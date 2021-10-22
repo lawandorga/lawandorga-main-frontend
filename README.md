@@ -1,3 +1,3 @@
 # lawandorga-frontend
 
-My personal vue3 typescript starter with eslint and prettier enabled. Ready to be deployed to netlify. 
+R&D of the collab feature to see if it works with vue3 and typescript.
