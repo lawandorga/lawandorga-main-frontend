@@ -1,0 +1,20 @@
+{
+    "eslint.validate": ["vue", "javascript", "typescript"],
+    "eslint.packageManager": "npm",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "css.validate": false,
+    "css.lint.unknownAtRules": "ignore",
+    "tailwindCSS.emmetCompletions": true,
+    "emmet.includeLanguages": {
+      "edge": "html",
+      "vue-html": "html",
+      "vue": "html"
+    },
+  }
