@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import collabRoutes from "./collab";
+import userRoutes from "./user";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -6,6 +8,8 @@ const routes: Array<RouteRecordRaw> = [
     name: "index",
     component: () => import("@/views/Index.vue"),
   },
+  ...userRoutes,
+  ...collabRoutes,
 ];
 
 const router = createRouter({

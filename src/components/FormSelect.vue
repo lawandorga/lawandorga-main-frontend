@@ -1,0 +1,93 @@
+<template>
+  <label :for="name" class="block relative">
+    <FormLabel :required="required" :label="label" />
+    <div class="flex mt-1 space-x-2 items-center">
+      <select
+        :id="`form--${name}`"
+        :name="name"
+        :required="required"
+        :value="modelValue"
+        class="
+          cursor-pointer
+          mt-1
+          appearance-none
+          block
+          w-full
+          px-3
+          py-2
+          border border-gray-300
+          rounded-md
+          shadow-sm
+          placeholder-gray-400
+          focus:outline-none focus:ring-blue-800 focus:border-blue-800
+          sm:text-sm
+        "
+        @input="$emit('update:modelValue', typeCorrect($event.target.value))"
+      >
+        <option
+          v-for="option in options"
+          :key="option.value"
+          :value="option.value"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+    </div>
+    <FormHelptext :form-helptext="helptext" />
+  </label>
+</template>
+
+<script lang="ts">
+import FormLabel from "./FormLabel.vue";
+import FormHelptext from "./FormHelptext.vue";
+
+export default {
+  components: {
+    FormHelptext,
+    FormLabel,
+  },
+  props: {
+    label: {
+      required: true,
+      type: String,
+    },
+    helptext: {
+      required: false,
+      default: "",
+      type: String,
+    },
+    modelValue: {
+      required: false,
+      default: "",
+      type: [String, Number, Boolean],
+    },
+    name: {
+      required: false,
+      type: String,
+      default: "",
+    },
+    options: {
+      required: true,
+      type: Array,
+    },
+    tooltip: {
+      required: false,
+      default: "",
+      type: String,
+    },
+    required: {
+      required: false,
+      default: false,
+      type: Boolean,
+    },
+  },
+  emits: ["update:modelValue"],
+  methods: {
+    typeCorrect(value) {
+      if (value === "true") return true;
+      else if (value === "false") return false;
+      return value;
+    },
+  },
+};
+</script>

@@ -18,9 +18,17 @@ axios.interceptors.request.use(function (
   config: AxiosRequestConfig,
 ): AxiosRequestConfig {
   if (store.getters.isAuthenticated) {
-    config.headers = { ...config.headers, Authorization: store.getters.token };
+    config.headers = {
+      ...config.headers,
+      Authorization: store.getters.token,
+      "private-key": store.getters.key,
+    };
   } else {
-    config.headers = { ...config.headers, Authorization: "" };
+    config.headers = {
+      ...config.headers,
+      Authorization: "",
+      "private-key": "",
+    };
   }
   return config;
 });
@@ -56,6 +64,9 @@ axios.interceptors.response.use(
   },
 );
 app.provide("$axios", axios);
+
+// auto login on reload
+store.dispatch("user/autoLogin");
 
 // mount
 app.mount("#app");

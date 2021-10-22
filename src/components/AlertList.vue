@@ -43,6 +43,9 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({ alerts: "alert/alerts" }),
+    test() {
+      return this.$route.query;
+    },
   },
 });
 </script>
