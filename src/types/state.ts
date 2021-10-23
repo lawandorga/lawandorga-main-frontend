@@ -1,5 +1,5 @@
 import { Alert } from "./alert";
-import { RlcUser } from "./user";
+import { User } from "./user";
 
 export interface AlertState {
   alerts: Alert[];
@@ -8,7 +8,7 @@ export interface AlertState {
 export interface UserState {
   token: string | null;
   key: string | null;
-  user: RlcUser | null;
+  user: User | null;
 }
 
 export interface RootState {

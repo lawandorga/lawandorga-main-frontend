@@ -18,11 +18,7 @@
                 "
               >
                 <div class="flex space-x-4 items-center">
-                  <img
-                    src="/assets/img/logo.svg"
-                    alt="Law&Orga Logo"
-                    class="w-16 h-16"
-                  />
+                  <img src="/logo.svg" alt="Law&Orga Logo" class="w-16 h-16" />
                   <span class="md:block">Law&Orga</span>
                 </div>
               </h1>
@@ -186,7 +182,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, onMounted } from "@vue/runtime-core";
 import FormGenerator from "@/components/FormGenerator.vue";
 
 export default defineComponent({
@@ -196,5 +192,27 @@ export default defineComponent({
       roadmapItems: [],
     };
   },
+  computed: {
+    authenticated() {
+      return this.$store.getters['user/isAuthenticated']
+    }
+  },
+  watch: {
+    authenticated: function(newValue, _) {
+      if (newValue) {
+        this.next();
+      }
+    }
+  },
+  mounted() {
+    if (this.authenticated) this.next();
+  },
+  methods: {
+    next() {
+      const url = this.$route.query.next as string;
+         if (url) this.$router.push(url);
+          else this.$router.push({ name: "collab-dashboard" });
+    }
+  }
 });
 </script>

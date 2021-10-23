@@ -1,8 +1,8 @@
 import { RootState, UserState } from "@/types/state";
-import axios from "axios";
-import router from "../router/index";
+import router from "../router";
 import { ActionContext } from "vuex";
-import { RlcUser } from "@/types/user";
+import { User } from "@/types/user";
+import axios from "../api";
 
 const state = {
   token: null,
@@ -15,7 +15,7 @@ const getters = {
   token: (state: UserState) => `Token ${state.token}`,
   key: (state: UserState) =>
     state.key ? state.key.replace(/(?:\r\n|\r|\n)/g, "<linebreak>") : "",
-  isAuthenticated: (state: UserState) => state.token && state.key,
+  isAuthenticated: (state: UserState) => !!state.token && !!state.key,
   loginData: () => JSON.parse(localStorage.getItem("loginData") || "{}"),
 };
 
@@ -25,7 +25,14 @@ const actions = {
     if (!loginData) {
       return;
     }
-    context.commit("login", loginData);
+    return new Promise((_, reject) => {
+      axios
+        .get<{user: User}>(`profiles/statics/${loginData.token}/`)
+        .then((response) => {
+          context.commit("login", { token: loginData.token, key: loginData.key, user: response.data.user });
+        })
+        .catch((error) => reject(error.response.data));
+    });
   },
   login: (
     context: ActionContext<UserState, RootState>,
@@ -35,7 +42,6 @@ const actions = {
       axios
         .post("profiles/login/", data)
         .then((response) => {
-          context.commit("setLoginData", response.data);
           context.commit("login", response.data);
           if (data.next) router.push(data.next);
           else router.push({ name: "collab-dashboard" });
@@ -46,7 +52,6 @@ const actions = {
   logout: (context: ActionContext<UserState, RootState>) => {
     return new Promise<void>((resolve, reject) => {
       if (context.getters.isAuthenticated) {
-        context.commit("unsetLoginData");
         context.commit("logout");
         resolve();
       } else {
@@ -164,27 +169,21 @@ const actions = {
 const mutations = {
   login: (
     state: UserState,
-    data: { token: string; user: RlcUser; key: string },
+    data: { token: string; user: User; key: string },
   ) => {
+    localStorage.setItem(
+      "loginData",
+      JSON.stringify({ token: data.token, key: data.key }),
+    );
     state.token = data.token;
     state.user = data.user;
     state.key = data.key;
   },
   logout: (state: UserState) => {
+    localStorage.removeItem("loginData");
     state.token = null;
     state.user = null;
-  },
-  setUser: (state: UserState, data: RlcUser) => {
-    state.user = data;
-  },
-  setLoginData: (
-    _: ActionContext<UserState, RootState>,
-    data: { token: string; key: string },
-  ) => {
-    localStorage.setItem("loginData", JSON.stringify(data));
-  },
-  unsetLoginData: () => {
-    localStorage.removeItem("loginData");
+    state.key = null;
   },
 };
 

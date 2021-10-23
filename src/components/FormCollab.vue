@@ -1,7 +1,9 @@
 <template>
+  <div>
+    <QuillEditor ref="editor" @ready="setUpQuill()" theme="snow" />
   <div v-if="editor" class="editor">
     <MenuBar class="editor__header" :editor="editor" />
-    <EditorContent class="editor__content" :editor="editor" />
+    <EditorContent ref="tiptap" class="editor__content" :editor="editor" />
     <div class="editor__footer">
       <div :class="`editor__status editor__status--${status}`">
         <template v-if="status === 'connected'">
@@ -11,11 +13,11 @@
         <template v-else>offline</template>
       </div>
       <div class="editor__name">
-        <button @click="setName">
-          {{ currentUser.name }}
-        </button>
+        {{ user.name }}
       </div>
     </div>
+  </div>
+  <button type="button" @click="reformat()">reformat text</button>
   </div>
 </template>
 
@@ -29,52 +31,61 @@ import TaskItem from "@tiptap/extension-task-item";
 import Highlight from "@tiptap/extension-highlight";
 import CharacterCount from "@tiptap/extension-character-count";
 import * as Y from "yjs";
-import { WebsocketProvider } from "y-websocket";
 import { WebrtcProvider } from "y-webrtc";
-import { IndexeddbPersistence } from "y-indexeddb";
 import MenuBar from "./MenuBar.vue";
 import { defineComponent } from "@vue/runtime-core";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 
 const getRandomElement = (list) => {
   return list[Math.floor(Math.random() * list.length)];
 };
 
-const getRandomRoom = () => {
-  return getRandomElement(["rooms.7"]);
-};
-
 export default defineComponent({
   components: {
+    QuillEditor,
     EditorContent,
     MenuBar,
   },
-
+  props: {
+    content: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
-      currentUser: JSON.parse(localStorage.getItem("currentUser")) || {
-        name: this.getRandomName(),
-        color: this.getRandomColor(),
-      },
-      provider: null,
-      indexdb: null,
+      provider: null as null | WebrtcProvider,
       editor: null,
       users: [],
       status: "connecting",
-      room: getRandomRoom(),
+      room: 'Room 1',
+      html: ""
     };
+  },
+
+  computed: {
+    user() {
+      return this.$store.getters['user/user'];
+    },
+    editorUser() {
+      return {
+        name: this.user.name,
+        color: this.getRandomColor()
+      }
+    }
   },
 
   mounted() {
     const ydoc = new Y.Doc();
-    // this.provider = new WebsocketProvider(
-    //   "wss://y-webrtc-signaling-eu.herokuapp.com/",
-    //   this.room,
-    //   ydoc,
-    // );
-    this.provider = new WebrtcProvider(this.room, ydoc, {
-      password: "1234",
-      signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
-    });
+
+    this.provider = new WebrtcProvider('Room 1', ydoc, 
+    // {
+    //   password: "1234",
+    //   signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
+    // }
+    );
 
     this.provider.on("status", (event) => {
       console.log(event);
@@ -84,9 +95,8 @@ export default defineComponent({
 
     window.ydoc = ydoc;
 
-    this.indexdb = new IndexeddbPersistence(this.room, ydoc);
-
     this.editor = new Editor({
+      content: this.html,
       extensions: [
         StarterKit.configure({
           history: false,
@@ -99,7 +109,7 @@ export default defineComponent({
         }),
         CollaborationCursor.configure({
           provider: this.provider,
-          user: this.currentUser,
+          user: this.editorUser,
           onUpdate: (users) => {
             this.users = users;
           },
@@ -109,8 +119,6 @@ export default defineComponent({
         }),
       ],
     });
-
-    localStorage.setItem("currentUser", JSON.stringify(this.currentUser));
   },
 
   beforeUnmount() {
@@ -119,14 +127,13 @@ export default defineComponent({
   },
 
   methods: {
-    setName() {
-      const name = (window.prompt("Name") || "").trim().substring(0, 32);
+    setUpQuill() {
+      this.$refs.editor.setContents(JSON.parse(this.content))
+    },
 
-      if (name) {
-        return this.updateCurrentUser({
-          name,
-        });
-      }
+    reformat() {
+      console.log(this.$refs.editor.getHTML())
+      this.editor.commands.setContent(this.$refs.editor.getHTML());
     },
 
     updateCurrentUser(attributes) {
@@ -145,36 +152,6 @@ export default defineComponent({
         "#70CFF8",
         "#94FADB",
         "#B9F18D",
-      ]);
-    },
-
-    getRandomName() {
-      return getRandomElement([
-        "Lea Thompson",
-        "Cyndi Lauper",
-        "Tom Cruise",
-        "Madonna",
-        "Jerry Hall",
-        "Joan Collins",
-        "Winona Ryder",
-        "Christina Applegate",
-        "Alyssa Milano",
-        "Molly Ringwald",
-        "Ally Sheedy",
-        "Debbie Harry",
-        "Olivia Newton-John",
-        "Elton John",
-        "Michael J. Fox",
-        "Axl Rose",
-        "Emilio Estevez",
-        "Ralph Macchio",
-        "Rob Lowe",
-        "Jennifer Grey",
-        "Mickey Rourke",
-        "John Cusack",
-        "Matthew Broderick",
-        "Justine Bateman",
-        "Lisa Bonet",
       ]);
     },
   },
