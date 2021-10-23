@@ -27,9 +27,13 @@ const actions = {
     }
     return new Promise((_, reject) => {
       axios
-        .get<{user: User}>(`profiles/statics/${loginData.token}/`)
+        .get<{ user: User }>(`profiles/statics/${loginData.token}/`)
         .then((response) => {
-          context.commit("login", { token: loginData.token, key: loginData.key, user: response.data.user });
+          context.commit("login", {
+            token: loginData.token,
+            key: loginData.key,
+            user: response.data.user,
+          });
         })
         .catch((error) => reject(error.response.data));
     });

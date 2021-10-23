@@ -13,6 +13,7 @@ module.exports = {
     "@vue/prettier",
     "@vue/prettier/@typescript-eslint",
   ],
+  // parser: "@typescript-eslint/parser",
   plugins: ["vue", "prettier"],
   rules: {
     "no-unused-vars": "warn",
