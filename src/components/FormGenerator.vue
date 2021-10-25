@@ -24,7 +24,7 @@
         :key="name"
         :class="{ hidden: type === 'hidden' }"
       >
-        <Textarea
+        <FormTextarea
           v-if="type === 'textarea'"
           v-model="data[name]"
           :label="label"
@@ -34,16 +34,17 @@
           :placeholder="placeholder"
           @update:modelValue="showSuccess = false"
         />
-        <Select
+        <FormSelect
           v-else-if="type === 'select'"
           v-model="data[name]"
           :label="label"
           :name="name"
           :required="required"
-          :options="options"
+          :options="options ?? []"
           @update:modelValue="showSuccess = false"
         />
-        <Input
+        <FormTipTap v-else-if="type === 'tiptap'" v-model="data[name]" />
+        <FormInput
           v-else
           v-model="data[name]"
           :label="label"
@@ -77,14 +78,14 @@
             {{ success }}
           </p>
         </transition>
-        <!-- <LightButton
+        <ButtonLight
           v-if="cancel"
           class="mr-3"
           type="button"
           @click="$emit('cancel')"
         >
           {{ cancel }}
-        </LightButton> -->
+        </ButtonLight>
         <ButtonBlue type="submit" :loading="loading">
           {{ submit }}
         </ButtonBlue>
@@ -94,28 +95,32 @@
 </template>
 
 <script lang="ts">
-import Input from "./FormInput.vue";
-import Textarea from "./FormTextarea.vue";
-import Select from "./FormSelect.vue";
+import FormInput from "./FormInput.vue";
+import FormTextarea from "./FormTextarea.vue";
+import FormSelect from "./FormSelect.vue";
 import ButtonBlue from "./ButtonBlue.vue";
+import ButtonLight from "./ButtonLight.vue";
+import FormTipTap from "./FormTipTap.vue";
+import { Field } from "@/types/form";
+import { defineComponent, PropType } from "@vue/runtime-core";
 
-export default {
+export default defineComponent({
   components: {
     ButtonBlue,
-    Select,
-    Input,
-    Textarea,
+    FormSelect,
+    FormInput,
+    ButtonLight,
+    FormTextarea,
+    FormTipTap,
   },
   props: {
     fields: {
-      type: Array,
+      type: Array as PropType<Field[]>,
       required: true,
     },
     initial: {
-      type: Object,
-      default() {
-        return null;
-      },
+      type: Object as PropType<{ [key: string]: string } | null>,
+      default: () => null,
       required: false,
     },
     success: {
@@ -126,7 +131,7 @@ export default {
     submit: {
       type: String,
       required: false,
-      default: "Absenden",
+      default: "Send" as string,
     },
     cancel: {
       type: String,
@@ -143,8 +148,8 @@ export default {
     return {
       showSuccess: false,
       nonFieldErrors: [],
-      errors: {},
-      data: {},
+      errors: {} as { [key: string]: string[] },
+      data: {} as { [key: string]: string | number | boolean },
       loading: false,
     };
   },
@@ -184,5 +189,5 @@ export default {
         });
     },
   },
-};
+});
 </script>

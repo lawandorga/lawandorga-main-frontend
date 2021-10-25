@@ -11,24 +11,19 @@
       font-medium
       rounded-xl
       shadow-sm
-      text-white
-      hover:text-white
-      bg-lorgablue bg-opacity-100
-      hover:bg-opacity-90
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue
+      text-indigo-700
+      bg-indigo-100
+      hover:bg-indigo-200
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
     "
-    :class="[
-      disabledComputed
-        ? 'pointer-events-none opacity-80 cursor-not-allowed'
-        : '',
-    ]"
+    :class="[disabledComputed ? 'pointer-events-none opacity-80' : '']"
     :to="to"
     :href="href"
     :disabled="disabledComputed"
     :type="type"
     @click="emitClick()"
   >
-    <Loader v-show="loading" color="text-white" class="mr-2" />
+    <Loader v-show="loading" color="text-indigo-600" class="mr-2" />
     <slot />
   </component>
 </template>
@@ -75,7 +70,7 @@ export default defineComponent({
       }
       return "div";
     },
-    disabledComputed() {
+    disabledComputed(): boolean {
       if (this.loading) return true;
       return this.disabled;
     },
@@ -87,5 +82,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style></style>

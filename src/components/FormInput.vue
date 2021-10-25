@@ -36,7 +36,7 @@
           @mouseleave="setMouseFocus(false)"
           @blur="setInputFocus(false)"
           @focus="setInputFocus(true)"
-          @input="$emit('update:modelValue', $event.target.value)"
+          @input="update($event)"
         />
         <div
           v-if="unit"
@@ -60,15 +60,16 @@
         </div>
       </div>
     </div>
-    <FormHelptext :form-helptext="FormHelptext" />
+    <FormHelptext :helptext="helptext" />
   </label>
 </template>
 
 <script lang="ts">
 import FormLabel from "./FormLabel.vue";
 import FormHelptext from "./FormHelptext.vue";
+import { defineComponent } from "@vue/runtime-core";
 
-export default {
+export default defineComponent({
   components: {
     FormHelptext,
     FormLabel,
@@ -78,7 +79,7 @@ export default {
       required: true,
       type: String,
     },
-    FormHelptext: {
+    helptext: {
       required: false,
       default: "",
       type: String,
@@ -86,7 +87,7 @@ export default {
     modelValue: {
       required: false,
       default: "",
-      type: [String, Number],
+      type: [String, Number, Boolean],
     },
     type: {
       default: "text",
@@ -152,12 +153,18 @@ export default {
     },
   },
   methods: {
-    setInputFocus(val) {
+    setInputFocus(val: boolean) {
       this.inputFocus = val;
     },
-    setMouseFocus(val) {
+    setMouseFocus(val: boolean) {
       this.mouseFocus = val;
     },
+    update($event: Event) {
+      this.$emit(
+        "update:modelValue",
+        ($event.target as HTMLInputElement).value,
+      );
+    },
   },
-};
+});
 </script>

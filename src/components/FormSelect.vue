@@ -22,11 +22,11 @@
           focus:outline-none focus:ring-blue-800 focus:border-blue-800
           sm:text-sm
         "
-        @input="$emit('update:modelValue', typeCorrect($event.target.value))"
+        @input="update($event)"
       >
         <option
           v-for="option in options"
-          :key="option.value"
+          :key="option.name"
           :value="option.value"
         >
           {{ option.name }}
@@ -40,8 +40,9 @@
 <script lang="ts">
 import FormLabel from "./FormLabel.vue";
 import FormHelptext from "./FormHelptext.vue";
+import { defineComponent, PropType } from "@vue/runtime-core";
 
-export default {
+export default defineComponent({
   components: {
     FormHelptext,
     FormLabel,
@@ -68,7 +69,7 @@ export default {
     },
     options: {
       required: true,
-      type: Array,
+      type: Array as PropType<{ name: string; value: string | boolean }[]>,
     },
     tooltip: {
       required: false,
@@ -83,11 +84,17 @@ export default {
   },
   emits: ["update:modelValue"],
   methods: {
-    typeCorrect(value) {
+    typeCorrect(value: string | boolean) {
       if (value === "true") return true;
       else if (value === "false") return false;
       return value;
     },
+    update($event: Event) {
+      this.$emit(
+        "update:modelValue",
+        this.typeCorrect(($event.target as HTMLSelectElement).value),
+      );
+    },
   },
-};
+});
 </script>
