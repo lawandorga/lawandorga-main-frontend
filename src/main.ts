@@ -15,8 +15,8 @@ app.use(store);
 // axios
 app.config.globalProperties.$axios = axios;
 
-// auto login on reload
-store.dispatch("user/autoLogin");
-
 // mount
 app.mount("#app");
+
+// auto login on reload
+await store.dispatch("user/autoLogin");

@@ -1,28 +1,33 @@
 <template>
-  <div>
-    <QuillEditor ref="editor" @ready="setUpQuill()" theme="snow" />
-  <div v-if="editor" class="editor">
-    <MenuBar class="editor__header" :editor="editor" />
-    <EditorContent ref="tiptap" class="editor__content" :editor="editor" />
-    <div class="editor__footer">
-      <div :class="`editor__status editor__status--${status}`">
-        <template v-if="status === 'connected'">
-          {{ users.length }} user{{ users.length === 1 ? "" : "s" }} online in
-          {{ room }}
-        </template>
-        <template v-else>offline</template>
+  <div v-if="editor" class="border-2 border-gray-800 rounded-xl">
+    <MenuBar
+      class="flex items-center border-b-2 border-gray-800 p-2"
+      :editor="editor"
+    />
+    <EditorContent ref="tiptap" :editor="editor" />
+    <div
+      class="
+        text-gray-800
+        flex
+        items-center
+        justify-between
+        border-t-2 border-gray-800
+        px-2
+        py-1
+      "
+    >
+      <div class="space-x-4">
+        <span v-for="item in users" :key="item.clientId" class="text-sm">
+          {{ item.name }}
+        </span>
       </div>
-      <div class="editor__name">
-        {{ user.name }}
-      </div>
+      <div class="text-sm">{{ editor.getCharacterCount() }} characters</div>
     </div>
-  </div>
-  <button type="button" @click="reformat()">reformat text</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Editor, EditorContent } from "@tiptap/vue-3";
+import { Editor, EditorContent, EditorEvents } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -34,69 +39,61 @@ import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import MenuBar from "./MenuBar.vue";
 import { defineComponent } from "@vue/runtime-core";
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
-
-
-const getRandomElement = (list) => {
-  return list[Math.floor(Math.random() * list.length)];
-};
 
 export default defineComponent({
   components: {
-    QuillEditor,
     EditorContent,
     MenuBar,
   },
   props: {
-    content: {
+    room: {
+      type: String,
+      default: "Room 1",
+    },
+    modelValue: {
       type: String,
       required: true,
     },
   },
+  emits: ["update:modelValue"],
   data() {
     return {
       provider: null as null | WebrtcProvider,
-      editor: null,
-      users: [],
-      status: "connecting",
-      room: 'Room 1',
-      html: ""
+      editor: null as null | Editor,
+      users: [] as { [key: string]: any; clientId: number }[], // eslint-disable-line @typescript-eslint/no-explicit-any
     };
   },
-
   computed: {
     user() {
-      return this.$store.getters['user/user'];
+      return this.$store.getters["user/user"];
     },
     editorUser() {
       return {
         name: this.user.name,
-        color: this.getRandomColor()
-      }
-    }
+        color: this.getRandomColor(),
+      };
+    },
   },
-
   mounted() {
     const ydoc = new Y.Doc();
 
-    this.provider = new WebrtcProvider('Room 1', ydoc, 
-    // {
-    //   password: "1234",
-    //   signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
-    // }
+    this.provider = new WebrtcProvider(
+      this.room,
+      ydoc,
+      // {
+      //   password: "1234",
+      //   signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
+      // }
     );
 
-    this.provider.on("status", (event) => {
-      console.log(event);
-
-      this.status = event.status;
-    });
-
-    window.ydoc = ydoc;
-
     this.editor = new Editor({
-      content: this.html,
+      content: this.modelValue,
+      editorProps: {
+        attributes: {
+          class:
+            "prose prose-sm p-5 w-full focus:outline-none sm:max-w-none sm:prose",
+        },
+      },
       extensions: [
         StarterKit.configure({
           history: false,
@@ -110,8 +107,9 @@ export default defineComponent({
         CollaborationCursor.configure({
           provider: this.provider,
           user: this.editorUser,
-          onUpdate: (users) => {
+          onUpdate: (users): null => {
             this.users = users;
+            return null;
           },
         }),
         CharacterCount.configure({
@@ -119,32 +117,19 @@ export default defineComponent({
         }),
       ],
     });
-  },
 
+    this.editor.on("update", (props: EditorEvents["update"]) => {
+      const html = props.editor.getHTML();
+      this.$emit("update:modelValue", html);
+    });
+  },
   beforeUnmount() {
-    this.editor.destroy();
-    this.provider.destroy();
+    this.editor ? this.editor.destroy() : null;
+    this.provider ? this.provider.destroy() : null;
   },
-
   methods: {
-    setUpQuill() {
-      this.$refs.editor.setContents(JSON.parse(this.content))
-    },
-
-    reformat() {
-      console.log(this.$refs.editor.getHTML())
-      this.editor.commands.setContent(this.$refs.editor.getHTML());
-    },
-
-    updateCurrentUser(attributes) {
-      this.currentUser = { ...this.currentUser, ...attributes };
-      this.editor.chain().focus().user(this.currentUser).run();
-
-      localStorage.setItem("currentUser", JSON.stringify(this.currentUser));
-    },
-
     getRandomColor() {
-      return getRandomElement([
+      const colors = [
         "#958DF1",
         "#F98181",
         "#FBBC88",
@@ -152,7 +137,8 @@ export default defineComponent({
         "#70CFF8",
         "#94FADB",
         "#B9F18D",
-      ]);
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
     },
   },
 });

@@ -7,5 +7,11 @@ export interface CollabDocument {
 }
 
 export interface CollabText {
+  updated: string;
+  created: string;
+  creator: number | null;
+  document: number;
+  is_draft: boolean;
+  quill: boolean;
   content: string;
 }

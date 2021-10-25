@@ -13,9 +13,9 @@
       shadow-sm
       text-white
       hover:text-white
-      bg-blue-800
-      hover:bg-blue-900
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-800
+      bg-lorgablue bg-opacity-100
+      hover:bg-opacity-90
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue
     "
     :class="[
       disabledComputed

@@ -1,4 +1,5 @@
 import store from "./store";
+import router from "./router";
 import axios, { AxiosRequestConfig } from "axios";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
@@ -34,12 +35,15 @@ axios.interceptors.response.use(
       const alert = {
         type: "error",
         heading: `Error 401`,
-        message: 'Your token expired, please login again.',
+        message: "Your token expired, please login again.",
       };
       store.dispatch("alert/createAlert", alert);
-      store.dispatch('user/logout');
-    }
-    else if (error.response && error.response.status !== 400) {
+      store.dispatch("user/logout");
+      router.push({
+        name: "user-login",
+        query: { next: window.location.pathname },
+      });
+    } else if (error.response && error.response.status !== 400) {
       let text;
       if (error.response.headers["content-type"] === "application/json")
         text = error.response.data.detail;
@@ -50,8 +54,7 @@ axios.interceptors.response.use(
         message: text,
       };
       store.dispatch("alert/createAlert", alert);
-    }
-    else if (!error.response) {
+    } else if (!error.response) {
       const alert = {
         type: "error",
         heading: "Error",

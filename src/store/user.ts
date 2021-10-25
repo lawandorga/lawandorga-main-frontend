@@ -22,21 +22,29 @@ const getters = {
 const actions = {
   autoLogin(context: ActionContext<UserState, RootState>) {
     const loginData = context.getters.loginData;
-    if (!loginData) {
-      return;
+    if ("token" in loginData && "key" in loginData) {
+      // login already to avoid the login page flash
+      context.commit("login", {
+        token: loginData.token,
+        key: loginData.key,
+        user: null,
+      });
+      // now truly login if the token is not valid interceptors will redirect to login page anyway
+      return new Promise<void>((resolve, reject) => {
+        axios
+          .get<{ user: User }>(`profiles/statics/${loginData.token}/`)
+          .then((response) => {
+            context.commit("login", {
+              token: loginData.token,
+              key: loginData.key,
+              user: response.data.user,
+            });
+            resolve();
+          })
+          .catch((error) => reject(error.response.data));
+      });
     }
-    return new Promise((_, reject) => {
-      axios
-        .get<{ user: User }>(`profiles/statics/${loginData.token}/`)
-        .then((response) => {
-          context.commit("login", {
-            token: loginData.token,
-            key: loginData.key,
-            user: response.data.user,
-          });
-        })
-        .catch((error) => reject(error.response.data));
-    });
+    return;
   },
   login: (
     context: ActionContext<UserState, RootState>,
@@ -54,13 +62,9 @@ const actions = {
     });
   },
   logout: (context: ActionContext<UserState, RootState>) => {
-    return new Promise<void>((resolve, reject) => {
-      if (context.getters.isAuthenticated) {
-        context.commit("logout");
-        resolve();
-      } else {
-        reject();
-      }
+    return new Promise<void>((resolve) => {
+      context.commit("logout");
+      resolve();
     });
   },
   //   register: (_: ActionContext<UserState, RootState>, data) => {

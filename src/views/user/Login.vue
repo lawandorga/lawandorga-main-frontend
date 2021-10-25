@@ -204,7 +204,7 @@ export default defineComponent({
       }
     },
   },
-  mounted() {
+  beforeMount() {
     if (this.authenticated) this.next();
   },
   methods: {
