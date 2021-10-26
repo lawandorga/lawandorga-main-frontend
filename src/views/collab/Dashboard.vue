@@ -1,12 +1,18 @@
 <template>
-  <div class="pt-32 pb-64 px-5">
-    <ul>
-      <li v-for="item in documents" :key="item.pk">
-        <router-link :to="{ name: 'collab-detail', params: { id: item.pk } }">
-          {{ item.path }}
-        </router-link>
-      </li>
-    </ul>
+  <div class="grid grid-cols-3 gap-6">
+    <div class="bg-white shadow rounded p-5">
+      <h2 class="text-lg font-bold mb-4">Documents</h2>
+      <ul>
+        <li v-for="item in documents" :key="item.pk">
+          <router-link :to="{ name: 'collab-detail', params: { id: item.pk } }">
+            {{ item.path }}
+          </router-link>
+        </li>
+      </ul>
+    </div>
+    <dig class="bg-white shadow rounded p-5 col-span-2">
+      <h2 class="text-lg font-bold mb-4">Document: hallo</h2>
+    </dig>
   </div>
 </template>
 

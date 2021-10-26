@@ -43,7 +43,7 @@
           :options="options ?? []"
           @update:modelValue="showSuccess = false"
         />
-        <FormTipTap v-else-if="type === 'tiptap'" v-model="data[name]" />
+        <FormTiptap v-else-if="type === 'tiptap'" v-model="data[name]" />
         <FormInput
           v-else
           v-model="data[name]"
@@ -100,9 +100,9 @@ import FormTextarea from "./FormTextarea.vue";
 import FormSelect from "./FormSelect.vue";
 import ButtonBlue from "./ButtonBlue.vue";
 import ButtonLight from "./ButtonLight.vue";
-import FormTipTap from "./FormTipTap.vue";
 import { Field } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
+import FormTiptap from "./FormTiptap.vue";
 
 export default defineComponent({
   components: {
@@ -111,7 +111,7 @@ export default defineComponent({
     FormInput,
     ButtonLight,
     FormTextarea,
-    FormTipTap,
+    FormTiptap,
   },
   props: {
     fields: {

@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="flex flex-wrap">
     <template v-for="(item, index) in items">
       <div
         v-if="item.type === 'divider'"
         :key="`divider${index}`"
-        class="divider"
+        class="divider mx-3"
       />
       <MenuItem v-else :key="index" v-bind="item" />
     </template>
@@ -14,6 +14,7 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import MenuItem from "./MenuItem.vue";
+import { BooleanFunction, VoidFunction } from "@/types/shared";
 
 export default defineComponent({
   components: {
@@ -49,16 +50,16 @@ export default defineComponent({
           isActive: () => this.editor.isActive("strike"),
         },
         {
-          icon: "code-view",
-          title: "Code",
-          action: () => this.editor.chain().focus().toggleCode().run(),
-          isActive: () => this.editor.isActive("code"),
-        },
-        {
           icon: "mark-pen-line",
           title: "Highlight",
           action: () => this.editor.chain().focus().toggleHighlight().run(),
           isActive: () => this.editor.isActive("highlight"),
+        },
+        {
+          icon: "format-clear",
+          title: "Clear Format",
+          action: () =>
+            this.editor.chain().focus().clearNodes().unsetAllMarks().run(),
         },
         {
           type: "divider",
@@ -84,6 +85,9 @@ export default defineComponent({
           isActive: () => this.editor.isActive("paragraph"),
         },
         {
+          type: "divider",
+        },
+        {
           icon: "list-unordered",
           title: "Bullet List",
           action: () => this.editor.chain().focus().toggleBulletList().run(),
@@ -94,21 +98,6 @@ export default defineComponent({
           title: "Ordered List",
           action: () => this.editor.chain().focus().toggleOrderedList().run(),
           isActive: () => this.editor.isActive("orderedList"),
-        },
-        {
-          icon: "list-check-2",
-          title: "Task List",
-          action: () => this.editor.chain().focus().toggleTaskList().run(),
-          isActive: () => this.editor.isActive("taskList"),
-        },
-        {
-          icon: "code-box-line",
-          title: "Code Block",
-          action: () => this.editor.chain().focus().toggleCodeBlock().run(),
-          isActive: () => this.editor.isActive("codeBlock"),
-        },
-        {
-          type: "divider",
         },
         {
           icon: "double-quotes-l",
@@ -125,20 +114,6 @@ export default defineComponent({
           type: "divider",
         },
         {
-          icon: "text-wrap",
-          title: "Hard Break",
-          action: () => this.editor.chain().focus().setHardBreak().run(),
-        },
-        {
-          icon: "format-clear",
-          title: "Clear Format",
-          action: () =>
-            this.editor.chain().focus().clearNodes().unsetAllMarks().run(),
-        },
-        {
-          type: "divider",
-        },
-        {
           icon: "arrow-go-back-line",
           title: "Undo",
           action: () => this.editor.chain().focus().undo().run(),
@@ -148,18 +123,77 @@ export default defineComponent({
           title: "Redo",
           action: () => this.editor.chain().focus().redo().run(),
         },
-      ],
+        {
+          type: "divider",
+        },
+        {
+          icon: "table-2",
+          title: "Insert Table",
+          action: () =>
+            this.editor.commands.insertTable({
+              rows: 3,
+              cols: 3,
+              withHeaderRow: true,
+            }),
+        },
+        {
+          icon: "insert-column-left",
+          title: "Add Column Before",
+          action: () => this.editor.chain().focus().addColumnBefore().run(),
+        },
+        {
+          icon: "insert-column-right",
+          title: "Add Column After",
+          action: () => this.editor.chain().focus().addColumnAfter().run(),
+        },
+        {
+          icon: "delete-column",
+          title: "Delete Column",
+          action: () => this.editor.chain().focus().deleteColumn().run(),
+        },
+        {
+          icon: "insert-row-top",
+          title: "Add Row Before",
+          action: () => this.editor.chain().focus().addRowBefore().run(),
+        },
+        {
+          icon: "insert-row-bottom",
+          title: "Add Row After",
+          action: () => this.editor.chain().focus().addRowAfter().run(),
+        },
+        {
+          icon: "delete-row",
+          title: "Delete Row",
+          action: () => this.editor.chain().focus().deleteRow().run(),
+        },
+        {
+          icon: "merge-cells-horizontal",
+          title: "Merge Cell",
+          action: () => this.editor.chain().focus().mergeCells().run(),
+        },
+        {
+          icon: "split-cells-horizontal",
+          title: "Split Cell",
+          action: () => this.editor.chain().focus().splitCell().run(),
+        },
+        {
+          icon: "heading",
+          title: "Toggle Header Cell",
+          action: () => this.editor.chain().focus().toggleHeaderCell().run(),
+        },
+        {
+          icon: "omega",
+          title: "Delete Table",
+          action: () => this.editor.chain().focus().deleteTable().run(),
+        },
+      ] as {
+        type?: "divider";
+        icon: string;
+        title: string;
+        action: VoidFunction;
+        isActive?: BooleanFunction;
+      }[],
     };
   },
 });
 </script>
-
-<style>
-.divider {
-  width: 2px;
-  height: 1.25rem;
-  background-color: rgba(#000, 0.1);
-  margin-left: 0.5rem;
-  margin-right: 0.75rem;
-}
-</style>

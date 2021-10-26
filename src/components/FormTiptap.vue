@@ -31,15 +31,16 @@ import { Editor, EditorContent, EditorEvents } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
 import Highlight from "@tiptap/extension-highlight";
 import CharacterCount from "@tiptap/extension-character-count";
+import Table from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
 import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import MenuBar from "./MenuBar.vue";
 import { defineComponent } from "@vue/runtime-core";
-import { log } from "console";
 
 export default defineComponent({
   components: {
@@ -63,6 +64,7 @@ export default defineComponent({
       provider: null as null | WebrtcProvider,
       editor: null as null | Editor,
       users: [] as { [key: string]: any; clientId: number }[], // eslint-disable-line @typescript-eslint/no-explicit-any
+      setup: false,
     };
   },
   computed: {
@@ -78,24 +80,16 @@ export default defineComponent({
   },
   watch: {
     modelValue: function (newValue, oldValue) {
-      const html = this.editor ? this.editor.getHTML() : "";
-      console.log("###");
-      console.log(newValue.length);
-      console.log(oldValue.length);
-      console.log(newValue.length % oldValue.length);
-      console.log("###");
-      const update =
+      if (
         newValue.length > 0 &&
         oldValue.length > 0 &&
-        newValue.length % oldValue.length === 0;
-      console.log(update);
-      if (update) {
-        console.log("oldValue");
+        newValue.length % oldValue.length === 0 &&
+        newValue.length !== oldValue.length
+      ) {
         this.editor?.commands.setContent(oldValue);
-      } else {
-        console.log("newValue");
-        console.log(newValue);
+      } else if (newValue !== oldValue && !this.setup) {
         this.editor?.commands.setContent(newValue);
+        this.setup = true;
       }
     },
   },
@@ -114,8 +108,7 @@ export default defineComponent({
     this.editor = new Editor({
       editorProps: {
         attributes: {
-          class:
-            "prose prose-sm p-5 w-full focus:outline-none sm:max-w-none sm:prose",
+          class: "prose p-5 w-full focus:outline-none sm:max-w-none",
         },
       },
       extensions: [
@@ -123,8 +116,6 @@ export default defineComponent({
           history: false,
         }),
         Highlight,
-        TaskList,
-        TaskItem,
         Collaboration.configure({
           document: ydoc,
         }),
@@ -139,6 +130,12 @@ export default defineComponent({
         CharacterCount.configure({
           limit: 10000,
         }),
+        Table.configure({
+          resizable: true,
+        }),
+        TableRow,
+        TableHeader,
+        TableCell,
       ],
     });
 
@@ -169,7 +166,7 @@ export default defineComponent({
 </script>
 
 <style>
-/* Give a remote user a caret */
+/* give a remote user a caret */
 .collaboration-cursor__caret {
   position: relative;
   margin-left: -1px;
@@ -180,7 +177,7 @@ export default defineComponent({
   pointer-events: none;
 }
 
-/* Render the username above the caret */
+/* render the username above the caret */
 .collaboration-cursor__label {
   position: absolute;
   top: -1.4em;
@@ -194,5 +191,15 @@ export default defineComponent({
   padding: 0.1rem 0.3rem;
   border-radius: 3px 3px 3px 0;
   white-space: nowrap;
+}
+
+/* make cell selection visible */
+.selectedCell {
+  @apply relative;
+}
+.selectedCell:after {
+  z-index: 2;
+  @apply absolute inset-0 bg-gray-600 bg-opacity-10 pointer-events-none;
+  content: "";
 }
 </style>

@@ -1,18 +1,24 @@
 <template>
   <button
-    class="menu-item"
-    :class="{ 'is-active': isActive ? isActive() : null }"
+    class="w-7 h-7 rounded-md p-1 mr-1.5"
+    type="button"
+    :class="{
+      'text-white bg-gray-900': active,
+      'text-gray-900': !active,
+    }"
     :title="title"
-    @click="action"
+    tabindex="-1"
+    @click.prevent="action"
   >
-    <svg class="remix">
+    <svg class="remix w-full h-full fill-current">
       <use :xlink:href="`${remixiconUrl}#ri-${icon}`" />
     </svg>
   </button>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { BooleanFunction, VoidFunction } from "@/types/shared";
+import { defineComponent, PropType } from "@vue/runtime-core";
 import remixiconUrl from "remixicon/fonts/remixicon.symbol.svg";
 
 export default defineComponent({
@@ -21,51 +27,30 @@ export default defineComponent({
       type: String,
       required: true,
     },
-
     title: {
       type: String,
       required: true,
     },
-
     action: {
-      type: Function,
+      type: Function as PropType<VoidFunction>,
       required: true,
     },
-
     isActive: {
-      type: Function,
+      type: Function as PropType<BooleanFunction>,
       default: null,
+      required: false,
     },
   },
-
   data() {
     return {
       remixiconUrl,
     };
   },
+  computed: {
+    active() {
+      if (this.isActive) return this.isActive();
+      return false;
+    },
+  },
 });
 </script>
-
-<style>
-.menu-item {
-  width: 1.75rem;
-  height: 1.75rem;
-  color: #0d0d0d;
-  border: none;
-  background-color: transparent;
-  border-radius: 0.4rem;
-  padding: 0.25rem;
-  margin-right: 0.25rem;
-}
-.menu-item svg {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.menu-item.is-active,
-.menu-item:hover {
-  color: #fff;
-  background-color: #0d0d0d;
-}
-</style>
