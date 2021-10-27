@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10">
+  <div class="bg-white shadow rounded px-6 py-5">
     <div v-if="loadQuill && !!text">
       <FormQuill :content="text.content" @html="content = $event" />
     </div>
