@@ -32,7 +32,7 @@
           flex-grow-0
           ml-4
         "
-        @click="$emit('clicked', item.pk)"
+        @click="$emit('clicked', item.id)"
       >
         <span>{{ item.name }}</span>
         <!-- <span class="text-sm text-gray-500">({{ item.children.length }})</span> -->
@@ -40,9 +40,10 @@
     </div>
     <DisclosurePanel as="ul" class="pl-8">
       <TreeItem
-        v-for="child in item.children"
+        v-for="child in children"
         :key="child.id"
         :item="child"
+        :items="items"
         @clicked="$emit('clicked', $event)"
       />
     </DisclosurePanel>
@@ -55,9 +56,9 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronRightIcon } from "@heroicons/vue/solid";
 
 interface TreeItem {
-  pk: number;
+  id: number;
   name: string;
-  children?: TreeItem[];
+  children: number[];
 }
 
 export default defineComponent({
@@ -73,7 +74,18 @@ export default defineComponent({
       type: Object as PropType<TreeItem>,
       required: true,
     },
+    items: {
+      type: Array as PropType<TreeItem[]>,
+      required: true,
+    },
   },
   emits: ["clicked"],
+  computed: {
+    children() {
+      return this.items.filter((items_item) =>
+        this.item.children.includes(items_item.id),
+      );
+    },
+  },
 });
 </script>

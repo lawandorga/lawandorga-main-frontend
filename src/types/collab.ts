@@ -1,10 +1,11 @@
 export interface CollabDocument {
+  root: boolean;
   name: string;
-  pk: number;
+  id: number;
   path: string;
   created: string;
   creator: number;
-  children: CollabDocument[];
+  children: number[];
 }
 
 export interface CollabText {

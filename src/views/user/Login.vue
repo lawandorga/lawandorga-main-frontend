@@ -52,11 +52,13 @@
                     type: 'email',
                     tag: 'input',
                     name: 'email',
+                    autocomplete: 'email',
                     required: true,
                   },
                   {
                     label: 'Password',
                     type: 'password',
+                    autocomplete: 'current-passwort',
                     tag: 'input',
                     name: 'password',
                     required: true,

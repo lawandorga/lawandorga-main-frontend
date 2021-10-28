@@ -100,9 +100,12 @@ import FormTextarea from "./FormTextarea.vue";
 import FormSelect from "./FormSelect.vue";
 import ButtonBlue from "./ButtonBlue.vue";
 import ButtonLight from "./ButtonLight.vue";
-import { Field } from "@/types/form";
+import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import FormTiptap from "./FormTiptap.vue";
+import { DjangoError, DjangoModel } from "@/types/shared";
+
+type RequestFunction = (data: DjangoModel) => Promise<any>; // eslint-disable-line
 
 export default defineComponent({
   components: {
@@ -115,12 +118,12 @@ export default defineComponent({
   },
   props: {
     fields: {
-      type: Array as PropType<Field[]>,
+      type: Array as PropType<FormField[]>,
       required: true,
     },
     initial: {
-      type: Object as PropType<{ [key: string]: string } | null>,
-      default: () => null,
+      type: Object as PropType<DjangoModel>,
+      default: null,
       required: false,
     },
     success: {
@@ -140,16 +143,22 @@ export default defineComponent({
     },
     action: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
+    },
+    request: {
+      type: Function as PropType<RequestFunction>,
+      required: false,
+      default: null,
     },
   },
   emits: ["success", "error", "cancel"],
   data() {
     return {
       showSuccess: false,
-      nonFieldErrors: [],
-      errors: {} as { [key: string]: string[] },
-      data: {} as { [key: string]: string | number | boolean },
+      nonFieldErrors: [] as string[],
+      errors: {} as DjangoError,
+      data: {} as DjangoModel,
       loading: false,
     };
   },
@@ -165,28 +174,33 @@ export default defineComponent({
     handleSubmit() {
       this.showSuccess = false;
       this.loading = true;
-
-      const data = {
-        ...this.data,
-        form: this.$refs.form,
-      };
-
+      if (this.action) this.dispatchStore(this.data);
+      else this.sendRequest(this.data);
+    },
+    sendRequest(data: DjangoModel) {
+      this.request(data)
+        .then((data: DjangoModel) => this.handleSuccess(data))
+        .catch((error: DjangoError) => this.handleError(error));
+    },
+    dispatchStore(data: DjangoModel) {
       this.$store
         .dispatch(this.action, data)
-        .then((data) => {
-          this.errors = {};
-          this.nonFieldErrors = [];
-          if (this.initial === null) this.data = {};
-          this.showSuccess = true;
-          this.loading = false;
-          this.$emit("success", data);
-        })
-        .catch((errors) => {
-          this.errors = errors;
-          this.nonFieldErrors = errors.non_field_errors;
-          this.loading = false;
-          this.$emit("error", errors);
-        });
+        .then((data: DjangoModel) => this.handleSuccess(data))
+        .catch((errors: DjangoError) => this.handleError(errors));
+    },
+    handleSuccess(data: DjangoModel) {
+      this.errors = {};
+      this.nonFieldErrors = [];
+      if (this.initial === null) this.data = {};
+      this.showSuccess = true;
+      this.loading = false;
+      this.$emit("success", data);
+    },
+    handleError(errors: DjangoError) {
+      this.errors = errors;
+      this.nonFieldErrors = errors.non_field_errors as string[];
+      this.loading = false;
+      this.$emit("error", errors);
     },
   },
 });

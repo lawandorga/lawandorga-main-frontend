@@ -1,4 +1,4 @@
-export interface Field {
+export interface FormField {
   label: string;
   name: string;
   type:

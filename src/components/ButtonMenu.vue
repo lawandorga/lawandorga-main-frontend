@@ -45,6 +45,7 @@
       leave-to-class="transform scale-95 opacity-0"
     >
       <MenuItems
+        :unmount="false"
         class="
           absolute
           right-0

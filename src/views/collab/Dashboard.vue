@@ -4,13 +4,20 @@
       <div class="bg-white shadow rounded p-5">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="text-lg font-bold">Documents</h2>
-          <ButtonIcon type="button" icon="PlusCircle">Create</ButtonIcon>
+          <ButtonIcon
+            type="button"
+            icon="PlusCircle"
+            @click="createOpen = true"
+          >
+            Create
+          </ButtonIcon>
         </div>
         <ul>
           <TreeItem
-            v-for="item in documents"
-            :key="item.pk"
+            v-for="item in documents.filter((item) => item.root)"
+            :key="item.id"
             :item="item"
+            :items="documents"
             @clicked="documentSelected($event)"
           />
         </ul>
@@ -22,7 +29,7 @@
             <div class="flex space-x-3">
               <ButtonIcon
                 icon="Pencil"
-                :to="{ name: 'collab-detail', params: { id: document.pk } }"
+                :to="{ name: 'collab-detail', params: { id: document.id } }"
               >
                 Edit
               </ButtonIcon>
@@ -32,9 +39,8 @@
                   { name: 'Permissions', id: 'permissions' },
                   { name: 'Delete', id: 'delete' },
                 ]"
-              >
-                test
-              </ButtonMenu>
+                @click="menuClicked($event)"
+              />
             </div>
           </div>
           <!-- eslint-disable-next-line vue/no-v-html -->
@@ -53,6 +59,26 @@
         </BoxAlert>
       </div>
     </div>
+    <ModalFree v-model="createOpen" title="Create Document">
+      <FormGenerator
+        :fields="[
+          { label: 'Path', name: 'path', disabled: true, required: true },
+          { label: 'Name', name: 'name', required: true },
+        ]"
+        :initial="{ path: document ? document.path + '/' : '/' }"
+        submit="Create"
+        :request="createDocument"
+        @success="documentCreated($event)"
+      />
+    </ModalFree>
+    <div v-if="document">
+      <ModalDelete
+        v-model="deleteOpen"
+        :url="`collab/collab_documents/${document.id}/`"
+        :object="document.name"
+        @deleted="documentDeleted(document.id)"
+      />
+    </div>
   </BoxLoader>
 </template>
 
@@ -65,6 +91,10 @@ import Loader from "@/components/Loader.vue";
 import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonIcon from "@/components/ButtonIcon.vue";
 import ButtonMenu from "@/components/ButtonMenu.vue";
+import ModalFree from "@/components/ModalFree.vue";
+import FormGenerator from "@/components/FormGenerator.vue";
+import ModalDelete from "@/components/ModalDelete.vue";
+import Collab from "@/services/collab";
 
 export default defineComponent({
   components: {
@@ -74,41 +104,54 @@ export default defineComponent({
     BoxLoader,
     ButtonIcon,
     ButtonMenu,
+    ModalFree,
+    FormGenerator,
+    ModalDelete,
   },
   data: function () {
     return {
       documents: [] as CollabDocument[],
       text: null as CollabText | null,
       textLoading: false,
+      createOpen: false,
+      deleteOpen: false,
+      createDocument: Collab.createDocument,
     };
   },
   computed: {
     document(): CollabDocument | null {
       const document = this.documents.find(
-        (item: CollabDocument) => item.pk === this.text?.document,
+        (item: CollabDocument) => item.id === this.text?.document,
       );
       if (document) return document;
       return null;
     },
   },
   mounted() {
-    this.$axios
-      .get<CollabDocument[]>("/collab/collab_documents/")
-      .then((response) => (this.documents = response.data));
+    Collab.getDocuments().then((documents) => (this.documents = documents));
   },
   methods: {
-    documentSelected(pk: number) {
+    documentSelected(id: number) {
       this.textLoading = true;
       this.text = null;
-      this.$axios
-        .get<CollabText>(`collab/collab_documents/${pk}/latest/`)
-        .then((response) => (this.text = response.data))
+      Collab.getLatestText(id)
+        .then((text) => (this.text = text))
         .finally(() => (this.textLoading = false));
+    },
+    documentCreated(data: CollabDocument) {
+      this.createOpen = false;
+      this.documents
+        .find((item) => {
+          let path = data.path.split("/");
+          path.pop();
+          return item.path === path.join("/");
+        })
+        ?.children.push(data.id);
+      this.documents.push(data);
+    },
+    menuClicked(id: string) {
+      if (id === "delete") this.deleteOpen = true;
     },
   },
 });
-
-// <router-link :to="{ name: 'collab-detail', params: { id: item.pk } }">
-//             {{ item.path }}
-//           </router-link>
 </script>
