@@ -6,7 +6,7 @@
     <div v-if="content && !!text">
       <FormGenerator
         :fields="[{ label: 'Content', name: 'content', type: 'tiptap' }]"
-        action="collab/createTextVersion"
+        action="collab/createVersionVersion"
         success="Saved"
         submit="Save"
         :initial="{ content: content, quill: false, document: text.document }"
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import { CollabText } from "@/types/collab";
+import { CollabVersion } from "@/types/collab";
 import FormQuill from "@/components/FormQuill.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 
@@ -28,14 +28,14 @@ export default defineComponent({
   },
   data: function () {
     return {
-      text: null as CollabText | null,
+      text: null as CollabVersion | null,
       content: null as string | null,
       loadQuill: false,
     };
   },
   mounted() {
     this.$axios
-      .get<CollabText>(
+      .get<CollabVersion>(
         `collab/collab_documents/${this.$route.params.id}/latest/`,
       )
       .then((response) => {
@@ -52,7 +52,7 @@ export default defineComponent({
           quill: false,
         });
         this.$axios
-          .post<CollabText>(
+          .post<CollabVersion>(
             `collab/text_documents/${this.text.document}/versions/`,
             data,
           )

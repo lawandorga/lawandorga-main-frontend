@@ -3,7 +3,7 @@
     <div class="grid grid-cols-3 gap-6">
       <div class="bg-white shadow rounded p-5">
         <div class="flex justify-between items-baseline mb-4">
-          <h2 class="text-lg font-bold">Documents</h2>
+          <h2 class="version-lg font-bold">Documents</h2>
           <ButtonIcon
             type="button"
             icon="PlusCircle"
@@ -23,7 +23,7 @@
         </ul>
       </div>
       <div class="bg-white shadow rounded p-5 col-span-2">
-        <div v-if="text && document">
+        <div v-if="version && document">
           <div class="flex justify-between">
             <div>{{ document.path }}</div>
             <div class="flex space-x-3">
@@ -44,12 +44,12 @@
             </div>
           </div>
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <article class="pt-8 prose" v-html="text.content"></article>
+          <article class="pt-8 prose" v-html="version.content"></article>
         </div>
-        <Loader v-show="textLoading" />
-        <p v-show="!textLoading && !text">No document selected.</p>
+        <Loader v-show="versionLoading" />
+        <p v-show="!versionLoading && !version">No document selected.</p>
         <BoxAlert
-          v-show="text && text.content.includes('{')"
+          v-show="version && version.content.includes('{')"
           type="warning"
           class="mt-2"
         >
@@ -79,12 +79,36 @@
         @deleted="documentDeleted(document.id)"
       />
     </div>
+    <ModalFree v-model="versionsOpen" title="Versions">
+      <ul class="space-y-2">
+        <li v-for="item in versions" :key="item.id">
+          <button
+            type="button"
+            class="
+              w-full
+              border-2 border-gray-300
+              rounded
+              px-3
+              py-2
+              font-medium
+              text-left text-gray-700
+              bg-gray-100
+              hover:bg-gray-200
+            "
+            @click="versionSelected(item.id)"
+          >
+            {{ formatDate(item.created) }}
+          </button>
+        </li>
+      </ul>
+      <Loader v-show="versionsLoading" />
+    </ModalFree>
   </BoxLoader>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import { CollabDocument, CollabText } from "@/types/collab";
+import { CollabDocument, CollabVersion } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import Loader from "@/components/Loader.vue";
@@ -96,6 +120,7 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import Collab from "@/services/collab";
 import { removeFromArray } from "@/utils/array";
+import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   components: {
@@ -112,17 +137,21 @@ export default defineComponent({
   data: function () {
     return {
       documents: [] as CollabDocument[],
-      text: null as CollabText | null,
-      textLoading: false,
+      version: null as CollabVersion | null,
+      versionLoading: false,
+      versions: [] as CollabVersion[],
+      versionsOpen: false,
+      versionsLoading: false,
       createOpen: false,
       deleteOpen: false,
       createDocument: Collab.createDocument,
+      formatDate: formatDate,
     };
   },
   computed: {
     document(): CollabDocument | null {
       const document = this.documents.find(
-        (item: CollabDocument) => item.id === this.text?.document,
+        (item: CollabDocument) => item.id === this.version?.document,
       );
       if (document) return document;
       return null;
@@ -133,11 +162,18 @@ export default defineComponent({
   },
   methods: {
     documentSelected(id: number) {
-      this.textLoading = true;
-      this.text = null;
-      Collab.getLatestText(id)
-        .then((text) => (this.text = text))
-        .finally(() => (this.textLoading = false));
+      this.versionLoading = true;
+      this.version = null;
+      Collab.getLatestVersion(id)
+        .then((version) => (this.version = version))
+        .finally(() => (this.versionLoading = false));
+    },
+    versionSelected(id: number) {
+      this.versionLoading = true;
+      this.version = null;
+      const found = this.versions.find((item) => item.id === id);
+      if (found) this.version = found;
+      this.versionLoading = false;
     },
     documentCreated(data: CollabDocument) {
       this.createOpen = false;
@@ -156,6 +192,14 @@ export default defineComponent({
     },
     menuClicked(id: string) {
       if (id === "delete") this.deleteOpen = true;
+      if (id === "versions") {
+        this.versionsLoading = true;
+        this.versions = [];
+        this.versionsOpen = true;
+        Collab.getVersions(this.document ? this.document.id : 0)
+          .then((versions) => (this.versions = versions))
+          .finally(() => (this.versionsLoading = false));
+      }
     },
   },
 });

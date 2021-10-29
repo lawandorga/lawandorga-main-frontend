@@ -1,4 +1,4 @@
-import { CollabDocument, CollabText } from "./collab";
+import { CollabDocument, CollabVersion } from "./collab";
 import { RlcUser, User } from "./user";
 
 export type VoidFunction = () => void;
@@ -11,7 +11,7 @@ export interface JsonModel {
 export type DjangoModel =
   | JsonModel
   | CollabDocument
-  | CollabText
+  | CollabVersion
   | User
   | RlcUser;
 

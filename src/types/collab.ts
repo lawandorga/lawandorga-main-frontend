@@ -8,7 +8,7 @@ export interface CollabDocument {
   children: number[];
 }
 
-export interface CollabText {
+export interface CollabVersion {
   id: number;
   updated: string;
   created: string;

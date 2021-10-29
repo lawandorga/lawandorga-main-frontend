@@ -1,4 +1,4 @@
-import { CollabText } from "@/types/collab";
+import { CollabVersion } from "@/types/collab";
 import { CollabState, RootState } from "@/types/state";
 import { ActionContext } from "vuex";
 import axios from "../api";
@@ -10,9 +10,9 @@ const state: CollabState = {
 const getters = {};
 
 const actions = {
-  createTextVersion: (
+  createVersionVersion: (
     _: ActionContext<CollabState, RootState>,
-    data: CollabText,
+    data: CollabVersion,
   ) => {
     return new Promise<void>((resolve, reject) => {
       axios
