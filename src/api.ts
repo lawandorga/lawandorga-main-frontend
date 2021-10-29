@@ -28,6 +28,7 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log("interceptor");
     // if the error code is 400 it's supposed to be a form error
     // if there is no response it might be another type of error like a network error
     // we want to catch everything that is not a form error and display an error alert

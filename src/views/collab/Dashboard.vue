@@ -95,6 +95,7 @@ import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import Collab from "@/services/collab";
+import { removeFromArray } from "@/utils/array";
 
 export default defineComponent({
   components: {
@@ -148,6 +149,10 @@ export default defineComponent({
         })
         ?.children.push(data.id);
       this.documents.push(data);
+    },
+    documentDeleted(id: number) {
+      this.deleteOpen = false;
+      this.documents = removeFromArray(this.documents, id) as CollabDocument[];
     },
     menuClicked(id: string) {
       if (id === "delete") this.deleteOpen = true;

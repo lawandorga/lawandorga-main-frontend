@@ -1,5 +1,4 @@
 import { CollabDocument, CollabText } from "@/types/collab";
-import { DjangoModel } from "@/types/shared";
 import axios from "../api";
 
 class CollabService {
@@ -9,22 +8,33 @@ class CollabService {
       .then((response) => response.data);
   }
 
-  createDocument(data: DjangoModel): Promise<CollabDocument> {
+  createDocument(data: {
+    name: string;
+    path: string;
+  }): Promise<CollabDocument> {
     return axios
       .post<CollabDocument>("collab/collab_documents/", data)
       .then((response) => response.data);
   }
 
-  getLatestText(id: number) {
+  createText(data: { content: string; document: number }): Promise<CollabText> {
+    console.log("create");
+    return axios
+      .post<CollabText>(
+        `collab/collab_documents/${data.document}/create_version/`,
+        data,
+      )
+      .then((response) => response.data);
+  }
+
+  getLatestText(id: number): Promise<CollabText> {
     return axios
       .get<CollabText>(`collab/collab_documents/${id}/latest/`)
       .then((response) => response.data)
-      .catch(() => {
-        // create a new text
-        console.log("create a new text");
-      });
+      .catch(() => this.createText({ content: "", document: id }));
   }
 }
 
 const Collab = new CollabService();
+
 export default Collab;

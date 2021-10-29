@@ -34,7 +34,7 @@
         "
         @click="$emit('clicked', item.id)"
       >
-        <span>{{ item.name }}</span>
+        <span>{{ item.name || "---" }}</span>
         <!-- <span class="text-sm text-gray-500">({{ item.children.length }})</span> -->
       </button>
     </div>

@@ -9,6 +9,7 @@ export interface CollabDocument {
 }
 
 export interface CollabText {
+  id: number;
   updated: string;
   created: string;
   creator: number | null;

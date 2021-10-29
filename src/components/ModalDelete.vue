@@ -64,7 +64,11 @@
                 >
                   Cancel
                 </ButtonLight>
-                <ButtonBlue type="button" @click="deleteClicked()">
+                <ButtonBlue
+                  type="button"
+                  :loading="loading"
+                  @click="deleteClicked()"
+                >
                   Yes, delete
                 </ButtonBlue>
               </div>
@@ -119,9 +123,18 @@ export default defineComponent({
     },
   },
   emits: ["update:modelValue", "deleted"],
+  data: function () {
+    return {
+      loading: false,
+    };
+  },
   methods: {
     deleteClicked() {
-      this.$axios.delete(this.url).then(() => this.$emit("deleted"));
+      this.loading = true;
+      this.$axios
+        .delete(this.url)
+        .then(() => this.$emit("deleted"))
+        .finally(() => (this.loading = false));
     },
   },
 });
