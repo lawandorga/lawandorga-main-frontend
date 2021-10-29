@@ -1,26 +1,36 @@
 <template>
   <BoxLoader :show="!!documents.length">
     <div class="grid grid-cols-3 gap-6">
-      <div class="bg-white shadow rounded p-5">
-        <div class="flex justify-between items-baseline mb-4">
-          <h2 class="version-lg font-bold">Documents</h2>
-          <ButtonIcon
-            type="button"
-            icon="PlusCircle"
-            @click="createOpen = true"
-          >
-            Create
-          </ButtonIcon>
+      <div class="space-y-6">
+        <div class="bg-white shadow rounded p-5">
+          <div class="flex justify-between items-baseline mb-4">
+            <h2 class="version-lg font-bold">Documents</h2>
+            <ButtonIcon
+              type="button"
+              icon="PlusCircle"
+              @click="createOpen = true"
+            >
+              Create
+            </ButtonIcon>
+          </div>
+          <ul>
+            <TreeItem
+              v-for="item in documents.filter((item) => item.root)"
+              :key="item.id"
+              :item="item"
+              :items="documents"
+              @clicked="documentSelected($event)"
+            />
+          </ul>
         </div>
-        <ul>
-          <TreeItem
-            v-for="item in documents.filter((item) => item.root)"
-            :key="item.id"
-            :item="item"
-            :items="documents"
-            @clicked="documentSelected($event)"
-          />
-        </ul>
+        <div class="bg-white shadow rounded p-5">
+          <div class="flex justify-between items-baseline mb-4">
+            <h2 class="version-lg font-bold">Permissions</h2>
+          </div>
+          <div>
+            <p v-show="!versionLoading && !version">No document selected.</p>
+          </div>
+        </div>
       </div>
       <div class="bg-white shadow rounded p-5 col-span-2">
         <div v-if="version && document">
