@@ -1,4 +1,10 @@
-import { CollabDocument, CollabVersion } from "@/types/collab";
+import {
+  CollabDocument,
+  CollabDocumentPermission,
+  CollabPermission,
+  CollabVersion,
+} from "@/types/collab";
+import { HasPermission } from "@/types/core";
 import axios from "../api";
 
 class CollabService {
@@ -21,7 +27,6 @@ class CollabService {
     content: string;
     document: number;
   }): Promise<CollabVersion> {
-    console.log("create");
     return axios
       .post<CollabVersion>(
         `collab/collab_documents/${data.document}/create_version/`,
@@ -43,6 +48,40 @@ class CollabService {
       .then((response) =>
         response.data.sort((item1, item2) => item2.id - item1.id),
       );
+  }
+
+  getGeneralPermissions(): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>("has_permission/collab/")
+      .then((response) => response.data);
+  }
+
+  getCollabPermissions(): Promise<CollabPermission[]> {
+    return axios
+      .get<CollabPermission[]>("collab/collab_permissions")
+      .then((response) => response.data);
+  }
+
+  getDocumentPermissions(id: number): Promise<CollabDocumentPermission[]> {
+    return axios
+      .get<CollabDocumentPermission[]>(
+        `collab/collab_documents/${id}/permissions/`,
+      )
+      .then((response) => response.data);
+  }
+
+  createDocumentPermission(data: {
+    permission: number;
+    document: number;
+    group: number;
+  }): Promise<CollabDocumentPermission> {
+    return axios
+      .post<CollabDocumentPermission>("collab/document_permissions/", data)
+      .then((response) => response.data);
+  }
+
+  deleteDocumentPermission(id: number): Promise<void> {
+    return axios.delete(`collab/document_permissions/${id}/`);
   }
 }
 

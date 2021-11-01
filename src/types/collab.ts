@@ -18,3 +18,15 @@ export interface CollabVersion {
   quill: boolean;
   content: string;
 }
+
+export interface CollabPermission {
+  id: number;
+  name: string;
+}
+
+export interface CollabDocumentPermission {
+  id: number;
+  group_has_permission: number | { id: number; name: string };
+  document: number | { id: number; path: string };
+  permission: number | { id: number; name: string };
+}

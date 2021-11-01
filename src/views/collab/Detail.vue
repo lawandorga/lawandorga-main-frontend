@@ -3,10 +3,10 @@
     <div v-if="loadQuill && !!text">
       <FormQuill :content="text.content" @html="content = $event" />
     </div>
-    <div v-if="content && !!text">
+    <div v-if="content === '' || (content && !!text)">
       <FormGenerator
         :fields="[{ label: 'Content', name: 'content', type: 'tiptap' }]"
-        action="collab/createVersionVersion"
+        :request="createVersion"
         success="Saved"
         submit="Save"
         :initial="{ content: content, quill: false, document: text.document }"
@@ -20,6 +20,7 @@ import { defineComponent } from "@vue/runtime-core";
 import { CollabVersion } from "@/types/collab";
 import FormQuill from "@/components/FormQuill.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
+import Collab from "@/services/collab";
 
 export default defineComponent({
   components: {
@@ -31,34 +32,17 @@ export default defineComponent({
       text: null as CollabVersion | null,
       content: null as string | null,
       loadQuill: false,
+      createVersion: Collab.createVersion,
     };
   },
   mounted() {
-    this.$axios
-      .get<CollabVersion>(
-        `collab/collab_documents/${this.$route.params.id}/latest/`,
-      )
-      .then((response) => {
-        this.text = response.data;
+    Collab.getLatestVersion(parseInt(this.$route.params.id as string)).then(
+      (version) => {
+        this.text = version;
         if (this.text.quill) this.loadQuill = true;
         else this.content = this.text.content;
-      });
-  },
-  methods: {
-    updateDocument() {
-      if (this.text) {
-        const data = Object.assign({}, this.text, {
-          content: this.content,
-          quill: false,
-        });
-        this.$axios
-          .post<CollabVersion>(
-            `collab/text_documents/${this.text.document}/versions/`,
-            data,
-          )
-          .then((response) => (this.text = response.data));
-      }
-    },
+      },
+    );
   },
 });
 </script>
