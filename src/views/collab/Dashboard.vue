@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="!!documents.length">
+  <BoxLoader :show="true">
     <div class="grid grid-cols-3 gap-6">
       <div class="bg-white shadow rounded p-5">
         <div class="flex justify-between items-baseline mb-4">
