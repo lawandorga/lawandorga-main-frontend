@@ -90,8 +90,10 @@
                   font-medium
                   rounded-md
                 "
+                @click="setOpen(false)"
               >
-                <svg
+                <component
+                  :is="item.icon"
                   class="
                     text-gray-400
                     mr-4
@@ -100,13 +102,7 @@
                     w-6
                     group-hover:text-gray-500
                   "
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                  v-html="item.icon"
-                ></svg>
+                />
                 {{ item.label }}
               </router-link>
             </nav>
@@ -129,7 +125,7 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
-import { defineComponent, toRefs } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {
