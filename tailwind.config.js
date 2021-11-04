@@ -8,6 +8,9 @@ module.exports = {
       colors: {
         lorgablue: "#003c4d",
       },
+      extend: {
+        backgroundColor: ["odd", "even"],
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {

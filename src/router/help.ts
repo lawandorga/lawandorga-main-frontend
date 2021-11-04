@@ -8,6 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/help/Dashboard.vue"),
     beforeEnter: isAuthenticated,
   },
+  {
+    path: "/help/permissions/",
+    name: "help-permissions",
+    component: () => import("@/views/help/Permissions.vue"),
+    beforeEnter: isAuthenticated,
+  },
 ];
 
 export default routes;

@@ -31,7 +31,15 @@ axios.interceptors.response.use(
     // if the error code is 400 it's supposed to be a form error
     // if there is no response it might be another type of error like a network error
     // we want to catch everything that is not a form error and display an error alert
-    if (error.response.status === 401) {
+    if (!error.response) {
+      const alert = {
+        type: "error",
+        heading: `Network Error`,
+        message:
+          "There seems to be a network error. Make sure you're connected to the internet.",
+      };
+      store.dispatch("alert/createAlert", alert);
+    } else if (error.response.status === 401) {
       const alert = {
         type: "error",
         heading: `Error 401`,
@@ -52,13 +60,6 @@ axios.interceptors.response.use(
         type: "error",
         heading: `Error ${error.response.status}`,
         message: text,
-      };
-      store.dispatch("alert/createAlert", alert);
-    } else if (!error.response) {
-      const alert = {
-        type: "error",
-        heading: "Error",
-        message: "An unknown error occurred.",
       };
       store.dispatch("alert/createAlert", alert);
     }

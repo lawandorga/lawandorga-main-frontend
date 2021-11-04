@@ -1,9 +1,17 @@
-import { ref, onMounted, watch, computed, Ref } from "vue";
+import { ref, onMounted, watch, computed, Ref, Component } from "vue";
 import { useStore } from "vuex";
+import {
+  CollectionIcon,
+  FolderOpenIcon,
+  DocumentTextIcon,
+  ChartPieIcon,
+  CogIcon,
+  SupportIcon,
+} from "@heroicons/vue/outline";
 
 interface SidebarItem {
   label: string;
-  icon: string;
+  icon: Component;
   link: string | { name: string };
   notifications?: number;
   permissions: string[];
@@ -13,43 +21,43 @@ export default function useNavigationItems() {
   const navigationItems: Ref<SidebarItem[]> = ref([]);
   const store = useStore();
 
-  const getNavigationItems = (permissions: string[]) => {
+  const setNavigationItems = (permissions: string[]) => {
     navigationItems.value = [
       {
         label: "Records",
-        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />',
-        link: "/records/",
+        icon: CollectionIcon,
+        link: { name: "records-dashboard" },
         permissions: [],
       },
       {
         label: "Files",
-        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />',
-        link: "/files/",
+        icon: FolderOpenIcon,
+        link: { name: "files-dashboard" },
         permissions: [],
       },
       {
         label: "Collab",
-        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />',
+        icon: DocumentTextIcon,
         link: { name: "collab-dashboard" },
         permissions: [],
       },
       {
         label: "Statistics",
-        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />',
-        link: "/statistics/",
+        icon: ChartPieIcon,
+        link: { name: "statistics-dashboard" },
         permissions: [],
       },
       {
         label: "Admin",
-        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />',
-        link: "/admin/",
+        icon: CogIcon,
+        link: { name: "admin-dashboard" },
         notifications: 0,
         permissions: [],
       },
       {
         label: "Help",
-        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />',
-        link: "/help/",
+        icon: SupportIcon,
+        link: { name: "help-dashboard" },
         permissions: [],
       },
       // {
@@ -69,11 +77,10 @@ export default function useNavigationItems() {
     (): boolean => store.getters["user/isAuthenticated"],
   );
 
-  onMounted(() => getNavigationItems([]));
-  watch(authenticated, () => getNavigationItems([]));
+  onMounted(() => setNavigationItems([]));
+  watch(authenticated, () => setNavigationItems([]));
 
   return {
     navigationItems,
-    getNavigationItems,
   };
 }

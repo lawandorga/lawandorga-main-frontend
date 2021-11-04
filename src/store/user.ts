@@ -64,6 +64,7 @@ const actions = {
   logout: (context: ActionContext<UserState, RootState>) => {
     return new Promise<void>((resolve) => {
       context.commit("logout");
+      router.push({ name: "user-login" });
       resolve();
     });
   },

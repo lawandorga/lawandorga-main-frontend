@@ -58,7 +58,8 @@
               "
             >
               <div class="flex items-center">
-                <svg
+                <component
+                  :is="item.icon"
                   class="
                     text-gray-400
                     mr-3
@@ -67,14 +68,7 @@
                     w-6
                     group-hover:text-gray-500
                   "
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                  v-html="item.icon"
-                ></svg>
-
+                />
                 {{ item.label }}
               </div>
               <div

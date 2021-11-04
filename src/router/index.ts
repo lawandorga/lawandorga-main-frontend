@@ -11,7 +11,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "index",
-    component: () => import("@/views/Index.vue"),
+    redirect: { name: "user-login" },
+    // component: () => import("@/views/Index.vue"),
   },
   ...userRoutes,
   ...recordsRoutes,
