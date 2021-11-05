@@ -39,6 +39,8 @@ axios.interceptors.response.use(
           "There seems to be a network error. Make sure you're connected to the internet.",
       };
       store.dispatch("alert/createAlert", alert);
+      // } else if (error.response.status === 400) {
+      // throw error.response.data;
     } else if (error.response.status === 401) {
       const alert = {
         type: "error",

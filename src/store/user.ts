@@ -2,7 +2,7 @@ import { RootState, UserState } from "@/types/state";
 import router from "../router";
 import { ActionContext } from "vuex";
 import { User } from "@/types/user";
-import axios from "../api";
+import UserService from "@/services/user";
 
 const state = {
   token: null,
@@ -30,19 +30,17 @@ const actions = {
         user: null,
       });
       // now truly login if the token is not valid interceptors will redirect to login page anyway
-      return new Promise<void>((resolve, reject) => {
-        axios
-          .get<{ user: User }>(`profiles/statics/${loginData.token}/`)
-          .then((response) => {
-            context.commit("login", {
-              token: loginData.token,
-              key: loginData.key,
-              user: response.data.user,
-            });
-            resolve();
-          })
-          .catch((error) => reject(error.response.data));
-      });
+      return UserService.statics(loginData.token)
+        .then((statics) => {
+          context.commit("login", {
+            token: loginData.token,
+            key: loginData.key,
+            user: statics.user,
+          });
+        })
+        .catch((error) => {
+          throw error.response.data;
+        });
     }
     return;
   },
@@ -50,15 +48,10 @@ const actions = {
     context: ActionContext<UserState, RootState>,
     data: { email: string; password: string; next?: string },
   ) => {
-    return new Promise((_, reject) => {
-      axios
-        .post("profiles/login/", data)
-        .then((response) => {
-          context.commit("login", response.data);
-          if (data.next) router.push(data.next);
-          else router.push({ name: "collab-dashboard" });
-        })
-        .catch((error) => reject(error.response.data));
+    return UserService.login(data).then((login) => {
+      context.commit("login", login);
+      if (data.next) router.push(data.next);
+      else router.push({ name: "collab-dashboard" });
     });
   },
   logout: (context: ActionContext<UserState, RootState>) => {

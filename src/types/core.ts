@@ -13,3 +13,21 @@ export interface Group {
   description: string;
   note: string;
 }
+
+export interface Rlc {
+  id: number;
+  name: string;
+  use_record_pool: boolean;
+}
+
+export interface Permission {
+  id: number;
+  name: string;
+}
+
+export interface HasPermission {
+  id: string;
+  permission: number | { id: number; name: string };
+  user_has_permission: number | { id: number; name: string };
+  group_has_permission: number | { id: number; name: string };
+}
