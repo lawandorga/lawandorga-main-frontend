@@ -1,4 +1,4 @@
-<template>user detail</template>
+<template>questionnaires</template>
 
 <script>
 export default {};

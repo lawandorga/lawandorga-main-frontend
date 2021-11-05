@@ -32,7 +32,7 @@
       <div class="flex-1 flex"></div>
       <div class="ml-4 flex items-center md:ml-6">
         <router-link
-          to="/notifications"
+          :to="{ name: 'admin-notifications' }"
           class="
             p-1
             block

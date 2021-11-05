@@ -1,4 +1,4 @@
-<template>user detail</template>
+<template>profiles</template>
 
 <script>
 export default {};

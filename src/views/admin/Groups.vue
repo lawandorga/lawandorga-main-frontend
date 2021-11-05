@@ -1,4 +1,4 @@
-<template>user detail</template>
+<template>groups</template>
 
 <script>
 export default {};

@@ -93,7 +93,7 @@ export default defineComponent({
         title: "Profiles",
         description:
           "Here you can manage the users of your RLC. If you have the 'manage_users' permission you can change their contact information. If you have the 'manage_permissions' permission you can update the permissions of every user.",
-        link: "/profiles",
+        link: { name: "admin-profiles" },
         icon: UserIcon,
         notifications: 0,
         class: "rounded-tl-lg",
@@ -102,7 +102,7 @@ export default defineComponent({
         title: "Groups",
         description:
           "Here you can manage the groups of your RLC. If you have the 'manage_groups' permission you can add, change and remove groups. You can also add and remove users. If you have the 'manage_permissions' permission you can add permissions to a group or remove permissions from a group.",
-        link: "/groups",
+        link: { name: "admin-groups" },
         icon: UsersIcon,
         notifications: 0,
         class: "rounded-tr-lg",
@@ -111,7 +111,7 @@ export default defineComponent({
         title: "Tags",
         description:
           "Add and remove tags or change the name of your existing tags. Tags that are used within records can not be deleted.",
-        link: "/admin/tags",
+        link: { name: "admin-tags" },
         icon: TagIcon,
         notifications: 0,
         class: "",
@@ -120,7 +120,7 @@ export default defineComponent({
         title: "Record-Permit-Requests",
         description:
           "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
-        link: "/admin/permit-requests",
+        link: { name: "admin-recordpermitrequests" },
         icon: LockOpenIcon,
         notifications: 0,
         class: "",
@@ -129,7 +129,7 @@ export default defineComponent({
         title: "Record-Deletion-Requests",
         description:
           "If somebody requested to delete a record you can take a look and allow that request here.",
-        link: "/admin/deletion-requests",
+        link: { name: "admin-recorddeletionrequests" },
         icon: TrashIcon,
         notifications: 0,
         class: "rounded-bl-lg",
@@ -138,7 +138,7 @@ export default defineComponent({
         title: "Record Questionnaires",
         description:
           "Here you can create questionnaire templates that can be send out from the record detail page.",
-        link: "/admin/questionnaires",
+        link: { name: "admin-questionnaires" },
         icon: QuestionMarkCircleIcon,
         notifications: 0,
         class: "rounded-br-lg",

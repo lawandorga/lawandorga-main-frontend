@@ -1,4 +1,4 @@
-<template>user detail</template>
+<template>record permit requets</template>
 
 <script>
 export default {};

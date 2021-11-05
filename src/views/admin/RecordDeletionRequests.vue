@@ -1,4 +1,4 @@
-<template>user detail</template>
+<template>record deletion requests</template>
 
 <script>
 export default {};
