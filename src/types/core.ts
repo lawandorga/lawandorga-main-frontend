@@ -31,3 +31,15 @@ export interface HasPermission {
   user_has_permission: number | { id: number; name: string };
   group_has_permission: number | { id: number; name: string };
 }
+
+export interface Notification {
+  description_text: string;
+  id: string;
+  last_activity: Date;
+  created: Date;
+  type: string;
+  read: boolean;
+  ref_id: string;
+  ref_text: string;
+  notifications: Notification[];
+}
