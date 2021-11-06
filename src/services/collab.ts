@@ -23,6 +23,12 @@ class CollabService {
       .then((response) => response.data);
   }
 
+  deleteDocument(data: CollabDocument): Promise<CollabDocument> {
+    return axios
+      .delete<CollabDocument>(`collab/collab_documents/${data.id}`)
+      .then((response) => response.data);
+  }
+
   createVersion(data: {
     content: string;
     document: number;

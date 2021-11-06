@@ -53,7 +53,7 @@
               </DialogTitle>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  Are you sure you want to delete {{ object }}?
+                  Are you sure you want to delete {{ object.name }}?
                 </p>
               </div>
 
@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import {
   TransitionRoot,
   TransitionChild,
@@ -91,6 +91,7 @@ import {
 } from "@headlessui/vue";
 import ButtonBlue from "@/components/ButtonBlue.vue";
 import ButtonLight from "@/components/ButtonLight.vue";
+import { DjangoModel, RequestFunction } from "@/types/shared";
 
 export default defineComponent({
   components: {
@@ -109,17 +110,19 @@ export default defineComponent({
       default: "Delete",
     },
     object: {
-      type: String,
-      required: true,
+      type: Object as PropType<DjangoModel>,
+      required: false,
+      default: () => null,
     },
     modelValue: {
       type: Boolean,
       required: false,
       default: false,
     },
-    url: {
-      type: String,
-      required: true,
+    request: {
+      type: Function as PropType<RequestFunction>,
+      required: false,
+      default: null,
     },
   },
   emits: ["update:modelValue", "deleted"],
@@ -131,9 +134,8 @@ export default defineComponent({
   methods: {
     deleteClicked() {
       this.loading = true;
-      this.$axios
-        .delete(this.url)
-        .then(() => this.$emit("deleted"))
+      this.request(this.object)
+        .then(() => this.$emit("deleted", this.object))
         .finally(() => (this.loading = false));
     },
   },

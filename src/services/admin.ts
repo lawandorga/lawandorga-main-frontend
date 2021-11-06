@@ -2,6 +2,9 @@ import { Tag } from "@/types/records";
 import axios from "../api";
 
 class UserService {
+  /*
+  // Tags
+  */
   getTags(): Promise<Tag[]> {
     return axios.get<Tag[]>(`records/tags/`).then((response) => response.data);
   }
@@ -14,12 +17,12 @@ class UserService {
 
   updateTag(tag: Tag): Promise<Tag> {
     return axios
-      .patch<Tag>(`api/records/tags/${tag.id}/`, tag)
+      .patch<Tag>(`records/tags/${tag.id}/`, tag)
       .then((response) => response.data);
   }
 
-  deleteTag(id: number): Promise<void> {
-    return axios.delete(`records/tags/${id}/`);
+  deleteTag(tag: Tag): Promise<void> {
+    return axios.delete(`records/tags/${tag.id}/`);
   }
 }
 

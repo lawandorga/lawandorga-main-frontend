@@ -132,8 +132,8 @@
     <div v-if="document">
       <ModalDelete
         v-model="deleteOpen"
-        :url="`collab/collab_documents/${document.id}/`"
-        :object="document.name"
+        :request="deleteDocument"
+        :object="document"
         @deleted="documentDeleted(document.id)"
       />
     </div>
@@ -237,6 +237,7 @@ export default defineComponent({
       createOpen: false,
       deleteOpen: false,
       createDocument: Collab.createDocument,
+      deleteDocument: Collab.deleteDocument,
       formatDate: formatDate,
       permissions: [] as HasPermission[],
       docPermissions: [] as CollabDocumentPermission[],

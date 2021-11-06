@@ -103,10 +103,8 @@ import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import FormTiptap from "./FormTiptap.vue";
-import { DjangoError, DjangoModel } from "@/types/shared";
+import { DjangoError, DjangoModel, RequestFunction } from "@/types/shared";
 import { AxiosError } from "axios";
-
-type RequestFunction = (data: DjangoModel) => Promise<any>; // eslint-disable-line
 
 export default defineComponent({
   components: {
