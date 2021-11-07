@@ -53,7 +53,8 @@
               </DialogTitle>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  Are you sure you want to delete {{ object.name }}?
+                  Are you sure you want to delete
+                  {{ object.name || object.id }}?
                 </p>
               </div>
 

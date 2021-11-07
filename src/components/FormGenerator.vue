@@ -103,7 +103,12 @@ import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import FormTiptap from "./FormTiptap.vue";
-import { DjangoError, DjangoModel, RequestFunction } from "@/types/shared";
+import {
+  DjangoError,
+  DjangoModel,
+  JsonModel,
+  RequestFunction,
+} from "@/types/shared";
 import { AxiosError } from "axios";
 
 export default defineComponent({
@@ -176,8 +181,10 @@ export default defineComponent({
       if (this.action) this.dispatchStore(this.data);
       else this.sendRequest(this.data);
     },
-    sendRequest(data: DjangoModel) {
-      this.request(data)
+    sendRequest(requestData: DjangoModel | FormData) {
+      if (this.fields.map((item) => item.name).includes("file"))
+        requestData = new FormData(this.$refs.form as HTMLFormElement);
+      this.request(requestData)
         .then((data: DjangoModel) => this.handleSuccess(data))
         .catch((error: AxiosError<DjangoError>) =>
           this.handleError(error.response ? error.response.data : {}),

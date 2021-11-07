@@ -3,9 +3,11 @@
     <Thead>
       <Tr class="divide-x divide-gray-200">
         <Th v-for="item in head" :key="item.key">
-          <div class="flex items-center justify-between">
-            {{ item.name }}
-          </div>
+          <slot :name="`head-${item.key}`">
+            <div class="flex items-center justify-between">
+              {{ item.name }}
+            </div>
+          </slot>
         </Th>
       </Tr>
     </Thead>
@@ -32,7 +34,8 @@ import Tbody from "./TableBody.vue";
 import Thead from "./TableHeader.vue";
 import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, PropType } from "@vue/runtime-core";
+import { JsonModel } from "@/types/shared";
 
 interface NestedObject {
   [key: string]: string | number | boolean | NestedObject;
@@ -49,11 +52,11 @@ export default defineComponent({
   },
   props: {
     head: {
-      type: Array,
+      type: Array as PropType<{ key: string; name: string }[]>,
       required: true,
     },
     data: {
-      type: Array,
+      type: Array as PropType<JsonModel[]>,
       required: true,
     },
   },
