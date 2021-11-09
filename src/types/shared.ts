@@ -6,7 +6,7 @@ export type BooleanFunction = () => void;
 export type RequestFunction = (data: DjangoModel | FormData) => Promise<any>; // eslint-disable-line
 
 export interface JsonModel {
-  [key: string]: string | boolean | number;
+  [key: string]: string | boolean | number | number[];
 }
 
 export type DjangoModel =

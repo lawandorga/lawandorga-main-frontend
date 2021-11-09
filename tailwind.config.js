@@ -2,14 +2,14 @@ const colors = require("tailwindcss/colors");  // eslint-disable-line
 
 module.exports = {
   purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-  //   mode: "jit",
+  mode: "jit",
   theme: {
     extend: {
       colors: {
         lorgablue: "#003c4d",
       },
       extend: {
-        backgroundColor: ["odd", "even"],
+        backgroundColor: ["odd", "even", "checked"],
       },
       typography: (theme) => ({
         DEFAULT: {

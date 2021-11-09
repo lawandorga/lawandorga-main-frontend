@@ -43,6 +43,15 @@
           :options="options ?? []"
           @update:modelValue="showSuccess = false"
         />
+        <FormMultiple
+          v-else-if="type === 'multiple'"
+          v-model="data[name]"
+          :label="label"
+          :name="name"
+          :required="required"
+          :options="options ?? []"
+          @update:modelValue="showSuccess = false"
+        />
         <FormTiptap v-else-if="type === 'tiptap'" v-model="data[name]" />
         <FormInput
           v-else
@@ -103,13 +112,9 @@ import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import FormTiptap from "./FormTiptap.vue";
-import {
-  DjangoError,
-  DjangoModel,
-  JsonModel,
-  RequestFunction,
-} from "@/types/shared";
+import { DjangoError, DjangoModel, RequestFunction } from "@/types/shared";
 import { AxiosError } from "axios";
+import FormMultiple from "./FormMultiple.vue";
 
 export default defineComponent({
   components: {
@@ -119,6 +124,7 @@ export default defineComponent({
     ButtonLight,
     FormTextarea,
     FormTiptap,
+    FormMultiple,
   },
   props: {
     fields: {

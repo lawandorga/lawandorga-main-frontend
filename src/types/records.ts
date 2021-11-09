@@ -1,3 +1,54 @@
+export interface Record {
+  id: number;
+  token: string;
+  last_contact_date: Date;
+  state: string;
+  tags: Tag[];
+  working_on_record: [number, string];
+  official_note: string;
+  created_on: Date;
+  last_edited: Date;
+  first_contact_date: Date;
+  note: string;
+  from_rlc: number;
+  client: number;
+  first_consultation: Date;
+  consultant_team: string;
+  lawyer: string;
+  related_persons: string;
+  contact: string;
+  bamf_token: string;
+  foreign_token: string;
+  first_correspondence: string;
+  circumstances: string;
+  next_steps: string;
+  status_described: string;
+  additional_facts: string;
+}
+
+export interface RestrictedRecord {
+  id: number;
+  state: string;
+  created_on: string;
+  last_edited: string;
+  record_token: string;
+  tags: { id: number; name: string }[];
+  working_on_record: { id: number; name: string; email: string }[];
+  official_note: string;
+  access: boolean;
+}
+
+export interface Consultant {
+  id: number;
+  name: string;
+}
+
+export interface Country {
+  id: number;
+  name: string;
+  state: string;
+}
+
 export interface Tag {
   id: number;
   rlc: number;
