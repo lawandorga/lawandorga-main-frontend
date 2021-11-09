@@ -36,6 +36,7 @@ export interface RestrictedRecord {
   working_on_record: { id: number; name: string; email: string }[];
   official_note: string;
   access: boolean;
+  delete: boolean;
 }
 
 export interface Consultant {

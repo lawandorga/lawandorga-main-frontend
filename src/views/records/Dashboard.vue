@@ -25,7 +25,15 @@
           Create Record
         </ButtonTable>
       </template>
-      <template #action>action</template>
+      <template #action="slotProps">
+        <ButtonTable
+          type="button"
+          :disabled="slotProps.dataItem.delete"
+          @click="openDelete(slotProps.dataItem)"
+        >
+          Request Deletion
+        </ButtonTable>
+      </template>
       <template #working_on_record="slotProps">
         <ul class="list-disc pl-3.5">
           <li
@@ -51,11 +59,38 @@
         </ul>
       </template>
     </TableGenerator>
+    <!-- modals -->
     <ModalFree v-model="createOpen" title="Create Record">
       <FormGenerator
         :fields="createFields"
         :request="createRecord"
         @success="recordCreated"
+      ></FormGenerator>
+    </ModalFree>
+    <ModalFree v-model="deleteOpen" title="Request Deletion">
+      <FormGenerator
+        :fields="[
+          {
+            label: 'Record',
+            name: 'record_token',
+            disabled: true,
+            required: true,
+          },
+          {
+            label: 'Explanation',
+            name: 'explanation',
+            type: 'textarea',
+            required: true,
+          },
+        ]"
+        :initial="{
+          record_token: record ? record.record_token : null,
+          record: record ? record.id : null,
+          requested_from: $store.getters['user/user'].id,
+        }"
+        :request="createDeletionRequest"
+        submit="Request Deletion"
+        @success="deletionRequestCreated"
       ></FormGenerator>
     </ModalFree>
   </BoxLoader>
@@ -153,6 +188,10 @@ export default defineComponent({
           required: false,
         },
       ],
+      // delete
+      deleteOpen: false,
+      record: null as RestrictedRecord | null,
+      createDeletionRequest: RecordsService.createDeletionRequest,
     };
   },
   computed: {
@@ -182,14 +221,28 @@ export default defineComponent({
       this.createOpen = false;
       this.records.push(record);
     },
+    // delete
+    openDelete(record: RestrictedRecord) {
+      this.record = record;
+      this.deleteOpen = true;
+    },
+    deletionRequestCreated() {
+      this.deleteOpen = false;
+      const index = this.records.findIndex(
+        (item) => item.id === this.record?.id,
+      );
+      if (index !== -1) this.records[index].delete = true;
+      this.record = null;
+    },
     // list
     filterRecord(record: RestrictedRecord): boolean {
       const filter = this.search.toLowerCase();
+      const note = record.official_note || "";
 
       return (
         record.record_token.toLowerCase().includes(filter) ||
         this.getState(record.state).toLowerCase().includes(filter) ||
-        record.official_note.toLowerCase().includes(filter) ||
+        note.toLowerCase().includes(filter) ||
         record.working_on_record
           .map((item) => item.name.toLowerCase())
           .some((name) => name.includes(filter)) ||

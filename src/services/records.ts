@@ -2,6 +2,7 @@ import {
   Consultant,
   Country,
   Record,
+  RecordDeletionRequest,
   RestrictedRecord,
   Tag,
 } from "@/types/records";
@@ -38,6 +39,17 @@ class RecordsService {
   getCountries(): Promise<Country[]> {
     return axios
       .get<Country[]>("records/origin_countries/")
+      .then((response) => response.data);
+  }
+
+  createDeletionRequest(
+    deletionRequest: RecordDeletionRequest,
+  ): Promise<RecordDeletionRequest> {
+    return axios
+      .post<RecordDeletionRequest>(
+        "records/record_deletion_requests/",
+        deletionRequest,
+      )
       .then((response) => response.data);
   }
 }
