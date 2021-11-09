@@ -39,6 +39,17 @@ export interface RestrictedRecord {
   delete: boolean;
 }
 
+export interface RecordsClient {
+  id: string;
+  name: string;
+  created_on: Date;
+  last_edited: Date;
+  birthday: Date;
+  origin_country: string;
+  note: string;
+  phone_number: string;
+}
+
 export interface Consultant {
   id: number;
   name: string;
@@ -48,6 +59,28 @@ export interface Country {
   id: number;
   name: string;
   state: string;
+}
+
+export interface Message {
+  id: number;
+  message: string;
+  sender: null | {
+    id: number;
+    name: string;
+    email: string;
+  };
+  created_on: string;
+  record: number;
+}
+
+export interface RecordsDocument {
+  id: number;
+  name: string;
+  creator: string;
+  created_on: Date;
+  last_edited: Date;
+  file_size: number;
+  tags: Tag[];
 }
 
 export interface Tag {

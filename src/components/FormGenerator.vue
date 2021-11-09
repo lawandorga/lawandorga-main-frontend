@@ -32,7 +32,7 @@
           :type="type"
           :required="required"
           :placeholder="placeholder"
-          @update:modelValue="showSuccess = false"
+          @update:model-value="showSuccess = false"
         />
         <FormSelect
           v-else-if="type === 'select'"
@@ -41,7 +41,7 @@
           :name="name"
           :required="required"
           :options="options ?? []"
-          @update:modelValue="showSuccess = false"
+          @update:model-value="showSuccess = false"
         />
         <FormMultiple
           v-else-if="type === 'multiple'"
@@ -50,7 +50,7 @@
           :name="name"
           :required="required"
           :options="options ?? []"
-          @update:modelValue="showSuccess = false"
+          @update:model-value="showSuccess = false"
         />
         <FormTiptap v-else-if="type === 'tiptap'" v-model="data[name]" />
         <FormInput
@@ -63,7 +63,7 @@
           :type="type"
           :required="required"
           :placeholder="placeholder"
-          @update:modelValue="showSuccess = false"
+          @update:model-value="showSuccess = false"
         />
         <p
           v-if="errors[name]"
@@ -112,7 +112,12 @@ import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import FormTiptap from "./FormTiptap.vue";
-import { DjangoError, DjangoModel, RequestFunction } from "@/types/shared";
+import {
+  DjangoError,
+  DjangoModel,
+  JsonModel,
+  RequestFunction,
+} from "@/types/shared";
 import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
 
@@ -132,7 +137,7 @@ export default defineComponent({
       required: true,
     },
     initial: {
-      type: Object as PropType<DjangoModel>,
+      type: Object as PropType<JsonModel>,
       default: null,
       required: false,
     },
@@ -188,8 +193,14 @@ export default defineComponent({
       else this.sendRequest(this.data);
     },
     sendRequest(requestData: DjangoModel | FormData) {
-      if (this.fields.map((item) => item.name).includes("file"))
+      if (this.fields.map((item) => item.name).includes("file")) {
         requestData = new FormData(this.$refs.form as HTMLFormElement);
+        if (this.initial)
+          Object.keys(this.initial).forEach((key) => {
+            if (!(key in requestData))
+              (requestData as FormData).set(key, this.initial[key] as string);
+          });
+      }
       this.request(requestData)
         .then((data: DjangoModel) => this.handleSuccess(data))
         .catch((error: AxiosError<DjangoError>) =>

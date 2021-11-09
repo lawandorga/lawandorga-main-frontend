@@ -27,12 +27,12 @@
             :key="option.name"
             class="px-3 py-2 focus:text-red-500 focus:bg-red-500"
             :class="{
-              'bg-lorgablue text-blue-50': modelValue.includes(
+              'bg-lorgablue text-blue-50': modelValueStringArray.includes(
                 option.id.toString(),
               ),
             }"
             :value="option.id"
-            :selected="modelValue.includes(option.id.toString())"
+            :selected="modelValueStringArray.includes(option.id.toString())"
             @click="update(option.id.toString())"
           >
             {{ option.name }}
@@ -79,7 +79,7 @@
         <span class="block truncate">
           {{
             options
-              .filter((item) => modelValue.includes(item.id.toString()))
+              .filter((item) => modelValueStringArray.includes(item.id.toString()))
               .map((item) => item.name)
               .join(", ") || "---"
           }}
@@ -147,7 +147,7 @@
             >
               <span
                 :class="[
-                  modelValue.includes(option.id.toString())
+                  modelValueStringArray.includes(option.id.toString())
                     ? 'font-semibold'
                     : 'font-normal',
                   'block truncate',
@@ -157,7 +157,7 @@
               </span>
 
               <span
-                v-if="modelValue.includes(option.id.toString())"
+                v-if="modelValueStringArray.includes(option.id.toString())"
                 :class="[
                   active ? 'text-white' : 'text-indigo-600',
                   'absolute inset-y-0 left-0 flex items-center pl-1.5',
@@ -230,12 +230,16 @@ export default defineComponent({
       clickListener: null,
     };
   },
-
+  computed: {
+    modelValueStringArray() {
+      return this.modelValue.map((item) => item.toString());
+    },
+  },
   methods: {
     update(value: string) {
       if (value === "") return;
       let values = this.modelValue;
-      const index = this.modelValue.indexOf(value);
+      const index = this.modelValueStringArray.indexOf(value);
       if (index === -1) values.push(value);
       else values.splice(index, 1);
 

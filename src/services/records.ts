@@ -1,9 +1,12 @@
 import {
   Consultant,
   Country,
+  Message,
   Record,
   RecordDeletionRequest,
   RecordPermissionRequest,
+  RecordsClient,
+  RecordsDocument,
   RestrictedRecord,
   Tag,
 } from "@/types/records";
@@ -11,15 +14,27 @@ import axios from "../api";
 
 class RecordsService {
   // records
+  getRecords(): Promise<RestrictedRecord[]> {
+    return axios
+      .get<RestrictedRecord[]>("records/records/")
+      .then((response) => response.data);
+  }
+
+  getRecord(id: number | string): Promise<Record> {
+    return axios
+      .get<Record>(`records/records/${id}/`)
+      .then((response) => response.data);
+  }
+
   createRecord(record: Record): Promise<Record> {
     return axios
       .post<Record>("records/records/", record)
       .then((response) => response.data);
   }
 
-  getRecords(): Promise<RestrictedRecord[]> {
+  updateRecord(record: Record): Promise<Record> {
     return axios
-      .get<RestrictedRecord[]>("records/records/")
+      .patch<Record>(`records/records/${record.id}/`, record)
       .then((response) => response.data);
   }
 
@@ -27,6 +42,46 @@ class RecordsService {
     return axios.delete(`records/records/${record.id}/`).then();
   }
 
+  // messages
+  getMessages(id: string | number): Promise<Message[]> {
+    return axios
+      .get<Message[]>(`records/records/${id}/messages/`)
+      .then((response) => response.data);
+  }
+
+  createMessage(message: Message): Promise<Message> {
+    return axios
+      .post<Message>(`records/records/${message.record}/add_message/`, message)
+      .then((response) => response.data);
+  }
+
+  // documents
+  getDocuments(id: number | string): Promise<RecordsDocument[]> {
+    return axios
+      .get<RecordsDocument[]>(`records/records/${id}/documents/`)
+      .then((response) => response.data);
+  }
+
+  createDocument(document: RecordsDocument): Promise<RecordsDocument> {
+    return axios
+      .post<RecordsDocument>(`records/record_documents/`, document)
+      .then((response) => response.data);
+  }
+
+  // client
+  getClient(id: number): Promise<RecordsClient> {
+    return axios
+      .get<RecordsClient>(`records/e_clients/${id}/`)
+      .then((response) => response.data);
+  }
+
+  updateClient(client: RecordsClient): Promise<RecordsClient> {
+    return axios
+      .patch<RecordsClient>(`records/e_clients/${client.id}/`, client)
+      .then((response) => response.data);
+  }
+
+  // consultants
   getConsultants(): Promise<Consultant[]> {
     return axios
       .get<Consultant[]>("records/consultants/")
