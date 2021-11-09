@@ -3,15 +3,20 @@ import router from "../router";
 import { ActionContext } from "vuex";
 import { User } from "@/types/user";
 import UserService from "@/services/user";
+import { Rlc } from "@/types/core";
 
 const state = {
   token: null,
   key: null,
   user: {},
+  rlc: {},
+  permissions: [],
 };
 
 const getters = {
   user: (state: UserState) => state.user,
+  rlc: (state: UserState) => state.rlc,
+  permissions: (state: UserState) => state.permissions,
   token: (state: UserState) => `Token ${state.token}`,
   key: (state: UserState) =>
     state.key ? state.key.replace(/(?:\r\n|\r|\n)/g, "<linebreak>") : "",
@@ -37,6 +42,10 @@ const actions = {
             key: loginData.key,
             user: statics.user,
           });
+          context.commit("setRlc", statics.rlc);
+          context.commit("setPermissions", statics.permissions);
+          // context.commit('setNotifications', statics.rlc);
+          // context.commit('setAllPermissions', statics.all_permissions);
         })
         .catch((error) => {
           throw error.response.data;
@@ -186,6 +195,12 @@ const mutations = {
     state.token = null;
     state.user = null;
     state.key = null;
+  },
+  setRlc: (state: UserState, rlc: Rlc) => {
+    state.rlc = rlc;
+  },
+  setPermissions: (state: UserState, permissions: string[]) => {
+    state.permissions = permissions;
   },
 };
 

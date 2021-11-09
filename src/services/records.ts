@@ -3,6 +3,7 @@ import {
   Country,
   Record,
   RecordDeletionRequest,
+  RecordPermissionRequest,
   RestrictedRecord,
   Tag,
 } from "@/types/records";
@@ -32,16 +33,19 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  // tags
   getTags(): Promise<Tag[]> {
     return axios.get<Tag[]>("records/tags/").then((response) => response.data);
   }
 
+  // countries
   getCountries(): Promise<Country[]> {
     return axios
       .get<Country[]>("records/origin_countries/")
       .then((response) => response.data);
   }
 
+  // deletion-requests
   createDeletionRequest(
     deletionRequest: RecordDeletionRequest,
   ): Promise<RecordDeletionRequest> {
@@ -49,6 +53,15 @@ class RecordsService {
       .post<RecordDeletionRequest>(
         "records/record_deletion_requests/",
         deletionRequest,
+      )
+      .then((response) => response.data);
+  }
+
+  // permit-requests
+  requestAccess(record: RestrictedRecord): Promise<RecordPermissionRequest> {
+    return axios
+      .post<RecordPermissionRequest>(
+        `records/records/${record.id}/request_permission/`,
       )
       .then((response) => response.data);
   }

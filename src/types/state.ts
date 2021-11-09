@@ -1,4 +1,5 @@
 import { Alert } from "./alert";
+import { Rlc } from "./core";
 import { User } from "./user";
 
 export interface CollabState {
@@ -13,6 +14,8 @@ export interface UserState {
   token: string | null;
   key: string | null;
   user: User | null;
+  rlc: Rlc | null;
+  permissions: string[];
 }
 
 export interface RootState {

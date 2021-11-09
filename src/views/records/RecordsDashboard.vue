@@ -1,5 +1,10 @@
 <template>
   <BoxLoader :show="true">
+    <div v-if="$store.getters['user/rlc'].use_record_pool">
+      <router-link :to="{ name: 'records-pool' }">
+        go to the record pool
+      </router-link>
+    </div>
     <div class="bg-white px-4 pb-4 pt-3 rounded shadow mb-5">
       <FormInput
         v-model="search"
@@ -25,6 +30,28 @@
           Create Record
         </ButtonTable>
       </template>
+      <template #record_token="slotProps">
+        <div class="flex items-center justify-between">
+          <router-link
+            v-if="slotProps.dataItem.access"
+            class="underline text-lorgablue hover:text-opacity-75"
+            :to="{
+              name: 'records-detail',
+              params: { id: slotProps.dataItem.id },
+            }"
+          >
+            {{ slotProps.dataItem.record_token }}
+          </router-link>
+          <span v-else>{{ slotProps.dataItem.record_token }}</span>
+          <ButtonTable
+            v-if="!slotProps.dataItem.access"
+            type="button"
+            @click="requestAccess(slotProps.dataItem)"
+          >
+            Request Access
+          </ButtonTable>
+        </div>
+      </template>
       <template #action="slotProps">
         <ButtonTable
           type="button"
@@ -39,22 +66,25 @@
           <li
             v-for="item in slotProps.dataItem.working_on_record"
             :key="item.id"
-            class="cursor-pointer hover:underline"
-            @click="search = item.name"
           >
-            {{ item.name }}
+            <button
+              class="cursor-pointer hover:underline text-left"
+              @click="search = item.name"
+            >
+              {{ item.name }}
+            </button>
           </li>
         </ul>
       </template>
       <template #tags="slotProps">
         <ul class="list-disc pl-3.5">
-          <li
-            v-for="item in slotProps.dataItem.tags"
-            :key="item.id"
-            class="cursor-pointer hover:underline"
-            @click="search = item.name"
-          >
-            {{ item.name }}
+          <li v-for="item in slotProps.dataItem.tags" :key="item.id">
+            <button
+              class="cursor-pointer hover:underline text-left"
+              @click="search = item.name"
+            >
+              {{ item.name }}
+            </button>
           </li>
         </ul>
       </template>
@@ -233,6 +263,16 @@ export default defineComponent({
       );
       if (index !== -1) this.records[index].delete = true;
       this.record = null;
+    },
+    // access
+    requestAccess(record: RestrictedRecord) {
+      RecordsService.requestAccess(record).then(() =>
+        this.$store.dispatch("alert/createAlert", {
+          heading: "Access Requested",
+          type: "success",
+          message: "An admin needs to allow you to see this record now.",
+        }),
+      );
     },
     // list
     filterRecord(record: RestrictedRecord): boolean {
