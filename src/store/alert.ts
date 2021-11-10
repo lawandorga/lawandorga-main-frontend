@@ -17,6 +17,15 @@ const actions = {
   closeAlert: (context: ActionContext<AlertState, RootState>, alert: Alert) => {
     context.commit("removeAlert", alert);
   },
+  showSuccess: (
+    context: ActionContext<AlertState, RootState>,
+    message: string,
+  ) => {
+    context.dispatch("createAlert", {
+      type: "success",
+      heading: message,
+    });
+  },
   createAlerts: (context: ActionContext<AlertState, RootState>) => {
     context.dispatch("createAlert", {
       type: "success",

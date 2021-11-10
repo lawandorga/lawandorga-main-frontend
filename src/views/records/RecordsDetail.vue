@@ -32,24 +32,24 @@
           <h2 class="mb-5 text-lg font-bold text-gray-800">Files</h2>
           <div>
             <div>
-              <div v-for="document in documents" :key="document.id">
+              <div v-for="item in documents" :key="item.id">
                 <div>
-                  <b>{{ document.name }}</b>
+                  <b>{{ item.name }}</b>
                 </div>
                 <div>
-                  <i>{{ document.created_on }}</i>
+                  <i>{{ item.created_on }}</i>
                 </div>
                 <button
                   mat-button
                   color="primary"
-                  @click="downloadDocument(document)"
+                  @click="downloadDocument(item)"
                 >
                   Download
                 </button>
                 <button
                   mat-button
                   color="warn"
-                  @click="openDocumentDelete(document)"
+                  @click="openDocumentDelete(item)"
                 >
                   Delete
                 </button>
@@ -106,58 +106,61 @@
           </div>
         </div>
 
-        <!-- <div class="bg-white shadow px-5 py-4 rounded">
-        <div class="flex items-baseline justify-between">
-          <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
-          <button
-            mat-button
-            color="primary"
-            type="button"
-            (click)="publishQuestionnaire()"
-          >
-            Publish a questionnaire
-          </button>
-        </div>
-        <div class="pt-5" *ngIf="recordQuestionnaires.length">
-          <ul class="space-y-4">
-            <li
-              class="block py-3 px-4 rounded bg-gray-100"
-              *ngFor="let item of recordQuestionnaires"
+        <div class="bg-white shadow px-5 py-4 rounded">
+          <div class="flex items-baseline justify-between">
+            <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
+            <button
+              mat-button
+              color="primary"
+              type="button"
+              @click="openCreateRecordQuestionnaire()"
             >
-              <div class="flex items-baseline justify-between">
-                <h3 class="text-lg font-bold">{{ item.questionnaire.name }}</h3>
-                <div>
-                  <button
-                    type="button"
-                    mat-button
-                    color="primary"
-                    (click)="copyLink(item.code)"
-                  >
-                    Copy link
-                  </button>
-                  <button
-                    type="button"
-                    mat-button
-                    color="warn"
-                    (click)="deleteRecordQuestionnaire(item.id)"
-                  >
-                    Delete
-                  </button>
+              Publish a questionnaire
+            </button>
+          </div>
+          <div v-if="!!recordQuestionnaires.length" class="pt-5">
+            <ul class="space-y-4">
+              <li
+                v-for="item in recordQuestionnaires"
+                :key="item.id"
+                class="block py-3 px-4 rounded bg-gray-100"
+              >
+                <div class="flex items-baseline justify-between">
+                  <h3 class="text-lg font-bold">
+                    {{ item.questionnaire.name }}
+                  </h3>
+                  <div>
+                    <button
+                      type="button"
+                      mat-button
+                      color="primary"
+                      @click="copyLink(item)"
+                    >
+                      Copy link
+                    </button>
+                    <button
+                      type="button"
+                      mat-button
+                      color="warn"
+                      @click="openDeleteRecordQuestionnaire(item)"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-baseline space-x-5">
-                <div>Published: {{ item.created }}</div>
-                <div>Answered: {{ item.answered ? "Yes" : "No" }}</div>
-                <div>Link: {{ base }}/records/upload/{{ item.code }}</div>
-              </div>
-              <hr class="my-3 border-gray-300" />
-              <p *ngIf="item.answered" class="whitespace-pre-line">
-                {{ item.answer }}
-              </p>
-            </li>
-          </ul>
+                <div class="flex items-baseline space-x-5">
+                  <div>Published: {{ item.created }}</div>
+                  <div>Answered: {{ item.answered ? "Yes" : "No" }}</div>
+                  <div>Link: {{ base }}/records/upload/{{ item.code }}</div>
+                </div>
+                <hr class="my-3 border-gray-300" />
+                <p v-if="item.answered" class="whitespace-pre-line">
+                  {{ item.answer }}
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div> -->
       </div>
     </div>
     <ModalDelete
@@ -165,8 +168,27 @@
       :object="document"
       :request="deleteDocument"
       title="Delete Document"
-      @deleted="documentDeleted($event)"
+      @deleted="documentDeleted"
     />
+    <ModalDelete
+      v-model="deleteRecordQuestionnaireOpen"
+      :object="recordQuestionnaire"
+      :request="deleteRecordQuestionnaire"
+      title="Delete Questionnaire"
+      @deleted="recordQuestionnaireDeleted"
+    />
+    <ModalFree
+      v-model="createRecordQuestionnaireOpen"
+      title="Publish Questionnaire"
+    >
+      <FormGenerator
+        :fields="recordQuestionnaireFields"
+        :request="createRecordQuestionnaire"
+        :initial="{ record: $route.params.id }"
+        submit="Publish"
+        @success="recordQuestionnaireCreated"
+      />
+    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -176,6 +198,8 @@ import {
   Consultant,
   Country,
   Message,
+  Questionnaire,
+  RecordQuestionnaire,
   RecordsClient,
   RecordsDocument,
   Tag,
@@ -185,9 +209,10 @@ import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
+import ModalFree from "@/components/ModalFree.vue";
 
 export default defineComponent({
-  components: { ModalDelete, FormGenerator, BoxLoader },
+  components: { ModalDelete, FormGenerator, BoxLoader, ModalFree },
   data() {
     return {
       // record
@@ -206,6 +231,13 @@ export default defineComponent({
       deleteDocument: RecordsService.deleteDocument,
       deleteDocumentOpen: false,
       document: null as RecordsDocument | null,
+      // record-questionnaires
+      recordQuestionnaires: [] as RecordQuestionnaire[],
+      createRecordQuestionnaire: RecordsService.createRecordQuestionnaire,
+      deleteRecordQuestionnaire: RecordsService.deleteRecordQuestionnaire,
+      createRecordQuestionnaireOpen: false,
+      deleteRecordQuestionnaireOpen: false,
+      recordQuestionnaire: null as RecordQuestionnaire | null,
       // fields
       recordFields: [
         {
@@ -392,7 +424,21 @@ export default defineComponent({
           required: true,
         },
       ],
+      recordQuestionnaireFields: [
+        {
+          label: "Questionnaire",
+          name: "questionnaire",
+          type: "select",
+          required: true,
+          options: [] as Questionnaire[],
+        },
+      ],
     };
+  },
+  computed: {
+    base() {
+      return window.location.origin;
+    },
   },
   mounted() {
     RecordsService.getCountries().then(
@@ -414,8 +460,15 @@ export default defineComponent({
     RecordsService.getDocuments(this.$route.params.id as string).then(
       (documents) => (this.documents = documents),
     );
+    RecordsService.getRecordQuestionnaires(
+      this.$route.params.id as string,
+    ).then(
+      (recordQuestionnaires) =>
+        (this.recordQuestionnaires = recordQuestionnaires),
+    );
   },
   methods: {
+    // client
     getClient(id: number) {
       RecordsService.getClient(id).then((client) => (this.client = client));
     },
@@ -427,6 +480,35 @@ export default defineComponent({
     documentDeleted(document: RecordsDocument) {
       this.documents = this.documents.filter((item) => item.id !== document.id);
       this.deleteDocumentOpen = false;
+    },
+    // record-questionnaire
+    copyLink(recordQuestionnaire: RecordQuestionnaire): void {
+      navigator.clipboard
+        .writeText(`${this.base}/records/upload/${recordQuestionnaire.code}/`)
+        .then(() => this.$store.dispatch("alert/showSuccess", "Link Copied"));
+    },
+    // create record questionnaire
+    openCreateRecordQuestionnaire() {
+      RecordsService.getQuestionnaires().then(
+        (questionnaires) =>
+          (this.recordQuestionnaireFields[0].options = questionnaires),
+      );
+      this.createRecordQuestionnaireOpen = true;
+    },
+    recordQuestionnaireCreated(recordQuestionnaire: RecordQuestionnaire) {
+      this.createRecordQuestionnaireOpen = false;
+      this.recordQuestionnaires.push(recordQuestionnaire);
+    },
+    // delete record questionnaire
+    openDeleteRecordQuestionnaire(recordQuestionnaire: RecordQuestionnaire) {
+      this.recordQuestionnaire = recordQuestionnaire;
+      this.deleteRecordQuestionnaireOpen = true;
+    },
+    recordQuestionnaireDeleted(recordQuestionnaire: RecordQuestionnaire) {
+      this.deleteRecordQuestionnaireOpen = false;
+      this.recordQuestionnaires = this.recordQuestionnaires.filter(
+        (item) => item.id !== recordQuestionnaire.id,
+      );
     },
   },
 });

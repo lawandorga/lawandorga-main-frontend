@@ -74,10 +74,5 @@ export default defineComponent({
       required: true,
     },
   },
-  data: function () {
-    return {
-      show: true,
-    };
-  },
 });
 </script>

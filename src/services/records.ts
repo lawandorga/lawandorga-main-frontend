@@ -9,6 +9,8 @@ import {
   RecordsDocument,
   RestrictedRecord,
   Tag,
+  Questionnaire,
+  RecordQuestionnaire,
 } from "@/types/records";
 import downloadFile from "@/utils/download";
 import axios from "../api";
@@ -41,6 +43,41 @@ class RecordsService {
 
   deleteRecord(record: RestrictedRecord): Promise<void> {
     return axios.delete(`records/records/${record.id}/`).then();
+  }
+
+  // questionnaire
+  getQuestionnaires(): Promise<Questionnaire[]> {
+    return axios
+      .get<Questionnaire[]>("records/questionnaires/")
+      .then((response) => response.data);
+  }
+
+  // record questionnaire
+  getRecordQuestionnaires(id: number | string): Promise<RecordQuestionnaire[]> {
+    return axios
+      .get<RecordQuestionnaire[]>(
+        `records/records/${id}/record_questionnaires/`,
+      )
+      .then((response) => response.data);
+  }
+
+  createRecordQuestionnaire(
+    recordQuestionnaire: RecordQuestionnaire,
+  ): Promise<RecordQuestionnaire> {
+    return axios
+      .post<RecordQuestionnaire>(
+        `records/questionnaires/publish/`,
+        recordQuestionnaire,
+      )
+      .then((response) => response.data);
+  }
+
+  deleteRecordQuestionnaire(
+    recordQuestionnaire: RecordQuestionnaire,
+  ): Promise<void> {
+    return axios
+      .delete(`records/record_questionnaires/${recordQuestionnaire.id}/`)
+      .then();
   }
 
   // messages

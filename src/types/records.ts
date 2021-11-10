@@ -110,6 +110,7 @@ export interface RecordQuestionnaire {
   answered: boolean;
   created: string;
   updated: string;
+  code: string;
 }
 
 export interface RecordPermissionRequest {
