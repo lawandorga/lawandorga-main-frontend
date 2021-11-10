@@ -1,109 +1,112 @@
 <template>
-  <div class="grid gap-6 lg:grid-cols-2">
-    <div class="bg-white shadow px-5 py-4 rounded">
-      <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
-      <div>
-        <FormGenerator
-          :fields="recordFields"
-          :initial="record"
-          :request="updateRecord"
-          submit="Save"
-          @success="record = $event"
-        ></FormGenerator>
-      </div>
-    </div>
-
-    <div class="flex space-y-6 flex-col">
+  <BoxLoader :show="true">
+    <div class="grid gap-6 lg:grid-cols-2">
       <div class="bg-white shadow px-5 py-4 rounded">
-        <h2 class="mb-5 text-lg font-bold text-gray-800">Client</h2>
+        <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
         <div>
           <FormGenerator
-            :fields="clientFields"
-            :initial="client"
-            :request="updateClient"
+            :fields="recordFields"
+            :initial="record"
+            :request="updateRecord"
             submit="Save"
-            @success="client = $event"
+            @success="record = $event"
           ></FormGenerator>
         </div>
       </div>
 
-      <div class="bg-white shadow px-5 py-4 rounded">
-        <h2 class="mb-5 text-lg font-bold text-gray-800">Files</h2>
-        <div>
+      <div class="flex space-y-6 flex-col">
+        <div class="bg-white shadow px-5 py-4 rounded">
+          <h2 class="mb-5 text-lg font-bold text-gray-800">Client</h2>
           <div>
-            <div v-for="document in documents" :key="document.id">
-              <div>
-                <b>{{ document.name }}</b>
+            <FormGenerator
+              :fields="clientFields"
+              :initial="client"
+              :request="updateClient"
+              submit="Save"
+              @success="client = $event"
+            ></FormGenerator>
+          </div>
+        </div>
+
+        <div class="bg-white shadow px-5 py-4 rounded">
+          <h2 class="mb-5 text-lg font-bold text-gray-800">Files</h2>
+          <div>
+            <div>
+              <div v-for="document in documents" :key="document.id">
+                <div>
+                  <b>{{ document.name }}</b>
+                </div>
+                <div>
+                  <i>{{ document.created_on }}</i>
+                </div>
+                <button
+                  mat-button
+                  color="primary"
+                  @click="downloadDocument(document)"
+                >
+                  Download
+                </button>
+                <button
+                  mat-button
+                  color="warn"
+                  @click="openDocumentDelete(document)"
+                >
+                  Delete
+                </button>
               </div>
-              <div>
-                <i>{{ document.created_on }}</i>
+              <div style="height: auto; padding-top: 16px">
+                <FormGenerator
+                  :fields="documentFields"
+                  :initial="{ record: $route.params.id }"
+                  :request="createDocument"
+                  @success="documents.push($event)"
+                ></FormGenerator>
               </div>
-              <button
-                mat-button
-                color="primary"
-                click="onDownloadClick(document.id, document.name)"
-              >
-                Download
-              </button>
-              <button
-                mat-button
-                color="warn"
-                click="onDeleteClick(document.id)"
-              >
-                Delete
-              </button>
-            </div>
-            <div style="height: auto; padding-top: 16px">
-              <FormGenerator
-                :fields="documentFields"
-                :initial="{ record: $route.params.id }"
-                :request="createDocument"
-                @success="documents.push($event)"
-              ></FormGenerator>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="bg-white shadow px-5 py-4 rounded">
-        <h2 class="mb-5 text-lg font-bold text-gray-800">Messages</h2>
-        <div>
-          <ul>
-            <li v-for="message in messages" :key="message.id">
-              <div style="width: 100%">
-                <div
-                  style="
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                  "
-                >
-                  <b>
-                    {{ message.sender ? message.sender.name : "Deleted user" }}:
-                  </b>
-                  <i>{{ message.created_on }}</i>
+        <div class="bg-white shadow px-5 py-4 rounded">
+          <h2 class="mb-5 text-lg font-bold text-gray-800">Messages</h2>
+          <div>
+            <ul>
+              <li v-for="message in messages" :key="message.id">
+                <div style="width: 100%">
+                  <div
+                    style="
+                      width: 100%;
+                      display: flex;
+                      justify-content: space-between;
+                    "
+                  >
+                    <b>
+                      {{
+                        message.sender ? message.sender.name : "Deleted user"
+                      }}:
+                    </b>
+                    <i>{{ message.created_on }}</i>
+                  </div>
+                  <p
+                    class="whitespace-pre"
+                    style="margin-top: 2px; margin-bottom: 0"
+                  >
+                    {{ message.message }}
+                  </p>
                 </div>
-                <p
-                  class="whitespace-pre"
-                  style="margin-top: 2px; margin-bottom: 0"
-                >
-                  {{ message.message }}
-                </p>
+              </li>
+              <div style="height: auto; padding-top: 16px">
+                <FormGenerator
+                  :fields="messageFields"
+                  :initial="{ record: $route.params.id }"
+                  :request="createMessage"
+                  @success="messages.push($event)"
+                ></FormGenerator>
               </div>
-            </li>
-            <div style="height: auto; padding-top: 16px">
-              <FormGenerator
-                :fields="messageFields"
-                :initial="{ record: $route.params.id }"
-                :request="createMessage"
-                @success="messages.push($event)"
-              ></FormGenerator>
-            </div>
-          </ul>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <!-- <div class="bg-white shadow px-5 py-4 rounded">
+        <!-- <div class="bg-white shadow px-5 py-4 rounded">
         <div class="flex items-baseline justify-between">
           <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
           <button
@@ -155,8 +158,16 @@
           </ul>
         </div>
       </div> -->
+      </div>
     </div>
-  </div>
+    <ModalDelete
+      v-model="deleteDocumentOpen"
+      :object="document"
+      :request="deleteDocument"
+      title="Delete Document"
+      @deleted="documentDeleted($event)"
+    />
+  </BoxLoader>
 </template>
 
 <script lang="ts">
@@ -166,14 +177,17 @@ import {
   Country,
   Message,
   RecordsClient,
+  RecordsDocument,
   Tag,
 } from "@/types/records";
 import { defineComponent } from "@vue/runtime-core";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
+import BoxLoader from "@/components/BoxLoader.vue";
+import ModalDelete from "@/components/ModalDelete.vue";
 
 export default defineComponent({
-  components: { FormGenerator },
+  components: { ModalDelete, FormGenerator, BoxLoader },
   data() {
     return {
       // record
@@ -186,8 +200,12 @@ export default defineComponent({
       messages: [] as Message[],
       createMessage: RecordsService.createMessage,
       // documents
-      documents: [],
+      documents: [] as RecordsDocument[],
       createDocument: RecordsService.createDocument,
+      downloadDocument: RecordsService.downloadDocument,
+      deleteDocument: RecordsService.deleteDocument,
+      deleteDocumentOpen: false,
+      document: null as RecordsDocument | null,
       // fields
       recordFields: [
         {
@@ -400,6 +418,15 @@ export default defineComponent({
   methods: {
     getClient(id: number) {
       RecordsService.getClient(id).then((client) => (this.client = client));
+    },
+    // delete document
+    openDocumentDelete(document: RecordsDocument) {
+      this.document = document;
+      this.deleteDocumentOpen = true;
+    },
+    documentDeleted(document: RecordsDocument) {
+      this.documents = this.documents.filter((item) => item.id !== document.id);
+      this.deleteDocumentOpen = false;
     },
   },
 });

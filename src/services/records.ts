@@ -10,6 +10,7 @@ import {
   RestrictedRecord,
   Tag,
 } from "@/types/records";
+import downloadFile from "@/utils/download";
 import axios from "../api";
 
 class RecordsService {
@@ -66,6 +67,18 @@ class RecordsService {
     return axios
       .post<RecordsDocument>(`records/record_documents/`, document)
       .then((response) => response.data);
+  }
+
+  downloadDocument(document: RecordsDocument): void {
+    axios
+      .get<Blob>(`records/record_documents/${document.id}/`, {
+        responseType: "blob",
+      })
+      .then((response) => downloadFile(response, document.name));
+  }
+
+  deleteDocument(document: RecordsDocument): Promise<void> {
+    return axios.delete(`records/record_documents/${document.id}/`).then();
   }
 
   // client
