@@ -23,6 +23,11 @@
           </slot>
         </Td>
       </Tr>
+      <Tr v-show="loading">
+        <Td :colspan="head.length">
+          <CircleLoader />
+        </Td>
+      </Tr>
     </Tbody>
   </Table>
 </template>
@@ -36,6 +41,7 @@ import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import { JsonModel } from "@/types/shared";
+import CircleLoader from "./CircleLoader.vue";
 
 interface NestedObject {
   [key: string]: string | number | boolean | NestedObject;
@@ -49,6 +55,7 @@ export default defineComponent({
     Thead,
     Tr,
     Table,
+    CircleLoader,
   },
   props: {
     head: {
@@ -58,6 +65,11 @@ export default defineComponent({
     data: {
       type: Array as PropType<JsonModel[]>,
       required: true,
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   methods: {

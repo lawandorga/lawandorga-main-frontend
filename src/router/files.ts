@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/files/:id?/",
     name: "files-dashboard",
-    component: () => import("@/views/files/Dashboard.vue"),
+    component: () => import("@/views/files/FilesDashboard.vue"),
     beforeEnter: isAuthenticated,
   },
 ];

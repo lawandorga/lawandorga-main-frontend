@@ -1,45 +1,49 @@
 <template>
   <BoxLoader :show="true">
     <div class="grid lg:grid-cols-2 gap-10">
-      <div
-        v-if="folder && folder.path.length"
-        class="bg-white rounded m-0 lg:col-span-2 px-3 py-2"
-      >
-        <div class="flex items-center">
-          <div
-            v-for="(item, index) in folder.path"
-            :key="item.id"
-            class="flex items-center"
-          >
-            <router-link
-              :to="{ name: 'files-dashboard', params: { id: item.id } }"
-              class="underline"
-            >
-              {{ item.name }}
-            </router-link>
-            <div v-if="index !== folder.path.length - 1" class="mx-4">/</div>
-          </div>
-        </div>
-      </div>
+      <BreadcrumbsBar
+        v-if="!!folder"
+        class="lg:col-span-2"
+        :base="base"
+        :pages="
+          folder.path.map((item) => ({
+            name: item.name,
+            to: { name: 'files-dashboard', params: { id: item.id } },
+          }))
+        "
+      />
 
       <div class="col-span-2">
         <TableGenerator
           :head="[
-            { name: 'Type', key: 'type' },
+            { name: '', key: 'type' },
             { name: 'Name', key: 'name' },
             { name: 'Updated', key: 'last_edited' },
             { name: 'Created', key: 'created' },
             { name: '', key: 'action' },
           ]"
           :data="items"
+          :loading="itemsLoading"
         >
           <template #head-action>
-            <ButtonTable type="button" @click="openFolderCreate()">
-              Create Folder
-            </ButtonTable>
-            <ButtonTable type="button" @click="openFileCreate()">
-              Upload File
-            </ButtonTable>
+            <div class="flex space-x-3 justify-end">
+              <ButtonTable type="button" @click="openFolderCreate()">
+                Create Folder
+              </ButtonTable>
+              <ButtonTable type="button" @click="openFileCreate()">
+                Upload File
+              </ButtonTable>
+            </div>
+          </template>
+          <template #type="slotProps">
+            <FolderIcon
+              v-if="slotProps.dataItem.type === 'FOLDER'"
+              class="w-5 h-5 text-gray-500"
+            />
+            <DocumentIcon
+              v-if="slotProps.dataItem.type === 'FILE'"
+              class="w-5 h-5 text-gray-500"
+            />
           </template>
           <template #name="slotProps">
             <router-link
@@ -56,35 +60,43 @@
               {{ slotProps.dataItem.name }}
             </div>
           </template>
+          <template #last_edited="slotProps">
+            {{ formatDate(slotProps.dataItem.last_edited) }}
+          </template>
+          <template #created="slotProps">
+            {{ formatDate(slotProps.dataItem.created) }}
+          </template>
           <template #action="slotProps">
-            <ButtonTable
-              v-if="slotProps.dataItem.type === 'FOLDER'"
-              type="button"
-              @click="openFolderUpdate(slotProps.dataItem)"
-            >
-              Update Folder
-            </ButtonTable>
-            <ButtonTable
-              v-if="slotProps.dataItem.type === 'FOLDER'"
-              type="button"
-              @click="openFolderDelete(slotProps.dataItem)"
-            >
-              Delete Folder
-            </ButtonTable>
-            <ButtonTable
-              v-if="slotProps.dataItem.type === 'FILE'"
-              type="button"
-              @click="openFileDelete(slotProps.dataItem)"
-            >
-              Delete File
-            </ButtonTable>
-            <ButtonTable
-              v-if="slotProps.dataItem.type === 'FILE'"
-              type="button"
-              @click="downloadFile(slotProps.dataItem)"
-            >
-              Download File
-            </ButtonTable>
+            <div class="flex space-x-3 justify-end">
+              <ButtonTable
+                v-if="slotProps.dataItem.type === 'FOLDER'"
+                type="button"
+                @click="openFolderUpdate(slotProps.dataItem)"
+              >
+                Change
+              </ButtonTable>
+              <ButtonTable
+                v-if="slotProps.dataItem.type === 'FOLDER'"
+                type="button"
+                @click="openFolderDelete(slotProps.dataItem)"
+              >
+                Delete
+              </ButtonTable>
+              <ButtonTable
+                v-if="slotProps.dataItem.type === 'FILE'"
+                type="button"
+                @click="downloadFile(slotProps.dataItem)"
+              >
+                Download
+              </ButtonTable>
+              <ButtonTable
+                v-if="slotProps.dataItem.type === 'FILE'"
+                type="button"
+                @click="openFileDelete(slotProps.dataItem)"
+              >
+                Delete
+              </ButtonTable>
+            </div>
           </template>
         </TableGenerator>
       </div>
@@ -92,74 +104,52 @@
       <div class="col-span-2">
         <TableGenerator
           :head="[
-            { name: 'Permission', key: 'permission' },
-            { name: 'Group', key: 'group_has_permission' },
-            { name: 'Source', key: 'source' },
+            { name: 'Permission', key: ['permission', 'name'] },
+            { name: 'Group', key: ['group_has_permission', 'name'] },
+            { name: 'Source', key: 'folder' },
             { name: '', key: 'action' },
           ]"
           :data="permissions"
+          :loading="permissionsLoading"
         >
           <template #head-action>
-            <ButtonTable type="button" @click="openPermissionCreate()">
-              Add Permission
-            </ButtonTable>
+            <div class="flex justify-end">
+              <ButtonTable type="button" @click="openPermissionCreate()">
+                Add Permission
+              </ButtonTable>
+            </div>
+          </template>
+          <template #folder="slotProps">
+            <router-link
+              :to="{
+                name: 'files-dashboard',
+                params: { id: slotProps.dataItem.folder.id },
+              }"
+              class="underline"
+            >
+              {{ slotProps.dataItem.folder.name }}
+            </router-link>
           </template>
           <template #action="slotProps">
-            <ButtonTable
-              type="button"
-              @click="openPermissionDelete(slotProps.dataItem)"
-            >
-              Delete Permission
-            </ButtonTable>
+            <div class="flex justify-end">
+              <ButtonTable
+                v-if="slotProps.dataItem.source === 'NORMAL'"
+                type="button"
+                @click="openPermissionDelete(slotProps.dataItem)"
+              >
+                Delete
+              </ButtonTable>
+            </div>
           </template>
         </TableGenerator>
       </div>
-
-      <!-- <mat-card class="m-0 p-0 lg:col-span-2">
-      <table mat-table [dataSource]="permissions" class="w-full">
-        <ng-container mat-column-def="type">
-          <th mat-header-cell *matHeaderCellDef>Permission</th>
-          <td mat-cell *matCellDef="let permission">{{ permission.type }}</td>
-        </ng-container>
-        <ng-container mat-column-def="group">
-          <th mat-header-cell *matHeaderCellDef>Group</th>
-          <td mat-cell *matCellDef="let permission">
-            {{ permission.group_has_permission.name }}
-          </td>
-        </ng-container>
-        <ng-container mat-column-def="source">
-          <th mat-header-cell *matHeaderCellDef>Source</th>
-          <td mat-cell *matCellDef="let permission">
-            {{ permission.folder.name }}
-          </td>
-        </ng-container>
-        <ng-container mat-column-def="actions">
-          <th mat-header-cell *matHeaderCellDef style="text-align: right">
-            <button mat-button (click)="onAddPermission()" color="primary">
-              Add Permission
-            </button>
-          </th>
-          <td mat-cell *matCellDef="let permission" style="text-align: right">
-            <button
-              *ngIf="permission.source === 'NORMAL'"
-              mat-button
-              (click)="onRemovePermission(permission.id)"
-              color="warn"
-            >
-              Remove
-            </button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="permissionColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: permissionColumns;"></tr>
-      </table>
-    </mat-card> -->
     </div>
     <!-- folder -->
     <ModalFree v-model="folderCreateOpen" title="Create Folder">
       <FormGenerator
         :fields="folderFields"
         :request="createFolder"
+        :initial="{ parent: folder.id }"
         @success="folderCreated($event)"
       />
     </ModalFree>
@@ -182,6 +172,7 @@
       <FormGenerator
         :fields="fileFields"
         :request="createFile"
+        :initial="{ folder: folder.id }"
         @success="fileCreated($event)"
       />
     </ModalFree>
@@ -227,9 +218,17 @@ import ModalDelete from "@/components/ModalDelete.vue";
 import { RouteLocation } from "vue-router";
 import CoreService from "@/services/core";
 import { Group } from "@/types/core";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { FolderOpenIcon } from "@heroicons/vue/outline";
+import { FolderIcon, DocumentIcon } from "@heroicons/vue/solid";
+import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   components: {
+    FolderIcon,
+    DocumentIcon,
+    FolderOpenIcon, // eslint-disable-line vue/no-unused-components
+    BreadcrumbsBar,
     ModalDelete,
     TableGenerator,
     ButtonTable,
@@ -238,13 +237,23 @@ export default defineComponent({
     FormGenerator,
   },
   beforeRouteUpdate(to) {
+    this.itemsLoading = true;
+    this.items = [];
+    this.permissionsLoading = true;
+    this.permissions = [];
     this.getFolder(to);
   },
   data() {
     return {
+      // utils
+      formatDate: formatDate,
+      // breadcrumbs
+      base: { to: { name: "files-dashboard" }, icon: FolderOpenIcon },
       // shown
+      itemsLoading: true,
       items: [] as (FilesFolder | FilesFile)[],
       folder: null as FilesFolder | null,
+      permissionsLoading: true,
       permissions: [] as FilesPermission[],
       // folder
       createFolder: FilesService.createFolder,
@@ -302,10 +311,12 @@ export default defineComponent({
   },
   watch: {
     folder(newValue) {
-      FilesService.getPermissions(newValue).then(
-        (permissions) => (this.permissions = permissions),
-      );
-      FilesService.getItems(newValue).then((items) => (this.items = items));
+      FilesService.getPermissions(newValue)
+        .then((permissions) => (this.permissions = permissions))
+        .finally(() => (this.permissionsLoading = false));
+      FilesService.getItems(newValue)
+        .then((items) => (this.items = items))
+        .finally(() => (this.itemsLoading = false));
     },
   },
   mounted() {
@@ -321,7 +332,9 @@ export default defineComponent({
         FilesService.getFirstFolder().then((folder) => (this.folder = folder));
     },
     getItems(folder: FilesFolder) {
-      FilesService.getItems(folder).then((items) => (this.items = items));
+      FilesService.getItems(folder)
+        .then((items) => (this.items = items))
+        .finally(() => (this.itemsLoading = false));
     },
     // folder create
     openFolderCreate() {
@@ -348,7 +361,9 @@ export default defineComponent({
     },
     folderDeleted(folder: FilesFolder) {
       this.folderDeleteOpen = false;
-      this.items = this.items.filter((item) => item.id !== folder.id);
+      this.items = this.items.filter(
+        (item) => item.id !== folder.id || item.type === "FILE",
+      );
     },
     // file create
     openFileCreate() {
@@ -365,7 +380,9 @@ export default defineComponent({
     },
     fileDeleted(file: FilesFile) {
       this.fileDeleteOpen = false;
-      this.items = this.items.filter((item) => item.id !== file.id);
+      this.items = this.items.filter(
+        (item) => item.id !== file.id || item.type === "FOLDER",
+      );
     },
     // file download
     downloadFile(file: FilesFile) {

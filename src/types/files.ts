@@ -5,6 +5,7 @@ export interface FilesFolder {
   created: string;
   parent: number;
   path: FilesFolder[];
+  type: "FOLDER";
 }
 
 export interface FilesFile {

@@ -197,7 +197,7 @@ import {
 } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import Loader from "@/components/Loader.vue";
+import Loader from "@/components/CircleLoader.vue";
 import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonIcon from "@/components/ButtonIcon.vue";
 import ButtonMenu from "@/components/ButtonMenu.vue";

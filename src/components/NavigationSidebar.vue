@@ -40,7 +40,7 @@
               v-for="item in sidebarItems"
               :key="item.link"
               :to="item.link"
-              to-active="bg-gray-100 hover:bg-gray-100 text-gray-700"
+              active-class="bg-gray-100 hover:bg-gray-100 text-gray-700"
               class="
                 group
                 text-gray-600

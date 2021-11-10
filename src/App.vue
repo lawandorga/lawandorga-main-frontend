@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex overflow-hidden bg-gray-100">
+  <div class="h-screen flex overflow-hidden">
     <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
     <NavigationSidebar v-if="authenticated" />
