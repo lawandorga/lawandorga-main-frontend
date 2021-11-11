@@ -29,7 +29,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/groups/",
     name: "admin-groups",
-    component: () => import("@/views/admin/Groups.vue"),
+    component: () => import("@/views/admin/AdminGroups.vue"),
+    beforeEnter: isAuthenticated,
+  },
+  {
+    path: "/admin/groups/:id/",
+    name: "admin-group",
+    component: () => import("@/views/admin/AdminGroup.vue"),
     beforeEnter: isAuthenticated,
   },
   {
