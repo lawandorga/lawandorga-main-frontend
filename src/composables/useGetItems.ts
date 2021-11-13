@@ -1,17 +1,20 @@
-import { DjangoModel, GetMultipleFunction } from "@/types/shared";
-import { Ref, onMounted, watch } from "vue";
+import { DjangoModel } from "@/types/shared";
+import { Ref, onMounted, watch, unref } from "vue";
 
-export default function useGetItems(
-  getItemsFunc: GetMultipleFunction,
+type Mapper<Type> = typeof Type;
+
+export default function useGetItems<
+  Fn extends (...args: any[]) => Promise<DjangoModel[]>, // eslint-disable-line
+>(
+  getItemsFunction: Fn,
   items: Ref<DjangoModel[]>,
-  item?: Ref<DjangoModel>,
+  ...params: Mapper<Parameters<Fn>>
 ) {
   const getItems = () => {
-    if (item)
-      getItemsFunc(item.value).then((newItems) => (items.value = newItems));
-    else getItemsFunc().then((newItems) => (items.value = newItems));
+    getItemsFunction(...params.map(unref)).then(
+      (newItems) => (items.value = newItems),
+    );
   };
 
-  if (item) watch(item, () => getItems());
-  else onMounted(getItems);
+  watch(params, getItems);
 }
