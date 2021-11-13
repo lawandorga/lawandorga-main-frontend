@@ -140,9 +140,16 @@ export default defineComponent({
     const group = ref(null) as Ref<Group | null>;
     useGetItem(AdminService.getGroup, group, route.params.id as string);
 
-    // permissions
+    // const p = ref({}) as Ref<HasPermission>
+
+    // members and permissions
+    const members = ref([]) as Ref<User[]>;
     const permissions = ref([]) as Ref<HasPermission[]>;
+
+    // watch(group, (group) => {
+    useGetItems(AdminService.getMembers, members, group);
     useGetItems(AdminService.getGroupPermissions, permissions, group);
+    // });
 
     // add permission
     const permissionFields = reactive([
@@ -173,10 +180,6 @@ export default defineComponent({
       deleteRequest: removePermissionRequest,
       deleteModalOpen: removePermissionModalOpen,
     } = useDeleteItem(AdminService.deleteHasPermission, permissions);
-
-    // members
-    const members = ref([]) as Ref<User[]>;
-    useGetItems(AdminService.getMembers, members, group);
 
     // add member
     const memberFields = reactive([

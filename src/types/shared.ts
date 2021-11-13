@@ -10,9 +10,9 @@ export type RequestFunction = (
   item?: DjangoModel, // eslint-disable-line no-unused-vars
 ) => Promise<DjangoModel>;
 // get
-type GetMultipleFunction1 = () => Promise<DjangoModel[]>;
-type GetMultipleFunction2 = (data: DjangoModel) => Promise<DjangoModel[]>; // eslint-disable-line no-unused-vars
-export type GetMultipleFunction = GetMultipleFunction1 | GetMultipleFunction2;
+export type GetMultipleFunction = (
+  data?: DjangoModel, // eslint-disable-line no-unused-vars
+) => Promise<DjangoModel[]>;
 export type GetSingleFunction = (id: number | string) => Promise<DjangoModel>; // eslint-disable-line no-unused-vars
 // delete
 export type DeleteFunction = (
