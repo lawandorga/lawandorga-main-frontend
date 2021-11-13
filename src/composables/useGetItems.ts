@@ -1,13 +1,17 @@
-import { DjangoModel, GetFunction } from "@/types/shared";
-import { Ref, onMounted } from "vue";
+import { DjangoModel, GetMultipleFunction } from "@/types/shared";
+import { Ref, onMounted, watch } from "vue";
 
 export default function useGetItems(
-  getItemsFunc: GetFunction,
+  getItemsFunc: GetMultipleFunction,
   items: Ref<DjangoModel[]>,
+  item?: Ref<DjangoModel>,
 ) {
   const getItems = () => {
-    getItemsFunc().then((newItems) => (items.value = newItems));
+    if (item)
+      getItemsFunc(item.value).then((newItems) => (items.value = newItems));
+    else getItemsFunc().then((newItems) => (items.value = newItems));
   };
 
-  onMounted(getItems);
+  if (item) watch(item, () => getItems());
+  else onMounted(getItems);
 }

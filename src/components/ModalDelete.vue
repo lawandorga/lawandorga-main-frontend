@@ -53,7 +53,7 @@
               </DialogTitle>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  Are you sure you want to delete
+                  Are you sure you want to {{ verb }}
                   {{ object.name || object.id }}?
                 </p>
               </div>
@@ -70,7 +70,7 @@
                   :loading="loading"
                   @click="deleteClicked()"
                 >
-                  Yes, delete
+                  Yes, {{ verb }}
                 </ButtonBlue>
               </div>
             </div>
@@ -92,7 +92,7 @@ import {
 } from "@headlessui/vue";
 import ButtonBlue from "@/components/ButtonBlue.vue";
 import ButtonLight from "@/components/ButtonLight.vue";
-import { DjangoModel, RequestFunction } from "@/types/shared";
+import { JsonModel, RequestFunction } from "@/types/shared";
 
 export default defineComponent({
   components: {
@@ -111,7 +111,7 @@ export default defineComponent({
       default: "Delete",
     },
     object: {
-      type: Object as PropType<DjangoModel>,
+      type: Object as PropType<JsonModel>,
       required: false,
       default: () => null,
     },
@@ -124,6 +124,10 @@ export default defineComponent({
       type: Function as PropType<RequestFunction>,
       required: false,
       default: null,
+    },
+    verb: {
+      type: String,
+      default: "delete",
     },
   },
   emits: ["update:modelValue", "deleted"],
