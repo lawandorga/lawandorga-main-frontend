@@ -1,7 +1,16 @@
 import { CollabDocument, CollabVersion } from "./collab";
 import { Group, HasPermission } from "./core";
 import { RlcUser, User } from "./user";
+import { Ref } from "vue";
 
+/*
+// helpers
+*/
+export type Reffed<T> = T extends (infer U)[] ? Ref<U | null>[] : never;
+
+/*
+// functions
+*/
 export type VoidFunction = () => void;
 export type BooleanFunction = () => void;
 // post and patch
@@ -20,6 +29,9 @@ export type DeleteFunction = (
   item?: DjangoModel, // eslint-disable-line no-unused-vars
 ) => Promise<void>;
 
+/*
+// models
+*/
 export interface JsonModel {
   [key: string]: string | boolean | number | number[];
 }
@@ -32,6 +44,9 @@ export type DjangoModel =
   | RlcUser
   | Group;
 
+/*
+// errors
+*/
 export interface DjangoError {
   [key: string]: string[] | string;
 }

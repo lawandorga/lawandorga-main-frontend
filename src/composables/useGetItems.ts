@@ -1,14 +1,12 @@
-import { DjangoModel } from "@/types/shared";
+import { DjangoModel, Reffed } from "@/types/shared";
 import { Ref, onMounted, watch, unref } from "vue";
-
-type Mapper<Type> = typeof Type;
 
 export default function useGetItems<
   Fn extends (...args: any[]) => Promise<DjangoModel[]>, // eslint-disable-line
 >(
   getItemsFunction: Fn,
   items: Ref<DjangoModel[]>,
-  ...params: Mapper<Parameters<Fn>>
+  ...params: Reffed<Parameters<Fn>>
 ) {
   const getItems = () => {
     getItemsFunction(...params.map(unref)).then(
@@ -17,4 +15,5 @@ export default function useGetItems<
   };
 
   watch(params, getItems);
+  if (params.length === 0) onMounted(getItems);
 }
