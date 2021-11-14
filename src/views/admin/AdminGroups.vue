@@ -69,7 +69,6 @@ import { Group } from "@/types/core";
 import { defineComponent, Ref, ref } from "@vue/runtime-core";
 import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
-import { DeleteFunction, DjangoModel, RequestFunction } from "@/types/shared";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
@@ -114,19 +113,19 @@ export default defineComponent({
 
     // create
     const { createRequest, createModalOpen } = useCreateItem(
-      AdminService.createGroup as RequestFunction,
-      groups as Ref<DjangoModel[]>,
+      AdminService.createGroup,
+      groups,
     );
 
     // update
     const { updateRequest, updateModalOpen } = useUpdateItem(
-      AdminService.updateGroup as RequestFunction,
-      groups as Ref<DjangoModel[]>,
+      AdminService.updateGroup,
+      groups,
     );
 
     // delete
     const { deleteRequest, deleteModalOpen } = useDeleteItem(
-      AdminService.deleteGroup as DeleteFunction,
+      AdminService.deleteGroup,
       groups,
     );
 

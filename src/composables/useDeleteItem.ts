@@ -1,4 +1,4 @@
-import { DeleteFunction, DjangoModel, JsonModel, Reffed } from "@/types/shared";
+import { DjangoModel, JsonModel, Reffed } from "@/types/shared";
 import { ref, Ref, unref } from "vue";
 
 export default function useDeleteItem<
@@ -10,7 +10,7 @@ export default function useDeleteItem<
 ) {
   const deleteModalOpen = ref(false);
 
-  const deleteRequest: DeleteFunction = (data: JsonModel) => {
+  const deleteRequest = (data: JsonModel) => {
     return deleteItemFunc(data, ...params.map(unref)).then(() => {
       deleteModalOpen.value = false;
       items.value = items.value.filter((item) => item.id !== data.id);

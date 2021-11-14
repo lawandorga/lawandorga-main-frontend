@@ -17,7 +17,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/profiles/",
     name: "admin-profiles",
-    component: () => import("@/views/admin/Profiles.vue"),
+    component: () => import("@/views/admin/AdminProfiles.vue"),
+    beforeEnter: isAuthenticated,
+  },
+  {
+    path: "/admin/profiles/:id/",
+    name: "admin-profile",
+    component: () => import("@/views/admin/AdminProfile.vue"),
     beforeEnter: isAuthenticated,
   },
   {

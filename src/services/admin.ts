@@ -35,6 +35,22 @@ class AdminService {
     return axios.get<User[]>("profiles/").then((response) => response.data);
   }
 
+  deleteUser(user: User): Promise<void> {
+    return axios.delete(`profiles/${user.id}/`).then();
+  }
+
+  acceptUser(user: User): Promise<User> {
+    return axios
+      .post<Promise<User>>(`profiles/${user.id}/accept/`)
+      .then((response) => response.data);
+  }
+
+  unlockUser(user: User): Promise<User> {
+    return axios
+      .post<Promise<User>>(`profiles/${user.id}/unlock/`)
+      .then((response) => response.data);
+  }
+
   /*
   // Groups
   */

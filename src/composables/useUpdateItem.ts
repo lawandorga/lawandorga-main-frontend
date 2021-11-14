@@ -1,14 +1,17 @@
-import { DjangoModel, RequestFunction } from "@/types/shared";
-import { ref, Ref } from "vue";
+import { DjangoModel, Reffed } from "@/types/shared";
+import { ref, Ref, unref } from "vue";
 
-export default function useUpdateItem(
-  updateItemFunc: RequestFunction,
+export default function useUpdateItem<
+Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
+>(
+  updateItemFunc: Fn,
   items: Ref<DjangoModel[]>,
+  ...params: Reffed<Parameters<Fn>>
 ) {
   const updateModalOpen = ref(false);
 
-  const updateRequest: RequestFunction = (data: DjangoModel) => {
-    return updateItemFunc(data).then((newItem) => {
+  const updateRequest = (data: DjangoModel) => {
+    return updateItemFunc(data, ...params.map(unref)).then((newItem) => {
       updateModalOpen.value = false;
 
       const index = items.value.findIndex((item) => item.id === newItem.id);
