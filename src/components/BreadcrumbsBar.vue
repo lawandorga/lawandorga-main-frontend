@@ -3,12 +3,10 @@
     <ol role="list" class="bg-white rounded-md shadow px-6 flex space-x-4">
       <li class="flex h-11">
         <div class="flex items-center">
-          <router-link :to="base.to" class="text-gray-400 hover:text-gray-500">
-            <component
-              :is="base.icon"
-              class="flex-shrink-0 h-6 w-6"
-              aria-hidden="true"
-            />
+          <router-link :to="base" class="text-gray-400 hover:text-gray-500">
+            <div class="flex-shrink-0">
+              <slot />
+            </div>
             <span class="sr-only">Start</span>
           </router-link>
         </div>
@@ -57,7 +55,7 @@ export default defineComponent({
       default: () => [],
     },
     base: {
-      type: Object as PropType<{ to: LocationAsName; icon: Component }>,
+      type: Object as PropType<{ name: string; to: LocationAsName }>,
       required: true,
     },
   },

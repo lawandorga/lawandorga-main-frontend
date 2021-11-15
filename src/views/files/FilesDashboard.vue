@@ -11,7 +11,9 @@
             to: { name: 'files-dashboard', params: { id: item.id } },
           }))
         "
-      />
+      >
+        <FolderOpenIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
 
       <div class="col-span-2">
         <TableGenerator
@@ -248,7 +250,7 @@ export default defineComponent({
       // utils
       formatDate: formatDate,
       // breadcrumbs
-      base: { to: { name: "files-dashboard" }, icon: FolderOpenIcon },
+      base: { name: "files-dashboard" },
       // shown
       itemsLoading: true,
       items: [] as (FilesFolder | FilesFile)[],

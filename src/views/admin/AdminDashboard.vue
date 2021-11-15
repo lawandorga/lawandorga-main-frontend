@@ -1,5 +1,12 @@
 <template>
   <div class="max-w-5xl mx-auto">
+    <BreadcrumbsBar
+      class="lg:col-span-2"
+      :base="{ name: 'admin-dashboard' }"
+      :pages="[]"
+    >
+      <CogIcon class="w-6 h-6" />
+    </BreadcrumbsBar>
     <h2 class="text-lg font-medium mb-4">Admin</h2>
     <div
       class="
@@ -83,10 +90,16 @@ import {
   TrashIcon,
   UsersIcon,
   UserIcon,
+  CogIcon,
 } from "@heroicons/vue/outline";
 import { defineComponent } from "@vue/runtime-core";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 
 export default defineComponent({
+  components: {
+    BreadcrumbsBar,
+    CogIcon,
+  },
   setup() {
     const items = [
       {

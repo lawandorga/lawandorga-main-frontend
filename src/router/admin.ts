@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/",
     name: "admin-dashboard",
-    component: () => import("@/views/admin/Dashboard.vue"),
+    component: () => import("@/views/admin/AdminDashboard.vue"),
     beforeEnter: isAuthenticated,
   },
   {
