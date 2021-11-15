@@ -49,7 +49,7 @@
     <ModalFree v-model="createModalOpen" title="Create Group">
       <FormGenerator :fields="fields" :request="createRequest" />
     </ModalFree>
-    <ModalFree v-model="updateModalOpen" title="Update Tag">
+    <ModalFree v-model="updateModalOpen" title="Update Group">
       <FormGenerator
         :fields="fields"
         :initial="group"

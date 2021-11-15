@@ -35,6 +35,16 @@ class AdminService {
     return axios.get<User[]>("profiles/").then((response) => response.data);
   }
 
+  updateUser(user: JsonModel): Promise<User> {
+    return axios
+      .patch<User>(`profiles/${user.id}/`, user)
+      .then((response) => response.data);
+  }
+
+  getUser(id: number | string): Promise<User> {
+    return axios.get<User>(`profiles/${id}/`).then((response) => response.data);
+  }
+
   deleteUser(user: User): Promise<void> {
     return axios.delete(`profiles/${user.id}/`).then();
   }
@@ -48,6 +58,12 @@ class AdminService {
   unlockUser(user: User): Promise<User> {
     return axios
       .post<Promise<User>>(`profiles/${user.id}/unlock/`)
+      .then((response) => response.data);
+  }
+
+  getUserPermissions(user: User): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>(`profiles/${user.id}/permissions/`)
       .then((response) => response.data);
   }
 

@@ -5,7 +5,7 @@ export default function useUpdateItem<
 Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
 >(
   updateItemFunc: Fn,
-  items: Ref<DjangoModel[]>,
+  items: Ref<DjangoModel[] | DjangoModel | null>,
   ...params: Reffed<Parameters<Fn>>
 ) {
   const updateModalOpen = ref(false);
@@ -14,8 +14,12 @@ Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
     return updateItemFunc(data, ...params.map(unref)).then((newItem) => {
       updateModalOpen.value = false;
 
-      const index = items.value.findIndex((item) => item.id === newItem.id);
-      if (index !== -1) items.value.splice(index, 1, newItem);
+      if (Array.isArray(items.value)) {
+        const index = items.value.findIndex((item) => item.id === newItem.id);
+        if (index !== -1) items.value.splice(index, 1, newItem);
+      } else {
+        items.value = newItem;
+      }
 
       return newItem;
     });
