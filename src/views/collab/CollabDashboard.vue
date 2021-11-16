@@ -1,7 +1,20 @@
 <template>
   <BoxLoader :show="true">
     <div class="grid grid-cols-3 gap-6">
-      <div class="bg-white shadow rounded p-5">
+      <BreadcrumbsBar
+        class="col-span-3"
+        :base="{ name: 'collab-dashboard' }"
+        :pages="[]"
+      >
+        <DocumentTextIcon class="w-6 h-6" />
+        <template #buttons>
+          <ButtonBreadcrumbs @click="openGeneralPermissionsModal = true">
+            Show General Permissions
+          </ButtonBreadcrumbs>
+        </template>
+      </BreadcrumbsBar>
+
+      <div class="bg-white shadow rounded p-5 row-span-2">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="version-lg font-bold">Documents</h2>
           <ButtonIcon
@@ -60,25 +73,7 @@
         </BoxAlert>
       </div>
 
-      <div class="bg-white shadow rounded">
-        <div class="flex justify-between items-baseline mb-4 px-5 pt-5">
-          <h2 class="version-lg font-bold">General Permissions</h2>
-        </div>
-        <div class="">
-          <div class="border">
-            <TableGenerator
-              :head="[
-                { name: 'User', key: ['user_has_permission', 'name'] },
-                { name: 'Group', key: ['group_has_permission', 'name'] },
-                { name: 'Permission', key: ['permission', 'name'] },
-              ]"
-              :data="permissions"
-            ></TableGenerator>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white shadow rounded col-span-2">
+      <div class="bg-white shadow rounded col-span-2 col-start-2">
         <div class="flex justify-between items-baseline mb-4 px-5 pt-5">
           <h2 class="version-lg font-bold">Document Permissions</h2>
           <ButtonIcon
@@ -184,11 +179,30 @@
         @success="permissionCreated($event)"
       />
     </ModalFree>
+    <ModalFree
+      v-model="openGeneralPermissionsModal"
+      width="max-w-screen-xl"
+      title="General Permission"
+    >
+      <p class="mb-10 text-gray-600">
+        Groups or users listed here have permissions that apply to the whole
+        collab section. Those permissions can be managed within the admin
+        section.
+      </p>
+      <TableGenerator
+        :head="[
+          { name: 'User', key: ['user_has_permission', 'name'] },
+          { name: 'Group', key: ['group_has_permission', 'name'] },
+          { name: 'Permission', key: ['permission', 'name'] },
+        ]"
+        :data="permissions"
+      ></TableGenerator>
+    </ModalFree>
   </BoxLoader>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import {
   CollabDocument,
   CollabDocumentPermission,
@@ -211,9 +225,15 @@ import { Group, HasPermission } from "@/types/core";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
 import Core from "@/services/core";
+import { DocumentTextIcon } from "@heroicons/vue/outline";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 
 export default defineComponent({
   components: {
+    ButtonBreadcrumbs,
+    BreadcrumbsBar,
+    DocumentTextIcon,
     ButtonTable,
     TableGenerator,
     Loader,
@@ -246,6 +266,7 @@ export default defineComponent({
       permissionOptions: [] as CollabPermission[],
       createPermission: Collab.createDocumentPermission,
       groups: [] as Group[],
+      openGeneralPermissionsModal: false,
     };
   },
   computed: {

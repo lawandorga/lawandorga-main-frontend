@@ -112,12 +112,7 @@ import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "@vue/runtime-core";
 import FormTiptap from "./FormTiptap.vue";
-import {
-  DjangoError,
-  DjangoModel,
-  JsonModel,
-  RequestFunction,
-} from "@/types/shared";
+import { DjangoError, DjangoModel, JsonModel } from "@/types/shared";
 import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
 
@@ -162,7 +157,7 @@ export default defineComponent({
       default: null,
     },
     request: {
-      type: Function as PropType<RequestFunction>,
+      type: Function as PropType<Function>,
       required: false,
       default: null,
     },

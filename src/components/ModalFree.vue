@@ -32,7 +32,6 @@
               class="
                 inline-block
                 w-full
-                max-w-md
                 p-6
                 my-8
                 overflow-hidden
@@ -44,6 +43,7 @@
                 shadow-xl
                 rounded-md
               "
+              :class="[width]"
             >
               <DialogTitle
                 as="h3"
@@ -89,6 +89,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false,
+    },
+    width: {
+      type: String,
+      default: "max-w-md",
     },
   },
   emits: ["update:modelValue"],

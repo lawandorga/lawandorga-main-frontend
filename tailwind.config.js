@@ -9,7 +9,7 @@ module.exports = {
         lorgablue: "#003c4d",
       },
       extend: {
-        backgroundColor: ["odd", "even", "checked"],
+        backgroundColor: ["odd", "even", "checked", "focus"],
       },
       typography: (theme) => ({
         DEFAULT: {

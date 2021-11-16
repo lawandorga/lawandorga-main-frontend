@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex" aria-label="Breadcrumb">
+  <nav class="flex justify-between" aria-label="Breadcrumb">
     <ol role="list" class="bg-white rounded-md shadow px-6 flex space-x-4">
       <li class="flex h-11">
         <div class="flex items-center">
@@ -32,12 +32,14 @@
         </div>
       </li>
     </ol>
+    <div>
+      <slot name="buttons" />
+    </div>
   </nav>
 </template>
 
 <script lang="ts">
-import { FolderIcon } from "@heroicons/vue/solid";
-import { Component, defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent, PropType } from "vue";
 import { RouteParams } from "vue-router";
 
 interface LocationAsName {
@@ -46,9 +48,7 @@ interface LocationAsName {
 }
 
 export default defineComponent({
-  components: {
-    FolderIcon,
-  },
+  components: {},
   props: {
     pages: {
       type: Array as PropType<{ name: string; to: LocationAsName }[]>,

@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid lg:grid-cols-2 gap-10">
+    <div class="grid lg:grid-cols-2 gap-6">
       <BreadcrumbsBar
         v-if="!!folder"
         class="lg:col-span-2"
@@ -14,7 +14,6 @@
       >
         <FolderOpenIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-
       <div class="col-span-2">
         <TableGenerator
           :head="[
