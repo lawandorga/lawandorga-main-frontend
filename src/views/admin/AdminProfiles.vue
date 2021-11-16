@@ -1,56 +1,68 @@
 <template>
   <BoxLoader :show="true">
-    <TableGenerator
-      :head="[
-        { name: 'Name', key: 'name' },
-        { name: 'E-Mail', key: 'email' },
-        { name: 'Phone', key: 'phone_number' },
-        { name: '', key: 'action' },
-      ]"
-      :data="profiles"
-    >
-      <template #name="slotProps">
-        <router-link
-          class="underline"
-          :to="{ name: 'admin-profile', params: { id: slotProps.dataItem.id } }"
-        >
-          {{ slotProps.dataItem.name }}
-        </router-link>
-      </template>
-      <template #action="slotProps">
-        <div class="flex justify-end space-x-3">
-          <ButtonTable
-            v-if="!slotProps.dataItem.accepted"
-            type="button"
-            @click="
-              profile = slotProps.dataItem;
-              acceptUserModalOpen = true;
-            "
+    <div class="max-w-screen-lg mx-auto space-y-6">
+      <BreadcrumbsBar
+        class="lg:col-span-2"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[{ name: 'Profiles', to: { name: 'admin-profiles' } }]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
+      <TableGenerator
+        :head="[
+          { name: 'Name', key: 'name' },
+          { name: 'E-Mail', key: 'email' },
+          { name: 'Phone', key: 'phone_number' },
+          { name: '', key: 'action' },
+        ]"
+        :data="profiles"
+      >
+        <template #name="slotProps">
+          <router-link
+            class="underline"
+            :to="{
+              name: 'admin-profile',
+              params: { id: slotProps.dataItem.id },
+            }"
           >
-            Accept
-          </ButtonTable>
-          <ButtonTable
-            v-if="slotProps.dataItem.locked"
-            type="button"
-            @click="
-              profile = slotProps.dataItem;
-              unlockUserModalOpen;
-            "
-          >
-            Unlock
-          </ButtonTable>
-          <ButtonTable
-            type="button"
-            @click="
-              profile = slotProps.dataItem;
-              deleteModalOpen = true;
-            "
-          >
-            Delete
-          </ButtonTable>
-        </div>
-      </template>
-    </TableGenerator>
+            {{ slotProps.dataItem.name }}
+          </router-link>
+        </template>
+        <template #action="slotProps">
+          <div class="flex justify-end space-x-3">
+            <ButtonTable
+              v-if="!slotProps.dataItem.accepted"
+              type="button"
+              @click="
+                profile = slotProps.dataItem;
+                acceptUserModalOpen = true;
+              "
+            >
+              Accept
+            </ButtonTable>
+            <ButtonTable
+              v-if="slotProps.dataItem.locked"
+              type="button"
+              @click="
+                profile = slotProps.dataItem;
+                unlockUserModalOpen;
+              "
+            >
+              Unlock
+            </ButtonTable>
+            <ButtonTable
+              type="button"
+              @click="
+                profile = slotProps.dataItem;
+                deleteModalOpen = true;
+              "
+            >
+              Delete
+            </ButtonTable>
+          </div>
+        </template>
+      </TableGenerator>
+    </div>
     <!-- delete -->
     <ModalDelete
       v-model="deleteModalOpen"
@@ -88,9 +100,13 @@ import ButtonTable from "@/components/ButtonTable.vue";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
   components: {
+    BreadcrumbsBar,
+    CogIcon,
     BoxLoader,
     TableGenerator,
     ButtonTable,

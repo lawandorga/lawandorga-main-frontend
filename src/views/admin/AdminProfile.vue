@@ -1,47 +1,66 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid grid-cols-3 gap-y-6">
-      <div v-if="user" class="bg-white rounded shadow max-w-lg px-6 py-5">
-        <div class="text-sm font-bold tracking-wide text-gray-500">User</div>
-        <h2 class="text-2xl font-bold">{{ user.name }}</h2>
-        <div class="mt-4">
-          <p>E-Mail: {{ user.email }}</p>
-          <p>Phone: {{ user.phone_number }}</p>
+    <div class="max-w-screen-lg mx-auto space-y-6">
+      <BreadcrumbsBar
+        v-if="user"
+        class="lg:col-span-2"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[
+          { name: 'Profiles', to: { name: 'admin-profiles' } },
+          {
+            name: user.name,
+            to: { name: 'admin-profile', params: { id: user.id } },
+          },
+        ]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
+      <div class="grid grid-cols-3 gap-y-6">
+        <div v-if="user" class="bg-white rounded shadow max-w-lg px-6 py-5">
+          <div class="text-sm font-bold tracking-wide text-gray-500">User</div>
+          <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+          <div class="mt-4">
+            <p>E-Mail: {{ user.email }}</p>
+            <p>Phone: {{ user.phone_number }}</p>
+          </div>
+          <ButtonBlue type="button" @click="updateModalOpen = true">
+            Edit
+          </ButtonBlue>
         </div>
-        <ButtonBlue type="button" @click="updateModalOpen = true">
-          Edit
-        </ButtonBlue>
-      </div>
 
-      <div class="col-span-3">
-        <TableGenerator
-          :head="[
-            { name: 'Permission', key: 'name' },
-            { name: '', key: 'action' },
-          ]"
-          :data="permissions"
-        >
-          <template #head-action>
-            <div class="flex justify-end">
-              <ButtonTable type="button" @click="addPermissionModalOpen = true">
-                Add Permission
-              </ButtonTable>
-            </div>
-          </template>
-          <template #action="slotProps">
-            <div class="flex justify-end">
-              <ButtonTable
-                type="button"
-                @click="
-                  removePermissionModalOpen = true;
-                  permission = slotProps.dataItem;
-                "
-              >
-                Remove
-              </ButtonTable>
-            </div>
-          </template>
-        </TableGenerator>
+        <div class="col-span-3">
+          <TableGenerator
+            :head="[
+              { name: 'Permission', key: 'name' },
+              { name: '', key: 'action' },
+            ]"
+            :data="permissions"
+          >
+            <template #head-action>
+              <div class="flex justify-end">
+                <ButtonTable
+                  type="button"
+                  @click="addPermissionModalOpen = true"
+                >
+                  Add Permission
+                </ButtonTable>
+              </div>
+            </template>
+            <template #action="slotProps">
+              <div class="flex justify-end">
+                <ButtonTable
+                  type="button"
+                  @click="
+                    removePermissionModalOpen = true;
+                    permission = slotProps.dataItem;
+                  "
+                >
+                  Remove
+                </ButtonTable>
+              </div>
+            </template>
+          </TableGenerator>
+        </div>
       </div>
     </div>
     <!-- user update -->
@@ -89,6 +108,8 @@ import { HasPermission, Permission } from "@/types/core";
 import { User } from "@/types/user";
 import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
 
 const userFields = [
   {
@@ -132,6 +153,8 @@ export default defineComponent({
     ButtonTable,
     FormGenerator,
     ModalDelete,
+    BreadcrumbsBar,
+    CogIcon,
   },
   setup() {
     const route = useRoute();

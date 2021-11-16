@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-5xl mx-auto">
+  <div class="max-w-5xl mx-auto space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'admin-dashboard' }"
@@ -7,7 +7,6 @@
     >
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
-    <h2 class="text-lg font-medium mb-4">Admin</h2>
     <div
       class="
         rounded-lg

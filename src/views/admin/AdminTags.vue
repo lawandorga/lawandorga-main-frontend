@@ -160,7 +160,7 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import AdminService from "@/services/admin";
+import RecordsService from "@/services/records";
 import { Tag } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
@@ -180,9 +180,9 @@ export default defineComponent({
       tag: null as Tag | null,
       tags: [] as Tag[],
       // functions
-      createTag: AdminService.createTag,
-      updateTag: AdminService.updateTag,
-      deleteTag: AdminService.deleteTag,
+      createTag: RecordsService.createTag,
+      updateTag: RecordsService.updateTag,
+      deleteTag: RecordsService.deleteTag,
       // modals
       createOpen: false,
       updateOpen: false,
@@ -199,7 +199,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    AdminService.getTags().then((tags) => (this.tags = tags));
+    RecordsService.getTags().then((tags) => (this.tags = tags));
   },
   methods: {
     // create

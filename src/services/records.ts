@@ -8,9 +8,9 @@ import {
   RecordsClient,
   RecordsDocument,
   RestrictedRecord,
-  Tag,
   Questionnaire,
   RecordQuestionnaire,
+  Tag,
 } from "@/types/records";
 import downloadFile from "@/utils/download";
 import axios from "../api";
@@ -50,6 +50,25 @@ class RecordsService {
     return axios
       .get<Questionnaire[]>("records/questionnaires/")
       .then((response) => response.data);
+  }
+
+  createQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
+    return axios
+      .post<Questionnaire>("records/questionnaires/", questionnaire)
+      .then((response) => response.data);
+  }
+
+  updateQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
+    return axios
+      .patch<Questionnaire>(
+        `records/questionnaires/${questionnaire.id}/`,
+        questionnaire,
+      )
+      .then((response) => response.data);
+  }
+
+  deleteQuestionnaire(questionnaire: Questionnaire): Promise<void> {
+    return axios.delete(`records/questionnaires/${questionnaire.id}/`);
   }
 
   // record questionnaire
@@ -140,7 +159,23 @@ class RecordsService {
 
   // tags
   getTags(): Promise<Tag[]> {
-    return axios.get<Tag[]>("records/tags/").then((response) => response.data);
+    return axios.get<Tag[]>(`records/tags/`).then((response) => response.data);
+  }
+
+  createTag(tag: Tag): Promise<Tag> {
+    return axios
+      .post<Tag>("records/tags/", tag)
+      .then((response) => response.data);
+  }
+
+  updateTag(tag: Tag): Promise<Tag> {
+    return axios
+      .patch<Tag>(`records/tags/${tag.id}/`, tag)
+      .then((response) => response.data);
+  }
+
+  deleteTag(tag: Tag): Promise<void> {
+    return axios.delete(`records/tags/${tag.id}/`);
   }
 
   // countries

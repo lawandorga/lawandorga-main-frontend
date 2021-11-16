@@ -1,33 +1,9 @@
 import { Group, HasPermission } from "@/types/core";
-import { Tag } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import { User } from "@/types/user";
 import axios from "../api";
 
 class AdminService {
-  /*
-  // Tags
-  */
-  getTags(): Promise<Tag[]> {
-    return axios.get<Tag[]>(`records/tags/`).then((response) => response.data);
-  }
-
-  createTag(tag: Tag): Promise<Tag> {
-    return axios
-      .post<Tag>("records/tags/", tag)
-      .then((response) => response.data);
-  }
-
-  updateTag(tag: Tag): Promise<Tag> {
-    return axios
-      .patch<Tag>(`records/tags/${tag.id}/`, tag)
-      .then((response) => response.data);
-  }
-
-  deleteTag(tag: Tag): Promise<void> {
-    return axios.delete(`records/tags/${tag.id}/`);
-  }
-
   /*
   // Users
   */

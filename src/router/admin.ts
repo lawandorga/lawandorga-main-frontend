@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/tags/",
     name: "admin-tags",
-    component: () => import("@/views/admin/Tags.vue"),
+    component: () => import("@/views/admin/AdminTags.vue"),
     beforeEnter: isAuthenticated,
   },
   {
@@ -59,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/questionnaires/",
     name: "admin-questionnaires",
-    component: () => import("@/views/admin/Questionnaires.vue"),
+    component: () => import("@/views/admin/AdminQuestionnaires.vue"),
     beforeEnter: isAuthenticated,
   },
 ];
