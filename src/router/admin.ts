@@ -47,13 +47,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/record-permit-requests/",
     name: "admin-recordpermitrequests",
-    component: () => import("@/views/admin/RecordPermitRequests.vue"),
+    component: () => import("@/views/admin/AdminPermissionRequests.vue"),
     beforeEnter: isAuthenticated,
   },
   {
     path: "/admin/record-deletion-requests/",
     name: "admin-recorddeletionrequests",
-    component: () => import("@/views/admin/RecordDeletionRequests.vue"),
+    component: () => import("@/views/admin/AdminDeletionRequests.vue"),
     beforeEnter: isAuthenticated,
   },
   {

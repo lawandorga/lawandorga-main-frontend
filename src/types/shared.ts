@@ -2,7 +2,13 @@ import { CollabDocument, CollabVersion } from "./collab";
 import { Group, HasPermission, Permission } from "./core";
 import { RlcUser, User } from "./user";
 import { Ref } from "vue";
-import { Questionnaire, Record, RecordQuestionnaire } from "./records";
+import {
+  Questionnaire,
+  Record,
+  RecordDeletionRequest,
+  RecordPermissionRequest,
+  RecordQuestionnaire,
+} from "./records";
 
 /*
 // helpers
@@ -47,7 +53,9 @@ export type DjangoModel =
   | Permission
   | Record
   | RecordQuestionnaire
-  | Questionnaire;
+  | Questionnaire
+  | RecordDeletionRequest
+  | RecordPermissionRequest;
 
 /*
 // errors

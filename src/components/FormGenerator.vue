@@ -173,7 +173,7 @@ export default defineComponent({
       showSuccess: false,
       nonFieldErrors: [] as string[],
       errors: {} as DjangoError,
-      data: {} as DjangoModel,
+      data: {} as JsonModel,
       loading: false,
     };
   },
@@ -192,7 +192,7 @@ export default defineComponent({
       if (this.action) this.dispatchStore(this.data);
       else this.sendRequest(this.data);
     },
-    sendRequest(requestData: DjangoModel | FormData) {
+    sendRequest(requestData: JsonModel | FormData) {
       if (this.fields.map((item) => item.name).includes("file")) {
         requestData = new FormData(this.$refs.form as HTMLFormElement);
         if (this.initial)
@@ -207,7 +207,7 @@ export default defineComponent({
           this.handleError(error.response ? error.response.data : {}),
         );
     },
-    dispatchStore(data: DjangoModel) {
+    dispatchStore(data: JsonModel) {
       this.$store
         .dispatch(this.action, data)
         .then((data: DjangoModel) => this.handleSuccess(data))

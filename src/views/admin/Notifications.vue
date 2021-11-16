@@ -1,5 +1,6 @@
 <template>
-  <div class="notification-list__container">
+  coming back soon
+  <!-- <div class="notification-list__container">
     <table
       mat-table
       [dataSource]="notificationGroup.notifications"
@@ -50,10 +51,9 @@
         </td>
       </ng-container>
 
-      <!--        <tr mat-header-row *matHeaderRowDef="columns"></tr>-->
       <tr mat-row *matRowDef="let row; columns: columns"></tr>
     </table>
-  </div>
+  </div> -->
 </template>
 
 <script>

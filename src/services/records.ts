@@ -185,7 +185,39 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  // permission
+  getPermissionRequests(): Promise<RecordPermissionRequest[]> {
+    return axios
+      .get<RecordPermissionRequest[]>("records/record_permission_requests/")
+      .then((response) => response.data);
+  }
+
+  updatePermissionRequest(
+    data: RecordPermissionRequest,
+  ): Promise<RecordPermissionRequest> {
+    return axios
+      .patch<RecordPermissionRequest>(
+        `records/record_permission_requests/${data.id}/`,
+        data,
+      )
+      .then((response) => response.data);
+  }
+
+  requestAccess(record: RestrictedRecord): Promise<RecordPermissionRequest> {
+    return axios
+      .post<RecordPermissionRequest>(
+        `records/records/${record.id}/request_permission/`,
+      )
+      .then((response) => response.data);
+  }
+
   // deletion-requests
+  getDeletionRequests(): Promise<RecordDeletionRequest[]> {
+    return axios
+      .get<RecordDeletionRequest[]>("records/record_deletion_requests/")
+      .then((response) => response.data);
+  }
+
   createDeletionRequest(
     deletionRequest: RecordDeletionRequest,
   ): Promise<RecordDeletionRequest> {
@@ -197,11 +229,13 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  // permit-requests
-  requestAccess(record: RestrictedRecord): Promise<RecordPermissionRequest> {
+  updateDeletionRequest(
+    data: RecordDeletionRequest,
+  ): Promise<RecordDeletionRequest> {
     return axios
-      .post<RecordPermissionRequest>(
-        `records/records/${record.id}/request_permission/`,
+      .patch<RecordDeletionRequest>(
+        `records/record_deletion_requests/${data.id}/`,
+        data,
       )
       .then((response) => response.data);
   }

@@ -125,7 +125,7 @@ export interface RecordPermissionRequest {
 }
 
 export interface RecordDeletionRequest {
-  id: string;
+  id: number;
   // request_from: RestrictedUser;
   // request_processed: RestrictedUser | null;
   requested: Date;
