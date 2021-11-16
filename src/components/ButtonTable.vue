@@ -4,22 +4,20 @@
     class="
       inline-flex
       items-center
-      px-4
-      py-2
+      px-2
+      py-0.5
+      -mx-2
       border border-transparent
       text-sm
       font-medium
-      rounded-xl
-      shadow-sm
-      text-white
-      hover:text-white
-      bg-lorgablue bg-opacity-100
-      hover:bg-opacity-90
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue
+      rounded
+      text-blue-800
+      hover:text-blue-900 hover:bg-blue-50
+      focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-lorgablue
     "
     :class="[
       disabledComputed
-        ? 'pointer-events-none opacity-80 cursor-not-allowed'
+        ? 'pointer-events-none opacity-40 cursor-not-allowed'
         : '',
     ]"
     :to="to"

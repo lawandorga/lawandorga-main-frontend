@@ -26,9 +26,11 @@
       :data="filteredRecords"
     >
       <template #head-action>
-        <ButtonTable type="button" @click="openCreate()">
-          Create Record
-        </ButtonTable>
+        <div class="flex justify-end">
+          <ButtonTable type="button" @click="openCreate()">
+            Create Record
+          </ButtonTable>
+        </div>
       </template>
       <template #record_token="slotProps">
         <div class="flex items-center justify-between">
@@ -51,15 +53,6 @@
             Request Access
           </ButtonTable>
         </div>
-      </template>
-      <template #action="slotProps">
-        <ButtonTable
-          type="button"
-          :disabled="slotProps.dataItem.delete"
-          @click="openDelete(slotProps.dataItem)"
-        >
-          Request Deletion
-        </ButtonTable>
       </template>
       <template #working_on_record="slotProps">
         <ul class="list-disc pl-3.5">
@@ -87,6 +80,17 @@
             </button>
           </li>
         </ul>
+      </template>
+      <template #action="slotProps">
+        <div class="flex justify-end">
+          <ButtonTable
+            type="button"
+            :disabled="slotProps.dataItem.delete"
+            @click="openDelete(slotProps.dataItem)"
+          >
+            Request Deletion
+          </ButtonTable>
+        </div>
       </template>
     </TableGenerator>
     <!-- modals -->
