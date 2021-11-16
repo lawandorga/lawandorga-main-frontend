@@ -23,7 +23,7 @@
 <script lang="ts">
 import NavigationDefault from "@/components/NavigationDefault.vue";
 import AlertList from "@/components/AlertList.vue";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";

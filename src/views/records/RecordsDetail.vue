@@ -204,7 +204,7 @@ import {
   RecordsDocument,
   Tag,
 } from "@/types/records";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";

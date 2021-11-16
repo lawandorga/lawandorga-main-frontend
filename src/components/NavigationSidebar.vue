@@ -100,11 +100,14 @@
 import useNavigationItems from "@/composables/useNavigationItems";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import UserService from "@/services/user";
 
 export default {
   setup() {
     const { navigationItems } = useNavigationItems();
     const store = useStore();
+
+    UserService.admin().then((admin) => store.dispatch("user/setAdmin", admin));
 
     const user = computed(() => store.getters["user/user"]);
 

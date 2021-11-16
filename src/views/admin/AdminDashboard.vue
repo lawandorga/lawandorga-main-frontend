@@ -28,7 +28,7 @@
         "
         :class="[item.class]"
       >
-        <div>
+        <div class="relative">
           <span
             class="
               rounded-lg
@@ -41,6 +41,29 @@
           >
             <component :is="item.icon" class="h-6 w-6 text-gray-600" />
           </span>
+          <div
+            v-if="item.notifications > 0"
+            class="
+              flex
+              items-center
+              text-sm
+              font-bold
+              justify-center
+              absolute
+              top-0
+              text-red-800
+              left-0
+              transform
+              translate-x-8
+              -translate-y-1
+              w-6
+              h-6
+              rounded-full
+              bg-red-200
+            "
+          >
+            {{ item.notifications }}
+          </div>
         </div>
         <div class="mt-8">
           <h3 class="text-lg font-medium">
@@ -91,8 +114,9 @@ import {
   UserIcon,
   CogIcon,
 } from "@heroicons/vue/outline";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -100,14 +124,16 @@ export default defineComponent({
     CogIcon,
   },
   setup() {
-    const items = [
+    const store = useStore();
+
+    const items = computed(() => [
       {
         title: "Profiles",
         description:
           "Here you can manage the users of your RLC. If you have the 'manage_users' permission you can change their contact information. If you have the 'manage_permissions' permission you can update the permissions of every user.",
         link: { name: "admin-profiles" },
         icon: UserIcon,
-        notifications: 0,
+        notifications: store.getters["user/admin"].profiles,
         class: "rounded-tl-lg",
       },
       {
@@ -134,7 +160,7 @@ export default defineComponent({
           "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
         link: { name: "admin-recordpermitrequests" },
         icon: LockOpenIcon,
-        notifications: 0,
+        notifications: store.getters["user/admin"].record_permit_requests,
         class: "",
       },
       {
@@ -143,7 +169,7 @@ export default defineComponent({
           "If somebody requested to delete a record you can take a look and allow that request here.",
         link: { name: "admin-recorddeletionrequests" },
         icon: TrashIcon,
-        notifications: 0,
+        notifications: store.getters["user/admin"].record_deletion_requests,
         class: "rounded-bl-lg",
       },
       {
@@ -155,7 +181,7 @@ export default defineComponent({
         notifications: 0,
         class: "rounded-br-lg",
       },
-    ];
+    ]);
 
     return {
       items,

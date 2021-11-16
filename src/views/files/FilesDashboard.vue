@@ -208,7 +208,7 @@ import {
   FilesPermission,
   FilesPossiblePermission,
 } from "@/types/files";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import FilesService from "@/services/files";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonTable from "@/components/ButtonTable.vue";

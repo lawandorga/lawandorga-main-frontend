@@ -133,7 +133,7 @@
 <script lang="ts">
 import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
 import { Consultant, Country, RestrictedRecord, Tag } from "@/types/records";
 import FormInput from "@/components/FormInput.vue";

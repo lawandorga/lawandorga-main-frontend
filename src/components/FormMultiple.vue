@@ -181,7 +181,7 @@
 <script lang="ts">
 import FormLabel from "./FormLabel.vue";
 import FormHelptext from "./FormHelptext.vue";
-import { defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   components: {

@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from "@vue/runtime-core";
+import { defineComponent, Ref, ref } from "vue";
 import RecordsService from "@/services/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";

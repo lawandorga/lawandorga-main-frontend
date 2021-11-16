@@ -16,6 +16,12 @@ export interface UserState {
   user: User | null;
   rlc: Rlc | null;
   permissions: string[];
+  notifications: number;
+  admin: {
+    profiles: number;
+    record_deletion_requests: number;
+    record_permit_requests: number;
+  };
 }
 
 export interface RootState {

@@ -91,7 +91,7 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/solid";
 import { DotsVerticalIcon } from "@heroicons/vue/outline";
-import { defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent, PropType } from "vue";
 import { VoidFunction } from "@/types/shared";
 
 interface Item {

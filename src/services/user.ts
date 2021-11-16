@@ -16,6 +16,12 @@ interface StaticsResponse {
   all_permissions: Permission[];
 }
 
+interface AdminInformation {
+  profiles: number;
+  record_deletion_requests: number;
+  record_permit_requests: number;
+}
+
 class UserService {
   login(data: { email: string; password: string }): Promise<LoginResponse> {
     return axios
@@ -26,6 +32,12 @@ class UserService {
   statics(token: string): Promise<StaticsResponse> {
     return axios
       .get<StaticsResponse>(`profiles/statics/${token}/`)
+      .then((response) => response.data);
+  }
+
+  admin(): Promise<AdminInformation> {
+    return axios
+      .get<AdminInformation>("profiles/admin/")
       .then((response) => response.data);
   }
 

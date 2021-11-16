@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 
 export default defineComponent({

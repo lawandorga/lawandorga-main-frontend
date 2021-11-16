@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { AnnotationIcon, ShieldCheckIcon } from "@heroicons/vue/outline";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   setup() {

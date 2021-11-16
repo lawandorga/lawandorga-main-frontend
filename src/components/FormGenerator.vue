@@ -110,7 +110,7 @@ import FormSelect from "./FormSelect.vue";
 import ButtonBlue from "./ButtonBlue.vue";
 import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
-import { defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent, PropType } from "vue";
 import FormTiptap from "./FormTiptap.vue";
 import { DjangoError, DjangoModel, JsonModel } from "@/types/shared";
 import { AxiosError } from "axios";

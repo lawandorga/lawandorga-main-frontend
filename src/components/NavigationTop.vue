@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import { computed } from "@vue/runtime-core";
+import { computed } from "vue";
 import { BellIcon, MenuAlt2Icon } from "@heroicons/vue/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 

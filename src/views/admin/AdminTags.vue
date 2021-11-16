@@ -159,7 +159,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
 import { Tag } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";

@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import { CollabVersion } from "@/types/collab";
 import FormQuill from "@/components/FormQuill.vue";
 import FormGenerator from "@/components/FormGenerator.vue";

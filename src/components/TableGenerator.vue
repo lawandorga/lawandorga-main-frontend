@@ -39,7 +39,7 @@ import Tbody from "./TableBody.vue";
 import Thead from "./TableHeader.vue";
 import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
-import { defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent, PropType } from "vue";
 import { JsonModel } from "@/types/shared";
 import CircleLoader from "./CircleLoader.vue";
 

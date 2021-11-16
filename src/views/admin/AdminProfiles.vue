@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 import { ref, Ref } from "vue";
 import { User } from "@/types/user";
 import useGetItems from "@/composables/useGetItems";

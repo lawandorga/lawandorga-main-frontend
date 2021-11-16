@@ -40,7 +40,7 @@ import TableHeader from "@tiptap/extension-table-header";
 import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import MenuBar from "./MenuBar.vue";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {

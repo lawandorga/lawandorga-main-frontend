@@ -55,10 +55,10 @@
           focus:outline-none
         "
       >
-        <MenuItem>
+        <!-- <MenuItem>
           <router-link
             v-if="user"
-            to="/"
+            :to="{ name: 'admin-profile', params: { id: user.rlc_user } }"
             class="
               cursor-pointer
               block
@@ -72,7 +72,7 @@
           >
             Settings
           </router-link>
-        </MenuItem>
+        </MenuItem> -->
         <MenuItem>
           <button
             type="button"

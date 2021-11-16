@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { Group } from "@/types/core";
-import { defineComponent, Ref, ref } from "@vue/runtime-core";
+import { defineComponent, Ref, ref } from "vue";
 import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";

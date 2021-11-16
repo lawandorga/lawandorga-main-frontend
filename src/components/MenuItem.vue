@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { BooleanFunction, VoidFunction } from "@/types/shared";
-import { defineComponent, PropType } from "@vue/runtime-core";
+import { defineComponent, PropType } from "vue";
 import remixiconUrl from "remixicon/fonts/remixicon.symbol.svg";
 
 export default defineComponent({

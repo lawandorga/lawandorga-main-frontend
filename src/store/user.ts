@@ -11,6 +11,8 @@ const state = {
   user: {},
   rlc: {},
   permissions: [],
+  notifications: 0,
+  admin: {},
 };
 
 const getters = {
@@ -22,6 +24,12 @@ const getters = {
     state.key ? state.key.replace(/(?:\r\n|\r|\n)/g, "<linebreak>") : "",
   isAuthenticated: (state: UserState) => !!state.token && !!state.key,
   loginData: () => JSON.parse(localStorage.getItem("loginData") || "{}"),
+  notifications: (state: UserState) => state.notifications,
+  admin: (state: UserState) => state.admin,
+  adminNotifications: (state: UserState) =>
+    state.admin.profiles +
+    state.admin.record_deletion_requests +
+    state.admin.record_permit_requests,
 };
 
 const actions = {
@@ -44,7 +52,7 @@ const actions = {
           });
           context.commit("setRlc", statics.rlc);
           context.commit("setPermissions", statics.permissions);
-          // context.commit('setNotifications', statics.rlc);
+          context.commit("setNotifications", statics.notifications);
           // context.commit('setAllPermissions', statics.all_permissions);
         })
         .catch((error) => {
@@ -69,6 +77,16 @@ const actions = {
       router.push({ name: "user-login" });
       resolve();
     });
+  },
+  setAdmin: (
+    context: ActionContext<UserState, RootState>,
+    data: {
+      profiles: number;
+      record_deletion_requests: number;
+      record_permit_requests: number;
+    },
+  ) => {
+    context.commit("setAdmin", data);
   },
   //   register: (_: ActionContext<UserState, RootState>, data) => {
   //     return new Promise((resolve, reject) => {
@@ -201,6 +219,19 @@ const mutations = {
   },
   setPermissions: (state: UserState, permissions: string[]) => {
     state.permissions = permissions;
+  },
+  setNotifications: (state: UserState, notifications: number) => {
+    state.notifications = notifications;
+  },
+  setAdmin: (
+    state: UserState,
+    notifications: {
+      profiles: number;
+      record_deletion_requests: number;
+      record_permit_requests: number;
+    },
+  ) => {
+    state.admin = notifications;
   },
 };
 
