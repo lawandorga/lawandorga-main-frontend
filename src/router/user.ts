@@ -1,11 +1,12 @@
 import { RouteRecordRaw } from "vue-router";
 import { notAuthenticated } from "./utils";
+import Login from "@/views/user/Login.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/user/login",
     name: "user-login",
-    component: () => import("@/views/user/Login.vue"),
+    component: Login,
     beforeEnter: notAuthenticated,
   },
 ];

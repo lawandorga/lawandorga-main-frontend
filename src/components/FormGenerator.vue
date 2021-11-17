@@ -20,6 +20,7 @@
           placeholder,
           autocomplete,
           options,
+          room,
         } in fields"
         :key="name"
         :class="{ hidden: type === 'hidden' }"
@@ -52,7 +53,11 @@
           :options="options ?? []"
           @update:model-value="showSuccess = false"
         />
-        <FormTiptap v-else-if="type === 'tiptap'" v-model="data[name]" />
+        <FormTiptap
+          v-else-if="type === 'tiptap'"
+          v-model="data[name]"
+          :room="room"
+        />
         <FormInput
           v-else
           v-model="data[name]"

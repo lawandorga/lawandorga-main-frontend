@@ -1,6 +1,6 @@
 <template>
-  <component
-    :is="is"
+  <button
+    type="button"
     class="
       inline-flex
       items-center
@@ -11,24 +11,25 @@
       text-sm
       font-medium
       rounded
-      text-blue-800
-      hover:text-blue-900 hover:bg-blue-50
-      focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-lorgablue
+      focus:outline-none
     "
-    :class="[
-      disabledComputed
-        ? 'pointer-events-none opacity-40 cursor-not-allowed'
-        : '',
-    ]"
-    :to="to"
-    :href="href"
+    :class="{
+      'pointer-events-none opacity-40 cursor-not-allowed': disabledComputed,
+      'text-blue-800 hover:text-blue-900 hover:bg-blue-50 focus:border-blue-200':
+        type === 'NORMAL' || type === 'CREATE',
+      'text-red-600 hover:text-red-700 hover:bg-red-50 focus:border-red-200':
+        type === 'DELETE',
+      'text-green-600 hover:text-green-700 hover:bg-green-50 focus:border-green-200':
+        type === '',
+    }"
     :disabled="disabledComputed"
-    :type="type"
     @click="emitClick()"
   >
     <Loader v-show="loading" color="text-white" class="mr-2" />
-    <slot />
-  </component>
+    <div ref="content">
+      <slot />
+    </div>
+  </button>
 </template>
 
 <script lang="ts">
@@ -40,18 +41,6 @@ export default defineComponent({
     Loader,
   },
   props: {
-    to: {
-      type: [String, Object],
-      default: "",
-    },
-    href: {
-      type: String,
-      default: "",
-    },
-    type: {
-      type: String,
-      default: "",
-    },
     loading: {
       type: Boolean,
       default: false,
@@ -62,21 +51,25 @@ export default defineComponent({
     },
   },
   emits: ["click"],
+  data() {
+    return {
+      type: "NORMAL",
+    };
+  },
   computed: {
-    is() {
-      if (this.to) {
-        return "router-link";
-      } else if (this.href) {
-        return "a";
-      } else if (this.type) {
-        return "button";
-      }
-      return "div";
-    },
     disabledComputed() {
       if (this.loading) return true;
       return this.disabled;
     },
+  },
+  mounted() {
+    let text = "delete";
+    if (this.$refs.content)
+      text = (this.$refs.content as HTMLElement).textContent || "";
+    if (text.toLowerCase().includes("delet")) this.type = "DELETE";
+    if (text.toLowerCase().includes("remove")) this.type = "DELETE";
+    else if (text.toLowerCase().includes("add")) this.type = "CREATE";
+    else if (text.toLowerCase().includes("create")) this.type = "CREATE";
   },
   methods: {
     emitClick() {

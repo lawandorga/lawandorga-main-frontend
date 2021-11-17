@@ -1,5 +1,5 @@
 <template>
-  <Disclosure v-slot="{ open }" as="li" class="mb-4">
+  <Disclosure v-slot="{ open }" as="li" class="mb-4" default-open>
     <div class="flex mb-2">
       <DisclosureButton>
         <div

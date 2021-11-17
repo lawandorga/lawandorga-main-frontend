@@ -7,7 +7,7 @@
       px-6
       h-11
       border border-transparent
-      text-sm
+      text-base
       font-medium
       rounded-md
       shadow-sm

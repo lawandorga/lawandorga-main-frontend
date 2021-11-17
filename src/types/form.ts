@@ -33,4 +33,5 @@ export interface FormField {
   required?: boolean;
   placeholder?: string;
   options?: { name: string; value: string }[];
+  room?: string;
 }

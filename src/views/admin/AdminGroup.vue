@@ -6,8 +6,7 @@
           {{ group.name }}
         </h2>
         <div>
-          <p>Note: {{ group.note }}</p>
-          <p>Description: {{ group.description }}</p>
+          <p>{{ group.description }}</p>
         </div>
       </div>
 

@@ -8,13 +8,16 @@
       >
         <DocumentTextIcon class="w-6 h-6" />
         <template #buttons>
+          <ButtonBreadcrumbs @click="helpModalOpen = true">
+            Show Help
+          </ButtonBreadcrumbs>
           <ButtonBreadcrumbs @click="openGeneralPermissionsModal = true">
             Show General Permissions
           </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
 
-      <div class="bg-white shadow rounded p-5 row-span-2">
+      <div class="bg-white shadow rounded-md p-5 row-span-2">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="version-lg font-bold">Documents</h2>
           <ButtonIcon
@@ -36,7 +39,7 @@
         </ul>
       </div>
 
-      <div class="bg-white shadow rounded p-5 col-span-2">
+      <div class="bg-white shadow rounded-md p-5 col-span-2">
         <div v-if="version && document">
           <div class="flex justify-between">
             <div>{{ document.path }}</div>
@@ -72,44 +75,30 @@
           editor.
         </BoxAlert>
       </div>
-
-      <div class="bg-white shadow rounded col-span-2 col-start-2">
-        <div class="flex justify-between items-baseline mb-4 px-5 pt-5">
-          <h2 class="version-lg font-bold">Document Permissions</h2>
-          <ButtonIcon
-            type="button"
-            icon="PlusCircle"
-            @click="addPermissionOpen = true"
-          >
-            Add
-          </ButtonIcon>
-        </div>
-        <div>
-          <p v-show="!versionLoading && !version" class="px-5 pb-5">
-            No document selected.
-          </p>
-          <div v-show="!!docPermissions.length" class="border">
-            <TableGenerator
-              :head="[
-                { name: 'Source', key: ['document', 'path'] },
-                { name: 'Group', key: ['group_has_permission', 'name'] },
-                { name: 'Permission', key: ['permission', 'name'] },
-                { name: '', key: 'action' },
-              ]"
-              :data="docPermissions"
+      <div class="col-span-2">
+        <TableGenerator
+          :head="[
+            { name: 'Type', key: 'type' },
+            { name: 'Group', key: ['group_has_permission', 'name'] },
+            { name: 'Source', key: ['document', 'path'] },
+            { name: '', key: 'action' },
+          ]"
+          :data="docPermissions"
+        >
+          <template #head-action>
+            <ButtonTable @click="addPermissionOpen = true">Add</ButtonTable>
+          </template>
+          <template #action="slotProps">
+            <ButtonTable
+              v-if="slotProps.dataItem.source === 'NORMAL'"
+              type="button"
+              :loading="permissionDeleteLoading"
+              @click="deletePermission(slotProps.dataItem.id)"
             >
-              <template #action="slotProps">
-                <ButtonTable
-                  type="button"
-                  :loading="permissionDeleteLoading"
-                  @click="deletePermission(slotProps.dataItem.id)"
-                >
-                  Remove
-                </ButtonTable>
-              </template>
-            </TableGenerator>
-          </div>
-        </div>
+              Remove
+            </ButtonTable>
+          </template>
+        </TableGenerator>
       </div>
     </div>
     <ModalFree v-model="createOpen" title="Create Document">
@@ -198,6 +187,40 @@
         :data="permissions"
       ></TableGenerator>
     </ModalFree>
+    <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
+      <article class="prose">
+        <p>
+          Here is a short explanation of the different document permissions.
+        </p>
+        <p>
+          Once you click on a Document you can see its permissions in the
+          permission table. Those permissions always relate to the document that
+          is opened or was clicked at.
+        </p>
+        <p>There are 3 different kind of permissions.</p>
+        <p>
+          Let's start with the simple one first: 'read_document'. With this
+          permission the specified group can access the content of the document
+          and read it.
+        </p>
+        <p>
+          The second one: 'write_document' allows the specified group to read
+          the content of the document and update it.
+        </p>
+        <p>
+          Both permissions 'read_document' and 'write_document' apply to all
+          children of the source document. A group that has the 'write_document'
+          permission for the top level document can write and add documents
+          everywhere within the tree.
+        </p>
+        <p>
+          The last permission 'see_document' says that the specified group can
+          see the document name within the tree structure. But it can not see
+          its content. This permission appears when the group has access to a
+          document further down the tree.
+        </p>
+      </article>
+    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -267,6 +290,7 @@ export default defineComponent({
       createPermission: Collab.createDocumentPermission,
       groups: [] as Group[],
       openGeneralPermissionsModal: false,
+      helpModalOpen: false,
     };
   },
   computed: {

@@ -32,7 +32,7 @@
         </div>
       </li>
     </ol>
-    <div>
+    <div class="flex space-x-3">
       <slot name="buttons" />
     </div>
   </nav>

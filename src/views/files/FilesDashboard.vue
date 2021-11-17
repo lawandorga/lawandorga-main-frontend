@@ -105,7 +105,7 @@
       <div class="col-span-2">
         <TableGenerator
           :head="[
-            { name: 'Permission', key: ['permission', 'name'] },
+            { name: 'Permission', key: 'type' },
             { name: 'Group', key: ['group_has_permission', 'name'] },
             { name: 'Source', key: 'folder' },
             { name: '', key: 'action' },
@@ -138,7 +138,7 @@
                 type="button"
                 @click="openPermissionDelete(slotProps.dataItem)"
               >
-                Delete
+                Remove
               </ButtonTable>
             </div>
           </template>

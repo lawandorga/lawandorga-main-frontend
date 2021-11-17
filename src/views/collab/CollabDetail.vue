@@ -20,7 +20,14 @@
         </div>
         <div v-if="content === '' || (content && !!text)">
           <FormGenerator
-            :fields="[{ label: 'Content', name: 'content', type: 'tiptap' }]"
+            :fields="[
+              {
+                label: 'Content',
+                name: 'content',
+                type: 'tiptap',
+                room: `Room ${text.id}`,
+              },
+            ]"
             :request="createVersion"
             success="Saved"
             submit="Save"

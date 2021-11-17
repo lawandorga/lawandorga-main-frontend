@@ -17,7 +17,12 @@
       "
     >
       <div class="space-x-4">
-        <span v-for="item in users" :key="item.clientId" class="text-sm">
+        <span class="text-sm">{{ room }}:</span>
+        <span
+          v-for="item in editor.storage.collaborationCursor.users"
+          :key="item.clientId"
+          class="text-sm"
+        >
           {{ item.name }}
         </span>
       </div>
@@ -50,7 +55,7 @@ export default defineComponent({
   props: {
     room: {
       type: String,
-      default: "Room 1",
+      required: true,
     },
     modelValue: {
       type: [String, Boolean, Number],
@@ -96,14 +101,12 @@ export default defineComponent({
   mounted() {
     const ydoc = new Y.Doc();
 
-    this.provider = new WebrtcProvider(
-      this.room,
-      ydoc,
-      // {
-      //   password: "1234",
-      //   signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
-      // }
-    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.provider = new WebrtcProvider(this.room, ydoc, {
+      password: `${this.$store.getters["user/rlc"].id}${this.$store.getters["user/rlc"].name}`,
+      signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
+    });
 
     this.editor = new Editor({
       editorProps: {
@@ -122,10 +125,6 @@ export default defineComponent({
         CollaborationCursor.configure({
           provider: this.provider,
           user: this.editorUser,
-          onUpdate: (users): null => {
-            this.users = users;
-            return null;
-          },
         }),
         CharacterCount.configure({
           limit: 10000,

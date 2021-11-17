@@ -45,7 +45,11 @@ class CollabService {
     return axios
       .get<CollabVersion>(`collab/collab_documents/${id}/latest/`)
       .then((response) => response.data)
-      .catch(() => this.createVersion({ content: "", document: id }));
+      .catch((error) => {
+        if (error.response.status === 404)
+          return this.createVersion({ content: "", document: id });
+        throw error;
+      });
   }
 
   getVersions(id: number): Promise<CollabVersion[]> {
