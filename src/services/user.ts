@@ -23,6 +23,10 @@ interface AdminInformation {
 }
 
 class UserService {
+  getRlcs(): Promise<Rlc[]> {
+    return axios.get<Rlc[]>("rlcs/").then((response) => response.data);
+  }
+
   login(data: { email: string; password: string }): Promise<LoginResponse> {
     return axios
       .post<LoginResponse>(`profiles/login/`, data)
@@ -39,6 +43,30 @@ class UserService {
     return axios
       .get<AdminInformation>("profiles/admin/")
       .then((response) => response.data);
+  }
+
+  register(data: User): Promise<void> {
+    return axios.post("profiles/", data).then();
+  }
+
+  requestPasswordReset(data: { email: string }): Promise<void> {
+    return axios.post("profiles/password_reset/", data).then();
+  }
+
+  confirmEmail(data: { user: string; token: string }): Promise<void> {
+    return axios
+      .post(`profiles/${data.user}/activate/${data.token}/`, {})
+      .then();
+  }
+
+  resetPassword(data: {
+    user: number;
+    new_password: string;
+    token: string;
+  }): Promise<void> {
+    return axios
+      .post(`profiles/${data.user}/password_reset_confirm/`, data)
+      .then();
   }
 
   // getPermissions(): Promise<Permission[]> {

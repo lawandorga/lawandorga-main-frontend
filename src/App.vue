@@ -7,7 +7,7 @@
     <div class="flex flex-col w-0 flex-1 overflow-hidden">
       <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
 
-      <NavigationDefault v-if="!authenticated && false" />
+      <NavigationDefault v-if="!authenticated" />
 
       <!-- Main Panel -->
       <main class="flex-1 relative overflow-y-auto focus:outline-none">

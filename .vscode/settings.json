@@ -9,8 +9,6 @@
       "comments": false,
       "strings": true
     },
-    "css.validate": false,
-    "css.lint.unknownAtRules": "ignore",
     "tailwindCSS.emmetCompletions": true,
     "emmet.includeLanguages": {
       "edge": "html",

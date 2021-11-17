@@ -68,8 +68,18 @@
                 submit="Login"
               />
               <div class="pt-6 text-right space-x-4">
-                <a routerLink="/register/">Register</a>
-                <a routerLink="/forgot-password/">Forgot Password?</a>
+                <router-link
+                  :to="{ name: 'user-register' }"
+                  class="hover:underline"
+                >
+                  Register
+                </router-link>
+                <router-link
+                  :to="{ name: 'user-passwordreset' }"
+                  class="hover:underline"
+                >
+                  Forgot Password?
+                </router-link>
               </div>
             </div>
           </div>

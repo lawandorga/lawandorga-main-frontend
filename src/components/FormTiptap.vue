@@ -164,7 +164,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="postcss">
 /* give a remote user a caret */
 .collaboration-cursor__caret {
   position: relative;
