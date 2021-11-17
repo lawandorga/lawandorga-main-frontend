@@ -62,6 +62,7 @@ class UserService {
   resetPassword(data: {
     user: number;
     new_password: string;
+    new_password_confirm: string;
     token: string;
   }): Promise<void> {
     return axios

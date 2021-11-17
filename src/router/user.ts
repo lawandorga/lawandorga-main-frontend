@@ -18,19 +18,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/user/password-reset/",
     name: "user-passwordreset",
-    component: () => import("@/views/user/UserPasswordReset.vue"),
+    component: () => import("@/views/user/UserRequestPasswordReset.vue"),
     beforeEnter: notAuthenticated,
   },
   {
-    path: "/user/password-reset-confirm/",
+    path: "/user/password-reset-confirm/:user/:token/",
     name: "user-passwordresetconfirm",
-    component: () => import("@/views/user/UserPasswordResetConfirm.vue"),
+    component: () => import("@/views/user/UserPasswordReset.vue"),
     beforeEnter: notAuthenticated,
   },
   {
     path: "/user/email-confirm/:user/:token/",
     name: "user-emailconfirm",
-    component: () => import("@/views/user/UserEmailConfirm.vue"),
+    component: () => import("@/views/user/UserEmailConfirmation.vue"),
     beforeEnter: notAuthenticated,
   },
 ];

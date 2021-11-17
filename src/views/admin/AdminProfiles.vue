@@ -45,7 +45,7 @@
               type="button"
               @click="
                 profile = slotProps.dataItem;
-                unlockUserModalOpen;
+                unlockUserModalOpen = true;
               "
             >
               Unlock
