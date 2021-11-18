@@ -134,3 +134,16 @@ export interface RecordDeletionRequest {
   explanation: string;
   // record?: TokenRecord;
 }
+
+export interface Pool {
+  type: string;
+  entries: Array<{
+    id: number;
+    enlisted: string;
+    consultant?: number;
+    record_key?: string;
+    record?: number;
+    yielder?: number;
+  }>;
+  number_of_own_enlistings: number;
+}

@@ -11,7 +11,9 @@ import {
   Questionnaire,
   RecordQuestionnaire,
   Tag,
+  Pool,
 } from "@/types/records";
+import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
 import axios from "../api";
 
@@ -238,6 +240,29 @@ class RecordsService {
         data,
       )
       .then((response) => response.data);
+  }
+
+  // pool
+  getPool(): Promise<Pool> {
+    return axios
+      .get<Pool>("records/record_pool/")
+      .then((response) => response.data);
+  }
+
+  yieldRecord(data: JsonModel): Promise<void> {
+    return axios.post("records/pool_records/", { record: data.record }).then();
+  }
+
+  enlist(): Promise<string> {
+    return axios
+      .post<{ action: string }>("records/pool_consultants/", {})
+      .then((response) => {
+        const message =
+          response.data.action === "created"
+            ? "You enlisted successfully into the record pool."
+            : "You've been given a record";
+        return message;
+      });
   }
 }
 
