@@ -10,10 +10,12 @@
       <NavigationDefault v-if="!authenticated" />
 
       <!-- Main Panel -->
-      <main class="flex-1 relative overflow-y-auto focus:outline-none">
-        <div class="px-6" :class="{ 'py-6': authenticated }">
-          <router-view></router-view>
-        </div>
+      <main
+        class="flex-1 relative overflow-y-auto focus:outline-none px-6 py-6"
+      >
+        <!-- <div class="px-6" :class="{ 'py-6': authenticated }"> -->
+        <router-view></router-view>
+        <!-- </div> -->
       </main>
     </div>
   </div>

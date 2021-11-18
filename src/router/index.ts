@@ -6,6 +6,7 @@ import filesRoutes from "./files";
 import recordsRoutes from "./records";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
+import internalRoutes from "./internal";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +22,7 @@ const routes: Array<RouteRecordRaw> = [
   ...statisticsRoutes,
   ...adminRoutes,
   ...helpRoutes,
+  ...internalRoutes,
 ];
 
 const router = createRouter({

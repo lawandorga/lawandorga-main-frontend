@@ -86,7 +86,7 @@
         </div>
       </div>
     </section>
-    <!-- <section class="bg-white mx-auto max-w-7xl py-12 px-8">
+    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
       <div
         class="
           relative
@@ -96,10 +96,11 @@
           lg:max-w-7xl
         "
       >
+        <!-- eslint-disable vue/no-v-html -->
         <article
+          v-if="page"
           class="prose prose-lg"
-          [innerHTML]="page.content"
-          *ngIf="page"
+          v-html="page.content"
         ></article>
       </div>
     </section>
@@ -120,9 +121,9 @@
           </h2>
         </div>
         <div class="pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
-          <div *ngFor="let article of articles">
+          <div v-for="article in articles" :key="article.id">
             <p class="text-sm text-gray-500">
-              <time>{{ article.date|date:'MMM d, yyyy' }}</time>
+              <time>{{ formatDate(article.date) }}</time>
             </p>
             <a [routerLink]="'/articles/' + article.id" class="mt-2 block">
               <p class="text-xl font-semibold text-gray-900">
@@ -133,12 +134,12 @@
               </p>
             </a>
             <div class="mt-3">
-              <a
-                [routerLink]="'/articles/' + article.id"
+              <router-link
+                :to="{ name: 'internal-article', params: { id: article.id } }"
                 class="text-base font-semibold text-lorgablue"
               >
                 Read full article
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -184,24 +185,30 @@
     </section>
     <section class="bg-white mx-auto max-w-7xl py-12 px-8">
       <div class="text-right space-x-4">
-        <a routerLink="/legal_notice/">Imprint</a>
+        <router-link :to="{ name: 'internal-imprint' }">Imprint</router-link>
         <a target="_blank" href="http://rlc-deutschland.de/datenschutz/">
           Privacy
         </a>
       </div>
-    </section> -->
+    </section>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import FormGenerator from "@/components/FormGenerator.vue";
+import InternalService from "@/services/internal";
+import { Article, LoginPage, RoadmapItem } from "@/types/internal";
+import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   components: { FormGenerator },
   data: function () {
     return {
-      roadmapItems: [],
+      roadmapItems: [] as RoadmapItem[],
+      articles: [] as Article[],
+      page: null as LoginPage | null,
+      formatDate: formatDate,
     };
   },
   computed: {
@@ -218,6 +225,15 @@ export default defineComponent({
   },
   beforeMount() {
     if (this.authenticated) this.next();
+  },
+  mounted() {
+    InternalService.getArticles().then(
+      (articles) => (this.articles = articles),
+    );
+    InternalService.getRoadmapItems().then(
+      (roadmapItems) => (this.roadmapItems = roadmapItems),
+    );
+    InternalService.getLoginPage().then((page) => (this.page = page));
   },
   methods: {
     next() {
