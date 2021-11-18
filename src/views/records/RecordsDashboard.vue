@@ -1,98 +1,107 @@
 <template>
   <BoxLoader :show="true">
-    <div v-if="$store.getters['user/rlc'].use_record_pool">
-      <router-link :to="{ name: 'records-pool' }">
-        go to the record pool
-      </router-link>
-    </div>
-    <div class="bg-white px-4 pb-4 pt-3 rounded shadow mb-5">
-      <FormInput
-        v-model="search"
-        label="Search (Token, State, Consultants, Tags, Note)"
-        required
-      />
-    </div>
-    <TableGenerator
-      :head="[
-        { name: 'Token', key: 'record_token' },
-        { name: 'State', key: 'state' },
-        { name: 'Consultants', key: 'working_on_record' },
-        { name: 'Tags', key: 'tags' },
-        { name: 'Note', key: 'official_note' },
-        { name: 'Created', key: 'created_on' },
-        { name: 'Updated', key: 'last_edited' },
-        { name: 'action', key: 'action' },
-      ]"
-      :data="filteredRecords"
-    >
-      <template #head-action>
-        <div class="flex justify-end">
-          <ButtonTable type="button" @click="openCreate()">
-            Create Record
-          </ButtonTable>
-        </div>
-      </template>
-      <template #record_token="slotProps">
-        <div class="flex items-center justify-between">
-          <router-link
-            v-if="slotProps.dataItem.access"
-            class="underline text-lorgablue hover:text-opacity-75"
-            :to="{
-              name: 'records-detail',
-              params: { id: slotProps.dataItem.id },
-            }"
+    <div class="max-w-screen-2xl mx-auto space-y-6">
+      <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
+        <CollectionIcon class="w-6 h-6" />
+        <template #buttons>
+          <ButtonBreadcrumbs
+            v-if="$store.getters['user/rlc'].use_record_pool"
+            :to="{ name: 'records-pool' }"
           >
-            {{ slotProps.dataItem.record_token }}
-          </router-link>
-          <span v-else>{{ slotProps.dataItem.record_token }}</span>
-          <ButtonTable
-            v-if="!slotProps.dataItem.access"
-            type="button"
-            @click="requestAccess(slotProps.dataItem)"
-          >
-            Request Access
-          </ButtonTable>
-        </div>
-      </template>
-      <template #working_on_record="slotProps">
-        <ul class="list-disc pl-3.5">
-          <li
-            v-for="item in slotProps.dataItem.working_on_record"
-            :key="item.id"
-          >
-            <button
-              class="cursor-pointer hover:underline text-left"
-              @click="search = item.name"
+            Go to the Record Pool
+          </ButtonBreadcrumbs>
+        </template>
+      </BreadcrumbsBar>
+      <div class="bg-white px-4 pb-4 pt-3 rounded-md shadow mb-5">
+        <FormInput
+          v-model="search"
+          label="Search (Token, State, Consultants, Tags, Note)"
+          type="search"
+          required
+        />
+      </div>
+      <TableGenerator
+        :head="[
+          { name: 'Token', key: 'record_token' },
+          { name: 'State', key: 'state' },
+          { name: 'Consultants', key: 'working_on_record' },
+          { name: 'Tags', key: 'tags' },
+          { name: 'Note', key: 'official_note' },
+          { name: 'Created', key: 'created_on' },
+          { name: 'Updated', key: 'last_edited' },
+          { name: 'action', key: 'action' },
+        ]"
+        :data="filteredRecords"
+      >
+        <template #head-action>
+          <div class="flex justify-end">
+            <ButtonTable type="button" @click="openCreate()">
+              Create Record
+            </ButtonTable>
+          </div>
+        </template>
+        <template #record_token="slotProps">
+          <div class="flex items-center justify-between">
+            <router-link
+              v-if="slotProps.dataItem.access"
+              class="underline text-lorgablue hover:text-opacity-75"
+              :to="{
+                name: 'records-detail',
+                params: { id: slotProps.dataItem.id },
+              }"
             >
-              {{ item.name }}
-            </button>
-          </li>
-        </ul>
-      </template>
-      <template #tags="slotProps">
-        <ul class="list-disc pl-3.5">
-          <li v-for="item in slotProps.dataItem.tags" :key="item.id">
-            <button
-              class="cursor-pointer hover:underline text-left"
-              @click="search = item.name"
+              {{ slotProps.dataItem.record_token }}
+            </router-link>
+            <span v-else>{{ slotProps.dataItem.record_token }}</span>
+            <ButtonTable
+              v-if="!slotProps.dataItem.access"
+              type="button"
+              @click="requestAccess(slotProps.dataItem)"
             >
-              {{ item.name }}
-            </button>
-          </li>
-        </ul>
-      </template>
-      <template #action="slotProps">
-        <div class="flex justify-end">
-          <ButtonTable
-            type="button"
-            :disabled="slotProps.dataItem.delete"
-            @click="openDelete(slotProps.dataItem)"
-          >
-            Request Deletion
-          </ButtonTable>
-        </div>
-      </template>
-    </TableGenerator>
+              Request Access
+            </ButtonTable>
+          </div>
+        </template>
+        <template #working_on_record="slotProps">
+          <ul class="list-disc pl-3.5">
+            <li
+              v-for="item in slotProps.dataItem.working_on_record"
+              :key="item.id"
+            >
+              <button
+                class="cursor-pointer hover:underline text-left"
+                @click="search = item.name"
+              >
+                {{ item.name }}
+              </button>
+            </li>
+          </ul>
+        </template>
+        <template #tags="slotProps">
+          <ul class="list-disc pl-3.5">
+            <li v-for="item in slotProps.dataItem.tags" :key="item.id">
+              <button
+                class="cursor-pointer hover:underline text-left"
+                @click="search = item.name"
+              >
+                {{ item.name }}
+              </button>
+            </li>
+          </ul>
+        </template>
+        <template #action="slotProps">
+          <div class="flex justify-end">
+            <ButtonTable
+              type="button"
+              :disabled="slotProps.dataItem.delete"
+              @click="openDelete(slotProps.dataItem)"
+            >
+              Request Deletion
+            </ButtonTable>
+          </div>
+        </template>
+      </TableGenerator>
+    </div>
     <!-- modals -->
     <ModalFree v-model="createOpen" title="Create Record">
       <FormGenerator
@@ -140,9 +149,15 @@ import FormInput from "@/components/FormInput.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CollectionIcon } from "@heroicons/vue/outline";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 
 export default defineComponent({
   components: {
+    ButtonBreadcrumbs,
+    CollectionIcon,
+    BreadcrumbsBar,
     FormGenerator,
     BoxLoader,
     TableGenerator,

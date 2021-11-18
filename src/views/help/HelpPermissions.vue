@@ -1,86 +1,93 @@
 <template>
-  <h2 class="text-lg font-medium mb-4">
-    <router-link :to="{ name: 'help-dashboard' }">Help</router-link>
-    / Permissions
-  </h2>
-  <div class="flex flex-col">
-    <div class="overflow-x-auto">
-      <div class="align-middle inline-block min-w-full">
-        <div class="shadow overflow-hidden border-b border-gray-200 rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
+  <div class="max-w-screen-2xl mx-auto space-y-6">
+    <BreadcrumbsBar
+      class="lg:col-span-2"
+      :base="{ name: 'help-dashboard' }"
+      :pages="[{ name: 'Permissions', to: { name: 'help-permissions' } }]"
+    >
+      <SupportIcon class="w-6 h-6" />
+    </BreadcrumbsBar>
+    <div class="flex flex-col">
+      <div class="overflow-x-auto">
+        <div class="align-middle inline-block min-w-full">
+          <div
+            class="shadow overflow-hidden border-b border-gray-200 rounded-lg"
+          >
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    class="
+                      px-6
+                      py-3
+                      text-left text-xs
+                      font-medium
+                      text-gray-500
+                      uppercase
+                      tracking-wider
+                    "
+                  >
+                    Permission
+                  </th>
+                  <th
+                    scope="col"
+                    class="
+                      px-6
+                      py-3
+                      text-left text-xs
+                      font-medium
+                      text-gray-500
+                      uppercase
+                      tracking-wider
+                    "
+                  >
+                    Explanation
+                  </th>
+                  <th
+                    scope="col"
+                    class="
+                      px-6
+                      py-3
+                      text-left text-xs
+                      font-medium
+                      text-gray-500
+                      uppercase
+                      tracking-wider
+                    "
+                  >
+                    Useful Group
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="permission in permissions"
+                  :key="permission.name"
+                  class="bg-white"
                 >
-                  Permission
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
-                  Explanation
-                </th>
-                <th
-                  scope="col"
-                  class="
-                    px-6
-                    py-3
-                    text-left text-xs
-                    font-medium
-                    text-gray-500
-                    uppercase
-                    tracking-wider
-                  "
-                >
-                  Useful Group
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="permission in permissions"
-                :key="permission.name"
-                class="bg-white"
-              >
-                <td
-                  class="
-                    px-6
-                    py-4
-                    whitespace-nowrap
-                    text-sm
-                    font-medium
-                    text-gray-900
-                  "
-                >
-                  {{ permission.name }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ permission.explanation }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ permission.group }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <td
+                    class="
+                      px-6
+                      py-4
+                      whitespace-nowrap
+                      text-sm
+                      font-medium
+                      text-gray-900
+                    "
+                  >
+                    {{ permission.name }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ permission.explanation }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ permission.group }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -89,8 +96,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { SupportIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
+  components: {
+    BreadcrumbsBar,
+    SupportIcon,
+  },
   setup() {
     const permissions = [
       {

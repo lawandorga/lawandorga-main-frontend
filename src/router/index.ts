@@ -7,6 +7,8 @@ import recordsRoutes from "./records";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import internalRoutes from "./internal";
+import Dashboard from "@/views/DashboardPage.vue";
+import { isAuthenticated } from "./utils";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,6 +16,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "index",
     redirect: { name: "user-login" },
     // component: () => import("@/views/Index.vue"),
+  },
+  {
+    path: "/dashboard/",
+    name: "dashboard",
+    component: Dashboard,
+    beforeEnter: isAuthenticated,
   },
   ...userRoutes,
   ...recordsRoutes,

@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid lg:grid-cols-2 gap-6">
+    <div class="grid lg:grid-cols-2 gap-6 max-w-screen-2xl mx-auto">
       <BreadcrumbsBar
         v-if="!!folder"
         class="lg:col-span-2"

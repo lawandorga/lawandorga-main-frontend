@@ -1,6 +1,18 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-screen-lg mx-auto">
+    <div class="max-w-screen-lg mx-auto space-y-6">
+      <BreadcrumbsBar
+        class="lg:col-span-2"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[
+          {
+            name: 'Permission-Requests',
+            to: { name: 'admin-recordpermitrequests' },
+          },
+        ]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
       <TableGenerator
         :head="[
           { name: 'Record', key: ['record', 'record_token'] },
@@ -61,6 +73,8 @@ import useGetItems from "@/composables/useGetItems";
 import useUpdateItem from "@/composables/useUpdateItem";
 import { RecordDeletionRequest } from "@/types/records";
 import { formatDate } from "@/utils/date";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
 
 const fields = [
   {
@@ -77,9 +91,11 @@ const fields = [
 
 export default defineComponent({
   components: {
+    CogIcon,
     BoxLoader,
     TableGenerator,
     ButtonTable,
+    BreadcrumbsBar,
     ModalFree,
     FormGenerator,
   },

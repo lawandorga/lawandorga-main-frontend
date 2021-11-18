@@ -239,7 +239,7 @@ export default defineComponent({
     next() {
       const url = this.$route.query.next as string;
       if (url) this.$router.push(url);
-      else this.$router.push({ name: "collab-dashboard" });
+      else this.$router.push({ name: "dashboard" });
     },
   },
 });

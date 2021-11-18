@@ -1,6 +1,12 @@
 <template>
-  <div class="max-w-5xl mx-auto">
-    <h2 class="text-lg font-medium mb-4">Help</h2>
+  <div class="max-w-5xl mx-auto space-y-6">
+    <BreadcrumbsBar
+      class="lg:col-span-2"
+      :base="{ name: 'help-dashboard' }"
+      :pages="[]"
+    >
+      <SupportIcon class="w-6 h-6" />
+    </BreadcrumbsBar>
     <div
       class="
         rounded-lg
@@ -78,8 +84,14 @@
 <script lang="ts">
 import { AnnotationIcon, ShieldCheckIcon } from "@heroicons/vue/outline";
 import { defineComponent } from "vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { SupportIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
+  components: {
+    BreadcrumbsBar,
+    SupportIcon,
+  },
   setup() {
     const items = [
       {

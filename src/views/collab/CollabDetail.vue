@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid gap-6">
+    <div class="grid gap-6 max-w-screen-xl mx-auto">
       <BreadcrumbsBar
         v-if="text"
         :base="{ name: 'collab-dashboard' }"

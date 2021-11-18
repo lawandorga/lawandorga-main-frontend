@@ -1,138 +1,36 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-2xl mx-auto">
-      <div class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div
-            class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-          >
-            <div
-              class="
-                shadow
-                overflow-hidden
-                border-b border-gray-200
-                sm:rounded-lg
-              "
-            >
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-100">
-                  <tr>
-                    <th
-                      scope="col"
-                      class="
-                        px-6
-                        py-3
-                        text-left text-xs
-                        font-medium
-                        text-gray-500
-                        uppercase
-                        tracking-wider
-                      "
-                    >
-                      Tag
-                    </th>
-                    <th
-                      scope="col"
-                      class="
-                        relative
-                        px-6
-                        py-3
-                        whitespace-nowrap
-                        text-sm text-right
-                      "
-                    >
-                      <button
-                        type="button"
-                        class="
-                          text-gray-600
-                          hover:text-gray-900
-                          font-medium
-                          bg-transparent
-                        "
-                        @click="openCreate()"
-                      >
-                        Add Tag
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="item in tags"
-                    :key="item.name"
-                    class="odd:bg-white even:bg-gray-50"
-                  >
-                    <td
-                      class="
-                        px-6
-                        py-4
-                        whitespace-nowrap
-                        text-sm
-                        font-medium
-                        text-gray-900
-                      "
-                    >
-                      {{ item.name }}
-                    </td>
-                    <td
-                      class="
-                        px-6
-                        py-4
-                        whitespace-nowrap
-                        text-sm
-                        flex flex-row
-                        space-x-2
-                        justify-end
-                      "
-                    >
-                      <button
-                        type="button"
-                        class="
-                          text-gray-600
-                          hover:text-gray-900
-                          font-medium
-                          bg-transparent
-                        "
-                        @click="openUpdate(item)"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        class="
-                          text-gray-600
-                          hover:text-gray-900
-                          font-medium
-                          bg-transparent
-                        "
-                        @click="openDelete(item)"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                  <tr class="odd:bg-white even:bg-gray-50">
-                    <td colspan="2" class="px-6 py-4 whitespace-nowrap text-sm">
-                      <button
-                        type="button"
-                        class="
-                          text-gray-600
-                          hover:text-gray-900
-                          font-medium
-                          bg-transparent
-                        "
-                        @click="openCreate()"
-                      >
-                        Add Tag
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <div class="max-w-2xl mx-auto space-y-6">
+      <BreadcrumbsBar
+        class="lg:col-span-2"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[{ name: 'Tags', to: { name: 'admin-tags' } }]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
+      <TableGenerator
+        :data="tags"
+        :head="[
+          { name: 'Tag', key: 'name' },
+          { name: '', key: 'action' },
+        ]"
+      >
+        <template #head-action>
+          <div class="flex justify-end">
+            <ButtonTable @click="openCreate()">Add Tag</ButtonTable>
           </div>
-        </div>
-      </div>
+        </template>
+        <template #action="slotProps">
+          <div class="flex justify-end space-x-3">
+            <ButtonTable @click="openUpdate(slotProps.dataItem)">
+              Edit
+            </ButtonTable>
+            <ButtonTable @click="openDelete(slotProps.dataItem)">
+              Delete
+            </ButtonTable>
+          </div>
+        </template>
+      </TableGenerator>
     </div>
     <ModalFree v-model="createOpen" title="Create Tag">
       <FormGenerator
@@ -166,9 +64,17 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
+import TableGenerator from "@/components/TableGenerator.vue";
+import ButtonTable from "@/components/ButtonTable.vue";
 
 export default defineComponent({
   components: {
+    ButtonTable,
+    CogIcon,
+    TableGenerator,
+    BreadcrumbsBar,
     ModalDelete,
     ModalFree,
     FormGenerator,

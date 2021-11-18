@@ -1,6 +1,22 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid gap-6">
+    <div class="max-w-screen-lg mx-auto grid gap-6">
+      <BreadcrumbsBar
+        v-if="group"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[
+          {
+            name: 'Groups',
+            to: { name: 'admin-groups' },
+          },
+          {
+            name: group.name,
+            to: { name: 'admin-group', params: { id: group.id } },
+          },
+        ]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
       <div v-if="group" class="bg-white shadow rounded px-5 py-4">
         <h2 class="text-lg font-bold mb-4">
           {{ group.name }}
@@ -106,6 +122,8 @@ import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
 
 const groupFields = [
   {
@@ -125,11 +143,13 @@ const groupFields = [
 
 export default defineComponent({
   components: {
+    BreadcrumbsBar,
     BoxLoader,
     TableGenerator,
     ModalFree,
     FormGenerator,
     ButtonTable,
+    CogIcon,
     ModalDelete,
   },
   setup() {

@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid grid-cols-3 gap-6">
+    <div class="grid grid-cols-3 gap-6 max-w-screen-2xl mx-auto">
       <BreadcrumbsBar
         class="col-span-3"
         :base="{ name: 'collab-dashboard' }"

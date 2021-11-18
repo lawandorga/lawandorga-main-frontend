@@ -1,6 +1,15 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-2xl mx-auto space-y-6">
+      <BreadcrumbsBar
+        class="lg:col-span-2"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[
+          { name: 'Questionnaires', to: { name: 'admin-questionnaires' } },
+        ]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
       <TableGenerator
         :head="[
           { name: 'Name', key: 'name' },
@@ -74,6 +83,8 @@ import useGetItems from "@/composables/useGetItems";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useCreateItem from "@/composables/useCreateItem";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
 
 const fields = [
   {
@@ -99,6 +110,8 @@ export default defineComponent({
     ModalFree,
     FormGenerator,
     BoxLoader,
+    CogIcon,
+    BreadcrumbsBar,
     TableGenerator,
     ButtonTable,
   },

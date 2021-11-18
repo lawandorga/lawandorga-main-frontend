@@ -1,6 +1,19 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid gap-6 lg:grid-cols-2">
+    <div class="grid gap-6 lg:grid-cols-2 max-w-screen-2xl mx-auto">
+      <BreadcrumbsBar
+        v-if="record"
+        class="lg:col-span-2"
+        :base="{ name: 'records-dashboard' }"
+        :pages="[
+          {
+            name: record.record_token,
+            to: { name: 'records-detail', params: { id: record.id } },
+          },
+        ]"
+      >
+        <CollectionIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
       <div class="bg-white shadow px-5 py-4 rounded">
         <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
         <div>
@@ -210,9 +223,18 @@ import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import ModalFree from "@/components/ModalFree.vue";
+import { CollectionIcon } from "@heroicons/vue/outline";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 
 export default defineComponent({
-  components: { ModalDelete, FormGenerator, BoxLoader, ModalFree },
+  components: {
+    ModalDelete,
+    FormGenerator,
+    BoxLoader,
+    ModalFree,
+    BreadcrumbsBar,
+    CollectionIcon,
+  },
   data() {
     return {
       // record

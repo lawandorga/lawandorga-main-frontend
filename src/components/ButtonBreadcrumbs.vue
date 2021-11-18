@@ -1,6 +1,6 @@
 <template>
-  <button
-    type="button"
+  <component
+    :is="is"
     class="
       inline-flex
       items-center
@@ -21,11 +21,15 @@
         ? 'pointer-events-none opacity-80 cursor-not-allowed'
         : '',
     ]"
+    :to="to"
+    :href="href"
+    :disabled="disabledComputed"
+    :type="type"
     @click="emitClick()"
   >
     <Loader v-show="loading" color="text-white" class="mr-2" />
     <slot />
-  </button>
+  </component>
 </template>
 
 <script lang="ts">
@@ -37,6 +41,18 @@ export default defineComponent({
     Loader,
   },
   props: {
+    to: {
+      type: [String, Object],
+      default: "",
+    },
+    href: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "button",
+    },
     loading: {
       type: Boolean,
       default: false,
@@ -48,6 +64,16 @@ export default defineComponent({
   },
   emits: ["click"],
   computed: {
+    is() {
+      if (this.to) {
+        return "router-link";
+      } else if (this.href) {
+        return "a";
+      } else if (this.type) {
+        return "button";
+      }
+      return "div";
+    },
     disabledComputed() {
       if (this.loading) return true;
       return this.disabled;

@@ -1,51 +1,65 @@
 <template>
   <BoxLoader :show="true">
-    <TableGenerator
-      :head="[
-        { name: 'Group', key: 'name' },
-        { name: 'Description', key: 'description' },
-        { name: 'Action', key: 'action' },
-      ]"
-      :data="groups"
-    >
-      <template #head-action>
-        <div class="flex justify-end">
-          <ButtonTable type="button" @click="createModalOpen = true">
-            Create Group
-          </ButtonTable>
-        </div>
-      </template>
-      <template #name="slotProps">
-        <router-link
-          class="underline"
-          :to="{ name: 'admin-group', params: { id: slotProps.dataItem.id } }"
-        >
-          {{ slotProps.dataItem.name }}
-        </router-link>
-      </template>
-      <template #action="slotProps">
-        <div class="flex justify-end space-x-3">
-          <ButtonTable
-            type="button"
-            @click="
-              group = slotProps.dataItem;
-              updateModalOpen = true;
-            "
+    <div class="max-w-2xl mx-auto space-y-6">
+      <BreadcrumbsBar
+        class="lg:col-span-2"
+        :base="{ name: 'admin-dashboard' }"
+        :pages="[
+          {
+            name: 'Groups',
+            to: { name: 'admin-groups' },
+          },
+        ]"
+      >
+        <CogIcon class="w-6 h-6" />
+      </BreadcrumbsBar>
+      <TableGenerator
+        :head="[
+          { name: 'Group', key: 'name' },
+          { name: 'Description', key: 'description' },
+          { name: 'Action', key: 'action' },
+        ]"
+        :data="groups"
+      >
+        <template #head-action>
+          <div class="flex justify-end">
+            <ButtonTable type="button" @click="createModalOpen = true">
+              Create Group
+            </ButtonTable>
+          </div>
+        </template>
+        <template #name="slotProps">
+          <router-link
+            class="underline"
+            :to="{ name: 'admin-group', params: { id: slotProps.dataItem.id } }"
           >
-            Change
-          </ButtonTable>
-          <ButtonTable
-            type="button"
-            @click="
-              group = slotProps.dataItem;
-              deleteModalOpen = true;
-            "
-          >
-            Delete
-          </ButtonTable>
-        </div>
-      </template>
-    </TableGenerator>
+            {{ slotProps.dataItem.name }}
+          </router-link>
+        </template>
+        <template #action="slotProps">
+          <div class="flex justify-end space-x-3">
+            <ButtonTable
+              type="button"
+              @click="
+                group = slotProps.dataItem;
+                updateModalOpen = true;
+              "
+            >
+              Change
+            </ButtonTable>
+            <ButtonTable
+              type="button"
+              @click="
+                group = slotProps.dataItem;
+                deleteModalOpen = true;
+              "
+            >
+              Delete
+            </ButtonTable>
+          </div>
+        </template>
+      </TableGenerator>
+    </div>
     <ModalFree v-model="createModalOpen" title="Create Group">
       <FormGenerator :fields="fields" :request="createRequest" />
     </ModalFree>
@@ -78,6 +92,8 @@ import useGetItems from "@/composables/useGetItems";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/outline";
 
 const fields = [
   {
@@ -100,9 +116,11 @@ export default defineComponent({
     BoxLoader,
     TableGenerator,
     ButtonTable,
+    CogIcon,
     ModalFree,
     FormGenerator,
     ModalDelete,
+    BreadcrumbsBar,
   },
   setup() {
     const groups = ref([]) as Ref<Group[]>;
