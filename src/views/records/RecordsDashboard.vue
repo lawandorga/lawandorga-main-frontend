@@ -4,6 +4,9 @@
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <CollectionIcon class="w-6 h-6" />
         <template #buttons>
+          <ButtonBreadcrumbs @click="generalPermissionsModalOpen = true">
+            Show General Permissions
+          </ButtonBreadcrumbs>
           <ButtonBreadcrumbs
             v-if="$store.getters['user/rlc'].use_record_pool"
             :to="{ name: 'records-pool' }"
@@ -136,6 +139,26 @@
         @success="deletionRequestCreated"
       ></FormGenerator>
     </ModalFree>
+    <!-- breadcrumbs -->
+    <ModalFree
+      v-model="generalPermissionsModalOpen"
+      width="max-w-screen-xl"
+      title="General Permission"
+    >
+      <p class="mb-10 text-gray-600">
+        Groups or users listed here have permissions that apply to the whole
+        collab section. Those permissions can be managed within the admin
+        section.
+      </p>
+      <TableGenerator
+        :head="[
+          { name: 'User', key: ['user_has_permission', 'name'] },
+          { name: 'Group', key: ['group_has_permission', 'name'] },
+          { name: 'Permission', key: ['permission', 'name'] },
+        ]"
+        :data="generalPermissions"
+      ></TableGenerator>
+    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -152,6 +175,7 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import { HasPermission } from "@/types/core";
 
 export default defineComponent({
   components: {
@@ -241,6 +265,9 @@ export default defineComponent({
       deleteOpen: false,
       record: null as RestrictedRecord | null,
       createDeletionRequest: RecordsService.createDeletionRequest,
+      // breadcrumbs
+      generalPermissions: [] as HasPermission[],
+      generalPermissionsModalOpen: false,
     };
   },
   computed: {
@@ -251,6 +278,9 @@ export default defineComponent({
   },
   mounted() {
     RecordsService.getRecords().then((records) => (this.records = records));
+    RecordsService.getGeneralPermissions().then(
+      (permissions) => (this.generalPermissions = permissions),
+    );
   },
   methods: {
     // create

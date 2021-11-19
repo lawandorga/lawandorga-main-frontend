@@ -13,6 +13,14 @@
         "
       >
         <FolderOpenIcon class="w-6 h-6" />
+        <template #buttons>
+          <ButtonBreadcrumbs @click="helpModalOpen = true">
+            Show Help
+          </ButtonBreadcrumbs>
+          <ButtonBreadcrumbs @click="generalPermissionsModalOpen = true">
+            Show General Permissions
+          </ButtonBreadcrumbs>
+        </template>
       </BreadcrumbsBar>
       <div class="col-span-2">
         <TableGenerator
@@ -198,6 +206,57 @@
       :object="permission"
       @deleted="permissionDeleted($event)"
     />
+    <!-- breadcrumbs -->
+    <ModalFree
+      v-model="generalPermissionsModalOpen"
+      width="max-w-screen-xl"
+      title="General Permission"
+    >
+      <p class="mb-10 text-gray-600">
+        Groups or users listed here have permissions that apply to the whole
+        collab section. Those permissions can be managed within the admin
+        section.
+      </p>
+      <TableGenerator
+        :head="[
+          { name: 'User', key: ['user_has_permission', 'name'] },
+          { name: 'Group', key: ['group_has_permission', 'name'] },
+          { name: 'Permission', key: ['permission', 'name'] },
+        ]"
+        :data="generalPermissions"
+      ></TableGenerator>
+    </ModalFree>
+    <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
+      <article class="prose">
+        <p>Here is a short explanation of the different folder permissions.</p>
+        <p>
+          Once you click on a folder you can see its permissions in the
+          permission table. Those permissions always relate to the folder that
+          is open.
+        </p>
+        <p>There are 3 different kind of permissions.</p>
+        <p>
+          Let's start with the simple one first: 'read_folder'. With this
+          permission the specified group can access the files of the folder and
+          download them.
+        </p>
+        <p>
+          The second one: 'write_folder' allows the specified group to upload
+          and delete files within that folder.
+        </p>
+        <p>
+          Both permissions 'read_folder' and 'write_folder' apply to all
+          children of the source folder. A group that has the 'write_folder'
+          permission for the top level folder can upload and delete files in
+          every subfolder.
+        </p>
+        <p>
+          The last permission 'see_folder' says that the specified group can see
+          the folder name. But it can not see any files only the subfolder that
+          leads to the source of the 'see_folder' permission.
+        </p>
+      </article>
+    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -218,14 +277,16 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import { RouteLocation } from "vue-router";
 import CoreService from "@/services/core";
-import { Group } from "@/types/core";
+import { Group, HasPermission } from "@/types/core";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { FolderOpenIcon } from "@heroicons/vue/outline";
 import { FolderIcon, DocumentIcon } from "@heroicons/vue/solid";
 import { formatDate } from "@/utils/date";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 
 export default defineComponent({
   components: {
+    ButtonBreadcrumbs,
     FolderIcon,
     DocumentIcon,
     FolderOpenIcon, // eslint-disable-line vue/no-unused-components
@@ -308,6 +369,10 @@ export default defineComponent({
           required: true,
         },
       ],
+      // breadcrumbs
+      generalPermissions: [] as HasPermission[],
+      helpModalOpen: false,
+      generalPermissionsModalOpen: false,
     };
   },
   watch: {
@@ -322,6 +387,9 @@ export default defineComponent({
   },
   mounted() {
     this.getFolder(this.$route);
+    FilesService.getGeneralPermissions().then(
+      (permissions) => (this.generalPermissions = permissions),
+    );
   },
   methods: {
     getFolder(route: RouteLocation) {

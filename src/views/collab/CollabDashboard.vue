@@ -11,7 +11,7 @@
           <ButtonBreadcrumbs @click="helpModalOpen = true">
             Show Help
           </ButtonBreadcrumbs>
-          <ButtonBreadcrumbs @click="openGeneralPermissionsModal = true">
+          <ButtonBreadcrumbs @click="eneralPermissionsModalOpen = true">
             Show General Permissions
           </ButtonBreadcrumbs>
         </template>
@@ -169,7 +169,7 @@
       />
     </ModalFree>
     <ModalFree
-      v-model="openGeneralPermissionsModal"
+      v-model="eneralPermissionsModalOpen"
       width="max-w-screen-xl"
       title="General Permission"
     >
@@ -289,7 +289,7 @@ export default defineComponent({
       permissionOptions: [] as CollabPermission[],
       createPermission: Collab.createDocumentPermission,
       groups: [] as Group[],
-      openGeneralPermissionsModal: false,
+      eneralPermissionsModalOpen: false,
       helpModalOpen: false,
     };
   },

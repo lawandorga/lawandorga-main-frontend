@@ -1,3 +1,4 @@
+import { HasPermission } from "@/types/core";
 import {
   Consultant,
   Country,
@@ -45,6 +46,13 @@ class RecordsService {
 
   deleteRecord(record: RestrictedRecord): Promise<void> {
     return axios.delete(`records/records/${record.id}/`).then();
+  }
+
+  // permissions
+  getGeneralPermissions(): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>("has_permission/records/")
+      .then((response) => response.data);
   }
 
   // questionnaire
