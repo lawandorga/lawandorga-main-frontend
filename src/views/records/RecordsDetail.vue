@@ -143,18 +143,11 @@
                     {{ item.questionnaire.name }}
                   </h3>
                   <div>
-                    <button
-                      type="button"
-                      mat-button
-                      color="primary"
-                      @click="copyLink(item)"
-                    >
+                    <button type="button" @click="copyLink(item)">
                       Copy link
                     </button>
                     <button
                       type="button"
-                      mat-button
-                      color="warn"
                       @click="openDeleteRecordQuestionnaire(item)"
                     >
                       Delete
@@ -162,14 +155,31 @@
                   </div>
                 </div>
                 <div class="flex items-baseline space-x-5">
-                  <div>Published: {{ item.created }}</div>
-                  <div>Answered: {{ item.answered ? "Yes" : "No" }}</div>
+                  <div>Published: {{ formatDate(item.created) }}</div>
                   <div>Link: {{ base }}/records/upload/{{ item.code }}</div>
                 </div>
                 <hr class="my-3 border-gray-300" />
-                <p v-if="item.answered" class="whitespace-pre-line">
-                  {{ item.answer }}
-                </p>
+                <ul class="space-y-4">
+                  <li v-for="answer in item.answers" :key="answer.id">
+                    <b>{{ answer.field.question }}</b>
+                    <br />
+                    <button
+                      v-if="answer.field.type === 'FILE'"
+                      class="
+                        underline
+                        text-left
+                        rounded
+                        hover:bg-gray-200
+                        px-2
+                        py-0.5
+                      "
+                      @click="downloadQuestionnaireAnswerFile(answer)"
+                    >
+                      {{ answer.data }}
+                    </button>
+                    <span v-else class="px-2">{{ answer.data }}</span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -212,6 +222,7 @@ import {
   Country,
   Message,
   Questionnaire,
+  QuestionnaireAnswer,
   RecordQuestionnaire,
   RecordsClient,
   RecordsDocument,
@@ -225,6 +236,7 @@ import ModalDelete from "@/components/ModalDelete.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   components: {
@@ -237,6 +249,8 @@ export default defineComponent({
   },
   data() {
     return {
+      // utils
+      formatDate: formatDate,
       // record
       record: null as Record | null,
       updateRecord: RecordsService.updateRecord,
@@ -503,11 +517,14 @@ export default defineComponent({
       this.documents = this.documents.filter((item) => item.id !== document.id);
       this.deleteDocumentOpen = false;
     },
-    // record-questionnaire
+    // record questionnaire
     copyLink(recordQuestionnaire: RecordQuestionnaire): void {
       navigator.clipboard
         .writeText(`${this.base}/records/upload/${recordQuestionnaire.code}/`)
         .then(() => this.$store.dispatch("alert/showSuccess", "Link Copied"));
+    },
+    downloadQuestionnaireAnswerFile(answer: QuestionnaireAnswer): void {
+      RecordsService.downloadQuestionnaireFile(answer);
     },
     // create record questionnaire
     openCreateRecordQuestionnaire() {

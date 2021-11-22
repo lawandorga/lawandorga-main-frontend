@@ -39,9 +39,11 @@ export type DeleteFunction = (
 /*
 // models
 */
-export interface JsonModel {
+interface KeyValueModel {
   [key: string]: string | boolean | number | number[];
 }
+
+export type JsonModel = KeyValueModel;
 
 export type DjangoModel =
   | CollabDocument

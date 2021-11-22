@@ -100,6 +100,7 @@ export interface Questionnaire {
   allow_file_upload: boolean;
   updated: string;
   created: string;
+  fields?: { id: number; question: string; type: "FILE" }[];
 }
 
 export interface RecordQuestionnaire {
@@ -111,6 +112,12 @@ export interface RecordQuestionnaire {
   created: string;
   updated: string;
   code: string;
+  fields?: { id: number; name: string; question: string; type: "FILE" }[];
+}
+
+export interface QuestionnaireAnswer {
+  id: number;
+  data: string;
 }
 
 export interface RecordPermissionRequest {

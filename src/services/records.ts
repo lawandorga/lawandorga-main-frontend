@@ -13,6 +13,7 @@ import {
   RecordQuestionnaire,
   Tag,
   Pool,
+  QuestionnaireAnswer,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
@@ -107,6 +108,40 @@ class RecordsService {
     return axios
       .delete(`records/record_questionnaires/${recordQuestionnaire.id}/`)
       .then();
+  }
+
+  getRecordQuestionnaire(code: string): Promise<RecordQuestionnaire> {
+    return axios
+      .get(`records/record_questionnaires/${code}/`)
+      .then((response) => response.data);
+  }
+
+  sendQuestionnaireAnswer(
+    data: JsonModel,
+    recordQuestionnaire: RecordQuestionnaire,
+  ): Promise<RecordQuestionnaire> {
+    return axios
+      .patch<RecordQuestionnaire>(
+        `records/record_questionnaires/${recordQuestionnaire.id}/`,
+        data,
+      )
+      .then((response) => response.data);
+  }
+
+  downloadQuestionnaireFile(questionnaireAnswer: QuestionnaireAnswer): void {
+    axios
+      .get<Blob>(
+        `records/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
+        {
+          responseType: "blob",
+        },
+      )
+      .then((response) =>
+        downloadFile(
+          response,
+          questionnaireAnswer.data.split("/").at(-1) || "filename",
+        ),
+      );
   }
 
   // messages

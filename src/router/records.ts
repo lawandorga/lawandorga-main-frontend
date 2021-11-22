@@ -20,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/records/RecordsPool.vue"),
     beforeEnter: isAuthenticated,
   },
+  {
+    path: "/records/upload/:code/",
+    name: "records-questionnaire",
+    component: () => import("@/views/records/RecordsQuestionnaire.vue"),
+  },
 ];
 
 export default routes;

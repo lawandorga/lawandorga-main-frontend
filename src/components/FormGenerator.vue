@@ -117,7 +117,7 @@ import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "vue";
 import FormTiptap from "./FormTiptap.vue";
-import { DjangoError, DjangoModel, JsonModel } from "@/types/shared";
+import { DjangoError, JsonModel } from "@/types/shared";
 import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
 
@@ -162,7 +162,7 @@ export default defineComponent({
       default: null,
     },
     request: {
-      type: Function as PropType<Function>,
+      type: Function as PropType<(...args: any[]) => Promise<JsonModel>>, // eslint-disable-line
       required: false,
       default: null,
     },
@@ -193,7 +193,7 @@ export default defineComponent({
       else this.sendRequest(this.data);
     },
     sendRequest(requestData: JsonModel | FormData) {
-      if (this.fields.map((item) => item.name).includes("file")) {
+      if (this.fields.map((item) => item.type).includes("file")) {
         requestData = new FormData(this.$refs.form as HTMLFormElement);
         if (this.initial)
           Object.keys(this.initial).forEach((key) => {
@@ -202,7 +202,7 @@ export default defineComponent({
           });
       }
       this.request(requestData)
-        .then((data: DjangoModel) => this.handleSuccess(data))
+        .then((data: JsonModel) => this.handleSuccess(data))
         .catch((error: AxiosError<DjangoError>) =>
           this.handleError(error.response ? error.response.data : {}),
         );
@@ -210,10 +210,10 @@ export default defineComponent({
     dispatchStore(data: JsonModel) {
       this.$store
         .dispatch(this.action, data)
-        .then((data: DjangoModel) => this.handleSuccess(data))
+        .then((data: JsonModel) => this.handleSuccess(data))
         .catch((errors: DjangoError) => this.handleError(errors));
     },
-    handleSuccess(data: DjangoModel) {
+    handleSuccess(data: JsonModel) {
       this.errors = {};
       this.nonFieldErrors = [];
       if (this.initial === null) this.data = {};
