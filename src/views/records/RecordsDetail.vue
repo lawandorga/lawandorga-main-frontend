@@ -119,67 +119,119 @@
           </div>
         </div>
 
-        <div class="bg-white shadow px-5 py-4 rounded">
-          <div class="flex items-baseline justify-between">
+        <div class="bg-white shadow rounded">
+          <div
+            class="
+              flex
+              items-baseline
+              justify-between
+              px-5
+              pt-4
+              pb-4
+              border-b-4 border-gray-200
+            "
+          >
             <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
-            <button
-              mat-button
-              color="primary"
-              type="button"
-              @click="openCreateRecordQuestionnaire()"
-            >
+            <ButtonSimple @click="openCreateRecordQuestionnaire()">
               Publish a questionnaire
-            </button>
+            </ButtonSimple>
           </div>
-          <div v-if="!!recordQuestionnaires.length" class="pt-5">
-            <ul class="space-y-4">
-              <li
-                v-for="item in recordQuestionnaires"
-                :key="item.id"
-                class="block py-3 px-4 rounded bg-gray-100"
-              >
-                <div class="flex items-baseline justify-between">
-                  <h3 class="text-lg font-bold">
-                    {{ item.questionnaire.name }}
-                  </h3>
+          <div v-if="!!recordQuestionnaires.length" class="">
+            <ul class="space-y-4d divide-y-2 divide-gray-200">
+              <li v-for="item in recordQuestionnaires" :key="item.id">
+                <div class="px-4 py-5 sm:px-6 flex justify-between">
                   <div>
-                    <button type="button" @click="copyLink(item)">
-                      Copy link
-                    </button>
-                    <button
-                      type="button"
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                      {{ item.questionnaire.name }}
+                    </h3>
+                    <div class="mt-1 text-gray-500 text-sm flex space-x-4">
+                      <p class="">Published: {{ formatDate(item.created) }}</p>
+                      <p class="">
+                        Link:
+                        <button
+                          class="underline hover:text-gray-700"
+                          @click="copyLink(item)"
+                        >
+                          {{ base }}/records/upload/{{ item.code }}/
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="space-x-3">
+                    <ButtonSimple
+                      color="red"
                       @click="openDeleteRecordQuestionnaire(item)"
                     >
                       Delete
-                    </button>
+                    </ButtonSimple>
                   </div>
                 </div>
-                <div class="flex items-baseline space-x-5">
-                  <div>Published: {{ formatDate(item.created) }}</div>
-                  <div>Link: {{ base }}/records/upload/{{ item.code }}</div>
-                </div>
-                <hr class="my-3 border-gray-300" />
-                <ul class="space-y-4">
-                  <li v-for="answer in item.answers" :key="answer.id">
-                    <b>{{ answer.field.question }}</b>
-                    <br />
-                    <button
-                      v-if="answer.field.type === 'FILE'"
-                      class="
-                        underline
-                        text-left
-                        rounded
-                        hover:bg-gray-200
-                        px-2
-                        py-0.5
-                      "
-                      @click="downloadQuestionnaireAnswerFile(answer)"
+                <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                  <dl class="grid grid-cols-1 gap-x-4 gap-y-8">
+                    <div
+                      v-for="answer in item.answers"
+                      :key="answer.id"
+                      class=""
                     >
-                      {{ answer.data }}
-                    </button>
-                    <span v-else class="px-2">{{ answer.data }}</span>
-                  </li>
-                </ul>
+                      <dt class="text-sm font-medium text-gray-500">
+                        {{ answer.field.question }}
+                      </dt>
+                      <dd
+                        v-if="answer.field.type === 'TEXTAREA'"
+                        class="mt-1 text-sm text-gray-900"
+                      >
+                        {{ answer.data }}
+                      </dd>
+                      <dd
+                        v-if="answer.field.type === 'FILE'"
+                        class="mt-1 text-sm text-gray-900"
+                      >
+                        <div
+                          class="
+                            border border-gray-200
+                            rounded-md
+                            divide-y divide-gray-200
+                          "
+                        >
+                          <div
+                            class="
+                              pl-3
+                              pr-4
+                              py-3
+                              flex
+                              items-center
+                              justify-between
+                              text-sm
+                            "
+                          >
+                            <div class="w-0 flex-1 flex items-center">
+                              <PaperClipIcon
+                                class="flex-shrink-0 h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                              <span class="ml-2 flex-1 w-0 truncate">
+                                {{ answer.data.split("/").at(-1) }}
+                              </span>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                              <ButtonSimple
+                                @click="downloadQuestionnaireAnswerFile(answer)"
+                              >
+                                Download
+                              </ButtonSimple>
+                            </div>
+                          </div>
+                        </div>
+                      </dd>
+                    </div>
+                    <div
+                      v-if="!item.answers || item.answers.length === 0"
+                      class="text-base text-gray-500"
+                    >
+                      No answers yet.
+                    </div>
+                  </dl>
+                </div>
               </li>
             </ul>
           </div>
@@ -237,15 +289,19 @@ import ModalFree from "@/components/ModalFree.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { formatDate } from "@/utils/date";
+import { PaperClipIcon } from "@heroicons/vue/solid";
+import ButtonSimple from "@/components/ButtonSimple.vue";
 
 export default defineComponent({
   components: {
+    PaperClipIcon,
     ModalDelete,
     FormGenerator,
     BoxLoader,
     ModalFree,
     BreadcrumbsBar,
     CollectionIcon,
+    ButtonSimple,
   },
   data() {
     return {
@@ -290,13 +346,13 @@ export default defineComponent({
         },
         {
           label: "Last Contact Date",
-          type: "data",
+          type: "text",
           name: "last_contact_date",
           required: false,
         },
         {
           label: "First Consultation",
-          type: "date",
+          type: "text",
           name: "first_consultation",
           required: false,
         },
