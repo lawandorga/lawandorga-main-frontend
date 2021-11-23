@@ -48,11 +48,14 @@ axios.interceptors.response.use(
         message: "Your token expired, please login again.",
       };
       store.dispatch("alert/createAlert", alert);
-      store.dispatch("user/logout");
-      router.push({
-        name: "user-login",
-        query: { next: window.location.pathname },
-      });
+      if (store.getters["user/isAuthenticated"]) {
+        const next = window.location.pathname;
+        store.dispatch("user/logout");
+        router.push({
+          name: "user-login",
+          query: { next: next },
+        });
+      }
     } else if (error.response && error.response.status !== 400) {
       let text;
       if (error.response.headers["content-type"] === "application/json")

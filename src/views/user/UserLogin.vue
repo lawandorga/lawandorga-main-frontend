@@ -203,6 +203,9 @@ import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   components: { FormGenerator },
+  // beforeRouteUpdate() {
+  // if (this.authenticated) this.next();
+  // },
   data: function () {
     return {
       roadmapItems: [] as RoadmapItem[],
@@ -234,6 +237,7 @@ export default defineComponent({
       (roadmapItems) => (this.roadmapItems = roadmapItems),
     );
     InternalService.getLoginPage().then((page) => (this.page = page));
+    if (this.authenticated) this.next();
   },
   methods: {
     next() {

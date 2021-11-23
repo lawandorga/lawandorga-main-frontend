@@ -18,6 +18,6 @@ export const notAuthenticated: NavigationGuard = (_, __, next) => {
     return;
   }
   next({
-    name: "collab-dashboard",
+    name: "dashboard",
   });
 };

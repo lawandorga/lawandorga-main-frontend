@@ -67,8 +67,6 @@ const actions = {
   ) => {
     return UserService.login(data).then((login) => {
       context.commit("login", login);
-      if (data.next) router.push(data.next);
-      else router.push({ name: "dashboard" });
     });
   },
   logout: (context: ActionContext<UserState, RootState>) => {

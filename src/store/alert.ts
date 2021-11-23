@@ -12,7 +12,12 @@ const getters = {
 
 const actions = {
   createAlert: (context: ActionContext<AlertState, RootState>, data: Alert) => {
-    context.commit("addAlert", data);
+    if (
+      !context.getters.alerts
+        .map((item: Alert) => item.message)
+        .includes(data.message)
+    )
+      context.commit("addAlert", data);
   },
   closeAlert: (context: ActionContext<AlertState, RootState>, alert: Alert) => {
     context.commit("removeAlert", alert);
