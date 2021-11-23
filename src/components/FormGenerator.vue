@@ -211,7 +211,9 @@ export default defineComponent({
       this.$store
         .dispatch(this.action, data)
         .then((data: JsonModel) => this.handleSuccess(data))
-        .catch((errors: DjangoError) => this.handleError(errors));
+        .catch((error: AxiosError<DjangoError>) =>
+          this.handleError(error.response ? error.response.data : {}),
+        );
     },
     handleSuccess(data: JsonModel) {
       this.errors = {};
