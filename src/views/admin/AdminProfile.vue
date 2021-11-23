@@ -92,7 +92,7 @@
 <script lang="ts">
 import { defineComponent, reactive, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import ButtonBlue from "@/components/ButtonBlue.vue";
+import ButtonBlue from "@/components/ButtonNormal.vue";
 import useGetItem from "@/composables/useGetItem";
 import { ref, Ref } from "vue";
 import ModalFree from "@/components/ModalFree.vue";

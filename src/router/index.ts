@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "index",
-    redirect: { name: "user-login" },
+    redirect: { name: "dashboard" },
     // component: () => import("@/views/Index.vue"),
   },
   {

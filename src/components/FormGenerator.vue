@@ -112,7 +112,7 @@
 import FormInput from "./FormInput.vue";
 import FormTextarea from "./FormTextarea.vue";
 import FormSelect from "./FormSelect.vue";
-import ButtonBlue from "./ButtonBlue.vue";
+import ButtonBlue from "./ButtonNormal.vue";
 import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "vue";

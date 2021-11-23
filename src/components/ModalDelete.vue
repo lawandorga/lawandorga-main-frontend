@@ -90,7 +90,7 @@ import {
   DialogOverlay,
   DialogTitle,
 } from "@headlessui/vue";
-import ButtonBlue from "@/components/ButtonBlue.vue";
+import ButtonBlue from "@/components/ButtonNormal.vue";
 import ButtonLight from "@/components/ButtonLight.vue";
 import { JsonModel, RequestFunction } from "@/types/shared";
 

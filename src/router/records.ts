@@ -21,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
+    path: "/records/upload/",
+    name: "records-upload",
+    component: () => import("@/views/records/RecordsUpload.vue"),
+  },
+  {
     path: "/records/upload/:code/",
     name: "records-questionnaire",
     component: () => import("@/views/records/RecordsQuestionnaire.vue"),

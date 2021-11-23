@@ -55,7 +55,7 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import RecordsService from "@/services/records";
 import { Pool, RestrictedRecord } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import ButtonBlue from "@/components/ButtonBlue.vue";
+import ButtonBlue from "@/components/ButtonNormal.vue";
 
 export default defineComponent({
   components: {
