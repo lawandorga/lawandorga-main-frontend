@@ -1,9 +1,8 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid lg:grid-cols-2 gap-6 max-w-screen-2xl mx-auto">
+    <div class="max-w-screen-2xl mx-auto space-y-6">
       <BreadcrumbsBar
         v-if="!!folder"
-        class="lg:col-span-2"
         :base="base"
         :pages="
           folder.path.map((item) => ({
@@ -22,7 +21,7 @@
           </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
-      <div class="col-span-2">
+      <div>
         <TableGenerator
           :head="[
             { name: '', key: 'type' },
@@ -109,8 +108,7 @@
           </template>
         </TableGenerator>
       </div>
-
-      <div class="col-span-2">
+      <div>
         <TableGenerator
           :head="[
             { name: 'Permission', key: 'type' },

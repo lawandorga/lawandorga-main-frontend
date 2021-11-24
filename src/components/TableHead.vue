@@ -8,6 +8,7 @@
       text-gray-500
       uppercase
       tracking-wider
+      whitespace-nowrap
     "
   >
     <slot />
