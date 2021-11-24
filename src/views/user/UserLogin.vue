@@ -2,7 +2,7 @@
   <main class="divide-y divide-gray-100">
     <section class="bg-lorgablue mx-auto max-w-7xl py-8 px-8">
       <div class="max-w-7xl">
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid lg:grid-cols-2 gap-6">
           <div class="">
             <div>
               <h1
@@ -26,8 +26,8 @@
                 <b>Law&Orga</b>
                 ist ein
                 <b>kostenfreies Akten- und Organisationsverwaltungssystem</b>
-                , welches speziell auf die Bedürfnisse einer (R)LC angepasst
-                ist.
+                <span>,</span>
+                welches speziell auf die Bedürfnisse einer (R)LC angepasst ist.
               </p>
               <p class="mt-3 text-base text-gray-200 sm:mt-5">
                 Unter besonderer Berücksichtigung des Datenschutzes mithilfe von
