@@ -1,9 +1,9 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid gap-6 lg:grid-cols-2 max-w-screen-2xl mx-auto">
+    <div class="grid gap-6 2xl:grid-cols-2 max-w-screen-2xl mx-auto">
       <BreadcrumbsBar
         v-if="record"
-        class="lg:col-span-2"
+        class="2xl:col-span-2"
         :base="{ name: 'records-dashboard' }"
         :pages="[
           {
@@ -82,14 +82,16 @@
         <div class="bg-white shadow px-5 py-4 rounded">
           <h2 class="mb-5 text-lg font-bold text-gray-800">Messages</h2>
           <div>
-            <ul>
+            <ul class="space-y-5">
               <li v-for="message in messages" :key="message.id">
                 <div style="width: 100%">
                   <div
-                    style="
-                      width: 100%;
-                      display: flex;
-                      justify-content: space-between;
+                    class="
+                      w-full
+                      flex-col-reverse flex
+                      justify-between
+                      items-baseline
+                      md:flex-row
                     "
                   >
                     <b>
@@ -97,12 +99,11 @@
                         message.sender ? message.sender.name : "Deleted user"
                       }}:
                     </b>
-                    <i>{{ message.created_on }}</i>
+                    <i class="text-sm tracking-tight">
+                      {{ formatDate(message.created_on) }}
+                    </i>
                   </div>
-                  <p
-                    class="whitespace-pre"
-                    style="margin-top: 2px; margin-bottom: 0"
-                  >
+                  <p class="" style="margin-top: 2px; margin-bottom: 0">
                     {{ message.message }}
                   </p>
                 </div>
@@ -139,17 +140,29 @@
           <div v-if="!!recordQuestionnaires.length" class="">
             <ul class="space-y-4d divide-y-2 divide-gray-200">
               <li v-for="item in recordQuestionnaires" :key="item.id">
-                <div class="px-4 py-5 sm:px-6 flex justify-between">
-                  <div>
+                <div class="px-5 py-5 sm:px-6 flex justify-between">
+                  <div class="flex-shrink">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
                       {{ item.questionnaire.name }}
                     </h3>
-                    <div class="mt-1 text-gray-500 text-sm flex space-x-4">
+                    <div
+                      class="
+                        mt-1
+                        text-gray-500 text-sm
+                        flex flex-col
+                        lg:space-x-4 lg:flex-row
+                      "
+                    >
                       <p class="">Published: {{ formatDate(item.created) }}</p>
                       <p class="">
                         Link:
                         <button
-                          class="underline hover:text-gray-700"
+                          class="
+                            underline
+                            break-all
+                            text-left
+                            hover:text-gray-700
+                          "
                           @click="copyLink(item)"
                         >
                           {{ base }}/records/upload/{{ item.code }}/
@@ -166,7 +179,7 @@
                     </ButtonSimple>
                   </div>
                 </div>
-                <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                <div class="border-t border-gray-200 px-5 py-5 sm:px-6">
                   <dl class="grid grid-cols-1 gap-x-4 gap-y-8">
                     <div
                       v-for="answer in item.answers"
