@@ -1,8 +1,15 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid grid-cols-3 gap-6 max-w-screen-2xl mx-auto">
+    <div
+      class="
+        max-w-screen-2xl
+        mx-auto
+        space-y-6
+        2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0
+      "
+    >
       <BreadcrumbsBar
-        class="col-span-3"
+        class="2xl:col-span-3"
         :base="{ name: 'collab-dashboard' }"
         :pages="[]"
       >
@@ -17,7 +24,7 @@
         </template>
       </BreadcrumbsBar>
 
-      <div class="bg-white shadow rounded-md p-5 row-span-2">
+      <div class="bg-white shadow rounded-md p-5 2xl:row-span-2">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="version-lg font-bold">Documents</h2>
           <ButtonIcon
@@ -39,11 +46,13 @@
         </ul>
       </div>
 
-      <div class="bg-white shadow rounded-md p-5 col-span-2">
+      <div class="bg-white shadow rounded-md p-5 2xl:col-span-2">
         <div v-if="version && document">
-          <div class="flex justify-between">
-            <div>{{ document.path }}</div>
-            <div class="flex space-x-3">
+          <div
+            class="flex flex-col justify-between lg:flex-row lg:items-center"
+          >
+            <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
+            <div class="flex space-x-3 self-end">
               <ButtonIcon
                 icon="Pencil"
                 :to="{ name: 'collab-detail', params: { id: document.id } }"
@@ -75,7 +84,7 @@
           editor.
         </BoxAlert>
       </div>
-      <div class="col-span-2">
+      <div class="2xl:col-span-2">
         <TableGenerator
           :head="[
             { name: 'Type', key: 'type' },
