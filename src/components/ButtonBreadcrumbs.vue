@@ -4,8 +4,9 @@
     class="
       inline-flex
       items-center
+      text-center
       px-6
-      h-11
+      min-h-[2.75rem]
       border border-transparent
       text-base
       font-medium

@@ -15,7 +15,7 @@
           </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
-      <div class="bg-white px-4 pb-4 pt-3 rounded-md shadow mb-5">
+      <div class="bg-white px-4 pb-4 pt-3 rounded-md shadow-sm mb-5">
         <FormInput
           v-model="search"
           label="Search (Token, State, Consultants, Tags, Note)"
@@ -64,6 +64,12 @@
               Request Access
             </ButtonTable>
           </div>
+        </template>
+        <template #created_on="slotProps">
+          {{ formatDate(slotProps.dataItem.created_on) }}
+        </template>
+        <template #last_edited="slotProps">
+          {{ formatDate(slotProps.dataItem.last_edited) }}
         </template>
         <template #working_on_record="slotProps">
           <ul class="list-disc pl-3.5">
@@ -176,6 +182,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { HasPermission } from "@/types/core";
+import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   components: {
@@ -191,6 +198,8 @@ export default defineComponent({
   },
   data() {
     return {
+      // utils
+      formatDate: formatDate,
       // list
       records: [] as RestrictedRecord[],
       search: "" as string,

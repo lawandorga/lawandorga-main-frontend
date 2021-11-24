@@ -1,6 +1,14 @@
 <template>
-  <nav class="flex justify-between" aria-label="Breadcrumb">
-    <ol role="list" class="bg-white rounded-md shadow px-6 flex space-x-4">
+  <nav
+    class="
+      flex flex-col
+      items-start
+      space-y-6
+      lg:space-y-0 lg:flex-row lg:justify-between
+    "
+    aria-label="Breadcrumb"
+  >
+    <ol role="list" class="bg-white rounded-md shadow-sm px-6 flex space-x-4">
       <li class="flex h-11">
         <div class="flex items-center">
           <router-link :to="base" class="text-gray-400 hover:text-gray-500">
