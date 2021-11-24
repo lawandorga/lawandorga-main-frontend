@@ -17,7 +17,7 @@
       "
     >
       <div
-        v-for="(item, index) in items"
+        v-for="item in items"
         :key="item.title"
         class="
           relative
@@ -26,7 +26,7 @@
           p-6
           focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500
         "
-        :class="{ 'rounded-l-lg': index === 0, 'rounded-r-lg': index === 1 }"
+        :class="[item.class]"
       >
         <div>
           <span
@@ -100,12 +100,14 @@ export default defineComponent({
           "Take a look at every permission and see what it is used for.",
         link: { name: "help-permissions" },
         icon: ShieldCheckIcon,
+        class: "rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none",
       },
       {
         title: "Bug Report",
         description: "Coming in the future..",
         link: { name: "help-dashboard" },
         icon: AnnotationIcon,
+        class: "rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none",
       },
     ];
 
