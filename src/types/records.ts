@@ -91,6 +91,12 @@ export interface Tag {
   updated: string;
 }
 
+export interface QuestionnaireField {
+  id: number;
+  question: string;
+  type: "FILE";
+}
+
 export interface Questionnaire {
   id: number;
   rlc: number;
@@ -100,7 +106,7 @@ export interface Questionnaire {
   allow_file_upload: boolean;
   updated: string;
   created: string;
-  fields?: { id: number; question: string; type: "FILE" }[];
+  fields?: QuestionnaireField[];
 }
 
 export interface RecordQuestionnaire {

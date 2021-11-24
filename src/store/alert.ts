@@ -8,16 +8,16 @@ const state: AlertState = {
 
 const getters = {
   alerts: (state: AlertState) => state.alerts,
+  similar: (state: AlertState) => (alert: Alert) =>
+    state.alerts.find((item) => (item.message = alert.message)),
 };
 
 const actions = {
   createAlert: (context: ActionContext<AlertState, RootState>, data: Alert) => {
-    if (
-      !context.getters.alerts
-        .map((item: Alert) => item.message)
-        .includes(data.message)
-    )
-      context.commit("addAlert", data);
+    if (!("heading" in data) || !("type" in data)) return;
+    const similar = context.getters.similar(data);
+    if (similar && new Date().valueOf() - similar.created < 1000) return;
+    context.commit("addAlert", data);
   },
   closeAlert: (context: ActionContext<AlertState, RootState>, alert: Alert) => {
     context.commit("removeAlert", alert);
@@ -48,6 +48,7 @@ const actions = {
 const mutations = {
   addAlert(state: AlertState, alert: Alert) {
     alert["id"] = state.alerts.length + 1;
+    alert["created"] = new Date().valueOf();
     state.alerts.push(alert);
   },
   removeAlert(state: AlertState, alert: Alert) {

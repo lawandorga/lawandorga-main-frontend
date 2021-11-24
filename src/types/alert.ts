@@ -3,4 +3,5 @@ export interface Alert {
   type: string;
   heading: string;
   message: string;
+  created: number;
 }

@@ -4,6 +4,7 @@ import { RlcUser, User } from "./user";
 import { Ref } from "vue";
 import {
   Questionnaire,
+  QuestionnaireField,
   Record,
   RecordDeletionRequest,
   RecordPermissionRequest,
@@ -55,6 +56,8 @@ export type DjangoModel =
   | Permission
   | Record
   | RecordQuestionnaire
+  | Questionnaire
+  | QuestionnaireField
   | Questionnaire
   | RecordDeletionRequest
   | RecordPermissionRequest;

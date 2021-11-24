@@ -19,7 +19,7 @@
           rounded-md
           shadow-sm
           placeholder-gray-400
-          focus:outline-none focus:ring-blue-800 focus:border-blue-800
+          focus:outline-none focus:ring-lorgablue focus:border-lorgablue
           sm:text-sm
         "
         @input="update($event)"

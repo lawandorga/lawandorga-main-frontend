@@ -62,6 +62,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminQuestionnaires.vue"),
     beforeEnter: isAuthenticated,
   },
+  {
+    path: "/admin/questionnaires/:id/",
+    name: "admin-questionnaire",
+    component: () => import("@/views/admin/AdminQuestionnaire.vue"),
+    beforeEnter: isAuthenticated,
+  },
 ];
 
 export default routes;

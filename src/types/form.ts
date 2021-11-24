@@ -34,4 +34,5 @@ export interface FormField {
   placeholder?: string;
   options?: { name: string; value: string }[];
   room?: string;
+  helptext?: string;
 }

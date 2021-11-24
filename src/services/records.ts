@@ -14,6 +14,7 @@ import {
   Tag,
   Pool,
   QuestionnaireAnswer,
+  QuestionnaireField,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
@@ -61,6 +62,45 @@ class RecordsService {
     return axios
       .get<Questionnaire[]>("records/questionnaires/")
       .then((response) => response.data);
+  }
+
+  getQuestionnaire(id: number | string): Promise<Questionnaire> {
+    return axios
+      .get<Questionnaire>(`records/questionnaires/${id}/`)
+      .then((response) => response.data);
+  }
+
+  getQuestionnaireFields(
+    questionnaire: Questionnaire,
+  ): Promise<QuestionnaireField[]> {
+    return axios
+      .get<QuestionnaireField[]>(
+        `records/questionnaires/${questionnaire.id}/fields/`,
+      )
+      .then((response) => response.data);
+  }
+
+  createQuestionnaireField(
+    field: QuestionnaireField,
+  ): Promise<QuestionnaireField> {
+    return axios
+      .post<QuestionnaireField>("records/questionnaire_fields/", field)
+      .then((response) => response.data);
+  }
+
+  updateQuestionnaireField(
+    field: QuestionnaireField,
+  ): Promise<QuestionnaireField> {
+    return axios
+      .patch<QuestionnaireField>(
+        `records/questionnaire_fields/${field.id}/`,
+        field,
+      )
+      .then((response) => response.data);
+  }
+
+  deleteQuestionnaireField(field: QuestionnaireField): Promise<void> {
+    return axios.delete(`records/questionnaire_fields/${field.id}/`);
   }
 
   createQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {

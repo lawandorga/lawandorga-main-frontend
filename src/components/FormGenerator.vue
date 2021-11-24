@@ -12,6 +12,7 @@
       </div>
       <div
         v-for="{
+          helptext,
           name,
           label,
           type,
@@ -68,6 +69,7 @@
           :type="type"
           :required="required"
           :placeholder="placeholder"
+          :helptext="helptext"
           @update:model-value="showSuccess = false"
         />
         <p
