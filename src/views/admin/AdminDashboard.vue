@@ -134,7 +134,7 @@ export default defineComponent({
         link: { name: "admin-profiles" },
         icon: UserIcon,
         notifications: store.getters["user/admin"].profiles,
-        class: "rounded-tl-lg",
+        class: "rounded-t-lg sm:rounded-tr-none",
       },
       {
         title: "Groups",
@@ -143,7 +143,7 @@ export default defineComponent({
         link: { name: "admin-groups" },
         icon: UsersIcon,
         notifications: 0,
-        class: "rounded-tr-lg",
+        class: "sm:rounded-tr-lg",
       },
       {
         title: "Tags",
@@ -170,7 +170,7 @@ export default defineComponent({
         link: { name: "admin-recorddeletionrequests" },
         icon: TrashIcon,
         notifications: store.getters["user/admin"].record_deletion_requests,
-        class: "rounded-bl-lg",
+        class: "sm:rounded-bl-lg",
       },
       {
         title: "Record Questionnaires",
@@ -179,7 +179,7 @@ export default defineComponent({
         link: { name: "admin-questionnaires" },
         icon: QuestionMarkCircleIcon,
         notifications: 0,
-        class: "rounded-br-lg",
+        class: "rounded-b-lg sm:rounded-bl-none",
       },
     ]);
 

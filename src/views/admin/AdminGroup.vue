@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-screen-lg mx-auto grid gap-6">
+    <div class="max-w-screen-lg mx-auto space-y-6">
       <BreadcrumbsBar
         v-if="group"
         :base="{ name: 'admin-dashboard' }"

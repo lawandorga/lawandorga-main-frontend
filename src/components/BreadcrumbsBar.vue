@@ -3,7 +3,6 @@
     class="
       flex flex-col
       items-start
-      space-y-6
       lg:space-y-0 lg:flex-row lg:justify-between
     "
     aria-label="Breadcrumb"
@@ -40,7 +39,7 @@
         </div>
       </li>
     </ol>
-    <div class="flex space-x-3">
+    <div class="flex space-x-3 children:mt-6">
       <slot name="buttons" />
     </div>
   </nav>
@@ -72,3 +71,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="postcss">
+.children\:mt-6 > * {
+  @apply mt-6;
+}
+</style>
