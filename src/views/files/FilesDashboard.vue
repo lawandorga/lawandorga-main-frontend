@@ -21,135 +21,135 @@
           </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
-      <div>
-        <TableGenerator
-          :head="[
-            { name: '', key: 'type' },
-            { name: 'Name', key: 'name' },
-            { name: 'Updated', key: 'last_edited' },
-            { name: 'Created', key: 'created' },
-            { name: '', key: 'action' },
-          ]"
-          :data="items"
-          :loading="itemsLoading"
-        >
-          <template #head-action>
-            <div class="flex space-x-3 justify-end">
-              <ButtonTable type="button" @click="openFolderCreate()">
-                Create Folder
-              </ButtonTable>
-              <ButtonTable type="button" @click="openFileCreate()">
-                Upload File
-              </ButtonTable>
-            </div>
-          </template>
-          <template #type="slotProps">
-            <FolderIcon
+      <TableGenerator
+        :head="[
+          { name: '', key: 'type' },
+          { name: 'Name', key: 'name' },
+          { name: 'Updated', key: 'last_edited' },
+          { name: 'Created', key: 'created' },
+          { name: '', key: 'action' },
+        ]"
+        :data="items"
+        :loading="itemsLoading"
+      >
+        <template #head-action>
+          <div class="flex space-x-3 justify-end">
+            <ButtonTable type="button" @click="openFolderCreate()">
+              Create Folder
+            </ButtonTable>
+            <ButtonTable type="button" @click="openFileCreate()">
+              Upload File
+            </ButtonTable>
+          </div>
+        </template>
+        <template #type="slotProps">
+          <FolderIcon
+            v-if="slotProps.dataItem.type === 'FOLDER'"
+            class="w-5 h-5 text-gray-500"
+          />
+          <DocumentIcon
+            v-if="slotProps.dataItem.type === 'FILE'"
+            class="w-5 h-5 text-gray-500"
+          />
+        </template>
+        <template #name="slotProps">
+          <router-link
+            v-if="slotProps.dataItem.type === 'FOLDER'"
+            class="underline"
+            :to="{
+              name: 'files-dashboard',
+              params: { id: slotProps.dataItem.id },
+            }"
+          >
+            {{ slotProps.dataItem.name }}
+          </router-link>
+          <div v-else class="">
+            {{ slotProps.dataItem.name }}
+          </div>
+        </template>
+        <template #last_edited="slotProps">
+          {{ formatDate(slotProps.dataItem.last_edited) }}
+        </template>
+        <template #created="slotProps">
+          {{ formatDate(slotProps.dataItem.created) }}
+        </template>
+        <template #action="slotProps">
+          <div class="flex space-x-3 justify-end">
+            <ButtonTable
               v-if="slotProps.dataItem.type === 'FOLDER'"
-              class="w-5 h-5 text-gray-500"
-            />
-            <DocumentIcon
+              type="button"
+              @click="openFolderUpdate(slotProps.dataItem)"
+            >
+              Change
+            </ButtonTable>
+            <ButtonTable
+              v-if="slotProps.dataItem.type === 'FOLDER'"
+              type="button"
+              @click="openFolderDelete(slotProps.dataItem)"
+            >
+              Delete
+            </ButtonTable>
+            <ButtonTable
               v-if="slotProps.dataItem.type === 'FILE'"
-              class="w-5 h-5 text-gray-500"
-            />
-          </template>
-          <template #name="slotProps">
-            <router-link
-              v-if="slotProps.dataItem.type === 'FOLDER'"
-              class="underline"
-              :to="{
-                name: 'files-dashboard',
-                params: { id: slotProps.dataItem.id },
-              }"
+              type="button"
+              @click="downloadFile(slotProps.dataItem)"
             >
-              {{ slotProps.dataItem.name }}
-            </router-link>
-            <div v-else class="">
-              {{ slotProps.dataItem.name }}
-            </div>
-          </template>
-          <template #last_edited="slotProps">
-            {{ formatDate(slotProps.dataItem.last_edited) }}
-          </template>
-          <template #created="slotProps">
-            {{ formatDate(slotProps.dataItem.created) }}
-          </template>
-          <template #action="slotProps">
-            <div class="flex space-x-3 justify-end">
-              <ButtonTable
-                v-if="slotProps.dataItem.type === 'FOLDER'"
-                type="button"
-                @click="openFolderUpdate(slotProps.dataItem)"
-              >
-                Change
-              </ButtonTable>
-              <ButtonTable
-                v-if="slotProps.dataItem.type === 'FOLDER'"
-                type="button"
-                @click="openFolderDelete(slotProps.dataItem)"
-              >
-                Delete
-              </ButtonTable>
-              <ButtonTable
-                v-if="slotProps.dataItem.type === 'FILE'"
-                type="button"
-                @click="downloadFile(slotProps.dataItem)"
-              >
-                Download
-              </ButtonTable>
-              <ButtonTable
-                v-if="slotProps.dataItem.type === 'FILE'"
-                type="button"
-                @click="openFileDelete(slotProps.dataItem)"
-              >
-                Delete
-              </ButtonTable>
-            </div>
-          </template>
-        </TableGenerator>
-      </div>
-      <div>
-        <TableGenerator
-          :head="[
-            { name: 'Permission', key: 'type' },
-            { name: 'Group', key: ['group_has_permission', 'name'] },
-            { name: 'Source', key: 'folder' },
-            { name: '', key: 'action' },
-          ]"
-          :data="permissions"
-          :loading="permissionsLoading"
-        >
-          <template #head-action>
-            <div class="flex justify-end">
-              <ButtonTable type="button" @click="openPermissionCreate()">
-                Add Permission
-              </ButtonTable>
-            </div>
-          </template>
-          <template #folder="slotProps">
-            <router-link
-              :to="{
-                name: 'files-dashboard',
-                params: { id: slotProps.dataItem.folder.id },
-              }"
-              class="underline"
+              Download
+            </ButtonTable>
+            <ButtonTable
+              v-if="slotProps.dataItem.type === 'FILE'"
+              type="button"
+              @click="openFileDelete(slotProps.dataItem)"
             >
-              {{ slotProps.dataItem.folder.name }}
-            </router-link>
-          </template>
-          <template #action="slotProps">
-            <div class="flex justify-end">
-              <ButtonTable
-                v-if="slotProps.dataItem.source === 'NORMAL'"
-                type="button"
-                @click="openPermissionDelete(slotProps.dataItem)"
-              >
-                Remove
-              </ButtonTable>
-            </div>
-          </template>
-        </TableGenerator>
-      </div>
+              Delete
+            </ButtonTable>
+          </div>
+        </template>
+      </TableGenerator>
+      <TableGenerator
+        :head="[
+          { name: 'Permission', key: 'type' },
+          { name: 'Group', key: ['group_has_permission', 'name'] },
+          { name: 'Source', key: 'folder' },
+          { name: '', key: 'action' },
+        ]"
+        :data="permissions"
+        :loading="permissionsLoading"
+      >
+        <template #head-action>
+          <div class="flex justify-end">
+            <ButtonTable type="button" @click="openPermissionCreate()">
+              Add Permission
+            </ButtonTable>
+          </div>
+        </template>
+        <template #folder="slotProps">
+          <router-link
+            :to="{
+              name: 'files-dashboard',
+              params: { id: slotProps.dataItem.folder.id },
+            }"
+            class="underline"
+          >
+            {{ slotProps.dataItem.folder.name }}
+          </router-link>
+        </template>
+        <template #action="slotProps">
+          <div class="flex justify-end">
+            <ButtonTable
+              v-if="slotProps.dataItem.source === 'NORMAL'"
+              type="button"
+              @click="openPermissionDelete(slotProps.dataItem)"
+            >
+              Remove
+            </ButtonTable>
+          </div>
+        </template>
+      </TableGenerator>
+      <BoxAlert type="warning">
+        There seems to be a problem with the Safari Browser. At the moment we
+        can only guarantee that the download works in Chrome or Firefox.
+      </BoxAlert>
     </div>
     <!-- folder -->
     <ModalFree v-model="folderCreateOpen" title="Create Folder">
@@ -281,9 +281,11 @@ import { FolderOpenIcon } from "@heroicons/vue/outline";
 import { FolderIcon, DocumentIcon } from "@heroicons/vue/solid";
 import { formatDate } from "@/utils/date";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import BoxAlert from "@/components/BoxAlert.vue";
 
 export default defineComponent({
   components: {
+    BoxAlert,
     ButtonBreadcrumbs,
     FolderIcon,
     DocumentIcon,
