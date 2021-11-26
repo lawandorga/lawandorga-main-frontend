@@ -6,7 +6,7 @@
       class="text-lg font-medium text-lorgablue"
       :to="{ name: 'user-login' }"
     >
-      &#x21a9; Back
+      &#x21b5; Back
     </router-link>
   </section>
   <section class="bg-white mx-auto max-w-7xl py-12 px-8">
