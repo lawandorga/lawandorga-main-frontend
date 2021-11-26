@@ -223,7 +223,11 @@
                                 aria-hidden="true"
                               />
                               <span class="ml-2 flex-1 w-0 truncate">
-                                {{ answer.data.split("/").at(-1) }}
+                                {{
+                                  answer.data
+                                    ? answer.data.split("/").at(-1)
+                                    : "Error"
+                                }}
                               </span>
                             </div>
                             <div class="ml-4 flex-shrink-0">
