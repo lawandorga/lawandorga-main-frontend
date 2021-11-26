@@ -183,6 +183,9 @@ export default defineComponent({
     initial: function () {
       this.data = Object.assign({}, this.initial, this.data);
     },
+    fields: function () {
+      this.data = Object.assign({}, this.initial);
+    },
   },
   mounted() {
     this.data = Object.assign({}, this.initial);
