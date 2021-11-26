@@ -125,14 +125,17 @@
             <p class="text-sm text-gray-500">
               <time>{{ formatDate(article.date) }}</time>
             </p>
-            <a [routerLink]="'/articles/' + article.id" class="mt-2 block">
+            <router-link
+              :to="{ name: 'internal-article', params: { id: article.id } }"
+              class="mt-2 block"
+            >
               <p class="text-xl font-semibold text-gray-900">
                 {{ article.title }}
               </p>
               <p class="mt-3 text-base text-gray-500 line-clamp-3">
                 {{ article.description }}
               </p>
-            </a>
+            </router-link>
             <div class="mt-3">
               <router-link
                 :to="{ name: 'internal-article', params: { id: article.id } }"
