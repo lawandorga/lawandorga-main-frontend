@@ -27,11 +27,7 @@ const getters = {
   notifications: (state: UserState) => state.notifications,
   admin: (state: UserState) => state.admin,
   loaded: (state: UserState) =>
-    !!state.token &&
-    !!state.key &&
-    !!state.user &&
-    !!state.rlc &&
-    !!state.permissions.length,
+    !!state.token && !!state.key && !!state.user && !!state.rlc,
   adminNotifications: (state: UserState) =>
     state.admin
       ? state.admin.profiles +

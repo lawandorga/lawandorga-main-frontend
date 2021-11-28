@@ -23,7 +23,7 @@
           required
         />
       </div>
-      <TableGenerator
+      <TableControls
         :head="[
           { name: 'Token', key: 'record_token' },
           { name: 'State', key: 'state' },
@@ -125,7 +125,7 @@
             </ButtonTable>
           </div>
         </template>
-      </TableGenerator>
+      </TableControls>
     </div>
     <!-- modals -->
     <ModalFree v-model="createOpen" title="Create Record">
@@ -185,7 +185,8 @@
 </template>
 
 <script lang="ts">
-import TableGenerator from "@/components/TableControls.vue";
+import TableControls from "@/components/TableControls.vue";
+import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
@@ -208,6 +209,7 @@ export default defineComponent({
     FormGenerator,
     BoxLoader,
     TableGenerator,
+    TableControls,
     FormInput,
     ButtonTable,
     ModalFree,
