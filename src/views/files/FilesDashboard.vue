@@ -323,6 +323,13 @@ export default defineComponent({
       deleteFolder: FilesService.deleteFolder,
       folderFields: [
         {
+          label: "Parent",
+          type: "select",
+          name: "parent",
+          required: true,
+          options: [] as FilesFolder[],
+        },
+        {
           label: "Name",
           type: "text",
           name: "name",
@@ -366,7 +373,6 @@ export default defineComponent({
           type: "select",
           name: "group_has_permission",
           options: [] as FilesPossiblePermission[],
-          required: true,
         },
       ],
       // breadcrumbs
@@ -407,21 +413,32 @@ export default defineComponent({
     },
     // folder create
     openFolderCreate() {
+      FilesService.getFolders().then(
+        (items) => (this.folderFields[0].options = items),
+      );
       this.folderCreateOpen = true;
     },
     folderCreated(folder: FilesFolder) {
       this.folderCreateOpen = false;
-      this.items.push(folder);
+      if (!this.folder || folder.parent === this.folder.id)
+        this.items.push(folder);
     },
     // folder update
     openFolderUpdate(folder: FilesFolder) {
+      FilesService.getFolders().then(
+        (items) => (this.folderFields[0].options = items),
+      );
       this.folderOpen = folder;
       this.folderUpdateOpen = true;
     },
     folderUpdated(folder: FilesFolder) {
       this.folderUpdateOpen = false;
       let index = this.items.findIndex((item) => item.id === folder.id);
-      if (index !== -1) this.items.splice(index, 1, folder);
+      if (index !== -1) {
+        if (!this.folder || folder.parent === this.folder.id)
+          this.items.splice(index, 1, folder);
+        else this.items.splice(index, 1);
+      }
     },
     // folder delete
     openFolderDelete(folder: FilesFolder) {

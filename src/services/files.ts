@@ -50,6 +50,12 @@ class FilesService {
   }
 
   // folder
+  getFolders(): Promise<FilesFolder[]> {
+    return axios
+      .get<FilesFolder[]>("files/folder/")
+      .then((response) => response.data);
+  }
+
   createFolder(folder: FilesFolder): Promise<FilesFolder> {
     return axios
       .post<FilesFolder>("files/folder/", folder)
