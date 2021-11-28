@@ -65,6 +65,17 @@
             </ButtonTable>
           </div>
         </template>
+        <template #state="slotProps">
+          <button
+            class="cursor-pointer hover:underline text-left"
+            @click="search = slotProps.dataItem.state"
+          >
+            <span v-if="slotProps.dataItem.state === 'op'">Open</span>
+            <span v-if="slotProps.dataItem.state === 'cl'">Closed</span>
+            <span v-if="slotProps.dataItem.state === 'wa'">Waiting</span>
+            <span v-if="slotProps.dataItem.state === 'wo'">Working</span>
+          </button>
+        </template>
         <template #official_note="slotProps">
           <div class="max-w-xs whitespace-normal line-clamp-3 min-w-[12rem]">
             {{ slotProps.dataItem.official_note }}
