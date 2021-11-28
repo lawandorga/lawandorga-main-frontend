@@ -8,11 +8,11 @@ import { Rlc } from "@/types/core";
 const state = {
   token: null,
   key: null,
-  user: {},
-  rlc: {},
+  user: null,
+  rlc: null,
   permissions: [],
   notifications: 0,
-  admin: {},
+  admin: null,
 };
 
 const getters = {
@@ -26,10 +26,18 @@ const getters = {
   loginData: () => JSON.parse(localStorage.getItem("loginData") || "{}"),
   notifications: (state: UserState) => state.notifications,
   admin: (state: UserState) => state.admin,
+  loaded: (state: UserState) =>
+    !!state.token &&
+    !!state.key &&
+    !!state.user &&
+    !!state.rlc &&
+    !!state.permissions.length,
   adminNotifications: (state: UserState) =>
-    state.admin.profiles +
-    state.admin.record_deletion_requests +
-    state.admin.record_permit_requests,
+    state.admin
+      ? state.admin.profiles +
+        state.admin.record_deletion_requests +
+        state.admin.record_permit_requests
+      : 0,
 };
 
 const actions = {
@@ -52,7 +60,7 @@ const actions = {
           });
           context.commit("setRlc", statics.rlc);
           context.commit("setPermissions", statics.permissions);
-          context.commit("setNotifications", statics.notifications);
+          // context.commit("setNotifications", statics.notifications);
           // context.commit('setAllPermissions', statics.all_permissions);
         })
         .catch((error) => {
@@ -67,6 +75,8 @@ const actions = {
   ) => {
     return UserService.login(data).then((login) => {
       context.commit("login", login);
+      context.commit("setRlc", login.rlc);
+      context.commit("setPermissions", login.permissions);
     });
   },
   logout: (context: ActionContext<UserState, RootState>) => {
@@ -211,6 +221,10 @@ const mutations = {
     state.token = null;
     state.user = null;
     state.key = null;
+    state.rlc = null;
+    state.permissions = [];
+    state.notifications = 0;
+    state.admin = null;
   },
   setRlc: (state: UserState, rlc: Rlc) => {
     state.rlc = rlc;

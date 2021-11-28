@@ -6,6 +6,8 @@ interface LoginResponse {
   token: string;
   key: string;
   user: User;
+  rlc: Rlc;
+  permissions: string[];
 }
 
 interface StaticsResponse {

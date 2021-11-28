@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="true">
+  <BoxLoader :show="$store.getters['user/loaded']">
     <div class="max-w-screen-2xl mx-auto space-y-6">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <CollectionIcon class="w-6 h-6" />
@@ -63,6 +63,11 @@
             >
               Request Access
             </ButtonTable>
+          </div>
+        </template>
+        <template #official_note="slotProps">
+          <div class="max-w-xs whitespace-normal line-clamp-3 min-w-[12rem]">
+            {{ slotProps.dataItem.official_note }}
           </div>
         </template>
         <template #created_on="slotProps">
