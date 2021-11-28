@@ -190,7 +190,7 @@ export default defineComponent({
   },
   data() {
     return {
-      perPage: 20,
+      perPage: 12,
       page: 1,
     };
   },
