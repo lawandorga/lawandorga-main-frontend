@@ -28,43 +28,121 @@
           <CircleLoader />
         </Td>
       </Tr>
+      <Tr>
+        <Td :colspan="head.length">
+          <div
+            class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+          >
+            <div>
+              <p class="text-sm text-gray-700">
+                Showing
+                {{ " " }}
+                <span class="font-medium">
+                  {{ data.length === 0 ? 0 : start + 1 }}
+                </span>
+                {{ " " }}
+                to
+                {{ " " }}
+                <span class="font-medium">
+                  {{ Math.min(end, data.length) }}
+                </span>
+                {{ " " }}
+                of
+                {{ " " }}
+                <span class="font-medium">{{ data.length }}</span>
+                {{ " " }}
+                records
+              </p>
+            </div>
+            <div>
+              <nav
+                class="
+                  relative
+                  z-0
+                  inline-flex
+                  rounded-md
+                  shadow-sm
+                  -space-x-px
+                "
+                aria-label="Pagination"
+              >
+                <button
+                  type="button"
+                  class="
+                    relative
+                    inline-flex
+                    items-center
+                    px-2
+                    py-2
+                    rounded-l-md
+                    border border-gray-300
+                    bg-white
+                    text-sm
+                    font-medium
+                    text-gray-500
+                    hover:bg-gray-50
+                  "
+                  @click="page = Math.max(page - 1, 1)"
+                >
+                  <span class="sr-only">Previous</span>
+                  <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
+                </button>
+                <button
+                  v-for="pageNumber in pages.slice(
+                    Math.max(page - 5, 0),
+                    page + 5,
+                  )"
+                  :key="pageNumber"
+                  type="button"
+                  class="
+                    hover:bg-gray-50
+                    relative
+                    inline-flex
+                    items-center
+                    px-4
+                    py-2
+                    border
+                    text-sm
+                    font-medium
+                  "
+                  :class="{
+                    'z-10 bg-blue-50 border-blue-500 text-blue-600':
+                      pageNumber === page,
+                    'bg-white border-gray-300 text-gray-500':
+                      pageNumber !== page,
+                  }"
+                  @click="page = pageNumber"
+                >
+                  {{ pageNumber }}
+                </button>
+                <button
+                  type="button"
+                  class="
+                    relative
+                    inline-flex
+                    items-center
+                    px-2
+                    py-2
+                    rounded-r-md
+                    border border-gray-300
+                    bg-white
+                    text-sm
+                    font-medium
+                    text-gray-500
+                    hover:bg-gray-50
+                  "
+                  @click="page = Math.min(page + 1, pages.length)"
+                >
+                  <span class="sr-only">Next</span>
+                  <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
+                </button>
+              </nav>
+            </div>
+          </div>
+        </Td>
+      </Tr>
     </Tbody>
   </Table>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <li class="page-item">
-        <button
-          v-if="page != 1"
-          type="button"
-          class="page-link"
-          @click="page--"
-        >
-          Previous
-        </button>
-      </li>
-      <li class="page-item">
-        <button
-          v-for="pageNumber in pages.slice(Math.max(page - 5, 0), page + 5)"
-          :key="pageNumber"
-          type="button"
-          class="page-link"
-          @click="page = pageNumber"
-        >
-          {{ pageNumber }}
-        </button>
-      </li>
-      <li class="page-item">
-        <button
-          v-if="page < pages.length"
-          type="button"
-          class="page-link"
-          @click="page++"
-        >
-          Next
-        </button>
-      </li>
-    </ul>
-  </nav>
 </template>
 
 <script lang="ts">
@@ -77,6 +155,7 @@ import Th from "./TableHead.vue";
 import { defineComponent, PropType } from "vue";
 import { JsonModel } from "@/types/shared";
 import CircleLoader from "./CircleLoader.vue";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
 
 interface NestedObject {
   [key: string]: string | number | boolean | NestedObject;
@@ -84,6 +163,8 @@ interface NestedObject {
 
 export default defineComponent({
   components: {
+    ChevronLeftIcon,
+    ChevronRightIcon,
     Th,
     Td,
     Tbody,
@@ -111,31 +192,27 @@ export default defineComponent({
     return {
       perPage: 2,
       page: 1,
-      pages: [],
     };
   },
   computed: {
     start() {
-      return this.page * this.perPage - this.perPage;
+      return (this.page - 1) * this.perPage;
     },
     end() {
-      return this.page * this.perPage;
+      return Math.min(this.page * this.perPage, this.data.length);
+    },
+    pages() {
+      return Array.from(
+        Array(Math.ceil(this.data.length / this.perPage)).keys(),
+      ).map((i) => (i += 1));
     },
   },
   watch: {
-    data() {
-      this.setPages();
+    data: function () {
+      if (!this.pages.includes(this.page)) this.page = 1;
     },
-  },
-  mounted() {
-    this.setPages();
   },
   methods: {
-    setPages() {
-      let numberOfPages = Math.ceil(this.data.length / this.perPage);
-      for (let index = 1; index <= numberOfPages; index++)
-        this.pages.push(index as never);
-    },
     getData(
       data: NestedObject,
       key: string | string[],
