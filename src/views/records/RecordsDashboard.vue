@@ -174,7 +174,7 @@
 </template>
 
 <script lang="ts">
-import TableGenerator from "@/components/TableGenerator.vue";
+import TableGenerator from "@/components/TableControls.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
