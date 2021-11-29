@@ -51,7 +51,10 @@
       </TableGenerator>
     </div>
     <!-- update -->
-    <ModalFree v-model="updateModalOpen" title="Update Questionnaire">
+    <ModalFree
+      v-model="updateModalOpen"
+      title="Accept / Decline Permission-Request"
+    >
       <FormGenerator
         :fields="fields"
         :initial="deletionRequest"
