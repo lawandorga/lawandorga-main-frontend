@@ -74,6 +74,6 @@ export default defineComponent({
 
 <style lang="postcss">
 .children\:mt-6 > * {
-  @apply mt-6;
+  @apply mt-6 lg:mt-0;
 }
 </style>
