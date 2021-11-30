@@ -597,7 +597,7 @@ export default defineComponent({
         .then(() => this.$store.dispatch("alert/showSuccess", "Link Copied"));
     },
     downloadQuestionnaireAnswerFile(answer: QuestionnaireAnswer): void {
-      RecordsService.downloadQuestionnaireFile(answer);
+      RecordsService.downloadQuestionnaireAnswerFile(answer);
     },
     // create record questionnaire
     openCreateRecordQuestionnaire() {

@@ -97,6 +97,14 @@ export interface QuestionnaireField {
   type: "FILE";
 }
 
+export interface QuestionnaireFile {
+  id: number;
+  questionnaire: number;
+  name: string;
+  created: string;
+  updated: string;
+}
+
 export interface Questionnaire {
   id: number;
   rlc: number;

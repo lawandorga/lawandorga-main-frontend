@@ -15,6 +15,7 @@ import {
   Pool,
   QuestionnaireAnswer,
   QuestionnaireField,
+  QuestionnaireFile,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
@@ -70,6 +71,26 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  createQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
+    return axios
+      .post<Questionnaire>("records/questionnaires/", questionnaire)
+      .then((response) => response.data);
+  }
+
+  updateQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
+    return axios
+      .patch<Questionnaire>(
+        `records/questionnaires/${questionnaire.id}/`,
+        questionnaire,
+      )
+      .then((response) => response.data);
+  }
+
+  deleteQuestionnaire(questionnaire: Questionnaire): Promise<void> {
+    return axios.delete(`records/questionnaires/${questionnaire.id}/`);
+  }
+
+  // questionnairefield
   getQuestionnaireFields(
     questionnaire: Questionnaire,
   ): Promise<QuestionnaireField[]> {
@@ -103,26 +124,7 @@ class RecordsService {
     return axios.delete(`records/questionnaire_fields/${field.id}/`);
   }
 
-  createQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
-    return axios
-      .post<Questionnaire>("records/questionnaires/", questionnaire)
-      .then((response) => response.data);
-  }
-
-  updateQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
-    return axios
-      .patch<Questionnaire>(
-        `records/questionnaires/${questionnaire.id}/`,
-        questionnaire,
-      )
-      .then((response) => response.data);
-  }
-
-  deleteQuestionnaire(questionnaire: Questionnaire): Promise<void> {
-    return axios.delete(`records/questionnaires/${questionnaire.id}/`);
-  }
-
-  // record questionnaire
+  // recordquestionnaire
   getRecordQuestionnaires(id: number | string): Promise<RecordQuestionnaire[]> {
     return axios
       .get<RecordQuestionnaire[]>(
@@ -168,7 +170,10 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  downloadQuestionnaireFile(questionnaireAnswer: QuestionnaireAnswer): void {
+  // questionnaireanswer
+  downloadQuestionnaireAnswerFile(
+    questionnaireAnswer: QuestionnaireAnswer,
+  ): void {
     axios
       .get<Blob>(
         `records/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
@@ -182,6 +187,35 @@ class RecordsService {
           questionnaireAnswer.data.split("/").at(-1) || "filename",
         ),
       );
+  }
+
+  // questionnairefile
+  getQuestionnaireFiles(
+    questionnaire: Questionnaire,
+  ): Promise<QuestionnaireFile[]> {
+    return axios
+      .get<QuestionnaireFile[]>(
+        `records/questionnaires/${questionnaire.id}/files/`,
+      )
+      .then((response) => response.data);
+  }
+
+  downloadQuestionnaireFile(file: QuestionnaireFile): void {
+    axios
+      .get<Blob>(`records/questionnaire_files/${file.id}/`, {
+        responseType: "blob",
+      })
+      .then((response) => downloadFile(response, file.name));
+  }
+
+  createQuestionnaireFile(file: QuestionnaireFile): Promise<QuestionnaireFile> {
+    return axios
+      .post<QuestionnaireFile>("records/questionnaire_files/", file)
+      .then((response) => response.data);
+  }
+
+  deleteQuestionnaireFile(file: QuestionnaireFile): Promise<void> {
+    return axios.delete(`records/questionnaire_files/${file.id}/`).then();
   }
 
   // messages
