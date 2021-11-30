@@ -3,10 +3,46 @@
     v-if="recordQuestionnaire"
     class="max-w-2xl bg-white shadow mx-auto px-6 py-5"
   >
-    <h2 class="text-2xl font-bold">
+    <h2 class="text-2xl font-bold mb-3">
       Questionnaire: {{ recordQuestionnaire.questionnaire.name }}
     </h2>
-    <div class="pt-10">
+    <p
+      v-if="recordQuestionnaire.questionnaire.notes"
+      class="text-lg text-gray-500 mb-10"
+    >
+      {{ recordQuestionnaire.questionnaire.notes }}
+    </p>
+    <div v-if="recordQuestionnaire.questionnaire.files.length">
+      <h3 class="mb-1 text-gray-700">Files to download or fill out:</h3>
+      <ul class="space-y-2">
+        <li
+          v-for="file in recordQuestionnaire.questionnaire.files"
+          :key="file.id"
+        >
+          <div class="border border-gray-200 rounded-md">
+            <div
+              class="pl-2 pr-3 py-2 flex items-center justify-between text-sm"
+            >
+              <div class="w-0 flex-1 flex items-center">
+                <PaperClipIcon
+                  class="flex-shrink-0 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+                <span class="ml-2 flex-1 w-0 truncate">
+                  {{ file.name }}
+                </span>
+              </div>
+              <div class="ml-4 flex-shrink-0">
+                <ButtonSimple @click="downloadQuestionnaireFile(file)">
+                  Download
+                </ButtonSimple>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="mt-10">
       <FormGenerator
         v-if="fields.length > 0"
         button="Save"
@@ -29,9 +65,13 @@ import useGetItem from "@/composables/useGetItem";
 import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
+import { PaperClipIcon } from "@heroicons/vue/outline";
+import ButtonSimple from "@/components/ButtonSimple.vue";
 
 export default defineComponent({
   components: {
+    ButtonSimple,
+    PaperClipIcon,
     FormGenerator,
   },
   setup() {
@@ -72,6 +112,7 @@ export default defineComponent({
       fields,
       recordQuestionnaire,
       sendAnswer,
+      downloadQuestionnaireFile: RecordsService.downloadQuestionnaireFile,
     };
   },
 });

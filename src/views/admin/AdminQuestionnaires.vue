@@ -104,6 +104,12 @@ const fields = [
     type: "text",
     required: true,
   },
+  {
+    label: "Note",
+    name: "notes",
+    type: "textarea",
+    required: false,
+  },
 ];
 
 export default defineComponent({
