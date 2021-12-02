@@ -10,7 +10,7 @@
     <TableGenerator
       :head="[
         { name: 'Permission', key: 'name' },
-        { name: 'Explanation', key: 'group' },
+        { name: 'Explanation', key: 'explanation' },
         { name: 'Useful Group', key: 'group' },
       ]"
       :data="permissions"
