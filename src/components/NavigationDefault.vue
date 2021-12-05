@@ -11,10 +11,16 @@
         border-b border-white border-opacity-20
       "
     >
+    <div class="flex space-x-2">
       <router-link :to="{ name: 'index' }" class="flex space-x-2 items-center">
         <img src="/rlc_intranet_logo.png" alt="Law&Orga" class="h-8 w-auto" />
         <h1 class="text-white font-bold text-2xl">Law&Orga</h1>
       </router-link>
+      <!-- <div class="flex items-center space-x-2">
+        <span class="text-gray-200 text-xs pt-2.5"></span>
+        <img src="/cms.jpg" alt="CMS Stiftung" class="h-6 w-auto rounded overflow-hidden" />
+      </div> -->
+      </div>
       <div class="pr-8 space-x-8 hidden sm:block">
         <router-link
           class="text-white font-medium text-lg hover:underline"

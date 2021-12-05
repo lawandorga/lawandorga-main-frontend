@@ -17,9 +17,13 @@
                   xl:text-6xl
                 "
               >
-                <div class="flex space-x-4 items-center">
+                <div class="flex space-x-4 items-center flex-wrap">
                   <img src="/logo.svg" alt="Law&Orga Logo" class="w-16 h-16" />
                   <span class="md:block">Law&Orga</span>
+                  <div class="flex items-center space-x-2">
+                  <span class="text-gray-200 text-base font-normal pt-2.5">supported by</span>
+                  <img src="/cms.jpg" alt="CMS Stiftung" class="h-12 w-auto rounded overflow-hidden" />
+                  </div>
                 </div>
               </h1>
               <p class="mt-3 text-base text-gray-200 sm:mt-5 sm:text-xl">
