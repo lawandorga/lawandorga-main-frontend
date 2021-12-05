@@ -21,7 +21,7 @@
                   <img src="/logo.svg" alt="Law&Orga Logo" class="w-16 h-16" />
                   <span class="md:block">Law&Orga</span>
                   <div class="flex items-center space-x-2">
-                  <span class="text-gray-200 text-base font-normal pt-2.5">supported by</span>
+                  <span class="text-gray-200 text-base font-normal pt-2.5 tracking-normal">supported by</span>
                   <img src="/cms.jpg" alt="CMS Stiftung" class="h-12 w-auto rounded overflow-hidden" />
                   </div>
                 </div>
