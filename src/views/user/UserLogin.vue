@@ -17,13 +17,21 @@
                   xl:text-6xl
                 "
               >
-                <div class="flex space-x-4 items-center flex-wrap">
-                  <img src="/logo.svg" alt="Law&Orga Logo" class="w-16 h-16" />
-                  <span class="md:block">Law&Orga</span>
-                  <div class="flex items-center space-x-2">
-                  <span class="text-gray-200 text-base font-normal pt-2.5 tracking-normal">supported by</span>
-                  <img src="/cms.jpg" alt="CMS Stiftung" class="h-12 w-auto rounded overflow-hidden" />
+                <div class="flex space-x-5 items-center flex-wrap">
+                  <div class="flex space-x-3 items-center">
+                    <img
+                      src="/logo.svg"
+                      alt="Law&Orga Logo"
+                      class="w-16 h-16"
+                    />
+                    <span class="md:block">Law&Orga</span>
                   </div>
+                  <div class="bg-gray-200 w-0.5 h-16"></div>
+                  <img
+                    src="/sponsor-cms.jpg"
+                    alt="CMS Stiftung"
+                    class="w-40 h-auto rounded overflow-hidden"
+                  />
                 </div>
               </h1>
               <p class="mt-3 text-base text-gray-200 sm:mt-5 sm:text-xl">
@@ -191,6 +199,59 @@
       </div>
     </section>
     <section class="bg-white mx-auto max-w-7xl py-12 px-8">
+      <div class="relative max-w-lg mx-auto lg:max-w-7xl">
+        <div>
+          <h2
+            class="
+              text-3xl
+              tracking-tight
+              font-extrabold
+              text-gray-900
+              sm:text-4xl
+            "
+          >
+            Sponsors
+          </h2>
+        </div>
+        <div class="space-y-8 mt-6">
+          <div v-for="group in sponsorGroups" :key="group.name" class="">
+            <h3 class="text-xl tracking-tight font-bold text-gray-900 mb-4">
+              {{ group.name }}
+            </h3>
+            <ul class="grid grid-cols-6 gap-6">
+              <li
+                v-for="sponsor in sponsors.filter(
+                  (item) => item.type === group.type,
+                )"
+                :key="sponsor.name"
+                class="block"
+              >
+                <figure>
+                  <img
+                    :src="sponsor.image"
+                    alt="CMS Stiftung"
+                    class="
+                      mx-auto
+                      w-auto
+                      max-h-[5rem]
+                      rounded-md
+                      overflow-hidden
+                      border-2 border-gray-300
+                      shadow
+                    "
+                    :class="[sponsor.class]"
+                  />
+                  <figcaption class="text-gray-500 text-sm mt-2 text-center">
+                    {{ sponsor.name }}
+                  </figcaption>
+                </figure>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
       <div class="text-right space-x-4">
         <router-link :to="{ name: 'internal-imprint' }">Imprint</router-link>
         <a target="_blank" href="http://rlc-deutschland.de/datenschutz/">
@@ -219,6 +280,37 @@ export default defineComponent({
       articles: [] as Article[],
       page: null as LoginPage | null,
       formatDate: formatDate,
+      sponsors: [
+        {
+          name: "CMS Stiftung",
+          image: "/sponsor-cms.jpg",
+          type: "MAIN",
+          class: "",
+        },
+        {
+          name: "Prototype Fund",
+          image: "/sponsor-p.png",
+          type: "FORMER",
+          class: "p-2",
+        },
+        {
+          name: "Deutsche Stiftung für Engagement und Ehrenamt",
+          image: "/sponsor-dse.png",
+          type: "CURRENT",
+          class: "px-4",
+        },
+        {
+          name: "Bundesministerium für Bildung und Forschung",
+          image: "/sponsor-bmbf.png",
+          type: "FORMER",
+          class: "px-2 py-1",
+        },
+      ],
+      sponsorGroups: [
+        { name: "Main Sponsor", type: "MAIN" },
+        { name: "Current Sponsors", type: "CURRENT" },
+        { name: "Former Sponsors", type: "FORMER" },
+      ],
     };
   },
   computed: {
