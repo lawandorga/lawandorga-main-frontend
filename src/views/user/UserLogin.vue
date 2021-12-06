@@ -218,7 +218,7 @@
             <h3 class="text-xl tracking-tight font-bold text-gray-900 mb-4">
               {{ group.name }}
             </h3>
-            <ul class="grid grid-cols-6 gap-6">
+            <ul class="grid grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-6">
               <li
                 v-for="sponsor in sponsors.filter(
                   (item) => item.type === group.type,
