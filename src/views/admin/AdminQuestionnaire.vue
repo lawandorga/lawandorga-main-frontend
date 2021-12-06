@@ -256,13 +256,13 @@ export default defineComponent({
     const {
       updateRequest: updateFieldRequest,
       updateModalOpen: updateFieldModalOpen,
-    } = useUpdateItem(RecordsService.createQuestionnaireFile, fields);
+    } = useUpdateItem(RecordsService.updateQuestionnaireField, fields);
 
     // delete field
     const {
       deleteRequest: deleteFieldRequest,
       deleteModalOpen: deleteFieldModalOpen,
-    } = useDeleteItem(RecordsService.deleteQuestionnaireFile, fields);
+    } = useDeleteItem(RecordsService.deleteQuestionnaireField, fields);
 
     return {
       questionnaire,
