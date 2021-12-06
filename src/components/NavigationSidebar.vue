@@ -34,7 +34,7 @@
           <div>{{ user ? user.name : "" }}</div>
           <div>{{ user ? user.email : "" }}</div>
         </div>
-        <div class="flex-grow flex flex-col">
+        <div class="flex-grow flex flex-col justify-between bg-white">
           <nav class="flex-1 px-2 py-2 bg-white space-y-1">
             <router-link
               v-for="item in sidebarItems"
@@ -90,6 +90,23 @@
               </div>
             </router-link>
           </nav>
+          <div class="pb-4 flex justify-center items-center">
+            <figure>
+              <figcaption class="text-gray-500 mb-1">Supported by</figcaption>
+              <img
+                src="/sponsor-cms.jpg"
+                alt="CMS Stiftung"
+                class="
+                  h-auto
+                  w-56
+                  rounded-md
+                  overflow-hidden
+                  border-2 border-gray-200
+                  shadow
+                "
+              />
+            </figure>
+          </div>
         </div>
       </div>
     </div>
