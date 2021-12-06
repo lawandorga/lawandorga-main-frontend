@@ -90,15 +90,32 @@
               </div>
             </router-link>
           </nav>
-          <div class="pb-4 flex justify-center items-center">
+          <div class="pb-4 px-4 flex flex-col justify-center items-start">
+            <figure class="mb-3">
+              <figcaption class="text-gray-500 mb-1">A project of</figcaption>
+              <img
+                src="/RLCD-logo.png"
+                alt="RLC Deutschland"
+                class="
+                  h-auto
+                  px-2
+                  py-2
+                  w-36
+                  rounded-md
+                  overflow-hidden
+                  border-2 border-gray-200
+                  shadow
+                "
+              />
+            </figure>
             <figure>
-              <figcaption class="text-gray-500 mb-1">Supported by</figcaption>
+              <figcaption class="text-gray-500 mb-1">supported by</figcaption>
               <img
                 src="/sponsor-cms.jpg"
                 alt="CMS Stiftung"
                 class="
                   h-auto
-                  w-56
+                  w-full
                   rounded-md
                   overflow-hidden
                   border-2 border-gray-200

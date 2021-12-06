@@ -200,7 +200,7 @@
     </section>
     <section class="bg-white mx-auto max-w-7xl py-12 px-8">
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
-        <div>
+        <div class="mb-6">
           <h2
             class="
               text-3xl
@@ -213,18 +213,23 @@
             Sponsors
           </h2>
         </div>
-        <div class="space-y-8 mt-6">
-          <div v-for="group in sponsorGroups" :key="group.name" class="">
+        <div class="flex justify-start flex-wrap -my-2 -mx-6">
+          <div
+            v-for="group in sponsorGroups"
+            :key="group.name"
+            class="py-2 px-6"
+            :class="[group.class]"
+          >
             <h3 class="text-xl tracking-tight font-bold text-gray-900 mb-4">
               {{ group.name }}
             </h3>
-            <ul class="grid grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-6">
+            <ul class="flex flex-wrap justify-start -m-3">
               <li
                 v-for="sponsor in sponsors.filter(
                   (item) => item.type === group.type,
                 )"
                 :key="sponsor.name"
-                class="block"
+                class="block lg:max-w-[17rem] p-3"
               >
                 <figure>
                   <img
@@ -305,11 +310,17 @@ export default defineComponent({
           type: "FORMER",
           class: "px-2 py-1",
         },
+        {
+          name: "Robert Bosch Stiftung",
+          image: "/sponsor-rbs.png",
+          type: "FORMER",
+          class: "px-2 py-1",
+        },
       ],
       sponsorGroups: [
-        { name: "Main Sponsor", type: "MAIN" },
-        { name: "Current Sponsors", type: "CURRENT" },
-        { name: "Former Sponsors", type: "FORMER" },
+        { name: "Main Sponsor", type: "MAIN", class: "" },
+        { name: "Current Sponsors", type: "CURRENT", class: "" },
+        { name: "Former Sponsors", type: "FORMER", class: "w-full" },
       ],
     };
   },
