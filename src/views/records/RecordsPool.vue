@@ -56,6 +56,7 @@ import RecordsService from "@/services/records";
 import { Pool, RestrictedRecord } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import ButtonBlue from "@/components/ButtonNormal.vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -66,6 +67,8 @@ export default defineComponent({
     FormGenerator,
   },
   setup() {
+    const store = useStore();
+
     const fields = ref([
       {
         label: "Record",
@@ -82,10 +85,17 @@ export default defineComponent({
     onMounted(() =>
       RecordsService.getRecords().then(
         (items) =>
-          (fields.value[0].options = items.map((item) => ({
-            ...item,
-            name: item.record_token,
-          }))),
+          (fields.value[0].options = items
+            .filter((record) => record.state !== "cl")
+            .filter((record) =>
+              record.working_on_record
+                .map((user) => user.id)
+                .includes(store.getters["user/user"].id),
+            )
+            .map((item) => ({
+              ...item,
+              name: item.record_token,
+            }))),
       ),
     );
 

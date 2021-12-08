@@ -363,13 +363,13 @@ export default defineComponent({
         },
         {
           label: "Last Contact Date",
-          type: "text",
+          type: "datetime-local",
           name: "last_contact_date",
           required: false,
         },
         {
           label: "First Consultation",
-          type: "text",
+          type: "datetime-local",
           name: "first_consultation",
           required: false,
         },

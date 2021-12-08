@@ -248,13 +248,13 @@ export default defineComponent({
           label: "Client Phone",
           type: "tel",
           name: "phone_number",
-          required: true,
+          required: false,
         },
         {
           label: "Client Note",
           type: "text",
           name: "note",
-          required: true,
+          required: false,
         },
         {
           label: "Record Token",
