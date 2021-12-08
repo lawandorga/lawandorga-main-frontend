@@ -234,7 +234,7 @@
                 <figure>
                   <img
                     :src="sponsor.image"
-                    alt="CMS Stiftung"
+                    :alt="sponsor.name"
                     class="
                       mx-auto
                       w-auto
@@ -315,6 +315,12 @@ export default defineComponent({
           image: "/sponsor-rbs.png",
           type: "FORMER",
           class: "px-2 py-1",
+        },
+        {
+          name: "Google Impact Challenge",
+          image: "/sponsor-google.png",
+          type: "FORMER",
+          class: "",
         },
       ],
       sponsorGroups: [

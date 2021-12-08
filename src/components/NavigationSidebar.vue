@@ -14,11 +14,7 @@
           "
         >
           <router-link to="/" class="flex space-x-2 items-center">
-            <img
-              src="/rlc_intranet_logo.png"
-              alt="Law&Orga"
-              class="h-8 w-auto"
-            />
+            <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
             <h1 class="text-white font-bold text-2xl">Law&Orga</h1>
           </router-link>
         </div>
@@ -94,7 +90,7 @@
             <figure class="mb-3">
               <figcaption class="text-gray-500 mb-1">A project of</figcaption>
               <img
-                src="/RLCD-logo.png"
+                src="/rlcd.png"
                 alt="RLC Deutschland"
                 class="
                   h-auto
@@ -110,18 +106,20 @@
             </figure>
             <figure>
               <figcaption class="text-gray-500 mb-1">supported by</figcaption>
-              <img
-                src="/sponsor-cms.jpg"
-                alt="CMS Stiftung"
-                class="
-                  h-auto
-                  w-full
-                  rounded-md
-                  overflow-hidden
-                  border-2 border-gray-200
-                  shadow
-                "
-              />
+              <a href="https://www.cms-stiftung.de/" target="_blank">
+                <img
+                  src="/sponsor-cms.jpg"
+                  alt="CMS Stiftung"
+                  class="
+                    h-auto
+                    w-full
+                    rounded-md
+                    overflow-hidden
+                    border-2 border-gray-200
+                    shadow
+                  "
+                />
+              </a>
             </figure>
           </div>
         </div>

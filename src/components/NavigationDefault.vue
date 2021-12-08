@@ -16,7 +16,7 @@
           :to="{ name: 'index' }"
           class="flex space-x-2 items-center"
         >
-          <img src="/rlc_intranet_logo.png" alt="Law&Orga" class="h-8 w-auto" />
+          <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
           <h1 class="text-white font-bold text-2xl">Law&Orga</h1>
         </router-link>
         <div class="w-px h-8 bg-white"></div>

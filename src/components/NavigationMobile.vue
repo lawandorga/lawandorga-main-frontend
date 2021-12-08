@@ -63,7 +63,7 @@
           <div class="flex-shrink-0 h-16 flex items-center px-4 bg-lorgablue">
             <router-link to="/" class="flex space-x-2 items-center">
               <img
-                src="/rlc_intranet_logo.png"
+                src="/logo.png"
                 alt="Law&Orga"
                 class="h-8 w-auto"
               />
