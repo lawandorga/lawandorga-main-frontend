@@ -29,12 +29,11 @@
           </div>
         </template>
         <template #name="slotProps">
-          <router-link
-            class="underline"
+          <ButtonLink
             :to="{ name: 'admin-group', params: { id: slotProps.dataItem.id } }"
           >
             {{ slotProps.dataItem.name }}
-          </router-link>
+          </ButtonLink>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
@@ -94,6 +93,7 @@ import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const fields = [
   {
@@ -113,6 +113,7 @@ const fields = [
 
 export default defineComponent({
   components: {
+    ButtonLink,
     BoxLoader,
     TableGenerator,
     ButtonTable,

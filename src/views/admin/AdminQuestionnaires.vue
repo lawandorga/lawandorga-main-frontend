@@ -25,7 +25,7 @@
           </div>
         </template>
         <template #name="slotProps">
-          <router-link
+          <ButtonLink
             class="underline"
             :to="{
               name: 'admin-questionnaire',
@@ -33,7 +33,7 @@
             }"
           >
             {{ slotProps.dataItem.name }}
-          </router-link>
+          </ButtonLink>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
@@ -96,6 +96,7 @@ import useDeleteItem from "@/composables/useDeleteItem";
 import useCreateItem from "@/composables/useCreateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const fields = [
   {
@@ -115,6 +116,7 @@ const fields = [
 export default defineComponent({
   components: {
     ModalDelete,
+    ButtonLink,
     ModalFree,
     FormGenerator,
     BoxLoader,

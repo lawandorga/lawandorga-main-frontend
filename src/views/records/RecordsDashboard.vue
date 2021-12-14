@@ -45,16 +45,15 @@
         </template>
         <template #record_token="slotProps">
           <div class="flex items-center justify-between">
-            <router-link
+            <ButtonLink
               v-if="slotProps.dataItem.access"
-              class="underline text-lorgablue hover:text-opacity-75"
               :to="{
                 name: 'records-detail',
                 params: { id: slotProps.dataItem.id },
               }"
             >
               {{ slotProps.dataItem.record_token }}
-            </router-link>
+            </ButtonLink>
             <span v-else>{{ slotProps.dataItem.record_token }}</span>
             <ButtonTable
               v-if="!slotProps.dataItem.access"
@@ -190,6 +189,7 @@
 </template>
 
 <script lang="ts">
+import ButtonLink from "@/components/ButtonLink.vue";
 import TableControls from "@/components/TableControls.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -218,6 +218,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   components: {
     ButtonBreadcrumbs,
+    ButtonLink,
     CollectionIcon,
     BreadcrumbsBar,
     FormGenerator,

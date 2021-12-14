@@ -53,16 +53,15 @@
           />
         </template>
         <template #name="slotProps">
-          <router-link
+          <ButtonLink
             v-if="slotProps.dataItem.type === 'FOLDER'"
-            class="underline"
             :to="{
               name: 'files-dashboard',
               params: { id: slotProps.dataItem.id },
             }"
           >
             {{ slotProps.dataItem.name }}
-          </router-link>
+          </ButtonLink>
           <div v-else class="">
             {{ slotProps.dataItem.name }}
           </div>
@@ -282,9 +281,11 @@ import { FolderIcon, DocumentIcon } from "@heroicons/vue/solid";
 import { formatDate } from "@/utils/date";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import BoxAlert from "@/components/BoxAlert.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 export default defineComponent({
   components: {
+    ButtonLink,
     BoxAlert,
     ButtonBreadcrumbs,
     FolderIcon,
