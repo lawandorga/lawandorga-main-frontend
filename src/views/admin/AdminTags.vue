@@ -84,7 +84,7 @@ export default defineComponent({
     return {
       // data
       tag: null as Tag | null,
-      tags: [] as Tag[],
+      tags: null as Tag[] | null,
       // functions
       createTag: RecordsService.createTag,
       updateTag: RecordsService.updateTag,
@@ -114,7 +114,7 @@ export default defineComponent({
     },
     tagCreated(tag: Tag) {
       this.createOpen = false;
-      this.tags.push(tag);
+      if (Array.isArray(this.tags)) this.tags.push(tag);
     },
     // update
     openUpdate(tag: Tag) {
@@ -123,8 +123,10 @@ export default defineComponent({
     },
     tagUpdated(tag: Tag) {
       this.updateOpen = false;
-      let index = this.tags.findIndex((item) => item.id === tag.id);
-      if (index) this.tags.splice(index, 1, tag);
+      if (Array.isArray(this.tags)) {
+        let index = this.tags.findIndex((item) => item.id === tag.id);
+        if (index) this.tags.splice(index, 1, tag);
+      }
     },
     // delete
     openDelete(tag: Tag) {
@@ -133,7 +135,8 @@ export default defineComponent({
     },
     tagDeleted(tag: Tag) {
       this.deleteOpen = false;
-      this.tags = this.tags.filter((item) => item.id !== tag.id);
+      if (Array.isArray(this.tags))
+        this.tags = this.tags.filter((item) => item.id !== tag.id);
     },
   },
 });

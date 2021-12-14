@@ -21,7 +21,7 @@ export interface UserState {
     profiles: number;
     record_deletion_requests: number;
     record_permit_requests: number;
-  } | null;
+  };
 }
 
 export interface RootState {

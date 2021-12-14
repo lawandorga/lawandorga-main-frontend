@@ -170,7 +170,7 @@ export default defineComponent({
     );
 
     // permissions
-    const permissions = ref([]) as Ref<HasPermission[]>;
+    const permissions = ref(null) as Ref<HasPermission[] | null>;
     useGetItems(AdminService.getUserPermissions, permissions, user);
 
     // add permission

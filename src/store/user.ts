@@ -12,7 +12,11 @@ const state = {
   rlc: null,
   permissions: [],
   notifications: 0,
-  admin: null,
+  admin: {
+    profiles: 0,
+    record_deletion_requests: 0,
+    record_permit_requests: 0,
+  },
 };
 
 const getters = {
@@ -220,7 +224,11 @@ const mutations = {
     state.rlc = null;
     state.permissions = [];
     state.notifications = 0;
-    state.admin = null;
+    state.admin = {
+      profiles: 0,
+      record_deletion_requests: 0,
+      record_permit_requests: 0,
+    };
   },
   setRlc: (state: UserState, rlc: Rlc) => {
     state.rlc = rlc;

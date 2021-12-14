@@ -38,7 +38,7 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="openCreate()">
+            <ButtonTable type="button" @click="createModalOpen = true">
               Create Record
             </ButtonTable>
           </div>
@@ -119,7 +119,10 @@
             <ButtonTable
               type="button"
               :disabled="slotProps.dataItem.delete"
-              @click="openDelete(slotProps.dataItem)"
+              @click="
+                record = slotProps.dataItem;
+                createDeletionRequestModalOpen = true;
+              "
             >
               Request Deletion
             </ButtonTable>
@@ -128,14 +131,16 @@
       </TableControls>
     </div>
     <!-- modals -->
-    <ModalFree v-model="createOpen" title="Create Record">
+    <ModalFree v-model="createModalOpen" title="Create Record">
       <FormGenerator
         :fields="createFields"
-        :request="createRecord"
-        @success="recordCreated"
+        :request="createRequest"
       ></FormGenerator>
     </ModalFree>
-    <ModalFree v-model="deleteOpen" title="Request Deletion">
+    <ModalFree
+      v-model="createDeletionRequestModalOpen"
+      title="Request Deletion"
+    >
       <FormGenerator
         :fields="[
           {
@@ -156,7 +161,7 @@
           record: record ? record.id : null,
           requested_from: $store.getters['user/user'].id,
         }"
-        :request="createDeletionRequest"
+        :request="createDeletionRequestRequest"
         submit="Request Deletion"
         @success="deletionRequestCreated"
       ></FormGenerator>
@@ -188,9 +193,15 @@
 import TableControls from "@/components/TableControls.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { defineComponent } from "vue";
+import { defineComponent, ref, Ref, computed, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
-import { Consultant, Country, RestrictedRecord, Tag } from "@/types/records";
+import {
+  Consultant,
+  Country,
+  RecordDeletionRequest,
+  RestrictedRecord,
+  Tag,
+} from "@/types/records";
 import FormInput from "@/components/FormInput.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
 import ModalFree from "@/components/ModalFree.vue";
@@ -200,6 +211,9 @@ import { CollectionIcon } from "@heroicons/vue/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { HasPermission } from "@/types/core";
 import { formatDate } from "@/utils/date";
+import useCreateItem from "@/composables/useCreateItem";
+import useGetItems from "@/composables/useGetItems";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -214,160 +228,78 @@ export default defineComponent({
     ButtonTable,
     ModalFree,
   },
-  data() {
-    return {
-      // utils
-      formatDate: formatDate,
-      // list
-      records: [] as RestrictedRecord[],
-      search: "" as string,
-      // create
-      createOpen: false,
-      createRecord: RecordsService.createRecord,
-      createFields: [
-        {
-          label: "Client",
-          type: "text",
-          name: "name",
-          required: true,
-        },
-        {
-          label: "Birthday",
-          type: "date",
-          name: "birthday",
-          required: false,
-        },
-        {
-          label: "Client Origin Country",
-          type: "select",
-          name: "origin_country",
-          required: false,
-          options: [] as Country[],
-        },
-        {
-          label: "Client Phone",
-          type: "tel",
-          name: "phone_number",
-          required: false,
-        },
-        {
-          label: "Client Note",
-          type: "text",
-          name: "note",
-          required: false,
-        },
-        {
-          label: "Record Token",
-          type: "text",
-          name: "record_token",
-          required: true,
-        },
-        {
-          label: "Record Contact Date",
-          type: "date",
-          name: "first_contact_date",
-        },
-        {
-          label: "Record Consultants",
-          type: "multiple",
-          name: "working_on_record",
-          required: true,
-          options: [] as Consultant[],
-        },
-        {
-          label: "Tags",
-          type: "multiple",
-          name: "tags",
-          required: true,
-          options: [] as Tag[],
-        },
-        {
-          label: "Record Note",
-          type: "text",
-          name: "record_note",
-          required: false,
-        },
-      ],
-      // delete
-      deleteOpen: false,
-      record: null as RestrictedRecord | null,
-      createDeletionRequest: RecordsService.createDeletionRequest,
-      // breadcrumbs
-      generalPermissions: [] as HasPermission[],
-      generalPermissionsModalOpen: false,
-    };
-  },
-  computed: {
-    filteredRecords(): RestrictedRecord[] {
-      if (this.search === "") return this.records;
-      return this.records.filter(this.filterRecord);
-    },
-  },
-  mounted() {
-    RecordsService.getRecords().then((records) => (this.records = records));
-    RecordsService.getGeneralPermissions().then(
-      (permissions) => (this.generalPermissions = permissions),
-    );
-  },
-  methods: {
-    // create
-    openCreate() {
-      this.createOpen = true;
-      RecordsService.getCountries().then(
-        (countries) => (this.createFields[2].options = countries),
-      );
-      RecordsService.getConsultants().then(
-        (consultants) => (this.createFields[7].options = consultants),
-      );
-      RecordsService.getTags().then(
-        (tags) => (this.createFields[8].options = tags),
-      );
-    },
-    recordCreated(record: RestrictedRecord) {
-      this.createOpen = false;
-      this.records.push(record);
-    },
-    // delete
-    openDelete(record: RestrictedRecord) {
-      this.record = record;
-      this.deleteOpen = true;
-    },
-    deletionRequestCreated() {
-      this.deleteOpen = false;
-      const index = this.records.findIndex(
-        (item) => item.id === this.record?.id,
-      );
-      if (index !== -1) this.records[index].delete = true;
-      this.record = null;
-    },
-    // access
-    requestAccess(record: RestrictedRecord) {
-      RecordsService.requestAccess(record).then(() =>
-        this.$store.dispatch("alert/createAlert", {
-          heading: "Access Requested",
-          type: "success",
-          message: "An admin needs to allow you to see this record now.",
-        }),
-      );
-    },
-    // list
-    filterRecord(record: RestrictedRecord): boolean {
-      const filter = this.search.toLowerCase();
-      const note = record.official_note || "";
+  setup() {
+    // fields
+    const createFields = reactive([
+      {
+        label: "Client",
+        type: "text",
+        name: "name",
+        required: true,
+      },
+      {
+        label: "Birthday",
+        type: "date",
+        name: "birthday",
+        required: false,
+      },
+      {
+        label: "Client Origin Country",
+        type: "select",
+        name: "origin_country",
+        required: false,
+        options: [] as Country[],
+      },
+      {
+        label: "Client Phone",
+        type: "tel",
+        name: "phone_number",
+        required: false,
+      },
+      {
+        label: "Client Note",
+        type: "text",
+        name: "note",
+        required: false,
+      },
+      {
+        label: "Record Token",
+        type: "text",
+        name: "record_token",
+        required: true,
+      },
+      {
+        label: "Record Contact Date",
+        type: "date",
+        name: "first_contact_date",
+      },
+      {
+        label: "Record Consultants",
+        type: "multiple",
+        name: "working_on_record",
+        required: true,
+        options: [] as Consultant[],
+      },
+      {
+        label: "Tags",
+        type: "multiple",
+        name: "tags",
+        required: true,
+        options: [] as Tag[],
+      },
+      {
+        label: "Record Note",
+        type: "text",
+        name: "record_note",
+        required: false,
+      },
+    ]);
 
-      return (
-        record.record_token.toLowerCase().includes(filter) ||
-        this.getState(record.state).toLowerCase().includes(filter) ||
-        note.toLowerCase().includes(filter) ||
-        record.working_on_record
-          .map((item) => item.name.toLowerCase())
-          .some((name) => name.includes(filter)) ||
-        record.tags
-          .map((item) => item.name.toLowerCase())
-          .some((name) => name.includes(filter))
-      );
-    },
-    getState(state: string): string {
+    // store
+    const store = useStore();
+
+    // utils
+    const getState = (state: string) => {
       switch (state) {
         case "op":
           return "Open";
@@ -380,7 +312,108 @@ export default defineComponent({
         default:
           return "Unknown";
       }
-    },
+    };
+
+    // records
+    const records = ref(null) as Ref<RestrictedRecord[] | null>;
+    const record = ref(null) as Ref<RestrictedRecord | null>;
+
+    const search = ref("");
+
+    const filterRecord =
+      (search: string) =>
+      (record: RestrictedRecord): boolean => {
+        const filter = search.toLowerCase();
+        const note = record.official_note || "";
+
+        return (
+          record.record_token.toLowerCase().includes(filter) ||
+          getState(record.state).toLowerCase().includes(filter) ||
+          note.toLowerCase().includes(filter) ||
+          record.working_on_record
+            .map((item) => item.name.toLowerCase())
+            .some((name) => name.includes(filter)) ||
+          record.tags
+            .map((item) => item.name.toLowerCase())
+            .some((name) => name.includes(filter))
+        );
+      };
+
+    const filteredRecords = computed(() => {
+      if (search.value === "" || !Array.isArray(records.value))
+        return records.value;
+      return records.value.filter(filterRecord(search.value));
+    });
+
+    // general
+    const generalPermissions = ref(null) as Ref<HasPermission[] | null>;
+    const generalPermissionsModalOpen = ref(false);
+
+    // get
+    useGetItems(RecordsService.getRecords, records);
+    useGetItems(RecordsService.getGeneralPermissions, generalPermissions);
+
+    // create
+    const { createRequest, createModalOpen } = useCreateItem(
+      RecordsService.createRecord,
+      records,
+    );
+    watch(createModalOpen, () => {
+      RecordsService.getCountries().then(
+        (countries) => (createFields[2].options = countries),
+      );
+      RecordsService.getConsultants().then(
+        (consultants) => (createFields[7].options = consultants),
+      );
+      RecordsService.getTags().then((tags) => (createFields[8].options = tags));
+    });
+
+    // delete
+    const {
+      createRequest: createDeletionRequestRequest,
+      createModalOpen: createDeletionRequestModalOpen,
+    } = useCreateItem(RecordsService.createDeletionRequest, ref(null));
+    const deletionRequestCreated = (deletionRequest: RecordDeletionRequest) => {
+      if (records.value === null) return;
+      const index = records.value.findIndex(
+        (item) => item.id === deletionRequest.record,
+      );
+      if (index !== -1) records.value[index].delete = true;
+    };
+
+    // request access
+    const requestAccess = (record: RestrictedRecord) => {
+      RecordsService.requestAccess(record).then(() =>
+        store.dispatch("alert/createAlert", {
+          heading: "Access Requested",
+          type: "success",
+          message: "An admin needs to allow you to see this record now.",
+        }),
+      );
+    };
+
+    return {
+      // utils
+      formatDate,
+      // records
+      records,
+      record,
+      search,
+      filteredRecords,
+      // general
+      generalPermissions,
+      generalPermissionsModalOpen,
+      // access
+      requestAccess,
+      // create record
+      createFields,
+      createModalOpen,
+      createRequest,
+      // create deletion request
+      createDeletionRequestRequest,
+      createDeletionRequestModalOpen,
+      deletionRequestCreated,
+    };
   },
 });
 </script>

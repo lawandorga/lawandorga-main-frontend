@@ -123,7 +123,7 @@ export default defineComponent({
     BreadcrumbsBar,
   },
   setup() {
-    const groups = ref([]) as Ref<Group[]>;
+    const groups = ref(null) as Ref<Group[] | null>;
     const group = ref({}) as Ref<Group>;
 
     // get

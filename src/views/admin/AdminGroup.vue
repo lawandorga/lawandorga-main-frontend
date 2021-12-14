@@ -162,8 +162,8 @@ export default defineComponent({
     // const p = ref({}) as Ref<HasPermission>
 
     // members and permissions
-    const members = ref([]) as Ref<User[]>;
-    const permissions = ref([]) as Ref<HasPermission[]>;
+    const members = ref(null) as Ref<User[] | null>;
+    const permissions = ref(null) as Ref<HasPermission[] | null>;
 
     // watch(group, (group) => {
     useGetItems(AdminService.getMembers, members, group);

@@ -103,7 +103,7 @@ export default defineComponent({
     FormGenerator,
   },
   setup() {
-    const deletionRequests = ref([]) as Ref<RecordDeletionRequest[]>;
+    const deletionRequests = ref(null) as Ref<RecordDeletionRequest[] | null>;
     const deletionRequest = ref(null) as Ref<RecordDeletionRequest | null>;
 
     // get

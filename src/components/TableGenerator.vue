@@ -23,7 +23,7 @@
           </slot>
         </Td>
       </Tr>
-      <Tr v-show="loading">
+      <Tr v-show="innerLoading">
         <Td :colspan="head.length">
           <CircleLoader />
         </Td>
@@ -63,13 +63,19 @@ export default defineComponent({
       required: true,
     },
     data: {
-      type: Array as PropType<JsonModel[]>,
-      required: true,
+      type: Array as PropType<JsonModel[] | null>,
+      required: false,
+      default: null,
     },
     loading: {
       type: Boolean,
       required: false,
       default: false,
+    },
+  },
+  computed: {
+    innerLoading() {
+      return this.loading || this.data === null;
     },
   },
   methods: {

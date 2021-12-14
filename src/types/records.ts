@@ -153,7 +153,7 @@ export interface RecordDeletionRequest {
   processed_on: Date;
   state: string;
   explanation: string;
-  // record?: TokenRecord;
+  record: number;
 }
 
 export interface Pool {

@@ -113,7 +113,7 @@ export default defineComponent({
     ModalDelete,
   },
   setup() {
-    const profiles = ref([]) as Ref<User[]>;
+    const profiles = ref(null) as Ref<User[] | null>;
     useGetItems(AdminService.getUsers, profiles);
 
     // accept

@@ -221,12 +221,12 @@ export default defineComponent({
     );
 
     // fields
-    const fields = ref([]) as Ref<QuestionnaireField[]>;
+    const fields = ref(null) as Ref<QuestionnaireField[] | null>;
     const field = ref(null) as Ref<QuestionnaireField | null>;
     useGetItems(RecordsService.getQuestionnaireFields, fields, questionnaire);
 
     // files
-    const files = ref([]) as Ref<QuestionnaireFile[]>;
+    const files = ref(null) as Ref<QuestionnaireFile[] | null>;
     const file = ref(null) as Ref<QuestionnaireFile | null>;
     useGetItems(RecordsService.getQuestionnaireFiles, files, questionnaire);
 
@@ -295,5 +295,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style></style>

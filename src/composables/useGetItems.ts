@@ -5,7 +5,7 @@ export default function useGetItems<
   Fn extends (...args: any[]) => Promise<DjangoModel[]>, // eslint-disable-line
 >(
   getItemsFunction: Fn,
-  items: Ref<DjangoModel[]>,
+  items: Ref<DjangoModel[] | null>,
   ...params: Reffed<Parameters<Fn>>
 ) {
   const getItems = () => {

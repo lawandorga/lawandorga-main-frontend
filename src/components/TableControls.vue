@@ -12,18 +12,24 @@
       </Tr>
     </Thead>
     <Tbody>
-      <Tr
-        v-for="(dataItem, index) in data.slice(start, end)"
-        :key="index"
-        class="divide-x divide-gray-100"
-      >
-        <Td v-for="headItem in head" :key="headItem.key">
-          <slot :dataItem="dataItem" :headItem="headItem" :name="headItem.key">
-            {{ getData(dataItem, headItem.key) }}
-          </slot>
-        </Td>
-      </Tr>
-      <Tr v-show="loading">
+      <template v-if="data !== null">
+        <Tr
+          v-for="(dataItem, index) in data.slice(start - 1, end)"
+          :key="index"
+          class="divide-x divide-gray-100"
+        >
+          <Td v-for="headItem in head" :key="headItem.key">
+            <slot
+              :dataItem="dataItem"
+              :headItem="headItem"
+              :name="headItem.key"
+            >
+              {{ getData(dataItem, headItem.key) }}
+            </slot>
+          </Td>
+        </Tr>
+      </template>
+      <Tr v-show="innerLoading">
         <Td :colspan="head.length">
           <CircleLoader />
         </Td>
@@ -38,18 +44,18 @@
                 Showing
                 {{ " " }}
                 <span class="font-medium">
-                  {{ data.length === 0 ? 0 : start + 1 }}
+                  {{ start }}
                 </span>
                 {{ " " }}
                 to
                 {{ " " }}
                 <span class="font-medium">
-                  {{ Math.min(end, data.length) }}
+                  {{ end }}
                 </span>
                 {{ " " }}
                 of
                 {{ " " }}
-                <span class="font-medium">{{ data.length }}</span>
+                <span class="font-medium">{{ total }}</span>
                 {{ " " }}
                 records
               </p>
@@ -179,8 +185,9 @@ export default defineComponent({
       required: true,
     },
     data: {
-      type: Array as PropType<JsonModel[]>,
-      required: true,
+      type: Array as PropType<JsonModel[] | null>,
+      required: false,
+      default: null,
     },
     loading: {
       type: Boolean,
@@ -196,15 +203,25 @@ export default defineComponent({
   },
   computed: {
     start() {
-      return (this.page - 1) * this.perPage;
+      if (this.data === null || this.data.length === 0) return 0;
+      return (this.page - 1) * this.perPage + 1;
     },
     end() {
+      if (this.data === null) return 0;
       return Math.min(this.page * this.perPage, this.data.length);
     },
     pages() {
+      if (this.data === null) return [1];
       return Array.from(
         Array(Math.ceil(this.data.length / this.perPage)).keys(),
       ).map((i) => (i += 1));
+    },
+    total() {
+      if (this.data === null) return 0;
+      return this.data.length;
+    },
+    innerLoading() {
+      return this.loading || this.data === null;
     },
   },
   watch: {

@@ -124,7 +124,7 @@ export default defineComponent({
     ButtonTable,
   },
   setup() {
-    const questionnaires = ref([]) as Ref<Questionnaire[]>;
+    const questionnaires = ref(null) as Ref<Questionnaire[] | null>;
     const questionnaire = ref({}) as Ref<Questionnaire>;
 
     // get
