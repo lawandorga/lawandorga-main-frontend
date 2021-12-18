@@ -25,30 +25,30 @@ class RecordsService {
   // records
   getRecords(): Promise<RestrictedRecord[]> {
     return axios
-      .get<RestrictedRecord[]>("records/records/")
+      .get<RestrictedRecord[]>("records/oldrecords/")
       .then((response) => response.data);
   }
 
   getRecord(id: number | string): Promise<Record> {
     return axios
-      .get<Record>(`records/records/${id}/`)
+      .get<Record>(`records/oldrecords/${id}/`)
       .then((response) => response.data);
   }
 
   createRecord(record: Record): Promise<Record> {
     return axios
-      .post<Record>("records/records/", record)
+      .post<Record>("records/oldrecords/", record)
       .then((response) => response.data);
   }
 
   updateRecord(record: Record): Promise<Record> {
     return axios
-      .patch<Record>(`records/records/${record.id}/`, record)
+      .patch<Record>(`records/oldrecords/${record.id}/`, record)
       .then((response) => response.data);
   }
 
   deleteRecord(record: RestrictedRecord): Promise<void> {
-    return axios.delete(`records/records/${record.id}/`).then();
+    return axios.delete(`records/oldrecords/${record.id}/`).then();
   }
 
   // permissions
@@ -128,7 +128,7 @@ class RecordsService {
   getRecordQuestionnaires(id: number | string): Promise<RecordQuestionnaire[]> {
     return axios
       .get<RecordQuestionnaire[]>(
-        `records/records/${id}/record_questionnaires/`,
+        `records/oldrecords/${id}/record_questionnaires/`,
       )
       .then((response) => response.data);
   }
@@ -221,20 +221,23 @@ class RecordsService {
   // messages
   getMessages(id: string | number): Promise<Message[]> {
     return axios
-      .get<Message[]>(`records/records/${id}/messages/`)
+      .get<Message[]>(`records/oldrecords/${id}/messages/`)
       .then((response) => response.data);
   }
 
   createMessage(message: Message): Promise<Message> {
     return axios
-      .post<Message>(`records/records/${message.record}/add_message/`, message)
+      .post<Message>(
+        `records/oldrecords/${message.record}/add_message/`,
+        message,
+      )
       .then((response) => response.data);
   }
 
   // documents
   getDocuments(id: number | string): Promise<RecordsDocument[]> {
     return axios
-      .get<RecordsDocument[]>(`records/records/${id}/documents/`)
+      .get<RecordsDocument[]>(`records/oldrecords/${id}/documents/`)
       .then((response) => response.data);
   }
 
@@ -325,7 +328,7 @@ class RecordsService {
   requestAccess(record: RestrictedRecord): Promise<RecordPermissionRequest> {
     return axios
       .post<RecordPermissionRequest>(
-        `records/records/${record.id}/request_permission/`,
+        `records/oldrecords/${record.id}/request_permission/`,
       )
       .then((response) => response.data);
   }
