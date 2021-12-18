@@ -23,18 +23,18 @@
           required
         />
       </div>
-      <TableControls
-        :head="[
+      <TableRecords
+        :head2="[
           { name: 'Token', key: 'record_token' },
           { name: 'State', key: 'state' },
           { name: 'Consultants', key: 'working_on_record' },
           { name: 'Tags', key: 'tags' },
           { name: 'Note', key: 'official_note' },
-          { name: 'Created', key: 'created_on' },
-          { name: 'Updated', key: 'last_edited' },
+          { name: 'Created', key: 'created' },
+          { name: 'Updated', key: 'updated' },
           { name: 'action', key: 'action' },
         ]"
-        :data="filteredRecords"
+        :records="filteredRecords"
       >
         <template #head-action>
           <div class="flex justify-end">
@@ -43,7 +43,7 @@
             </ButtonTable>
           </div>
         </template>
-        <template #record_token="slotProps">
+        <!-- <template #record_token="slotProps">
           <div class="flex items-center justify-between">
             <ButtonLink
               v-if="slotProps.dataItem.access"
@@ -55,13 +55,6 @@
               {{ slotProps.dataItem.record_token }}
             </ButtonLink>
             <span v-else>{{ slotProps.dataItem.record_token }}</span>
-            <ButtonTable
-              v-if="!slotProps.dataItem.access"
-              type="button"
-              @click="requestAccess(slotProps.dataItem)"
-            >
-              Request Access
-            </ButtonTable>
           </div>
         </template>
         <template #state="slotProps">
@@ -80,11 +73,11 @@
             {{ slotProps.dataItem.official_note }}
           </div>
         </template>
-        <template #created_on="slotProps">
-          {{ formatDate(slotProps.dataItem.created_on) }}
+        <template #created="slotProps">
+          {{ formatDate(slotProps.dataItem.created) }}
         </template>
-        <template #last_edited="slotProps">
-          {{ formatDate(slotProps.dataItem.last_edited) }}
+        <template #updated="slotProps">
+          {{ formatDate(slotProps.dataItem.updated) }}
         </template>
         <template #working_on_record="slotProps">
           <ul class="list-disc pl-3.5">
@@ -112,9 +105,25 @@
               </button>
             </li>
           </ul>
-        </template>
+        </template> -->
         <template #action="slotProps">
-          <div class="flex justify-end">
+          <div class="flex justify-end space-x-3">
+            <ButtonLink
+              v-if="slotProps.dataItem.access"
+              :to="{
+                name: 'records-detail',
+                params: { id: slotProps.dataItem.id },
+              }"
+            >
+              Open
+            </ButtonLink>
+            <ButtonTable
+              v-else
+              type="button"
+              @click="requestAccess(slotProps.dataItem)"
+            >
+              Request Access
+            </ButtonTable>
             <ButtonTable
               type="button"
               :disabled="slotProps.dataItem.delete"
@@ -127,7 +136,7 @@
             </ButtonTable>
           </div>
         </template>
-      </TableControls>
+      </TableRecords>
     </div>
     <!-- modals -->
     <ModalFree v-model="createModalOpen" title="Create Record">
@@ -190,7 +199,7 @@
 
 <script lang="ts">
 import ButtonLink from "@/components/ButtonLink.vue";
-import TableControls from "@/components/TableControls.vue";
+import TableRecords from "@/components/TableRecords.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent, ref, Ref, computed, reactive, watch } from "vue";
@@ -224,7 +233,7 @@ export default defineComponent({
     FormGenerator,
     BoxLoader,
     TableGenerator,
-    TableControls,
+    TableRecords,
     FormInput,
     ButtonTable,
     ModalFree,

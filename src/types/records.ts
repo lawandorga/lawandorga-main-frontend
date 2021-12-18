@@ -27,6 +27,14 @@ export interface Record {
 }
 
 export interface RestrictedRecord {
+  entries: {
+    id: number;
+    name: string;
+    order: number;
+    value: string;
+    field: number;
+    field_type: string;
+  }[];
   id: number;
   state: string;
   created_on: string;

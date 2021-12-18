@@ -1,0 +1,279 @@
+<template>
+  <Table>
+    <Thead>
+      <Tr class="divide-x divide-gray-200">
+        <Th v-for="item in head" :key="item.key">
+          <div class="flex items-center justify-between">
+            {{ item.name }}
+          </div>
+        </Th>
+        <Th>
+          <slot name="head-action"></slot>
+        </Th>
+      </Tr>
+    </Thead>
+    <Tbody>
+      <template v-if="records !== null">
+        <Tr
+          v-for="(dataItem, index) in records.slice(start - 1, end)"
+          :key="index"
+          class="divide-x divide-gray-100"
+        >
+          <Td v-for="headItem in head" :key="headItem.key">
+            <!-- <slot
+              :dataItem="dataItem"
+              :headItem="headItem"
+              :name="headItem.key"
+            >
+              {{ getData(dataItem, headItem.key) }}
+            </slot> -->
+            hallo
+          </Td>
+          <Td>
+            <slot
+              :dataItem="dataItem"
+              :headItem="headItem"
+              name="action"
+            ></slot>
+          </Td>
+        </Tr>
+      </template>
+      <Tr v-show="innerLoading">
+        <Td :colspan="head.length + 1">
+          <CircleLoader />
+        </Td>
+      </Tr>
+      <Tr>
+        <Td :colspan="head.length + 1">
+          <div
+            class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+          >
+            <div>
+              <p class="text-sm text-gray-700">
+                Showing
+                {{ " " }}
+                <span class="font-medium">
+                  {{ start }}
+                </span>
+                {{ " " }}
+                to
+                {{ " " }}
+                <span class="font-medium">
+                  {{ end }}
+                </span>
+                {{ " " }}
+                of
+                {{ " " }}
+                <span class="font-medium">{{ total }}</span>
+                {{ " " }}
+                records
+              </p>
+            </div>
+            <div>
+              <nav
+                class="
+                  relative
+                  z-0
+                  inline-flex
+                  rounded-md
+                  shadow-sm
+                  -space-x-px
+                "
+                aria-label="Pagination"
+              >
+                <button
+                  type="button"
+                  class="
+                    relative
+                    inline-flex
+                    items-center
+                    px-2
+                    py-2
+                    rounded-l-md
+                    border border-gray-300
+                    bg-white
+                    text-sm
+                    font-medium
+                    text-gray-500
+                    hover:bg-gray-50
+                  "
+                  @click="page = Math.max(page - 1, 1)"
+                >
+                  <span class="sr-only">Previous</span>
+                  <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
+                </button>
+                <button
+                  v-for="pageNumber in pages.slice(
+                    Math.max(page - 5, 0),
+                    page + 5,
+                  )"
+                  :key="pageNumber"
+                  type="button"
+                  class="
+                    hover:bg-gray-50
+                    relative
+                    inline-flex
+                    items-center
+                    px-4
+                    py-2
+                    border
+                    text-sm
+                    font-medium
+                  "
+                  :class="{
+                    'z-10 bg-blue-50 border-blue-500 text-blue-600':
+                      pageNumber === page,
+                    'bg-white border-gray-300 text-gray-500':
+                      pageNumber !== page,
+                  }"
+                  @click="page = pageNumber"
+                >
+                  {{ pageNumber }}
+                </button>
+                <button
+                  type="button"
+                  class="
+                    relative
+                    inline-flex
+                    items-center
+                    px-2
+                    py-2
+                    rounded-r-md
+                    border border-gray-300
+                    bg-white
+                    text-sm
+                    font-medium
+                    text-gray-500
+                    hover:bg-gray-50
+                  "
+                  @click="page = Math.min(page + 1, pages.length)"
+                >
+                  <span class="sr-only">Next</span>
+                  <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
+                </button>
+              </nav>
+            </div>
+          </div>
+        </Td>
+      </Tr>
+    </Tbody>
+  </Table>
+</template>
+
+<script lang="ts">
+import Table from "./TableTable.vue";
+import Td from "./TableData.vue";
+import Tbody from "./TableBody.vue";
+import Thead from "./TableHeader.vue";
+import Tr from "./TableRow.vue";
+import Th from "./TableHead.vue";
+import { defineComponent, PropType } from "vue";
+import CircleLoader from "./CircleLoader.vue";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
+import { RestrictedRecord } from "@/types/records";
+
+interface NestedObject {
+  [key: string]: string | number | boolean | NestedObject;
+}
+
+export default defineComponent({
+  components: {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    Th,
+    Td,
+    Tbody,
+    Thead,
+    Tr,
+    Table,
+    CircleLoader,
+  },
+  props: {
+    records: {
+      type: Array as PropType<RestrictedRecord[] | null>,
+      required: false,
+      default: null,
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      perPage: 12,
+      page: 1,
+    };
+  },
+  computed: {
+    entryNames() {
+      return this.records
+        ? Array.from(
+            new Set(
+              this.records.map((r) => r.entries.map((e) => e.name)).flat(),
+            ),
+          )
+        : [];
+    },
+    mappedRecords() {
+      return this.records
+        ? this.records.map((r) => ({
+            ...r,
+            data: Object.assign(
+              {},
+              ...r.entries.map((e) => ({ [e.name]: e.value })),
+            ),
+          }))
+        : [];
+    },
+    head() {
+      const head: { name: string; key: string | string[] }[] =
+        this.entryNames.map((i) => ({ name: i, key: ["data", i] }));
+      return head;
+    },
+    start() {
+      if (this.records === null || this.records.length === 0) return 0;
+      return (this.page - 1) * this.perPage + 1;
+    },
+    end() {
+      if (this.records === null) return 0;
+      return Math.min(this.page * this.perPage, this.records.length);
+    },
+    pages() {
+      if (this.records === null) return [1];
+      return Array.from(
+        Array(Math.ceil(this.records.length / this.perPage)).keys(),
+      ).map((i) => (i += 1));
+    },
+    total() {
+      if (this.records === null) return 0;
+      return this.records.length;
+    },
+    innerLoading() {
+      return this.loading || this.records === null;
+    },
+  },
+  watch: {
+    data: function () {
+      if (!this.pages.includes(this.page)) this.page = 1;
+    },
+  },
+  methods: {
+    getData(
+      data: NestedObject,
+      key: string | string[],
+    ): string | number | boolean {
+      if (Array.isArray(key)) {
+        let newData = data as NestedObject | string | number | boolean;
+        key.forEach((key) => {
+          if (newData) newData = (newData as NestedObject)[key];
+          else return "";
+        });
+        return newData as unknown as string | number | boolean;
+      }
+      return data[key] as number | string | boolean;
+    },
+  },
+});
+</script>

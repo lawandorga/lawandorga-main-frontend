@@ -25,7 +25,7 @@ class RecordsService {
   // records
   getRecords(): Promise<RestrictedRecord[]> {
     return axios
-      .get<RestrictedRecord[]>("records/oldrecords/")
+      .get<RestrictedRecord[]>("records/records/")
       .then((response) => response.data);
   }
 
