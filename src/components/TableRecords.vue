@@ -20,7 +20,7 @@
           class="divide-x divide-gray-100"
         >
           <Td v-for="headItem in head" :key="headItem">
-            {{ dataItem['entries'][headItem]['value'] }}
+            {{ dataItem["entries"][headItem]["value"] }}
             <!-- TODO: display according to entry type -->
             <!-- TODO: django change return of record list -->
           </Td>
@@ -38,9 +38,18 @@
           <CircleLoader />
         </Td>
       </Tr>
-      <table-pagination :colspan="head.length + 1" :previousPage="previousPage" :setPage="setPage" :nextPage="nextPage" 
-      :total="total" :current="current" :start="start" :end="end" :pages="pages" name="records"
-       />
+      <TablePagination
+        :colspan="head.length + 1"
+        :previous-page="previousPage"
+        :set-page="setPage"
+        :next-page="nextPage"
+        :total="total"
+        :current="current"
+        :start="start"
+        :end="end"
+        :pages="pages"
+        name="records"
+      />
     </Tbody>
   </Table>
 </template>
@@ -54,18 +63,15 @@ import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
 import { defineComponent, PropType, toRefs, computed } from "vue";
 import CircleLoader from "./CircleLoader.vue";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
 import { RestrictedRecord } from "@/types/records";
-import usePagination from '@/composables/usePagination'
-import TablePagination from '@/components/TablePagination.vue'
+import usePagination from "@/composables/usePagination";
+import TablePagination from "@/components/TablePagination.vue";
 interface NestedObject {
   [key: string]: string | number | boolean | NestedObject;
 }
 
 export default defineComponent({
   components: {
-    ChevronLeftIcon,
-    ChevronRightIcon,
     Th,
     Td,
     Tbody,
@@ -91,34 +97,33 @@ export default defineComponent({
     const { records, loading } = toRefs(props);
     const innerLoading = computed(() => {
       return loading.value || records.value === null;
-    })
-    const {
-         pages,
-    start, end,
-    paginatedData,
-    total,
-    previous, next, setPage,
-    } = usePagination(records, 12)
+    });
+    const { pages, start, end, paginatedData, total, previous, next, setPage } =
+      usePagination(records, 12);
 
     const head = computed(() => {
       if (paginatedData.value === null) return [];
       return Array.from(
-            new Set(
-              paginatedData.value.map((r: RestrictedRecord) => r.entries.map((e) => e.name)).flat(),
-            ),
-          )
-    })
-
+        new Set(
+          paginatedData.value
+            .map((r: RestrictedRecord) => r.entries.map((e) => e.name))
+            .flat(),
+        ),
+      );
+    });
 
     return {
-   pages,
-    start, end,
-    paginatedData,
-    total,
-    previous, next, setPage,
-    innerLoading,
-    head
-    }
+      pages,
+      start,
+      end,
+      paginatedData,
+      total,
+      previous,
+      next,
+      setPage,
+      innerLoading,
+      head,
+    };
   },
   computed: {
     mappedRecords() {
