@@ -31,7 +31,7 @@ export interface RestrictedRecord {
     id: number;
     name: string;
     order: number;
-    value: string;
+    value: string | string[] | number | number[] | boolean;
     field: number;
     field_type: string;
   }[];
@@ -45,6 +45,7 @@ export interface RestrictedRecord {
   official_note: string;
   access: boolean;
   delete: boolean;
+  show: string[];
 }
 
 export interface RecordsClient {

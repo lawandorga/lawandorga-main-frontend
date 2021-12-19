@@ -23,19 +23,7 @@
           required
         />
       </div>
-      <TableRecords
-        :head2="[
-          { name: 'Token', key: 'record_token' },
-          { name: 'State', key: 'state' },
-          { name: 'Consultants', key: 'working_on_record' },
-          { name: 'Tags', key: 'tags' },
-          { name: 'Note', key: 'official_note' },
-          { name: 'Created', key: 'created' },
-          { name: 'Updated', key: 'updated' },
-          { name: 'action', key: 'action' },
-        ]"
-        :records="filteredRecords"
-      >
+      <TableRecords :records="filteredRecords" @search="search = $event">
         <template #head-action>
           <div class="flex justify-end">
             <ButtonTable type="button" @click="createModalOpen = true">
@@ -43,92 +31,20 @@
             </ButtonTable>
           </div>
         </template>
-        <!-- <template #record_token="slotProps">
-          <div class="flex items-center justify-between">
-            <ButtonLink
-              v-if="slotProps.dataItem.access"
-              :to="{
-                name: 'records-detail',
-                params: { id: slotProps.dataItem.id },
-              }"
-            >
-              {{ slotProps.dataItem.record_token }}
-            </ButtonLink>
-            <span v-else>{{ slotProps.dataItem.record_token }}</span>
-          </div>
-        </template>
-        <template #state="slotProps">
-          <button
-            class="cursor-pointer hover:underline text-left"
-            @click="search = slotProps.dataItem.state"
-          >
-            <span v-if="slotProps.dataItem.state === 'op'">Open</span>
-            <span v-if="slotProps.dataItem.state === 'cl'">Closed</span>
-            <span v-if="slotProps.dataItem.state === 'wa'">Waiting</span>
-            <span v-if="slotProps.dataItem.state === 'wo'">Working</span>
-          </button>
-        </template>
-        <template #official_note="slotProps">
-          <div class="max-w-xs whitespace-normal line-clamp-3 min-w-[12rem]">
-            {{ slotProps.dataItem.official_note }}
-          </div>
-        </template>
-        <template #created="slotProps">
-          {{ formatDate(slotProps.dataItem.created) }}
-        </template>
-        <template #updated="slotProps">
-          {{ formatDate(slotProps.dataItem.updated) }}
-        </template>
-        <template #working_on_record="slotProps">
-          <ul class="list-disc pl-3.5">
-            <li
-              v-for="item in slotProps.dataItem.working_on_record"
-              :key="item.id"
-            >
-              <button
-                class="cursor-pointer hover:underline text-left"
-                @click="search = item.name"
-              >
-                {{ item.name }}
-              </button>
-            </li>
-          </ul>
-        </template>
-        <template #tags="slotProps">
-          <ul class="list-disc pl-3.5">
-            <li v-for="item in slotProps.dataItem.tags" :key="item.id">
-              <button
-                class="cursor-pointer hover:underline text-left"
-                @click="search = item.name"
-              >
-                {{ item.name }}
-              </button>
-            </li>
-          </ul>
-        </template> -->
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonLink
-              v-if="slotProps.dataItem.access"
-              :to="{
-                name: 'records-detail',
-                params: { id: slotProps.dataItem.id },
-              }"
-            >
-              Open
-            </ButtonLink>
             <ButtonTable
-              v-else
+              v-if="!slotProps.record.access"
               type="button"
-              @click="requestAccess(slotProps.dataItem)"
+              @click="requestAccess(slotProps.record)"
             >
               Request Access
             </ButtonTable>
             <ButtonTable
               type="button"
-              :disabled="slotProps.dataItem.delete"
+              :disabled="slotProps.record.delete"
               @click="
-                record = slotProps.dataItem;
+                record = slotProps.record;
                 createDeletionRequestModalOpen = true;
               "
             >
@@ -198,7 +114,6 @@
 </template>
 
 <script lang="ts">
-import ButtonLink from "@/components/ButtonLink.vue";
 import TableRecords from "@/components/TableRecords.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -227,7 +142,6 @@ import { useStore } from "vuex";
 export default defineComponent({
   components: {
     ButtonBreadcrumbs,
-    ButtonLink,
     CollectionIcon,
     BreadcrumbsBar,
     FormGenerator,
@@ -308,22 +222,6 @@ export default defineComponent({
     // store
     const store = useStore();
 
-    // utils
-    const getState = (state: string) => {
-      switch (state) {
-        case "op":
-          return "Open";
-        case "wa":
-          return "Waiting";
-        case "cl":
-          return "Closed";
-        case "wo":
-          return "Working";
-        default:
-          return "Unknown";
-      }
-    };
-
     // records
     const records = ref(null) as Ref<RestrictedRecord[] | null>;
     const record = ref(null) as Ref<RestrictedRecord | null>;
@@ -331,22 +229,21 @@ export default defineComponent({
     const search = ref("");
 
     const filterRecord =
-      (search: string) =>
-      (record: RestrictedRecord): boolean => {
-        const filter = search.toLowerCase();
-        const note = record.official_note || "";
-
-        return (
-          record.record_token.toLowerCase().includes(filter) ||
-          getState(record.state).toLowerCase().includes(filter) ||
-          note.toLowerCase().includes(filter) ||
-          record.working_on_record
-            .map((item) => item.name.toLowerCase())
-            .some((name) => name.includes(filter)) ||
-          record.tags
-            .map((item) => item.name.toLowerCase())
-            .some((name) => name.includes(filter))
-        );
+      (search2: string) =>
+      (record2: RestrictedRecord): boolean => {
+        const filter = search2.toLowerCase();
+        let ret = false;
+        for (const key in record2.entries) {
+          const entry = record2.entries[key];
+          if (Array.isArray(entry.value))
+            ret =
+              ret ||
+              entry.value
+                .map((i) => (i + "").toLowerCase())
+                .some((name: string) => name.includes(filter));
+          else ret = ret || (entry.value + "").toLowerCase().includes(filter);
+        }
+        return ret;
       };
 
     const filteredRecords = computed(() => {
