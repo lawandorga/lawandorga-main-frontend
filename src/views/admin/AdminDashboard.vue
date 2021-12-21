@@ -108,7 +108,7 @@
 import {
   LockOpenIcon,
   QuestionMarkCircleIcon,
-  TagIcon,
+  TemplateIcon,
   TrashIcon,
   UsersIcon,
   UserIcon,
@@ -146,11 +146,11 @@ export default defineComponent({
         class: "sm:rounded-tr-lg",
       },
       {
-        title: "Tags",
+        title: "Record Templates (Coming Soon)",
         description:
-          "Add and remove tags or change the name of your existing tags. Tags that are used within records can not be deleted.",
-        link: { name: "admin-tags" },
-        icon: TagIcon,
+          "Add and edit your record templates. You can add, change and remove fields.",
+        link: "#",
+        icon: TemplateIcon,
         notifications: 0,
         class: "",
       },
