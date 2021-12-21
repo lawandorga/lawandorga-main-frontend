@@ -28,13 +28,15 @@ export interface Record {
 
 export interface RestrictedRecord {
   entries: {
-    id: number;
-    name: string;
-    order: number;
-    value: string | string[] | number | number[] | boolean;
-    field: number;
-    field_type: string;
-  }[];
+    [key: string]: {
+      id: number;
+      name: string;
+      order: number;
+      value: string | string[] | number | number[] | boolean;
+      field: number;
+      field_type: string;
+    };
+  };
   id: number;
   state: string;
   created_on: string;

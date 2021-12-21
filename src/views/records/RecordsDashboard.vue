@@ -18,7 +18,8 @@
       <div class="bg-white px-4 pb-4 pt-3 rounded-md shadow-sm mb-5">
         <FormInput
           v-model="search"
-          label="Search (Token, State, Consultants, Tags, Note)"
+          label="Search"
+          placeholder="AZ-123 / Open"
           type="search"
           required
         />

@@ -2,9 +2,61 @@
   <Table>
     <Thead>
       <Tr class="divide-x divide-gray-200">
-        <Th v-for="item in head" :key="item">
+        <Th v-for="item in head" :key="item" class="!pr-2 group">
           <div class="flex items-center justify-between">
-            {{ item }}
+            <button
+              type="button"
+              class="relative min-w-5 h-5 flex-grow"
+              @click="changeSort(item)"
+            >
+              <div
+                class="
+                  text-left text-xs
+                  font-medium
+                  text-gray-500
+                  uppercase
+                  tracking-wider
+                  whitespace-nowrap
+                  pr-8
+                "
+              >
+                {{ item }}
+              </div>
+              <ChevronUpIcon
+                :class="[
+                  sortOrder === 'ASC' && sortBy === item
+                    ? 'text-gray-400'
+                    : 'text-gray-300',
+                ]"
+                class="
+                  w-5
+                  h-5
+                  top-0
+                  right-0
+                  bottom-0
+                  absolute
+                  transform
+                  -translate-y-1.5
+                "
+              />
+              <ChevronDownIcon
+                :class="[
+                  sortOrder === 'DESC' && sortBy === item
+                    ? 'text-gray-400'
+                    : 'text-gray-300',
+                ]"
+                class="
+                  w-5
+                  h-5
+                  top-0
+                  right-0
+                  bottom-0
+                  absolute
+                  transform
+                  translate-y-1.5
+                "
+              />
+            </button>
           </div>
         </Th>
         <Th>Created</Th>
@@ -17,7 +69,7 @@
     <Tbody>
       <template v-if="records !== null">
         <Tr
-          v-for="record in paginatedData"
+          v-for="record in filteredRecords"
           :key="record.id"
           class="divide-x divide-gray-100"
         >
@@ -129,9 +181,13 @@ import usePagination from "@/composables/usePagination";
 import TablePagination from "@/components/TablePagination.vue";
 import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/solid";
+import useSort from "@/composables/useSort";
 
 export default defineComponent({
   components: {
+    ChevronUpIcon,
+    ChevronDownIcon,
     Th,
     Td,
     Tbody,
@@ -157,36 +213,57 @@ export default defineComponent({
   emits: ["search"],
   setup(props) {
     const { records, loading } = toRefs(props);
+
     const innerLoading = computed(() => {
       return loading.value || records.value === null;
     });
+
+    const { sortBy, sortOrder, changeSort, sortValues } = useSort();
+
+    const sortedRecords = computed(() => {
+      if (records.value === null) return null;
+      const sortedRecords = [...records.value];
+      sortedRecords.sort((r1: RestrictedRecord, r2: RestrictedRecord) => {
+        if (sortBy.value) {
+          const e1 = r1.entries[sortBy.value];
+          const e2 = r2.entries[sortBy.value];
+          return sortValues(e1 ? e1.value : "", e2 ? e2.value : "");
+        }
+        return 0;
+      });
+      return sortedRecords;
+    });
+
     const {
       pages,
       start,
       end,
-      paginatedData,
+      paginatedData: filteredRecords,
       total,
       currentPage,
       previousPage,
       nextPage,
       setPage,
-    } = usePagination(records, 12);
+    } = usePagination(sortedRecords, 12);
 
     const head = computed(() => {
-      if (paginatedData.value === null) return [];
+      if (filteredRecords.value === null) return [];
       return Array.from(
         new Set(
-          paginatedData.value.map((r: RestrictedRecord) => r.show).flat(),
+          filteredRecords.value.map((r: RestrictedRecord) => r.show).flat(),
         ),
       );
     });
 
     return {
+      sortBy,
+      sortOrder,
+      changeSort,
       formatDate,
       pages,
       start,
       end,
-      paginatedData,
+      filteredRecords,
       total,
       currentPage,
       previousPage,

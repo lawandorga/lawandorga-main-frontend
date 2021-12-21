@@ -13,7 +13,8 @@
           appearance-none
           block
           w-full
-          px-3
+          pl-3
+          pr-6
           py-2
           border border-gray-300
           rounded-md
