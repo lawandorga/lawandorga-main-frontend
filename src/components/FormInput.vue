@@ -3,7 +3,7 @@
     <div>
       <FormLabel :required="required" :label="label" />
     </div>
-    <div class="flex mt-1 space-x-2 items-center">
+    <div class="flex space-x-2 items-center" :class="{ 'mt-1': label }">
       <div class="relative w-full">
         <input
           :id="`form--${name}`"

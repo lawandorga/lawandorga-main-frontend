@@ -15,16 +15,7 @@
           </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
-      <div class="bg-white px-4 pb-4 pt-3 rounded-md shadow-sm mb-5">
-        <FormInput
-          v-model="search"
-          label="Search"
-          placeholder="AZ-123 / Open"
-          type="search"
-          required
-        />
-      </div>
-      <TableRecords :records="filteredRecords" @search="search = $event">
+      <TableRecords :records="records">
         <template #head-action>
           <div class="flex justify-end">
             <ButtonTable type="button" @click="createModalOpen = true">
@@ -118,7 +109,7 @@
 import TableRecords from "@/components/TableRecords.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { defineComponent, ref, Ref, computed, reactive, watch } from "vue";
+import { defineComponent, ref, Ref, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
 import {
   Consultant,
@@ -127,7 +118,6 @@ import {
   RestrictedRecord,
   Tag,
 } from "@/types/records";
-import FormInput from "@/components/FormInput.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
@@ -149,145 +139,22 @@ export default defineComponent({
     BoxLoader,
     TableGenerator,
     TableRecords,
-    FormInput,
     ButtonTable,
     ModalFree,
   },
   setup() {
-    // fields
-    const createFields = reactive([
-      {
-        label: "Client",
-        type: "text",
-        name: "name",
-        required: true,
-      },
-      {
-        label: "Birthday",
-        type: "date",
-        name: "birthday",
-        required: false,
-      },
-      {
-        label: "Client Origin Country",
-        type: "select",
-        name: "origin_country",
-        required: false,
-        options: [] as Country[],
-      },
-      {
-        label: "Client Phone",
-        type: "tel",
-        name: "phone_number",
-        required: false,
-      },
-      {
-        label: "Client Note",
-        type: "text",
-        name: "note",
-        required: false,
-      },
-      {
-        label: "Record Token",
-        type: "text",
-        name: "record_token",
-        required: true,
-      },
-      {
-        label: "Record Contact Date",
-        type: "date",
-        name: "first_contact_date",
-      },
-      {
-        label: "Record Consultants",
-        type: "multiple",
-        name: "working_on_record",
-        required: true,
-        options: [] as Consultant[],
-      },
-      {
-        label: "Tags",
-        type: "multiple",
-        name: "tags",
-        required: true,
-        options: [] as Tag[],
-      },
-      {
-        label: "Record Note",
-        type: "text",
-        name: "record_note",
-        required: false,
-      },
-    ]);
-
     // store
     const store = useStore();
 
     // records
     const records = ref(null) as Ref<RestrictedRecord[] | null>;
     const record = ref(null) as Ref<RestrictedRecord | null>;
-
-    const search = ref("");
-
-    const filterRecord =
-      (search2: string) =>
-      (record2: RestrictedRecord): boolean => {
-        const filter = search2.toLowerCase();
-        let ret = false;
-        for (const key in record2.entries) {
-          const entry = record2.entries[key];
-          if (Array.isArray(entry.value))
-            ret =
-              ret ||
-              entry.value
-                .map((i) => (i + "").toLowerCase())
-                .some((name: string) => name.includes(filter));
-          else ret = ret || (entry.value + "").toLowerCase().includes(filter);
-        }
-        return ret;
-      };
-
-    const filteredRecords = computed(() => {
-      if (search.value === "" || !Array.isArray(records.value))
-        return records.value;
-      return records.value.filter(filterRecord(search.value));
-    });
+    useGetItems(RecordsService.getRecords, records);
 
     // general
     const generalPermissions = ref(null) as Ref<HasPermission[] | null>;
     const generalPermissionsModalOpen = ref(false);
-
-    // get
-    useGetItems(RecordsService.getRecords, records);
     useGetItems(RecordsService.getGeneralPermissions, generalPermissions);
-
-    // create
-    const { createRequest, createModalOpen } = useCreateItem(
-      RecordsService.createRecord,
-      records,
-    );
-    watch(createModalOpen, () => {
-      RecordsService.getCountries().then(
-        (countries) => (createFields[2].options = countries),
-      );
-      RecordsService.getConsultants().then(
-        (consultants) => (createFields[7].options = consultants),
-      );
-      RecordsService.getTags().then((tags) => (createFields[8].options = tags));
-    });
-
-    // delete
-    const {
-      createRequest: createDeletionRequestRequest,
-      createModalOpen: createDeletionRequestModalOpen,
-    } = useCreateItem(RecordsService.createDeletionRequest, ref(null));
-    const deletionRequestCreated = (deletionRequest: RecordDeletionRequest) => {
-      if (records.value === null) return;
-      const index = records.value.findIndex(
-        (item) => item.id === deletionRequest.record,
-      );
-      if (index !== -1) records.value[index].delete = true;
-    };
 
     // request access
     const requestAccess = (record: RestrictedRecord) => {
@@ -306,22 +173,122 @@ export default defineComponent({
       // records
       records,
       record,
-      search,
-      filteredRecords,
       // general
       generalPermissions,
       generalPermissionsModalOpen,
       // access
       requestAccess,
-      // create record
-      createFields,
-      createModalOpen,
-      createRequest,
-      // create deletion request
-      createDeletionRequestRequest,
-      createDeletionRequestModalOpen,
-      deletionRequestCreated,
+      ...createRecord(records),
+      ...createDeletionRequest(records),
     };
   },
 });
+
+function createDeletionRequest(records: Ref<RestrictedRecord[] | null>) {
+  const {
+    createRequest: createDeletionRequestRequest,
+    createModalOpen: createDeletionRequestModalOpen,
+  } = useCreateItem(RecordsService.createDeletionRequest, ref(null));
+  const deletionRequestCreated = (deletionRequest: RecordDeletionRequest) => {
+    if (records.value === null) return;
+    const index = records.value.findIndex(
+      (item) => item.id === deletionRequest.record,
+    );
+    if (index !== -1) records.value[index].delete = true;
+  };
+
+  return {
+    createDeletionRequestRequest,
+    createDeletionRequestModalOpen,
+    deletionRequestCreated,
+  };
+}
+
+function createRecord(records: Ref<RestrictedRecord[] | null>) {
+  const createFields = reactive([
+    {
+      label: "Client",
+      type: "text",
+      name: "name",
+      required: true,
+    },
+    {
+      label: "Birthday",
+      type: "date",
+      name: "birthday",
+      required: false,
+    },
+    {
+      label: "Client Origin Country",
+      type: "select",
+      name: "origin_country",
+      required: false,
+      options: [] as Country[],
+    },
+    {
+      label: "Client Phone",
+      type: "tel",
+      name: "phone_number",
+      required: false,
+    },
+    {
+      label: "Client Note",
+      type: "text",
+      name: "note",
+      required: false,
+    },
+    {
+      label: "Record Token",
+      type: "text",
+      name: "record_token",
+      required: true,
+    },
+    {
+      label: "Record Contact Date",
+      type: "date",
+      name: "first_contact_date",
+    },
+    {
+      label: "Record Consultants",
+      type: "multiple",
+      name: "working_on_record",
+      required: true,
+      options: [] as Consultant[],
+    },
+    {
+      label: "Tags",
+      type: "multiple",
+      name: "tags",
+      required: true,
+      options: [] as Tag[],
+    },
+    {
+      label: "Record Note",
+      type: "text",
+      name: "record_note",
+      required: false,
+    },
+  ]);
+
+  const { createRequest, createModalOpen } = useCreateItem(
+    RecordsService.createRecord,
+    records,
+  );
+
+  watch(createModalOpen, () => {
+    RecordsService.getCountries().then(
+      (countries) => (createFields[2].options = countries),
+    );
+    RecordsService.getConsultants().then(
+      (consultants) => (createFields[7].options = consultants),
+    );
+    RecordsService.getTags().then((tags) => (createFields[8].options = tags));
+  });
+
+  return {
+    createFields,
+    createRequest,
+    createModalOpen,
+  };
+}
 </script>

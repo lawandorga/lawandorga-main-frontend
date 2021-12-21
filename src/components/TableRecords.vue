@@ -1,6 +1,18 @@
 <template>
   <Table>
     <Thead>
+      <Tr class="border-b border-gray-200 bg-white">
+        <Td :colspan="head.length + 3" class="!py-1.5">
+          <FormInput
+            v-model="search"
+            label=""
+            placeholder="AZ-123 / Open / Consultant / Tag"
+            type="search"
+            required
+            class="max-w-md ml-auto"
+          />
+        </Td>
+      </Tr>
       <Tr class="divide-x divide-gray-200">
         <Th v-for="item in head" :key="item" class="!pr-2 group">
           <div class="flex items-center justify-between">
@@ -69,7 +81,7 @@
     <Tbody>
       <template v-if="records !== null">
         <Tr
-          v-for="record in filteredRecords"
+          v-for="record in paginatedRecords"
           :key="record.id"
           class="divide-x divide-gray-100"
         >
@@ -151,6 +163,7 @@
           <CircleLoader />
         </Td>
       </Tr>
+
       <TablePagination
         :colspan="head.length + 3"
         :previous-page="previousPage"
@@ -183,9 +196,12 @@ import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/solid";
 import useSort from "@/composables/useSort";
+import FormInput from "@/components/FormInput.vue";
+import useSearch from "@/composables/useSearch";
 
 export default defineComponent({
   components: {
+    FormInput,
     ChevronUpIcon,
     ChevronDownIcon,
     Th,
@@ -212,17 +228,28 @@ export default defineComponent({
   },
   emits: ["search"],
   setup(props) {
+    // records & loading
     const { records, loading } = toRefs(props);
 
     const innerLoading = computed(() => {
       return loading.value || records.value === null;
     });
 
+    // filter
+    const { filterRecord, search } = useSearch();
+
+    const filteredRecords = computed(() => {
+      if (search.value === "" || !Array.isArray(records.value))
+        return records.value;
+      return records.value.filter(filterRecord(search.value));
+    });
+
+    // sort
     const { sortBy, sortOrder, changeSort, sortValues } = useSort();
 
     const sortedRecords = computed(() => {
-      if (records.value === null) return null;
-      const sortedRecords = [...records.value];
+      if (filteredRecords.value === null) return null;
+      const sortedRecords = [...filteredRecords.value];
       sortedRecords.sort((r1: RestrictedRecord, r2: RestrictedRecord) => {
         if (sortBy.value) {
           const e1 = r1.entries[sortBy.value];
@@ -234,11 +261,12 @@ export default defineComponent({
       return sortedRecords;
     });
 
+    // paginate
     const {
       pages,
       start,
       end,
-      paginatedData: filteredRecords,
+      paginatedData: paginatedRecords,
       total,
       currentPage,
       previousPage,
@@ -246,16 +274,19 @@ export default defineComponent({
       setPage,
     } = usePagination(sortedRecords, 12);
 
+    // head
     const head = computed(() => {
-      if (filteredRecords.value === null) return [];
+      if (paginatedRecords.value === null) return [];
       return Array.from(
         new Set(
-          filteredRecords.value.map((r: RestrictedRecord) => r.show).flat(),
+          paginatedRecords.value.map((r: RestrictedRecord) => r.show).flat(),
         ),
       );
     });
 
+    // return
     return {
+      search,
       sortBy,
       sortOrder,
       changeSort,
@@ -263,7 +294,7 @@ export default defineComponent({
       pages,
       start,
       end,
-      filteredRecords,
+      paginatedRecords,
       total,
       currentPage,
       previousPage,
