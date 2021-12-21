@@ -86,23 +86,23 @@
           class="divide-x divide-gray-100"
         >
           <Td v-for="(headItem, index) in head" :key="headItem">
-            <template v-if="record.entries[headItem]">
-              <template v-if="index === 0">
-                <ButtonLink
-                  v-if="record.access"
-                  :to="{
-                    name: 'records-detail',
-                    params: { id: record.id },
-                  }"
-                >
-                  {{ record.entries[headItem].value }}
-                </ButtonLink>
-                <div v-else>
-                  {{ record.entries[headItem].value }}
-                </div>
-              </template>
+            <template v-if="index === 0">
+              <ButtonLink
+                v-if="record.access"
+                :to="{
+                  name: 'records-detail',
+                  params: { id: record.id },
+                }"
+              >
+                {{ record.entries[headItem]?.value ?? "undefined" }}
+              </ButtonLink>
+              <div v-else>
+                {{ record.entries[headItem]?.value ?? "undefined" }}
+              </div>
+            </template>
+            <template v-else-if="record.entries[headItem]">
               <button
-                v-else-if="record.entries[headItem].field_type === 'text'"
+                v-if="record.entries[headItem].field_type === 'text'"
                 class="
                   max-w-xs
                   whitespace-normal

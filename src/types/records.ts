@@ -1,3 +1,12 @@
+export interface RecordTemplate {
+  id: string;
+  name: string;
+  rlc: number;
+  create: string;
+  updated: string;
+  show: string[];
+}
+
 export interface Record {
   id: number;
   token: string;

@@ -16,12 +16,20 @@ import {
   QuestionnaireAnswer,
   QuestionnaireField,
   QuestionnaireFile,
+  RecordTemplate,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
 import axios from "../api";
 
 class RecordsService {
+  // record templates
+  getTemplates(): Promise<RecordTemplate[]> {
+    return axios
+      .get<RecordTemplate[]>("records/recordtemplates/")
+      .then((response) => response.data);
+  }
+
   // records
   getRecords(): Promise<RestrictedRecord[]> {
     return axios
@@ -35,9 +43,9 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createRecord(record: Record): Promise<Record> {
+  createRecord(data: JsonModel): Promise<Record> {
     return axios
-      .post<Record>("records/oldrecords/", record)
+      .post<Record>("records/records/", data)
       .then((response) => response.data);
   }
 

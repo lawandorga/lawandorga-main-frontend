@@ -75,7 +75,7 @@
               }"
               @click="setPage(pageNumber)"
             >
-              {{ current }}
+              {{ pageNumber }}
             </button>
             <button
               type="button"

@@ -112,11 +112,9 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent, ref, Ref, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
 import {
-  Consultant,
-  Country,
   RecordDeletionRequest,
+  RecordTemplate,
   RestrictedRecord,
-  Tag,
 } from "@/types/records";
 import ButtonTable from "@/components/ButtonTable.vue";
 import ModalFree from "@/components/ModalFree.vue";
@@ -207,66 +205,11 @@ function createDeletionRequest(records: Ref<RestrictedRecord[] | null>) {
 function createRecord(records: Ref<RestrictedRecord[] | null>) {
   const createFields = reactive([
     {
-      label: "Client",
-      type: "text",
-      name: "name",
-      required: true,
-    },
-    {
-      label: "Birthday",
-      type: "date",
-      name: "birthday",
-      required: false,
-    },
-    {
-      label: "Client Origin Country",
+      label: "Template",
       type: "select",
-      name: "origin_country",
-      required: false,
-      options: [] as Country[],
-    },
-    {
-      label: "Client Phone",
-      type: "tel",
-      name: "phone_number",
-      required: false,
-    },
-    {
-      label: "Client Note",
-      type: "text",
-      name: "note",
-      required: false,
-    },
-    {
-      label: "Record Token",
-      type: "text",
-      name: "record_token",
+      name: "template",
       required: true,
-    },
-    {
-      label: "Record Contact Date",
-      type: "date",
-      name: "first_contact_date",
-    },
-    {
-      label: "Record Consultants",
-      type: "multiple",
-      name: "working_on_record",
-      required: true,
-      options: [] as Consultant[],
-    },
-    {
-      label: "Tags",
-      type: "multiple",
-      name: "tags",
-      required: true,
-      options: [] as Tag[],
-    },
-    {
-      label: "Record Note",
-      type: "text",
-      name: "record_note",
-      required: false,
+      options: [] as RecordTemplate[],
     },
   ]);
 
@@ -276,13 +219,9 @@ function createRecord(records: Ref<RestrictedRecord[] | null>) {
   );
 
   watch(createModalOpen, () => {
-    RecordsService.getCountries().then(
-      (countries) => (createFields[2].options = countries),
+    RecordsService.getTemplates().then(
+      (templates) => (createFields[0].options = templates),
     );
-    RecordsService.getConsultants().then(
-      (consultants) => (createFields[7].options = consultants),
-    );
-    RecordsService.getTags().then((tags) => (createFields[8].options = tags));
   });
 
   return {
