@@ -1,5 +1,5 @@
 import { DjangoModel, Reffed } from "@/types/shared";
-import { Ref, onMounted, watch, unref } from "vue";
+import { Ref, watch, unref } from "vue";
 
 export default function useGetItems<
   Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
@@ -16,6 +16,5 @@ export default function useGetItems<
   };
 
   watch(params, getItem);
-  if (params.length === 0) onMounted(getItem);
-  onMounted(getItem);
+  if (params.length === 0) getItem();
 }
