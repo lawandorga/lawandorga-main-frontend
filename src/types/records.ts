@@ -35,6 +35,24 @@ export interface Record {
   additional_facts: string;
 }
 
+type RecordValue =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | { id?: number; name?: string; value?: string }[];
+
+export interface RecordEntry {
+  id: number;
+  name: string;
+  order: number;
+  value: RecordValue;
+  field: number;
+  field_type: string;
+  url: string;
+}
+
 export interface RestrictedRecord {
   entries: {
     [key: string]: {

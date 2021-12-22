@@ -16,18 +16,15 @@
       </BreadcrumbsBar>
       <div class="bg-white shadow px-5 py-4 rounded">
         <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
-        <div>
-          <FormGenerator
-            :fields="recordFields"
-            :initial="record"
-            :request="updateRecord"
-            submit="Save"
-            @success="record = $event"
-          ></FormGenerator>
+        <div v-if="record">
+          <FormRecord
+            :fields="record.form"
+            :entries="record.entries"
+          ></FormRecord>
         </div>
       </div>
 
-      <div class="flex space-y-6 flex-col">
+      <!-- <div class="flex space-y-6 flex-col">
         <div class="bg-white shadow px-5 py-4 rounded">
           <h2 class="mb-5 text-lg font-bold text-gray-800">Client</h2>
           <div>
@@ -253,7 +250,7 @@
             </ul>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <ModalDelete
       v-model="deleteDocumentOpen"
@@ -286,6 +283,7 @@
 
 <script lang="ts">
 import FormGenerator from "@/components/FormGenerator.vue";
+import FormRecord from "@/components/FormRecord.vue";
 import {
   Consultant,
   Country,
@@ -315,6 +313,7 @@ export default defineComponent({
     ModalDelete,
     FormGenerator,
     BoxLoader,
+    FormRecord,
     ModalFree,
     BreadcrumbsBar,
     CollectionIcon,
@@ -549,32 +548,32 @@ export default defineComponent({
       return window.location.origin;
     },
   },
-  mounted() {
-    RecordsService.getCountries().then(
-      (countries) => (this.clientFields[2].options = countries),
-    );
-    RecordsService.getConsultants().then(
-      (consultants) => (this.recordFields[5].options = consultants),
-    );
-    RecordsService.getTags().then(
-      (tags) => (this.recordFields[6].options = tags),
-    );
+  created() {
+    // RecordsService.getCountries().then(
+    //   (countries) => (this.clientFields[2].options = countries),
+    // );
+    // RecordsService.getConsultants().then(
+    //   (consultants) => (this.recordFields[5].options = consultants),
+    // );
+    // RecordsService.getTags().then(
+    //   (tags) => (this.recordFields[6].options = tags),
+    // );
     RecordsService.getRecord(this.$route.params.id as string).then((record) => {
       this.record = record;
-      this.getClient(record.client);
+      // this.getClient(record.client);
     });
-    RecordsService.getMessages(this.$route.params.id as string).then(
-      (messages) => (this.messages = messages),
-    );
-    RecordsService.getDocuments(this.$route.params.id as string).then(
-      (documents) => (this.documents = documents),
-    );
-    RecordsService.getRecordQuestionnaires(
-      this.$route.params.id as string,
-    ).then(
-      (recordQuestionnaires) =>
-        (this.recordQuestionnaires = recordQuestionnaires),
-    );
+    // RecordsService.getMessages(this.$route.params.id as string).then(
+    //   (messages) => (this.messages = messages),
+    // );
+    // RecordsService.getDocuments(this.$route.params.id as string).then(
+    //   (documents) => (this.documents = documents),
+    // );
+    // RecordsService.getRecordQuestionnaires(
+    //   this.$route.params.id as string,
+    // ).then(
+    //   (recordQuestionnaires) =>
+    //     (this.recordQuestionnaires = recordQuestionnaires),
+    // );
   },
   methods: {
     // client

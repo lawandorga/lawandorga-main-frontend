@@ -39,7 +39,7 @@ class RecordsService {
 
   getRecord(id: number | string): Promise<Record> {
     return axios
-      .get<Record>(`records/oldrecords/${id}/`)
+      .get<Record>(`records/records/${id}/`)
       .then((response) => response.data);
   }
 

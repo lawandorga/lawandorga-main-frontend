@@ -26,7 +26,7 @@
         @input="update($event)"
       >
         <option v-for="option in options" :key="option.name" :value="option.id">
-          {{ option.name }}
+          {{ option.name ?? option }}
         </option>
       </select>
     </div>
