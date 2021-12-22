@@ -11,51 +11,50 @@
         </p>
       </div>
       <div
-        v-for="{ name, label, type, options } in fields"
-        :key="name"
-        :class="{ hidden: type === 'hidden' }"
+        v-for="field in fields"
+        :key="field.name"
+        :class="{ hidden: field.type === 'hidden' }"
       >
         <FormTextarea
-          v-if="type === 'textarea'"
-          v-bind="getAttrs(name)"
-          :label="label"
-          :name="name"
-          :type="type"
+          v-if="field.type === 'textarea'"
+          v-bind="getAttrs(field.name)"
+          :label="field.label"
+          :name="field.name"
           required
-          @change="update(name, $event)"
+          @change="update(field, $event.target.value)"
         />
         <FormSelect
-          v-else-if="type === 'select'"
-          v-bind="getAttrs(name)"
-          :label="label"
-          :name="name"
+          v-else-if="field.type === 'select'"
+          v-bind="getAttrs(field.name)"
+          :label="field.label"
+          :name="field.name"
           required
-          :options="options ?? []"
-          @update:model-value="update(name, $event)"
+          :options="field.options ?? []"
+          @update:model-value="update(field, $event)"
         />
         <FormMultiple
-          v-else-if="type === 'multiple'"
-          v-bind="getAttrs(name)"
-          :label="label"
-          :name="name"
+          v-else-if="field.type === 'multiple'"
+          v-bind="getAttrs(field.name)"
+          :label="field.label"
+          :name="field.name"
           required
-          :options="options ?? []"
-          @update:model-value="update(name, $event)"
+          :options="field.options ?? []"
+          @update:model-value="update(field, $event)"
         />
         <FormInput
           v-else
-          v-bind="getAttrs(name)"
-          :label="label"
-          :name="name"
-          :type="type"
+          v-bind="getAttrs(field.name)"
+          :label="field.label"
+          :name="field.name"
+          :type="field.type"
           required
-          @change="update(name, $event)"
+          @change="update(field, $event.target.value)"
         />
         <p
-          v-if="errors[name]"
+          v-if="errors[field.name]"
           class="text-red-700 text-sm leading-tight ml-1.5 mt-1"
         >
-          {{ errors[name][0] }}
+          {{ errors[field.name][0] }}
         </p>
       </div>
     </div>
@@ -88,7 +87,7 @@ export default defineComponent({
   },
   data() {
     return {
-      entriesCopy: {} as { [key: string]: RecordEntry },
+      entries: {} as Record["entries"],
       nonFieldErrors: [] as string[],
       errors: {} as DjangoError,
     };
@@ -97,9 +96,14 @@ export default defineComponent({
     fields() {
       return this.record.fields;
     },
-    entries() {
-      return this.record.entries;
+  },
+  watch: {
+    record(newValue) {
+      this.entries = newValue.entries;
     },
+  },
+  created() {
+    this.entries = this.record.entries;
   },
   methods: {
     getAttrs(name: string) {
@@ -108,7 +112,8 @@ export default defineComponent({
       return {};
     },
     update(field: RecordField, value: RecordEntry["value"]) {
-      if (field.name in this.entries) {
+      this.errors = {};
+      if (Object.keys(this.entries).includes(field.name)) {
         const data = {
           url: this.entries[field.name].url,
           value: value,
@@ -126,6 +131,9 @@ export default defineComponent({
           if (e.response) this.handleError(field, e.response.data);
         });
       }
+    },
+    handleSuccess(field: RecordField, entry: RecordEntry) {
+      this.entries[field.name] = entry;
     },
     handleError(field: RecordField, errors: DjangoError) {
       this.errors[field.name] = errors["value"];
