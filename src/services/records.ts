@@ -8,7 +8,6 @@ import {
   RecordPermissionRequest,
   RecordsClient,
   RecordsDocument,
-  RestrictedRecord,
   Questionnaire,
   RecordQuestionnaire,
   Tag,
@@ -32,9 +31,9 @@ class RecordsService {
   }
 
   // records
-  getRecords(): Promise<RestrictedRecord[]> {
+  getRecords(): Promise<Record[]> {
     return axios
-      .get<RestrictedRecord[]>("records/records/")
+      .get<Record[]>("records/records/")
       .then((response) => response.data);
   }
 
@@ -56,7 +55,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  deleteRecord(record: RestrictedRecord): Promise<void> {
+  deleteRecord(record: Record): Promise<void> {
     return axios.delete(`records/oldrecords/${record.id}/`).then();
   }
 
@@ -347,7 +346,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  requestAccess(record: RestrictedRecord): Promise<RecordPermissionRequest> {
+  requestAccess(record: Record): Promise<RecordPermissionRequest> {
     return axios
       .post<RecordPermissionRequest>(
         `records/oldrecords/${record.id}/request_permission/`,

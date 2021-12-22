@@ -9,7 +9,6 @@ import {
   RecordDeletionRequest,
   RecordPermissionRequest,
   RecordQuestionnaire,
-  RestrictedRecord,
 } from "./records";
 
 /*
@@ -56,7 +55,6 @@ export type DjangoModel =
   | Group
   | Permission
   | Record
-  | RestrictedRecord
   | RecordQuestionnaire
   | Questionnaire
   | QuestionnaireField

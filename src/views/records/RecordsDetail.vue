@@ -17,10 +17,7 @@
       <div class="bg-white shadow px-5 py-4 rounded">
         <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
         <div v-if="record">
-          <FormRecord
-            :fields="record.form"
-            :entries="record.entries"
-          ></FormRecord>
+          <FormRecord :record="record"></FormRecord>
         </div>
       </div>
 

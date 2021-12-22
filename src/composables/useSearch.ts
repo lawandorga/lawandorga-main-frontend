@@ -1,4 +1,4 @@
-import { RestrictedRecord } from "@/types/records";
+import { Record } from "@/types/records";
 import { ref } from "vue";
 
 export default function useSearch() {
@@ -6,7 +6,7 @@ export default function useSearch() {
 
   const filterRecord =
     (search2: string) =>
-    (record2: RestrictedRecord): boolean => {
+    (record2: Record): boolean => {
       const filter = search2.toLowerCase();
       let ret = false;
       for (const key in record2.entries) {
