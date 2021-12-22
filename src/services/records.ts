@@ -17,6 +17,7 @@ import {
   QuestionnaireField,
   QuestionnaireFile,
   RecordTemplate,
+  RecordEntry,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
@@ -57,6 +58,19 @@ class RecordsService {
 
   deleteRecord(record: RestrictedRecord): Promise<void> {
     return axios.delete(`records/oldrecords/${record.id}/`).then();
+  }
+
+  // entries
+  createEntry(data: JsonModel): Promise<RecordEntry> {
+    return axios
+      .post<RecordEntry>(data.url as string, data)
+      .then((response) => response.data);
+  }
+
+  updateEntry(data: JsonModel): Promise<RecordEntry> {
+    return axios
+      .patch<RecordEntry>(data.url as string, data)
+      .then((response) => response.data);
   }
 
   // permissions

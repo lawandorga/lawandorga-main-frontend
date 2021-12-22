@@ -33,6 +33,7 @@
           :type="type"
           :required="required"
           :placeholder="placeholder"
+          @change="update(name, $event)"
         />
         <FormSelect
           v-else-if="type === 'select'"
@@ -41,6 +42,7 @@
           :name="name"
           :required="required"
           :options="options ?? []"
+          @update:model-value="update(name, $event)"
         />
         <FormMultiple
           v-else-if="type === 'multiple'"
@@ -49,6 +51,7 @@
           :name="name"
           :required="required"
           :options="options ?? []"
+          @update:model-value="update(name, $event)"
         />
         <FormInput
           v-else
@@ -61,6 +64,7 @@
           :required="required"
           :placeholder="placeholder"
           :helptext="helptext"
+          @change="update(name, $event)"
         />
         <p
           v-if="errors[name]"
@@ -82,7 +86,8 @@ import { defineComponent, PropType } from "vue";
 import { DjangoError, JsonModel } from "@/types/shared";
 import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
-import { RecordEntry } from "@/types/records";
+import { RecordEntry, Record, RecordField } from "@/types/records";
+import RecordsService from "@/services/records";
 
 export default defineComponent({
   components: {
@@ -100,6 +105,10 @@ export default defineComponent({
       type: Object as PropType<{ [key: string]: RecordEntry }>,
       default: null,
       required: false,
+    },
+    record: {
+      type: Object as PropType<Record>,
+      required: true,
     },
   },
   data() {
@@ -127,11 +136,33 @@ export default defineComponent({
   },
   methods: {
     getAttrs(name: string) {
-      console.log(this.entries[name]);
       if (name in this.entries)
         return { "model-value": this.entries[name].value };
       return {};
-      //
+    },
+    update(field: RecordField, value: RecordEntry["value"]) {
+      if (field.name in this.entries) {
+        const data = {
+          url: this.entries[field.name].url,
+          value: value,
+        };
+        RecordsService.updateEntry(data).catch((e: AxiosError) => {
+          if (e.response) this.handleError(field, e.response.data);
+        });
+      } else {
+        const data = {
+          value: value,
+          field: field.id,
+          record: this.record.id,
+        };
+        RecordsService.createEntry(data).catch((e: AxiosError) => {
+          if (e.response) this.handleError(field, e.response.data);
+        });
+      }
+    },
+    handleError(field: RecordField, errors: DjangoError) {
+      this.errors[field.name] = errors["value"];
+      this.nonFieldErrors = errors.non_field_errors as string[];
     },
     // handleSubmit() {
     //   this.showSuccess = false;

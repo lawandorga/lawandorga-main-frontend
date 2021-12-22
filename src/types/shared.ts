@@ -42,7 +42,7 @@ export type DeleteFunction = (
 // models
 */
 interface KeyValueModel {
-  [key: string]: string | boolean | number | number[];
+  [key: string]: string | boolean | number | number[] | string[];
 }
 
 export type JsonModel = KeyValueModel;

@@ -35,13 +35,7 @@ export interface Record {
   additional_facts: string;
 }
 
-type RecordValue =
-  | string
-  | number
-  | boolean
-  | string[]
-  | number[]
-  | { id?: number; name?: string; value?: string }[];
+type RecordValue = string | number | boolean | string[] | number[];
 
 export interface RecordEntry {
   id: number;
@@ -51,6 +45,12 @@ export interface RecordEntry {
   field: number;
   field_type: string;
   url: string;
+}
+
+export interface RecordField {
+  id: number;
+  url: string;
+  name: string;
 }
 
 export interface RestrictedRecord {
