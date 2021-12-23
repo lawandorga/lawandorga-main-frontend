@@ -242,16 +242,13 @@ class RecordsService {
   // messages
   getMessages(id: string | number): Promise<Message[]> {
     return axios
-      .get<Message[]>(`records/oldrecords/${id}/messages/`)
+      .get<Message[]>(`records/messages/?record=${id}`)
       .then((response) => response.data);
   }
 
-  createMessage(message: Message): Promise<Message> {
+  createMessage(data: JsonModel): Promise<Message> {
     return axios
-      .post<Message>(
-        `records/oldrecords/${message.record}/add_message/`,
-        message,
-      )
+      .post<Message>(`records/messages/`, data)
       .then((response) => response.data);
   }
 

@@ -1,25 +1,27 @@
 <template>
-  <div class="h-screen flex overflow-hidden">
-    <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
+  <div>
+    <div class="h-screen flex overflow-hidden">
+      <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
-    <NavigationSidebar v-if="authenticated" />
+      <NavigationSidebar v-if="authenticated" />
 
-    <div class="flex flex-col w-0 flex-1 overflow-hidden">
-      <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
+      <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
 
-      <NavigationDefault v-if="!authenticated" />
+        <NavigationDefault v-if="!authenticated" />
 
-      <!-- Main Panel -->
-      <main
-        class="flex-1 relative overflow-y-auto focus:outline-none px-6 py-6"
-      >
-        <!-- <div class="px-6" :class="{ 'py-6': authenticated }"> -->
-        <router-view></router-view>
-        <!-- </div> -->
-      </main>
+        <!-- Main Panel -->
+        <main
+          class="flex-1 relative overflow-y-auto focus:outline-none px-6 py-6"
+        >
+          <!-- <div class="px-6" :class="{ 'py-6': authenticated }"> -->
+          <router-view></router-view>
+          <!-- </div> -->
+        </main>
+      </div>
     </div>
+    <AlertList />
   </div>
-  <AlertList />
 </template>
 
 <script lang="ts">

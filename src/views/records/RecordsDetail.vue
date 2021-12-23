@@ -97,7 +97,7 @@
               <div style="height: auto; padding-top: 16px">
                 <FormGenerator
                   :fields="messageFields"
-                  :initial="{ record: record.old_record }"
+                  :initial="{ record: $route.params.id }"
                   :request="createMessage"
                   @success="messages.push($event)"
                 ></FormGenerator>
@@ -353,9 +353,7 @@ export default defineComponent({
     // );
     RecordsService.getRecord(this.$route.params.id as string).then((record) => {
       this.record = record;
-      RecordsService.getMessages(this.record.old_record).then(
-        (messages) => (this.messages = messages),
-      );
+
       RecordsService.getDocuments(this.record.old_record).then(
         (documents) => (this.documents = documents),
       );
@@ -364,6 +362,9 @@ export default defineComponent({
           (this.recordQuestionnaires = recordQuestionnaires),
       );
     });
+    RecordsService.getMessages(this.$route.params.id as string).then(
+      (messages) => (this.messages = messages),
+    );
   },
   methods: {
     // client
