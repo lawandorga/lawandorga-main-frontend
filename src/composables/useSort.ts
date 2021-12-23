@@ -1,6 +1,12 @@
 import { ref } from "vue";
 
-type Value = string | string[] | number | number[] | boolean;
+type Value =
+  | string
+  | string[]
+  | number
+  | number[]
+  | boolean
+  | { name: string; id: number }[];
 
 export default function useSort() {
   const sortOrder = ref("");

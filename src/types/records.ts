@@ -11,8 +11,10 @@ export interface Record {
   id: number;
   created: string;
   updated: string;
+  // delete: boolean;
   entries: { [key: string]: RecordEntry };
   fields: RecordField[];
+  show?: string[];
 }
 
 type RecordValue = string | number | boolean | string[] | number[];
@@ -23,7 +25,7 @@ export interface RecordEntry {
   order: number;
   value: RecordValue;
   field: number;
-  field_type: string;
+  type: string;
   url: string;
 }
 

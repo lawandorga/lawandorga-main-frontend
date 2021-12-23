@@ -114,23 +114,34 @@ export default defineComponent({
     update(field: RecordField, value: RecordEntry["value"]) {
       this.errors = {};
       if (Object.keys(this.entries).includes(field.name)) {
-        const data = {
-          url: this.entries[field.name].url,
-          value: value,
-        };
-        RecordsService.updateEntry(data).catch((e: AxiosError) => {
-          if (e.response) this.handleError(field, e.response.data);
-        });
+        this.updateEntry(field, value);
       } else {
-        const data = {
-          value: value,
-          field: field.id,
-          record: this.record.id,
-        };
-        RecordsService.createEntry(data).catch((e: AxiosError) => {
+        this.createEntry(field, value);
+      }
+    },
+    updateEntry(field: RecordField, value: RecordEntry["value"]) {
+      const data = {
+        url: this.entries[field.name].url,
+        value: value,
+      };
+      RecordsService.updateEntry(data)
+        .then((entry) => this.handleSuccess(field, entry))
+        .catch((e: AxiosError) => {
           if (e.response) this.handleError(field, e.response.data);
         });
-      }
+    },
+    createEntry(field: RecordField, value: RecordEntry["value"]) {
+      const data = {
+        value: value,
+        field: field.id,
+        record: this.record.id,
+        url: field.url,
+      };
+      RecordsService.createEntry(data)
+        .then((entry) => this.handleSuccess(field, entry))
+        .catch((e: AxiosError) => {
+          if (e.response) this.handleError(field, e.response.data);
+        });
     },
     handleSuccess(field: RecordField, entry: RecordEntry) {
       this.entries[field.name] = entry;

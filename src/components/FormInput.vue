@@ -16,19 +16,7 @@
           :required="required"
           :disabled="disabled"
           :autocomplete="autocomplete"
-          class="
-            appearance-none
-            block
-            w-full
-            px-3
-            py-2
-            border border-gray-300
-            rounded-md
-            shadow-sm
-            placeholder-gray-400
-            focus:outline-none focus:ring-lorgablue focus:border-lorgablue
-            sm:text-sm
-          "
+          class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
           :class="{
             'opacity-50 bg-gray-100 pointer-events-none': disabled,
           }"
@@ -40,18 +28,7 @@
         />
         <div
           v-if="unit"
-          class="
-            absolute
-            inset-y-0
-            right-0
-            pr-3
-            flex
-            items-center
-            pointer-events-none
-            transition
-            transform
-            duration-100
-          "
+          class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none transition transform duration-100"
           :class="{ '-translate-x-6': type === 'number' && focus }"
         >
           <span id="price-currency" class="text-gray-500 sm:text-sm">
@@ -59,6 +36,14 @@
           </span>
         </div>
       </div>
+    </div>
+    <div
+      v-if="
+        type === 'datetime-local' && modelValue && !modelValue.includes('T')
+      "
+      class="mt-1 text-right text-sm text-gray-700"
+    >
+      Error: {{ modelValue }}
     </div>
     <FormHelptext :helptext="helptext" />
   </label>

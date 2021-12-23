@@ -102,7 +102,8 @@ axios.interceptors.response.use(
     } else if (
       error.response &&
       error.response.status &&
-      error.response.statusText
+      error.response.statusText &&
+      error.response.status !== 400
     ) {
       store.dispatch("alert/createAlert", {
         type: "error",

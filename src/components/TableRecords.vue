@@ -22,15 +22,7 @@
               @click="changeSort(item)"
             >
               <div
-                class="
-                  text-left text-xs
-                  font-medium
-                  text-gray-500
-                  uppercase
-                  tracking-wider
-                  whitespace-nowrap
-                  pr-8
-                "
+                class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap pr-8"
               >
                 {{ item }}
               </div>
@@ -40,16 +32,7 @@
                     ? 'text-gray-400'
                     : 'text-gray-300',
                 ]"
-                class="
-                  w-5
-                  h-5
-                  top-0
-                  right-0
-                  bottom-0
-                  absolute
-                  transform
-                  -translate-y-1.5
-                "
+                class="w-5 h-5 top-0 right-0 bottom-0 absolute transform -translate-y-1.5"
               />
               <ChevronDownIcon
                 :class="[
@@ -57,16 +40,7 @@
                     ? 'text-gray-400'
                     : 'text-gray-300',
                 ]"
-                class="
-                  w-5
-                  h-5
-                  top-0
-                  right-0
-                  bottom-0
-                  absolute
-                  transform
-                  translate-y-1.5
-                "
+                class="w-5 h-5 top-0 right-0 bottom-0 absolute transform translate-y-1.5"
               />
             </button>
           </div>
@@ -102,46 +76,39 @@
             </template>
             <template v-else-if="record.entries[headItem]">
               <button
-                v-if="record.entries[headItem].field_type === 'text'"
-                class="
-                  max-w-xs
-                  whitespace-normal
-                  line-clamp-3
-                  cursor-pointer
-                  hover:underline
-                  text-left
-                "
-                @click="$emit('search', record.entries[headItem].value)"
+                v-if="record.entries[headItem].type === 'text'"
+                class="max-w-xs whitespace-normal line-clamp-3 cursor-pointer hover:underline text-left"
+                @click="search = record.entries[headItem].value"
               >
                 {{ record.entries[headItem].value }}
               </button>
               <button
                 v-else-if="
-                  record.entries[headItem].field_type === 'date' ||
-                  record.entries[headItem].field_type === 'datetime-local'
+                  record.entries[headItem].type === 'date' ||
+                  record.entries[headItem].type === 'datetime-local'
                 "
                 class="cursor-pointer hover:underline text-left"
-                @click="$emit('search', record.entries[headItem].value)"
+                @click="search = record.entries[headItem].value"
               >
                 {{ formatDate(record.entries[headItem].value) }}
               </button>
               <ul
-                v-else-if="record.entries[headItem].field_type === 'multiple'"
+                v-else-if="record.entries[headItem].type === 'multiple'"
                 class="list-disc pl-3.5"
               >
                 <li v-for="item in record.entries[headItem].value" :key="item">
                   <button
                     class="cursor-pointer hover:underline text-left"
-                    @click="$emit('search', item)"
+                    @click="search = item.name ?? item"
                   >
-                    {{ item }}
+                    {{ item.name ?? item }}
                   </button>
                 </li>
               </ul>
               <button
                 v-else
                 class="cursor-pointer hover:underline text-left"
-                @click="$emit('search', record.entries[headItem].value)"
+                @click="search = record.entries[headItem].value"
               >
                 {{ record.entries[headItem].value }}
               </button>
@@ -189,7 +156,7 @@ import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
 import { defineComponent, PropType, toRefs, computed } from "vue";
 import CircleLoader from "./CircleLoader.vue";
-import { RestrictedRecord } from "@/types/records";
+import { Record } from "@/types/records";
 import usePagination from "@/composables/usePagination";
 import TablePagination from "@/components/TablePagination.vue";
 import { formatDate } from "@/utils/date";
@@ -216,7 +183,7 @@ export default defineComponent({
   },
   props: {
     records: {
-      type: Array as PropType<RestrictedRecord[] | null>,
+      type: Array as PropType<Record[] | null>,
       required: false,
       default: null,
     },
@@ -250,7 +217,7 @@ export default defineComponent({
     const sortedRecords = computed(() => {
       if (filteredRecords.value === null) return null;
       const sortedRecords = [...filteredRecords.value];
-      sortedRecords.sort((r1: RestrictedRecord, r2: RestrictedRecord) => {
+      sortedRecords.sort((r1: Record, r2: Record) => {
         if (sortBy.value) {
           const e1 = r1.entries[sortBy.value];
           const e2 = r2.entries[sortBy.value];
@@ -278,9 +245,7 @@ export default defineComponent({
     const head = computed(() => {
       if (paginatedRecords.value === null) return [];
       return Array.from(
-        new Set(
-          paginatedRecords.value.map((r: RestrictedRecord) => r.show).flat(),
-        ),
+        new Set(paginatedRecords.value.map((r: Record) => r.show).flat()),
       );
     });
 

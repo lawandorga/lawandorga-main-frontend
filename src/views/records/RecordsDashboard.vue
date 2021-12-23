@@ -111,11 +111,7 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent, ref, Ref, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
-import {
-  RecordDeletionRequest,
-  RecordTemplate,
-  RestrictedRecord,
-} from "@/types/records";
+import { RecordDeletionRequest, RecordTemplate, Record } from "@/types/records";
 import ButtonTable from "@/components/ButtonTable.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
@@ -145,8 +141,8 @@ export default defineComponent({
     const store = useStore();
 
     // records
-    const records = ref(null) as Ref<RestrictedRecord[] | null>;
-    const record = ref(null) as Ref<RestrictedRecord | null>;
+    const records = ref(null) as Ref<Record[] | null>;
+    const record = ref(null) as Ref<Record | null>;
     useGetItems(RecordsService.getRecords, records);
 
     // general
@@ -155,7 +151,7 @@ export default defineComponent({
     useGetItems(RecordsService.getGeneralPermissions, generalPermissions);
 
     // request access
-    const requestAccess = (record: RestrictedRecord) => {
+    const requestAccess = (record: Record) => {
       RecordsService.requestAccess(record).then(() =>
         store.dispatch("alert/createAlert", {
           heading: "Access Requested",
@@ -182,7 +178,7 @@ export default defineComponent({
   },
 });
 
-function createDeletionRequest(records: Ref<RestrictedRecord[] | null>) {
+function createDeletionRequest(records: Ref<Record[] | null>) {
   const {
     createRequest: createDeletionRequestRequest,
     createModalOpen: createDeletionRequestModalOpen,
@@ -202,7 +198,7 @@ function createDeletionRequest(records: Ref<RestrictedRecord[] | null>) {
   };
 }
 
-function createRecord(records: Ref<RestrictedRecord[] | null>) {
+function createRecord(records: Ref<Record[] | null>) {
   const createFields = reactive([
     {
       label: "Template",
