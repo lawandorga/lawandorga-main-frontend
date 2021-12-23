@@ -15,6 +15,7 @@ export interface Record {
   entries: { [key: string]: RecordEntry };
   fields: RecordField[];
   show?: string[];
+  old_record: number;
 }
 
 type RecordValue = string | number | boolean | string[] | number[];
