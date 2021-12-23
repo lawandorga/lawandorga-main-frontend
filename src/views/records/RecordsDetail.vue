@@ -86,13 +86,7 @@
               <li v-for="message in messages" :key="message.id">
                 <div style="width: 100%">
                   <div
-                    class="
-                      w-full
-                      flex-col-reverse flex
-                      justify-between
-                      items-baseline
-                      md:flex-row
-                    "
+                    class="w-full flex-col-reverse flex justify-between items-baseline md:flex-row"
                   >
                     <b>
                       {{
@@ -122,19 +116,12 @@
 
         <div class="bg-white shadow rounded">
           <div
-            class="
-              flex
-              items-baseline
-              justify-between
-              px-5
-              pt-4
-              pb-4
-              border-b-4 border-gray-200
-            "
+            class="flex items-baseline justify-between px-5 pt-4 pb-4 border-b-4 border-gray-200"
           >
             <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
-            <ButtonSimple @click="openCreateRecordQuestionnaire()">
-              Publish a questionnaire
+            <ButtonSimple disabled>
+              <!-- @click="openCreateRecordQuestionnaire()" -->
+              Publish a questionnaire (Blocked until Sunday)
             </ButtonSimple>
           </div>
           <div v-if="!!recordQuestionnaires.length" class="">
@@ -146,23 +133,13 @@
                       {{ item.questionnaire.name }}
                     </h3>
                     <div
-                      class="
-                        mt-1
-                        text-gray-500 text-sm
-                        flex flex-col
-                        lg:space-x-4 lg:flex-row
-                      "
+                      class="mt-1 text-gray-500 text-sm flex flex-col lg:space-x-4 lg:flex-row"
                     >
                       <p class="">Published: {{ formatDate(item.created) }}</p>
                       <p class="">
                         Link:
                         <button
-                          class="
-                            underline
-                            break-all
-                            text-left
-                            hover:text-gray-700
-                          "
+                          class="underline break-all text-left hover:text-gray-700"
                           @click="copyLink(item)"
                         >
                           {{ base }}/records/upload/{{ item.code }}/
@@ -200,22 +177,10 @@
                         class="mt-1 text-sm text-gray-900"
                       >
                         <div
-                          class="
-                            border border-gray-200
-                            rounded-md
-                            divide-y divide-gray-200
-                          "
+                          class="border border-gray-200 rounded-md divide-y divide-gray-200"
                         >
                           <div
-                            class="
-                              pl-3
-                              pr-4
-                              py-3
-                              flex
-                              items-center
-                              justify-between
-                              text-sm
-                            "
+                            class="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
                           >
                             <div class="w-0 flex-1 flex items-center">
                               <PaperClipIcon
