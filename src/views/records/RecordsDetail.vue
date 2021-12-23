@@ -25,8 +25,8 @@
         <div class="bg-white shadow px-5 py-4 rounded">
           <h2 class="text-lg font-bold text-gray-800">Client</h2>
           <p class="text-base text-gray-600 mb-5">
-            The following data could not be copied over into the new format,
-            because of the way the encryption was built.
+            The following data could not be copied over into the new format, due
+            to the way the encryption was built.
           </p>
           <p>Client name: {{ record.client.name }}</p>
           <p>Client phone: {{ record.client.phone }}</p>
