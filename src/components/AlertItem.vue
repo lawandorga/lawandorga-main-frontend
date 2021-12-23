@@ -1,14 +1,6 @@
 <template>
   <div
-    class="
-      w-full
-      bg-white
-      shadow-lg
-      rounded-lg
-      pointer-events-auto
-      ring-1 ring-black ring-opacity-5
-      overflow-hidden
-    "
+    class="w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden"
   >
     <div class="p-4">
       <div class="flex items-start">
@@ -34,18 +26,7 @@
         </div>
         <div class="ml-4 flex-shrink-0 flex">
           <button
-            class="
-              bg-white
-              p-0.5
-              rounded-md
-              inline-flex
-              text-gray-400
-              hover:text-gray-500
-              focus:outline-none
-              focus:ring-2
-              focus:bg-gray-100
-              focus:ring-gray-200
-            "
+            class="bg-white p-0.5 rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-gray-200"
             @click="$store.dispatch('alert/closeAlert', alert)"
           >
             <span class="sr-only">Close</span>
