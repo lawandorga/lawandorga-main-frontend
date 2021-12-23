@@ -7,7 +7,7 @@
         :base="{ name: 'records-dashboard' }"
         :pages="[
           {
-            name: record.record_token,
+            name: firstEntry,
             to: { name: 'records-detail', params: { id: record.id } },
           },
         ]"
@@ -247,6 +247,7 @@ import {
   Message,
   Questionnaire,
   QuestionnaireAnswer,
+  RecordEntry,
   RecordQuestionnaire,
   RecordsClient,
   RecordsDocument,
@@ -333,6 +334,11 @@ export default defineComponent({
   computed: {
     base() {
       return window.location.origin;
+    },
+    firstEntry(): RecordEntry["value"] | string {
+      if (this.record !== null && Object.keys(this.record.entries).length > 0)
+        return Object.values(this.record.entries)[0].value;
+      return "undefined";
     },
   },
   created() {
