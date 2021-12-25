@@ -6,16 +6,7 @@
           <div class="">
             <div>
               <h1
-                class="
-                  m-0
-                  text-4xl
-                  tracking-tight
-                  font-extrabold
-                  text-white
-                  sm:leading-none
-                  lg:text-5xl
-                  xl:text-6xl
-                "
+                class="m-0 text-4xl tracking-tight font-extrabold text-white sm:leading-none lg:text-5xl xl:text-6xl"
               >
                 <div class="flex space-x-5 items-center flex-wrap">
                   <div class="flex space-x-3 items-center">
@@ -57,7 +48,7 @@
           <div class="flex flex-col justify-center">
             <div class="p-6 bg-white rounded-sm shadow-sm">
               <h2 class="text-2xl font-bold mb-8">Login</h2>
-              <FormGenerator
+              <!-- <FormGenerator
                 :fields="[
                   {
                     label: 'E-Mail',
@@ -78,7 +69,8 @@
                 ]"
                 action="user/login"
                 submit="Login"
-              />
+              /> -->
+              Wartungsarbeiten im Gange
               <div class="pt-6 text-right space-x-4">
                 <router-link
                   :to="{ name: 'user-register' }"
@@ -100,13 +92,7 @@
     </section>
     <section class="bg-white mx-auto max-w-7xl py-12 px-8">
       <div
-        class="
-          relative
-          max-w-lg
-          mx-auto
-          divide-y-2 divide-gray-200
-          lg:max-w-7xl
-        "
+        class="relative max-w-lg mx-auto divide-y-2 divide-gray-200 lg:max-w-7xl"
       >
         <!-- eslint-disable vue/no-v-html -->
         <article
@@ -121,13 +107,7 @@
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
         <div>
           <h2
-            class="
-              text-3xl
-              tracking-tight
-              font-extrabold
-              text-gray-900
-              sm:text-4xl
-            "
+            class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl"
           >
             More News
           </h2>
@@ -164,13 +144,7 @@
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
         <div>
           <h2
-            class="
-              text-3xl
-              tracking-tight
-              font-extrabold
-              text-gray-900
-              sm:text-4xl
-            "
+            class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl"
           >
             Roadmap
           </h2>
@@ -202,13 +176,7 @@
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
         <div class="mb-6">
           <h2
-            class="
-              text-3xl
-              tracking-tight
-              font-extrabold
-              text-gray-900
-              sm:text-4xl
-            "
+            class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl"
           >
             Sponsors
           </h2>
@@ -235,15 +203,7 @@
                   <img
                     :src="sponsor.image"
                     :alt="sponsor.name"
-                    class="
-                      mx-auto
-                      w-auto
-                      max-h-[5rem]
-                      rounded-md
-                      overflow-hidden
-                      border-2 border-gray-300
-                      shadow
-                    "
+                    class="mx-auto w-auto max-h-[5rem] rounded-md overflow-hidden border-2 border-gray-300 shadow"
                     :class="[sponsor.class]"
                   />
                   <figcaption class="text-gray-500 text-sm mt-2 text-center">
