@@ -130,23 +130,23 @@ export default defineComponent({
     const questionnaire = ref({}) as Ref<Questionnaire>;
 
     // get
-    useGetItems(RecordsService.getQuestionnaires, questionnaires);
+    useGetItems(RecordsService.getQuestionnaireTemplates, questionnaires);
 
     // create
     const { createRequest, createModalOpen } = useCreateItem(
-      RecordsService.createQuestionnaire,
+      RecordsService.createQuestionnaireTemplate,
       questionnaires,
     );
 
     // update
     const { updateRequest, updateModalOpen } = useUpdateItem(
-      RecordsService.updateQuestionnaire,
+      RecordsService.updateQuestionnaireTemplate,
       questionnaires,
     );
 
     // delete
     const { deleteRequest, deleteModalOpen } = useDeleteItem(
-      RecordsService.deleteQuestionnaire,
+      RecordsService.deleteQuestionnaireTemplate,
       questionnaires,
     );
 

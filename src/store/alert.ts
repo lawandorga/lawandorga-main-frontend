@@ -9,7 +9,7 @@ const state: AlertState = {
 const getters = {
   alerts: (state: AlertState) => state.alerts,
   similar: (state: AlertState) => (alert: Alert) =>
-    state.alerts.find((item) => (item.message = alert.message)),
+    state.alerts.find((item) => item.message === alert.message),
 };
 
 const actions = {

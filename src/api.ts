@@ -99,6 +99,17 @@ axios.interceptors.response.use(
         heading: "Error 500",
         message: "Server Error",
       });
+    } else if (
+      error.response &&
+      error.response.status &&
+      error.response.statusText &&
+      error.response.status !== 400
+    ) {
+      store.dispatch("alert/createAlert", {
+        type: "error",
+        heading: `Error ${error.response.status}`,
+        message: error.response.statusText,
+      });
     }
 
     // return

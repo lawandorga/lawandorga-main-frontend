@@ -8,18 +8,7 @@
           multiple
           :name="name"
           :value="modelValue"
-          class="
-            cursor-pointer
-            appearance-none
-            block
-            w-full
-            p-0
-            border border-gray-300
-            rounded-l-md
-            overflow-x-hidden
-            focus:outline-none focus:border-lorgablue focus:ring-lorgablue
-            sm:text-sm
-          "
+          class="cursor-pointer appearance-none block w-full p-0 border border-gray-300 rounded-l-md overflow-x-hidden focus:outline-none focus:border-lorgablue focus:ring-lorgablue sm:text-sm"
           @keydown.space.left.right.stop.prevent="update($event.target.value)"
         >
           <option
@@ -27,15 +16,13 @@
             :key="option.name"
             class="px-3 py-2 focus:text-red-500 focus:bg-red-500"
             :class="{
-              'bg-lorgablue text-blue-50': modelValueStringArray.includes(
-                option.id.toString(),
-              ),
+              'bg-lorgablue text-blue-50': checkOptionSelected(option),
             }"
             :value="option.id"
-            :selected="modelValueStringArray.includes(option.id.toString())"
-            @click="update(option.id.toString())"
+            :selected="checkOptionSelected(option)"
+            @click="update(option)"
           >
-            {{ option.name }}
+            {{ option.name ?? option }}
           </option>
         </select>
       </div>
@@ -236,9 +223,29 @@ export default defineComponent({
     },
   },
   methods: {
-    update(value: string) {
+    checkOptionSelected(
+      option: string | { id: number; name?: string; value?: string },
+    ) {
+      if (typeof option === "object" && "value" in option)
+        return this.modelValueStringArray.includes(option.value as string);
+
+      if (typeof option === "object" && "id" in option)
+        return this.modelValueStringArray.includes(option.id.toString());
+
+      if (typeof option === "string")
+        return this.modelValueStringArray.includes(option);
+
+      return false;
+    },
+    update(option: string | { id: number; name: string }) {
+      let value = "";
+
+      if (typeof option === "string") value = option;
+      else value = option.id.toString();
+
       if (value === "") return;
-      let values = this.modelValue;
+
+      let values = [...this.modelValue];
       const index = this.modelValueStringArray.indexOf(value);
       if (index === -1) values.push(value);
       else values.splice(index, 1);

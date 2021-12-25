@@ -7,25 +7,11 @@
         :name="name"
         :required="required"
         :value="modelValue"
-        class="
-          cursor-pointer
-          mt-1
-          appearance-none
-          block
-          w-full
-          px-3
-          py-2
-          border border-gray-300
-          rounded-md
-          shadow-sm
-          placeholder-gray-400
-          focus:outline-none focus:ring-lorgablue focus:border-lorgablue
-          sm:text-sm
-        "
+        class="cursor-pointer mt-1 appearance-none block w-full pl-3 pr-6 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
         @input="update($event)"
       >
         <option v-for="option in options" :key="option.name" :value="option.id">
-          {{ option.name }}
+          {{ option.name ?? option }}
         </option>
       </select>
     </div>

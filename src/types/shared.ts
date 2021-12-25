@@ -3,13 +3,12 @@ import { Group, HasPermission, Permission } from "./core";
 import { RlcUser, User } from "./user";
 import { Ref } from "vue";
 import {
-  Questionnaire,
-  QuestionnaireField,
+  QuestionnaireTemplate,
+  QuestionnaireQuestion,
   Record,
   RecordDeletionRequest,
   RecordPermissionRequest,
-  RecordQuestionnaire,
-  RestrictedRecord,
+  Questionnaire,
 } from "./records";
 
 /*
@@ -42,7 +41,7 @@ export type DeleteFunction = (
 // models
 */
 interface KeyValueModel {
-  [key: string]: string | boolean | number | number[];
+  [key: string]: string | boolean | number | number[] | string[];
 }
 
 export type JsonModel = KeyValueModel;
@@ -56,11 +55,10 @@ export type DjangoModel =
   | Group
   | Permission
   | Record
-  | RestrictedRecord
-  | RecordQuestionnaire
   | Questionnaire
-  | QuestionnaireField
-  | Questionnaire
+  | QuestionnaireTemplate
+  | QuestionnaireQuestion
+  | QuestionnaireTemplate
   | RecordDeletionRequest
   | RecordPermissionRequest;
 

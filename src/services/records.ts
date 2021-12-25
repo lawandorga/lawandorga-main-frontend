@@ -8,24 +8,32 @@ import {
   RecordPermissionRequest,
   RecordsClient,
   RecordsDocument,
-  RestrictedRecord,
+  QuestionnaireTemplate,
   Questionnaire,
-  RecordQuestionnaire,
   Tag,
   Pool,
   QuestionnaireAnswer,
-  QuestionnaireField,
-  QuestionnaireFile,
+  QuestionnaireQuestion,
+  QuestionnaireTemplateFile,
+  RecordTemplate,
+  RecordEntry,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
 import axios from "../api";
 
 class RecordsService {
-  // records
-  getRecords(): Promise<RestrictedRecord[]> {
+  // record templates
+  getTemplates(): Promise<RecordTemplate[]> {
     return axios
-      .get<RestrictedRecord[]>("records/records/")
+      .get<RecordTemplate[]>("records/recordtemplates/")
+      .then((response) => response.data);
+  }
+
+  // records
+  getRecords(): Promise<Record[]> {
+    return axios
+      .get<Record[]>("records/records/")
       .then((response) => response.data);
   }
 
@@ -35,20 +43,33 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createRecord(record: Record): Promise<Record> {
+  createRecord(data: JsonModel): Promise<Record> {
     return axios
-      .post<Record>("records/records/", record)
+      .post<Record>("records/records/", data)
       .then((response) => response.data);
   }
 
   updateRecord(record: Record): Promise<Record> {
     return axios
-      .patch<Record>(`records/records/${record.id}/`, record)
+      .patch<Record>(`records/oldrecords/${record.id}/`, record)
       .then((response) => response.data);
   }
 
-  deleteRecord(record: RestrictedRecord): Promise<void> {
-    return axios.delete(`records/records/${record.id}/`).then();
+  deleteRecord(record: Record): Promise<void> {
+    return axios.delete(`records/oldrecords/${record.id}/`).then();
+  }
+
+  // entries
+  createEntry(data: JsonModel): Promise<RecordEntry> {
+    return axios
+      .post<RecordEntry>(data.url as string, data)
+      .then((response) => response.data);
+  }
+
+  updateEntry(data: JsonModel): Promise<RecordEntry> {
+    return axios
+      .patch<RecordEntry>(data.url as string, data)
+      .then((response) => response.data);
   }
 
   // permissions
@@ -58,113 +79,120 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  // questionnaire
-  getQuestionnaires(): Promise<Questionnaire[]> {
+  // questionnairetemplate
+  getQuestionnaireTemplates(): Promise<QuestionnaireTemplate[]> {
     return axios
-      .get<Questionnaire[]>("records/questionnaires/")
+      .get<QuestionnaireTemplate[]>("records/questionnairetemplates/")
       .then((response) => response.data);
   }
 
-  getQuestionnaire(id: number | string): Promise<Questionnaire> {
+  getQuestionnaireTemplate(
+    id: number | string,
+  ): Promise<QuestionnaireTemplate> {
     return axios
-      .get<Questionnaire>(`records/questionnaires/${id}/`)
+      .get<QuestionnaireTemplate>(`records/questionnairetemplates/${id}/`)
       .then((response) => response.data);
   }
 
-  createQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
+  createQuestionnaireTemplate(
+    questionnaire: QuestionnaireTemplate,
+  ): Promise<QuestionnaireTemplate> {
     return axios
-      .post<Questionnaire>("records/questionnaires/", questionnaire)
-      .then((response) => response.data);
-  }
-
-  updateQuestionnaire(questionnaire: Questionnaire): Promise<Questionnaire> {
-    return axios
-      .patch<Questionnaire>(
-        `records/questionnaires/${questionnaire.id}/`,
+      .post<QuestionnaireTemplate>(
+        "records/questionnairetemplates/",
         questionnaire,
       )
       .then((response) => response.data);
   }
 
-  deleteQuestionnaire(questionnaire: Questionnaire): Promise<void> {
-    return axios.delete(`records/questionnaires/${questionnaire.id}/`);
-  }
-
-  // questionnairefield
-  getQuestionnaireFields(
-    questionnaire: Questionnaire,
-  ): Promise<QuestionnaireField[]> {
+  updateQuestionnaireTemplate(
+    questionnaire: QuestionnaireTemplate,
+  ): Promise<QuestionnaireTemplate> {
     return axios
-      .get<QuestionnaireField[]>(
-        `records/questionnaires/${questionnaire.id}/fields/`,
+      .patch<QuestionnaireTemplate>(
+        `records/questionnairetemplates/${questionnaire.id}/`,
+        questionnaire,
       )
       .then((response) => response.data);
   }
 
-  createQuestionnaireField(
-    field: QuestionnaireField,
-  ): Promise<QuestionnaireField> {
+  deleteQuestionnaireTemplate(
+    questionnaire: QuestionnaireTemplate,
+  ): Promise<void> {
+    return axios.delete(`records/questionnairetemplates/${questionnaire.id}/`);
+  }
+
+  // questionnairequestion
+  getQuestionnaireQuestions(
+    questionnaire: QuestionnaireTemplate,
+  ): Promise<QuestionnaireQuestion[]> {
     return axios
-      .post<QuestionnaireField>("records/questionnaire_fields/", field)
+      .get<QuestionnaireQuestion[]>(
+        `records/questionnairetemplates/${questionnaire.id}/fields/`,
+      )
       .then((response) => response.data);
   }
 
-  updateQuestionnaireField(
-    field: QuestionnaireField,
-  ): Promise<QuestionnaireField> {
+  createQuestionnaireQuestion(
+    field: QuestionnaireQuestion,
+  ): Promise<QuestionnaireQuestion> {
     return axios
-      .patch<QuestionnaireField>(
+      .post<QuestionnaireQuestion>("records/questionnaire_fields/", field)
+      .then((response) => response.data);
+  }
+
+  updateQuestionnaireQuestion(
+    field: QuestionnaireQuestion,
+  ): Promise<QuestionnaireQuestion> {
+    return axios
+      .patch<QuestionnaireQuestion>(
         `records/questionnaire_fields/${field.id}/`,
         field,
       )
       .then((response) => response.data);
   }
 
-  deleteQuestionnaireField(field: QuestionnaireField): Promise<void> {
+  deleteQuestionnaireQuestion(field: QuestionnaireQuestion): Promise<void> {
     return axios.delete(`records/questionnaire_fields/${field.id}/`);
   }
 
-  // recordquestionnaire
-  getRecordQuestionnaires(id: number | string): Promise<RecordQuestionnaire[]> {
+  // questionnaire
+  getQuestionnaires(id: number | string): Promise<Questionnaire[]> {
     return axios
-      .get<RecordQuestionnaire[]>(
-        `records/records/${id}/record_questionnaires/`,
-      )
+      .get<Questionnaire[]>(`records/questionnaires/?record=${id}`)
       .then((response) => response.data);
   }
 
-  createRecordQuestionnaire(
-    recordQuestionnaire: RecordQuestionnaire,
-  ): Promise<RecordQuestionnaire> {
+  createQuestionnaire(
+    recordQuestionnaire: Questionnaire,
+  ): Promise<Questionnaire> {
     return axios
-      .post<RecordQuestionnaire>(
-        `records/questionnaires/publish/`,
+      .post<Questionnaire>(
+        `records/questionnairetemplates/publish/`,
         recordQuestionnaire,
       )
       .then((response) => response.data);
   }
 
-  deleteRecordQuestionnaire(
-    recordQuestionnaire: RecordQuestionnaire,
-  ): Promise<void> {
+  deleteQuestionnaire(recordQuestionnaire: Questionnaire): Promise<void> {
     return axios
-      .delete(`records/record_questionnaires/${recordQuestionnaire.id}/`)
+      .delete(`records/questionnaires/${recordQuestionnaire.id}/`)
       .then();
   }
 
-  getRecordQuestionnaire(code: string): Promise<RecordQuestionnaire> {
+  getQuestionnaire(code: string): Promise<Questionnaire> {
     return axios
-      .get(`records/record_questionnaires/${code}/`)
+      .get(`records/questionnaires/${code}/`)
       .then((response) => response.data);
   }
 
   sendQuestionnaireAnswer(
     data: JsonModel,
-    recordQuestionnaire: RecordQuestionnaire,
-  ): Promise<RecordQuestionnaire> {
+    recordQuestionnaire: Questionnaire,
+  ): Promise<Questionnaire> {
     return axios
-      .patch<RecordQuestionnaire>(
-        `records/record_questionnaires/${recordQuestionnaire.id}/`,
+      .patch<Questionnaire>(
+        `records/questionnaires/${recordQuestionnaire.id}/`,
         data,
       )
       .then((response) => response.data);
@@ -191,16 +219,16 @@ class RecordsService {
 
   // questionnairefile
   getQuestionnaireFiles(
-    questionnaire: Questionnaire,
-  ): Promise<QuestionnaireFile[]> {
+    questionnaire: QuestionnaireTemplate,
+  ): Promise<QuestionnaireTemplateFile[]> {
     return axios
-      .get<QuestionnaireFile[]>(
-        `records/questionnaires/${questionnaire.id}/files/`,
+      .get<QuestionnaireTemplateFile[]>(
+        `records/questionnairetemplates/${questionnaire.id}/files/`,
       )
       .then((response) => response.data);
   }
 
-  downloadQuestionnaireFile(file: QuestionnaireFile): void {
+  downloadQuestionnaireFile(file: QuestionnaireTemplateFile): void {
     axios
       .get<Blob>(`records/questionnaire_files/${file.id}/`, {
         responseType: "blob",
@@ -208,26 +236,28 @@ class RecordsService {
       .then((response) => downloadFile(response, file.name));
   }
 
-  createQuestionnaireFile(file: QuestionnaireFile): Promise<QuestionnaireFile> {
+  createQuestionnaireFile(
+    file: QuestionnaireTemplateFile,
+  ): Promise<QuestionnaireTemplateFile> {
     return axios
-      .post<QuestionnaireFile>("records/questionnaire_files/", file)
+      .post<QuestionnaireTemplateFile>("records/questionnaire_files/", file)
       .then((response) => response.data);
   }
 
-  deleteQuestionnaireFile(file: QuestionnaireFile): Promise<void> {
+  deleteQuestionnaireFile(file: QuestionnaireTemplateFile): Promise<void> {
     return axios.delete(`records/questionnaire_files/${file.id}/`).then();
   }
 
   // messages
   getMessages(id: string | number): Promise<Message[]> {
     return axios
-      .get<Message[]>(`records/records/${id}/messages/`)
+      .get<Message[]>(`records/messages/?record=${id}`)
       .then((response) => response.data);
   }
 
-  createMessage(message: Message): Promise<Message> {
+  createMessage(data: JsonModel): Promise<Message> {
     return axios
-      .post<Message>(`records/records/${message.record}/add_message/`, message)
+      .post<Message>(`records/messages/`, data)
       .then((response) => response.data);
   }
 
@@ -322,10 +352,10 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  requestAccess(record: RestrictedRecord): Promise<RecordPermissionRequest> {
+  requestAccess(record: Record): Promise<RecordPermissionRequest> {
     return axios
       .post<RecordPermissionRequest>(
-        `records/records/${record.id}/request_permission/`,
+        `records/oldrecords/${record.id}/request_permission/`,
       )
       .then((response) => response.data);
   }

@@ -1,42 +1,39 @@
-export interface Record {
-  id: number;
-  token: string;
-  last_contact_date: Date;
-  state: string;
-  tags: Tag[];
-  working_on_record: [number, string];
-  official_note: string;
-  created_on: Date;
-  last_edited: Date;
-  first_contact_date: Date;
-  note: string;
-  from_rlc: number;
-  client: number;
-  first_consultation: Date;
-  consultant_team: string;
-  lawyer: string;
-  related_persons: string;
-  contact: string;
-  bamf_token: string;
-  foreign_token: string;
-  first_correspondence: string;
-  circumstances: string;
-  next_steps: string;
-  status_described: string;
-  additional_facts: string;
+export interface RecordTemplate {
+  id: string;
+  name: string;
+  rlc: number;
+  create: string;
+  updated: string;
+  show: string[];
 }
 
-export interface RestrictedRecord {
+export interface Record {
   id: number;
-  state: string;
-  created_on: string;
-  last_edited: string;
-  record_token: string;
-  tags: { id: number; name: string }[];
-  working_on_record: { id: number; name: string; email: string }[];
-  official_note: string;
-  access: boolean;
-  delete: boolean;
+  created: string;
+  updated: string;
+  // delete: boolean;
+  entries: { [key: string]: RecordEntry };
+  fields: RecordField[];
+  show?: string[];
+  old_record: number;
+}
+
+type RecordValue = string | number | boolean | string[] | number[];
+
+export interface RecordEntry {
+  id: number;
+  name: string;
+  order: number;
+  value: RecordValue;
+  field: number;
+  type: string;
+  url: string;
+}
+
+export interface RecordField {
+  id: number;
+  url: string;
+  name: string;
 }
 
 export interface RecordsClient {
@@ -91,13 +88,13 @@ export interface Tag {
   updated: string;
 }
 
-export interface QuestionnaireField {
+export interface QuestionnaireQuestion {
   id: number;
   question: string;
   type: "FILE";
 }
 
-export interface QuestionnaireFile {
+export interface QuestionnaireTemplateFile {
   id: number;
   questionnaire: number;
   name: string;
@@ -105,7 +102,7 @@ export interface QuestionnaireFile {
   updated: string;
 }
 
-export interface Questionnaire {
+export interface QuestionnaireTemplate {
   id: number;
   rlc: number;
   name: string;
@@ -114,13 +111,13 @@ export interface Questionnaire {
   allow_file_upload: boolean;
   updated: string;
   created: string;
-  fields?: QuestionnaireField[];
+  fields?: QuestionnaireQuestion[];
 }
 
-export interface RecordQuestionnaire {
+export interface Questionnaire {
   id: number;
   record: number;
-  questionnaire: number | Questionnaire;
+  template: number | QuestionnaireTemplate;
   answer: string;
   answered: boolean;
   created: string;

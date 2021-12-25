@@ -7,7 +7,7 @@
         :base="{ name: 'records-dashboard' }"
         :pages="[
           {
-            name: record.record_token,
+            name: firstEntry,
             to: { name: 'records-detail', params: { id: record.id } },
           },
         ]"
@@ -16,29 +16,21 @@
       </BreadcrumbsBar>
       <div class="bg-white shadow px-5 py-4 rounded">
         <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
-        <div>
-          <FormGenerator
-            :fields="recordFields"
-            :initial="record"
-            :request="updateRecord"
-            submit="Save"
-            @success="record = $event"
-          ></FormGenerator>
+        <div v-if="record">
+          <FormRecord :record="record"></FormRecord>
         </div>
       </div>
 
-      <div class="flex space-y-6 flex-col">
+      <div v-if="record" class="flex space-y-6 flex-col">
         <div class="bg-white shadow px-5 py-4 rounded">
-          <h2 class="mb-5 text-lg font-bold text-gray-800">Client</h2>
-          <div>
-            <FormGenerator
-              :fields="clientFields"
-              :initial="client"
-              :request="updateClient"
-              submit="Save"
-              @success="client = $event"
-            ></FormGenerator>
-          </div>
+          <h2 class="text-lg font-bold text-gray-800">Client</h2>
+          <p class="text-base text-gray-600 mb-5">
+            The following data could not be copied over into the new format, due
+            to the way the encryption was built.
+          </p>
+          <p>Client name: {{ record.client.name }}</p>
+          <p>Client phone: {{ record.client.phone }}</p>
+          <p>Client note: {{ record.client.note }}</p>
         </div>
 
         <div class="bg-white shadow px-5 py-4 rounded">
@@ -130,7 +122,7 @@
                 <div class="px-5 py-5 sm:px-6 flex justify-between">
                   <div class="flex-shrink">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                      {{ item.questionnaire.name }}
+                      {{ item.template.name }}
                     </h3>
                     <div
                       class="mt-1 text-gray-500 text-sm flex flex-col lg:space-x-4 lg:flex-row"
@@ -168,7 +160,7 @@
                       </dt>
                       <dd
                         v-if="answer.field.type === 'TEXTAREA'"
-                        class="mt-1 text-sm text-gray-900"
+                        class="mt-1 text-sm text-gray-900 break-words"
                       >
                         {{ answer.data }}
                       </dd>
@@ -251,16 +243,15 @@
 
 <script lang="ts">
 import FormGenerator from "@/components/FormGenerator.vue";
+import FormRecord from "@/components/FormRecord.vue";
 import {
-  Consultant,
-  Country,
   Message,
   Questionnaire,
   QuestionnaireAnswer,
-  RecordQuestionnaire,
+  QuestionnaireTemplate,
+  RecordEntry,
   RecordsClient,
   RecordsDocument,
-  Tag,
 } from "@/types/records";
 import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
@@ -280,6 +271,7 @@ export default defineComponent({
     ModalDelete,
     FormGenerator,
     BoxLoader,
+    FormRecord,
     ModalFree,
     BreadcrumbsBar,
     CollectionIcon,
@@ -306,182 +298,13 @@ export default defineComponent({
       deleteDocumentOpen: false,
       document: null as RecordsDocument | null,
       // record-questionnaires
-      recordQuestionnaires: [] as RecordQuestionnaire[],
-      createRecordQuestionnaire: RecordsService.createRecordQuestionnaire,
-      deleteRecordQuestionnaire: RecordsService.deleteRecordQuestionnaire,
+      recordQuestionnaires: [] as Questionnaire[],
+      createRecordQuestionnaire: RecordsService.createQuestionnaire,
+      deleteRecordQuestionnaire: RecordsService.deleteQuestionnaire,
       createRecordQuestionnaireOpen: false,
       deleteRecordQuestionnaireOpen: false,
-      recordQuestionnaire: null as RecordQuestionnaire | null,
+      recordQuestionnaire: null as Questionnaire | null,
       // fields
-      recordFields: [
-        {
-          label: "Token",
-          type: "text",
-          name: "record_token",
-          required: true,
-        },
-        {
-          label: "First Contact Date",
-          type: "date",
-          name: "first_contact_date",
-          required: false,
-        },
-        {
-          label: "Last Contact Date",
-          type: "datetime-local",
-          name: "last_contact_date",
-          required: false,
-        },
-        {
-          label: "First Consultation",
-          type: "datetime-local",
-          name: "first_consultation",
-          required: false,
-        },
-        {
-          label: "Official Note (Everybody can see this note)",
-          type: "text",
-          name: "official_note",
-          required: false,
-        },
-        {
-          label: "Record Consultants",
-          type: "multiple",
-          name: "working_on_record",
-          required: true,
-          options: [] as Consultant[],
-        },
-        {
-          label: "Tags",
-          type: "multiple",
-          name: "tags",
-          required: true,
-          options: [] as Tag[],
-        },
-        {
-          label: "State",
-          type: "select",
-          name: "state",
-          required: true,
-          options: [
-            {
-              id: "op",
-              name: "Open",
-            },
-            {
-              id: "cl",
-              name: "Closed",
-            },
-            {
-              id: "wa",
-              name: "Waiting",
-            },
-            {
-              id: "wo",
-              name: "Working",
-            },
-          ],
-        },
-        {
-          label: "Note",
-          type: "textarea",
-          name: "note",
-          required: false,
-        },
-        {
-          label: "Consultant Team",
-          type: "text",
-          name: "consultant_team",
-          required: false,
-        },
-        {
-          label: "Lawyer",
-          type: "text",
-          name: "lawyer",
-          required: false,
-        },
-        {
-          label: "Related Persons",
-          type: "text",
-          name: "related_persons",
-          required: false,
-        },
-        {
-          label: "Contact",
-          type: "text",
-          name: "contact",
-          required: false,
-        },
-        {
-          label: "BAMF Token",
-          type: "text",
-          name: "bamf_token",
-          required: false,
-        },
-        {
-          label: "Foreign Token",
-          type: "text",
-          name: "foreign_token",
-          required: false,
-        },
-        {
-          label: "First Correspondence",
-          type: "textarea",
-          name: "first_correspondence",
-          required: false,
-        },
-        {
-          label: "Next Steps",
-          type: "textarea",
-          name: "next_steps",
-          required: false,
-        },
-        {
-          label: "Status Described",
-          type: "textarea",
-          name: "status_described",
-          required: false,
-        },
-        {
-          label: "Additional Facts",
-          type: "textarea",
-          name: "additional_facts",
-          required: false,
-        },
-      ],
-      clientFields: [
-        {
-          label: "Name",
-          type: "text",
-          name: "name",
-          required: true,
-        },
-        {
-          label: "Birthday",
-          type: "date",
-          name: "birthday",
-          required: false,
-        },
-        {
-          label: "Origin Country",
-          type: "select",
-          name: "origin_country",
-          required: false,
-          options: [] as Country[],
-        },
-        {
-          label: "Phone",
-          type: "tel",
-          name: "phone_number",
-          required: false,
-        },
-        {
-          label: "Note",
-          type: "textarea",
-          name: "note",
-          required: false,
-        },
-      ],
       documentFields: [
         {
           label: "File",
@@ -500,11 +323,11 @@ export default defineComponent({
       ],
       recordQuestionnaireFields: [
         {
-          label: "Questionnaire",
-          name: "questionnaire",
+          label: "Template",
+          name: "template",
           type: "select",
           required: true,
-          options: [] as Questionnaire[],
+          options: [] as QuestionnaireTemplate[],
         },
       ],
     };
@@ -513,32 +336,33 @@ export default defineComponent({
     base() {
       return window.location.origin;
     },
+    firstEntry(): RecordEntry["value"] | string {
+      if (this.record !== null && Object.keys(this.record.entries).length > 0)
+        return Object.values(this.record.entries)[0].value;
+      return "undefined";
+    },
   },
-  mounted() {
-    RecordsService.getCountries().then(
-      (countries) => (this.clientFields[2].options = countries),
+  created() {
+    // RecordsService.getCountries().then(
+    //   (countries) => (this.clientFields[2].options = countries),
+    // );
+    // RecordsService.getConsultants().then(
+    //   (consultants) => (this.recordFields[5].options = consultants),
+    // );
+    // RecordsService.getTags().then(
+    //   (tags) => (this.recordFields[6].options = tags),
+    // );
+    RecordsService.getRecord(this.$route.params.id as string).then(
+      (record) => (this.record = record),
     );
-    RecordsService.getConsultants().then(
-      (consultants) => (this.recordFields[5].options = consultants),
+    RecordsService.getQuestionnaires(this.$route.params.id as string).then(
+      (questionnaires) => (this.recordQuestionnaires = questionnaires),
     );
-    RecordsService.getTags().then(
-      (tags) => (this.recordFields[6].options = tags),
-    );
-    RecordsService.getRecord(this.$route.params.id as string).then((record) => {
-      this.record = record;
-      this.getClient(record.client);
-    });
     RecordsService.getMessages(this.$route.params.id as string).then(
       (messages) => (this.messages = messages),
     );
     RecordsService.getDocuments(this.$route.params.id as string).then(
       (documents) => (this.documents = documents),
-    );
-    RecordsService.getRecordQuestionnaires(
-      this.$route.params.id as string,
-    ).then(
-      (recordQuestionnaires) =>
-        (this.recordQuestionnaires = recordQuestionnaires),
     );
   },
   methods: {
@@ -556,7 +380,7 @@ export default defineComponent({
       this.deleteDocumentOpen = false;
     },
     // record questionnaire
-    copyLink(recordQuestionnaire: RecordQuestionnaire): void {
+    copyLink(recordQuestionnaire: Questionnaire): void {
       navigator.clipboard
         .writeText(`${this.base}/records/upload/${recordQuestionnaire.code}/`)
         .then(() => this.$store.dispatch("alert/showSuccess", "Link Copied"));
@@ -566,22 +390,22 @@ export default defineComponent({
     },
     // create record questionnaire
     openCreateRecordQuestionnaire() {
-      RecordsService.getQuestionnaires().then(
+      RecordsService.getQuestionnaireTemplates().then(
         (questionnaires) =>
           (this.recordQuestionnaireFields[0].options = questionnaires),
       );
       this.createRecordQuestionnaireOpen = true;
     },
-    recordQuestionnaireCreated(recordQuestionnaire: RecordQuestionnaire) {
+    recordQuestionnaireCreated(recordQuestionnaire: Questionnaire) {
       this.createRecordQuestionnaireOpen = false;
       this.recordQuestionnaires.push(recordQuestionnaire);
     },
     // delete record questionnaire
-    openDeleteRecordQuestionnaire(recordQuestionnaire: RecordQuestionnaire) {
+    openDeleteRecordQuestionnaire(recordQuestionnaire: Questionnaire) {
       this.recordQuestionnaire = recordQuestionnaire;
       this.deleteRecordQuestionnaireOpen = true;
     },
-    recordQuestionnaireDeleted(recordQuestionnaire: RecordQuestionnaire) {
+    recordQuestionnaireDeleted(recordQuestionnaire: Questionnaire) {
       this.deleteRecordQuestionnaireOpen = false;
       this.recordQuestionnaires = this.recordQuestionnaires.filter(
         (item) => item.id !== recordQuestionnaire.id,
