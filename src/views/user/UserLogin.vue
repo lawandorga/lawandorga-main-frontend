@@ -48,7 +48,7 @@
           <div class="flex flex-col justify-center">
             <div class="p-6 bg-white rounded-sm shadow-sm">
               <h2 class="text-2xl font-bold mb-8">Login</h2>
-              <FormGenerator
+              <!-- <FormGenerator
                 :fields="[
                   {
                     label: 'E-Mail',
@@ -69,8 +69,8 @@
                 ]"
                 action="user/login"
                 submit="Login"
-              />
-              <!-- Wartungsarbeiten im Gange -->
+              /> -->
+              Wartungsarbeiten im Gange
               <div class="pt-6 text-right space-x-4">
                 <router-link
                   :to="{ name: 'user-register' }"
