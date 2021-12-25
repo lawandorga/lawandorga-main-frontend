@@ -4,21 +4,18 @@
     class="max-w-2xl bg-white shadow mx-auto px-6 py-5"
   >
     <h2 class="text-2xl font-bold mb-3">
-      Questionnaire: {{ recordQuestionnaire.questionnaire.name }}
+      Questionnaire: {{ recordQuestionnaire.template.name }}
     </h2>
     <p
-      v-if="recordQuestionnaire.questionnaire.notes"
+      v-if="recordQuestionnaire.template.notes"
       class="text-lg text-gray-500 mb-10"
     >
-      {{ recordQuestionnaire.questionnaire.notes }}
+      {{ recordQuestionnaire.template.notes }}
     </p>
-    <div v-if="recordQuestionnaire.questionnaire.files.length">
+    <div v-if="recordQuestionnaire.template.files.length">
       <h3 class="mb-1 text-gray-700">Files to download or fill out:</h3>
       <ul class="space-y-2">
-        <li
-          v-for="file in recordQuestionnaire.questionnaire.files"
-          :key="file.id"
-        >
+        <li v-for="file in recordQuestionnaire.template.files" :key="file.id">
           <div class="border border-gray-200 rounded-md">
             <div
               class="pl-2 pr-3 py-2 flex items-center justify-between text-sm"
@@ -47,7 +44,6 @@
         v-if="fields.length > 0"
         button="Save"
         :fields="fields"
-        :initial="{ id: recordQuestionnaire.id }"
         :request="sendAnswer"
       ></FormGenerator>
       <p v-else class="text-lg text-gray-700">
@@ -60,7 +56,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 import FormGenerator from "@/components/FormGenerator.vue";
-import { RecordQuestionnaire } from "@/types/records";
+import { Questionnaire } from "@/types/records";
 import useGetItem from "@/composables/useGetItem";
 import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
@@ -75,11 +71,11 @@ export default defineComponent({
     FormGenerator,
   },
   setup() {
-    const recordQuestionnaire = ref<RecordQuestionnaire | null>(null);
+    const recordQuestionnaire = ref<Questionnaire | null>(null);
     const route = useRoute();
 
     useGetItem(
-      RecordsService.getRecordQuestionnaire,
+      RecordsService.getQuestionnaire,
       recordQuestionnaire,
       route.params.code as string,
     );

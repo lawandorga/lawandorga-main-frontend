@@ -88,13 +88,13 @@ export interface Tag {
   updated: string;
 }
 
-export interface QuestionnaireField {
+export interface QuestionnaireQuestion {
   id: number;
   question: string;
   type: "FILE";
 }
 
-export interface QuestionnaireFile {
+export interface QuestionnaireTemplateFile {
   id: number;
   questionnaire: number;
   name: string;
@@ -102,7 +102,7 @@ export interface QuestionnaireFile {
   updated: string;
 }
 
-export interface Questionnaire {
+export interface QuestionnaireTemplate {
   id: number;
   rlc: number;
   name: string;
@@ -111,13 +111,13 @@ export interface Questionnaire {
   allow_file_upload: boolean;
   updated: string;
   created: string;
-  fields?: QuestionnaireField[];
+  fields?: QuestionnaireQuestion[];
 }
 
-export interface RecordQuestionnaire {
+export interface Questionnaire {
   id: number;
   record: number;
-  questionnaire: number | Questionnaire;
+  template: number | QuestionnaireTemplate;
   answer: string;
   answered: boolean;
   created: string;

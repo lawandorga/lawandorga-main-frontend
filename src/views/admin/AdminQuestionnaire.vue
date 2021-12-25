@@ -135,8 +135,9 @@
 import { defineComponent, Ref, ref } from "vue";
 import {
   Questionnaire,
-  QuestionnaireField,
-  QuestionnaireFile,
+  QuestionnaireQuestion,
+  QuestionnaireTemplateFile,
+  QuestionnaireTemplate,
 } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
@@ -213,21 +214,25 @@ export default defineComponent({
     const route = useRoute();
 
     // questionnaire
-    const questionnaire = ref(null) as Ref<Questionnaire | null>;
+    const questionnaire = ref(null) as Ref<QuestionnaireTemplate | null>;
     useGetItem(
-      RecordsService.getQuestionnaire,
+      RecordsService.getQuestionnaireTemplate,
       questionnaire,
       route.params.id as string,
     );
 
     // fields
-    const fields = ref(null) as Ref<QuestionnaireField[] | null>;
-    const field = ref(null) as Ref<QuestionnaireField | null>;
-    useGetItems(RecordsService.getQuestionnaireFields, fields, questionnaire);
+    const fields = ref(null) as Ref<QuestionnaireQuestion[] | null>;
+    const field = ref(null) as Ref<QuestionnaireQuestion | null>;
+    useGetItems(
+      RecordsService.getQuestionnaireQuestions,
+      fields,
+      questionnaire,
+    );
 
     // files
-    const files = ref(null) as Ref<QuestionnaireFile[] | null>;
-    const file = ref(null) as Ref<QuestionnaireFile | null>;
+    const files = ref(null) as Ref<QuestionnaireTemplateFile[] | null>;
+    const file = ref(null) as Ref<QuestionnaireTemplateFile | null>;
     useGetItems(RecordsService.getQuestionnaireFiles, files, questionnaire);
 
     // create file
@@ -237,7 +242,7 @@ export default defineComponent({
     } = useCreateItem(RecordsService.createQuestionnaireFile, files);
 
     // download file
-    const downloadFile = (file: QuestionnaireFile) =>
+    const downloadFile = (file: QuestionnaireTemplateFile) =>
       RecordsService.downloadQuestionnaireFile(file);
 
     // delete file
@@ -250,19 +255,19 @@ export default defineComponent({
     const {
       createRequest: createFieldRequest,
       createModalOpen: createFieldModalOpen,
-    } = useCreateItem(RecordsService.createQuestionnaireField, fields);
+    } = useCreateItem(RecordsService.createQuestionnaireQuestion, fields);
 
     // update field
     const {
       updateRequest: updateFieldRequest,
       updateModalOpen: updateFieldModalOpen,
-    } = useUpdateItem(RecordsService.updateQuestionnaireField, fields);
+    } = useUpdateItem(RecordsService.updateQuestionnaireQuestion, fields);
 
     // delete field
     const {
       deleteRequest: deleteFieldRequest,
       deleteModalOpen: deleteFieldModalOpen,
-    } = useDeleteItem(RecordsService.deleteQuestionnaireField, fields);
+    } = useDeleteItem(RecordsService.deleteQuestionnaireQuestion, fields);
 
     return {
       questionnaire,

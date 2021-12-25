@@ -3,12 +3,12 @@ import { Group, HasPermission, Permission } from "./core";
 import { RlcUser, User } from "./user";
 import { Ref } from "vue";
 import {
-  Questionnaire,
-  QuestionnaireField,
+  QuestionnaireTemplate,
+  QuestionnaireQuestion,
   Record,
   RecordDeletionRequest,
   RecordPermissionRequest,
-  RecordQuestionnaire,
+  Questionnaire,
 } from "./records";
 
 /*
@@ -55,10 +55,10 @@ export type DjangoModel =
   | Group
   | Permission
   | Record
-  | RecordQuestionnaire
   | Questionnaire
-  | QuestionnaireField
-  | Questionnaire
+  | QuestionnaireTemplate
+  | QuestionnaireQuestion
+  | QuestionnaireTemplate
   | RecordDeletionRequest
   | RecordPermissionRequest;
 

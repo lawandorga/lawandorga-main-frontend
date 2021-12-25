@@ -121,7 +121,7 @@
                 <div class="px-5 py-5 sm:px-6 flex justify-between">
                   <div class="flex-shrink">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                      {{ item.questionnaire.name }}
+                      {{ item.template.name }}
                     </h3>
                     <div
                       class="mt-1 text-gray-500 text-sm flex flex-col lg:space-x-4 lg:flex-row"
@@ -159,7 +159,7 @@
                       </dt>
                       <dd
                         v-if="answer.field.type === 'TEXTAREA'"
-                        class="mt-1 text-sm text-gray-900"
+                        class="mt-1 text-sm text-gray-900 break-words"
                       >
                         {{ answer.data }}
                       </dd>
@@ -232,7 +232,7 @@
       <FormGenerator
         :fields="recordQuestionnaireFields"
         :request="createRecordQuestionnaire"
-        :initial="{ record: record.old_record }"
+        :initial="{ record: $route.params.id }"
         submit="Publish"
         @success="recordQuestionnaireCreated"
       />
@@ -247,8 +247,8 @@ import {
   Message,
   Questionnaire,
   QuestionnaireAnswer,
+  QuestionnaireTemplate,
   RecordEntry,
-  RecordQuestionnaire,
   RecordsClient,
   RecordsDocument,
 } from "@/types/records";
@@ -297,12 +297,12 @@ export default defineComponent({
       deleteDocumentOpen: false,
       document: null as RecordsDocument | null,
       // record-questionnaires
-      recordQuestionnaires: [] as RecordQuestionnaire[],
-      createRecordQuestionnaire: RecordsService.createRecordQuestionnaire,
-      deleteRecordQuestionnaire: RecordsService.deleteRecordQuestionnaire,
+      recordQuestionnaires: [] as Questionnaire[],
+      createRecordQuestionnaire: RecordsService.createQuestionnaire,
+      deleteRecordQuestionnaire: RecordsService.deleteQuestionnaire,
       createRecordQuestionnaireOpen: false,
       deleteRecordQuestionnaireOpen: false,
-      recordQuestionnaire: null as RecordQuestionnaire | null,
+      recordQuestionnaire: null as Questionnaire | null,
       // fields
       documentFields: [
         {
@@ -322,11 +322,11 @@ export default defineComponent({
       ],
       recordQuestionnaireFields: [
         {
-          label: "Questionnaire",
-          name: "questionnaire",
+          label: "Template",
+          name: "template",
           type: "select",
           required: true,
-          options: [] as Questionnaire[],
+          options: [] as QuestionnaireTemplate[],
         },
       ],
     };
@@ -351,13 +351,12 @@ export default defineComponent({
     // RecordsService.getTags().then(
     //   (tags) => (this.recordFields[6].options = tags),
     // );
-    RecordsService.getRecord(this.$route.params.id as string).then((record) => {
-      this.record = record;
-      RecordsService.getRecordQuestionnaires(this.record.old_record).then(
-        (recordQuestionnaires) =>
-          (this.recordQuestionnaires = recordQuestionnaires),
-      );
-    });
+    RecordsService.getRecord(this.$route.params.id as string).then(
+      (record) => (this.record = record),
+    );
+    RecordsService.getQuestionnaires(this.$route.params.id as string).then(
+      (questionnaires) => (this.recordQuestionnaires = questionnaires),
+    );
     RecordsService.getMessages(this.$route.params.id as string).then(
       (messages) => (this.messages = messages),
     );
@@ -380,7 +379,7 @@ export default defineComponent({
       this.deleteDocumentOpen = false;
     },
     // record questionnaire
-    copyLink(recordQuestionnaire: RecordQuestionnaire): void {
+    copyLink(recordQuestionnaire: Questionnaire): void {
       navigator.clipboard
         .writeText(`${this.base}/records/upload/${recordQuestionnaire.code}/`)
         .then(() => this.$store.dispatch("alert/showSuccess", "Link Copied"));
@@ -390,22 +389,22 @@ export default defineComponent({
     },
     // create record questionnaire
     openCreateRecordQuestionnaire() {
-      RecordsService.getQuestionnaires().then(
+      RecordsService.getQuestionnaireTemplates().then(
         (questionnaires) =>
           (this.recordQuestionnaireFields[0].options = questionnaires),
       );
       this.createRecordQuestionnaireOpen = true;
     },
-    recordQuestionnaireCreated(recordQuestionnaire: RecordQuestionnaire) {
+    recordQuestionnaireCreated(recordQuestionnaire: Questionnaire) {
       this.createRecordQuestionnaireOpen = false;
       this.recordQuestionnaires.push(recordQuestionnaire);
     },
     // delete record questionnaire
-    openDeleteRecordQuestionnaire(recordQuestionnaire: RecordQuestionnaire) {
+    openDeleteRecordQuestionnaire(recordQuestionnaire: Questionnaire) {
       this.recordQuestionnaire = recordQuestionnaire;
       this.deleteRecordQuestionnaireOpen = true;
     },
-    recordQuestionnaireDeleted(recordQuestionnaire: RecordQuestionnaire) {
+    recordQuestionnaireDeleted(recordQuestionnaire: Questionnaire) {
       this.deleteRecordQuestionnaireOpen = false;
       this.recordQuestionnaires = this.recordQuestionnaires.filter(
         (item) => item.id !== recordQuestionnaire.id,
