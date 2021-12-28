@@ -59,6 +59,14 @@
           v-model="data[name]"
           :room="room"
         />
+        <FormList
+          v-else-if="type === 'list'"
+          v-model="data[name]"
+          :required="required"
+          :label="label"
+          :helptext="helptext"
+          :name="name"
+        />
         <FormInput
           v-else
           v-model="data[name]"
@@ -122,6 +130,7 @@ import FormTiptap from "./FormTiptap.vue";
 import { DjangoError, JsonModel } from "@/types/shared";
 import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
+import FormList from "./FormList.vue";
 
 export default defineComponent({
   components: {
@@ -132,6 +141,7 @@ export default defineComponent({
     FormTextarea,
     FormTiptap,
     FormMultiple,
+    FormList,
   },
   props: {
     fields: {
