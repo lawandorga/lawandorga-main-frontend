@@ -2,6 +2,7 @@ export interface FormField {
   label: string;
   name: string;
   type:
+    | "list"
     | "input"
     | "select"
     | "textarea"
@@ -32,7 +33,7 @@ export interface FormField {
   disabled?: boolean;
   required?: boolean;
   placeholder?: string;
-  options?: { name: string; value: string }[];
+  options?: { name: string; value?: string; id?: string }[];
   room?: string;
   helptext?: string;
 }

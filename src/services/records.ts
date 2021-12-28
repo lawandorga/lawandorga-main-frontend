@@ -17,6 +17,7 @@ import {
   QuestionnaireTemplateFile,
   RecordTemplate,
   RecordEntry,
+  RecordField,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
@@ -42,6 +43,12 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  getTemplateFields(template: RecordTemplate): Promise<RecordField[]> {
+    return axios
+      .get<RecordField[]>(`records/recordtemplates/${template.id}/fields/`)
+      .then((response) => response.data);
+  }
+
   updateTemplate(template: RecordTemplate): Promise<RecordTemplate> {
     return axios
       .patch<RecordTemplate>(
@@ -55,6 +62,21 @@ class RecordsService {
     return axios
       .delete(`records/recordtemplates/${template.id}/`)
       .then((response) => response.data);
+  }
+
+  // fields
+  createField(data: JsonModel): Promise<RecordField> {
+    return axios
+      .post(data.url as string, data)
+      .then((response) => response.data);
+  }
+
+  updateField(field: RecordField): Promise<RecordField> {
+    return axios.patch(field.url, field).then((response) => response.data);
+  }
+
+  deleteField(field: RecordField): Promise<void> {
+    return axios.delete(field.url).then();
   }
 
   // records

@@ -15,10 +15,17 @@ Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
       updateModalOpen.value = false;
 
       if (Array.isArray(items.value)) {
-        const index = items.value.findIndex((item) => item.id === newItem.id);
+        let index = -1;
+
+        if ("url" in newItem)
+          index = items.value.findIndex((item) =>
+            "url" in item ? item.url === newItem.url : false,
+          );
+        else index = items.value.findIndex((item) => item.id === newItem.id);
+
         if (index !== -1) items.value.splice(index, 1, newItem);
       } else {
-        items.value = newItem;
+        items.value = [newItem];
       }
 
       return newItem;

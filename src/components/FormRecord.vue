@@ -135,7 +135,7 @@ export default defineComponent({
         value: value,
         field: field.id,
         record: this.record.id,
-        url: field.url,
+        url: field.entry_url,
       };
       RecordsService.createEntry(data)
         .then((entry) => this.handleSuccess(field, entry))

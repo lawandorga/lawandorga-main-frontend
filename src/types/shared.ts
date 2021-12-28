@@ -10,6 +10,7 @@ import {
   RecordPermissionRequest,
   Questionnaire,
   RecordTemplate,
+  RecordField,
 } from "./records";
 
 /*
@@ -62,7 +63,8 @@ export type DjangoModel =
   | QuestionnaireTemplate
   | RecordDeletionRequest
   | RecordPermissionRequest
-  | RecordTemplate;
+  | RecordTemplate
+  | RecordField;
 
 /*
 // errors

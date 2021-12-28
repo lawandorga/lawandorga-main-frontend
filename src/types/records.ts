@@ -33,6 +33,9 @@ export interface RecordEntry {
 export interface RecordField {
   id: number;
   url: string;
+  entry_url: string;
+  order: number;
+  type: string;
   name: string;
 }
 

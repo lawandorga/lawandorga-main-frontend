@@ -1,9 +1,7 @@
 <template>
-  <BoxLoader :show="true">
-    <div class="max-w-2xl mx-auto space-y-6">
+  <BoxLoader :show="!!template">
+    <div class="max-w-3xl mx-auto space-y-6">
       <BreadcrumbsBar
-        v-if="template"
-        class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[
           { name: 'Templates', to: { name: 'admin-templates' } },
@@ -18,18 +16,19 @@
       >
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <!-- <TableGenerator
+      <TableGenerator
         :head="[
-          { name: 'Question', key: 'question' },
-          { name: 'Type', key: 'type' },
+          { name: 'Field', key: 'name' },
           { name: 'Order', key: 'order' },
+          { name: 'Type', key: 'type' },
+          { name: 'Encrypted', key: 'encrypted' },
           { name: '', key: 'action' },
         ]"
         :data="fields"
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="createFieldModalOpen = true">
+            <ButtonTable type="button" @click="createModalOpen = true">
               Add Field
             </ButtonTable>
           </div>
@@ -40,7 +39,7 @@
               type="button"
               @click="
                 field = slotProps.dataItem;
-                updateFieldModalOpen = true;
+                updateModalOpen = true;
               "
             >
               Change
@@ -49,7 +48,7 @@
               type="button"
               @click="
                 field = slotProps.dataItem;
-                deleteFieldModalOpen = true;
+                deleteModalOpen = true;
               "
             >
               Delete
@@ -57,89 +56,35 @@
           </div>
         </template>
       </TableGenerator>
-      <TableGenerator
-        :head="[
-          { name: 'File', key: 'name' },
-          { name: '', key: 'action' },
-        ]"
-        :data="files"
-      >
-        <template #head-action>
-          <div class="flex justify-end">
-            <ButtonTable type="button" @click="createFileModalOpen = true">
-              Add File
-            </ButtonTable>
-          </div>
-        </template>
-        <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonTable
-              type="button"
-              @click="downloadFile(slotProps.dataItem)"
-            >
-              Download
-            </ButtonTable>
-            <ButtonTable
-              type="button"
-              @click="
-                file = slotProps.dataItem;
-                deleteFileModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonTable>
-          </div>
-        </template>
-      </TableGenerator> -->
     </div>
-    <!-- create field -->
-    <!-- <ModalFree v-model="createFieldModalOpen" title="Create Field">
+    <!-- create -->
+    <ModalFree v-model="createModalOpen" title="Create Field">
       <FormGenerator
-        :fields="formFieldFields"
-        :request="createFieldRequest"
-        :initial="{ questionnaire: questionnaire.id }"
+        :fields="createFields"
+        :request="createRequest"
+        :initial="{ template: template.id }"
       />
-    </ModalFree> -->
-    <!-- update field -->
-    <!-- <ModalFree v-model="updateFieldModalOpen" title="Update Field">
+    </ModalFree>
+    <!-- update -->
+    <ModalFree v-model="updateModalOpen" title="Update Field">
       <FormGenerator
-        :fields="formFieldFields"
+        :fields="updateFields"
         :initial="field"
-        :request="updateFieldRequest"
+        :request="updateRequest"
       />
-    </ModalFree> -->
-    <!-- delete field -->
-    <!-- <ModalDelete
-      v-model="deleteFieldModalOpen"
-      :request="deleteFieldRequest"
+    </ModalFree>
+    <!-- delete -->
+    <ModalDelete
+      v-model="deleteModalOpen"
+      :request="deleteRequest"
       :object="field"
-    /> -->
-    <!-- create file -->
-    <!-- <ModalFree v-model="createFileModalOpen" title="Add File">
-      <FormGenerator
-        :fields="formFileFields"
-        :request="createFileRequest"
-        :initial="{ questionnaire: questionnaire.id }"
-      />
-    </ModalFree> -->
-    <!-- delete file -->
-    <!-- <ModalDelete
-      v-model="deleteFileModalOpen"
-      :request="deleteFileRequest"
-      :object="file"
-    /> -->
+    />
   </BoxLoader>
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from "vue";
-import {
-  Questionnaire,
-  QuestionnaireQuestion,
-  QuestionnaireTemplateFile,
-  QuestionnaireTemplate,
-  RecordTemplate,
-} from "@/types/records";
+import { defineComponent, Ref, ref, computed } from "vue";
+import { RecordTemplate, RecordField } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
@@ -155,34 +100,9 @@ import useCreateItem from "@/composables/useCreateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
 import { useRoute } from "vue-router";
+import { FormField } from "@/types/form";
 
-const formFieldFields = [
-  {
-    label: "Type",
-    name: "type",
-    type: "select",
-    options: [
-      { name: "Text", id: "TEXTAREA" },
-      { name: "File", id: "FILE" },
-    ],
-    required: true,
-  },
-  {
-    label: "Question",
-    name: "question",
-    type: "textarea",
-    required: true,
-  },
-  {
-    label: "Order",
-    name: "order",
-    type: "number",
-    required: true,
-    helptext: "The ordering in which the fields appear.",
-  },
-];
-
-const formFileFields = [
+const updateFieldsSource = [
   {
     label: "Name",
     name: "name",
@@ -190,12 +110,50 @@ const formFileFields = [
     required: true,
   },
   {
-    label: "File",
-    name: "file",
-    type: "file",
+    label: "Order",
+    name: "order",
+    type: "number",
     required: true,
-    helptext:
-      "ATTENTION: This file will not be encrypted on the server. It should not contain sensitive information. Uploaded answer pdfs are encrypted.",
+  },
+] as FormField[];
+
+const createFields = [
+  {
+    label: "Type",
+    name: "url",
+    type: "select",
+    options: [
+      { name: "Standard", value: "records/recordstandardfields/" },
+      { name: "Select", value: "records/recordselectfields/" },
+      { name: "Multiple", value: "records/recordmultiplefields/" },
+      { name: "State", value: "records/recordstatefields/" },
+      { name: "Users", value: "records/recordusersfields/" },
+      {
+        name: "Encrypted Standard",
+        value: "records/recordencryptedstandardfields/",
+      },
+      {
+        name: "Encrypted Select",
+        value: "records/recordencryptedselectfields/",
+      },
+      {
+        name: "Encrypted File (Work in Progress)",
+        value: "records/recordencryptedfilefields/",
+      },
+    ],
+    required: true,
+  },
+  {
+    label: "Name",
+    name: "name",
+    type: "text",
+    required: true,
+  },
+  {
+    label: "Order",
+    name: "order",
+    type: "number",
+    required: true,
   },
 ];
 
@@ -218,81 +176,81 @@ export default defineComponent({
     const template = ref(null) as Ref<RecordTemplate | null>;
     useGetItem(RecordsService.getTemplate, template, route.params.id as string);
 
-    // // fields
-    // const fields = ref(null) as Ref<QuestionnaireQuestion[] | null>;
-    // const field = ref(null) as Ref<QuestionnaireQuestion | null>;
-    // useGetItems(
-    //   RecordsService.getQuestionnaireQuestions,
-    //   fields,
-    //   questionnaire,
-    // );
+    // fields
+    const fields = ref(null) as Ref<RecordField[] | null>;
+    const field = ref(null) as Ref<RecordField | null>;
+    useGetItems(RecordsService.getTemplateFields, fields, template);
 
-    // // files
-    // const files = ref(null) as Ref<QuestionnaireTemplateFile[] | null>;
-    // const file = ref(null) as Ref<QuestionnaireTemplateFile | null>;
-    // useGetItems(RecordsService.getQuestionnaireFiles, files, questionnaire);
+    // adapt form to field
+    const updateFields = computed<FormField[]>(() => {
+      if (field.value === null) return [];
 
-    // // create file
-    // const {
-    //   createRequest: createFileRequest,
-    //   createModalOpen: createFileModalOpen,
-    // } = useCreateItem(RecordsService.createQuestionnaireFile, files);
+      const fields = [...updateFieldsSource];
 
-    // // download file
-    // const downloadFile = (file: QuestionnaireTemplateFile) =>
-    //   RecordsService.downloadQuestionnaireFile(file);
+      if (field.value.url.includes("standardfield"))
+        fields.push({
+          label: "Type",
+          name: "field_type",
+          type: "select",
+          options: [
+            { name: "Single Line", value: "TEXT" },
+            { name: "Multi Line", value: "TEXTAREA" },
+            { name: "Date", value: "DATE" },
+            { name: "Date and Time", value: "DATETIME-LOCAL" },
+          ],
+          required: true,
+        });
 
-    // // delete file
-    // const {
-    //   deleteRequest: deleteFileRequest,
-    //   deleteModalOpen: deleteFileModalOpen,
-    // } = useDeleteItem(RecordsService.deleteQuestionnaireFile, files);
+      if (
+        field.value.url.includes("state") ||
+        field.value.url.includes("select") ||
+        field.value.url.includes("multiple")
+      )
+        fields.push({
+          label: "Options",
+          name: "options",
+          type: "list",
+          required: true,
+        });
 
-    // // create field
-    // const {
-    //   createRequest: createFieldRequest,
-    //   createModalOpen: createFieldModalOpen,
-    // } = useCreateItem(RecordsService.createQuestionnaireQuestion, fields);
+      return fields;
+    });
 
-    // // update field
-    // const {
-    //   updateRequest: updateFieldRequest,
-    //   updateModalOpen: updateFieldModalOpen,
-    // } = useUpdateItem(RecordsService.updateQuestionnaireQuestion, fields);
+    // create
+    const { createRequest, createModalOpen } = useCreateItem(
+      RecordsService.createField,
+      fields,
+    );
 
-    // // delete field
-    // const {
-    //   deleteRequest: deleteFieldRequest,
-    //   deleteModalOpen: deleteFieldModalOpen,
-    // } = useDeleteItem(RecordsService.deleteQuestionnaireQuestion, fields);
+    // update
+    const { updateRequest, updateModalOpen } = useUpdateItem(
+      RecordsService.updateField,
+      fields,
+    );
+
+    // delete
+    const { deleteRequest, deleteModalOpen } = useDeleteItem(
+      RecordsService.deleteField,
+      fields,
+    );
 
     return {
       template,
-      //   // field
-      //   field,
-      //   fields,
-      //   formFieldFields,
-      //   // create field
-      //   createFieldRequest,
-      //   createFieldModalOpen,
-      //   // update field
-      //   updateFieldRequest,
-      //   updateFieldModalOpen,
-      //   // delete field
-      //   deleteFieldRequest,
-      //   deleteFieldModalOpen,
-      //   // file
-      //   file,
-      //   files,
-      //   formFileFields,
-      //   // create file
-      //   createFileRequest,
-      //   createFileModalOpen,
-      //   // download file
-      //   downloadFile,
-      //   // delete file
-      //   deleteFileRequest,
-      //   deleteFileModalOpen,
+      // field
+      field,
+      fields,
+      // form
+      updateFields,
+      // create
+      createFields,
+      createRequest,
+      createModalOpen,
+      // update
+      updateRequest,
+      updateModalOpen,
+      // delete
+      deleteRequest,
+      deleteModalOpen,
     };
   },
 });
