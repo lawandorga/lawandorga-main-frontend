@@ -8,59 +8,23 @@
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <div
-      class="
-        rounded-lg
-        bg-gray-200
-        shadow
-        divide-y divide-gray-200
-        sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px
-      "
+      class="rounded-lg bg-gray-200 shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
     >
       <div
         v-for="item in items"
         :key="item.title"
-        class="
-          relative
-          group
-          bg-white
-          p-6
-          focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500
-        "
+        class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500"
         :class="[item.class]"
       >
         <div class="relative">
           <span
-            class="
-              rounded-lg
-              inline-flex
-              p-3
-              bg-gray-50
-              text-gray-700
-              ring-4 ring-white
-            "
+            class="rounded-lg inline-flex p-3 bg-gray-50 text-gray-700 ring-4 ring-white"
           >
             <component :is="item.icon" class="h-6 w-6 text-gray-600" />
           </span>
           <div
             v-if="item.notifications > 0"
-            class="
-              flex
-              items-center
-              text-sm
-              font-bold
-              justify-center
-              absolute
-              top-0
-              text-red-800
-              left-0
-              transform
-              translate-x-8
-              -translate-y-1
-              w-6
-              h-6
-              rounded-full
-              bg-red-200
-            "
+            class="flex items-center text-sm font-bold justify-center absolute top-0 text-red-800 left-0 transform translate-x-8 -translate-y-1 w-6 h-6 rounded-full bg-red-200"
           >
             {{ item.notifications }}
           </div>
@@ -78,14 +42,7 @@
           </p>
         </div>
         <span
-          class="
-            pointer-events-none
-            absolute
-            top-6
-            right-6
-            text-gray-300
-            group-hover:text-gray-400
-          "
+          class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
           aria-hidden="true"
         >
           <svg
@@ -146,10 +103,10 @@ export default defineComponent({
         class: "sm:rounded-tr-lg",
       },
       {
-        title: "Record Templates (Coming Soon)",
+        title: "Record Templates",
         description:
           "Add and edit your record templates. You can add, change and remove fields.",
-        link: "#",
+        link: { name: "admin-templates" },
         icon: TemplateIcon,
         notifications: 0,
         class: "",
