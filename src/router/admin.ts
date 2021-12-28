@@ -68,6 +68,18 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminQuestionnaire.vue"),
     beforeEnter: isAuthenticated,
   },
+  {
+    path: "/admin/templates/",
+    name: "admin-templates",
+    component: () => import("@/views/admin/AdminTemplates.vue"),
+    beforeEnter: isAuthenticated,
+  },
+  {
+    path: "/admin/template/",
+    name: "admin-template",
+    component: () => import("@/views/admin/AdminTemplate.vue"),
+    beforeEnter: isAuthenticated,
+  },
 ];
 
 export default routes;

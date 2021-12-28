@@ -30,6 +30,33 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  createTemplate(data: JsonModel): Promise<RecordTemplate> {
+    return axios
+      .post<RecordTemplate>(`records/recordtemplates/`, data)
+      .then((response) => response.data);
+  }
+
+  getTemplate(id: string | number): Promise<RecordTemplate> {
+    return axios
+      .get<RecordTemplate>(`record/recordtemplates/${id}/`)
+      .then((response) => response.data);
+  }
+
+  updateTemplate(template: RecordTemplate): Promise<RecordTemplate> {
+    return axios
+      .patch<RecordTemplate>(
+        `records/recordtemplates/${template.id}/`,
+        template,
+      )
+      .then((response) => response.data);
+  }
+
+  deleteTemplate(template: RecordTemplate): Promise<void> {
+    return axios
+      .delete(`records/recordtemplates/${template.id}/`)
+      .then((response) => response.data);
+  }
+
   // records
   getRecords(): Promise<Record[]> {
     return axios
