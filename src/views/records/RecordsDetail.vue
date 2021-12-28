@@ -111,9 +111,8 @@
             class="flex items-baseline justify-between px-5 pt-4 pb-4 border-b-4 border-gray-200"
           >
             <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
-            <ButtonSimple disabled>
-              <!-- @click="openCreateRecordQuestionnaire()" -->
-              Publish a questionnaire (Blocked until Sunday)
+            <ButtonSimple @click="openCreateRecordQuestionnaire()">
+              Publish a questionnaire
             </ButtonSimple>
           </div>
           <div v-if="!!recordQuestionnaires.length" class="">
