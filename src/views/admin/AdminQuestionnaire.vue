@@ -134,7 +134,6 @@
 <script lang="ts">
 import { defineComponent, Ref, ref } from "vue";
 import {
-  Questionnaire,
   QuestionnaireQuestion,
   QuestionnaireTemplateFile,
   QuestionnaireTemplate,
