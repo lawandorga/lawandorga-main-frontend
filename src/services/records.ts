@@ -38,7 +38,7 @@ class RecordsService {
 
   getTemplate(id: string | number): Promise<RecordTemplate> {
     return axios
-      .get<RecordTemplate>(`record/recordtemplates/${id}/`)
+      .get<RecordTemplate>(`records/recordtemplates/${id}/`)
       .then((response) => response.data);
   }
 

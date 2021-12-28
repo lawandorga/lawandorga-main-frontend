@@ -75,7 +75,7 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
-    path: "/admin/template/",
+    path: "/admin/templates/:id/",
     name: "admin-template",
     component: () => import("@/views/admin/AdminTemplate.vue"),
     beforeEnter: isAuthenticated,
