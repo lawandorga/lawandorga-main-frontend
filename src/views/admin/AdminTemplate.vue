@@ -137,7 +137,7 @@ const createFields = [
         value: "records/recordencryptedselectfields/",
       },
       {
-        name: "Encrypted File (Work in Progress)",
+        name: "Encrypted File",
         value: "records/recordencryptedfilefields/",
       },
     ],
