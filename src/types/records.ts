@@ -145,15 +145,18 @@ export interface RecordPermissionRequest {
   state: string;
 }
 
-export interface RecordDeletionRequest {
+export interface RecordDeletion {
   id: number;
-  // request_from: RestrictedUser;
-  // request_processed: RestrictedUser | null;
-  requested: Date;
-  processed_on: Date;
+  requested_by_detail: string;
+  record_detail: string;
+  processed_by_detail: string;
+  requested_by: number;
+  processed_by: number;
   state: string;
   explanation: string;
   record: number;
+  created: string;
+  updated: string;
 }
 
 export interface Pool {
