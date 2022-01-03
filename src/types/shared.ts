@@ -6,7 +6,7 @@ import {
   QuestionnaireTemplate,
   QuestionnaireQuestion,
   Record,
-  RecordDeletionRequest,
+  RecordDeletion,
   RecordPermissionRequest,
   Questionnaire,
   RecordTemplate,
@@ -61,7 +61,7 @@ export type DjangoModel =
   | QuestionnaireTemplate
   | QuestionnaireQuestion
   | QuestionnaireTemplate
-  | RecordDeletionRequest
+  | RecordDeletion
   | RecordPermissionRequest
   | RecordTemplate
   | RecordField;

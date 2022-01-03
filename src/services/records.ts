@@ -4,7 +4,7 @@ import {
   Country,
   Message,
   Record,
-  RecordDeletionRequest,
+  RecordDeletion,
   RecordPermissionRequest,
   RecordsClient,
   RecordsDocument,
@@ -410,31 +410,21 @@ class RecordsService {
   }
 
   // deletion-requests
-  getDeletionRequests(): Promise<RecordDeletionRequest[]> {
+  getRecordDeletions(): Promise<RecordDeletion[]> {
     return axios
-      .get<RecordDeletionRequest[]>("records/record_deletion_requests/")
+      .get<RecordDeletion[]>("records/deletions/")
       .then((response) => response.data);
   }
 
-  createDeletionRequest(
-    deletionRequest: RecordDeletionRequest,
-  ): Promise<RecordDeletionRequest> {
+  createDeletionRequest(data: JsonModel): Promise<RecordDeletion> {
     return axios
-      .post<RecordDeletionRequest>(
-        "records/record_deletion_requests/",
-        deletionRequest,
-      )
+      .post<RecordDeletion>("records/deletions/", data)
       .then((response) => response.data);
   }
 
-  updateDeletionRequest(
-    data: RecordDeletionRequest,
-  ): Promise<RecordDeletionRequest> {
+  updateRecordDeletion(data: RecordDeletion): Promise<RecordDeletion> {
     return axios
-      .patch<RecordDeletionRequest>(
-        `records/record_deletion_requests/${data.id}/`,
-        data,
-      )
+      .patch<RecordDeletion>(`records/deletions/${data.id}/`, data)
       .then((response) => response.data);
   }
 

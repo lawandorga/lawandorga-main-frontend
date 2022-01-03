@@ -60,12 +60,6 @@
       <FormGenerator
         :fields="[
           {
-            label: 'Record',
-            name: 'record_token',
-            disabled: true,
-            required: true,
-          },
-          {
             label: 'Explanation',
             name: 'explanation',
             type: 'textarea',
@@ -73,9 +67,8 @@
           },
         ]"
         :initial="{
-          record_token: record ? record.record_token : null,
           record: record ? record.id : null,
-          requested_from: $store.getters['user/user'].id,
+          requested_by: $store.getters['user/user'].id,
         }"
         :request="createDeletionRequestRequest"
         submit="Request Deletion"
@@ -111,7 +104,7 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent, ref, Ref, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
-import { RecordDeletionRequest, RecordTemplate, Record } from "@/types/records";
+import { RecordDeletion, RecordTemplate, Record } from "@/types/records";
 import ButtonTable from "@/components/ButtonTable.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
@@ -183,7 +176,7 @@ function createDeletionRequest(records: Ref<Record[] | null>) {
     createRequest: createDeletionRequestRequest,
     createModalOpen: createDeletionRequestModalOpen,
   } = useCreateItem(RecordsService.createDeletionRequest, ref(null));
-  const deletionRequestCreated = (deletionRequest: RecordDeletionRequest) => {
+  const deletionRequestCreated = (deletionRequest: RecordDeletion) => {
     if (records.value === null) return;
     const index = records.value.findIndex(
       (item) => item.id === deletionRequest.record,

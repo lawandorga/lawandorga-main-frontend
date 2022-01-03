@@ -15,24 +15,27 @@
       </BreadcrumbsBar>
       <TableGenerator
         :head="[
-          { name: 'Record', key: ['record', 'record_token'] },
-          { name: 'Requested', key: 'requested' },
-          { name: 'State', key: 'state' },
+          { name: 'Record', key: 'record_detail' },
+          { name: 'Requested', key: 'created' },
+          { name: 'Requested By', key: 'requested_by_detail' },
+          { name: 'Explanation', key: 'explanation' },
           { name: 'Processed', key: 'processed_on' },
+          { name: 'Processed By', key: 'processed_by_detail' },
+          { name: 'State', key: 'state' },
           { name: '', key: 'action' },
         ]"
         :data="deletionRequests"
       >
-        <template #requested="slotProps">
-          {{ formatDate(slotProps.dataItem.requested) }}
+        <template #created="slotProps">
+          {{ formatDate(slotProps.dataItem.created) }}
+        </template>
+        <template #processed_on="slotProps">
+          {{ formatDate(slotProps.dataItem.processed) }}
         </template>
         <template #state="slotProps">
           <span v-if="slotProps.dataItem.state === 're'">Requested</span>
           <span v-if="slotProps.dataItem.state === 'de'">Declined</span>
           <span v-if="slotProps.dataItem.state === 'gr'">Accepted</span>
-        </template>
-        <template #processed_on="slotProps">
-          {{ formatDate(slotProps.dataItem.processed_on) }}
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
@@ -57,7 +60,11 @@
     >
       <FormGenerator
         :fields="fields"
-        :initial="deletionRequest"
+        :initial="{
+          ...deletionRequest,
+          processed_by: $store.getters['user/user'].id,
+          processed: new Date(),
+        }"
         :request="updateRequest"
       />
     </ModalFree>
@@ -74,7 +81,7 @@ import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import useGetItems from "@/composables/useGetItems";
 import useUpdateItem from "@/composables/useUpdateItem";
-import { RecordDeletionRequest } from "@/types/records";
+import { RecordDeletion } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
@@ -103,15 +110,15 @@ export default defineComponent({
     FormGenerator,
   },
   setup() {
-    const deletionRequests = ref(null) as Ref<RecordDeletionRequest[] | null>;
-    const deletionRequest = ref(null) as Ref<RecordDeletionRequest | null>;
+    const deletionRequests = ref(null) as Ref<RecordDeletion[] | null>;
+    const deletionRequest = ref(null) as Ref<RecordDeletion | null>;
 
     // get
-    useGetItems(RecordsService.getDeletionRequests, deletionRequests);
+    useGetItems(RecordsService.getRecordDeletions, deletionRequests);
 
     // update
     const { updateRequest, updateModalOpen } = useUpdateItem(
-      RecordsService.updateDeletionRequest,
+      RecordsService.updateRecordDeletion,
       deletionRequests,
     );
 
