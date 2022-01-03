@@ -121,6 +121,32 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  createFileEntry(data: FormData): Promise<RecordEntry> {
+    return axios
+      .post<RecordEntry>(data.get("url") as string, data, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((response) => response.data);
+  }
+
+  updateFileEntry(data: FormData): Promise<RecordEntry> {
+    return axios
+      .patch<RecordEntry>(data.get("url") as string, data, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((response) => response.data);
+  }
+
+  downloadFileFromEntry(entry: RecordEntry): void {
+    axios
+      .get<Blob>(`${entry.url}download/`, { responseType: "blob" })
+      .then((response) => downloadFile(response, entry.value as string));
+  }
+
   // permissions
   getGeneralPermissions(): Promise<HasPermission[]> {
     return axios

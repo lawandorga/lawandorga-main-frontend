@@ -57,11 +57,6 @@ export default defineComponent({
       required: true,
       type: Array as PropType<{ name: string; value: string | boolean }[]>,
     },
-    tooltip: {
-      required: false,
-      default: "",
-      type: String,
-    },
     required: {
       required: false,
       default: false,

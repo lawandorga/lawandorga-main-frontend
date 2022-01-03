@@ -3,34 +3,32 @@
     <div>
       <FormLabel :required="required" :label="label" />
     </div>
-    <div class="flex space-x-2 items-center" :class="{ 'mt-1': !!label }">
+    <div class="flex space-x-2 items-center" :class="{ 'mt-1': label }">
       <div class="relative w-full">
         <input
           :id="`form--${name}`"
           :name="name"
-          :type="type"
-          :placeholder="placeholder"
-          :value="modelValue"
-          :step="step"
-          :min="min"
+          type="file"
           :required="required"
           :disabled="disabled"
-          :autocomplete="autocomplete"
           class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus-within:ring-1 focus-within:ring-lorgablue focus-within:border-lorgablue focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
           :class="{
             'opacity-50 bg-gray-100 pointer-events-none': disabled,
           }"
           @input="update($event)"
         />
+        <div
+          v-if="modelValue"
+          class="absolute inset-0 left-auto flex items-center justify-center mr-4"
+        >
+          <button
+            class="font-medium hover:text-opacity-75 text-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue focus:ring-opacity-70"
+            @click.prevent="$emit('download')"
+          >
+            {{ modelValue }}
+          </button>
+        </div>
       </div>
-    </div>
-    <div
-      v-if="
-        type === 'datetime-local' && modelValue && !modelValue.includes('T')
-      "
-      class="mt-1 text-right text-sm text-gray-700"
-    >
-      Error: {{ modelValue }}
     </div>
     <FormHelptext :helptext="helptext" />
   </label>
@@ -61,30 +59,10 @@ export default defineComponent({
       default: "",
       type: [String, Number, Boolean],
     },
-    type: {
-      default: "text",
-      type: String,
-      required: false,
-    },
     name: {
       required: false,
       type: String,
       default: "",
-    },
-    placeholder: {
-      required: false,
-      default: null,
-      type: String,
-    },
-    step: {
-      required: false,
-      default: null,
-      type: Number,
-    },
-    min: {
-      required: false,
-      default: null,
-      type: Number,
     },
     required: {
       required: false,
@@ -96,13 +74,8 @@ export default defineComponent({
       default: false,
       type: Boolean,
     },
-    autocomplete: {
-      required: false,
-      default: null,
-      type: String,
-    },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "download"],
   methods: {
     update($event: Event) {
       this.$emit(

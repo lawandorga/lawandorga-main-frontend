@@ -41,6 +41,15 @@
           :options="field.options ?? []"
           @update:model-value="update(field, $event)"
         />
+        <FormFile
+          v-else-if="field.type === 'file'"
+          v-bind="getAttrs(field.name)"
+          :label="field.label"
+          :name="field.name"
+          required
+          @update:model-value="update(field, $event)"
+          @download="downloadFile(field.name)"
+        />
         <FormInput
           v-else
           v-bind="getAttrs(field.name)"
@@ -71,9 +80,11 @@ import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
 import { RecordEntry, Record, RecordField } from "@/types/records";
 import RecordsService from "@/services/records";
+import FormFile from "@/components/FormFile.vue";
 
 export default defineComponent({
   components: {
+    FormFile,
     FormSelect,
     FormInput,
     FormTextarea,
@@ -106,6 +117,10 @@ export default defineComponent({
     this.entries = this.record.entries;
   },
   methods: {
+    downloadFile(name: string) {
+      const entry = this.entries[name];
+      RecordsService.downloadFileFromEntry(entry);
+    },
     getAttrs(name: string) {
       if (name in this.entries)
         return { "model-value": this.entries[name].value };
@@ -131,17 +146,30 @@ export default defineComponent({
         });
     },
     createEntry(field: RecordField, value: RecordEntry["value"]) {
-      const data = {
-        value: value,
-        field: field.id,
-        record: this.record.id,
-        url: field.entry_url,
-      };
-      RecordsService.createEntry(data)
-        .then((entry) => this.handleSuccess(field, entry))
-        .catch((e: AxiosError) => {
-          if (e.response) this.handleError(field, e.response.data);
-        });
+      if (field.type === "file") {
+        const formData = new FormData();
+        formData.append("file", this.getFilesFromInput(field.name));
+        formData.append("field", field.id.toString());
+        formData.append("record", this.record.id.toString());
+        formData.append("url", field.entry_url);
+        RecordsService.createFileEntry(formData)
+          .then((entry) => this.handleSuccess(field, entry))
+          .catch((e: AxiosError) => {
+            if (e.response) this.handleError(field, e.response.data);
+          });
+      } else {
+        const data = {
+          value: value,
+          field: field.id,
+          record: this.record.id,
+          url: field.entry_url,
+        };
+        RecordsService.createEntry(data)
+          .then((entry) => this.handleSuccess(field, entry))
+          .catch((e: AxiosError) => {
+            if (e.response) this.handleError(field, e.response.data);
+          });
+      }
     },
     handleSuccess(field: RecordField, entry: RecordEntry) {
       this.entries[field.name] = entry;
@@ -149,6 +177,13 @@ export default defineComponent({
     handleError(field: RecordField, errors: DjangoError) {
       this.errors[field.name] = errors["value"] ?? errors["file"];
       this.nonFieldErrors = errors.non_field_errors as string[];
+    },
+    getFilesFromInput(name: string): string | File {
+      const field = (this.$refs["form"] as HTMLFormElement).querySelector(
+        `input[name='${name}']`,
+      ) as HTMLInputElement;
+      if (!field.files) return "";
+      return field.files[0];
     },
   },
 });
