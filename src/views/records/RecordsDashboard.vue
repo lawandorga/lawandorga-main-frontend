@@ -51,6 +51,7 @@
       <FormGenerator
         :fields="createFields"
         :request="createRequest"
+        @success="recordCreated($event)"
       ></FormGenerator>
     </ModalFree>
     <ModalFree
@@ -116,6 +117,7 @@ import { formatDate } from "@/utils/date";
 import useCreateItem from "@/composables/useCreateItem";
 import useGetItems from "@/composables/useGetItems";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -192,6 +194,8 @@ function createDeletionRequest(records: Ref<Record[] | null>) {
 }
 
 function createRecord(records: Ref<Record[] | null>) {
+  const router = useRouter();
+
   const createFields = reactive([
     {
       label: "Template",
@@ -207,6 +211,10 @@ function createRecord(records: Ref<Record[] | null>) {
     records,
   );
 
+  const recordCreated = (record: Record) => {
+    router.push({ name: "records-detail", params: { id: record.id } });
+  };
+
   watch(createModalOpen, () => {
     RecordsService.getTemplates().then(
       (templates) => (createFields[0].options = templates),
@@ -217,6 +225,7 @@ function createRecord(records: Ref<Record[] | null>) {
     createFields,
     createRequest,
     createModalOpen,
+    recordCreated,
   };
 }
 </script>
