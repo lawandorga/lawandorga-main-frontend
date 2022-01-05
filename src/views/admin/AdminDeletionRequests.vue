@@ -19,7 +19,7 @@
           { name: 'Requested', key: 'created' },
           { name: 'Requested By', key: 'requested_by_detail' },
           { name: 'Explanation', key: 'explanation' },
-          { name: 'Processed', key: 'processed_on' },
+          { name: 'Processed', key: 'processed' },
           { name: 'Processed By', key: 'processed_by_detail' },
           { name: 'State', key: 'state' },
           { name: '', key: 'action' },
@@ -29,7 +29,7 @@
         <template #created="slotProps">
           {{ formatDate(slotProps.dataItem.created) }}
         </template>
-        <template #processed_on="slotProps">
+        <template #processed="slotProps">
           {{ formatDate(slotProps.dataItem.processed) }}
         </template>
         <template #state="slotProps">

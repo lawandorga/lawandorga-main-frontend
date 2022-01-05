@@ -5,7 +5,7 @@ import {
   Message,
   Record,
   RecordDeletion,
-  RecordPermissionRequest,
+  RecordAccess,
   RecordsClient,
   RecordsDocument,
   QuestionnaireTemplate,
@@ -410,28 +410,21 @@ class RecordsService {
   }
 
   // permission
-  getPermissionRequests(): Promise<RecordPermissionRequest[]> {
+  getRecordAccesses(): Promise<RecordAccess[]> {
     return axios
-      .get<RecordPermissionRequest[]>("records/record_permission_requests/")
+      .get<RecordAccess[]>("records/accesses/")
       .then((response) => response.data);
   }
 
-  updatePermissionRequest(
-    data: RecordPermissionRequest,
-  ): Promise<RecordPermissionRequest> {
+  updateRecordAccess(data: RecordAccess): Promise<RecordAccess> {
     return axios
-      .patch<RecordPermissionRequest>(
-        `records/record_permission_requests/${data.id}/`,
-        data,
-      )
+      .patch<RecordAccess>(`records/accesses/${data.id}/`, data)
       .then((response) => response.data);
   }
 
-  requestAccess(record: Record): Promise<RecordPermissionRequest> {
+  createRecordAccess(data: JsonModel): Promise<RecordAccess> {
     return axios
-      .post<RecordPermissionRequest>(
-        `records/oldrecords/${record.id}/request_permission/`,
-      )
+      .post<RecordAccess>(`records/accesses/`, data)
       .then((response) => response.data);
   }
 

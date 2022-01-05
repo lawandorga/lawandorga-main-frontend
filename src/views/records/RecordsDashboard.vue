@@ -147,7 +147,10 @@ export default defineComponent({
 
     // request access
     const requestAccess = (record: Record) => {
-      RecordsService.requestAccess(record).then(() =>
+      RecordsService.createRecordAccess({
+        record: record.id,
+        requested_by: store.getters["user/user"].id,
+      }).then(() =>
         store.dispatch("alert/createAlert", {
           heading: "Access Requested",
           type: "success",

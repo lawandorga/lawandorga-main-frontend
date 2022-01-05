@@ -15,24 +15,26 @@
       </BreadcrumbsBar>
       <TableGenerator
         :head="[
-          { name: 'Record', key: ['record', 'record_token'] },
-          { name: 'Requested', key: 'requested' },
-          { name: 'State', key: 'state' },
+          { name: 'Record', key: 'record_detail' },
+          { name: 'Requested', key: 'created' },
+          { name: 'Requested By', key: 'requested_by_detail' },
           { name: 'Processed', key: 'processed_on' },
+          { name: 'Processed By', key: 'processed_by_detail' },
+          { name: 'State', key: 'state' },
           { name: '', key: 'action' },
         ]"
         :data="deletionRequests"
       >
-        <template #requested="slotProps">
-          {{ formatDate(slotProps.dataItem.requested) }}
+        <template #created="slotProps">
+          {{ formatDate(slotProps.dataItem.created) }}
+        </template>
+        <template #processed_on="slotProps">
+          {{ formatDate(slotProps.dataItem.processed_on) }}
         </template>
         <template #state="slotProps">
           <span v-if="slotProps.dataItem.state === 're'">Requested</span>
           <span v-if="slotProps.dataItem.state === 'de'">Declined</span>
           <span v-if="slotProps.dataItem.state === 'gr'">Accepted</span>
-        </template>
-        <template #processed="slotProps">
-          {{ formatDate(slotProps.dataItem.requested) }}
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
@@ -74,7 +76,7 @@ import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import useGetItems from "@/composables/useGetItems";
 import useUpdateItem from "@/composables/useUpdateItem";
-import { RecordDeletionRequest } from "@/types/records";
+import { RecordAccess } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
@@ -103,15 +105,15 @@ export default defineComponent({
     FormGenerator,
   },
   setup() {
-    const deletionRequests = ref(null) as Ref<RecordDeletionRequest[] | null>;
-    const deletionRequest = ref(null) as Ref<RecordDeletionRequest | null>;
+    const deletionRequests = ref(null) as Ref<RecordAccess[] | null>;
+    const deletionRequest = ref(null) as Ref<RecordAccess | null>;
 
     // get
-    useGetItems(RecordsService.getPermissionRequests, deletionRequests);
+    useGetItems(RecordsService.getRecordAccesses, deletionRequests);
 
     // update
     const { updateRequest, updateModalOpen } = useUpdateItem(
-      RecordsService.updatePermissionRequest,
+      RecordsService.updateRecordAccess,
       deletionRequests,
     );
 

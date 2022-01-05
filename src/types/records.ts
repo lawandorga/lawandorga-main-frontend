@@ -135,24 +135,30 @@ export interface QuestionnaireAnswer {
   data: string;
 }
 
-export interface RecordPermissionRequest {
-  id: string;
-  // request_from: RestrictedUser;
-  // request_processed: RestrictedUser | null;
-  // record: TokenRecord;
-  requested: Date;
-  processed_on: Date;
-  can_edit: boolean;
-  state: string;
-}
-
-export interface RecordDeletion {
-  id: number;
+export interface RecordAccess {
   requested_by_detail: string;
   record_detail: string;
   processed_by_detail: string;
+
+  id: string;
   requested_by: number;
   processed_by: number;
+  record: number;
+  processed_on: string;
+  state: string;
+  created: string;
+  updated: string;
+}
+
+export interface RecordDeletion {
+  requested_by_detail: string;
+  record_detail: string;
+  processed_by_detail: string;
+
+  id: number;
+  requested_by: number;
+  processed_by: number;
+  processed: string;
   state: string;
   explanation: string;
   record: number;
