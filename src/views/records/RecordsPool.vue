@@ -53,10 +53,9 @@ import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import RecordsService from "@/services/records";
-import { Pool, Record } from "@/types/records";
+import { Pool } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import ButtonBlue from "@/components/ButtonNormal.vue";
-import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -67,8 +66,6 @@ export default defineComponent({
     FormGenerator,
   },
   setup() {
-    const store = useStore();
-
     const fields = ref([
       {
         label: "Record",
@@ -87,7 +84,9 @@ export default defineComponent({
         (items) =>
           (fields.value[0].options = items.map((item) => ({
             id: item.id,
-            name: item.entries["Token"] ? item.entries["Token"].value : item.id,
+            name: item.entries["Token"]
+              ? (item.entries["Token"].value as string)
+              : item.id,
           }))),
       ),
     );
