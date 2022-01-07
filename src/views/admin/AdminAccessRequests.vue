@@ -6,7 +6,7 @@
         :base="{ name: 'admin-dashboard' }"
         :pages="[
           {
-            name: 'Permission-Requests',
+            name: 'Access-Requests',
             to: { name: 'admin-recordpermitrequests' },
           },
         ]"

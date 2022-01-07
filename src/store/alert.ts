@@ -47,7 +47,7 @@ const actions = {
 
 const mutations = {
   addAlert(state: AlertState, alert: Alert) {
-    alert["id"] = state.alerts.length + 1;
+    alert["id"] = Math.random();
     alert["created"] = new Date().valueOf();
     state.alerts.push(alert);
   },

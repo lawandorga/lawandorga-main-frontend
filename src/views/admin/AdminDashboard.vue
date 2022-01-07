@@ -112,7 +112,7 @@ export default defineComponent({
         class: "",
       },
       {
-        title: "Record-Permit-Requests",
+        title: "Record-Access-Requests",
         description:
           "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
         link: { name: "admin-recordpermitrequests" },
