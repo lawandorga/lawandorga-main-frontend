@@ -450,7 +450,7 @@ class RecordsService {
   // pool
   getPool(): Promise<Pool> {
     return axios
-      .get<Pool>("records/record_pool/")
+      .get<Pool>("records/pool_records/status/")
       .then((response) => response.data);
   }
 

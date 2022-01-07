@@ -53,7 +53,7 @@ import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import RecordsService from "@/services/records";
-import { Pool, RestrictedRecord } from "@/types/records";
+import { Pool, Record } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import ButtonBlue from "@/components/ButtonNormal.vue";
 import { useStore } from "vuex";
@@ -75,7 +75,7 @@ export default defineComponent({
         type: "select",
         name: "record",
         required: true,
-        options: [] as RestrictedRecord[],
+        options: [] as { id: number; name: string | number }[],
       },
     ]);
     const pool = ref<Pool | null>(null);
@@ -85,17 +85,10 @@ export default defineComponent({
     onMounted(() =>
       RecordsService.getRecords().then(
         (items) =>
-          (fields.value[0].options = items
-            .filter((record) => record.state !== "cl")
-            .filter((record) =>
-              record.working_on_record
-                .map((user) => user.id)
-                .includes(store.getters["user/user"].id),
-            )
-            .map((item) => ({
-              ...item,
-              name: item.record_token,
-            }))),
+          (fields.value[0].options = items.map((item) => ({
+            id: item.id,
+            name: item.entries["Token"] ? item.entries["Token"].value : item.id,
+          }))),
       ),
     );
 
