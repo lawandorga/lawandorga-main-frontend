@@ -24,7 +24,7 @@
       <div v-if="record" class="flex space-y-6 flex-col">
         <div class="bg-white shadow px-5 py-4 rounded">
           <h2 class="text-lg font-bold text-gray-800">Client</h2>
-          <p class="text-base text-gray-600 mb-5">
+          <p class="text-sm text-gray-600 mb-5">
             The following data could not be copied over into the new format, due
             to the way the encryption was built.
           </p>
@@ -209,6 +209,28 @@
             </ul>
           </div>
         </div>
+
+        <div class="bg-white shadow rounded">
+          <div class="pt-5 px-5">
+            <h2 class="text-lg font-bold text-gray-800">Access</h2>
+            <p class="text-gray-600 text-sm">
+              The following persons have access to this record.
+            </p>
+          </div>
+          <div class="mt-5 border-t border-gray-200">
+            <TableGenerator
+              :head="[
+                { name: 'Person', key: 'user_detail' },
+                { name: 'Since', key: 'created' },
+              ]"
+              :data="record ? record.encryptions : null"
+            >
+              <template #created="slotProps">
+                {{ formatDate(slotProps.dataItem.created) }}
+              </template>
+            </TableGenerator>
+          </div>
+        </div>
       </div>
     </div>
     <ModalDelete
@@ -263,9 +285,11 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { formatDate } from "@/utils/date";
 import { PaperClipIcon } from "@heroicons/vue/solid";
 import ButtonSimple from "@/components/ButtonSimple.vue";
+import TableGenerator from "@/components/TableGenerator.vue";
 
 export default defineComponent({
   components: {
+    TableGenerator,
     PaperClipIcon,
     ModalDelete,
     FormGenerator,

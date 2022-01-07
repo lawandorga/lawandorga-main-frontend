@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/record-permit-requests/",
     name: "admin-recordpermitrequests",
-    component: () => import("@/views/admin/AdminPermissionRequests.vue"),
+    component: () => import("@/views/admin/AdminAccessRequests.vue"),
     beforeEnter: isAuthenticated,
   },
   {
