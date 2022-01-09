@@ -175,8 +175,8 @@ export default defineComponent({
       this.entries[field.name] = entry;
     },
     handleError(field: RecordField, errors: DjangoError) {
-      this.errors[field.name] = errors["value"] ?? errors["file"];
-      this.nonFieldErrors = errors.non_field_errors as string[];
+      this.errors[field.name] =
+        errors["value"] || errors["file"] || errors["non_field_errors"];
     },
     getFilesFromInput(name: string): string | File {
       const field = (this.$refs["form"] as HTMLFormElement).querySelector(
