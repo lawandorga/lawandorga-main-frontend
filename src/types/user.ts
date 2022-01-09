@@ -19,3 +19,8 @@ export interface RlcUser {
   is_active: boolean;
   accepted: boolean;
 }
+
+export interface DashboardInformation {
+  records: { identifier: string; id: number; state: string }[];
+  users: { id: number; name: string; rlcuserid: number }[];
+}

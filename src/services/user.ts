@@ -1,5 +1,5 @@
 import { Permission, Rlc } from "@/types/core";
-import { User } from "@/types/user";
+import { DashboardInformation, User } from "@/types/user";
 import axios from "../api";
 
 interface LoginResponse {
@@ -44,6 +44,12 @@ class UserService {
   admin(): Promise<AdminInformation> {
     return axios
       .get<AdminInformation>("profiles/admin/")
+      .then((response) => response.data);
+  }
+
+  dashboard(): Promise<DashboardInformation> {
+    return axios
+      .get<DashboardInformation>("profiles/dashboard/")
       .then((response) => response.data);
   }
 
