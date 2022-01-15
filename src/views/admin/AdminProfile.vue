@@ -15,17 +15,47 @@
       >
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div class="grid grid-cols-3 gap-y-6">
+      <div class="grid grid-cols-2 gap-y-6">
         <div v-if="user" class="bg-white rounded shadow max-w-lg px-6 py-5">
-          <div class="text-sm font-bold tracking-wide text-gray-500">User</div>
-          <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm font-bold tracking-wide text-gray-500">
+                User
+              </div>
+              <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+            </div>
+            <div>
+              <ButtonBlue type="button" @click="updateModalOpen = true">
+                <div class="flex space-x-1 items-center">
+                  <PencilIcon class="w-5 h-5 opacity-90" />
+                  <span class="">Edit</span>
+                </div>
+              </ButtonBlue>
+            </div>
+          </div>
           <div class="mt-4">
             <p>E-Mail: {{ user.email }}</p>
             <p>Phone: {{ user.phone_number }}</p>
+            <div
+              v-if="
+                ['street', 'city', 'postal_code', 'note'].every((item) =>
+                  Object.keys(user).includes(item),
+                )
+              "
+            >
+              <p>
+                Address:
+                <span v-if="user.street && user.postal_code && user.city">
+                  {{ user.street }}, {{ user.postal_code }} {{ user.city }}
+                </span>
+              </p>
+              <p>
+                Note:
+                <br />
+                {{ user.note }}
+              </p>
+            </div>
           </div>
-          <ButtonBlue type="button" @click="updateModalOpen = true">
-            Edit
-          </ButtonBlue>
         </div>
 
         <div class="col-span-3">
@@ -110,6 +140,7 @@ import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
+import { PencilIcon } from "@heroicons/vue/solid";
 
 const userFields = [
   {
@@ -142,6 +173,12 @@ const userFields = [
     name: "postal_code",
     required: false,
   },
+  {
+    label: "Note",
+    type: "textarea",
+    name: "note",
+    required: false,
+  },
 ];
 
 export default defineComponent({
@@ -151,6 +188,7 @@ export default defineComponent({
     ModalFree,
     TableGenerator,
     ButtonTable,
+    PencilIcon,
     FormGenerator,
     ModalDelete,
     BreadcrumbsBar,

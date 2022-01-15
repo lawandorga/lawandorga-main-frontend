@@ -32,7 +32,7 @@
             </li>
           </ul>
         </div>
-        <div>
+        <div v-if="data.members">
           <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
             New Members
           </h2>

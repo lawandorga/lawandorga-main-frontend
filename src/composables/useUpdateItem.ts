@@ -24,8 +24,10 @@ Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
         else index = items.value.findIndex((item) => item.id === newItem.id);
 
         if (index !== -1) items.value.splice(index, 1, newItem);
-      } else {
+      } else if (!items.value) {
         items.value = [newItem];
+      } else {
+        items.value = newItem;
       }
 
       return newItem;

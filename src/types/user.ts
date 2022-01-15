@@ -4,6 +4,7 @@ export interface User {
   name: string;
   rlc: number;
   rlc_user?: number;
+  rlcuserid: number;
 }
 
 export interface RlcUser {
@@ -22,5 +23,5 @@ export interface RlcUser {
 
 export interface DashboardInformation {
   records: { identifier: string; id: number; state: string }[];
-  users: { id: number; name: string; rlcuserid: number }[];
+  members?: { id: number; name: string; rlcuserid: number }[];
 }

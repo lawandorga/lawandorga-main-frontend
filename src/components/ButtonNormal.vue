@@ -1,22 +1,7 @@
 <template>
   <component
     :is="is"
-    class="
-      inline-flex
-      items-center
-      px-4
-      py-2
-      border border-transparent
-      text-sm
-      font-medium
-      rounded-xl
-      shadow-sm
-      text-white
-      hover:text-white
-      bg-lorgablue bg-opacity-100
-      hover:bg-opacity-90
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue
-    "
+    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white hover:text-white bg-lorgablue bg-opacity-100 hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue"
     :class="[
       disabledComputed
         ? 'pointer-events-none opacity-80 cursor-not-allowed'
