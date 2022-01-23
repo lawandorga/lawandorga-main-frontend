@@ -1,7 +1,7 @@
 <template>
   <div
     aria-live="assertive"
-    class="fixed z-50 inset-0 flex items-end justify-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
+    class="fixed z-50 inset-0 flex items-end justify-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start print:hidden"
   >
     <transition-group
       tag="div"

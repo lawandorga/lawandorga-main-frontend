@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden md:flex md:flex-shrink-0">
+  <div class="hidden md:flex md:flex-shrink-0 print:hidden">
     <div class="flex flex-col w-64">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex flex-col flex-grow bg-lorgablue overflow-y-auto">

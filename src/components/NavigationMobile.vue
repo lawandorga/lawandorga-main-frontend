@@ -2,7 +2,7 @@
   <TransitionRoot as="template" :show="open">
     <Dialog
       as="div"
-      class="fixed inset-0 flex z-40 md:hidden"
+      class="fixed inset-0 flex z-40 md:hidden print:hidden"
       @close="setOpen(false)"
     >
       <TransitionChild

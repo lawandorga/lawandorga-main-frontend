@@ -87,7 +87,7 @@
           {{ errors[name][0] }}
         </p>
       </div>
-      <div class="pt-2 flex items-center justify-end">
+      <div class="pt-2 flex items-center justify-end print:hidden">
         <transition
           enter-active-class="transition duration-200 opacity-0"
           enter-class="opacity-0"

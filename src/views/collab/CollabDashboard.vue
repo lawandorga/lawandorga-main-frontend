@@ -19,7 +19,7 @@
         </template>
       </BreadcrumbsBar>
 
-      <div class="bg-white shadow rounded-md p-5 2xl:row-span-2">
+      <div class="bg-white shadow rounded-md p-5 2xl:row-span-2 print:hidden">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="version-lg font-bold">Documents</h2>
           <ButtonIcon
@@ -41,10 +41,12 @@
         </ul>
       </div>
 
-      <div class="bg-white shadow rounded-md p-5 2xl:col-span-2">
+      <div
+        class="bg-white shadow rounded-md p-5 2xl:col-span-2 print:p-0 print:shadow-none"
+      >
         <div v-if="version && document">
           <div
-            class="flex flex-col justify-between lg:flex-row lg:items-center"
+            class="flex flex-col justify-between lg:flex-row lg:items-center print:hidden"
           >
             <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
             <div class="flex space-x-3 self-end">
@@ -64,8 +66,12 @@
               />
             </div>
           </div>
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <article class="pt-8 prose" v-html="version.content"></article>
+          <!-- eslint-disable vue/no-v-html -->
+          <article
+            class="pt-8 prose print:p-0"
+            v-html="version.content"
+          ></article>
+          <!-- eslint-enable vue/no-v-html -->
         </div>
         <Loader v-show="versionLoading" />
         <p v-show="!versionLoading && !version">No document selected.</p>
@@ -79,7 +85,7 @@
           editor.
         </BoxAlert>
       </div>
-      <div class="2xl:col-span-2">
+      <div class="2xl:col-span-2 print:hidden">
         <TableGenerator
           :head="[
             { name: 'Type', key: 'type' },

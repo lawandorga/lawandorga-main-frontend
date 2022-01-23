@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-lorgablue">
+  <div class="bg-lorgablue print:hidden">
     <div
       class="flex items-center justify-between flex-shrink-0 px-4 h-16 border-b border-white border-opacity-20"
     >
