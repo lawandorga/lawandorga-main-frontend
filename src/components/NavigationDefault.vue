@@ -1,15 +1,7 @@
 <template>
   <div class="bg-lorgablue">
     <div
-      class="
-        flex
-        items-center
-        justify-between
-        flex-shrink-0
-        px-4
-        h-16
-        border-b border-white border-opacity-20
-      "
+      class="flex items-center justify-between flex-shrink-0 px-4 h-16 border-b border-white border-opacity-20"
     >
       <div class="flex space-x-3">
         <router-link

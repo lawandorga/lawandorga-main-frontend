@@ -1,12 +1,7 @@
 <template>
   <BoxLoader :show="true">
     <div
-      class="
-        max-w-screen-2xl
-        mx-auto
-        space-y-6
-        2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0
-      "
+      class="max-w-screen-2xl mx-auto space-y-6 2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0"
     >
       <BreadcrumbsBar
         class="2xl:col-span-3"
@@ -135,17 +130,7 @@
         <li v-for="item in versions" :key="item.id">
           <button
             type="button"
-            class="
-              w-full
-              border-2 border-gray-300
-              rounded
-              px-3
-              py-2
-              font-medium
-              text-left text-gray-700
-              bg-gray-100
-              hover:bg-gray-200
-            "
+            class="w-full border-2 border-gray-300 rounded px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200"
             @click="versionSelected(item.id)"
           >
             {{ formatDate(item.created) }}

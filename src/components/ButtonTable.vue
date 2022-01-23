@@ -1,18 +1,7 @@
 <template>
   <button
     type="button"
-    class="
-      inline-flex
-      items-center
-      px-2
-      py-0.5
-      -mx-2
-      border border-transparent
-      text-sm
-      font-medium
-      rounded
-      focus:outline-none
-    "
+    class="inline-flex items-center px-2 py-0.5 -mx-2 border border-transparent text-sm font-medium rounded focus:outline-none"
     :class="{
       'pointer-events-none opacity-40 cursor-not-allowed': disabledComputed,
       'text-blue-800 hover:text-blue-900 hover:bg-blue-50 focus:border-blue-200':

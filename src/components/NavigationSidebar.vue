@@ -4,14 +4,7 @@
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex flex-col flex-grow bg-lorgablue overflow-y-auto">
         <div
-          class="
-            flex
-            items-center
-            flex-shrink-0
-            px-4
-            h-16
-            border-b border-white border-opacity-20
-          "
+          class="flex items-center flex-shrink-0 px-4 h-16 border-b border-white border-opacity-20"
         >
           <router-link to="/" class="flex space-x-2 items-center">
             <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
@@ -19,13 +12,7 @@
           </router-link>
         </div>
         <div
-          class="
-            flex-col
-            text-white
-            px-4
-            py-3
-            border-b border-white border-opacity-20
-          "
+          class="flex-col text-white px-4 py-3 border-b border-white border-opacity-20"
         >
           <div>{{ user ? user.name : "" }}</div>
           <div>{{ user ? user.email : "" }}</div>
@@ -37,50 +24,18 @@
               :key="item.link"
               :to="item.link"
               active-class="bg-gray-100 hover:bg-gray-100 text-gray-700"
-              class="
-                group
-                text-gray-600
-                hover:bg-gray-50 hover:text-gray-900
-                group
-                flex
-                items-center
-                justify-between
-                pl-2
-                pr-3
-                py-2
-                text-sm
-                font-medium
-                rounded-md
-              "
+              class="group text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center justify-between pl-2 pr-3 py-2 text-sm font-medium rounded-md"
             >
               <div class="flex items-center">
                 <component
                   :is="item.icon"
-                  class="
-                    text-gray-400
-                    mr-3
-                    flex-shrink-0
-                    h-6
-                    w-6
-                    group-hover:text-gray-500
-                  "
+                  class="text-gray-400 mr-3 flex-shrink-0 h-6 w-6 group-hover:text-gray-500"
                 />
                 {{ item.label }}
               </div>
               <div
                 v-if="item.notifications > 0"
-                class="
-                  flex
-                  items-center
-                  text-sm
-                  font-bold
-                  justify-center
-                  text-red-800
-                  w-6
-                  h-6
-                  rounded-full
-                  bg-red-200
-                "
+                class="flex items-center text-sm font-bold justify-center text-red-800 w-6 h-6 rounded-full bg-red-200"
               >
                 {{ item.notifications }}
               </div>
@@ -92,16 +47,7 @@
               <img
                 src="/rlcd.png"
                 alt="RLC Deutschland"
-                class="
-                  h-auto
-                  px-2
-                  py-2
-                  w-36
-                  rounded-md
-                  overflow-hidden
-                  border-2 border-gray-200
-                  shadow
-                "
+                class="h-auto px-2 py-2 w-36 rounded-md overflow-hidden border-2 border-gray-200 shadow"
               />
             </figure>
             <figure>
@@ -110,14 +56,7 @@
                 <img
                   src="/sponsor-cms.jpg"
                   alt="CMS Stiftung"
-                  class="
-                    h-auto
-                    w-full
-                    rounded-md
-                    overflow-hidden
-                    border-2 border-gray-200
-                    shadow
-                  "
+                  class="h-auto w-full rounded-md overflow-hidden border-2 border-gray-200 shadow"
                 />
               </a>
             </figure>

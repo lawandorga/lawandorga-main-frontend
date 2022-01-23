@@ -6,7 +6,9 @@
     "build": "npm run build:production",
     "build:staging": "vite build --mode staging",
     "build:production": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint --ext .js,.vue ./src",
+    "fix": "eslint --fix --ext .js,.vue ./src"
   },
   "dependencies": {
     "@headlessui/vue": "^1.4.0",

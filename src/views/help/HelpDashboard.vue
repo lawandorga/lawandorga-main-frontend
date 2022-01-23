@@ -61,7 +61,11 @@
 </template>
 
 <script lang="ts">
-import { AnnotationIcon, ShieldCheckIcon, XIcon } from "@heroicons/vue/outline";
+import {
+  AnnotationIcon,
+  ShieldCheckIcon,
+  DocumentTextIcon,
+} from "@heroicons/vue/outline";
 import { defineComponent } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { SupportIcon } from "@heroicons/vue/outline";
@@ -70,6 +74,7 @@ export default defineComponent({
   components: {
     BreadcrumbsBar,
     SupportIcon,
+    DocumentTextIcon,
   },
   setup() {
     const items = [
@@ -95,7 +100,7 @@ export default defineComponent({
         title: "User Guide",
         description: "The user guide that explains how to use Law&Orga.",
         attrs: { href: "/handbuch.pdf", target: "_blank" },
-        icon: AnnotationIcon,
+        icon: DocumentTextIcon,
         class: "sm:rounded-bl-lg",
         is: "a",
       },

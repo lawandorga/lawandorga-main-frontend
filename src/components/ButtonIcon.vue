@@ -4,23 +4,7 @@
     :to="to"
     :href="href"
     :type="type"
-    class="
-      rounded-lg
-      group
-      no-underline
-      pl-2
-      pr-3
-      py-0.5
-      flex
-      items-center
-      font-normal
-      transition
-      bg-gray-100
-      text-gray-700
-      border-2 border-gray-200
-      hover:border-gray-300 hover:bg-gray-200 hover:text-gray-800
-      focus:outline-none focus:ring-1 focus:ring-gray-200 focus:ring-offset-1
-    "
+    class="rounded-lg group no-underline pl-2 pr-3 py-0.5 flex items-center font-normal transition bg-gray-100 text-gray-700 border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-200 hover:text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 focus:ring-offset-1"
     @click="emitClick()"
   >
     <component

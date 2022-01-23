@@ -6,15 +6,7 @@
     />
     <EditorContent ref="tiptap" :editor="editor" />
     <div
-      class="
-        text-gray-800
-        flex
-        items-center
-        justify-between
-        border-t-2 border-gray-800
-        px-2
-        py-1
-      "
+      class="text-gray-800 flex items-center justify-between border-t-2 border-gray-800 px-2 py-1"
     >
       <div class="space-x-4">
         <span class="text-sm">{{ room }}:</span>
