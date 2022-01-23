@@ -3,7 +3,7 @@
     <div class="max-w-screen-2xl mx-auto space-y-6">
       <BreadcrumbsBar
         v-if="!!folder"
-        :base="base"
+        :base="{ name: 'files-dashboard' }"
         :pages="
           folder.path.map((item) => ({
             name: item.name,
@@ -30,14 +30,13 @@
           { name: '', key: 'action' },
         ]"
         :data="items"
-        :loading="itemsLoading"
       >
         <template #head-action>
           <div class="flex space-x-3 justify-end">
-            <ButtonTable type="button" @click="openFolderCreate()">
+            <ButtonTable type="button" @click="createFolderModalOpen = true">
               Create Folder
             </ButtonTable>
-            <ButtonTable type="button" @click="openFileCreate()">
+            <ButtonTable type="button" @click="createFileModalOpen = true">
               Upload File
             </ButtonTable>
           </div>
@@ -77,14 +76,20 @@
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FOLDER'"
               type="button"
-              @click="openFolderUpdate(slotProps.dataItem)"
+              @click="
+                folderOpen = slotProps.dataItem;
+                updateFolderModalOpen = true;
+              "
             >
               Change
             </ButtonTable>
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FOLDER'"
               type="button"
-              @click="openFolderDelete(slotProps.dataItem)"
+              @click="
+                folderOpen = slotProps.dataItem;
+                deleteFolderModalOpen = true;
+              "
             >
               Delete
             </ButtonTable>
@@ -98,7 +103,10 @@
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FILE'"
               type="button"
-              @click="openFileDelete(slotProps.dataItem)"
+              @click="
+                fileOpen = slotProps.dataItem;
+                deleteFileModalOpen = true;
+              "
             >
               Delete
             </ButtonTable>
@@ -112,12 +120,14 @@
           { name: 'Source', key: 'folder' },
           { name: '', key: 'action' },
         ]"
-        :data="permissions"
-        :loading="permissionsLoading"
+        :data="folderPermissions"
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="openPermissionCreate()">
+            <ButtonTable
+              type="button"
+              @click="createPermissionModalOpen = true"
+            >
               Add Permission
             </ButtonTable>
           </div>
@@ -138,7 +148,10 @@
             <ButtonTable
               v-if="slotProps.dataItem.source === 'NORMAL'"
               type="button"
-              @click="openPermissionDelete(slotProps.dataItem)"
+              @click="
+                permissionOpen = slotProps.dataItem;
+                deletePermissionModalOpen = true;
+              "
             >
               Remove
             </ButtonTable>
@@ -151,57 +164,57 @@
       </BoxAlert>
     </div>
     <!-- folder -->
-    <ModalFree v-model="folderCreateOpen" title="Create Folder">
+    <ModalFree v-model="createFolderModalOpen" title="Create Folder">
       <FormGenerator
         :fields="folderFields"
-        :request="createFolder"
+        :request="createFolderRequest"
         :initial="{ parent: folder.id }"
-        @success="folderCreated($event)"
       />
     </ModalFree>
-    <ModalFree v-model="folderUpdateOpen" title="Update Folder">
+    <ModalFree v-model="updateFolderModalOpen" title="Update Folder">
       <FormGenerator
         :fields="folderFields"
         :initial="folderOpen"
-        :request="updateFolder"
-        @success="folderUpdated($event)"
+        :request="updateFolderRequest"
       />
     </ModalFree>
     <ModalDelete
-      v-model="folderDeleteOpen"
-      :request="deleteFolder"
+      v-model="deleteFolderModalOpen"
+      :request="deleteFolderRequest"
       :object="folderOpen"
-      @deleted="folderDeleted($event)"
     />
     <!-- file -->
-    <ModalFree v-model="fileCreateOpen" title="Create File">
+    <ModalFree v-model="createFileModalOpen" title="Create File">
       <FormGenerator
-        :fields="fileFields"
-        :request="createFile"
+        :fields="createFileFields"
+        :request="createFileRequest"
         :initial="{ folder: folder.id }"
-        @success="fileCreated($event)"
+      />
+    </ModalFree>
+    <ModalFree v-model="updateFileModalOpen" title="Update File">
+      <FormGenerator
+        :fields="updateFileFields"
+        :initial="fileOpen"
+        :request="updateFileRequest"
       />
     </ModalFree>
     <ModalDelete
-      v-model="fileDeleteOpen"
-      :request="deleteFile"
+      v-model="deleteFileModalOpen"
+      :request="deleteFileRequest"
       :object="fileOpen"
-      @deleted="fileDeleted($event)"
     />
     <!-- permission -->
-    <ModalFree v-model="permissionCreateOpen" title="Add Permission">
+    <ModalFree v-model="createPermissionModalOpen" title="Add Permission">
       <FormGenerator
         :fields="permissionFields"
-        :request="createPermission"
+        :request="createPermissionRequest"
         :initial="{ folder: folder.id }"
-        @success="permissionCreated($event)"
       />
     </ModalFree>
     <ModalDelete
-      v-model="permissionDeleteOpen"
-      :request="deletePermission"
-      :object="permission"
-      @deleted="permissionDeleted($event)"
+      v-model="deletePermissionModalOpen"
+      :request="deletePermissionRequest"
+      :object="permissionOpen"
     />
     <!-- breadcrumbs -->
     <ModalFree
@@ -264,7 +277,7 @@ import {
   FilesPermission,
   FilesPossiblePermission,
 } from "@/types/files";
-import { defineComponent } from "vue";
+import { defineComponent, reactive, Ref, ref, watch } from "vue";
 import FilesService from "@/services/files";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
@@ -272,7 +285,7 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
-import { RouteLocation } from "vue-router";
+import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
 import CoreService from "@/services/core";
 import { Group, HasPermission } from "@/types/core";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -282,6 +295,11 @@ import { formatDate } from "@/utils/date";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import useCreateItem from "@/composables/useCreateItem";
+import useUpdateItem from "@/composables/useUpdateItem";
+import useDeleteItem from "@/composables/useDeleteItem";
+import useGetItems from "@/composables/useGetItems";
+import { DjangoModel } from "@/types/shared";
 
 export default defineComponent({
   components: {
@@ -299,208 +317,250 @@ export default defineComponent({
     ModalFree,
     FormGenerator,
   },
-  beforeRouteUpdate(to) {
-    this.itemsLoading = true;
-    this.items = [];
-    this.permissionsLoading = true;
-    this.permissions = [];
-    this.getFolder(to);
-  },
-  data() {
+  setup() {
+    // general
+    const route = useRoute();
+
+    // items
+    const folder = ref<FilesFolder | null>(null);
+    const items = ref<(FilesFolder | FilesFile)[] | null>(null);
+    const folderPermissions = ref<FilesPermission[] | null>(null);
+    const generalPermissions = ref<HasPermission[] | null>(null);
+
+    // general permissions
+    useGetItems(FilesService.getGeneralPermissions, generalPermissions);
+
+    // files and folders
+    useGetItems(FilesService.getItems, items, folder);
+
+    const getFolder = (route: RouteLocation) => {
+      if (route.params.id)
+        FilesService.getFolder(route.params.id as string).then(
+          (f) => (folder.value = f),
+        );
+      else FilesService.getFirstFolder().then((f) => (folder.value = f));
+    };
+
+    onBeforeRouteUpdate((to) => {
+      items.value = null;
+      folderPermissions.value = null;
+      getFolder(to);
+    });
+
+    getFolder(route);
+
+    watch(folder, () => {
+      if (folder.value === null) return;
+      FilesService.getPermissions(folder.value).then(
+        (permissions) => (folderPermissions.value = permissions),
+      );
+    });
+
     return {
       // utils
       formatDate: formatDate,
-      // breadcrumbs
-      base: { name: "files-dashboard" },
-      // shown
-      itemsLoading: true,
-      items: [] as (FilesFolder | FilesFile)[],
-      folder: null as FilesFolder | null,
-      permissionsLoading: true,
-      permissions: [] as FilesPermission[],
+      // general permissions
+      generalPermissions,
+      // current folder
+      folder,
+      // items
+      items,
+      // folder permissions
+      folderPermissions,
       // folder
-      createFolder: FilesService.createFolder,
-      updateFolder: FilesService.updateFolder,
-      deleteFolder: FilesService.deleteFolder,
-      folderFields: [
-        {
-          label: "Parent",
-          type: "select",
-          name: "parent",
-          required: true,
-          options: [] as FilesFolder[],
-        },
-        {
-          label: "Name",
-          type: "text",
-          name: "name",
-          required: true,
-        },
-      ],
-      folderOpen: null as null | FilesFolder,
-      folderCreateOpen: false,
-      folderUpdateOpen: false,
-      folderDeleteOpen: false,
+      ...createUpdateDeleteFolder(items, folder),
+      // folder permission
+      ...createDeletePermission(folderPermissions),
       // file
-      createFile: FilesService.createFile,
-      deleteFile: FilesService.deleteFile,
-      fileFields: [
-        {
-          label: "File",
-          type: "file",
-          name: "file",
-          required: true,
-        },
-      ],
-      fileOpen: null as null | FilesFile,
-      fileCreateOpen: false,
-      fileDeleteOpen: false,
-      // permission
-      createPermission: FilesService.createPermission,
-      deletePermission: FilesService.deletePermission,
-      permission: null as null | FilesPermission,
-      permissionCreateOpen: false,
-      permissionDeleteOpen: false,
-      permissionFields: [
-        {
-          label: "Permission",
-          type: "select",
-          name: "permission",
-          options: [] as Group[],
-          required: true,
-        },
-        {
-          label: "Group",
-          type: "select",
-          name: "group_has_permission",
-          options: [] as FilesPossiblePermission[],
-        },
-      ],
-      // breadcrumbs
-      generalPermissions: [] as HasPermission[],
+      ...createUpdateDeleteFile(items),
+    };
+  },
+  data() {
+    return {
       helpModalOpen: false,
       generalPermissionsModalOpen: false,
     };
   },
-  watch: {
-    folder(newValue) {
-      FilesService.getPermissions(newValue)
-        .then((permissions) => (this.permissions = permissions))
-        .finally(() => (this.permissionsLoading = false));
-      FilesService.getItems(newValue)
-        .then((items) => (this.items = items))
-        .finally(() => (this.itemsLoading = false));
-    },
-  },
-  mounted() {
-    this.getFolder(this.$route);
-    FilesService.getGeneralPermissions().then(
-      (permissions) => (this.generalPermissions = permissions),
-    );
-  },
   methods: {
-    getFolder(route: RouteLocation) {
-      if (route.params.id)
-        FilesService.getFolder(route.params.id as string).then(
-          (folder) => (this.folder = folder),
-        );
-      else
-        FilesService.getFirstFolder().then((folder) => (this.folder = folder));
-    },
-    getItems(folder: FilesFolder) {
-      FilesService.getItems(folder)
-        .then((items) => (this.items = items))
-        .finally(() => (this.itemsLoading = false));
-    },
-    // folder create
-    openFolderCreate() {
-      FilesService.getFolders().then(
-        (items) => (this.folderFields[0].options = items),
-      );
-      this.folderCreateOpen = true;
-    },
-    folderCreated(folder: FilesFolder) {
-      this.folderCreateOpen = false;
-      if (!this.folder || folder.parent === this.folder.id)
-        this.items.push(folder);
-    },
-    // folder update
-    openFolderUpdate(folder: FilesFolder) {
-      FilesService.getFolders().then(
-        (items) => (this.folderFields[0].options = items),
-      );
-      this.folderOpen = folder;
-      this.folderUpdateOpen = true;
-    },
-    folderUpdated(folder: FilesFolder) {
-      this.folderUpdateOpen = false;
-      let index = this.items.findIndex((item) => item.id === folder.id);
-      if (index !== -1) {
-        if (!this.folder || folder.parent === this.folder.id)
-          this.items.splice(index, 1, folder);
-        else this.items.splice(index, 1);
-      }
-    },
-    // folder delete
-    openFolderDelete(folder: FilesFolder) {
-      this.folderOpen = folder;
-      this.folderDeleteOpen = true;
-    },
-    folderDeleted(folder: FilesFolder) {
-      this.folderDeleteOpen = false;
-      this.items = this.items.filter(
-        (item) => item.id !== folder.id || item.type === "FILE",
-      );
-    },
-    // file create
-    openFileCreate() {
-      this.fileCreateOpen = true;
-    },
-    fileCreated(file: FilesFile) {
-      this.fileCreateOpen = false;
-      this.items.push(file);
-    },
-    // file delete
-    openFileDelete(file: FilesFile) {
-      this.fileOpen = file;
-      this.fileDeleteOpen = true;
-    },
-    fileDeleted(file: FilesFile) {
-      this.fileDeleteOpen = false;
-      this.items = this.items.filter(
-        (item) => item.id !== file.id || item.type === "FOLDER",
-      );
-    },
     // file download
     downloadFile(file: FilesFile) {
       FilesService.downloadFile(file);
     },
-    // permission create
-    openPermissionCreate() {
-      FilesService.getPossiblePermissions().then(
-        (possiblePermissions) =>
-          (this.permissionFields[0].options = possiblePermissions),
-      );
-      CoreService.getGroups().then(
-        (groups) => (this.permissionFields[1].options = groups),
-      );
-      this.permissionCreateOpen = true;
-    },
-    permissionCreated(permission: FilesPermission) {
-      this.permissionCreateOpen = false;
-      this.permissions.push(permission);
-    },
-    // permission delete
-    openPermissionDelete(permission: FilesPermission) {
-      this.permission = permission;
-      this.permissionDeleteOpen = true;
-    },
-    permissionDeleted(permission: FilesPermission) {
-      this.permissionDeleteOpen = false;
-      this.permissions = this.permissions.filter(
-        (item) => item.id !== permission.id,
-      );
-    },
   },
 });
+
+function createUpdateDeleteFolder(
+  items: Ref<(FilesFolder | FilesFile)[] | null>,
+  currentFolder: Ref<FilesFolder | null>,
+) {
+  const folderOpen = ref(null);
+
+  // helper
+  const removeFolderFromItemsIfParentMismatches = (folder: FilesFolder) => {
+    if (items.value === null || currentFolder.value === null) return folder;
+
+    let index = items.value.findIndex((item) => item.id === folder.id);
+    if (index !== -1 && folder.parent !== currentFolder.value.id)
+      items.value.splice(index, 1);
+
+    return folder;
+  };
+
+  // create
+  const folderFields = ref([
+    {
+      label: "Parent",
+      type: "select",
+      name: "parent",
+      required: true,
+      options: [] as FilesFolder[],
+    },
+    {
+      label: "Name",
+      type: "text",
+      name: "name",
+      required: true,
+    },
+  ]);
+  const { createRequest, createModalOpen: createFolderModalOpen } =
+    useCreateItem(FilesService.createFolder, items);
+  const createFolderRequest = (data: DjangoModel) =>
+    createRequest(data).then(removeFolderFromItemsIfParentMismatches);
+
+  // update
+  const { updateRequest, updateModalOpen: updateFolderModalOpen } =
+    useUpdateItem(FilesService.updateFolder, items);
+  const updateFolderRequest = (data: DjangoModel) =>
+    updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
+
+  // create and update
+  watch([createFolderModalOpen, updateFolderModalOpen], () => {
+    FilesService.getFolders().then(
+      (items) => (folderFields.value[0].options = items),
+    );
+  });
+
+  // delete
+  const {
+    deleteRequest: deleteFolderRequest,
+    deleteModalOpen: deleteFolderModalOpen,
+  } = useDeleteItem(FilesService.deleteFolder, items);
+
+  return {
+    // current
+    folderOpen,
+    // create
+    folderFields,
+    createFolderRequest,
+    createFolderModalOpen,
+    // update
+    updateFolderRequest,
+    updateFolderModalOpen,
+    // delete
+    deleteFolderRequest,
+    deleteFolderModalOpen,
+  };
+}
+
+function createDeletePermission(permissions: Ref<FilesPermission[] | null>) {
+  const permissionOpen = ref(null);
+
+  // create
+  const permissionFields = ref([
+    {
+      label: "Permission",
+      type: "select",
+      name: "permission",
+      options: [] as Group[],
+      required: true,
+    },
+    {
+      label: "Group",
+      type: "select",
+      name: "group_has_permission",
+      options: [] as FilesPossiblePermission[],
+    },
+  ]);
+  const {
+    createRequest: createPermissionRequest,
+    createModalOpen: createPermissionModalOpen,
+  } = useCreateItem(FilesService.createPermission, permissions);
+
+  watch(createPermissionModalOpen, () => {
+    FilesService.getPossiblePermissions().then(
+      (possiblePermissions) =>
+        (permissionFields.value[0].options = possiblePermissions),
+    );
+    CoreService.getGroups().then(
+      (groups) => (permissionFields.value[1].options = groups),
+    );
+  });
+
+  // delete
+  const {
+    deleteRequest: deletePermissionRequest,
+    deleteModalOpen: deletePermissionModalOpen,
+  } = useDeleteItem(FilesService.deletePermission, permissions);
+
+  return {
+    // current
+    permissionOpen,
+    // create
+    permissionFields,
+    createPermissionRequest,
+    createPermissionModalOpen,
+    // delete
+    deletePermissionRequest,
+    deletePermissionModalOpen,
+  };
+}
+
+function createUpdateDeleteFile(
+  files: Ref<(FilesFolder | FilesFile)[] | null>,
+) {
+  const fileOpen = ref(null);
+
+  // create
+  const createFileFields = reactive([
+    {
+      label: "File",
+      type: "file",
+      name: "file",
+      required: true,
+    },
+  ]);
+  const {
+    createRequest: createFileRequest,
+    createModalOpen: createFileModalOpen,
+  } = useCreateItem(FilesService.createFile, files);
+
+  // update
+  const updateFileFields = reactive([]);
+  const {
+    updateRequest: updateFileRequest,
+    updateModalOpen: updateFileModalOpen,
+  } = useUpdateItem(FilesService.updateFile, files);
+
+  // delete
+  const {
+    deleteRequest: deleteFileRequest,
+    deleteModalOpen: deleteFileModalOpen,
+  } = useDeleteItem(FilesService.deleteFile, files);
+
+  return {
+    // current
+    fileOpen,
+    // create
+    createFileFields,
+    createFileRequest,
+    createFileModalOpen,
+    // update
+    updateFileFields,
+    updateFileRequest,
+    updateFileModalOpen,
+    // delete
+    deleteFileRequest,
+    deleteFileModalOpen,
+  };
+}
 </script>

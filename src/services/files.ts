@@ -93,6 +93,12 @@ class FilesService {
       .then((response) => response.data);
   }
 
+  updateFile(file: FilesFile): Promise<FilesFile> {
+    return axios
+      .patch<FilesFile>(`files/file_base/${file.id}/`)
+      .then((response) => response.data);
+  }
+
   deleteFile(file: FilesFile): Promise<void> {
     return axios.delete<void>(`files/file_base/${file.id}/`).then();
   }

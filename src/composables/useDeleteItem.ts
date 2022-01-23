@@ -21,6 +21,10 @@ export default function useDeleteItem<
           index = items.value.findIndex((item) =>
             "url" in item ? item.url === data.url : false,
           );
+        else if ("type" in data)
+          index = items.value.findIndex(
+            (item) => item.id === data.id && item.type === data.type,
+          );
         else index = items.value.findIndex((item) => item.id === data.id);
 
         if (index !== -1) items.value.splice(index, 1);
