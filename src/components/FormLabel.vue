@@ -6,7 +6,7 @@
     >
       {{ label }}
     </span>
-    <span v-if="!required" class="ml-1.5 text-gray-700 text-sm">
+    <span v-if="!required && label" class="ml-1.5 text-gray-700 text-sm">
       (optional)
     </span>
   </div>

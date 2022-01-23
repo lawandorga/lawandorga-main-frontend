@@ -1,18 +1,24 @@
 <template>
   <label :for="name" class="block relative">
     <FormLabel :required="required" :label="label" />
-    <div class="flex mt-2 space-x-2 items-center">
+    <div class="mt-2">
+      <input
+        v-model="search"
+        placeholder="Search"
+        type="search"
+        class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-t-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:z-10 focus:relative focus-within:ring-1 focus-within:ring-lorgablue focus-within:border-lorgablue focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
+      />
       <div class="shadow-sm rounded-md w-full">
         <select
           :id="`form--${name}`"
           multiple
           :name="name"
           :value="modelValue"
-          class="cursor-pointer appearance-none block w-full p-0 border border-gray-300 rounded-l-md overflow-x-hidden focus:outline-none focus:border-lorgablue focus:ring-lorgablue sm:text-sm"
+          class="cursor-pointer appearance-none block w-full p-0 border border-gray-300 rounded-bl-md overflow-x-hidden focus:outline-none focus:border-lorgablue focus:ring-lorgablue sm:text-sm"
           @keydown.space.left.right.stop.prevent="update($event.target.value)"
         >
           <option
-            v-for="option in options"
+            v-for="option in optionsSorted"
             :key="option.name"
             class="px-3 py-2 focus:text-red-500 focus:bg-red-500"
             :class="{
@@ -170,6 +176,8 @@ import FormLabel from "./FormLabel.vue";
 import FormHelptext from "./FormHelptext.vue";
 import { defineComponent, PropType } from "vue";
 
+type FormOption = { name?: string; value?: string; id: number } | string;
+
 export default defineComponent({
   components: {
     FormHelptext,
@@ -197,7 +205,7 @@ export default defineComponent({
     },
     options: {
       required: true,
-      type: Array as PropType<{ name: string; value: string | boolean }[]>,
+      type: Array as PropType<FormOption[]>,
     },
     required: {
       required: false,
@@ -210,17 +218,32 @@ export default defineComponent({
     return {
       open: false,
       clickListener: null,
+      search: "",
     };
   },
   computed: {
-    modelValueStringArray() {
+    modelValueStringArray(): string[] {
       return this.modelValue.map((item) => item.toString());
+    },
+    optionsSorted(): FormOption[] {
+      return [...this.optionsFiltered].sort((o1, o2) => {
+        const s1 = this.checkOptionSelected(o1);
+        const s2 = this.checkOptionSelected(o2);
+        return s1 === s2 ? 0 : s1 ? -1 : 1;
+      });
+    },
+    optionsFiltered(): FormOption[] {
+      if (this.search === "") return this.options;
+      return [...this.options].filter((o) => {
+        let value = "";
+        if (typeof o === "string") value = o.toLowerCase();
+        else if (o.name) value = o.name.toLowerCase();
+        return value.includes(this.search.toLowerCase());
+      });
     },
   },
   methods: {
-    checkOptionSelected(
-      option: string | { id: number; name?: string; value?: string },
-    ) {
+    checkOptionSelected(option: FormOption): boolean {
       if (typeof option === "object" && "value" in option)
         return this.modelValueStringArray.includes(option.value as string);
 
@@ -232,7 +255,7 @@ export default defineComponent({
 
       return false;
     },
-    update(option: string | { id: number; name: string }) {
+    update(option: FormOption) {
       let value = "";
 
       if (typeof option === "string") value = option;
