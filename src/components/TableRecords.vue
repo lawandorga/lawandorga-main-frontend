@@ -45,8 +45,6 @@
             </button>
           </div>
         </Th>
-        <Th>Created</Th>
-        <Th>Updated</Th>
         <Th>
           <slot name="head-action"></slot>
         </Th>
@@ -60,7 +58,15 @@
           class="divide-x divide-gray-100"
         >
           <Td v-for="(headItem, index) in head" :key="headItem">
-            <template v-if="index === 0">
+            <template v-if="headItem === 'Created' || headItem === 'Updated'">
+              <span v-if="headItem === 'Created'">
+                {{ formatDate(record.created) }}
+              </span>
+              <span v-else-if="headItem === 'Updated'">
+                {{ formatDate(record.updated) }}
+              </span>
+            </template>
+            <template v-else-if="index === 0">
               <ButtonLink
                 v-if="record.access"
                 :to="{
@@ -113,12 +119,6 @@
                 {{ record.entries[headItem].value }}
               </button>
             </template>
-          </Td>
-          <Td>
-            {{ formatDate(record.created) }}
-          </Td>
-          <Td>
-            {{ formatDate(record.updated) }}
           </Td>
           <Td>
             <slot :record="record" name="action"></slot>
@@ -212,19 +212,11 @@ export default defineComponent({
     });
 
     // sort
-    const { sortBy, sortOrder, changeSort, sortValues } = useSort();
+    const { sortBy, sortOrder, changeSort, schwartzSortRecords } = useSort();
 
     const sortedRecords = computed(() => {
       if (filteredRecords.value === null) return null;
-      const sortedRecords = [...filteredRecords.value];
-      sortedRecords.sort((r1: Record, r2: Record) => {
-        if (sortBy.value) {
-          const e1 = r1.entries[sortBy.value];
-          const e2 = r2.entries[sortBy.value];
-          return sortValues(e1 ? e1.value : "", e2 ? e2.value : "");
-        }
-        return 0;
-      });
+      const sortedRecords = schwartzSortRecords([...filteredRecords.value]);
       return sortedRecords;
     });
 
@@ -244,9 +236,12 @@ export default defineComponent({
     // head
     const head = computed(() => {
       if (paginatedRecords.value === null) return [];
-      return Array.from(
+      const head = Array.from(
         new Set(paginatedRecords.value.map((r: Record) => r.show).flat()),
       );
+      head.push("Created");
+      head.push("Updated");
+      return head;
     });
 
     // return
