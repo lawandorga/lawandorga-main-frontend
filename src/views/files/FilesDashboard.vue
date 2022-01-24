@@ -75,7 +75,6 @@
           <div class="flex space-x-3 justify-end">
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FOLDER'"
-              type="button"
               @click="
                 folderOpen = slotProps.dataItem;
                 updateFolderModalOpen = true;
@@ -85,7 +84,6 @@
             </ButtonTable>
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FOLDER'"
-              type="button"
               @click="
                 folderOpen = slotProps.dataItem;
                 deleteFolderModalOpen = true;
@@ -95,14 +93,21 @@
             </ButtonTable>
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FILE'"
-              type="button"
               @click="downloadFile(slotProps.dataItem)"
             >
               Download
             </ButtonTable>
             <ButtonTable
               v-if="slotProps.dataItem.type === 'FILE'"
-              type="button"
+              @click="
+                fileOpen = slotProps.dataItem;
+                updateFileModalOpen = true;
+              "
+            >
+              Change
+            </ButtonTable>
+            <ButtonTable
+              v-if="slotProps.dataItem.type === 'FILE'"
               @click="
                 fileOpen = slotProps.dataItem;
                 deleteFileModalOpen = true;
@@ -277,7 +282,7 @@ import {
   FilesPermission,
   FilesPossiblePermission,
 } from "@/types/files";
-import { defineComponent, reactive, Ref, ref, watch } from "vue";
+import { defineComponent, Ref, ref, watch } from "vue";
 import FilesService from "@/services/files";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonTable from "@/components/ButtonTable.vue";
@@ -372,7 +377,7 @@ export default defineComponent({
       // folder permission
       ...createDeletePermission(folderPermissions),
       // file
-      ...createUpdateDeleteFile(items),
+      ...createUpdateDeleteFile(items, folder),
     };
   },
   data() {
@@ -516,12 +521,26 @@ function createDeletePermission(permissions: Ref<FilesPermission[] | null>) {
 }
 
 function createUpdateDeleteFile(
-  files: Ref<(FilesFolder | FilesFile)[] | null>,
+  items: Ref<(FilesFolder | FilesFile)[] | null>,
+  currentFolder: Ref<FilesFolder | null>,
 ) {
   const fileOpen = ref(null);
 
+  // helper
+  const removeFileFromItemsIfParentMismatches = (file: FilesFile) => {
+    if (items.value === null || currentFolder.value === null) return file;
+
+    let index = items.value.findIndex(
+      (item) => item.id === file.id && item.type === file.type,
+    );
+    if (index !== -1 && file.folder !== currentFolder.value.id)
+      items.value.splice(index, 1);
+
+    return file;
+  };
+
   // create
-  const createFileFields = reactive([
+  const createFileFields = ref([
     {
       label: "File",
       type: "file",
@@ -532,20 +551,42 @@ function createUpdateDeleteFile(
   const {
     createRequest: createFileRequest,
     createModalOpen: createFileModalOpen,
-  } = useCreateItem(FilesService.createFile, files);
+  } = useCreateItem(FilesService.createFile, items);
 
   // update
-  const updateFileFields = reactive([]);
-  const {
-    updateRequest: updateFileRequest,
-    updateModalOpen: updateFileModalOpen,
-  } = useUpdateItem(FilesService.updateFile, files);
+  const updateFileFields = ref([
+    {
+      label: "Folder",
+      type: "select",
+      name: "folder",
+      required: true,
+      options: [] as FilesFolder[],
+    },
+    {
+      label: "Name",
+      type: "text",
+      name: "name",
+      required: true,
+    },
+  ]);
+  const { updateRequest, updateModalOpen: updateFileModalOpen } = useUpdateItem(
+    FilesService.updateFile,
+    items,
+  );
+  const updateFileRequest = (data: DjangoModel) =>
+    updateRequest(data).then(removeFileFromItemsIfParentMismatches);
+
+  watch(updateFileModalOpen, () => {
+    FilesService.getFolders().then(
+      (items) => (updateFileFields.value[0].options = items),
+    );
+  });
 
   // delete
   const {
     deleteRequest: deleteFileRequest,
     deleteModalOpen: deleteFileModalOpen,
-  } = useDeleteItem(FilesService.deleteFile, files);
+  } = useDeleteItem(FilesService.deleteFile, items);
 
   return {
     // current

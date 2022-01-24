@@ -95,7 +95,7 @@ class FilesService {
 
   updateFile(file: FilesFile): Promise<FilesFile> {
     return axios
-      .patch<FilesFile>(`files/file_base/${file.id}/`)
+      .patch<FilesFile>(`files/file_base/${file.id}/`, file)
       .then((response) => response.data);
   }
 
