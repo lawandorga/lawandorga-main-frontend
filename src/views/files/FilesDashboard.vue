@@ -304,7 +304,7 @@ import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useGetItems from "@/composables/useGetItems";
-import { DjangoModel } from "@/types/shared";
+import { DjangoModel, JsonModel } from "@/types/shared";
 
 export default defineComponent({
   components: {
@@ -552,6 +552,16 @@ function createUpdateDeleteFile(
     createRequest: createFileRequest,
     createModalOpen: createFileModalOpen,
   } = useCreateItem(FilesService.createFile, items);
+
+  // const { createRequest, createModalOpen: createFileModalOpen } = useCreateItem(
+  //     FilesService.createFile,
+  //     items,
+  //   );
+  //   const createFileRequest = (data: JsonModel) => {
+  //     const formData = new FormData();
+  //     formData.append("folder", (data.folder as number).toString());
+  //     return createRequest(formData);
+  //   };
 
   // update
   const updateFileFields = ref([

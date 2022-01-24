@@ -5,7 +5,6 @@ import {
   FilesFile,
   FilesPossiblePermission,
 } from "@/types/files";
-import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
 import axios from "../api";
 
@@ -87,9 +86,13 @@ class FilesService {
   }
 
   // files
-  createFile(data: JsonModel): Promise<FilesFile> {
+  createFile(data: FormData): Promise<FilesFile> {
     return axios
-      .post<FilesFile>("files/file_base/", data)
+      .post<FilesFile>("files/file_base/", data, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
       .then((response) => response.data);
   }
 
