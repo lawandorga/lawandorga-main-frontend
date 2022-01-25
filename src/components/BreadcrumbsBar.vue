@@ -1,10 +1,6 @@
 <template>
   <nav
-    class="
-      flex flex-col
-      items-start
-      lg:space-y-0 lg:flex-row lg:justify-between
-    "
+    class="flex flex-col items-start lg:space-y-0 lg:flex-row lg:justify-between print:hidden"
     aria-label="Breadcrumb"
   >
     <ol role="list" class="bg-white rounded-md shadow-sm px-6 flex space-x-4">

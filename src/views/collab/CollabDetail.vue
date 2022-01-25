@@ -14,7 +14,9 @@
         <DocumentTextIcon class="w-6 h-6" />
       </BreadcrumbsBar>
 
-      <div class="bg-white shadow rounded px-6 py-5">
+      <div
+        class="bg-white shadow rounded px-6 py-5 print:shadow-none print:p-0"
+      >
         <div v-if="loadQuill && !!text">
           <FormQuill :content="text.content" @html="content = $event" />
         </div>

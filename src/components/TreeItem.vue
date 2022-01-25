@@ -3,17 +3,7 @@
     <div class="flex mb-2">
       <DisclosureButton>
         <div
-          class="
-            flex
-            items-center
-            justify-center
-            bg-gray-100
-            w-6
-            h-6
-            rounded
-            border border-gray-200
-            hover:bg-gray-200
-          "
+          class="flex items-center justify-center bg-gray-100 w-6 h-6 rounded border border-gray-200 hover:bg-gray-200"
         >
           <ChevronRightIcon
             class="w-5 h-5 text-gray-800"
@@ -23,15 +13,7 @@
       </DisclosureButton>
       <button
         type="button"
-        class="
-          flex
-          text-lg
-          hover:underline
-          items-baseline
-          justify-between
-          flex-grow-0
-          ml-4
-        "
+        class="flex text-lg hover:underline items-baseline justify-between flex-grow-0 ml-4"
         @click="$emit('clicked', item.id)"
       >
         <span>{{ item.name || "---" }}</span>

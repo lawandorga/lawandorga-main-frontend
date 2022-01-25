@@ -21,6 +21,10 @@ Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
           index = items.value.findIndex((item) =>
             "url" in item ? item.url === newItem.url : false,
           );
+        else if ("type" in newItem)
+          index = items.value.findIndex(
+            (item) => item.id === data.id && item.type === data.type,
+          );
         else index = items.value.findIndex((item) => item.id === newItem.id);
 
         if (index !== -1) items.value.splice(index, 1, newItem);

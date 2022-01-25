@@ -8,61 +8,40 @@
       <SupportIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <div
-      class="
-        rounded-lg
-        bg-gray-200
-        shadow
-        divide-y divide-gray-200
-        sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px
-      "
+      class="rounded-lg divide-y shadow bg-gray-200 divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
     >
       <div
         v-for="item in items"
         :key="item.title"
-        class="
-          relative
-          group
-          bg-white
-          p-6
-          focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500
-        "
+        class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500"
         :class="[item.class]"
       >
-        <div>
+        <div v-if="item.title">
           <span
-            class="
-              rounded-lg
-              inline-flex
-              p-3
-              bg-gray-50
-              text-gray-700
-              ring-4 ring-white
-            "
+            class="rounded-lg inline-flex p-3 bg-gray-50 text-gray-700 ring-4 ring-white"
           >
             <component :is="item.icon" class="h-6 w-6 text-gray-600" />
           </span>
         </div>
-        <div class="mt-8">
+        <div v-if="item.title" class="mt-8">
           <h3 class="text-lg font-medium">
-            <router-link :to="item.link" class="focus:outline-none">
+            <component
+              :is="item.is"
+              v-bind="item.attrs"
+              class="focus:outline-none"
+            >
               <!-- Extend touch target to entire panel -->
               <div class="absolute inset-0" aria-hidden="true"></div>
               {{ item.title }}
-            </router-link>
+            </component>
           </h3>
           <p class="mt-2 text-sm text-gray-500">
             {{ item.description }}
           </p>
         </div>
         <span
-          class="
-            pointer-events-none
-            absolute
-            top-6
-            right-6
-            text-gray-300
-            group-hover:text-gray-400
-          "
+          v-if="item.title"
+          class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
           aria-hidden="true"
         >
           <svg
@@ -82,7 +61,11 @@
 </template>
 
 <script lang="ts">
-import { AnnotationIcon, ShieldCheckIcon } from "@heroicons/vue/outline";
+import {
+  AnnotationIcon,
+  ShieldCheckIcon,
+  DocumentTextIcon,
+} from "@heroicons/vue/outline";
 import { defineComponent } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { SupportIcon } from "@heroicons/vue/outline";
@@ -91,6 +74,7 @@ export default defineComponent({
   components: {
     BreadcrumbsBar,
     SupportIcon,
+    DocumentTextIcon,
   },
   setup() {
     const items = [
@@ -98,16 +82,34 @@ export default defineComponent({
         title: "Permissions",
         description:
           "Take a look at every permission and see what it is used for.",
-        link: { name: "help-permissions" },
+        attrs: { to: { name: "help-permissions" } },
         icon: ShieldCheckIcon,
-        class: "rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none",
+        class: "rounded-t-lg sm:rounded-tr-none",
+        is: "router-link",
       },
       {
         title: "Bug Report",
-        description: "Coming in the future..",
-        link: { name: "help-dashboard" },
+        description:
+          "Just send an email to it@law-orga.de. We're happy to help.",
+        attrs: { href: "mailto:it@law-orga.de?subject=Bug%20Report" },
         icon: AnnotationIcon,
-        class: "rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none",
+        class: "sm:rounded-tr-lg",
+        is: "a",
+      },
+      {
+        title: "User Guide",
+        description: "The user guide that explains how to use Law&Orga.",
+        attrs: { href: "/handbuch.pdf", target: "_blank" },
+        icon: DocumentTextIcon,
+        class: "sm:rounded-bl-lg",
+        is: "a",
+      },
+      {
+        title: "",
+        description: "",
+        attrs: { href: "#" },
+        class: "rounded-b-lg sm:rounded-bl-none",
+        is: "a",
       },
     ];
 

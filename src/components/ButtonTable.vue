@@ -1,35 +1,26 @@
 <template>
-  <button
-    type="button"
-    class="
-      inline-flex
-      items-center
-      px-2
-      py-0.5
-      -mx-2
-      border border-transparent
-      text-sm
-      font-medium
-      rounded
-      focus:outline-none
-    "
-    :class="{
-      'pointer-events-none opacity-40 cursor-not-allowed': disabledComputed,
-      'text-blue-800 hover:text-blue-900 hover:bg-blue-50 focus:border-blue-200':
-        type === 'NORMAL' || type === 'CREATE',
-      'text-red-600 hover:text-red-700 hover:bg-red-50 focus:border-red-200':
-        type === 'DELETE',
-      'text-green-600 hover:text-green-700 hover:bg-green-50 focus:border-green-200':
-        type === '',
-    }"
-    :disabled="disabledComputed"
-    @click="emitClick()"
-  >
-    <Loader v-show="loading" color="text-white" class="mr-2" />
-    <div ref="content">
-      <slot />
-    </div>
-  </button>
+  <div>
+    <button
+      type="button"
+      class="inline-flex items-center px-2 py-0.5 -mx-2 border border-transparent text-sm font-medium rounded focus:outline-none"
+      :class="{
+        'pointer-events-none opacity-40 cursor-not-allowed': disabledComputed,
+        'text-blue-800 hover:text-blue-900 hover:bg-blue-50 focus:border-blue-200':
+          type === 'NORMAL' || type === 'CREATE',
+        'text-red-600 hover:text-red-700 hover:bg-red-50 focus:border-red-200':
+          type === 'DELETE',
+        'text-green-600 hover:text-green-700 hover:bg-green-50 focus:border-green-200':
+          type === '',
+      }"
+      :disabled="disabledComputed"
+      @click="emitClick()"
+    >
+      <Loader v-show="loading" color="text-white" class="mr-2" />
+      <div ref="content">
+        <slot />
+      </div>
+    </button>
+  </div>
 </template>
 
 <script lang="ts">

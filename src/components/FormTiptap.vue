@@ -1,20 +1,12 @@
 <template>
   <div v-if="editor" class="border-2 border-gray-800 rounded-xl">
     <MenuBar
-      class="flex items-center border-b-2 border-gray-800 p-2"
+      class="flex items-center border-b-2 border-gray-800 p-2 print:hidden"
       :editor="editor"
     />
     <EditorContent ref="tiptap" :editor="editor" />
     <div
-      class="
-        text-gray-800
-        flex
-        items-center
-        justify-between
-        border-t-2 border-gray-800
-        px-2
-        py-1
-      "
+      class="text-gray-800 flex items-center justify-between border-t-2 border-gray-800 px-2 py-1 print:hidden"
     >
       <div class="space-x-4">
         <span class="text-sm">{{ room }}:</span>
@@ -26,7 +18,9 @@
           {{ item.name }}
         </span>
       </div>
-      <div class="text-sm">{{ editor.getCharacterCount() }} characters</div>
+      <div class="text-sm">
+        {{ editor.storage.characterCount.characters() }} characters
+      </div>
     </div>
   </div>
 </template>

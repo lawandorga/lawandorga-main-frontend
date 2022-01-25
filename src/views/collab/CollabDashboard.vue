@@ -1,12 +1,7 @@
 <template>
   <BoxLoader :show="true">
     <div
-      class="
-        max-w-screen-2xl
-        mx-auto
-        space-y-6
-        2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0
-      "
+      class="max-w-screen-2xl mx-auto space-y-6 2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0"
     >
       <BreadcrumbsBar
         class="2xl:col-span-3"
@@ -24,7 +19,7 @@
         </template>
       </BreadcrumbsBar>
 
-      <div class="bg-white shadow rounded-md p-5 2xl:row-span-2">
+      <div class="bg-white shadow rounded-md p-5 2xl:row-span-2 print:hidden">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="version-lg font-bold">Documents</h2>
           <ButtonIcon
@@ -46,10 +41,12 @@
         </ul>
       </div>
 
-      <div class="bg-white shadow rounded-md p-5 2xl:col-span-2">
+      <div
+        class="bg-white shadow rounded-md p-5 2xl:col-span-2 print:p-0 print:shadow-none"
+      >
         <div v-if="version && document">
           <div
-            class="flex flex-col justify-between lg:flex-row lg:items-center"
+            class="flex flex-col justify-between lg:flex-row lg:items-center print:hidden"
           >
             <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
             <div class="flex space-x-3 self-end">
@@ -69,8 +66,12 @@
               />
             </div>
           </div>
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <article class="pt-8 prose" v-html="version.content"></article>
+          <!-- eslint-disable vue/no-v-html -->
+          <article
+            class="pt-8 prose print:p-0"
+            v-html="version.content"
+          ></article>
+          <!-- eslint-enable vue/no-v-html -->
         </div>
         <Loader v-show="versionLoading" />
         <p v-show="!versionLoading && !version">No document selected.</p>
@@ -84,7 +85,7 @@
           editor.
         </BoxAlert>
       </div>
-      <div class="2xl:col-span-2">
+      <div class="2xl:col-span-2 print:hidden">
         <TableGenerator
           :head="[
             { name: 'Type', key: 'type' },
@@ -135,17 +136,7 @@
         <li v-for="item in versions" :key="item.id">
           <button
             type="button"
-            class="
-              w-full
-              border-2 border-gray-300
-              rounded
-              px-3
-              py-2
-              font-medium
-              text-left text-gray-700
-              bg-gray-100
-              hover:bg-gray-200
-            "
+            class="w-full border-2 border-gray-300 rounded px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200"
             @click="versionSelected(item.id)"
           >
             {{ formatDate(item.created) }}

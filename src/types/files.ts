@@ -14,6 +14,7 @@ export interface FilesFile {
   name: string;
   key: string;
   exists: boolean;
+  folder: number;
 }
 
 export interface FilesPermission {

@@ -23,14 +23,15 @@
           </slot>
         </Td>
       </Tr>
-      <Tr v-if="!innerLoading && data">
-        <Td class="text-right !py-2.5" :colspan="head.length">
-          {{ data.length }} Total
-        </Td>
-      </Tr>
       <Tr v-show="innerLoading">
         <Td :colspan="head.length">
           <CircleLoader />
+        </Td>
+      </Tr>
+      <Tr>
+        <Td class="text-right !py-2.5" :colspan="head.length">
+          <span v-if="!innerLoading && data">{{ data.length }} Total</span>
+          <span v-else>Loading...</span>
         </Td>
       </Tr>
     </Tbody>

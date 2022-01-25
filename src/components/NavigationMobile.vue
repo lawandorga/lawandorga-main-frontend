@@ -2,7 +2,7 @@
   <TransitionRoot as="template" :show="open">
     <Dialog
       as="div"
-      class="fixed inset-0 flex z-40 md:hidden"
+      class="fixed inset-0 flex z-40 md:hidden print:hidden"
       @close="setOpen(false)"
     >
       <TransitionChild
@@ -40,19 +40,7 @@
             <div class="absolute top-0 right-0 -mr-12 pt-2">
               <button
                 type="button"
-                class="
-                  ml-1
-                  flex
-                  items-center
-                  justify-center
-                  h-10
-                  w-10
-                  rounded-full
-                  focus:outline-none
-                  focus:ring-2
-                  focus:ring-inset
-                  focus:ring-white
-                "
+                class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="setOpen(false)"
               >
                 <span class="sr-only">Close sidebar</span>
@@ -62,11 +50,7 @@
           </TransitionChild>
           <div class="flex-shrink-0 h-16 flex items-center px-4 bg-lorgablue">
             <router-link to="/" class="flex space-x-2 items-center">
-              <img
-                src="/logo.png"
-                alt="Law&Orga"
-                class="h-8 w-auto"
-              />
+              <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
               <h1 class="text-white font-bold text-2xl">Law&Orga</h1>
             </router-link>
           </div>
@@ -77,31 +61,12 @@
                 :key="item.link"
                 :to="item.link"
                 to-active="bg-gray-100 hover:bg-gray-100 text-gray-700"
-                class="
-                  group
-                  text-gray-600
-                  group
-                  hover:bg-gray-50 hover:text-gray-900
-                  flex
-                  items-center
-                  px-2
-                  py-2
-                  text-base
-                  font-medium
-                  rounded-md
-                "
+                class="group text-gray-600 group hover:bg-gray-50 hover:text-gray-900 flex items-center px-2 py-2 text-base font-medium rounded-md"
                 @click="setOpen(false)"
               >
                 <component
                   :is="item.icon"
-                  class="
-                    text-gray-400
-                    mr-4
-                    flex-shrink-0
-                    h-6
-                    w-6
-                    group-hover:text-gray-500
-                  "
+                  class="text-gray-400 mr-4 flex-shrink-0 h-6 w-6 group-hover:text-gray-500"
                 />
                 {{ item.label }}
               </router-link>
