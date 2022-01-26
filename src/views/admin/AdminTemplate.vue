@@ -15,6 +15,11 @@
         ]"
       >
         <CogIcon class="w-6 h-6" />
+        <template #buttons>
+          <ButtonBreadcrumbs @click="helpModalOpen = true">
+            Show Help
+          </ButtonBreadcrumbs>
+        </template>
       </BreadcrumbsBar>
       <TableGenerator
         :head="[
@@ -79,6 +84,52 @@
       :request="deleteRequest"
       :object="field"
     />
+    <!-- help -->
+    <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
+      <article class="prose">
+        <p>
+          Here is a short explanation of the difference between encrypted and
+          normal fieds.
+        </p>
+        <h3 class="text-base">Normal fields</h3>
+        <p>
+          Normal fields are not encrypted at all, which means that everybody who
+          can access the database can read the information in those fields.
+          Access to the database is limited to two Law&amp;Orga employees.
+        </p>
+        <p>
+          Users who do not have access to the record can not read its normal
+          fields. That means only users who have access to the record can also
+          access its normal fields.
+        </p>
+        <p>
+          Normal fields can be shown in the records table. That means that the
+          records may be filtered or searched by that field.
+        </p>
+        <p>
+          You should use normal fields for less sensitive information which you
+          want to show within the records table.
+        </p>
+        <h3 class="text-base">Encrypted fields</h3>
+        <p>
+          Encrypted fields are encrypted at the database level which means that
+          only users whith the proper encryption keys can decrypt the data
+          within those fields. Nobody from Law&amp;Orga has access to the
+          content in those fields.
+        </p>
+        <p>
+          Users need to have the encryption keys of the record to decrypt and
+          read encrypted fields.
+        </p>
+        <p>
+          Encrypted fields can not be shown in the records table, because it
+          would take too long to decrypt those fields on every record.
+          Furthermore not every user within the LC might have encryption keys
+          for every record.
+        </p>
+        <p>You should use encrypted fields for sensitive information.</p>
+      </article>
+    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -101,6 +152,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
 import { useRoute } from "vue-router";
 import { FormField } from "@/types/form";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 
 const updateFieldsSource = [
   {
@@ -167,6 +219,7 @@ export default defineComponent({
     BreadcrumbsBar,
     TableGenerator,
     ButtonTable,
+    ButtonBreadcrumbs,
   },
   setup() {
     // other
@@ -234,6 +287,9 @@ export default defineComponent({
       fields,
     );
 
+    // help
+    const helpModalOpen = ref(false);
+
     return {
       template,
       // field
@@ -251,6 +307,8 @@ export default defineComponent({
       // delete
       deleteRequest,
       deleteModalOpen,
+      // help
+      helpModalOpen,
     };
   },
 });

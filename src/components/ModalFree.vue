@@ -43,7 +43,7 @@
                 </button>
               </div>
               <DialogTitle
-                as="h3"
+                as="h2"
                 class="text-lg font-medium leading-6 text-gray-900"
               >
                 {{ title }}
