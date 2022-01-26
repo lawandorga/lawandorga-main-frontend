@@ -32,6 +32,16 @@
               class="inline-block w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md"
               :class="[width]"
             >
+              <div class="block absolute top-0 right-0 pt-3 pr-3">
+                <button
+                  type="button"
+                  class="bg-white p-0.5 border-2 border-transparent rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 hover:border-gray-100 focus:outline-none focus:ring-0"
+                  @click="$emit('update:modelValue', false)"
+                >
+                  <span class="sr-only">Close</span>
+                  <XIcon class="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
               <DialogTitle
                 as="h3"
                 class="text-lg font-medium leading-6 text-gray-900"
@@ -58,12 +68,14 @@ import {
   DialogOverlay,
   DialogTitle,
 } from "@headlessui/vue";
+import { XIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
   components: {
     TransitionRoot,
     TransitionChild,
     Dialog,
+    XIcon,
     DialogOverlay,
     DialogTitle,
   },
