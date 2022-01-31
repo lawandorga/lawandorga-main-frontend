@@ -63,6 +63,9 @@
           </ButtonLink>
           <div v-else class="">
             {{ slotProps.dataItem.name }}
+            <span v-if="!slotProps.dataItem.exists" class="text-red-600">
+              (ERROR)
+            </span>
           </div>
         </template>
         <template #last_edited="slotProps">
@@ -304,7 +307,7 @@ import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useGetItems from "@/composables/useGetItems";
-import { DjangoModel, JsonModel } from "@/types/shared";
+import { DjangoModel } from "@/types/shared";
 
 export default defineComponent({
   components: {
