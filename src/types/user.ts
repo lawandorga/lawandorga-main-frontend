@@ -24,4 +24,9 @@ export interface RlcUser {
 export interface DashboardInformation {
   records: { identifier: string; id: number; state: string }[];
   members?: { id: number; name: string; rlcuserid: number }[];
+  questionnaires?: {
+    record_id: number;
+    name: string;
+    record: string;
+  }[];
 }
