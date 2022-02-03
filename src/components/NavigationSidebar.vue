@@ -44,11 +44,13 @@
           <div class="pb-4 px-4 flex flex-col justify-center items-start">
             <figure class="mb-3">
               <figcaption class="text-gray-500 mb-1">A project of</figcaption>
-              <img
-                src="/rlcd.png"
-                alt="RLC Deutschland"
-                class="h-auto px-2 py-2 w-36 rounded-md overflow-hidden border-2 border-gray-200 shadow"
-              />
+              <a href="https://rlc-deutschland.de/" target="_blank">
+                <img
+                  src="/rlcd.png"
+                  alt="RLC Deutschland"
+                  class="h-auto px-2 py-2 w-36 rounded-md overflow-hidden border-2 border-gray-200 shadow"
+                />
+              </a>
             </figure>
             <figure>
               <figcaption class="text-gray-500 mb-1">supported by</figcaption>
