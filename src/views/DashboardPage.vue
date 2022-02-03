@@ -35,7 +35,7 @@
         </div>
         <div v-if="data.members">
           <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
-            New Members
+            New Members in no groups
           </h2>
           <ul class="bg-white rounded shadow mt-2 p-1 space-y-1">
             <li v-for="member in data.members" :key="member.id" class="block">
