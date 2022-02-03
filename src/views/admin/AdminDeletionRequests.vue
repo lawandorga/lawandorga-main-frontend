@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-screen-lg mx-auto space-y-6">
+    <div class="max-w-screen-xl mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -36,6 +36,16 @@
           <span v-if="slotProps.dataItem.state === 're'">Requested</span>
           <span v-if="slotProps.dataItem.state === 'de'">Declined</span>
           <span v-if="slotProps.dataItem.state === 'gr'">Accepted</span>
+        </template>
+        <template #explanation="slotProps">
+          <div class="w-40 line-clamp-3 whitespace-normal">
+            <abbr
+              class="underline-dotted"
+              :title="slotProps.dataItem.explanation"
+            >
+              {{ slotProps.dataItem.explanation }}
+            </abbr>
+          </div>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
