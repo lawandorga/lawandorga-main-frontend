@@ -65,10 +65,10 @@ import {
   AnnotationIcon,
   ShieldCheckIcon,
   DocumentTextIcon,
+  SupportIcon,
 } from "@heroicons/vue/outline";
 import { defineComponent } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { SupportIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
   components: {
@@ -90,7 +90,7 @@ export default defineComponent({
       {
         title: "Bug Report",
         description:
-          "Just send an email to it@law-orga.de. We're happy to help.",
+          "You've discovered something that doesn't work? Please send an email to it@law-orga.de. We're happy to help.",
         attrs: { href: "mailto:it@law-orga.de?subject=Bug%20Report" },
         icon: AnnotationIcon,
         class: "sm:rounded-tr-lg",
@@ -105,9 +105,13 @@ export default defineComponent({
         is: "a",
       },
       {
-        title: "",
-        description: "",
-        attrs: { href: "#" },
+        title: "Ask for help",
+        icon: SupportIcon,
+        description:
+          "You need help with how to setup Law&Orga or you have a question about how Law&Orga works? Just send an email to user_management@law-orga.de. We're happy to help.",
+        attrs: {
+          href: "mailto:user_management@law-orga.de?subject=Help%20Request",
+        },
         class: "rounded-b-lg sm:rounded-bl-none",
         is: "a",
       },
