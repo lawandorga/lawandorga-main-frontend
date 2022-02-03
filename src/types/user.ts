@@ -29,4 +29,5 @@ export interface DashboardInformation {
     name: string;
     record: string;
   }[];
+  changed_records: { identifier: string; id: number; updated: string }[];
 }
