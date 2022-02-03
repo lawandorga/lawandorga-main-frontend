@@ -50,12 +50,16 @@
           >
             <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
             <div class="flex space-x-3 self-end">
-              <ButtonIcon
-                icon="Pencil"
+              <ButtonNormal
+                size="sm"
+                color="blue"
                 :to="{ name: 'collab-detail', params: { id: document.id } }"
               >
                 Edit
-              </ButtonIcon>
+              </ButtonNormal>
+              <ButtonNormal size="sm" color="blue" @click="print()">
+                Print
+              </ButtonNormal>
               <ButtonMenu
                 :items="[
                   { name: 'Versions', id: 'versions' },
@@ -78,7 +82,7 @@
         <BoxAlert
           v-show="version && version.content.includes('{')"
           type="warning"
-          class="mt-2"
+          class="mt-2 print:hidden"
         >
           This might not look correct. Don't worry, as soon as you edit it and
           save it it will fix itself. This happens because we switched out the
@@ -251,9 +255,11 @@ import Core from "@/services/core";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 
 export default defineComponent({
   components: {
+    ButtonNormal,
     ButtonBreadcrumbs,
     BreadcrumbsBar,
     DocumentTextIcon,
@@ -370,6 +376,9 @@ export default defineComponent({
     permissionCreated(data: CollabDocumentPermission) {
       this.addPermissionOpen = false;
       this.docPermissions.push(data);
+    },
+    print() {
+      window.print();
     },
   },
 });
