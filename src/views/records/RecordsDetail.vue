@@ -111,9 +111,13 @@
             class="flex items-baseline justify-between px-5 pt-4 pb-4 border-b-4 border-gray-200"
           >
             <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
-            <ButtonSimple @click="openCreateRecordQuestionnaire()">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="openCreateRecordQuestionnaire()"
+            >
               Publish a questionnaire
-            </ButtonSimple>
+            </ButtonNormal>
           </div>
           <div v-if="!!recordQuestionnaires.length" class="">
             <ul class="space-y-4d divide-y-2 divide-gray-200">
@@ -139,12 +143,13 @@
                     </div>
                   </div>
                   <div class="space-x-3">
-                    <ButtonSimple
-                      color="red"
+                    <ButtonNormal
+                      color="lightred"
+                      size="xs"
                       @click="openDeleteRecordQuestionnaire(item)"
                     >
                       Delete
-                    </ButtonSimple>
+                    </ButtonNormal>
                   </div>
                 </div>
                 <div class="border-t border-gray-200 px-5 py-5 sm:px-6">
@@ -187,11 +192,13 @@
                               </span>
                             </div>
                             <div class="ml-4 flex-shrink-0">
-                              <ButtonSimple
+                              <ButtonNormal
+                                size="xs"
+                                color="lightblue"
                                 @click="downloadQuestionnaireAnswerFile(answer)"
                               >
                                 Download
-                              </ButtonSimple>
+                              </ButtonNormal>
                             </div>
                           </div>
                         </div>
@@ -284,7 +291,7 @@ import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { formatDate } from "@/utils/date";
 import { PaperClipIcon } from "@heroicons/vue/solid";
-import ButtonSimple from "@/components/ButtonSimple.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 
 export default defineComponent({
@@ -298,7 +305,7 @@ export default defineComponent({
     ModalFree,
     BreadcrumbsBar,
     CollectionIcon,
-    ButtonSimple,
+    ButtonNormal,
   },
   data() {
     return {

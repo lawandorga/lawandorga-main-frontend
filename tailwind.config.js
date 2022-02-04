@@ -7,6 +7,18 @@ module.exports = {
     extend: {
       colors: {
         lorgablue: "#003c4d",
+        blue: {
+          50: "#eff9fb",
+          100: "#d0e7ed",
+          200: "#aad0db",
+          300: "#8abbc9",
+          400: "#6ca7b7",
+          500: "#428193",
+          600: "#275f6f",
+          700: "#153f4b",
+          800: "#0a2027",
+          900: "#010203",
+        },
       },
       extend: {
         backgroundColor: ["odd", "even", "checked", "focus"],

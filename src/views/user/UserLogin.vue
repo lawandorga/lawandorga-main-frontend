@@ -67,7 +67,7 @@
                     required: true,
                   },
                 ]"
-                action="user/login"
+                :request="loginRequest"
                 submit="Login"
               />
               <div class="pt-6 text-right space-x-4">
@@ -232,6 +232,8 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import InternalService from "@/services/internal";
 import { Article, LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
+import UsersService from "@/services/user";
+import { LoginResponse } from "@/types/user";
 
 export default defineComponent({
   components: { FormGenerator },
@@ -319,6 +321,14 @@ export default defineComponent({
       const url = this.$route.query.next as string;
       if (url) this.$router.push(url);
       else this.$router.push({ name: "dashboard" });
+    },
+    loginRequest(data: { email: string; password: string }) {
+      return UsersService.login(data).then((loginData: LoginResponse) => {
+        this.$store.dispatch("user/login", loginData);
+        if (this.$route.query.next)
+          this.$router.push(this.$route.query.next as string);
+        else this.$router.push({ name: "admin-dashboard" });
+      });
     },
   },
 });

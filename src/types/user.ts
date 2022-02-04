@@ -1,3 +1,5 @@
+import { Rlc } from "./core";
+
 export interface User {
   id: number;
   email: string;
@@ -30,4 +32,12 @@ export interface DashboardInformation {
     record: string;
   }[];
   changed_records: { identifier: string; id: number; updated: string }[];
+}
+
+export interface LoginResponse {
+  token: string;
+  key: string;
+  rlc: Rlc;
+  user: User;
+  permissions: string[];
 }

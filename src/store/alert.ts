@@ -49,7 +49,7 @@ const mutations = {
   addAlert(state: AlertState, alert: Alert) {
     alert["id"] = Math.random();
     alert["created"] = new Date().valueOf();
-    state.alerts.push(alert);
+    state.alerts = [alert].concat(state.alerts);
   },
   removeAlert(state: AlertState, alert: Alert) {
     const index = state.alerts.findIndex((item: Alert) => item.id === alert.id);

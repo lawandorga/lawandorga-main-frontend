@@ -30,9 +30,13 @@
                 </span>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <ButtonSimple @click="downloadQuestionnaireFile(file)">
+                <ButtonNormal
+                  color="lightblue"
+                  size="xs"
+                  @click="downloadQuestionnaireFile(file)"
+                >
                   Download
-                </ButtonSimple>
+                </ButtonNormal>
               </div>
             </div>
           </div>
@@ -62,11 +66,11 @@ import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
 import { PaperClipIcon } from "@heroicons/vue/outline";
-import ButtonSimple from "@/components/ButtonSimple.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 
 export default defineComponent({
   components: {
-    ButtonSimple,
+    ButtonNormal,
     PaperClipIcon,
     FormGenerator,
   },

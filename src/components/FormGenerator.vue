@@ -167,15 +167,9 @@ export default defineComponent({
       required: false,
       default: "",
     },
-    action: {
-      type: String,
-      required: false,
-      default: null,
-    },
     request: {
       type: Function as PropType<(...args: any[]) => Promise<JsonModel>>, // eslint-disable-line
-      required: false,
-      default: null,
+      required: true,
     },
   },
   emits: ["success", "error", "cancel"],
@@ -203,8 +197,7 @@ export default defineComponent({
     handleSubmit() {
       this.showSuccess = false;
       this.loading = true;
-      if (this.action) this.dispatchStore(this.data);
-      else this.sendRequest(this.data);
+      this.sendRequest(this.data);
     },
     sendRequest(requestData: JsonModel | FormData) {
       if (this.fields.map((item) => item.type).includes("file")) {
@@ -216,14 +209,6 @@ export default defineComponent({
           });
       }
       this.request(requestData)
-        .then((data: JsonModel) => this.handleSuccess(data))
-        .catch((error: AxiosError<DjangoError>) =>
-          this.handleError(error.response ? error.response.data : {}),
-        );
-    },
-    dispatchStore(data: JsonModel) {
-      this.$store
-        .dispatch(this.action, data)
         .then((data: JsonModel) => this.handleSuccess(data))
         .catch((error: AxiosError<DjangoError>) =>
           this.handleError(error.response ? error.response.data : {}),

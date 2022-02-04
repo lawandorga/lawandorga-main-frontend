@@ -1,10 +1,12 @@
-import store from "./store";
 import router from "./router";
 import axios, { AxiosRequestConfig } from "axios";
+import store from "./store";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
+const $axios = axios.create({
+  baseURL: import.meta.env.VITE_API_URL as string,
+});
 
-axios.interceptors.request.use(function (
+$axios.interceptors.request.use(function (
   config: AxiosRequestConfig,
 ): AxiosRequestConfig {
   if (store.getters["user/isAuthenticated"]) {
@@ -23,15 +25,11 @@ axios.interceptors.request.use(function (
   return config;
 });
 
-axios.interceptors.response.use(
+$axios.interceptors.response.use(
   function (response) {
     return response;
   },
   function (error) {
-    // if the error code is 400 it's supposed to be a form error
-    // if there is no response it might be another type of error like a network error
-    // we want to catch everything that is not a form error and display an error alert
-
     // error without a response object attached
     if (!error.response) {
       store.dispatch("alert/createAlert", {
@@ -93,12 +91,14 @@ axios.interceptors.response.use(
         heading: `Error ${error.response.status}`,
         message: error.response.data.detail,
       });
+      // 500 error
     } else if (error.response && error.response.status === 500) {
       store.dispatch("alert/createAlert", {
         type: "error",
         heading: "Error 500",
         message: "Server Error",
       });
+      // error without detail
     } else if (
       error.response &&
       error.response.status &&
@@ -117,4 +117,6 @@ axios.interceptors.response.use(
   },
 );
 
-export default axios;
+console.info("axios setup");
+
+export default $axios;

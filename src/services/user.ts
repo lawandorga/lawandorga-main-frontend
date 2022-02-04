@@ -1,14 +1,6 @@
 import { Permission, Rlc } from "@/types/core";
-import { DashboardInformation, User } from "@/types/user";
+import { DashboardInformation, LoginResponse, User } from "@/types/user";
 import axios from "../api";
-
-interface LoginResponse {
-  token: string;
-  key: string;
-  user: User;
-  rlc: Rlc;
-  permissions: string[];
-}
 
 interface StaticsResponse {
   user: User;
