@@ -29,35 +29,38 @@
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable
+            <ButtonNormal
               v-if="!slotProps.dataItem.accepted"
-              type="button"
+              size="xs"
+              color="lightblue"
               @click="
                 profile = slotProps.dataItem;
                 acceptUserModalOpen = true;
               "
             >
               Accept
-            </ButtonTable>
-            <ButtonTable
+            </ButtonNormal>
+            <ButtonNormal
               v-if="slotProps.dataItem.locked"
-              type="button"
+              size="xs"
+              color="lightblue"
               @click="
                 profile = slotProps.dataItem;
                 unlockUserModalOpen = true;
               "
             >
               Unlock
-            </ButtonTable>
-            <ButtonTable
-              type="button"
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightred"
               @click="
                 profile = slotProps.dataItem;
                 deleteModalOpen = true;
               "
             >
               Delete
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -95,7 +98,7 @@ import useGetItems from "@/composables/useGetItems";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
@@ -110,7 +113,7 @@ export default defineComponent({
     CogIcon,
     BoxLoader,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
     ModalDelete,
   },
   setup() {

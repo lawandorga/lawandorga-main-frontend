@@ -18,22 +18,28 @@
       <TableRecords :records="records">
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="createModalOpen = true">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="createModalOpen = true"
+            >
               Create Record
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable
+            <ButtonNormal
               v-if="!slotProps.record.access"
-              type="button"
+              size="xs"
+              color="lightblue"
               @click="requestAccess(slotProps.record)"
             >
               Request Access
-            </ButtonTable>
-            <ButtonTable
-              type="button"
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightred"
               :disabled="slotProps.record.delete"
               @click="
                 record = slotProps.record;
@@ -41,7 +47,7 @@
               "
             >
               Request Deletion
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableRecords>
@@ -106,7 +112,7 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent, ref, Ref, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
 import { RecordDeletion, RecordTemplate, Record } from "@/types/records";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -128,7 +134,7 @@ export default defineComponent({
     BoxLoader,
     TableGenerator,
     TableRecords,
-    ButtonTable,
+    ButtonNormal,
     ModalFree,
   },
   setup() {

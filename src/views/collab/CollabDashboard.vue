@@ -100,17 +100,24 @@
           :data="docPermissions"
         >
           <template #head-action>
-            <ButtonTable @click="addPermissionOpen = true">Add</ButtonTable>
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="addPermissionOpen = true"
+            >
+              Add
+            </ButtonNormal>
           </template>
           <template #action="slotProps">
-            <ButtonTable
+            <ButtonNormal
               v-if="slotProps.dataItem.source === 'NORMAL'"
-              type="button"
+              size="xs"
+              color="lightred"
               :loading="permissionDeleteLoading"
               @click="deletePermission(slotProps.dataItem.id)"
             >
               Remove
-            </ButtonTable>
+            </ButtonNormal>
           </template>
         </TableGenerator>
       </div>
@@ -250,7 +257,6 @@ import { removeFromArray } from "@/utils/array";
 import { formatDate } from "@/utils/date";
 import { Group, HasPermission } from "@/types/core";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
 import Core from "@/services/core";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -263,7 +269,6 @@ export default defineComponent({
     ButtonBreadcrumbs,
     BreadcrumbsBar,
     DocumentTextIcon,
-    ButtonTable,
     TableGenerator,
     Loader,
     BoxAlert,

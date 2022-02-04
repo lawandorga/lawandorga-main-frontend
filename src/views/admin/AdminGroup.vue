@@ -34,20 +34,29 @@
         :data="permissions"
       >
         <template #head-action>
-          <ButtonTable type="button" @click="addPermissionModalOpen = true">
-            Add Permission
-          </ButtonTable>
+          <div class="flex justify-end">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="addPermissionModalOpen = true"
+            >
+              Add Permission
+            </ButtonNormal>
+          </div>
         </template>
         <template #action="slotProps">
-          <ButtonTable
-            type="button"
-            @click="
-              removePermissionModalOpen = true;
-              permission = slotProps.dataItem;
-            "
-          >
-            Remove
-          </ButtonTable>
+          <div class="flex justify-end">
+            <ButtonNormal
+              size="xs"
+              color="lightred"
+              @click="
+                removePermissionModalOpen = true;
+                permission = slotProps.dataItem;
+              "
+            >
+              Remove
+            </ButtonNormal>
+          </div>
         </template>
       </TableGenerator>
 
@@ -60,20 +69,29 @@
         :data="members"
       >
         <template #head-action>
-          <ButtonTable type="button" @click="addMemberModalOpen = true">
-            Add Member
-          </ButtonTable>
+          <div class="flex justify-end">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="addMemberModalOpen = true"
+            >
+              Add Member
+            </ButtonNormal>
+          </div>
         </template>
         <template #action="slotProps">
-          <ButtonTable
-            type="button"
-            @click="
-              removeMemberModalOpen = true;
-              member = slotProps.dataItem;
-            "
-          >
-            Remove
-          </ButtonTable>
+          <div class="flex justify-end">
+            <ButtonNormal
+              size="xs"
+              color="lightred"
+              @click="
+                removeMemberModalOpen = true;
+                member = slotProps.dataItem;
+              "
+            >
+              Remove
+            </ButtonNormal>
+          </div>
         </template>
       </TableGenerator>
     </div>
@@ -115,7 +133,7 @@ import { useRoute } from "vue-router";
 import { User } from "@/types/user";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import { watch, defineComponent, ref, Ref, reactive } from "vue";
 import ModalFree from "@/components/ModalFree.vue";
@@ -148,7 +166,7 @@ export default defineComponent({
     TableGenerator,
     ModalFree,
     FormGenerator,
-    ButtonTable,
+    ButtonNormal,
     CogIcon,
     ModalDelete,
   },

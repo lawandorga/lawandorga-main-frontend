@@ -68,25 +68,27 @@
           >
             <template #head-action>
               <div class="flex justify-end">
-                <ButtonTable
-                  type="button"
+                <ButtonNormal
+                  size="xs"
+                  color="lightblue"
                   @click="addPermissionModalOpen = true"
                 >
                   Add Permission
-                </ButtonTable>
+                </ButtonNormal>
               </div>
             </template>
             <template #action="slotProps">
               <div class="flex justify-end">
-                <ButtonTable
-                  type="button"
+                <ButtonNormal
+                  size="xs"
+                  color="lightred"
                   @click="
                     removePermissionModalOpen = true;
                     permission = slotProps.dataItem;
                   "
                 >
                   Remove
-                </ButtonTable>
+                </ButtonNormal>
               </div>
             </template>
           </TableGenerator>
@@ -130,7 +132,7 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
 import useGetItems from "@/composables/useGetItems";
@@ -187,7 +189,7 @@ export default defineComponent({
     ButtonBlue,
     ModalFree,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
     PencilIcon,
     FormGenerator,
     ModalDelete,

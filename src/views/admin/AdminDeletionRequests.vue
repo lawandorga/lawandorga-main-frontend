@@ -49,16 +49,17 @@
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable
+            <ButtonNormal
               v-if="slotProps.dataItem.state === 're'"
-              type="button"
+              size="xs"
+              color="lightblue"
               @click="
                 deletionRequest = slotProps.dataItem;
                 updateModalOpen = true;
               "
             >
               Accept or Decline
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -86,7 +87,7 @@ import { defineComponent, Ref, ref } from "vue";
 import RecordsService from "@/services/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import useGetItems from "@/composables/useGetItems";
@@ -115,7 +116,7 @@ export default defineComponent({
     BreadcrumbsBar,
     BoxLoader,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
     ModalFree,
     FormGenerator,
   },

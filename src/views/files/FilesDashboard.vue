@@ -33,12 +33,20 @@
       >
         <template #head-action>
           <div class="flex space-x-3 justify-end">
-            <ButtonTable type="button" @click="createFolderModalOpen = true">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="createFolderModalOpen = true"
+            >
               Create Folder
-            </ButtonTable>
-            <ButtonTable type="button" @click="createFileModalOpen = true">
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="createFileModalOpen = true"
+            >
               Upload File
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
         <template #type="slotProps">
@@ -76,48 +84,58 @@
         </template>
         <template #action="slotProps">
           <div class="flex space-x-3 justify-end">
-            <ButtonTable
+            <ButtonNormal
               v-if="slotProps.dataItem.type === 'FOLDER'"
+              size="xs"
+              color="lightblue"
               @click="
                 folderOpen = slotProps.dataItem;
                 updateFolderModalOpen = true;
               "
             >
               Change
-            </ButtonTable>
-            <ButtonTable
+            </ButtonNormal>
+            <ButtonNormal
               v-if="slotProps.dataItem.type === 'FOLDER'"
+              size="xs"
+              color="lightred"
               @click="
                 folderOpen = slotProps.dataItem;
                 deleteFolderModalOpen = true;
               "
             >
               Delete
-            </ButtonTable>
-            <ButtonTable
+            </ButtonNormal>
+            <ButtonNormal
               v-if="slotProps.dataItem.type === 'FILE'"
+              size="xs"
+              color="lightblue"
               @click="downloadFile(slotProps.dataItem)"
             >
               Download
-            </ButtonTable>
-            <ButtonTable
+            </ButtonNormal>
+            <ButtonNormal
               v-if="slotProps.dataItem.type === 'FILE'"
+              size="xs"
+              color="lightblue"
               @click="
                 fileOpen = slotProps.dataItem;
                 updateFileModalOpen = true;
               "
             >
               Change
-            </ButtonTable>
-            <ButtonTable
+            </ButtonNormal>
+            <ButtonNormal
               v-if="slotProps.dataItem.type === 'FILE'"
+              size="xs"
+              color="lightred"
               @click="
                 fileOpen = slotProps.dataItem;
                 deleteFileModalOpen = true;
               "
             >
               Delete
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -132,12 +150,13 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable
-              type="button"
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
               @click="createPermissionModalOpen = true"
             >
               Add Permission
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
         <template #folder="slotProps">
@@ -153,16 +172,18 @@
         </template>
         <template #action="slotProps">
           <div class="flex justify-end">
-            <ButtonTable
+            <ButtonNormal
               v-if="slotProps.dataItem.source === 'NORMAL'"
               type="button"
+              size="xs"
+              color="lightred"
               @click="
                 permissionOpen = slotProps.dataItem;
                 deletePermissionModalOpen = true;
               "
             >
               Remove
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -288,7 +309,7 @@ import {
 import { defineComponent, Ref, ref, watch } from "vue";
 import FilesService from "@/services/files";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
@@ -320,7 +341,7 @@ export default defineComponent({
     BreadcrumbsBar,
     ModalDelete,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
     BoxLoader,
     ModalFree,
     FormGenerator,

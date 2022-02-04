@@ -33,31 +33,37 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="createModalOpen = true">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="createModalOpen = true"
+            >
               Add Field
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable
-              type="button"
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
               @click="
                 field = slotProps.dataItem;
                 updateModalOpen = true;
               "
             >
               Change
-            </ButtonTable>
-            <ButtonTable
-              type="button"
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightred"
               @click="
                 field = slotProps.dataItem;
                 deleteModalOpen = true;
               "
             >
               Delete
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -141,7 +147,7 @@ import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import RecordsService from "@/services/records";
 import useGetItem from "@/composables/useGetItem";
 import useGetItems from "@/composables/useGetItems";
@@ -218,7 +224,7 @@ export default defineComponent({
     CogIcon,
     BreadcrumbsBar,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
     ButtonBreadcrumbs,
   },
   setup() {

@@ -17,17 +17,27 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable @click="openCreate()">Add Tag</ButtonTable>
+            <ButtonNormal size="xs" color="lightblue" @click="openCreate()">
+              Add Tag
+            </ButtonNormal>
           </div>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable @click="openUpdate(slotProps.dataItem)">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="openUpdate(slotProps.dataItem)"
+            >
               Edit
-            </ButtonTable>
-            <ButtonTable @click="openDelete(slotProps.dataItem)">
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightred"
+              @click="openDelete(slotProps.dataItem)"
+            >
               Delete
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -67,11 +77,11 @@ import ModalDelete from "@/components/ModalDelete.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 
 export default defineComponent({
   components: {
-    ButtonTable,
+    ButtonNormal,
     CogIcon,
     TableGenerator,
     BreadcrumbsBar,

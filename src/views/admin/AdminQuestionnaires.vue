@@ -19,9 +19,13 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="createModalOpen = true">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="createModalOpen = true"
+            >
               Create Questionnaire
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
         <template #name="slotProps">
@@ -37,24 +41,26 @@
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable
-              type="button"
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
               @click="
                 questionnaire = slotProps.dataItem;
                 updateModalOpen = true;
               "
             >
               Change
-            </ButtonTable>
-            <ButtonTable
-              type="button"
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightred"
               @click="
                 questionnaire = slotProps.dataItem;
                 deleteModalOpen = true;
               "
             >
               Delete
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -88,7 +94,7 @@ import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import RecordsService from "@/services/records";
 import useGetItems from "@/composables/useGetItems";
 import useUpdateItem from "@/composables/useUpdateItem";
@@ -123,7 +129,7 @@ export default defineComponent({
     CogIcon,
     BreadcrumbsBar,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
   },
   setup() {
     const questionnaires = ref(null) as Ref<Questionnaire[] | null>;

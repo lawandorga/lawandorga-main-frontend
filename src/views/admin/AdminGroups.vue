@@ -23,9 +23,13 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonTable type="button" @click="createModalOpen = true">
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
+              @click="createModalOpen = true"
+            >
               Create Group
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
         <template #name="slotProps">
@@ -37,24 +41,26 @@
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonTable
-              type="button"
+            <ButtonNormal
+              size="xs"
+              color="lightblue"
               @click="
                 group = slotProps.dataItem;
                 updateModalOpen = true;
               "
             >
               Change
-            </ButtonTable>
-            <ButtonTable
-              type="button"
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              color="lightred"
               @click="
                 group = slotProps.dataItem;
                 deleteModalOpen = true;
               "
             >
               Delete
-            </ButtonTable>
+            </ButtonNormal>
           </div>
         </template>
       </TableGenerator>
@@ -84,7 +90,7 @@ import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonTable from "@/components/ButtonTable.vue";
+import ButtonNormal from "@/components/ButtonNormal.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import useGetItems from "@/composables/useGetItems";
@@ -116,7 +122,7 @@ export default defineComponent({
     ButtonLink,
     BoxLoader,
     TableGenerator,
-    ButtonTable,
+    ButtonNormal,
     CogIcon,
     ModalFree,
     FormGenerator,
