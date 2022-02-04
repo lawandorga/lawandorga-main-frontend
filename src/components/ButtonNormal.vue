@@ -7,9 +7,6 @@
       sizeDependingClasses,
       moreClasses,
     ]"
-    :to="to"
-    :href="href"
-    :disabled="disabledComputed"
     v-bind="attrs"
     @click="emitClick()"
   >
@@ -59,8 +56,15 @@ export default defineComponent({
   emits: ["click"],
   computed: {
     attrs() {
-      let attrs = {} as { [key: string]: string };
-      if (this.type && this.is === "button") attrs["type"] = this.type;
+      let attrs = {} as { [key: string]: any };  // eslint-disable-line
+      if (this.type && this.is === "button") {
+        attrs["type"] = this.type;
+        attrs["disabled"] = this.disabledComputed;
+      } else if (this.is === "router-link") {
+        attrs["to"] = this.to;
+      } else if (this.is === "a") {
+        attrs["href"] = this.href;
+      }
       return attrs;
     },
     is() {
@@ -75,7 +79,7 @@ export default defineComponent({
     },
     disabledComputed() {
       if (this.loading || this.disabled) return true;
-      return null;
+      return false;
     },
     baseClasses() {
       return "cursor-pointer inline-flex items-center shadow-sm border focus:outline-none focus:ring-2 focus:ring-offset-2";
@@ -112,5 +116,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style></style>

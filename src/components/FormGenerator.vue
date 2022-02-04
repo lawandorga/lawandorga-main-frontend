@@ -102,14 +102,15 @@
             {{ success }}
           </p>
         </transition>
-        <ButtonLight
+        <ButtonBlue
           v-if="cancel"
           class="mr-3"
+          color="indigo"
           type="button"
           @click="$emit('cancel')"
         >
           {{ cancel }}
-        </ButtonLight>
+        </ButtonBlue>
         <ButtonBlue type="submit" :loading="loading">
           {{ submit }}
         </ButtonBlue>
@@ -123,7 +124,6 @@ import FormInput from "./FormInput.vue";
 import FormTextarea from "./FormTextarea.vue";
 import FormSelect from "./FormSelect.vue";
 import ButtonBlue from "./ButtonNormal.vue";
-import ButtonLight from "./ButtonLight.vue";
 import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "vue";
 import FormTiptap from "./FormTiptap.vue";
@@ -137,7 +137,6 @@ export default defineComponent({
     ButtonBlue,
     FormSelect,
     FormInput,
-    ButtonLight,
     FormTextarea,
     FormTiptap,
     FormMultiple,

@@ -31,6 +31,16 @@
             <div
               class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md"
             >
+              <div class="block absolute top-0 right-0 pt-3 pr-3">
+                <button
+                  type="button"
+                  class="bg-white p-0.5 border-2 border-transparent rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 hover:border-gray-100 focus:outline-none focus:ring-0"
+                  @click="$emit('update:modelValue', false)"
+                >
+                  <span class="sr-only">Close</span>
+                  <XIcon class="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
               <DialogTitle
                 as="h3"
                 class="text-lg font-medium leading-6 text-gray-900"
@@ -38,19 +48,20 @@
                 {{ title }}
               </DialogTitle>
               <div class="mt-2">
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-gray-500 break-words">
                   Are you sure you want to {{ verb }}
                   {{ object.name || object.id }}?
                 </p>
               </div>
 
               <div class="mt-4 flex space-x-3 justify-end">
-                <ButtonLight
+                <ButtonBlue
+                  color="indigo"
                   type="button"
                   @click="$emit('update:modelValue', false)"
                 >
                   Cancel
-                </ButtonLight>
+                </ButtonBlue>
                 <ButtonBlue
                   type="button"
                   :loading="loading"
@@ -77,18 +88,18 @@ import {
   DialogTitle,
 } from "@headlessui/vue";
 import ButtonBlue from "@/components/ButtonNormal.vue";
-import ButtonLight from "@/components/ButtonLight.vue";
 import { JsonModel, RequestFunction } from "@/types/shared";
+import { XIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
   components: {
     ButtonBlue,
-    ButtonLight,
     TransitionRoot,
     TransitionChild,
     Dialog,
     DialogOverlay,
     DialogTitle,
+    XIcon,
   },
   props: {
     title: {
