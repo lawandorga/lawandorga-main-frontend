@@ -23,9 +23,9 @@ class CollabService {
       .then((response) => response.data);
   }
 
-  deleteDocument(data: CollabDocument): Promise<CollabDocument> {
+  deleteDocument(data: CollabDocument): Promise<void> {
     return axios
-      .delete<CollabDocument>(`collab/collab_documents/${data.id}`)
+      .delete<void>(`collab/collab_documents/${data.id}`)
       .then((response) => response.data);
   }
 
@@ -87,11 +87,9 @@ class CollabService {
       .then((response) => response.data);
   }
 
-  deleteDocumentPermission(id: number): Promise<void> {
-    return axios.delete(`collab/document_permissions/${id}/`);
+  deleteDocumentPermission(document: CollabDocument): Promise<void> {
+    return axios.delete(`collab/document_permissions/${document.id}/`);
   }
 }
 
-const Collab = new CollabService();
-
-export default Collab;
+export default new CollabService();
