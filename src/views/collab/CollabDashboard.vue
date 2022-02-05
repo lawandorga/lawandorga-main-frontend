@@ -1,5 +1,6 @@
 <template>
-  <BoxLoader :show="true">
+  Wartungsarbeiten
+  <BoxLoader :show="false">
     <div
       class="max-w-screen-2xl mx-auto space-y-6 2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0"
     >
@@ -100,24 +101,28 @@
           :data="docPermissions"
         >
           <template #head-action>
-            <ButtonNormal
-              size="xs"
-              color="lightblue"
-              @click="addPermissionOpen = true"
-            >
-              Add
-            </ButtonNormal>
+            <div class="flex justify-end">
+              <ButtonNormal
+                size="xs"
+                color="lightblue"
+                @click="addPermissionOpen = true"
+              >
+                Add
+              </ButtonNormal>
+            </div>
           </template>
           <template #action="slotProps">
-            <ButtonNormal
-              v-if="slotProps.dataItem.source === 'NORMAL'"
-              size="xs"
-              color="lightred"
-              :loading="permissionDeleteLoading"
-              @click="deletePermission(slotProps.dataItem.id)"
-            >
-              Remove
-            </ButtonNormal>
+            <div class="flex justify-end">
+              <ButtonNormal
+                v-if="slotProps.dataItem.source === 'NORMAL'"
+                size="xs"
+                color="lightred"
+                :loading="permissionDeleteLoading"
+                @click="deletePermission(slotProps.dataItem.id)"
+              >
+                Remove
+              </ButtonNormal>
+            </div>
           </template>
         </TableGenerator>
       </div>
