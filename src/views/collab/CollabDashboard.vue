@@ -1,6 +1,5 @@
 <template>
-  Wartungsarbeiten
-  <BoxLoader :show="false">
+  <BoxLoader :show="true">
     <div
       class="max-w-screen-2xl mx-auto space-y-6 2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0"
     >
