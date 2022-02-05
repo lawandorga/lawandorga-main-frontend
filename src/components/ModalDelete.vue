@@ -50,7 +50,7 @@
               <div class="mt-2">
                 <p class="text-sm text-gray-500 break-words">
                   Are you sure you want to {{ verb }}
-                  {{ object.name || object.id }}?
+                  {{ object ? object.name || object.id : "this object" }}?
                 </p>
               </div>
 

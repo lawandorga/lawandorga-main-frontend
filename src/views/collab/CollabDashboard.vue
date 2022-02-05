@@ -27,7 +27,7 @@
           <ButtonIcon
             type="button"
             icon="PlusCircle"
-            @click="createOpen = true"
+            @click="createDocumentModalOpen = true"
           >
             Create
           </ButtonIcon>
@@ -64,14 +64,20 @@
               <ButtonNormal size="sm" color="blue" @click="print()">
                 Print
               </ButtonNormal>
-              <ButtonMenu
-                :items="[
-                  { name: 'Versions', id: 'versions' },
-                  { name: 'Permissions', id: 'permissions' },
-                  { name: 'Delete', id: 'delete' },
-                ]"
-                @click="menuClicked($event)"
-              />
+              <ButtonNormal
+                size="sm"
+                color="blue"
+                @click="versionsModalOpen = true"
+              >
+                Versions
+              </ButtonNormal>
+              <ButtonNormal
+                size="sm"
+                color="blue"
+                @click="deleteDocumentModalOpen = true"
+              >
+                Delete
+              </ButtonNormal>
             </div>
           </div>
           <!-- eslint-disable vue/no-v-html -->
@@ -191,19 +197,19 @@
       </article>
     </ModalFree>
     <!-- versions modal -->
-    <ModalFree v-model="versionsOpen" title="Versions">
-      <ul class="space-y-2">
+    <ModalFree v-model="versionsModalOpen" title="Versions">
+      <Loader v-if="!versions" />
+      <ul v-else class="space-y-2">
         <li v-for="item in versions" :key="item.id">
           <button
             type="button"
             class="w-full border-2 border-gray-300 rounded px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200"
-            @click="versionSelected(item.id)"
+            @click="versionSelected(item)"
           >
             {{ formatDate(item.updated) }}
           </button>
         </li>
       </ul>
-      <Loader v-show="versionsLoading" />
     </ModalFree>
     <!-- create document -->
     <ModalFree v-model="createDocumentModalOpen" title="Create Document">
@@ -223,7 +229,7 @@
       v-model="deleteDocumentModalOpen"
       :request="deleteDocumentRequest"
       :object="document"
-      @deleted="documentDeleted($event)"
+      @deleted="documentDeleted()"
     />
     <!-- create permission -->
     <ModalFree v-model="createPermissionModalOpen" title="Add Permission">
@@ -270,7 +276,6 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import Loader from "@/components/CircleLoader.vue";
 import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonIcon from "@/components/ButtonIcon.vue";
-import ButtonMenu from "@/components/ButtonMenu.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
@@ -283,7 +288,7 @@ import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import useGetItems from "@/composables/useGetItems";
 import useCreateItem from "@/composables/useCreateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
@@ -302,7 +307,6 @@ export default defineComponent({
     TreeItem,
     BoxLoader,
     ButtonIcon,
-    ButtonMenu,
     ModalFree,
     FormGenerator,
     ModalDelete,
@@ -317,6 +321,7 @@ export default defineComponent({
       createRequest: createDocumentRequest,
       createModalOpen: createDocumentModalOpen,
     } = useCreateItem(CollabService.createDocument, documents);
+
     const documentCreated = (document: CollabDocument) => {
       if (documents.value === null) return;
       const parent = documents.value.find((item) => {
@@ -326,14 +331,7 @@ export default defineComponent({
       });
       if (parent !== undefined && parent.children)
         parent.children.push(document.id);
-      documents.value.push(document);
     };
-
-    // delete document
-    const {
-      deleteRequest: deleteDocumentRequest,
-      deleteModalOpen: deleteDocumentModalOpen,
-    } = useDeleteItem(CollabService.deleteDocument, documents);
 
     // single document
     const document = ref<CollabDocument | null>(null);
@@ -348,6 +346,18 @@ export default defineComponent({
       CollabService.getDocumentPermissions(id).then(
         (permissions) => (documentPermissions.value = permissions),
       );
+    };
+
+    // delete document
+    const {
+      deleteRequest: deleteDocumentRequest,
+      deleteModalOpen: deleteDocumentModalOpen,
+    } = useDeleteItem(CollabService.deleteDocument, documents);
+
+    const documentDeleted = () => {
+      documentLoading.value = false;
+      document.value = null;
+      documentPermissions.value = null;
     };
 
     // create and delete permission
@@ -370,6 +380,23 @@ export default defineComponent({
       CollabService.deleteDocumentPermission,
       documentPermissions,
     );
+
+    // versions
+    const versions = ref<CollabVersion[] | null>(null);
+    const versionsModalOpen = ref(false);
+
+    watch(versionsModalOpen, (newValue) => {
+      if (document.value === null || newValue === false) return;
+      versions.value = null;
+      CollabService.getVersions(document.value.id).then(
+        (v) => (versions.value = v),
+      );
+    });
+
+    const versionSelected = (version: CollabVersion) => {
+      if (document.value === null) return;
+      document.value.content = version.content;
+    };
 
     return {
       // all documents
@@ -394,17 +421,18 @@ export default defineComponent({
       // delete permission
       deletePermissionRequest,
       deletePermissionModalOpen,
+      documentDeleted,
+      // versions
+      versions,
+      versionsModalOpen,
+      versionSelected,
+      // utils
+      formatDate,
     };
   },
   data: function () {
     return {
-      versionLoading: false,
-      versions: [] as CollabVersion[],
-      versionsOpen: false,
-      versionsLoading: false,
-      formatDate: formatDate,
-      permissions: [] as HasPermission[],
-      permissionDeleteLoading: false,
+      permissions: null as HasPermission[] | null,
       permissionOptions: [] as CollabPermission[],
       groups: [] as Group[],
       generalPermissionsModalOpen: false,
@@ -421,24 +449,6 @@ export default defineComponent({
     CoreService.getGroups().then((groups) => (this.groups = groups));
   },
   methods: {
-    versionSelected(id: number) {
-      this.versionLoading = true;
-      this.version = null;
-      const found = this.versions.find((item) => item.id === id);
-      if (found) this.version = found;
-      this.versionLoading = false;
-    },
-    menuClicked(id: string) {
-      if (id === "delete") this.deleteOpen = true;
-      if (id === "versions") {
-        this.versionsLoading = true;
-        this.versions = [];
-        this.versionsOpen = true;
-        CollabService.getVersions(this.version.id)
-          .then((versions) => (this.versions = versions))
-          .finally(() => (this.versionsLoading = false));
-      }
-    },
     print() {
       window.print();
     },
