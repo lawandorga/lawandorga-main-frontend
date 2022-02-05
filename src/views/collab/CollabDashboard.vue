@@ -44,16 +44,16 @@
       <div
         class="bg-white shadow rounded-md p-5 2xl:col-span-2 print:p-0 print:shadow-none"
       >
-        <div v-if="version && document">
+        <div v-if="version">
           <div
             class="flex flex-col justify-between lg:flex-row lg:items-center print:hidden"
           >
-            <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
+            <div class="text-sm text-gray-500 mb-2">{{ version.path }}</div>
             <div class="flex space-x-3 self-end">
               <ButtonNormal
                 size="sm"
                 color="blue"
-                :to="{ name: 'collab-detail', params: { id: document.id } }"
+                :to="{ name: 'collab-detail', params: { id: version.id } }"
               >
                 Edit
               </ButtonNormal>
@@ -154,7 +154,7 @@
             class="w-full border-2 border-gray-300 rounded px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200"
             @click="versionSelected(item.id)"
           >
-            {{ formatDate(item.created) }}
+            {{ formatDate(item.updated) }}
           </button>
         </li>
       </ul>
@@ -287,7 +287,7 @@ export default defineComponent({
   data: function () {
     return {
       documents: [] as CollabDocument[],
-      version: null as CollabVersion | null,
+      version: null as CollabDocument | null,
       versionLoading: false,
       versions: [] as CollabVersion[],
       versionsOpen: false,
@@ -366,7 +366,7 @@ export default defineComponent({
         this.versionsLoading = true;
         this.versions = [];
         this.versionsOpen = true;
-        Collab.getVersions(this.document ? this.document.id : 0)
+        Collab.getVersions(this.version.id)
           .then((versions) => (this.versions = versions))
           .finally(() => (this.versionsLoading = false));
       }

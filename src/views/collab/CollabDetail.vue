@@ -13,7 +13,6 @@
       >
         <DocumentTextIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-
       <div
         class="bg-white shadow rounded px-6 py-5 print:shadow-none print:p-0"
       >
@@ -36,7 +35,7 @@
             :initial="{
               content: content,
               quill: false,
-              document: text.document,
+              document: $route.params.id,
             }"
           />
         </div>
@@ -47,7 +46,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { CollabVersion } from "@/types/collab";
+import { CollabDocument } from "@/types/collab";
 import FormQuill from "@/components/FormQuill.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import Collab from "@/services/collab";
@@ -65,7 +64,7 @@ export default defineComponent({
   },
   data: function () {
     return {
-      text: null as CollabVersion | null,
+      text: null as CollabDocument | null,
       content: null as string | null,
       loadQuill: false,
       createVersion: Collab.createVersion,
@@ -73,8 +72,8 @@ export default defineComponent({
   },
   mounted() {
     Collab.getLatestVersion(parseInt(this.$route.params.id as string)).then(
-      (version) => {
-        this.text = version;
+      (doc) => {
+        this.text = doc;
         if (this.text.quill) this.loadQuill = true;
         else this.content = this.text.content;
       },

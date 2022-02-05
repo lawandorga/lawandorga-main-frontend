@@ -4,8 +4,12 @@ export interface CollabDocument {
   id: number;
   path: string;
   created: string;
-  creator: number;
-  children: number[];
+  updated: string;
+  // list
+  children?: number[];
+  // retrieve
+  quill?: boolean;
+  content?: string;
 }
 
 export interface CollabVersion {

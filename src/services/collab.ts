@@ -32,18 +32,15 @@ class CollabService {
   createVersion(data: {
     content: string;
     document: number;
-  }): Promise<CollabVersion> {
+  }): Promise<CollabDocument> {
     return axios
-      .post<CollabVersion>(
-        `collab/collab_documents/${data.document}/create_version/`,
-        data,
-      )
+      .patch<CollabDocument>(`collab/collab_documents/${data.document}/`, data)
       .then((response) => response.data);
   }
 
-  getLatestVersion(id: number): Promise<CollabVersion> {
+  getLatestVersion(id: number): Promise<CollabDocument> {
     return axios
-      .get<CollabVersion>(`collab/collab_documents/${id}/latest/`)
+      .get<CollabDocument>(`collab/collab_documents/${id}/`)
       .then((response) => response.data)
       .catch((error) => {
         if (error.response.status === 404)
