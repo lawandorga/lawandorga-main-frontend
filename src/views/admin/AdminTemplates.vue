@@ -19,7 +19,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createModalOpen = true"
             >
               Create Template
@@ -41,7 +41,7 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 template = slotProps.dataItem;
                 updateModalOpen = true;
@@ -51,7 +51,7 @@
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 template = slotProps.dataItem;
                 deleteModalOpen = true;

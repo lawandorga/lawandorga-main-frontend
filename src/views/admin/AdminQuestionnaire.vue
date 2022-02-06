@@ -31,7 +31,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createFieldModalOpen = true"
             >
               Add Field
@@ -42,7 +42,7 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 field = slotProps.dataItem;
                 updateFieldModalOpen = true;
@@ -52,7 +52,7 @@
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 field = slotProps.dataItem;
                 deleteFieldModalOpen = true;
@@ -74,7 +74,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createFileModalOpen = true"
             >
               Add File
@@ -85,14 +85,14 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="downloadFile(slotProps.dataItem)"
             >
               Download
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 file = slotProps.dataItem;
                 deleteFileModalOpen = true;

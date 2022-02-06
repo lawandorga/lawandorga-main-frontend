@@ -52,7 +52,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.state === 're'"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 deletionRequest = slotProps.dataItem;
                 updateModalOpen = true;

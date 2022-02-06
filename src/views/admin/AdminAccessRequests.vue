@@ -40,7 +40,7 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               v-if="slotProps.dataItem.state === 're'"
-              color="lightblue"
+              kind="action"
               size="xs"
               @click="
                 deletionRequest = slotProps.dataItem;

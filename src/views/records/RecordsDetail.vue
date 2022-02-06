@@ -113,7 +113,7 @@
             <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="openCreateRecordQuestionnaire()"
             >
               Publish a questionnaire
@@ -144,7 +144,7 @@
                   </div>
                   <div class="space-x-3">
                     <ButtonNormal
-                      color="lightred"
+                      kind="delete"
                       size="xs"
                       @click="openDeleteRecordQuestionnaire(item)"
                     >
@@ -194,7 +194,7 @@
                             <div class="ml-4 flex-shrink-0">
                               <ButtonNormal
                                 size="xs"
-                                color="lightblue"
+                                kind="action"
                                 @click="downloadQuestionnaireAnswerFile(answer)"
                               >
                                 Download

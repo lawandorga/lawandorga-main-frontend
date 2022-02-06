@@ -105,7 +105,7 @@
         <ButtonBlue
           v-if="cancel"
           class="mr-3"
-          color="indigo"
+          kind="secondary"
           type="button"
           @click="$emit('cancel')"
         >

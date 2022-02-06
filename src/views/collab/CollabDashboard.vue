@@ -20,13 +20,9 @@
       <div class="bg-white shadow rounded-md p-5 2xl:row-span-2 print:hidden">
         <div class="flex justify-between items-baseline mb-4">
           <h2 class="version-lg font-bold">Documents</h2>
-          <ButtonIcon
-            type="button"
-            icon="PlusCircle"
-            @click="createDocumentModalOpen = true"
-          >
+          <ButtonNormal kind="action" @click="createDocumentModalOpen = true">
             Create
-          </ButtonIcon>
+          </ButtonNormal>
         </div>
         <CircleLoader v-if="!documents" />
         <ul v-else>
@@ -79,12 +75,10 @@ import { defineComponent } from "vue";
 import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import ButtonIcon from "@/components/ButtonIcon.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import CollabService from "@/services/collab";
-import { HasPermission } from "@/types/core";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
@@ -108,7 +102,6 @@ export default defineComponent({
     DocumentTextIcon,
     TreeItem,
     BoxLoader,
-    ButtonIcon,
     ModalFree,
     FormGenerator,
     ModalDelete,

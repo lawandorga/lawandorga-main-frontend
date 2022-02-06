@@ -56,7 +56,7 @@
 
               <div class="mt-4 flex space-x-3 justify-end">
                 <ButtonBlue
-                  color="indigo"
+                  kind="secondary"
                   type="button"
                   @click="$emit('update:modelValue', false)"
                 >

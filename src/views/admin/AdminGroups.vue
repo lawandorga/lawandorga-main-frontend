@@ -25,7 +25,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createModalOpen = true"
             >
               Create Group
@@ -43,7 +43,7 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 group = slotProps.dataItem;
                 updateModalOpen = true;
@@ -53,7 +53,7 @@
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 group = slotProps.dataItem;
                 deleteModalOpen = true;

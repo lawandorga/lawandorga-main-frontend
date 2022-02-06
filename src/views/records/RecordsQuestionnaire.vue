@@ -31,7 +31,7 @@
               </div>
               <div class="ml-4 flex-shrink-0">
                 <ButtonNormal
-                  color="lightblue"
+                  kind="action"
                   size="xs"
                   @click="downloadQuestionnaireFile(file)"
                 >

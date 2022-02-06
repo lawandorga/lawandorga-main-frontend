@@ -37,7 +37,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="addPermissionModalOpen = true"
             >
               Add Permission
@@ -48,7 +48,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 removePermissionModalOpen = true;
                 permission = slotProps.dataItem;
@@ -72,7 +72,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="addMemberModalOpen = true"
             >
               Add Member
@@ -83,7 +83,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 removeMemberModalOpen = true;
                 member = slotProps.dataItem;

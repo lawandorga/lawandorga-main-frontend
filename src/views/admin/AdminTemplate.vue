@@ -35,7 +35,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createModalOpen = true"
             >
               Add Field
@@ -46,7 +46,7 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 field = slotProps.dataItem;
                 updateModalOpen = true;
@@ -56,7 +56,7 @@
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 field = slotProps.dataItem;
                 deleteModalOpen = true;

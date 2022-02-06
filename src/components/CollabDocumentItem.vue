@@ -10,27 +10,16 @@
         <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
         <div class="flex space-x-3 self-end">
           <ButtonNormal
-            size="sm"
-            color="blue"
+            kind="action"
             :to="{ name: 'collab-detail', params: { id: document.id } }"
           >
             Edit
           </ButtonNormal>
-          <ButtonNormal size="sm" color="blue" @click="print()">
-            Print
-          </ButtonNormal>
-          <ButtonNormal
-            size="sm"
-            color="blue"
-            @click="versionsModalOpen = true"
-          >
+          <ButtonNormal kind="action" @click="print()">Print</ButtonNormal>
+          <ButtonNormal kind="action" @click="versionsModalOpen = true">
             Versions
           </ButtonNormal>
-          <ButtonNormal
-            size="sm"
-            color="blue"
-            @click="$emit('delete', document)"
-          >
+          <ButtonNormal kind="delete" @click="$emit('delete', document)">
             Delete
           </ButtonNormal>
         </div>
@@ -66,7 +55,7 @@
         <div class="flex justify-end">
           <ButtonNormal
             size="xs"
-            color="lightblue"
+            kind="action"
             @click="createPermissionModalOpen = true"
           >
             Add
@@ -78,7 +67,7 @@
           <ButtonNormal
             v-if="slotProps.dataItem.source === 'NORMAL'"
             size="xs"
-            color="lightred"
+            kind="delete"
             @click="
               permission = slotProps.dataItem;
               deletePermissionModalOpen = true;

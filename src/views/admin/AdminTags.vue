@@ -17,7 +17,7 @@
       >
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonNormal size="xs" color="lightblue" @click="openCreate()">
+            <ButtonNormal size="xs" kind="action" @click="openCreate()">
               Add Tag
             </ButtonNormal>
           </div>
@@ -26,14 +26,14 @@
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="openUpdate(slotProps.dataItem)"
             >
               Edit
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="openDelete(slotProps.dataItem)"
             >
               Delete

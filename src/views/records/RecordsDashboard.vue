@@ -18,11 +18,7 @@
       <TableRecords :records="records">
         <template #head-action>
           <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              color="lightblue"
-              @click="createModalOpen = true"
-            >
+            <ButtonNormal kind="action" @click="createModalOpen = true">
               Create Record
             </ButtonNormal>
           </div>
@@ -32,14 +28,14 @@
             <ButtonNormal
               v-if="!slotProps.record.access"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="requestAccess(slotProps.record)"
             >
               Request Access
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               :disabled="slotProps.record.delete"
               @click="
                 record = slotProps.record;

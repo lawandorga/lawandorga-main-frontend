@@ -32,7 +32,7 @@
             <ButtonNormal
               v-if="!slotProps.dataItem.accepted"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 profile = slotProps.dataItem;
                 acceptUserModalOpen = true;
@@ -43,7 +43,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.locked"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 profile = slotProps.dataItem;
                 unlockUserModalOpen = true;
@@ -53,7 +53,7 @@
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 profile = slotProps.dataItem;
                 deleteModalOpen = true;

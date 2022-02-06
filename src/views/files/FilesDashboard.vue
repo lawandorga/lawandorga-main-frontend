@@ -35,14 +35,14 @@
           <div class="flex space-x-3 justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createFolderModalOpen = true"
             >
               Create Folder
             </ButtonNormal>
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createFileModalOpen = true"
             >
               Upload File
@@ -87,7 +87,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.type === 'FOLDER'"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 folderOpen = slotProps.dataItem;
                 updateFolderModalOpen = true;
@@ -98,7 +98,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.type === 'FOLDER'"
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 folderOpen = slotProps.dataItem;
                 deleteFolderModalOpen = true;
@@ -109,7 +109,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.type === 'FILE'"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="downloadFile(slotProps.dataItem)"
             >
               Download
@@ -117,7 +117,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.type === 'FILE'"
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="
                 fileOpen = slotProps.dataItem;
                 updateFileModalOpen = true;
@@ -128,7 +128,7 @@
             <ButtonNormal
               v-if="slotProps.dataItem.type === 'FILE'"
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 fileOpen = slotProps.dataItem;
                 deleteFileModalOpen = true;
@@ -152,7 +152,7 @@
           <div class="flex justify-end">
             <ButtonNormal
               size="xs"
-              color="lightblue"
+              kind="action"
               @click="createPermissionModalOpen = true"
             >
               Add Permission
@@ -176,7 +176,7 @@
               v-if="slotProps.dataItem.source === 'NORMAL'"
               type="button"
               size="xs"
-              color="lightred"
+              kind="delete"
               @click="
                 permissionOpen = slotProps.dataItem;
                 deletePermissionModalOpen = true;
