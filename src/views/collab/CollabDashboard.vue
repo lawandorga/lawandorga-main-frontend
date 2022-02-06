@@ -11,12 +11,8 @@
       >
         <DocumentTextIcon class="w-6 h-6" />
         <template #buttons>
-          <ButtonBreadcrumbs @click="helpModalOpen = true">
-            Show Help
-          </ButtonBreadcrumbs>
-          <ButtonBreadcrumbs @click="generalPermissionsModalOpen = true">
-            Show General Permissions
-          </ButtonBreadcrumbs>
+          <CollabHelp />
+          <CollabPermissions />
         </template>
       </BreadcrumbsBar>
 
@@ -39,178 +35,21 @@
             :key="item.id"
             :item="item"
             :items="documents"
-            @clicked="documentSelected($event)"
+            @clicked="documentId = $event"
           />
         </ul>
       </div>
 
       <!-- single document -->
-      <div
-        class="bg-white shadow rounded-md p-5 2xl:col-span-2 print:p-0 print:shadow-none"
-      >
-        <div v-if="document">
-          <div
-            class="flex flex-col justify-between lg:flex-row lg:items-center print:hidden"
-          >
-            <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
-            <div class="flex space-x-3 self-end">
-              <ButtonNormal
-                size="sm"
-                color="blue"
-                :to="{ name: 'collab-detail', params: { id: document.id } }"
-              >
-                Edit
-              </ButtonNormal>
-              <ButtonNormal size="sm" color="blue" @click="print()">
-                Print
-              </ButtonNormal>
-              <ButtonNormal
-                size="sm"
-                color="blue"
-                @click="versionsModalOpen = true"
-              >
-                Versions
-              </ButtonNormal>
-              <ButtonNormal
-                size="sm"
-                color="blue"
-                @click="deleteDocumentModalOpen = true"
-              >
-                Delete
-              </ButtonNormal>
-            </div>
-          </div>
-          <!-- eslint-disable vue/no-v-html -->
-          <article
-            class="pt-8 prose print:p-0"
-            v-html="document.content"
-          ></article>
-          <!-- eslint-enable vue/no-v-html -->
-        </div>
-        <Loader v-if="!document && documentLoading" />
-        <p v-if="!document && !documentLoading">No document selected.</p>
-        <BoxAlert
-          v-show="document && document.content.includes('{')"
-          type="warning"
-          class="mt-2 print:hidden"
-        >
-          This might not look correct. Don't worry, as soon as you edit it and
-          save it it will fix itself. This happens because we switched out the
-          editor.
-        </BoxAlert>
-      </div>
-
-      <!-- single document permissions -->
-      <div v-if="document" class="2xl:col-span-2 print:hidden">
-        <TableGenerator
-          :head="[
-            { name: 'Type', key: 'type' },
-            { name: 'Group', key: ['group_has_permission', 'name'] },
-            { name: 'Source', key: ['document', 'path'] },
-            { name: '', key: 'action' },
-          ]"
-          :data="documentPermissions"
-        >
-          <template #head-action>
-            <div class="flex justify-end">
-              <ButtonNormal
-                size="xs"
-                color="lightblue"
-                @click="createPermissionModalOpen = true"
-              >
-                Add
-              </ButtonNormal>
-            </div>
-          </template>
-          <template #action="slotProps">
-            <div class="flex justify-end">
-              <ButtonNormal
-                v-if="slotProps.dataItem.source === 'NORMAL'"
-                size="xs"
-                color="lightred"
-                @click="
-                  permission = slotProps.dataItem;
-                  deletePermissionModalOpen = true;
-                "
-              >
-                Remove
-              </ButtonNormal>
-            </div>
-          </template>
-        </TableGenerator>
-      </div>
+      <CollabDocumentItem
+        :document-id="documentId"
+        @delete="
+          document = $event;
+          deleteDocumentModalOpen = true;
+        "
+      />
     </div>
 
-    <!-- general permissions -->
-    <ModalFree
-      v-model="generalPermissionsModalOpen"
-      width="max-w-screen-xl"
-      title="General Permission"
-    >
-      <p class="mb-10 text-gray-600">
-        Groups or users listed here have permissions that apply to the whole
-        collab section. Those permissions can be managed within the admin
-        section.
-      </p>
-      <TableGenerator
-        :head="[
-          { name: 'User', key: ['user_has_permission', 'name'] },
-          { name: 'Group', key: ['group_has_permission', 'name'] },
-          { name: 'Permission', key: ['permission', 'name'] },
-        ]"
-        :data="permissions"
-      ></TableGenerator>
-    </ModalFree>
-    <!-- help -->
-    <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
-      <article class="prose">
-        <p>
-          Here is a short explanation of the different document permissions.
-        </p>
-        <p>
-          Once you click on a Document you can see its permissions in the
-          permission table. Those permissions always relate to the document that
-          is opened or was clicked at.
-        </p>
-        <p>There are 3 different kind of permissions.</p>
-        <p>
-          Let's start with the simple one first: 'read_document'. With this
-          permission the specified group can access the content of the document
-          and read it.
-        </p>
-        <p>
-          The second one: 'write_document' allows the specified group to read
-          the content of the document and update it.
-        </p>
-        <p>
-          Both permissions 'read_document' and 'write_document' apply to all
-          children of the source document. A group that has the 'write_document'
-          permission for the top level document can write and add documents
-          everywhere within the tree.
-        </p>
-        <p>
-          The last permission 'see_document' says that the specified group can
-          see the document name within the tree structure. But it can not see
-          its content. This permission appears when the group has access to a
-          document further down the tree.
-        </p>
-      </article>
-    </ModalFree>
-    <!-- versions modal -->
-    <ModalFree v-model="versionsModalOpen" title="Versions">
-      <Loader v-if="!versions" />
-      <ul v-else class="space-y-2">
-        <li v-for="item in versions" :key="item.id">
-          <button
-            type="button"
-            class="w-full border-2 border-gray-300 rounded px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200"
-            @click="versionSelected(item)"
-          >
-            {{ formatDate(item.updated) }}
-          </button>
-        </li>
-      </ul>
-    </ModalFree>
     <!-- create document -->
     <ModalFree v-model="createDocumentModalOpen" title="Create Document">
       <FormGenerator
@@ -224,6 +63,7 @@
         @success="documentCreated($event)"
       />
     </ModalFree>
+
     <!-- delete document -->
     <ModalDelete
       v-model="deleteDocumentModalOpen"
@@ -231,79 +71,41 @@
       :object="document"
       @deleted="documentDeleted()"
     />
-    <!-- create permission -->
-    <ModalFree v-model="createPermissionModalOpen" title="Add Permission">
-      <FormGenerator
-        :fields="[
-          {
-            label: 'Permission',
-            name: 'permission',
-            type: 'select',
-            required: true,
-            options: permissionOptions,
-          },
-          {
-            label: 'Group',
-            name: 'group_has_permission',
-            type: 'select',
-            required: true,
-            options: groups,
-          },
-        ]"
-        :initial="{ document: document.id }"
-        :request="createPermissionRequest"
-      />
-    </ModalFree>
-    <!-- delete permission -->
-    <ModalDelete
-      v-model="deletePermissionModalOpen"
-      :request="deletePermissionRequest"
-      :object="permission"
-    />
   </BoxLoader>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {
-  CollabDocument,
-  CollabDocumentPermission,
-  CollabPermission,
-  CollabVersion,
-} from "@/types/collab";
+import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import Loader from "@/components/CircleLoader.vue";
-import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonIcon from "@/components/ButtonIcon.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import CollabService from "@/services/collab";
-import { formatDate } from "@/utils/date";
-import { Group, HasPermission } from "@/types/core";
-import TableGenerator from "@/components/TableGenerator.vue";
-import CoreService from "@/services/core";
+import { HasPermission } from "@/types/core";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import useGetItems from "@/composables/useGetItems";
 import useCreateItem from "@/composables/useCreateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import CircleLoader from "@/components/CircleLoader.vue";
+import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
+import CollabHelp from "@/components/CollabHelp.vue";
+import CollabPermissions from "@/components/CollabPermissions.vue";
 
 export default defineComponent({
   components: {
+    CollabPermissions,
+    CollabHelp,
+    CollabDocumentItem,
     CircleLoader,
     ButtonNormal,
-    ButtonBreadcrumbs,
     BreadcrumbsBar,
     DocumentTextIcon,
-    TableGenerator,
-    Loader,
-    BoxAlert,
     TreeItem,
     BoxLoader,
     ButtonIcon,
@@ -334,19 +136,8 @@ export default defineComponent({
     };
 
     // single document
+    const documentId = ref<null | number>(null);
     const document = ref<CollabDocument | null>(null);
-    const documentLoading = ref(false);
-    const documentPermissions = ref<CollabDocumentPermission[] | null>(null);
-
-    const documentSelected = (id: number) => {
-      document.value = null;
-      documentLoading.value = true;
-      documentPermissions.value = null;
-      CollabService.getLatestVersion(id).then((doc) => (document.value = doc));
-      CollabService.getDocumentPermissions(id).then(
-        (permissions) => (documentPermissions.value = permissions),
-      );
-    };
 
     // delete document
     const {
@@ -355,47 +146,7 @@ export default defineComponent({
     } = useDeleteItem(CollabService.deleteDocument, documents);
 
     const documentDeleted = () => {
-      documentLoading.value = false;
-      document.value = null;
-      documentPermissions.value = null;
-    };
-
-    // create and delete permission
-    const permission = ref<CollabDocumentPermission | null>(null);
-
-    // create permission
-    const {
-      createRequest: createPermissionRequest,
-      createModalOpen: createPermissionModalOpen,
-    } = useCreateItem(
-      CollabService.createDocumentPermission,
-      documentPermissions,
-    );
-
-    // delete permission
-    const {
-      deleteRequest: deletePermissionRequest,
-      deleteModalOpen: deletePermissionModalOpen,
-    } = useDeleteItem(
-      CollabService.deleteDocumentPermission,
-      documentPermissions,
-    );
-
-    // versions
-    const versions = ref<CollabVersion[] | null>(null);
-    const versionsModalOpen = ref(false);
-
-    watch(versionsModalOpen, (newValue) => {
-      if (document.value === null || newValue === false) return;
-      versions.value = null;
-      CollabService.getVersions(document.value.id).then(
-        (v) => (versions.value = v),
-      );
-    });
-
-    const versionSelected = (version: CollabVersion) => {
-      if (document.value === null) return;
-      document.value.content = version.content;
+      documentId.value = null;
     };
 
     return {
@@ -406,52 +157,13 @@ export default defineComponent({
       createDocumentModalOpen,
       documentCreated,
       // delete document
+      document,
+      documentDeleted,
       deleteDocumentRequest,
       deleteDocumentModalOpen,
       // single document
-      document,
-      documentLoading,
-      documentPermissions,
-      documentSelected,
-      // create and delete permission
-      permission,
-      // create permission
-      createPermissionRequest,
-      createPermissionModalOpen,
-      // delete permission
-      deletePermissionRequest,
-      deletePermissionModalOpen,
-      documentDeleted,
-      // versions
-      versions,
-      versionsModalOpen,
-      versionSelected,
-      // utils
-      formatDate,
+      documentId,
     };
-  },
-  data: function () {
-    return {
-      permissions: null as HasPermission[] | null,
-      permissionOptions: [] as CollabPermission[],
-      groups: [] as Group[],
-      generalPermissionsModalOpen: false,
-      helpModalOpen: false,
-    };
-  },
-  mounted() {
-    CollabService.getGeneralPermissions().then(
-      (permissions) => (this.permissions = permissions),
-    );
-    CollabService.getCollabPermissions().then(
-      (permissions) => (this.permissionOptions = permissions),
-    );
-    CoreService.getGroups().then((groups) => (this.groups = groups));
-  },
-  methods: {
-    print() {
-      window.print();
-    },
   },
 });
 </script>

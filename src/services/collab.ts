@@ -65,7 +65,7 @@ class CollabService {
 
   getCollabPermissions(): Promise<CollabPermission[]> {
     return axios
-      .get<CollabPermission[]>("collab/collab_permissions")
+      .get<CollabPermission[]>("collab/collab_permissions/")
       .then((response) => response.data);
   }
 
