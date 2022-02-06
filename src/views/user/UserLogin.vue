@@ -330,6 +330,9 @@ export default defineComponent({
         else this.$router.push({ name: "admin-dashboard" });
       });
     },
+    test() {
+      UsersService.login({ email: "test@test.de", password: "none" });
+    },
   },
 });
 </script>

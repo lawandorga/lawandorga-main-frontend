@@ -6,7 +6,7 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import downloadFile from "@/utils/download";
-import axios from "../api";
+import {axios } from '../main';
 
 class FilesService {
   // permissions

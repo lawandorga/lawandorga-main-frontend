@@ -112,7 +112,6 @@ export default defineComponent({
   },
   methods: {
     emitClick() {
-      console.log(this.kind);
       this.$emit("click");
     },
   },

@@ -1,5 +1,5 @@
 import { Group } from "@/types/core";
-import axios from "../api";
+import { axios } from "../main";
 
 class CoreService {
   getGroups(): Promise<Group[]> {

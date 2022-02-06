@@ -1,5 +1,5 @@
 import { Article, ImprintPage, LoginPage, RoadmapItem } from "@/types/internal";
-import axios from "../api";
+import {axios } from '../main';
 
 class InternalService {
   getRoadmapItems(): Promise<RoadmapItem[]> {
