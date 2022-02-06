@@ -31,7 +31,7 @@
     <CircleLoader v-if="documentId && !document" />
     <p v-if="!documentId">No document selected.</p>
     <BoxAlert
-      v-show="document && document.content.includes('{')"
+      v-show="document && document.quill"
       type="warning"
       class="mt-2 print:hidden"
     >

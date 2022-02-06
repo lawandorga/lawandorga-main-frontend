@@ -111,7 +111,7 @@
         >
           {{ cancel }}
         </ButtonBlue>
-        <ButtonBlue type="submit" :loading="loading">
+        <ButtonBlue v-if="submit" type="submit" :loading="loading">
           {{ submit }}
         </ButtonBlue>
       </div>
@@ -169,10 +169,11 @@ export default defineComponent({
     },
     request: {
       type: Function as PropType<(...args: any[]) => Promise<JsonModel>>, // eslint-disable-line
-      required: true,
+      required: false,
+      default: null,
     },
   },
-  emits: ["success", "error", "cancel"],
+  emits: ["success", "error", "cancel", "change"],
   data() {
     return {
       showSuccess: false,
@@ -183,11 +184,19 @@ export default defineComponent({
     };
   },
   watch: {
-    initial: function () {
+    initial: function (newValue, oldValue) {
+      console.log("initial");
+      console.log(newValue, oldValue);
       this.data = Object.assign({}, this.initial, this.data);
     },
-    fields: function () {
-      this.data = Object.assign({}, this.initial);
+    // fields: function () {
+    //   this.data = Object.assign({}, this.initial);
+    // },
+    data: {
+      deep: true,
+      handler(newValue) {
+        this.$emit("change", newValue);
+      },
     },
   },
   mounted() {

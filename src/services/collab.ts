@@ -5,6 +5,7 @@ import {
   CollabVersion,
 } from "@/types/collab";
 import { HasPermission } from "@/types/core";
+import { JsonModel } from "@/types/shared";
 import { axios } from "../main";
 
 class CollabService {
@@ -29,10 +30,7 @@ class CollabService {
       .then((response) => response.data);
   }
 
-  createVersion(data: {
-    content: string;
-    document: number;
-  }): Promise<CollabDocument> {
+  createVersion(data: JsonModel): Promise<CollabDocument> {
     return axios
       .patch<CollabDocument>(`collab/collab_documents/${data.document}/`, data)
       .then((response) => response.data);

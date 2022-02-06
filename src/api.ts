@@ -1,13 +1,12 @@
 import router from "./router";
 import axios, { AxiosRequestConfig } from "axios";
+import { Store } from "vuex";
+import { RootState } from "./types/state";
 
-export default function createAxios(store) {
+export default function createAxios(store: Store<RootState>) {
   const $axios = axios.create({
     baseURL: import.meta.env.VITE_API_URL as string,
   });
-
-  console.log(store.getters["user/isAuthenticated"]);
-  console.log(store.state);
 
   $axios.interceptors.request.use(function (
     config: AxiosRequestConfig,

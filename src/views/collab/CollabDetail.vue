@@ -29,15 +29,20 @@
                 room: `Room ${text.id}`,
               },
             ]"
-            :request="createVersion"
-            success="Saved"
-            submit="Save"
-            :initial="{
-              content: content,
-              quill: false,
-              document: $route.params.id,
-            }"
+            :initial="initial"
+            submit=""
+            @change="change($event)"
           />
+        </div>
+        <div>
+          <span
+            :class="{
+              'text-green-600': currentVersionSaved,
+              'text-red-600': !currentVersionSaved,
+            }"
+          >
+            {{ currentVersionSaved ? "Saved" : "Not saved..." }}
+          </span>
         </div>
       </div>
     </div>
@@ -49,10 +54,11 @@ import { defineComponent } from "vue";
 import { CollabDocument } from "@/types/collab";
 import FormQuill from "@/components/FormQuill.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
-import Collab from "@/services/collab";
+import CollabService from "@/services/collab";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
+import { JsonModel } from "@/types/shared";
 
 export default defineComponent({
   components: {
@@ -67,17 +73,48 @@ export default defineComponent({
       text: null as CollabDocument | null,
       content: null as string | null,
       loadQuill: false,
-      createVersion: Collab.createVersion,
+      currentVersionSaved: true,
+      data: {} as JsonModel,
+      saveInterval: null as ReturnType<typeof setInterval> | null,
     };
   },
-  mounted() {
-    Collab.getLatestVersion(parseInt(this.$route.params.id as string)).then(
-      (doc) => {
-        this.text = doc;
-        if (this.text.quill) this.loadQuill = true;
-        else this.content = this.text.content;
-      },
-    );
+  computed: {
+    initial(): { document: string; content: string } {
+      if (this.content !== null)
+        return {
+          document: this.$route.params.id as string,
+          content: this.content,
+        };
+      return { document: this.$route.params.id as string, content: "" };
+    },
+  },
+  created() {
+    this.saveInterval = setInterval(this.saveIfRequired, 5000);
+    CollabService.getLatestVersion(
+      parseInt(this.$route.params.id as string),
+    ).then((doc) => {
+      this.text = doc;
+      if (this.text.quill) this.loadQuill = true;
+      else this.content = this.text.content as string;
+    });
+  },
+  unmounted() {
+    if (this.saveInterval !== null) clearInterval(this.saveInterval);
+  },
+  methods: {
+    change(data: JsonModel) {
+      if (this.content !== data["content"]) this.currentVersionSaved = false;
+      this.data = Object.assign({}, data);
+    },
+    saveIfRequired() {
+      if (!this.currentVersionSaved) this.save();
+    },
+    save() {
+      this.currentVersionSaved = true;
+      CollabService.createVersion(this.data);
+    },
   },
 });
 </script>
+
+@change="change($event)"
