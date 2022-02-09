@@ -56,6 +56,16 @@
               kind="delete"
               @click="
                 profile = slotProps.dataItem;
+                activateUserModalOpen = true;
+              "
+            >
+              {{ slotProps.dataItem.is_active ? "Deactivate" : "Activate" }}
+            </ButtonNormal>
+            <ButtonNormal
+              size="xs"
+              kind="delete"
+              @click="
+                profile = slotProps.dataItem;
                 deleteModalOpen = true;
               "
             >
@@ -86,6 +96,17 @@
       :request="unlockUserRequest"
       :object="profile"
       verb="unlock"
+    />
+    <ModalDelete
+      v-model="activateUserModalOpen"
+      :title="
+        profile && profile.is_active ? 'Deactivate user' : 'Activate user'
+      "
+      :request="activateUserRequest"
+      :object="
+        Object.assign({}, profile, { is_active: profile && !profile.is_active })
+      "
+      :verb="profile && profile.is_active ? 'deactivate' : 'activate'"
     />
   </BoxLoader>
 </template>
@@ -139,6 +160,12 @@ export default defineComponent({
       updateModalOpen: unlockUserModalOpen,
     } = useUpdateItem(AdminService.unlockUser, profiles);
 
+    // activate
+    const {
+      updateRequest: activateUserRequest,
+      updateModalOpen: activateUserModalOpen,
+    } = useUpdateItem(AdminService.updateUser, profiles);
+
     return {
       profiles,
       profile,
@@ -151,6 +178,9 @@ export default defineComponent({
       // unlock
       unlockUserRequest,
       unlockUserModalOpen,
+      // activate
+      activateUserRequest,
+      activateUserModalOpen,
     };
   },
 });
