@@ -48,7 +48,9 @@
           <div class="flex flex-col justify-center">
             <div class="p-6 bg-white rounded-sm shadow-sm">
               <h2 class="text-2xl font-bold mb-8">Login</h2>
+              Wartungsarbeiten
               <FormGenerator
+                v-show="false"
                 :fields="[
                   {
                     label: 'E-Mail',
