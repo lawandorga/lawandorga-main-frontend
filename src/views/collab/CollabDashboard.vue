@@ -43,22 +43,23 @@
           document = $event;
           deleteDocumentModalOpen = true;
         "
+        @found="document = $event"
       />
     </div>
 
     <!-- create document -->
-    <ModalFree v-model="createDocumentModalOpen" title="Create Document">
-      <FormGenerator
-        :fields="[
-          { label: 'Path', name: 'path', disabled: true, required: true },
-          { label: 'Name', name: 'name', required: true },
-        ]"
-        :initial="{ path: document ? document.path + '/' : '/' }"
-        submit="Create"
-        :request="createDocumentRequest"
-        @success="documentCreated($event)"
-      />
-    </ModalFree>
+    <ModalForm
+      v-model="createDocumentModalOpen"
+      title="Create Document"
+      :fields="[
+        { label: 'Path', name: 'path', disabled: true, required: true },
+        { label: 'Name', name: 'name', required: true },
+      ]"
+      :initial="{ path: document ? document.path + '/' : '/' }"
+      submit="Create"
+      :request="createDocumentRequest"
+      @success="documentCreated($event)"
+    />
 
     <!-- delete document -->
     <ModalDelete
@@ -75,8 +76,6 @@ import { defineComponent } from "vue";
 import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import CollabService from "@/services/collab";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
@@ -90,9 +89,11 @@ import CircleLoader from "@/components/CircleLoader.vue";
 import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
 import CollabHelp from "@/components/CollabHelp.vue";
 import CollabPermissions from "@/components/CollabPermissions.vue";
+import ModalForm from "@/components/ModalForm.vue";
 
 export default defineComponent({
   components: {
+    ModalForm,
     CollabPermissions,
     CollabHelp,
     CollabDocumentItem,
@@ -102,8 +103,6 @@ export default defineComponent({
     DocumentTextIcon,
     TreeItem,
     BoxLoader,
-    ModalFree,
-    FormGenerator,
     ModalDelete,
   },
   setup() {
@@ -140,6 +139,7 @@ export default defineComponent({
 
     const documentDeleted = () => {
       documentId.value = null;
+      document.value = null;
     };
 
     return {

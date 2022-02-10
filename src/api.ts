@@ -32,7 +32,6 @@ export default function createAxios(store: Store<RootState>) {
       return response;
     },
     function (error) {
-      console.log(error);
       // error without a response object attached
       if (!error.response) {
         store.dispatch("alert/createAlert", {

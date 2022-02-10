@@ -167,8 +167,8 @@ export default defineComponent({
       default: null,
     },
   },
-  emits: ["delete"],
-  setup(props) {
+  emits: ["delete", "found"],
+  setup(props, { emit }) {
     const { documentId } = toRefs(props);
 
     // single document
@@ -180,9 +180,10 @@ export default defineComponent({
       document.value = null;
       documentPermissions.value = null;
       if (newValue === null) return;
-      CollabService.getLatestVersion(newValue).then(
-        (doc) => (document.value = doc),
-      );
+      CollabService.getLatestVersion(newValue).then((doc) => {
+        document.value = doc;
+        emit("found", doc);
+      });
       CollabService.getDocumentPermissions(newValue).then(
         (permissions) => (documentPermissions.value = permissions),
       );

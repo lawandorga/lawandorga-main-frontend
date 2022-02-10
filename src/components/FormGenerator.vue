@@ -11,80 +11,69 @@
         </p>
       </div>
       <div
-        v-for="{
-          helptext,
-          name,
-          label,
-          type,
-          disabled,
-          required,
-          placeholder,
-          autocomplete,
-          options,
-          room,
-        } in fields"
-        :key="name"
-        :class="{ hidden: type === 'hidden' }"
+        v-for="field in fields"
+        :key="field.name"
+        :class="{ hidden: field.type === 'hidden' }"
       >
         <FormTextarea
-          v-if="type === 'textarea'"
-          v-model="data[name]"
-          :label="label"
-          :name="name"
-          :type="type"
-          :required="required"
-          :placeholder="placeholder"
+          v-if="field.type === 'textarea'"
+          v-model="data[field.name]"
+          :label="field.label"
+          :name="field.name"
+          :type="field.type"
+          :required="field.required"
+          :placeholder="field.placeholder"
           @update:model-value="showSuccess = false"
         />
         <FormSelect
-          v-else-if="type === 'select'"
-          v-model="data[name]"
-          :label="label"
-          :name="name"
-          :required="required"
-          :options="options ?? []"
+          v-else-if="field.type === 'select'"
+          v-model="data[field.name]"
+          :label="field.label"
+          :name="field.name"
+          :required="field.required"
+          :options="field.options ?? []"
           @update:model-value="showSuccess = false"
         />
         <FormMultiple
-          v-else-if="type === 'multiple'"
-          v-model="data[name]"
-          :label="label"
-          :name="name"
-          :required="required"
-          :options="options ?? []"
+          v-else-if="field.type === 'multiple'"
+          v-model="data[field.name]"
+          :label="field.label"
+          :name="field.name"
+          :required="field.required"
+          :options="field.options ?? []"
           @update:model-value="showSuccess = false"
         />
         <FormTiptap
-          v-else-if="type === 'tiptap'"
-          v-model="data[name]"
-          :room="room"
+          v-else-if="field.type === 'tiptap'"
+          v-model="data[field.name]"
+          :room="field.room"
         />
         <FormList
-          v-else-if="type === 'list'"
-          v-model="data[name]"
-          :required="required"
-          :label="label"
-          :helptext="helptext"
-          :name="name"
+          v-else-if="field.type === 'list'"
+          v-model="data[field.name]"
+          :required="field.required"
+          :label="field.label"
+          :helptext="field.helptext"
+          :name="field.name"
         />
         <FormInput
           v-else
-          v-model="data[name]"
-          :label="label"
-          :autocomplete="autocomplete"
-          :name="name"
-          :disabled="disabled"
-          :type="type"
-          :required="required"
-          :placeholder="placeholder"
-          :helptext="helptext"
+          v-model="data[field.name]"
+          :label="field.label"
+          :autocomplete="field.autocomplete"
+          :name="field.name"
+          :disabled="field.disabled"
+          :type="field.type"
+          :required="field.required"
+          :placeholder="field.placeholder"
+          :helptext="field.helptext"
           @update:model-value="showSuccess = false"
         />
         <p
-          v-if="errors[name]"
+          v-if="errors[field.name]"
           class="text-red-700 text-sm leading-tight ml-1.5 mt-1"
         >
-          {{ errors[name][0] }}
+          {{ errors[field.name][0] }}
         </p>
       </div>
       <div class="pt-2 flex items-center justify-end print:hidden">
@@ -111,7 +100,12 @@
         >
           {{ cancel }}
         </ButtonBlue>
-        <ButtonBlue v-if="submit" type="submit" :loading="loading">
+        <ButtonBlue
+          v-if="submit"
+          type="submit"
+          :disabled="disabled"
+          :loading="loading"
+        >
           {{ submit }}
         </ButtonBlue>
       </div>
@@ -167,6 +161,11 @@ export default defineComponent({
       required: false,
       default: "",
     },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     request: {
       type: Function as PropType<(...args: any[]) => Promise<JsonModel>>, // eslint-disable-line
       required: false,
@@ -184,10 +183,8 @@ export default defineComponent({
     };
   },
   watch: {
-    initial: function (newValue, oldValue) {
-      console.log("initial");
-      console.log(newValue, oldValue);
-      this.data = Object.assign({}, this.initial, this.data);
+    initial: function (newValue) {
+      this.data = Object.assign({}, newValue, this.data);
     },
     // fields: function () {
     //   this.data = Object.assign({}, this.initial);
