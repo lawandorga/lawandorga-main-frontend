@@ -64,7 +64,8 @@ export type DjangoModel =
   | RecordDeletion
   | RecordPermissionRequest
   | RecordTemplate
-  | RecordField;
+  | RecordField
+  | Permission;
 
 /*
 // errors

@@ -10,6 +10,25 @@
     <TableGenerator
       :head="[
         { name: 'Permission', key: 'name' },
+        { name: 'Explanation', key: 'description' },
+        { name: 'Useful Group', key: 'recommended_for' },
+      ]"
+      :data="newPermissions"
+    >
+      <template #description="slotProps">
+        <div class="max-w-lg whitespace-pre-line break-words">
+          {{ slotProps.dataItem.description }}
+        </div>
+      </template>
+    </TableGenerator>
+    <div>
+      <h2 class="mt-24 text-lg font-bold text-gray-500">
+        Old Permission Names:
+      </h2>
+    </div>
+    <TableGenerator
+      :head="[
+        { name: 'Permission', key: 'name' },
         { name: 'Explanation', key: 'explanation' },
         { name: 'Useful Group', key: 'group' },
       ]"
@@ -19,10 +38,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { SupportIcon } from "@heroicons/vue/outline";
 import TableGenerator from "@/components/TableGenerator.vue";
+import useGetItems from "@/composables/useGetItems";
+import HelpService from "@/services/help";
 
 export default defineComponent({
   components: {
@@ -31,6 +52,9 @@ export default defineComponent({
     TableGenerator,
   },
   setup() {
+    const newPermissions = ref(null);
+    useGetItems(HelpService.getPermissions, newPermissions);
+
     const permissions = [
       {
         name: "accept_new_users_rlc",
@@ -134,6 +158,7 @@ export default defineComponent({
 
     return {
       permissions,
+      newPermissions,
     };
   },
 });

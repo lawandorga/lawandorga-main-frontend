@@ -23,6 +23,8 @@ export interface Rlc {
 export interface Permission {
   id: number;
   name: string;
+  description: string;
+  recommended_for: string;
 }
 
 export interface HasPermission {
