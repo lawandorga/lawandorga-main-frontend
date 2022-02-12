@@ -105,13 +105,12 @@ const fields = [
   {
     label: "Name",
     type: "text",
-    tag: "input",
     name: "name",
     required: true,
   },
   {
     label: "Description",
-    tag: "textarea",
+    type: "textarea",
     name: "description",
     required: false,
   },

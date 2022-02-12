@@ -1,24 +1,26 @@
 import { Group, HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
-import { User } from "@/types/user";
+import { RlcUser, User } from "@/types/user";
 import { axios } from "../main";
 
 class AdminService {
   /*
   // Users
   */
-  getUsers(): Promise<User[]> {
-    return axios.get<User[]>("profiles/").then((response) => response.data);
+  getUsers(): Promise<RlcUser[]> {
+    return axios.get<RlcUser[]>("profiles/").then((response) => response.data);
   }
 
-  updateUser(user: JsonModel): Promise<User> {
+  updateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<User>(`profiles/${user.id}/`, user)
+      .patch<RlcUser>(`profiles/${user.id}/`, user)
       .then((response) => response.data);
   }
 
-  getUser(id: number | string): Promise<User> {
-    return axios.get<User>(`profiles/${id}/`).then((response) => response.data);
+  getUser(id: number | string): Promise<RlcUser> {
+    return axios
+      .get<RlcUser>(`profiles/${id}/`)
+      .then((response) => response.data);
   }
 
   deleteUser(user: User): Promise<void> {
@@ -91,7 +93,11 @@ class AdminService {
   }
 
   removeMember(data: JsonModel, group: Group): Promise<void> {
-    return axios.post(`groups/${group.id}/remove/`, { member: data.id }).then();
+    return axios
+      .delete(`groups/${group.id}/member/`, {
+        data: { member: data.rlcuserid },
+      })
+      .then();
   }
 
   /*
