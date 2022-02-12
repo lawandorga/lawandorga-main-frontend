@@ -26,7 +26,7 @@ class CollabService {
 
   deleteDocument(data: CollabDocument): Promise<void> {
     return axios
-      .delete<void>(`collab/collab_documents/${data.id}`)
+      .delete<void>(`collab/collab_documents/${data.id}/`)
       .then((response) => response.data);
   }
 
