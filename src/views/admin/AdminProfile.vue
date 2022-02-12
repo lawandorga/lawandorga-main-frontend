@@ -25,11 +25,8 @@
               <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             </div>
             <div>
-              <ButtonBlue type="button" @click="updateModalOpen = true">
-                <div class="flex space-x-1 items-center">
-                  <PencilIcon class="w-5 h-5 opacity-90" />
-                  <span class="">Edit</span>
-                </div>
+              <ButtonBlue kind="action" @click="updateModalOpen = true">
+                Edit
               </ButtonBlue>
             </div>
           </div>
@@ -142,7 +139,6 @@ import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
-import { PencilIcon } from "@heroicons/vue/solid";
 
 const userFields = [
   {
@@ -190,7 +186,6 @@ export default defineComponent({
     ModalFree,
     TableGenerator,
     ButtonNormal,
-    PencilIcon,
     FormGenerator,
     ModalDelete,
     BreadcrumbsBar,
@@ -260,5 +255,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style></style>
