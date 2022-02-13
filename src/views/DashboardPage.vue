@@ -12,7 +12,7 @@
         Welcome {{ $store.getters["user/user"].name }}
       </h1>
       <div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-        <div>
+        <div v-if="data.records">
           <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
             Active Records
           </h2>
@@ -33,7 +33,7 @@
             </li>
           </ul>
         </div>
-        <div>
+        <div v-if="data.changed_records">
           <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
             Records updated in the last 10 days
           </h2>
