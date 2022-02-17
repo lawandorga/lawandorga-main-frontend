@@ -39,12 +39,6 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  getUserPermissions(user: RlcUser): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>(`has_permissions/?user=${user.user}`)
-      .then((response) => response.data);
-  }
-
   /*
   // Groups
   */
@@ -80,12 +74,6 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  getGroupPermissions(group: Group): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>(`groups/${group.id}/permissions/`)
-      .then((response) => response.data);
-  }
-
   addMember(data: JsonModel, group: Group): Promise<User> {
     return axios
       .post(`groups/${group.id}/member/`, { member: data.user })
@@ -110,6 +98,18 @@ class AdminService {
   /*
   // HasPermission
   */
+  getGroupPermissions(group: Group): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>(`has_permissions/?group=${group.id}`)
+      .then((response) => response.data);
+  }
+
+  getUserPermissions(user: RlcUser): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>(`has_permissions/?user=${user.user}`)
+      .then((response) => response.data);
+  }
+
   createHasPermission(data: JsonModel): Promise<HasPermission> {
     return axios
       .post("has_permissions/", data)

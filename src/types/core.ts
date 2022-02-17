@@ -1,9 +1,3 @@
-export interface HasPermission {
-  permission: number | { id: number; name: string };
-  user_has_permission: number | { id: number; name: string };
-  group_has_permission: number | { id: number; name: string };
-}
-
 export interface Group {
   id: string;
   name: string;
@@ -29,9 +23,12 @@ export interface Permission {
 
 export interface HasPermission {
   id: string;
-  permission: number | { id: number; name: string };
-  user_has_permission: number | { id: number; name: string };
-  group_has_permission: number | { id: number; name: string };
+  permission: number;
+  user_has_permission: number;
+  group_has_permission: number;
+  group_object: { name: string; id: number };
+  permission_object: { name: string; id: number };
+  user_object: { name: string; id: number };
 }
 
 export interface Notification {

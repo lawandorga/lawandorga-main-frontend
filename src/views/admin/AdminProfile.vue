@@ -61,10 +61,7 @@
               { name: 'Permission', key: (obj) => obj.permission_object.name },
               {
                 name: 'Source',
-                key: (obj) =>
-                  obj.user_object
-                    ? obj.user_object.name
-                    : obj.group_object.name,
+                key: 'source',
               },
               { name: '', key: 'action' },
             ]"
@@ -81,10 +78,24 @@
                 </ButtonNormal>
               </div>
             </template>
+            <template #source="slotProps">
+              <ButtonNormal
+                v-if="slotProps.source === 'GROUP'"
+                kind="link"
+                :to="{
+                  name: 'admin-group',
+                  params: { id: slotProps.group_object.id },
+                }"
+              >
+                {{ slotProps.group_object.name }}
+              </ButtonNormal>
+              <template v-else>
+                {{ slotProps.user_object.name }}
+              </template>
+            </template>
             <template #action="slotProps">
               <ButtonNormal
                 v-if="slotProps.source === 'USER'"
-                size="xs"
                 kind="delete"
                 @click="
                   removePermissionModalOpen = true;

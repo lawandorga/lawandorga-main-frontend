@@ -28,7 +28,7 @@
 
       <TableGenerator
         :head="[
-          { name: 'Permission', key: 'name' },
+          { name: 'Permission', key: (obj) => obj.permission_object.name },
           { name: '', key: 'action' },
         ]"
         :data="permissions"
@@ -68,6 +68,14 @@
         ]"
         :data="members"
       >
+        <template #name="slotProps">
+          <ButtonNormal
+            kind="link"
+            :to="{ name: 'admin-profile', params: { id: slotProps.rlcuserid } }"
+          >
+            {{ slotProps.name }}
+          </ButtonNormal>
+        </template>
         <template #head-action>
           <div class="flex justify-end">
             <ButtonNormal
