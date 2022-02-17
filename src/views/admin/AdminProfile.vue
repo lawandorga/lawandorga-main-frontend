@@ -58,7 +58,14 @@
         <div class="col-span-3">
           <TableGenerator
             :head="[
-              { name: 'Permission', key: 'name' },
+              { name: 'Permission', key: (obj) => obj.permission_object.name },
+              {
+                name: 'Source',
+                key: (obj) =>
+                  obj.user_object
+                    ? obj.user_object.name
+                    : obj.group_object.name,
+              },
               { name: '', key: 'action' },
             ]"
             :data="permissions"
@@ -75,18 +82,17 @@
               </div>
             </template>
             <template #action="slotProps">
-              <div class="flex justify-end">
-                <ButtonNormal
-                  size="xs"
-                  kind="delete"
-                  @click="
-                    removePermissionModalOpen = true;
-                    permission = slotProps.dataItem;
-                  "
-                >
-                  Remove
-                </ButtonNormal>
-              </div>
+              <ButtonNormal
+                v-if="slotProps.source === 'USER'"
+                size="xs"
+                kind="delete"
+                @click="
+                  removePermissionModalOpen = true;
+                  permission = slotProps.dataItem;
+                "
+              >
+                Remove
+              </ButtonNormal>
             </template>
           </TableGenerator>
         </div>
@@ -134,7 +140,7 @@ import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
 import useGetItems from "@/composables/useGetItems";
 import { HasPermission, Permission } from "@/types/core";
-import { User } from "@/types/user";
+import { RlcUser, User } from "@/types/user";
 import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -195,7 +201,7 @@ export default defineComponent({
     const route = useRoute();
 
     // user
-    const user = ref(null) as Ref<User | null>;
+    const user = ref(null) as Ref<RlcUser | null>;
     useGetItem(AdminService.getUser, user, route.params.id as string);
 
     // update user

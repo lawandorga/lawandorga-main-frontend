@@ -52,7 +52,7 @@ class CollabService {
 
   getGeneralPermissions(): Promise<HasPermission[]> {
     return axios
-      .get<HasPermission[]>("has_permission/collab/")
+      .get<HasPermission[]>("has_permissions/collab/")
       .then((response) => response.data);
   }
 

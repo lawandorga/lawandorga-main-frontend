@@ -150,7 +150,7 @@ class RecordsService {
   // permissions
   getGeneralPermissions(): Promise<HasPermission[]> {
     return axios
-      .get<HasPermission[]>("has_permission/records/")
+      .get<HasPermission[]>("has_permissions/records/")
       .then((response) => response.data);
   }
 

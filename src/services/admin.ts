@@ -39,9 +39,9 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  getUserPermissions(user: User): Promise<HasPermission[]> {
+  getUserPermissions(user: RlcUser): Promise<HasPermission[]> {
     return axios
-      .get<HasPermission[]>(`profiles/${user.id}/permissions/`)
+      .get<HasPermission[]>(`has_permissions/?user=${user.user}`)
       .then((response) => response.data);
   }
 
@@ -112,12 +112,12 @@ class AdminService {
   */
   createHasPermission(data: JsonModel): Promise<HasPermission> {
     return axios
-      .post("has_permission/", data)
+      .post("has_permissions/", data)
       .then((response) => response.data);
   }
 
   deleteHasPermission(data: JsonModel): Promise<void> {
-    return axios.delete(`has_permission/${data.id}/`).then();
+    return axios.delete(`has_permissions/${data.id}/`).then();
   }
 }
 
