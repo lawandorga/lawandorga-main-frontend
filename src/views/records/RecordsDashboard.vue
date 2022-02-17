@@ -4,9 +4,7 @@
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <CollectionIcon class="w-6 h-6" />
         <template #buttons>
-          <ButtonBreadcrumbs @click="generalPermissionsModalOpen = true">
-            Show General Permissions
-          </ButtonBreadcrumbs>
+          <RecordsPermissions />
           <ButtonBreadcrumbs
             v-if="$store.getters['user/rlc'].use_record_pool"
             :to="{ name: 'records-pool' }"
@@ -78,32 +76,11 @@
         @success="deletionRequestCreated"
       ></FormGenerator>
     </ModalFree>
-    <!-- breadcrumbs -->
-    <ModalFree
-      v-model="generalPermissionsModalOpen"
-      width="max-w-screen-xl"
-      title="General Permission"
-    >
-      <p class="mb-10 text-gray-600">
-        Groups or users listed here have permissions that apply to the whole
-        collab section. Those permissions can be managed within the admin
-        section.
-      </p>
-      <TableGenerator
-        :head="[
-          { name: 'User', key: ['user_has_permission', 'name'] },
-          { name: 'Group', key: ['group_has_permission', 'name'] },
-          { name: 'Permission', key: ['permission', 'name'] },
-        ]"
-        :data="generalPermissions"
-      ></TableGenerator>
-    </ModalFree>
   </BoxLoader>
 </template>
 
 <script lang="ts">
 import TableRecords from "@/components/TableRecords.vue";
-import TableGenerator from "@/components/TableGenerator.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { defineComponent, ref, Ref, reactive, watch } from "vue";
 import RecordsService from "@/services/records";
@@ -114,21 +91,21 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import { HasPermission } from "@/types/core";
 import { formatDate } from "@/utils/date";
 import useCreateItem from "@/composables/useCreateItem";
 import useGetItems from "@/composables/useGetItems";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import RecordsPermissions from "@/components/RecordsPermissions.vue";
 
 export default defineComponent({
   components: {
+    RecordsPermissions,
     ButtonBreadcrumbs,
     CollectionIcon,
     BreadcrumbsBar,
     FormGenerator,
     BoxLoader,
-    TableGenerator,
     TableRecords,
     ButtonNormal,
     ModalFree,
@@ -141,11 +118,6 @@ export default defineComponent({
     const records = ref(null) as Ref<Record[] | null>;
     const record = ref(null) as Ref<Record | null>;
     useGetItems(RecordsService.getRecords, records);
-
-    // general
-    const generalPermissions = ref(null) as Ref<HasPermission[] | null>;
-    const generalPermissionsModalOpen = ref(false);
-    useGetItems(RecordsService.getGeneralPermissions, generalPermissions);
 
     // request access
     const requestAccess = (record: Record) => {
@@ -167,9 +139,6 @@ export default defineComponent({
       // records
       records,
       record,
-      // general
-      generalPermissions,
-      generalPermissionsModalOpen,
       // access
       requestAccess,
       ...createRecord(records),

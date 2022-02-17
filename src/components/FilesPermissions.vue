@@ -8,8 +8,8 @@
     title="General Permission"
   >
     <p class="mb-10 text-gray-600">
-      Groups or users listed here have permissions that apply to the whole
-      Collab section. Those permissions can be managed within the admin section.
+      Groups or users listed here have permissions that apply to the whole Files
+      section. Those permissions can be managed within the admin section.
     </p>
     <TableGenerator
       :head="[
@@ -26,7 +26,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import ModalFree from "@/components/ModalFree.vue";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import CollabService from "@/services/collab";
+import FilesService from "@/services/files";
 import TableGenerator from "@/components/TableGenerator.vue";
 import { HasPermission } from "@/types/core";
 
@@ -45,7 +45,7 @@ export default defineComponent({
   watch: {
     generalPermissionsModalOpen(newValue) {
       if (newValue === true && this.permissions === null)
-        CollabService.getGeneralPermissions().then(
+        FilesService.getGeneralPermissions().then(
           (permissions) => (this.permissions = permissions),
         );
     },
