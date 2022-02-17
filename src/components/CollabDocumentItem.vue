@@ -65,11 +65,11 @@
       <template #action="slotProps">
         <div class="flex justify-end">
           <ButtonNormal
-            v-if="slotProps.dataItem.source === 'NORMAL'"
+            v-if="slotProps.source === 'NORMAL'"
             size="xs"
             kind="delete"
             @click="
-              permission = slotProps.dataItem;
+              permission = slotProps;
               deletePermissionModalOpen = true;
             "
           >

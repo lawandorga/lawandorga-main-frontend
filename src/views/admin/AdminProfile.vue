@@ -88,7 +88,7 @@
                 kind="delete"
                 @click="
                   removePermissionModalOpen = true;
-                  permission = slotProps.dataItem;
+                  permission = slotProps;
                 "
               >
                 Remove

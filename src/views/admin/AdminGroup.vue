@@ -51,7 +51,7 @@
               kind="delete"
               @click="
                 removePermissionModalOpen = true;
-                permission = slotProps.dataItem;
+                permission = slotProps;
               "
             >
               Remove
@@ -86,7 +86,7 @@
               kind="delete"
               @click="
                 removeMemberModalOpen = true;
-                member = slotProps.dataItem;
+                member = slotProps;
               "
             >
               Remove

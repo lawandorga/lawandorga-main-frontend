@@ -17,7 +17,7 @@
     >
       <template #description="slotProps">
         <div class="max-w-lg whitespace-pre-line break-words">
-          {{ slotProps.dataItem.description }}
+          {{ slotProps.description }}
         </div>
       </template>
     </TableGenerator>

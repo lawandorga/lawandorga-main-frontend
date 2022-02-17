@@ -51,86 +51,84 @@
         </template>
         <template #type="slotProps">
           <FolderIcon
-            v-if="slotProps.dataItem.type === 'FOLDER'"
+            v-if="slotProps.type === 'FOLDER'"
             class="w-5 h-5 text-gray-500"
           />
           <DocumentIcon
-            v-if="slotProps.dataItem.type === 'FILE'"
+            v-if="slotProps.type === 'FILE'"
             class="w-5 h-5 text-gray-500"
           />
         </template>
         <template #name="slotProps">
           <ButtonLink
-            v-if="slotProps.dataItem.type === 'FOLDER'"
+            v-if="slotProps.type === 'FOLDER'"
             :to="{
               name: 'files-dashboard',
-              params: { id: slotProps.dataItem.id },
+              params: { id: slotProps.id },
             }"
           >
-            {{ slotProps.dataItem.name }}
+            {{ slotProps.name }}
           </ButtonLink>
           <div v-else class="">
-            {{ slotProps.dataItem.name }}
-            <span v-if="!slotProps.dataItem.exists" class="text-red-600">
-              (ERROR)
-            </span>
+            {{ slotProps.name }}
+            <span v-if="!slotProps.exists" class="text-red-600">(ERROR)</span>
           </div>
         </template>
         <template #last_edited="slotProps">
-          {{ formatDate(slotProps.dataItem.last_edited) }}
+          {{ formatDate(slotProps.last_edited) }}
         </template>
         <template #created="slotProps">
-          {{ formatDate(slotProps.dataItem.created) }}
+          {{ formatDate(slotProps.created) }}
         </template>
         <template #action="slotProps">
           <div class="flex space-x-3 justify-end">
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FOLDER'"
+              v-if="slotProps.type === 'FOLDER'"
               size="xs"
               kind="action"
               @click="
-                folderOpen = slotProps.dataItem;
+                folderOpen = slotProps;
                 updateFolderModalOpen = true;
               "
             >
               Change
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FOLDER'"
+              v-if="slotProps.type === 'FOLDER'"
               size="xs"
               kind="delete"
               @click="
-                folderOpen = slotProps.dataItem;
+                folderOpen = slotProps;
                 deleteFolderModalOpen = true;
               "
             >
               Delete
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FILE'"
+              v-if="slotProps.type === 'FILE'"
               size="xs"
               kind="action"
-              @click="downloadFile(slotProps.dataItem)"
+              @click="downloadFile(slotProps)"
             >
               Download
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FILE'"
+              v-if="slotProps.type === 'FILE'"
               size="xs"
               kind="action"
               @click="
-                fileOpen = slotProps.dataItem;
+                fileOpen = slotProps;
                 updateFileModalOpen = true;
               "
             >
               Change
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FILE'"
+              v-if="slotProps.type === 'FILE'"
               size="xs"
               kind="delete"
               @click="
-                fileOpen = slotProps.dataItem;
+                fileOpen = slotProps;
                 deleteFileModalOpen = true;
               "
             >
@@ -163,22 +161,22 @@
           <router-link
             :to="{
               name: 'files-dashboard',
-              params: { id: slotProps.dataItem.folder.id },
+              params: { id: slotProps.folder.id },
             }"
             class="underline"
           >
-            {{ slotProps.dataItem.folder.name }}
+            {{ slotProps.folder.name }}
           </router-link>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end">
             <ButtonNormal
-              v-if="slotProps.dataItem.source === 'NORMAL'"
+              v-if="slotProps.source === 'NORMAL'"
               type="button"
               size="xs"
               kind="delete"
               @click="
-                permissionOpen = slotProps.dataItem;
+                permissionOpen = slotProps;
                 deletePermissionModalOpen = true;
               "
             >

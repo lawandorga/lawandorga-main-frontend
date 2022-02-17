@@ -48,7 +48,7 @@
               size="xs"
               kind="action"
               @click="
-                field = slotProps.dataItem;
+                field = slotProps;
                 updateModalOpen = true;
               "
             >
@@ -58,7 +58,7 @@
               size="xs"
               kind="delete"
               @click="
-                field = slotProps.dataItem;
+                field = slotProps;
                 deleteModalOpen = true;
               "
             >

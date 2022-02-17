@@ -31,10 +31,10 @@
             class="underline"
             :to="{
               name: 'admin-template',
-              params: { id: slotProps.dataItem.id },
+              params: { id: slotProps.id },
             }"
           >
-            {{ slotProps.dataItem.name }}
+            {{ slotProps.name }}
           </ButtonLink>
         </template>
         <template #action="slotProps">
@@ -43,7 +43,7 @@
               size="xs"
               kind="action"
               @click="
-                template = slotProps.dataItem;
+                template = slotProps;
                 updateModalOpen = true;
               "
             >
@@ -53,7 +53,7 @@
               size="xs"
               kind="delete"
               @click="
-                template = slotProps.dataItem;
+                template = slotProps;
                 deleteModalOpen = true;
               "
             >
