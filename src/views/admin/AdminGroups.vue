@@ -34,9 +34,9 @@
         </template>
         <template #name="slotProps">
           <ButtonLink
-            :to="{ name: 'admin-group', params: { id: slotProps.dataItem.id } }"
+            :to="{ name: 'admin-group', params: { id: slotProps.id } }"
           >
-            {{ slotProps.dataItem.name }}
+            {{ slotProps.name }}
           </ButtonLink>
         </template>
         <template #action="slotProps">
@@ -45,7 +45,7 @@
               size="xs"
               kind="action"
               @click="
-                group = slotProps.dataItem;
+                group = slotProps;
                 updateModalOpen = true;
               "
             >
@@ -55,7 +55,7 @@
               size="xs"
               kind="delete"
               @click="
-                group = slotProps.dataItem;
+                group = slotProps;
                 deleteModalOpen = true;
               "
             >
@@ -105,13 +105,12 @@ const fields = [
   {
     label: "Name",
     type: "text",
-    tag: "input",
     name: "name",
     required: true,
   },
   {
     label: "Description",
-    tag: "textarea",
+    type: "textarea",
     name: "description",
     required: false,
   },

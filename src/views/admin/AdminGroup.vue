@@ -28,7 +28,7 @@
 
       <TableGenerator
         :head="[
-          { name: 'Permission', key: 'name' },
+          { name: 'Permission', key: (obj) => obj.permission_object.name },
           { name: '', key: 'action' },
         ]"
         :data="permissions"
@@ -51,7 +51,7 @@
               kind="delete"
               @click="
                 removePermissionModalOpen = true;
-                permission = slotProps.dataItem;
+                permission = slotProps;
               "
             >
               Remove
@@ -68,6 +68,14 @@
         ]"
         :data="members"
       >
+        <template #name="slotProps">
+          <ButtonNormal
+            kind="link"
+            :to="{ name: 'admin-profile', params: { id: slotProps.rlcuserid } }"
+          >
+            {{ slotProps.name }}
+          </ButtonNormal>
+        </template>
         <template #head-action>
           <div class="flex justify-end">
             <ButtonNormal
@@ -86,7 +94,7 @@
               kind="delete"
               @click="
                 removeMemberModalOpen = true;
-                member = slotProps.dataItem;
+                member = slotProps;
               "
             >
               Remove
@@ -130,7 +138,7 @@ import useGetItems from "@/composables/useGetItems";
 import { Group, HasPermission, Permission } from "@/types/core";
 import AdminService from "@/services/admin";
 import { useRoute } from "vue-router";
-import { User } from "@/types/user";
+import { RlcUser } from "@/types/user";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
@@ -180,7 +188,7 @@ export default defineComponent({
     // const p = ref({}) as Ref<HasPermission>
 
     // members and permissions
-    const members = ref(null) as Ref<User[] | null>;
+    const members = ref(null) as Ref<RlcUser[] | null>;
     const permissions = ref(null) as Ref<HasPermission[] | null>;
 
     // watch(group, (group) => {
@@ -211,7 +219,7 @@ export default defineComponent({
     );
 
     // remove permission
-    const permission = ref(null) as Ref<User | null>;
+    const permission = ref(null) as Ref<HasPermission | null>;
 
     const {
       deleteRequest: removePermissionRequest,
@@ -225,7 +233,7 @@ export default defineComponent({
         name: "user",
         type: "select",
         required: true,
-        options: [] as User[],
+        options: [] as RlcUser[],
       },
     ]);
 
@@ -234,14 +242,15 @@ export default defineComponent({
       createModalOpen: addMemberModalOpen,
     } = useCreateItem(AdminService.addMember, members, group);
 
-    watch(addMemberModalOpen, () =>
-      AdminService.getUsers().then(
-        (users) => (memberFields[0].options = users),
-      ),
-    );
+    watch(addMemberModalOpen, (newValue) => {
+      if (newValue)
+        AdminService.getUsers().then(
+          (users) => (memberFields[0].options = users),
+        );
+    });
 
     // remove member
-    const member = ref(null) as Ref<User | null>;
+    const member = ref(null) as Ref<RlcUser | null>;
 
     const {
       deleteRequest: removeMemberRequest,

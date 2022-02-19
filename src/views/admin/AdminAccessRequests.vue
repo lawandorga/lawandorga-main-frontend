@@ -26,24 +26,24 @@
         :data="deletionRequests"
       >
         <template #created="slotProps">
-          {{ formatDate(slotProps.dataItem.created) }}
+          {{ formatDate(slotProps.created) }}
         </template>
         <template #processed_on="slotProps">
-          {{ formatDate(slotProps.dataItem.processed_on) }}
+          {{ formatDate(slotProps.processed_on) }}
         </template>
         <template #state="slotProps">
-          <span v-if="slotProps.dataItem.state === 're'">Requested</span>
-          <span v-if="slotProps.dataItem.state === 'de'">Declined</span>
-          <span v-if="slotProps.dataItem.state === 'gr'">Accepted</span>
+          <span v-if="slotProps.state === 're'">Requested</span>
+          <span v-if="slotProps.state === 'de'">Declined</span>
+          <span v-if="slotProps.state === 'gr'">Accepted</span>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
             <ButtonNormal
-              v-if="slotProps.dataItem.state === 're'"
+              v-if="slotProps.state === 're'"
               kind="action"
               size="xs"
               @click="
-                deletionRequest = slotProps.dataItem;
+                deletionRequest = slotProps;
                 updateModalOpen = true;
               "
             >

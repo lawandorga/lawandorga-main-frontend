@@ -21,6 +21,11 @@ export interface RlcUser {
   email_confirmed: boolean;
   is_active: boolean;
   accepted: boolean;
+  updated: string;
+  note: string;
+  name: string;
+  email: string;
+  created: string;
 }
 
 export interface DashboardInformation {

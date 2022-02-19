@@ -3,10 +3,11 @@
     <Thead>
       <Tr class="divide-x divide-gray-200">
         <Th v-for="item in head" :key="item.key">
-          <slot :name="`head-${item.key}`">
-            <div class="flex items-center justify-between">
-              {{ item.name }}
-            </div>
+          <div v-if="item.key === 'action'" class="flex justify-end space-x-3">
+            <slot :name="`head-${item.key}`" />
+          </div>
+          <slot v-else :name="`head-${item.key}`">
+            {{ item.name }}
           </slot>
         </Th>
       </Tr>
@@ -18,7 +19,13 @@
         class="divide-x divide-gray-100"
       >
         <Td v-for="headItem in head" :key="headItem.key">
-          <slot :dataItem="dataItem" :headItem="headItem" :name="headItem.key">
+          <div
+            v-if="headItem.key === 'action'"
+            class="flex justify-end space-x-3"
+          >
+            <slot v-bind="dataItem" name="action" />
+          </div>
+          <slot v-else v-bind="dataItem" :name="headItem.key">
             {{ getData(dataItem, headItem.key) }}
           </slot>
         </Td>
@@ -50,8 +57,10 @@ import { JsonModel } from "@/types/shared";
 import CircleLoader from "./CircleLoader.vue";
 
 interface NestedObject {
-  [key: string]: string | number | boolean | NestedObject;
+  [key: string]: string | NestedObject;
 }
+
+type KeyFunction = (_: JsonModel) => string | number | boolean;  // eslint-disable-line
 
 export default defineComponent({
   components: {
@@ -65,7 +74,9 @@ export default defineComponent({
   },
   props: {
     head: {
-      type: Array as PropType<{ key: string; name: string }[]>,
+      type: Array as PropType<
+        { key: NestedObject | KeyFunction; name: string }[]
+      >,
       required: true,
     },
     data: {
@@ -87,9 +98,11 @@ export default defineComponent({
   methods: {
     getData(
       data: NestedObject,
-      key: string | string[],
+      key: string | string[] | KeyFunction,
     ): string | number | boolean {
-      if (Array.isArray(key)) {
+      if (typeof key === "function") {
+        return key(data);
+      } else if (Array.isArray(key)) {
         let newData = data as NestedObject | string | number | boolean;
         key.forEach((key) => {
           if (newData) newData = (newData as NestedObject)[key];

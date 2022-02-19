@@ -77,17 +77,19 @@ export default defineComponent({
       return false;
     },
     baseClasses() {
-      return "cursor-pointer inline-flex items-center border focus:outline-none focus:ring-2 focus:ring-offset-2";
+      return "cursor-pointer inline-flex items-center focus:outline-none";
     },
     kindColorClasses() {
       if (this.kind === "primary") {
-        return "shadow-sm border-transparent text-white bg-lorgablue bg-opacity-100 hover:bg-opacity-90 focus:ring-lorgablue";
+        return "border shadow-sm border-transparent text-white bg-lorgablue bg-opacity-100 hover:bg-opacity-90 focus:ring-2 focus:ring-offset-2 focus:ring-lorgablue";
       } else if (this.kind === "secondary") {
-        return "shadow-sm border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200";
+        return "border shadow-sm border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:ring-2 focus:ring-offset-2";
       } else if (this.kind === "action") {
-        return "border-transparent text-blue-700 hover:text-blue-900 hover:bg-blue-50 focus:border-blue-200 focus:ring-transparent";
+        return "border border-transparent text-blue-700 hover:text-blue-900 hover:bg-blue-50 focus:border-blue-200";
       } else if (this.kind === "delete") {
-        return "border-transparent text-red-600 hover:text-red-700 hover:bg-red-50 focus:border-red-200 focus:ring-transparent";
+        return "border border-transparent text-red-600 hover:text-red-700 hover:bg-red-50 focus:border-red-200";
+      } else if (this.kind === "link") {
+        return "underline text-lorgablue hover:text-opacity-75 focus:ring-0";
       }
       return "";
     },

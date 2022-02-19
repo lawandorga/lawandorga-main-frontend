@@ -21,31 +21,31 @@
           <ButtonLink
             :to="{
               name: 'admin-profile',
-              params: { id: slotProps.dataItem.id },
+              params: { id: slotProps.id },
             }"
           >
-            {{ slotProps.dataItem.name }}
+            {{ slotProps.name }}
           </ButtonLink>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
             <ButtonNormal
-              v-if="!slotProps.dataItem.accepted"
+              v-if="!slotProps.accepted"
               size="xs"
               kind="action"
               @click="
-                profile = slotProps.dataItem;
+                profile = slotProps;
                 acceptUserModalOpen = true;
               "
             >
               Accept
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.locked"
+              v-if="slotProps.locked"
               size="xs"
               kind="action"
               @click="
-                profile = slotProps.dataItem;
+                profile = slotProps;
                 unlockUserModalOpen = true;
               "
             >
@@ -55,17 +55,17 @@
               size="xs"
               kind="delete"
               @click="
-                profile = slotProps.dataItem;
+                profile = slotProps;
                 activateUserModalOpen = true;
               "
             >
-              {{ slotProps.dataItem.is_active ? "Deactivate" : "Activate" }}
+              {{ slotProps.is_active ? "Deactivate" : "Activate" }}
             </ButtonNormal>
             <ButtonNormal
               size="xs"
               kind="delete"
               @click="
-                profile = slotProps.dataItem;
+                profile = slotProps;
                 deleteModalOpen = true;
               "
             >

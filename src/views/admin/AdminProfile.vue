@@ -25,11 +25,8 @@
               <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             </div>
             <div>
-              <ButtonBlue type="button" @click="updateModalOpen = true">
-                <div class="flex space-x-1 items-center">
-                  <PencilIcon class="w-5 h-5 opacity-90" />
-                  <span class="">Edit</span>
-                </div>
+              <ButtonBlue kind="action" @click="updateModalOpen = true">
+                Edit
               </ButtonBlue>
             </div>
           </div>
@@ -61,7 +58,11 @@
         <div class="col-span-3">
           <TableGenerator
             :head="[
-              { name: 'Permission', key: 'name' },
+              { name: 'Permission', key: (obj) => obj.permission_object.name },
+              {
+                name: 'Source',
+                key: 'source',
+              },
               { name: '', key: 'action' },
             ]"
             :data="permissions"
@@ -77,19 +78,32 @@
                 </ButtonNormal>
               </div>
             </template>
+            <template #source="slotProps">
+              <ButtonNormal
+                v-if="slotProps.source === 'GROUP'"
+                kind="link"
+                :to="{
+                  name: 'admin-group',
+                  params: { id: slotProps.group_object.id },
+                }"
+              >
+                {{ slotProps.group_object.name }}
+              </ButtonNormal>
+              <template v-else>
+                {{ slotProps.user_object.name }}
+              </template>
+            </template>
             <template #action="slotProps">
-              <div class="flex justify-end">
-                <ButtonNormal
-                  size="xs"
-                  kind="delete"
-                  @click="
-                    removePermissionModalOpen = true;
-                    permission = slotProps.dataItem;
-                  "
-                >
-                  Remove
-                </ButtonNormal>
-              </div>
+              <ButtonNormal
+                v-if="slotProps.source === 'USER'"
+                kind="delete"
+                @click="
+                  removePermissionModalOpen = true;
+                  permission = slotProps;
+                "
+              >
+                Remove
+              </ButtonNormal>
             </template>
           </TableGenerator>
         </div>
@@ -137,12 +151,11 @@ import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
 import useGetItems from "@/composables/useGetItems";
 import { HasPermission, Permission } from "@/types/core";
-import { User } from "@/types/user";
+import { RlcUser, User } from "@/types/user";
 import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
-import { PencilIcon } from "@heroicons/vue/solid";
 
 const userFields = [
   {
@@ -190,7 +203,6 @@ export default defineComponent({
     ModalFree,
     TableGenerator,
     ButtonNormal,
-    PencilIcon,
     FormGenerator,
     ModalDelete,
     BreadcrumbsBar,
@@ -200,7 +212,7 @@ export default defineComponent({
     const route = useRoute();
 
     // user
-    const user = ref(null) as Ref<User | null>;
+    const user = ref(null) as Ref<RlcUser | null>;
     useGetItem(AdminService.getUser, user, route.params.id as string);
 
     // update user
@@ -260,5 +272,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style></style>

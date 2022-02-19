@@ -44,7 +44,7 @@
               size="xs"
               kind="action"
               @click="
-                field = slotProps.dataItem;
+                field = slotProps;
                 updateFieldModalOpen = true;
               "
             >
@@ -54,7 +54,7 @@
               size="xs"
               kind="delete"
               @click="
-                field = slotProps.dataItem;
+                field = slotProps;
                 deleteFieldModalOpen = true;
               "
             >
@@ -86,7 +86,7 @@
             <ButtonNormal
               size="xs"
               kind="action"
-              @click="downloadFile(slotProps.dataItem)"
+              @click="downloadFile(slotProps)"
             >
               Download
             </ButtonNormal>
@@ -94,7 +94,7 @@
               size="xs"
               kind="delete"
               @click="
-                file = slotProps.dataItem;
+                file = slotProps;
                 deleteFileModalOpen = true;
               "
             >

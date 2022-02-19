@@ -320,14 +320,12 @@ export default defineComponent({
     next() {
       const url = this.$route.query.next as string;
       if (url) this.$router.push(url);
-      else this.$router.push({ name: "dashboard" });
+      else this.$router.push({ name: "admin-dashboard" });
     },
     loginRequest(data: { email: string; password: string }) {
       return UsersService.login(data).then((loginData: LoginResponse) => {
         this.$store.dispatch("user/login", loginData);
-        if (this.$route.query.next)
-          this.$router.push(this.$route.query.next as string);
-        else this.$router.push({ name: "admin-dashboard" });
+        this.next();
       });
     },
     test() {

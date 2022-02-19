@@ -1,45 +1,41 @@
 import { Group, HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
-import { User } from "@/types/user";
+import { RlcUser, User } from "@/types/user";
 import { axios } from "../main";
 
 class AdminService {
   /*
   // Users
   */
-  getUsers(): Promise<User[]> {
-    return axios.get<User[]>("profiles/").then((response) => response.data);
+  getUsers(): Promise<RlcUser[]> {
+    return axios.get<RlcUser[]>("profiles/").then((response) => response.data);
   }
 
-  updateUser(user: JsonModel): Promise<User> {
+  updateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<User>(`profiles/${user.id}/`, user)
+      .patch<RlcUser>(`profiles/${user.id}/`, user)
       .then((response) => response.data);
   }
 
-  getUser(id: number | string): Promise<User> {
-    return axios.get<User>(`profiles/${id}/`).then((response) => response.data);
+  getUser(id: number | string): Promise<RlcUser> {
+    return axios
+      .get<RlcUser>(`profiles/${id}/`)
+      .then((response) => response.data);
   }
 
   deleteUser(user: User): Promise<void> {
     return axios.delete(`profiles/${user.id}/`).then();
   }
 
-  acceptUser(user: User): Promise<User> {
+  acceptUser(user: User): Promise<RlcUser> {
     return axios
-      .post<Promise<User>>(`profiles/${user.id}/accept/`)
+      .post<Promise<RlcUser>>(`profiles/${user.id}/accept/`)
       .then((response) => response.data);
   }
 
   unlockUser(user: User): Promise<User> {
     return axios
       .post<Promise<User>>(`profiles/${user.id}/unlock/`)
-      .then((response) => response.data);
-  }
-
-  getUserPermissions(user: User): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>(`profiles/${user.id}/permissions/`)
       .then((response) => response.data);
   }
 
@@ -78,12 +74,6 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  getGroupPermissions(group: Group): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>(`groups/${group.id}/permissions/`)
-      .then((response) => response.data);
-  }
-
   addMember(data: JsonModel, group: Group): Promise<User> {
     return axios
       .post(`groups/${group.id}/member/`, { member: data.user })
@@ -91,7 +81,11 @@ class AdminService {
   }
 
   removeMember(data: JsonModel, group: Group): Promise<void> {
-    return axios.post(`groups/${group.id}/remove/`, { member: data.id }).then();
+    return axios
+      .delete(`groups/${group.id}/member/`, {
+        data: { member: data.rlcuserid },
+      })
+      .then();
   }
 
   /*
@@ -104,14 +98,26 @@ class AdminService {
   /*
   // HasPermission
   */
+  getGroupPermissions(group: Group): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>(`has_permissions/?group=${group.id}`)
+      .then((response) => response.data);
+  }
+
+  getUserPermissions(user: RlcUser): Promise<HasPermission[]> {
+    return axios
+      .get<HasPermission[]>(`has_permissions/?user=${user.user}`)
+      .then((response) => response.data);
+  }
+
   createHasPermission(data: JsonModel): Promise<HasPermission> {
     return axios
-      .post("has_permission/", data)
+      .post("has_permissions/", data)
       .then((response) => response.data);
   }
 
   deleteHasPermission(data: JsonModel): Promise<void> {
-    return axios.delete(`has_permission/${data.id}/`).then();
+    return axios.delete(`has_permissions/${data.id}/`).then();
   }
 }
 

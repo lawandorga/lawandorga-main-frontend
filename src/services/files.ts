@@ -6,13 +6,13 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import downloadFile from "@/utils/download";
-import {axios } from '../main';
+import { axios } from "../main";
 
 class FilesService {
   // permissions
   getGeneralPermissions(): Promise<HasPermission[]> {
     return axios
-      .get<HasPermission[]>("has_permission/files/")
+      .get<HasPermission[]>("has_permissions/files/")
       .then((response) => response.data);
   }
 

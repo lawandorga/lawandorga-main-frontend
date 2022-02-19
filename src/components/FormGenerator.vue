@@ -206,6 +206,8 @@ export default defineComponent({
       this.sendRequest(this.data);
     },
     sendRequest(requestData: JsonModel | FormData) {
+      this.errors = {};
+      this.nonFieldErrors = [];
       if (this.fields.map((item) => item.type).includes("file")) {
         requestData = new FormData(this.$refs.form as HTMLFormElement);
         if (this.initial)
@@ -221,9 +223,6 @@ export default defineComponent({
         );
     },
     handleSuccess(data: JsonModel) {
-      this.errors = {};
-      this.nonFieldErrors = [];
-      if (this.initial === null) this.data = {};
       this.showSuccess = true;
       this.loading = false;
       this.$emit("success", data);

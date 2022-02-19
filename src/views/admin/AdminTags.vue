@@ -27,14 +27,14 @@
             <ButtonNormal
               size="xs"
               kind="action"
-              @click="openUpdate(slotProps.dataItem)"
+              @click="openUpdate(slotProps)"
             >
               Edit
             </ButtonNormal>
             <ButtonNormal
               size="xs"
               kind="delete"
-              @click="openDelete(slotProps.dataItem)"
+              @click="openDelete(slotProps)"
             >
               Delete
             </ButtonNormal>

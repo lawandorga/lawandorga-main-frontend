@@ -13,12 +13,8 @@
       >
         <FolderOpenIcon class="w-6 h-6" />
         <template #buttons>
-          <ButtonBreadcrumbs @click="helpModalOpen = true">
-            Show Help
-          </ButtonBreadcrumbs>
-          <ButtonBreadcrumbs @click="generalPermissionsModalOpen = true">
-            Show General Permissions
-          </ButtonBreadcrumbs>
+          <FilesHelp />
+          <FilesPermissions />
         </template>
       </BreadcrumbsBar>
       <TableGenerator
@@ -51,86 +47,84 @@
         </template>
         <template #type="slotProps">
           <FolderIcon
-            v-if="slotProps.dataItem.type === 'FOLDER'"
+            v-if="slotProps.type === 'FOLDER'"
             class="w-5 h-5 text-gray-500"
           />
           <DocumentIcon
-            v-if="slotProps.dataItem.type === 'FILE'"
+            v-if="slotProps.type === 'FILE'"
             class="w-5 h-5 text-gray-500"
           />
         </template>
         <template #name="slotProps">
           <ButtonLink
-            v-if="slotProps.dataItem.type === 'FOLDER'"
+            v-if="slotProps.type === 'FOLDER'"
             :to="{
               name: 'files-dashboard',
-              params: { id: slotProps.dataItem.id },
+              params: { id: slotProps.id },
             }"
           >
-            {{ slotProps.dataItem.name }}
+            {{ slotProps.name }}
           </ButtonLink>
           <div v-else class="">
-            {{ slotProps.dataItem.name }}
-            <span v-if="!slotProps.dataItem.exists" class="text-red-600">
-              (ERROR)
-            </span>
+            {{ slotProps.name }}
+            <span v-if="!slotProps.exists" class="text-red-600">(ERROR)</span>
           </div>
         </template>
         <template #last_edited="slotProps">
-          {{ formatDate(slotProps.dataItem.last_edited) }}
+          {{ formatDate(slotProps.last_edited) }}
         </template>
         <template #created="slotProps">
-          {{ formatDate(slotProps.dataItem.created) }}
+          {{ formatDate(slotProps.created) }}
         </template>
         <template #action="slotProps">
           <div class="flex space-x-3 justify-end">
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FOLDER'"
+              v-if="slotProps.type === 'FOLDER'"
               size="xs"
               kind="action"
               @click="
-                folderOpen = slotProps.dataItem;
+                folderOpen = slotProps;
                 updateFolderModalOpen = true;
               "
             >
               Change
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FOLDER'"
+              v-if="slotProps.type === 'FOLDER'"
               size="xs"
               kind="delete"
               @click="
-                folderOpen = slotProps.dataItem;
+                folderOpen = slotProps;
                 deleteFolderModalOpen = true;
               "
             >
               Delete
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FILE'"
+              v-if="slotProps.type === 'FILE'"
               size="xs"
               kind="action"
-              @click="downloadFile(slotProps.dataItem)"
+              @click="downloadFile(slotProps)"
             >
               Download
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FILE'"
+              v-if="slotProps.type === 'FILE'"
               size="xs"
               kind="action"
               @click="
-                fileOpen = slotProps.dataItem;
+                fileOpen = slotProps;
                 updateFileModalOpen = true;
               "
             >
               Change
             </ButtonNormal>
             <ButtonNormal
-              v-if="slotProps.dataItem.type === 'FILE'"
+              v-if="slotProps.type === 'FILE'"
               size="xs"
               kind="delete"
               @click="
-                fileOpen = slotProps.dataItem;
+                fileOpen = slotProps;
                 deleteFileModalOpen = true;
               "
             >
@@ -163,22 +157,22 @@
           <router-link
             :to="{
               name: 'files-dashboard',
-              params: { id: slotProps.dataItem.folder.id },
+              params: { id: slotProps.folder.id },
             }"
             class="underline"
           >
-            {{ slotProps.dataItem.folder.name }}
+            {{ slotProps.folder.name }}
           </router-link>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end">
             <ButtonNormal
-              v-if="slotProps.dataItem.source === 'NORMAL'"
+              v-if="slotProps.source === 'NORMAL'"
               type="button"
               size="xs"
               kind="delete"
               @click="
-                permissionOpen = slotProps.dataItem;
+                permissionOpen = slotProps;
                 deletePermissionModalOpen = true;
               "
             >
@@ -245,57 +239,6 @@
       :request="deletePermissionRequest"
       :object="permissionOpen"
     />
-    <!-- breadcrumbs -->
-    <ModalFree
-      v-model="generalPermissionsModalOpen"
-      width="max-w-screen-xl"
-      title="General Permission"
-    >
-      <p class="mb-10 text-gray-600">
-        Groups or users listed here have permissions that apply to the whole
-        collab section. Those permissions can be managed within the admin
-        section.
-      </p>
-      <TableGenerator
-        :head="[
-          { name: 'User', key: ['user_has_permission', 'name'] },
-          { name: 'Group', key: ['group_has_permission', 'name'] },
-          { name: 'Permission', key: ['permission', 'name'] },
-        ]"
-        :data="generalPermissions"
-      ></TableGenerator>
-    </ModalFree>
-    <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
-      <article class="prose">
-        <p>Here is a short explanation of the different folder permissions.</p>
-        <p>
-          Once you click on a folder you can see its permissions in the
-          permission table. Those permissions always relate to the folder that
-          is open.
-        </p>
-        <p>There are 3 different kind of permissions.</p>
-        <p>
-          Let's start with the simple one first: 'read_folder'. With this
-          permission the specified group can access the files of the folder and
-          download them.
-        </p>
-        <p>
-          The second one: 'write_folder' allows the specified group to upload
-          and delete files within that folder.
-        </p>
-        <p>
-          Both permissions 'read_folder' and 'write_folder' apply to all
-          children of the source folder. A group that has the 'write_folder'
-          permission for the top level folder can upload and delete files in
-          every subfolder.
-        </p>
-        <p>
-          The last permission 'see_folder' says that the specified group can see
-          the folder name. But it can not see any files only the subfolder that
-          leads to the source of the 'see_folder' permission.
-        </p>
-      </article>
-    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -316,12 +259,11 @@ import FormGenerator from "@/components/FormGenerator.vue";
 import ModalDelete from "@/components/ModalDelete.vue";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
 import CoreService from "@/services/core";
-import { Group, HasPermission } from "@/types/core";
+import { Group } from "@/types/core";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { FolderOpenIcon } from "@heroicons/vue/outline";
 import { FolderIcon, DocumentIcon } from "@heroicons/vue/solid";
 import { formatDate } from "@/utils/date";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useCreateItem from "@/composables/useCreateItem";
@@ -329,12 +271,15 @@ import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useGetItems from "@/composables/useGetItems";
 import { DjangoModel } from "@/types/shared";
+import FilesPermissions from "@/components/FilesPermissions.vue";
+import FilesHelp from "@/components/FilesHelp.vue";
 
 export default defineComponent({
   components: {
+    FilesHelp,
+    FilesPermissions,
     ButtonLink,
     BoxAlert,
-    ButtonBreadcrumbs,
     FolderIcon,
     DocumentIcon,
     FolderOpenIcon, // eslint-disable-line vue/no-unused-components
@@ -354,10 +299,6 @@ export default defineComponent({
     const folder = ref<FilesFolder | null>(null);
     const items = ref<(FilesFolder | FilesFile)[] | null>(null);
     const folderPermissions = ref<FilesPermission[] | null>(null);
-    const generalPermissions = ref<HasPermission[] | null>(null);
-
-    // general permissions
-    useGetItems(FilesService.getGeneralPermissions, generalPermissions);
 
     // files and folders
     useGetItems(FilesService.getItems, items, folder);
@@ -388,8 +329,6 @@ export default defineComponent({
     return {
       // utils
       formatDate: formatDate,
-      // general permissions
-      generalPermissions,
       // current folder
       folder,
       // items
@@ -402,12 +341,6 @@ export default defineComponent({
       ...createDeletePermission(folderPermissions),
       // file
       ...createUpdateDeleteFile(items, folder),
-    };
-  },
-  data() {
-    return {
-      helpModalOpen: false,
-      generalPermissionsModalOpen: false,
     };
   },
   methods: {

@@ -233,7 +233,7 @@
               :data="record ? record.encryptions : null"
             >
               <template #created="slotProps">
-                {{ formatDate(slotProps.dataItem.created) }}
+                {{ formatDate(slotProps.created) }}
               </template>
             </TableGenerator>
           </div>

@@ -7,7 +7,6 @@ import {
   QuestionnaireQuestion,
   Record,
   RecordDeletion,
-  RecordPermissionRequest,
   Questionnaire,
   RecordTemplate,
   RecordField,
@@ -43,7 +42,13 @@ export type DeleteFunction = (
 // models
 */
 interface KeyValueModel {
-  [key: string]: string | boolean | number | number[] | string[];
+  [key: string]:
+    | string
+    | boolean
+    | number
+    | number[]
+    | string[]
+    | KeyValueModel;
 }
 
 export type JsonModel = KeyValueModel;
@@ -62,7 +67,6 @@ export type DjangoModel =
   | QuestionnaireQuestion
   | QuestionnaireTemplate
   | RecordDeletion
-  | RecordPermissionRequest
   | RecordTemplate
   | RecordField
   | Permission;

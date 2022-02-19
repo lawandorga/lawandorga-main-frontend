@@ -33,10 +33,10 @@
             class="underline"
             :to="{
               name: 'admin-questionnaire',
-              params: { id: slotProps.dataItem.id },
+              params: { id: slotProps.id },
             }"
           >
-            {{ slotProps.dataItem.name }}
+            {{ slotProps.name }}
           </ButtonLink>
         </template>
         <template #action="slotProps">
@@ -45,7 +45,7 @@
               size="xs"
               kind="action"
               @click="
-                questionnaire = slotProps.dataItem;
+                questionnaire = slotProps;
                 updateModalOpen = true;
               "
             >
@@ -55,7 +55,7 @@
               size="xs"
               kind="delete"
               @click="
-                questionnaire = slotProps.dataItem;
+                questionnaire = slotProps;
                 deleteModalOpen = true;
               "
             >
