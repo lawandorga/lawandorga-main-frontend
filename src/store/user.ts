@@ -25,7 +25,7 @@ const getters = {
   key: (state: UserState) =>
     state.key ? state.key.replace(/(?:\r\n|\r|\n)/g, "<linebreak>") : "",
   isAuthenticated: (state: UserState) => !!state.token && !!state.key,
-  loginData: () => JSON.parse(localStorage.getItem("loginData") || "{}"),
+  loginData: () => JSON.parse(localStorage.getItem("loginData") || "null"),
   admin: (state: UserState) => state.admin,
   loaded: (state: UserState) =>
     !!state.token && !!state.key && !!state.user && !!state.rlc,
@@ -40,7 +40,7 @@ const getters = {
 const actions = {
   autoLogin(context: ActionContext<UserState, RootState>) {
     const loginData = context.getters.loginData;
-    if ("token" in loginData && "key" in loginData) {
+    if (loginData && "token" in loginData && "key" in loginData) {
       // login already to avoid the login page flash
       context.commit("login", {
         token: loginData.token,

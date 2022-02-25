@@ -1,12 +1,9 @@
 import router from "./router";
-import axios, { AxiosRequestConfig } from "axios";
-import { Store } from "vuex";
-import { RootState } from "./types/state";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import store from "./store";
 
-export default function createAxios(store: Store<RootState>) {
-  const $axios = axios.create({
-    baseURL: import.meta.env.VITE_API_URL as string,
-  });
+export function setupDefaultAxios($axios: AxiosInstance) {
+  $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
 
   $axios.interceptors.request.use(function (
     config: AxiosRequestConfig,
@@ -125,3 +122,5 @@ export default function createAxios(store: Store<RootState>) {
 
   return $axios;
 }
+
+export default axios;

@@ -46,3 +46,9 @@ export interface LoginResponse {
   user: User;
   permissions: string[];
 }
+
+export interface DashboardNote {
+  id: number;
+  title: string;
+  note: string;
+}

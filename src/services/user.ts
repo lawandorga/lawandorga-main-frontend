@@ -1,6 +1,11 @@
 import { Permission, Rlc } from "@/types/core";
-import { DashboardInformation, LoginResponse, User } from "@/types/user";
-import { axios } from "../main";
+import {
+  DashboardInformation,
+  DashboardNote,
+  LoginResponse,
+  User,
+} from "@/types/user";
+import axios from "../api";
 
 interface StaticsResponse {
   user: User;
@@ -68,6 +73,27 @@ class UserService {
     return axios
       .post(`profiles/${data.user}/password_reset_confirm/`, data)
       .then();
+  }
+
+  // notes
+  getNotes(): Promise<DashboardNote[]> {
+    return axios.get("notes/").then((response) => response.data);
+  }
+
+  createNote(note: DashboardNote): Promise<DashboardNote> {
+    return axios
+      .post<DashboardNote>("notes/", note)
+      .then((response) => response.data);
+  }
+
+  updateNote(note: DashboardNote): Promise<DashboardNote> {
+    return axios
+      .patch<DashboardNote>(`notes/${note.id}/`, note)
+      .then((response) => response.data);
+  }
+
+  deleteNote(note: DashboardNote): Promise<void> {
+    return axios.delete(`notes/${note.id}/`);
   }
 
   // getPermissions(): Promise<Permission[]> {

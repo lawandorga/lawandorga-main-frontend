@@ -1,7 +1,7 @@
 import { Group, HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
 import { RlcUser, User } from "@/types/user";
-import { axios } from "../main";
+import axios from "../api";
 
 class AdminService {
   /*

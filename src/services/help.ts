@@ -1,4 +1,4 @@
-import { axios } from "../main";
+import axios from "../api";
 
 class HelpService {
   /*

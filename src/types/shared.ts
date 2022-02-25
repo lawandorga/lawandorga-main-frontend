@@ -1,6 +1,6 @@
 import { CollabDocument, CollabVersion } from "./collab";
 import { Group, HasPermission, Permission } from "./core";
-import { RlcUser, User } from "./user";
+import { DashboardNote, RlcUser, User } from "./user";
 import { Ref } from "vue";
 import {
   QuestionnaireTemplate,
@@ -69,7 +69,8 @@ export type DjangoModel =
   | RecordDeletion
   | RecordTemplate
   | RecordField
-  | Permission;
+  | Permission
+  | DashboardNote;
 
 /*
 // errors

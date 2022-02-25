@@ -12,6 +12,52 @@
         Welcome {{ $store.getters["user/user"].name }}
       </h1>
       <div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        <div class="lg:col-span-2 xl:col-span-3">
+          <div class="flex justify-between mt-8">
+            <h2
+              class="text-lg leading-6 font-medium text-gray-700 items-baseline"
+            >
+              Notes from your LC
+            </h2>
+            <ButtonNormal kind="action" @click="createNoteModalOpen = true">
+              Create Note
+            </ButtonNormal>
+          </div>
+          <div
+            class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-2"
+          >
+            <article
+              v-for="note in notes"
+              :key="note.id"
+              class="bg-white rounded shadow px-6 pt-4 pb-4"
+            >
+              <h3 class="font-medium text-gray-700 mb-2">
+                {{ note.title }}
+              </h3>
+              <p class="text-sm text-gray-700">{{ note.note }}</p>
+              <div class="flex space-x-3 justify-end mt-2">
+                <ButtonNormal
+                  kind="action"
+                  @click="
+                    noteTemporary = note;
+                    updateNoteModalOpen = true;
+                  "
+                >
+                  Edit
+                </ButtonNormal>
+                <ButtonNormal
+                  kind="delete"
+                  @click="
+                    noteTemporary = note;
+                    deleteNoteModalOpen = true;
+                  "
+                >
+                  Delete
+                </ButtonNormal>
+              </div>
+            </article>
+          </div>
+        </div>
         <div v-if="data.records">
           <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
             Active Records
@@ -111,6 +157,26 @@
         </div>
       </div>
     </div>
+    <!-- note -->
+    <ModalForm
+      v-model="createNoteModalOpen"
+      title="Create Note"
+      :fields="noteFields"
+      submit="Create"
+      :request="createNoteRequest"
+    />
+    <ModalForm
+      v-model="updateNoteModalOpen"
+      title="UpdateNote"
+      :fields="noteFields"
+      :request="updateNoteRequest"
+      :initial="noteTemporary"
+    />
+    <ModalDelete
+      v-model="deleteNoteModalOpen"
+      :request="deleteNoteRequest"
+      :object="noteTemporary"
+    />
   </BoxLoader>
 </template>
 
@@ -120,8 +186,22 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { defineComponent, ref } from "vue";
 import UsersService from "@/services/user";
 import { ViewGridIcon, ChevronRightIcon } from "@heroicons/vue/outline";
-import { DashboardInformation } from "@/types/user";
+import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
+import ButtonNormal from "@/components/ButtonNormal.vue";
+import useGetItems from "@/composables/useGetItems";
+import useCreateItem from "@/composables/useCreateItem";
+import useUpdateItem from "@/composables/useUpdateItem";
+import useDeleteItem from "@/composables/useDeleteItem";
+import ModalForm from "@/components/ModalForm.vue";
+import ModalDelete from "@/components/ModalDelete.vue";
+
+const notes = [
+  {
+    title: "My first note",
+    note: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  },
+];
 
 export default defineComponent({
   components: {
@@ -129,6 +209,9 @@ export default defineComponent({
     ViewGridIcon,
     BreadcrumbsBar,
     BoxLoader,
+    ButtonNormal,
+    ModalForm,
+    ModalDelete,
   },
   setup() {
     const data = ref<DashboardInformation | null>(null);
@@ -138,7 +221,59 @@ export default defineComponent({
     return {
       data,
       formatDate,
+      ...getCreateUpdateDeleteNotes(),
     };
   },
 });
+
+function getCreateUpdateDeleteNotes() {
+  const notes = ref<DashboardNote[] | null>(null);
+
+  // get
+  useGetItems(UsersService.getNotes, notes);
+
+  // create and update
+  const noteFields = [
+    { label: "Title", name: "title", required: true, type: "text" },
+    { label: "Note", name: "note", required: true, type: "textarea" },
+  ];
+
+  // create
+  const {
+    createModalOpen: createNoteModalOpen,
+    createRequest: createNoteRequest,
+  } = useCreateItem(UsersService.createNote, notes);
+
+  // update and delete
+  const noteTemporary = ref<DashboardNote | null>(null);
+
+  // update
+  const {
+    updateModalOpen: updateNoteModalOpen,
+    updateRequest: updateNoteRequest,
+  } = useUpdateItem(UsersService.updateNote, notes);
+
+  // delete
+  const {
+    deleteModalOpen: deleteNoteModalOpen,
+    deleteRequest: deleteNoteRequest,
+  } = useDeleteItem(UsersService.deleteNote, notes);
+
+  return {
+    notes,
+    // create and update
+    noteFields,
+    // create
+    createNoteModalOpen,
+    createNoteRequest,
+    // update and delete
+    noteTemporary,
+    // update
+    updateNoteModalOpen,
+    updateNoteRequest,
+    // delete
+    deleteNoteModalOpen,
+    deleteNoteRequest,
+  };
+}
 </script>

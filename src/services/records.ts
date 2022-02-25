@@ -21,7 +21,7 @@ import {
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
-import { axios } from "../main";
+import axios from "../api";
 
 class RecordsService {
   // record templates

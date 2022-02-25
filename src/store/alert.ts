@@ -17,7 +17,7 @@ const actions = {
     if (!("heading" in data) || !("type" in data)) return;
     const similar = context.getters.similar(data);
     if (similar && new Date().valueOf() - similar.created < 1000) return;
-    context.commit("addAlert", data);
+    // context.commit("addAlert", data);
   },
   closeAlert: (context: ActionContext<AlertState, RootState>, alert: Alert) => {
     context.commit("removeAlert", alert);
