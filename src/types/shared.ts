@@ -1,4 +1,8 @@
-import { CollabDocument, CollabVersion } from "./collab";
+import {
+  CollabDocument,
+  CollabDocumentPermission,
+  CollabVersion,
+} from "./collab";
 import { Group, HasPermission, Permission } from "./core";
 import { DashboardNote, RlcUser, User } from "./user";
 import { Ref } from "vue";
@@ -56,6 +60,7 @@ export type JsonModel = KeyValueModel;
 export type DjangoModel =
   | CollabDocument
   | CollabVersion
+  | CollabDocumentPermission
   | User
   | HasPermission
   | RlcUser
