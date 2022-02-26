@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="h-screen flex overflow-hidden">
+    <div class="h-screen flex overflow-hidden print:h-auto print:overflow-auto">
       <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
       <NavigationSidebar v-if="authenticated" />
