@@ -14,6 +14,7 @@ import {
   Questionnaire,
   RecordTemplate,
   RecordField,
+  RecordEncryption,
 } from "./records";
 
 /*
@@ -57,25 +58,7 @@ interface KeyValueModel {
 
 export type JsonModel = KeyValueModel;
 
-export type DjangoModel =
-  | CollabDocument
-  | CollabVersion
-  | CollabDocumentPermission
-  | User
-  | HasPermission
-  | RlcUser
-  | Group
-  | Permission
-  | Record
-  | Questionnaire
-  | QuestionnaireTemplate
-  | QuestionnaireQuestion
-  | QuestionnaireTemplate
-  | RecordDeletion
-  | RecordTemplate
-  | RecordField
-  | Permission
-  | DashboardNote;
+export type DjangoModel = { id: number; url?: string; type?: string };
 
 /*
 // errors

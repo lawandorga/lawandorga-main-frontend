@@ -49,8 +49,13 @@
               </DialogTitle>
               <div class="mt-2">
                 <p class="text-sm text-gray-500 break-words">
-                  Are you sure you want to {{ verb }}
-                  {{ object ? object.name || object.id : "this object" }}?
+                  <slot>
+                    Are you sure you want to {{ verb }}
+                    {{ object ? object.name : "this object" }}?
+                  </slot>
+                </p>
+                <p v-if="error" class="mt-2 text-sm text-red-600">
+                  {{ error }}
                 </p>
               </div>
 
@@ -88,8 +93,9 @@ import {
   DialogTitle,
 } from "@headlessui/vue";
 import ButtonBlue from "@/components/ButtonNormal.vue";
-import { JsonModel, RequestFunction } from "@/types/shared";
+import { DjangoError, JsonModel, RequestFunction } from "@/types/shared";
 import { XIcon } from "@heroicons/vue/outline";
+import { AxiosError } from "axios";
 
 export default defineComponent({
   components: {
@@ -127,18 +133,33 @@ export default defineComponent({
       default: "delete",
     },
   },
-  emits: ["update:modelValue", "deleted"],
+  emits: ["update:modelValue", "deleted", "error"],
   data: function () {
     return {
       loading: false,
+      error: null as string | null,
     };
+  },
+  watch: {
+    modelValue(newValue) {
+      if (newValue) this.error = null;
+    },
   },
   methods: {
     deleteClicked() {
       this.loading = true;
+      this.error = null;
       this.request(this.object)
         .then(() => this.$emit("deleted", this.object))
-        .finally(() => (this.loading = false));
+        .finally(() => (this.loading = false))
+        .catch((error: AxiosError<DjangoError>) =>
+          this.handleError(error.response ? error.response.data : {}),
+        );
+    },
+    handleError(errors: DjangoError) {
+      if (errors.detail) this.error = errors.detail as string;
+      this.loading = false;
+      this.$emit("error", errors);
     },
   },
 });

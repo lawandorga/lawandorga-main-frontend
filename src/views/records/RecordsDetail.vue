@@ -227,19 +227,41 @@
           <div class="mt-5 border-t border-gray-200">
             <TableGenerator
               :head="[
-                { name: 'Person', key: 'user_detail' },
+                { name: 'Person', key: (obj) => obj.user_object.name },
                 { name: 'Since', key: 'created' },
+                { name: '', key: 'action' },
               ]"
-              :data="record ? record.encryptions : null"
+              :data="encryptions"
             >
               <template #created="slotProps">
                 {{ formatDate(slotProps.created) }}
+              </template>
+              <template #action="slotProps">
+                <ButtonNormal
+                  kind="delete"
+                  @click="
+                    encryptionTemporary = slotProps;
+                    deleteEncryptionModalOpen = true;
+                  "
+                >
+                  Remove Access
+                </ButtonNormal>
               </template>
             </TableGenerator>
           </div>
         </div>
       </div>
     </div>
+    <!-- access -->
+    <ModalDelete
+      v-model="deleteEncryptionModalOpen"
+      :object="encryptionTemporary"
+      :request="deleteEncryptionRequest"
+      title="Delete Encryption Keys"
+    >
+      Are you sure you want to delete these keys?
+    </ModalDelete>
+    <!-- document -->
     <ModalDelete
       v-model="deleteDocumentOpen"
       :object="document"
@@ -247,6 +269,7 @@
       title="Delete Document"
       @deleted="documentDeleted"
     />
+    <!-- questionnaire -->
     <ModalDelete
       v-model="deleteRecordQuestionnaireOpen"
       :object="recordQuestionnaire"
@@ -277,11 +300,12 @@ import {
   Questionnaire,
   QuestionnaireAnswer,
   QuestionnaireTemplate,
+  RecordEncryption,
   RecordEntry,
   RecordsClient,
   RecordsDocument,
 } from "@/types/records";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -293,6 +317,10 @@ import { formatDate } from "@/utils/date";
 import { PaperClipIcon } from "@heroicons/vue/solid";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
+import useDeleteItem from "@/composables/useDeleteItem";
+import { useRoute } from "vue-router";
+import useGetItems from "@/composables/useGetItems";
+import useGetItem from "@/composables/useGetItem";
 
 export default defineComponent({
   components: {
@@ -306,6 +334,35 @@ export default defineComponent({
     BreadcrumbsBar,
     CollectionIcon,
     ButtonNormal,
+  },
+  setup() {
+    const route = useRoute();
+
+    // record
+    const record = ref<null | Record>(null);
+    useGetItem(RecordsService.getRecord, record, route.params.id as string);
+
+    // encryptions
+    const encryptions = ref<null | RecordEncryption[]>(null);
+
+    // get
+    useGetItems(RecordsService.getEncryptions, encryptions, record);
+
+    // delete
+    const encryptionTemporary = ref<null | RecordEncryption>(null);
+
+    const {
+      deleteRequest: deleteEncryptionRequest,
+      deleteModalOpen: deleteEncryptionModalOpen,
+    } = useDeleteItem(RecordsService.deleteEncryption, encryptions);
+
+    return {
+      encryptions,
+      // delete
+      encryptionTemporary,
+      deleteEncryptionRequest,
+      deleteEncryptionModalOpen,
+    };
   },
   data() {
     return {

@@ -18,6 +18,7 @@ import {
   RecordTemplate,
   RecordEntry,
   RecordField,
+  RecordEncryption,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import downloadFile from "@/utils/download";
@@ -409,7 +410,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  // permission
+  // access
   getRecordAccesses(): Promise<RecordAccess[]> {
     return axios
       .get<RecordAccess[]>("records/accesses/")
@@ -426,6 +427,17 @@ class RecordsService {
     return axios
       .post<RecordAccess>(`records/accesses/`, data)
       .then((response) => response.data);
+  }
+
+  // encryption
+  getEncryptions(record: { id: number }): Promise<RecordEncryption[]> {
+    return axios
+      .get(`records/encryptions/?record=${record.id}`)
+      .then((response) => response.data);
+  }
+
+  deleteEncryption(encryption: RecordEncryption): Promise<void> {
+    return axios.delete(`records/encryptions/${encryption.id}/`).then();
   }
 
   // deletion-requests

@@ -151,6 +151,13 @@ export interface RecordAccess {
   updated: string;
 }
 
+export interface RecordEncryption {
+  id: number;
+  user: number;
+  record: number;
+  user_object: { name: string; id: number };
+}
+
 export interface RecordDeletion {
   requested_by_detail: string;
   record_detail: string;
