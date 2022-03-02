@@ -52,7 +52,7 @@ export default {
     submit: {
       type: String,
       required: false,
-      default: "Speichern",
+      default: "Save",
     },
     cancel: {
       type: String,

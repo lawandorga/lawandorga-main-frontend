@@ -18,13 +18,11 @@
       <div class="grid grid-cols-2 gap-y-6">
         <div v-if="user" class="bg-white rounded shadow max-w-lg px-6 py-5">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-sm font-bold tracking-wide text-gray-500">
-                User
-              </div>
-              <h2 class="text-2xl font-bold">{{ user.name }}</h2>
-            </div>
-            <div>
+            <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+            <div class="flex items-center space-x-4">
+              <ButtonBlue kind="action" @click="changePasswordModalOpen = true">
+                Change Password
+              </ButtonBlue>
               <ButtonBlue kind="action" @click="updateModalOpen = true">
                 Edit
               </ButtonBlue>
@@ -117,6 +115,12 @@
         :request="updateRequest"
       />
     </ModalFree>
+    <ModalForm
+      v-model="changePasswordModalOpen"
+      title="Change Password"
+      :request="changePasswordRequest"
+      :fields="passwordFields"
+    />
     <!-- permission -->
     <ModalFree v-model="addPermissionModalOpen" title="Add Permission">
       <FormGenerator
@@ -156,6 +160,7 @@ import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
+import ModalForm from "@/components/ModalForm.vue";
 
 const userFields = [
   {
@@ -196,6 +201,27 @@ const userFields = [
   },
 ];
 
+const passwordFields = [
+  {
+    label: "Current Password",
+    type: "password",
+    name: "current_password",
+    required: true,
+  },
+  {
+    label: "New Password",
+    type: "password",
+    name: "new_password",
+    required: true,
+  },
+  {
+    label: "New Password Confirm",
+    type: "password",
+    name: "new_password_confirm",
+    required: true,
+  },
+];
+
 export default defineComponent({
   components: {
     BoxLoader,
@@ -206,6 +232,7 @@ export default defineComponent({
     FormGenerator,
     ModalDelete,
     BreadcrumbsBar,
+    ModalForm,
     CogIcon,
   },
   setup() {
@@ -214,6 +241,12 @@ export default defineComponent({
     // user
     const user = ref(null) as Ref<RlcUser | null>;
     useGetItem(AdminService.getUser, user, route.params.id as string);
+
+    // change password
+    const {
+      updateModalOpen: changePasswordModalOpen,
+      updateRequest: changePasswordRequest,
+    } = useUpdateItem(AdminService.changePassword, user);
 
     // update user
     const { updateRequest, updateModalOpen } = useUpdateItem(
@@ -260,6 +293,10 @@ export default defineComponent({
       userFields,
       updateRequest,
       updateModalOpen,
+      // change password
+      passwordFields,
+      changePasswordRequest,
+      changePasswordModalOpen,
       // permissions
       permissions,
       addPermissionRequest,
