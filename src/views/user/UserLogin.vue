@@ -221,6 +221,7 @@
         <a target="_blank" href="http://rlc-deutschland.de/datenschutz/">
           Privacy
         </a>
+        <router-link :to="{ name: 'internal-toms' }">TOMS</router-link>
       </div>
     </section>
   </main>

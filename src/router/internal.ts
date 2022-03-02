@@ -11,6 +11,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "internal-imprint",
     component: () => import("@/views/internal/InternalImprint.vue"),
   },
+  {
+    path: "/internal/toms/",
+    name: "internal-toms",
+    component: () => import("@/views/internal/InternalToms.vue"),
+  },
 ];
 
 export default routes;

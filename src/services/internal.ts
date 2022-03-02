@@ -1,4 +1,10 @@
-import { Article, ImprintPage, LoginPage, RoadmapItem } from "@/types/internal";
+import {
+  Article,
+  ImprintPage,
+  LoginPage,
+  RoadmapItem,
+  TomsPage,
+} from "@/types/internal";
 import axios from "../api";
 
 class InternalService {
@@ -27,6 +33,12 @@ class InternalService {
   getImprintPage(): Promise<ImprintPage> {
     return axios
       .get<ImprintPage>("pages/imprint/")
+      .then((response) => response.data);
+  }
+
+  getTomsPage(): Promise<TomsPage> {
+    return axios
+      .get<ImprintPage>("pages/toms/")
       .then((response) => response.data);
   }
 }
