@@ -1,5 +1,5 @@
 export interface RecordTemplate {
-  id: string;
+  id: number;
   name: string;
   rlc: number;
   create: string;
@@ -42,7 +42,7 @@ export interface RecordField {
 }
 
 export interface RecordsClient {
-  id: string;
+  id: number;
   name: string;
   created_on: Date;
   last_edited: Date;
@@ -141,7 +141,7 @@ export interface RecordAccess {
   record_detail: string;
   processed_by_detail: string;
 
-  id: string;
+  id: number;
   requested_by: number;
   processed_by: number;
   record: number;

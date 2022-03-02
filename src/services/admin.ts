@@ -33,9 +33,9 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  unlockUser(user: User): Promise<User> {
+  unlockUser(user: User): Promise<RlcUser> {
     return axios
-      .post<Promise<User>>(`profiles/${user.id}/unlock/`)
+      .post<Promise<RlcUser>>(`profiles/${user.id}/unlock/`)
       .then((response) => response.data);
   }
 
@@ -43,9 +43,15 @@ class AdminService {
     current_password: string;
     new_password: string;
     new_password_confirm: string;
-  }) {
+  }): Promise<RlcUser> {
     return axios
-      .post<Promise<User>>("profiles/change_password/", data)
+      .post<Promise<RlcUser>>("profiles/change_password/", data)
+      .then((response) => response.data);
+  }
+
+  getMembers(group: Group): Promise<RlcUser[]> {
+    return axios
+      .get(`profiles/?group=${group.id}`)
       .then((response) => response.data);
   }
 
@@ -75,12 +81,6 @@ class AdminService {
   deleteGroup(group: Group): Promise<void> {
     return axios
       .delete(`groups/${group.id}/`)
-      .then((response) => response.data);
-  }
-
-  getMembers(group: Group): Promise<User[]> {
-    return axios
-      .get(`groups/${group.id}/members/`)
       .then((response) => response.data);
   }
 

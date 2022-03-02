@@ -1,5 +1,5 @@
 export interface Group {
-  id: string;
+  id: number;
   name: string;
   creator_id: string;
   members: number[];
@@ -22,7 +22,7 @@ export interface Permission {
 }
 
 export interface HasPermission {
-  id: string;
+  id: number;
   permission: number;
   user_has_permission: number;
   group_has_permission: number;
@@ -33,7 +33,7 @@ export interface HasPermission {
 
 export interface Notification {
   description_text: string;
-  id: string;
+  id: number;
   last_activity: Date;
   created: Date;
   type: string;

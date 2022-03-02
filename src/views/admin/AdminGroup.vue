@@ -71,7 +71,7 @@
         <template #name="slotProps">
           <ButtonNormal
             kind="link"
-            :to="{ name: 'admin-profile', params: { id: slotProps.rlcuserid } }"
+            :to="{ name: 'admin-profile', params: { id: slotProps.id } }"
           >
             {{ slotProps.name }}
           </ButtonNormal>
