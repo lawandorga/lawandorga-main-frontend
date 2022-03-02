@@ -57,7 +57,7 @@
           :name="field.name"
           :type="field.type"
           required
-          @change="update(field, $event.target.value)"
+          @focusout="update(field, $event.target.value)"
         />
         <p
           v-if="errors[field.name]"
