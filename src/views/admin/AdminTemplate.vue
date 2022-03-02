@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="!!template">
-    <div class="max-w-3xl mx-auto space-y-6">
+    <div class="max-w-4xl mx-auto space-y-6">
       <BreadcrumbsBar
         :base="{ name: 'admin-dashboard' }"
         :pages="[
@@ -25,6 +25,7 @@
         :head="[
           { name: 'Field', key: 'name' },
           { name: 'Order', key: 'order' },
+          { name: 'Kind', key: 'kind' },
           { name: 'Type', key: 'type' },
           { name: 'Encrypted', key: 'encrypted' },
           { name: '', key: 'action' },
@@ -140,7 +141,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref, computed } from "vue";
+import { defineComponent, Ref, ref, watch } from "vue";
 import { RecordTemplate, RecordField } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
@@ -159,6 +160,8 @@ import { CogIcon } from "@heroicons/vue/outline";
 import { useRoute } from "vue-router";
 import { FormField } from "@/types/form";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import { Group } from "@/types/core";
+import AdminService from "@/services/admin";
 
 const updateFieldsSource = [
   {
@@ -177,7 +180,7 @@ const updateFieldsSource = [
 
 const createFields = [
   {
-    label: "Type",
+    label: "Kind",
     name: "url",
     type: "select",
     options: [
@@ -240,14 +243,27 @@ export default defineComponent({
     const field = ref(null) as Ref<RecordField | null>;
     useGetItems(RecordsService.getTemplateFields, fields, template);
 
-    // adapt form to field
-    const updateFields = computed<FormField[]>(() => {
-      if (field.value === null) return [];
+    // create
+    const { createRequest, createModalOpen } = useCreateItem(
+      RecordsService.createField,
+      fields,
+    );
 
-      const fields = [...updateFieldsSource];
+    // update
+    const { updateRequest, updateModalOpen } = useUpdateItem(
+      RecordsService.updateField,
+      fields,
+    );
+
+    const updateFields = ref(updateFieldsSource);
+
+    watch(updateModalOpen, () => {
+      if (field.value === null || updateModalOpen.value === false) return;
+
+      updateFields.value = [...updateFieldsSource];
 
       if (field.value.url.includes("standardfield"))
-        fields.push({
+        updateFields.value.push({
           label: "Type",
           name: "field_type",
           type: "select",
@@ -265,27 +281,38 @@ export default defineComponent({
         field.value.url.includes("select") ||
         field.value.url.includes("multiple")
       )
-        fields.push({
+        updateFields.value.push({
           label: "Options",
           name: "options",
           type: "list",
           required: true,
         });
 
+      if (field.value.url.includes("users")) {
+        updateFields.value.push({
+          label: "Share Keys",
+          name: "share_keys",
+          type: "checkbox",
+          required: false,
+          helptext:
+            "If this option is selected every user selected will get access to the record.",
+        });
+        updateFields.value.push({
+          label: "Group",
+          name: "group",
+          type: "select",
+          required: false,
+          helptext:
+            "If a group is selected only members of this group will be selectable.",
+          options: [] as Group[],
+        });
+        AdminService.getGroups().then(
+          (groups) => (updateFields.value[3].options = groups),
+        );
+      }
+
       return fields;
     });
-
-    // create
-    const { createRequest, createModalOpen } = useCreateItem(
-      RecordsService.createField,
-      fields,
-    );
-
-    // update
-    const { updateRequest, updateModalOpen } = useUpdateItem(
-      RecordsService.updateField,
-      fields,
-    );
 
     // delete
     const { deleteRequest, deleteModalOpen } = useDeleteItem(

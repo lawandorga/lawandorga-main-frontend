@@ -56,6 +56,12 @@
           :helptext="field.helptext"
           :name="field.name"
         />
+        <FormCheckbox
+          v-else-if="field.type === 'checkbox'"
+          v-model="data[field.name]"
+          :label="field.label"
+          :helptext="field.helptext"
+        />
         <FormInput
           v-else
           v-model="data[field.name]"
@@ -125,9 +131,11 @@ import { DjangoError, JsonModel } from "@/types/shared";
 import { AxiosError } from "axios";
 import FormMultiple from "./FormMultiple.vue";
 import FormList from "./FormList.vue";
+import FormCheckbox from "@/components/FormCheckbox.vue";
 
 export default defineComponent({
   components: {
+    FormCheckbox,
     ButtonBlue,
     FormSelect,
     FormInput,

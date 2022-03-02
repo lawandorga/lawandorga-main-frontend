@@ -38,6 +38,7 @@ export interface RecordField {
   order: number;
   type: string;
   name: string;
+  kind: string;
 }
 
 export interface RecordsClient {
