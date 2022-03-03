@@ -32,11 +32,11 @@ class CollabService {
 
   createVersion(data: JsonModel): Promise<CollabDocument> {
     return axios
-      .patch<CollabDocument>(`collab/collab_documents/${data.document}/`, data)
+      .patch<CollabDocument>(`collab/collab_documents/${data.id}/`, data)
       .then((response) => response.data);
   }
 
-  getLatestVersion(id: number): Promise<CollabDocument> {
+  getLatestVersion(id: number | string): Promise<CollabDocument> {
     return axios
       .get<CollabDocument>(`collab/collab_documents/${id}/`)
       .then((response) => response.data);

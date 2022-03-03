@@ -1,13 +1,13 @@
 <template>
-  <BoxLoader :show="true">
+  <BoxLoader :show="!!doc">
     <div class="grid gap-6 max-w-screen-xl mx-auto">
       <BreadcrumbsBar
-        v-if="text"
+        v-if="doc"
         :base="{ name: 'collab-dashboard' }"
         :pages="[
           {
             name: 'Document',
-            to: { name: 'collab-detail', params: { id: text.id } },
+            to: { name: 'collab-detail', params: { id: doc.id } },
           },
         ]"
       >
@@ -16,34 +16,22 @@
       <div
         class="bg-white shadow rounded px-6 py-5 print:shadow-none print:p-0"
       >
-        <div v-if="loadQuill && !!text">
-          <FormQuill :content="text.content" @html="content = $event" />
-        </div>
-        <div v-if="content === '' || (content && !!text)">
-          <FormGenerator
-            :fields="[
-              {
-                label: 'Content',
-                name: 'content',
-                type: 'tiptap',
-                room: `Room ${text.id}`,
-              },
-            ]"
-            :initial="initial"
-            submit=""
-            @change="change($event)"
-          />
-        </div>
-        <div>
-          <span
-            :class="{
-              'text-green-600': currentVersionSaved,
-              'text-red-600': !currentVersionSaved,
-            }"
-          >
-            {{ currentVersionSaved ? "Saved" : "Not saved..." }}
-          </span>
-        </div>
+        <FormTiptap v-model="model" :room="`Room ${doc.id}`">
+          <div class="border-b-2 border-gray-800 flex justify-between">
+            <div class="w-full">
+              <input
+                v-model="doc.name"
+                type="doc"
+                class="border-none bg-transparent px-3 py-2 doc-xl font-bold focus:border-none focus:outline-none focus:ring-offset-transparent focus:shadow-none shadow-none"
+                @update:model-value="currentVersionSaved = false"
+              />
+            </div>
+            <div class="flex items-center justify-center pr-3">
+              <CircleLoader v-show="!currentVersionSaved" />
+              <CheckIcon v-show="currentVersionSaved" class="w-6 h-6" />
+            </div>
+          </div>
+        </FormTiptap>
       </div>
     </div>
   </BoxLoader>
@@ -52,66 +40,68 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { CollabDocument } from "@/types/collab";
-import FormQuill from "@/components/FormQuill.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
 import CollabService from "@/services/collab";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
-import { JsonModel } from "@/types/shared";
+import FormTiptap from "@/components/FormTiptap.vue";
+import { CheckIcon } from "@heroicons/vue/outline";
+import CircleLoader from "@/components/CircleLoader.vue";
 
 export default defineComponent({
   components: {
+    CheckIcon,
+    CircleLoader,
+    FormTiptap,
     BoxLoader,
     BreadcrumbsBar,
     DocumentTextIcon,
-    FormGenerator,
-    FormQuill,
   },
   data: function () {
     return {
-      text: null as CollabDocument | null,
+      doc: null as CollabDocument | null,
       content: null as string | null,
-      loadQuill: false,
       currentVersionSaved: true,
-      data: {} as JsonModel,
       saveInterval: null as ReturnType<typeof setInterval> | null,
     };
   },
   computed: {
-    initial(): { document: string; content: string } {
-      if (this.content !== null)
-        return {
-          document: this.$route.params.id as string,
-          content: this.content,
-        };
-      return { document: this.$route.params.id as string, content: "" };
+    model: {
+      get(): string | null {
+        return this.content;
+      },
+      set(newValue: string) {
+        this.content = newValue;
+        this.change(newValue);
+      },
     },
   },
   created() {
+    // set auto save interval
     this.saveInterval = setInterval(this.saveIfRequired, 5000);
-    CollabService.getLatestVersion(
-      parseInt(this.$route.params.id as string),
-    ).then((doc) => {
-      this.text = doc;
-      if (this.text.quill) this.loadQuill = true;
-      else this.content = this.text.content as string;
-    });
+    // get the latest version
+    CollabService.getLatestVersion(this.$route.params.id as string).then(
+      (doc) => {
+        this.doc = doc;
+        this.content = doc.content_html;
+      },
+    );
   },
   unmounted() {
     if (this.saveInterval !== null) clearInterval(this.saveInterval);
   },
   methods: {
-    change(data: JsonModel) {
-      if (this.content !== data["content"]) this.currentVersionSaved = false;
-      this.data = Object.assign({}, data);
+    change(newText: string) {
+      if (this.doc === null) return;
+      if (this.doc.content_html !== newText) this.currentVersionSaved = false;
     },
     saveIfRequired() {
       if (!this.currentVersionSaved) this.save();
     },
     save() {
+      const data = Object.assign({}, this.doc, { content: this.content });
       this.currentVersionSaved = true;
-      CollabService.createVersion(this.data);
+      CollabService.createVersion(data).then((cb) => (this.doc = cb));
     },
   },
 });

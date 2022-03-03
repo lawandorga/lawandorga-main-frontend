@@ -11,7 +11,7 @@
           <input
             v-model="value[key]"
             type="text"
-            class="flex-grow appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
+            class="flex-grow appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue focus:ring-1 sm:text-sm"
             @change="change()"
           />
           <button

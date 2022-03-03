@@ -14,7 +14,7 @@
           multiple
           :name="name"
           :value="modelValue"
-          class="cursor-pointer appearance-none block w-full p-0 border border-gray-300 rounded-bl-md overflow-x-hidden focus:outline-none focus:border-lorgablue focus:ring-lorgablue sm:text-sm"
+          class="cursor-pointer focus:ring-1 appearance-none block w-full p-0 border border-gray-300 rounded-bl-md overflow-x-hidden focus:outline-none focus:border-lorgablue focus:ring-lorgablue sm:text-sm"
           @keydown.space.left.right.stop.prevent="update($event.target.value)"
         >
           <option

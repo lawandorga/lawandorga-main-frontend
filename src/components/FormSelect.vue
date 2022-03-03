@@ -6,7 +6,7 @@
         :id="`form--${name}`"
         v-model="model"
         :name="name"
-        class="cursor-pointer mt-1 appearance-none block w-full pl-3 pr-6 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
+        class="cursor-pointer mt-1 appearance-none block w-full pl-3 pr-6 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue focus:ring-1 sm:text-sm"
       >
         <option
           v-for="option in internalOptions"

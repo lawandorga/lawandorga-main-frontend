@@ -53,6 +53,7 @@ interface KeyValueModel {
     | number
     | number[]
     | string[]
+    | null
     | KeyValueModel;
 }
 

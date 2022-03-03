@@ -1,9 +1,11 @@
 <template>
   <div v-if="editor" class="border-2 border-gray-800 rounded-xl">
+    <slot></slot>
     <MenuBar
       class="flex items-center border-b-2 border-gray-800 p-2 print:hidden"
       :editor="editor"
     />
+
     <EditorContent ref="tiptap" :editor="editor" />
     <div
       class="text-gray-800 flex items-center justify-between border-t-2 border-gray-800 px-2 py-1 print:hidden"
@@ -26,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Editor, EditorContent, EditorEvents } from "@tiptap/vue-3";
+import { Editor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -52,7 +54,7 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: [String, Boolean, Number],
+      type: String,
       default: "",
       required: false,
     },
@@ -77,19 +79,32 @@ export default defineComponent({
       };
     },
   },
+  // watch: {
+  //   modelValue: function (newValue, oldValue) {
+  //     if (
+  //       newValue.length > 0 &&
+  //       oldValue.length > 0 &&
+  //       newValue.length % oldValue.length === 0 &&
+  //       newValue.length !== oldValue.length
+  //     ) {
+  //       this.editor?.commands.setContent(oldValue);
+  //     } else if (newValue !== oldValue && !this.setup) {
+  //       this.editor?.commands.setContent(newValue);
+  //       this.setup = true;
+  //     }
+  //   },
+  // },
   watch: {
-    modelValue: function (newValue, oldValue) {
-      if (
-        newValue.length > 0 &&
-        oldValue.length > 0 &&
-        newValue.length % oldValue.length === 0 &&
-        newValue.length !== oldValue.length
-      ) {
-        this.editor?.commands.setContent(oldValue);
-      } else if (newValue !== oldValue && !this.setup) {
-        this.editor?.commands.setContent(newValue);
-        this.setup = true;
+    modelValue(value) {
+      if (this.editor === null) return;
+
+      const isSame = this.editor.getHTML() === value;
+
+      if (isSame) {
+        return;
       }
+
+      this.editor.commands.setContent(value, false);
     },
   },
   mounted() {
@@ -108,6 +123,7 @@ export default defineComponent({
           class: "prose p-5 w-full focus:outline-none sm:max-w-none",
         },
       },
+      content: this.modelValue,
       extensions: [
         StarterKit.configure({
           history: false,
@@ -130,12 +146,18 @@ export default defineComponent({
         TableHeader,
         TableCell,
       ],
+      onUpdate: () => {
+        this.$emit(
+          "update:modelValue",
+          this.editor ? this.editor.getHTML() : "",
+        );
+      },
     });
 
-    this.editor.on("update", (props: EditorEvents["update"]) => {
-      const html = props.editor.getHTML();
-      this.$emit("update:modelValue", html);
-    });
+    // this.editor.on("update", (props: EditorEvents["update"]) => {
+    //   const html = props.editor.getHTML();
+    //   this.$emit("update:modelValue", html);
+    // });
   },
   beforeUnmount() {
     this.editor ? this.editor.destroy() : null;

@@ -9,7 +9,7 @@ export interface CollabDocument {
   children?: number[];
   // retrieve
   quill?: boolean;
-  content?: string;
+  content_html: string;
 }
 
 export interface CollabVersion {
