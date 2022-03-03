@@ -190,10 +190,8 @@ export default defineComponent({
     const members = ref(null) as Ref<RlcUser[] | null>;
     const permissions = ref(null) as Ref<HasPermission[] | null>;
 
-    // watch(group, (group) => {
     useGet(AdminService.getMembers, members, group);
     useGet(AdminService.getGroupPermissions, permissions, group);
-    // });
 
     // add permission
     const permissionFields = reactive([

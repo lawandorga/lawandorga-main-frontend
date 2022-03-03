@@ -17,7 +17,9 @@ function useGet<
   const refParams = computed(() => {
     return params.filter((p) => isRef(p));
   });
-  watch(refParams, getRequest);
+
+  watch(refParams.value, getRequest);
+
   if (params.length === 0) getRequest();
 }
 
