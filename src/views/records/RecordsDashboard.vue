@@ -93,7 +93,7 @@ import { CollectionIcon } from "@heroicons/vue/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { formatDate } from "@/utils/date";
 import useCreateItem from "@/composables/useCreateItem";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
@@ -117,7 +117,7 @@ export default defineComponent({
     // records
     const records = ref(null) as Ref<Record[] | null>;
     const record = ref(null) as Ref<Record | null>;
-    useGetItems(RecordsService.getRecords, records);
+    useGet(RecordsService.getRecords, records);
 
     // request access
     const requestAccess = (record: Record) => {

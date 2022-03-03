@@ -67,8 +67,11 @@ import {
   DocumentTextIcon,
   SupportIcon,
 } from "@heroicons/vue/outline";
-import { defineComponent } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import HelpService from "@/services/help";
+import useGet from "@/composables/useGet";
+import { HelpPage } from "@/types/page";
 
 export default defineComponent({
   components: {
@@ -77,7 +80,10 @@ export default defineComponent({
     DocumentTextIcon,
   },
   setup() {
-    const items = [
+    const page = ref<HelpPage | null>(null);
+    useGet(HelpService.getHelpPage, page);
+
+    const items = computed(() => [
       {
         title: "Permissions",
         description:
@@ -99,7 +105,7 @@ export default defineComponent({
       {
         title: "User Guide",
         description: "The user guide that explains how to use Law&Orga.",
-        attrs: { href: "/handbuch.pdf", target: "_blank" },
+        attrs: { href: page.value ? page.value.manual : "#", target: "_blank" },
         icon: DocumentTextIcon,
         class: "sm:rounded-bl-lg",
         is: "a",
@@ -115,7 +121,7 @@ export default defineComponent({
         class: "rounded-b-lg sm:rounded-bl-none",
         is: "a",
       },
-    ];
+    ]);
 
     return {
       items,

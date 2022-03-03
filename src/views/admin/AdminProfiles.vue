@@ -115,7 +115,7 @@
 import { defineComponent } from "vue";
 import { ref, Ref } from "vue";
 import { User } from "@/types/user";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
@@ -139,7 +139,7 @@ export default defineComponent({
   },
   setup() {
     const profiles = ref(null) as Ref<User[] | null>;
-    useGetItems(AdminService.getUsers, profiles);
+    useGet(AdminService.getUsers, profiles);
 
     // accept
     const {

@@ -42,7 +42,7 @@ import { defineComponent, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { SupportIcon } from "@heroicons/vue/outline";
 import TableGenerator from "@/components/TableGenerator.vue";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import HelpService from "@/services/help";
 
 export default defineComponent({
@@ -53,7 +53,7 @@ export default defineComponent({
   },
   setup() {
     const newPermissions = ref(null);
-    useGetItems(HelpService.getPermissions, newPermissions);
+    useGet(HelpService.getPermissions, newPermissions);
 
     const permissions = [
       {

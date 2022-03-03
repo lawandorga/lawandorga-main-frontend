@@ -133,8 +133,7 @@
 </template>
 
 <script lang="ts">
-import useGetItem from "@/composables/useGetItem";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import { Group, HasPermission, Permission } from "@/types/core";
 import AdminService from "@/services/admin";
 import { useRoute } from "vue-router";
@@ -183,7 +182,7 @@ export default defineComponent({
 
     // group
     const group = ref(null) as Ref<Group | null>;
-    useGetItem(AdminService.getGroup, group, route.params.id as string);
+    useGet(AdminService.getGroup, group, route.params.id as string);
 
     // const p = ref({}) as Ref<HasPermission>
 
@@ -192,8 +191,8 @@ export default defineComponent({
     const permissions = ref(null) as Ref<HasPermission[] | null>;
 
     // watch(group, (group) => {
-    useGetItems(AdminService.getMembers, members, group);
-    useGetItems(AdminService.getGroupPermissions, permissions, group);
+    useGet(AdminService.getMembers, members, group);
+    useGet(AdminService.getGroupPermissions, permissions, group);
     // });
 
     // add permission

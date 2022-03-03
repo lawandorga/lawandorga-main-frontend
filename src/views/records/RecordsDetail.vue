@@ -319,8 +319,7 @@ import ButtonNormal from "@/components/ButtonNormal.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { useRoute } from "vue-router";
-import useGetItems from "@/composables/useGetItems";
-import useGetItem from "@/composables/useGetItem";
+import useGet from "@/composables/useGet";
 
 export default defineComponent({
   components: {
@@ -340,13 +339,13 @@ export default defineComponent({
 
     // record
     const record = ref<null | Record>(null);
-    useGetItem(RecordsService.getRecord, record, route.params.id as string);
+    useGet(RecordsService.getRecord, record, route.params.id as string);
 
     // encryptions
     const encryptions = ref<null | RecordEncryption[]>(null);
 
     // get
-    useGetItems(RecordsService.getEncryptions, encryptions, record);
+    useGet(RecordsService.getEncryptions, encryptions, record);
 
     // delete
     const encryptionTemporary = ref<null | RecordEncryption>(null);

@@ -150,8 +150,7 @@ import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import RecordsService from "@/services/records";
-import useGetItem from "@/composables/useGetItem";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useCreateItem from "@/composables/useCreateItem";
@@ -236,12 +235,12 @@ export default defineComponent({
 
     // template
     const template = ref(null) as Ref<RecordTemplate | null>;
-    useGetItem(RecordsService.getTemplate, template, route.params.id as string);
+    useGet(RecordsService.getTemplate, template, route.params.id as string);
 
     // fields
     const fields = ref(null) as Ref<RecordField[] | null>;
     const field = ref(null) as Ref<RecordField | null>;
-    useGetItems(RecordsService.getTemplateFields, fields, template);
+    useGet(RecordsService.getTemplateFields, fields, template);
 
     // create
     const { createRequest, createModalOpen } = useCreateItem(

@@ -61,7 +61,7 @@
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 import FormGenerator from "@/components/FormGenerator.vue";
 import { Questionnaire } from "@/types/records";
-import useGetItem from "@/composables/useGetItem";
+import useGet from "@/composables/useGet";
 import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
@@ -78,7 +78,7 @@ export default defineComponent({
     const recordQuestionnaire = ref<Questionnaire | null>(null);
     const route = useRoute();
 
-    useGetItem(
+    useGet(
       RecordsService.getQuestionnaire,
       recordQuestionnaire,
       route.params.code as string,

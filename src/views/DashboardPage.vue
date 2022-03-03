@@ -189,7 +189,7 @@ import { ViewGridIcon, ChevronRightIcon } from "@heroicons/vue/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
 import ButtonNormal from "@/components/ButtonNormal.vue";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
@@ -223,7 +223,7 @@ function getCreateUpdateDeleteNotes() {
   const notes = ref<DashboardNote[] | null>(null);
 
   // get
-  useGetItems(UsersService.getNotes, notes);
+  useGet(UsersService.getNotes, notes);
 
   // create and update
   const noteFields = [

@@ -1,11 +1,17 @@
+import { Permission } from "@/types/core";
+import { HelpPage } from "@/types/page";
 import axios from "../api";
 
 class HelpService {
   /*
   // Permission
   */
-  getPermissions() {
+  getPermissions(): Promise<Permission> {
     return axios.get("permissions/").then((response) => response.data);
+  }
+
+  getHelpPage(): Promise<HelpPage> {
+    return axios.get("pages/help/").then((response) => response.data);
   }
 }
 

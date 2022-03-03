@@ -82,7 +82,7 @@ import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import { ref } from "vue";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useCreateItem from "@/composables/useCreateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import CircleLoader from "@/components/CircleLoader.vue";
@@ -108,7 +108,7 @@ export default defineComponent({
   setup() {
     // all documents
     const documents = ref<CollabDocument[] | null>(null);
-    useGetItems(CollabService.getDocuments, documents);
+    useGet(CollabService.getDocuments, documents);
 
     // create document
     const {

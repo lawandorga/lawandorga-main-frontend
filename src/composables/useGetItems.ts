@@ -1,7 +1,7 @@
 import { DjangoModel, Reffed } from "@/types/shared";
 import { Ref, watch, unref } from "vue";
 
-export default function useGetItems<
+export default function useGet<
   Fn extends (...args: any[]) => Promise<DjangoModel[]>, // eslint-disable-line
 >(
   getItemsFunction: Fn,

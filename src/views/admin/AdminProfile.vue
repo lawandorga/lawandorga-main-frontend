@@ -143,7 +143,7 @@
 import { defineComponent, reactive, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ButtonBlue from "@/components/ButtonNormal.vue";
-import useGetItem from "@/composables/useGetItem";
+import useGet from "@/composables/useGet";
 import { ref, Ref } from "vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
@@ -153,7 +153,6 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
-import useGetItems from "@/composables/useGetItems";
 import { HasPermission, Permission } from "@/types/core";
 import { RlcUser, User } from "@/types/user";
 import { useRoute } from "vue-router";
@@ -240,7 +239,7 @@ export default defineComponent({
 
     // user
     const user = ref(null) as Ref<RlcUser | null>;
-    useGetItem(AdminService.getUser, user, route.params.id as string);
+    useGet(AdminService.getUser, user, route.params.id as string);
 
     // change password
     const {
@@ -256,7 +255,7 @@ export default defineComponent({
 
     // permissions
     const permissions = ref(null) as Ref<HasPermission[] | null>;
-    useGetItems(AdminService.getUserPermissions, permissions, user);
+    useGet(AdminService.getUserPermissions, permissions, user);
 
     // add permission
     const permissionFields = reactive([

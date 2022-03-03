@@ -75,7 +75,7 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useUpdateItem from "@/composables/useUpdateItem";
 import { RecordAccess } from "@/types/records";
 import { formatDate } from "@/utils/date";
@@ -110,7 +110,7 @@ export default defineComponent({
     const deletionRequest = ref(null) as Ref<RecordAccess | null>;
 
     // get
-    useGetItems(RecordsService.getRecordAccesses, deletionRequests);
+    useGet(RecordsService.getRecordAccesses, deletionRequests);
 
     // update
     const { updateRequest, updateModalOpen } = useUpdateItem(

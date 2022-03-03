@@ -269,7 +269,7 @@ import ButtonLink from "@/components/ButtonLink.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import { DjangoModel } from "@/types/shared";
 import FilesPermissions from "@/components/FilesPermissions.vue";
 import FilesHelp from "@/components/FilesHelp.vue";
@@ -301,7 +301,7 @@ export default defineComponent({
     const folderPermissions = ref<FilesPermission[] | null>(null);
 
     // files and folders
-    useGetItems(FilesService.getItems, items, folder);
+    useGet(FilesService.getItems, items, folder);
 
     const getFolder = (route: RouteLocation) => {
       if (route.params.id)

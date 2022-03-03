@@ -93,7 +93,7 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import ModalFree from "@/components/ModalFree.vue";
 import FormGenerator from "@/components/FormGenerator.vue";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
@@ -133,7 +133,7 @@ export default defineComponent({
     const group = ref({}) as Ref<Group>;
 
     // get
-    useGetItems(AdminService.getGroups, groups);
+    useGet(AdminService.getGroups, groups);
 
     // create
     const { createRequest, createModalOpen } = useCreateItem(

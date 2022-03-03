@@ -94,7 +94,7 @@ import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import RecordsService from "@/services/records";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useCreateItem from "@/composables/useCreateItem";
@@ -134,7 +134,7 @@ export default defineComponent({
     const template = ref({}) as Ref<RecordTemplate>;
 
     // get
-    useGetItems(RecordsService.getTemplates, templates);
+    useGet(RecordsService.getTemplates, templates);
 
     // create
     const { createRequest, createModalOpen } = useCreateItem(

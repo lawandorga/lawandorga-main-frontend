@@ -157,8 +157,7 @@ import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import RecordsService from "@/services/records";
-import useGetItem from "@/composables/useGetItem";
-import useGetItems from "@/composables/useGetItems";
+import useGet from "@/composables/useGet";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import useCreateItem from "@/composables/useCreateItem";
@@ -226,7 +225,7 @@ export default defineComponent({
 
     // questionnaire
     const questionnaire = ref(null) as Ref<QuestionnaireTemplate | null>;
-    useGetItem(
+    useGet(
       RecordsService.getQuestionnaireTemplate,
       questionnaire,
       route.params.id as string,
@@ -235,16 +234,12 @@ export default defineComponent({
     // fields
     const fields = ref(null) as Ref<QuestionnaireQuestion[] | null>;
     const field = ref(null) as Ref<QuestionnaireQuestion | null>;
-    useGetItems(
-      RecordsService.getQuestionnaireQuestions,
-      fields,
-      questionnaire,
-    );
+    useGet(RecordsService.getQuestionnaireQuestions, fields, questionnaire);
 
     // files
     const files = ref(null) as Ref<QuestionnaireTemplateFile[] | null>;
     const file = ref(null) as Ref<QuestionnaireTemplateFile | null>;
-    useGetItems(RecordsService.getQuestionnaireFiles, files, questionnaire);
+    useGet(RecordsService.getQuestionnaireFiles, files, questionnaire);
 
     // create file
     const {

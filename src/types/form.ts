@@ -33,7 +33,7 @@ export interface FormField {
   disabled?: boolean;
   required?: boolean;
   placeholder?: string;
-  options?: { name: string; value?: string; id?: string }[];
+  options?: { name: string; value?: string; id?: number }[];
   room?: string;
   helptext?: string;
 }
