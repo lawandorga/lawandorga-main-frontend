@@ -20,7 +20,7 @@ function useGet<
 
   watch(refParams.value, getRequest);
 
-  if (params.length === 0) getRequest();
+  if (refParams.value.length === 0) getRequest();
 }
 
 export default useGet;
