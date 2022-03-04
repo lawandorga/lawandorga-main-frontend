@@ -99,10 +99,6 @@ export default defineComponent({
     modelValue(value) {
       if (this.editor === null) return;
 
-      console.log(this.initial);
-      console.log(this.editor.getHTML());
-      console.log(value);
-
       const isDifferent = this.editor.getHTML() === value;
       if (isDifferent) this.setEditorContent(value);
 
@@ -110,7 +106,6 @@ export default defineComponent({
         value.includes(this.initial) &&
         value.length % this.initial.length === 0 &&
         value.length > this.initial.length;
-      console.log(isInitialMultiple);
       if (isInitialMultiple) this.setEditorContent(this.initial);
     },
   },
