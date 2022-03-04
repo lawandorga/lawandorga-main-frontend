@@ -25,7 +25,10 @@
         </div>
       </div>
       <!-- eslint-disable vue/no-v-html -->
-      <article class="pt-8 prose print:p-0" v-html="document.content"></article>
+      <article
+        class="pt-8 prose print:p-0"
+        v-html="document.content_html"
+      ></article>
       <!-- eslint-enable vue/no-v-html -->
     </div>
     <CircleLoader v-if="documentId && !document" />
@@ -224,7 +227,7 @@ export default defineComponent({
 
     const versionSelected = (version: CollabVersion) => {
       if (document.value === null) return;
-      document.value.content = version.content;
+      document.value.content_html = version.content;
     };
 
     return {

@@ -66,6 +66,7 @@ export default defineComponent({
       editor: null as null | Editor,
       users: [] as { [key: string]: any; clientId: number }[], // eslint-disable-line @typescript-eslint/no-explicit-any
       setup: false,
+      initial: "" as string,
     };
   },
   computed: {
@@ -98,16 +99,24 @@ export default defineComponent({
     modelValue(value) {
       if (this.editor === null) return;
 
-      const isSame = this.editor.getHTML() === value;
+      console.log(this.initial);
+      console.log(this.editor.getHTML());
+      console.log(value);
 
-      if (isSame) {
-        return;
-      }
+      const isDifferent = this.editor.getHTML() === value;
+      if (isDifferent) this.setEditorContent(value);
 
-      this.editor.commands.setContent(value, false);
+      const isInitialMultiple =
+        value.includes(this.initial) &&
+        value.length % this.initial.length === 0 &&
+        value.length > this.initial.length;
+      console.log(isInitialMultiple);
+      if (isInitialMultiple) this.setEditorContent(this.initial);
     },
   },
   mounted() {
+    this.initial = this.modelValue;
+
     const ydoc = new Y.Doc();
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -123,7 +132,6 @@ export default defineComponent({
           class: "prose p-5 w-full focus:outline-none sm:max-w-none",
         },
       },
-      content: this.modelValue,
       extensions: [
         StarterKit.configure({
           history: false,
@@ -154,16 +162,19 @@ export default defineComponent({
       },
     });
 
-    // this.editor.on("update", (props: EditorEvents["update"]) => {
-    //   const html = props.editor.getHTML();
-    //   this.$emit("update:modelValue", html);
-    // });
+    this.setEditorContent(this.modelValue);
   },
   beforeUnmount() {
     this.editor ? this.editor.destroy() : null;
     this.provider ? this.provider.destroy() : null;
   },
   methods: {
+    setEditorContent(value: string) {
+      if (this.editor === null) return;
+      this.editor.commands.setContent(value, false, {
+        preserveWhitespace: true,
+      });
+    },
     getRandomColor() {
       const colors = [
         "#958DF1",

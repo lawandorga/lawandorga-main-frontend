@@ -22,7 +22,7 @@
               <input
                 v-model="doc.name"
                 type="doc"
-                class="border-none bg-transparent px-3 py-2 doc-xl font-bold focus:border-none focus:outline-none focus:ring-offset-transparent focus:shadow-none shadow-none"
+                class="border-none bg-transparent px-3 py-2 text-3xl font-bold focus:border-none focus:outline-none focus:ring-offset-transparent focus:shadow-none shadow-none"
                 @update:model-value="currentVersionSaved = false"
               />
             </div>
