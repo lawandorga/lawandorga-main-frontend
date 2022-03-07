@@ -99,7 +99,7 @@ export default defineComponent({
     modelValue(value) {
       if (this.editor === null) return;
 
-      const isDifferent = this.editor.getHTML() === value;
+      const isDifferent = this.editor.getHTML() !== value;
       if (isDifferent) this.setEditorContent(value);
 
       const isInitialMultiple =
