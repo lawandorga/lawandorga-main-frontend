@@ -1,8 +1,9 @@
-import { Permission, Rlc } from "@/types/core";
+import { Rlc } from "@/types/core";
 import {
   DashboardInformation,
   DashboardNote,
   LoginResponse,
+  RefreshResponse,
   User,
 } from "@/types/user";
 import axios from "../api";
@@ -10,9 +11,7 @@ import axios from "../api";
 interface StaticsResponse {
   user: User;
   rlc: Rlc;
-  notifications: number;
   permissions: string[];
-  all_permissions: Permission[];
 }
 
 interface AdminInformation {
@@ -32,9 +31,15 @@ class UserService {
       .then((response) => response.data);
   }
 
-  statics(token: string): Promise<StaticsResponse> {
+  refresh(data: { refresh: string }): Promise<RefreshResponse> {
     return axios
-      .get<StaticsResponse>(`profiles/statics/${token}/`)
+      .post<RefreshResponse>(`profiles/refresh/`, data)
+      .then((response) => response.data);
+  }
+
+  statics(): Promise<StaticsResponse> {
+    return axios
+      .get<StaticsResponse>(`profiles/statics/`)
       .then((response) => response.data);
   }
 

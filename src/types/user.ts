@@ -40,11 +40,16 @@ export interface DashboardInformation {
 }
 
 export interface LoginResponse {
-  token: string;
-  key: string;
+  access: string;
+  refresh: string;
   rlc: Rlc;
   user: User;
   permissions: string[];
+}
+
+export interface RefreshResponse {
+  access: string;
+  refresh: string;
 }
 
 export interface DashboardNote {

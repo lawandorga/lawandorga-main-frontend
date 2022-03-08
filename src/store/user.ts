@@ -1,16 +1,17 @@
 import { RootState, UserState } from "@/types/state";
 import router from "../router";
 import { ActionContext } from "vuex";
-import { LoginResponse, User } from "@/types/user";
+import { LoginResponse, RefreshResponse, RlcUser } from "@/types/user";
 import UserService from "@/services/user";
 import { Rlc } from "@/types/core";
 
 const state = {
-  token: null,
-  key: null,
+  access: null,
+  refresh: null,
   user: null,
   rlc: null,
   permissions: [],
+  task: null,
   admin: {
     profiles: 0,
     record_deletion_requests: 0,
@@ -19,16 +20,19 @@ const state = {
 };
 
 const getters = {
+  // user
   user: (state: UserState) => state.user,
+  // rlc
   rlc: (state: UserState) => state.rlc,
-  token: (state: UserState) => `Token ${state.token}`,
-  key: (state: UserState) =>
-    state.key ? state.key.replace(/(?:\r\n|\r|\n)/g, "<linebreak>") : "",
-  isAuthenticated: (state: UserState) => !!state.token && !!state.key,
-  loginData: () => JSON.parse(localStorage.getItem("loginData") || "null"),
-  admin: (state: UserState) => state.admin,
+  // auth
+  token: (state: UserState) => `Bearer ${state.access}`,
+  access: (state: UserState) => state.access,
+  refresh: (state: UserState) => state.refresh,
+  isAuthenticated: (state: UserState) => !!state.access && !!state.refresh,
   loaded: (state: UserState) =>
-    !!state.token && !!state.key && !!state.user && !!state.rlc,
+    !!state.rlc && !!state.user && !!state.permissions,
+  // admin
+  admin: (state: UserState) => state.admin,
   adminNotifications: (state: UserState) =>
     state.admin
       ? state.admin.profiles +
@@ -39,22 +43,21 @@ const getters = {
 
 const actions = {
   autoLogin(context: ActionContext<UserState, RootState>) {
-    const loginData = context.getters.loginData;
-    if (loginData && "token" in loginData && "key" in loginData) {
+    const access = localStorage.getItem("access");
+    const refresh = localStorage.getItem("refresh");
+    if (access && refresh) {
       // login already to avoid the login page flash
       context.commit("login", {
-        token: loginData.token,
-        key: loginData.key,
-        user: null,
+        access: access,
+        refresh: refresh,
       });
+      // refresh
+      context.dispatch("refresh");
+      context.dispatch("autoRefresh");
       // now truly login if the token is not valid interceptors will redirect to login page anyway
-      return UserService.statics(loginData.token)
+      return UserService.statics()
         .then((statics) => {
-          context.commit("login", {
-            token: loginData.token,
-            key: loginData.key,
-            user: statics.user,
-          });
+          context.commit("setUser", statics.user);
           context.commit("setRlc", statics.rlc);
           context.commit("setPermissions", statics.permissions);
         })
@@ -69,12 +72,30 @@ const actions = {
     data: LoginResponse,
   ) => {
     context.commit("login", data);
+    context.commit("setUser", data.user);
     context.commit("setRlc", data.rlc);
     context.commit("setPermissions", data.permissions);
+    context.dispatch("autoRefresh");
+  },
+  autoRefresh: (context: ActionContext<UserState, RootState>) => {
+    const task = setTimeout(() => {
+      context.dispatch("refresh");
+      context.dispatch("autoRefresh");
+    }, 15 * 60 * 1000);
+    context.commit("setTask", task);
+  },
+  refresh: (context: ActionContext<UserState, RootState>) => {
+    return UserService.refresh({ refresh: context.getters.refresh }).then(
+      (newToken) => {
+        context.commit("refresh", newToken);
+        return newToken;
+      },
+    );
   },
   logout: (context: ActionContext<UserState, RootState>) => {
     return new Promise<void>((resolve) => {
       context.commit("logout");
+      context.commit("resetTask");
       router.push({ name: "user-login" });
       resolve();
     });
@@ -92,25 +113,34 @@ const actions = {
 };
 
 const mutations = {
-  login: (
-    state: UserState,
-    data: { token: string; user: User; key: string },
-  ) => {
-    localStorage.setItem(
-      "loginData",
-      JSON.stringify({ token: data.token, key: data.key }),
-    );
-    state.token = data.token;
-    state.user = data.user;
-    state.key = data.key;
+  login: (state: UserState, data: { access: string; refresh: string }) => {
+    localStorage.setItem("access", data.access);
+    state.access = data.access;
+    localStorage.setItem("refresh", data.refresh);
+    state.refresh = data.refresh;
+  },
+  refresh: (state: UserState, data: RefreshResponse) => {
+    localStorage.setItem("access", data.access);
+    state.access = data.access;
+    localStorage.setItem("refresh", data.refresh);
+    state.refresh = data.refresh;
+  },
+  setTask: (state: UserState, task: ReturnType<typeof setTimeout>) => {
+    state.task = task;
+  },
+  resetTask: (state: UserState) => {
+    if (state.task) clearTimeout(state.task);
+    state.task = null;
   },
   logout: (state: UserState) => {
-    localStorage.removeItem("loginData");
-    state.token = null;
+    localStorage.clear();
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    state.access = null;
+    state.refresh = null;
     state.user = null;
-    state.key = null;
     state.rlc = null;
-    state.permissions = [];
+    state.permissions = null;
     state.admin = {
       profiles: 0,
       record_deletion_requests: 0,
@@ -122,6 +152,9 @@ const mutations = {
   },
   setPermissions: (state: UserState, permissions: string[]) => {
     state.permissions = permissions;
+  },
+  setUser: (state: UserState, user: RlcUser) => {
+    state.user = user;
   },
   setAdmin: (
     state: UserState,

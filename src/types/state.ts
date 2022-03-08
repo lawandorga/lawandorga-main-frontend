@@ -1,6 +1,6 @@
 import { Alert } from "./alert";
 import { Rlc } from "./core";
-import { User } from "./user";
+import { RlcUser } from "./user";
 
 export interface CollabState {
   null: null;
@@ -11,11 +11,13 @@ export interface AlertState {
 }
 
 export interface UserState {
-  token: string | null;
+  access: string | null;
+  refresh: string | null;
   key: string | null;
-  user: User | null;
+  user: RlcUser | null;
   rlc: Rlc | null;
-  permissions: string[];
+  permissions: string[] | null;
+  task: ReturnType<typeof setTimeout> | null;
   notifications: number;
   admin: {
     profiles: number;

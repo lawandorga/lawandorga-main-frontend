@@ -1,7 +1,6 @@
 import router from "./router";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import store from "./store";
-import UserService from "./services/user";
 
 export function setupDefaultAxios($axios: AxiosInstance) {
   $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
@@ -65,10 +64,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
         });
       }
       // authentication error
-      else if (
-        error.response.status === 401 &&
-        error.config.url.includes("refresh")
-      ) {
+      else if (error.response.status === 401) {
         store.dispatch("alert/createAlert", {
           type: "error",
           heading: `Error 401`,
@@ -82,15 +78,15 @@ export function setupDefaultAxios($axios: AxiosInstance) {
             query: { next: next },
           });
         }
-      } else if (error.response.status === 401) {
-        const originalConfig = error.config;
-        const newToken = await UserService.refresh({
-          refresh: store.getters["user/refresh"],
-        });
-        await store.dispatch("user/refresh", newToken);
-        originalConfig._retry = true;
-        originalConfig.headers.Authorization = store.getters["user/token"];
-        return $axios(originalConfig);
+        // } else if (error.response.status === 401) {
+        //   const originalConfig = error.config;
+        //   const newToken = await UserService.refresh({
+        //     refresh: store.getters["user/refresh"],
+        //   });
+        //   await store.dispatch("user/refresh", newToken);
+        //   originalConfig._retry = true;
+        //   originalConfig.headers.Authorization = store.getters["user/token"];
+        //   return $axios(originalConfig);
       }
       // error with detail message
       else if (
