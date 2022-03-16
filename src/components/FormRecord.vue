@@ -21,7 +21,7 @@
           :label="field.label"
           :name="field.name"
           required
-          @change="update(field, $event.target.value)"
+          @change="change(field, $event.target.value)"
         />
         <FormSelect
           v-else-if="field.type === 'select'"
@@ -30,7 +30,7 @@
           :name="field.name"
           required
           :options="field.options ?? []"
-          @update:model-value="update(field, $event)"
+          @update:model-value="change(field, $event)"
         />
         <FormMultiple
           v-else-if="field.type === 'multiple'"
@@ -39,7 +39,7 @@
           :name="field.name"
           required
           :options="field.options ?? []"
-          @update:model-value="update(field, $event)"
+          @update:model-value="change(field, $event)"
         />
         <FormFile
           v-else-if="field.type === 'file'"
@@ -47,7 +47,7 @@
           :label="field.label"
           :name="field.name"
           required
-          @update:model-value="update(field, $event)"
+          @update:model-value="change(field, $event)"
           @download="downloadFile(field.name)"
         />
         <FormInput
@@ -57,7 +57,7 @@
           :name="field.name"
           :type="field.type"
           required
-          @focusout="update(field, $event.target.value)"
+          @focusout="change(field, $event.target.value)"
         />
         <p
           v-if="errors[field.name]"
@@ -126,24 +126,14 @@ export default defineComponent({
         return { "model-value": this.entries[name].value };
       return {};
     },
-    update(field: RecordField, value: RecordEntry["value"]) {
+    change(field: RecordField, value: RecordEntry["value"]) {
       this.errors = {};
       if (Object.keys(this.entries).includes(field.name)) {
-        this.updateEntry(field, value);
-      } else {
+        if (value) this.updateEntry(field, value);
+        else this.deleteEntry(field);
+      } else if (value) {
         this.createEntry(field, value);
       }
-    },
-    updateEntry(field: RecordField, value: RecordEntry["value"]) {
-      const data = {
-        url: this.entries[field.name].url,
-        value: value,
-      };
-      RecordsService.updateEntry(data)
-        .then((entry) => this.handleSuccess(field, entry))
-        .catch((e: AxiosError) => {
-          if (e.response) this.handleError(field, e.response.data);
-        });
     },
     createEntry(field: RecordField, value: RecordEntry["value"]) {
       if (field.type === "file") {
@@ -170,6 +160,27 @@ export default defineComponent({
             if (e.response) this.handleError(field, e.response.data);
           });
       }
+    },
+    updateEntry(field: RecordField, value: RecordEntry["value"]) {
+      const data = {
+        url: this.entries[field.name].url,
+        value: value,
+      };
+      RecordsService.updateEntry(data)
+        .then((entry) => this.handleSuccess(field, entry))
+        .catch((e: AxiosError) => {
+          if (e.response) this.handleError(field, e.response.data);
+        });
+    },
+    deleteEntry(field: RecordField) {
+      const url = this.entries[field.name].url;
+      RecordsService.deleteEntry(url)
+        .then(() => {
+          delete this.entries[field.name];
+        })
+        .catch((e: AxiosError) => {
+          if (e.response) this.handleError(field, e.response.data);
+        });
     },
     handleSuccess(field: RecordField, entry: RecordEntry) {
       this.entries[field.name] = entry;

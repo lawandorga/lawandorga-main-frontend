@@ -122,6 +122,10 @@ class RecordsService {
       .then((response) => response.data);
   }
 
+  deleteEntry(url: string): Promise<void> {
+    return axios.delete(url).then();
+  }
+
   createFileEntry(data: FormData): Promise<RecordEntry> {
     return axios
       .post<RecordEntry>(data.get("url") as string, data, {
