@@ -10,8 +10,8 @@
       >
         <option
           v-for="option in internalOptions"
-          :key="option.name"
-          :value="option.id || option.value"
+          :key="option.name || option"
+          :value="option.id || option.value || option"
         >
           {{ option.name ?? option }}
         </option>
@@ -54,7 +54,7 @@ export default defineComponent({
     options: {
       required: true,
       type: Array as PropType<
-        { name: string; value: string | boolean | null }[]
+        (string | { name: string; value: string | boolean | null })[]
       >,
     },
     required: {
