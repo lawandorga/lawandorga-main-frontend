@@ -6,7 +6,7 @@ import {
   RefreshResponse,
   User,
 } from "@/types/user";
-import axios from "../api";
+import axios from "axios";
 
 interface StaticsResponse {
   user: User;

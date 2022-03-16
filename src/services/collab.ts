@@ -6,7 +6,7 @@ import {
 } from "@/types/collab";
 import { HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
-import axios from "../api";
+import axios from "axios";
 
 class CollabService {
   getDocuments(): Promise<CollabDocument[]> {

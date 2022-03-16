@@ -236,8 +236,12 @@ export default defineComponent({
       this.$emit("success", data);
     },
     handleError(errors: DjangoError) {
-      this.errors = errors;
-      this.nonFieldErrors = errors.non_field_errors as string[];
+      if (errors.detail) {
+        this.nonFieldErrors = [errors.detail as string];
+      } else {
+        this.errors = errors;
+        this.nonFieldErrors = errors.non_field_errors as string[];
+      }
       this.loading = false;
       this.$emit("error", errors);
     },

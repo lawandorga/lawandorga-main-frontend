@@ -5,7 +5,7 @@ import {
   RoadmapItem,
   TomsPage,
 } from "@/types/internal";
-import axios from "../api";
+import axios from "axios";
 
 class InternalService {
   getRoadmapItems(): Promise<RoadmapItem[]> {

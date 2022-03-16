@@ -27,8 +27,20 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       return response;
     },
     async function (error) {
+      // ignore those errors because the modals or forms handle it
+      if (
+        error.config &&
+        error.response &&
+        (error.config.method === "post" ||
+          error.config.method === "patch" ||
+          error.config.method === "put" ||
+          error.config.method === "delete") &&
+        error.response.status.toString().startsWith(4)
+      ) {
+        // ignore
+      }
       // error without a response object attached
-      if (!error.response) {
+      else if (!error.response) {
         store.dispatch("alert/createAlert", {
           type: "error",
           heading: `Network Error`,

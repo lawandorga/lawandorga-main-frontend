@@ -1,6 +1,6 @@
 import { Permission } from "@/types/core";
 import { HelpPage } from "@/types/page";
-import axios from "../api";
+import axios from "axios";
 
 class HelpService {
   /*
