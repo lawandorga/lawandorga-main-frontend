@@ -54,7 +54,10 @@
                     {{ object ? object.name : "this object" }}?
                   </slot>
                 </p>
-                <p v-if="error" class="mt-2 text-sm text-red-600">
+                <p
+                  v-if="error"
+                  class="mt-2 text-sm text-red-600 whitespace-pre-line"
+                >
                   {{ error }}
                 </p>
               </div>

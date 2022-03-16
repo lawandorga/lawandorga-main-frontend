@@ -1,6 +1,5 @@
 <template>
   <BoxLoader :show="!!template">
-    sfsad
     <div class="max-w-4xl mx-auto space-y-6">
       <BreadcrumbsBar
         :base="{ name: 'admin-dashboard' }"
