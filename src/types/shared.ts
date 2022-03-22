@@ -1,21 +1,4 @@
-import {
-  CollabDocument,
-  CollabDocumentPermission,
-  CollabVersion,
-} from "./collab";
-import { Group, HasPermission, Permission } from "./core";
-import { DashboardNote, RlcUser, User } from "./user";
 import { Ref } from "vue";
-import {
-  QuestionnaireTemplate,
-  QuestionnaireQuestion,
-  Record,
-  RecordDeletion,
-  Questionnaire,
-  RecordTemplate,
-  RecordField,
-  RecordEncryption,
-} from "./records";
 
 /*
 // helpers

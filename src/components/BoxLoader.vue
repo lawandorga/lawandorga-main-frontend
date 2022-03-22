@@ -12,10 +12,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Loader from "@/components/CircleLoader.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     Loader,
   },
@@ -25,5 +26,5 @@ export default {
       default: false,
     },
   },
-};
+});
 </script>

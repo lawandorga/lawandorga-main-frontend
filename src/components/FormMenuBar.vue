@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import MenuItem from "./MenuItem.vue";
+import MenuItem from "./FormMenuItem.vue";
 import { BooleanFunction, VoidFunction } from "@/types/shared";
 
 export default defineComponent({
