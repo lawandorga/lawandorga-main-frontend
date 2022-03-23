@@ -1,7 +1,18 @@
 <template>
-  <div class="max-w-lg mx-auto bg-white shadow px-4 pt-4 pb-6 mt-12">
-    <h2 class="text-2xl font-medium mb-4">Reset Password</h2>
-    <div v-if="!success" class="">
+  <div class="max-w-lg px-4 pt-4 pb-6 mx-auto mt-12 bg-white shadow">
+    <h2 class="mb-4 text-2xl font-medium">Reset Password</h2>
+    <p class="text-base">
+      Only use this if you have actually forgotten your password. Your account
+      will be locked after a password forgotten process and an admin needs to
+      unlock you. That's the case because your encryption keys need to be
+      resetted.
+      <br />
+      <b>
+        You can also change your password within Law&Orga on your personal
+        profile.
+      </b>
+    </p>
+    <div v-if="!success" class="mt-8">
       <FormGenerator
         :fields="fields"
         :request="reset"
