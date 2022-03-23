@@ -3,7 +3,7 @@
     class="flex flex-col items-start lg:space-y-0 lg:flex-row lg:justify-between print:hidden"
     aria-label="Breadcrumb"
   >
-    <ol role="list" class="bg-white rounded-md shadow-sm px-6 flex space-x-4">
+    <ol role="list" class="flex px-6 space-x-4 bg-white rounded-md shadow-sm">
       <li class="flex h-11">
         <div class="flex items-center">
           <router-link :to="base" class="text-gray-400 hover:text-gray-500">
@@ -28,7 +28,7 @@
           </svg>
           <router-link
             :to="page.to"
-            class="text-sm ml-4 font-medium text-gray-500 hover:text-gray-700"
+            class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
           >
             {{ page.name }}
           </router-link>
@@ -58,7 +58,7 @@ export default defineComponent({
       default: () => [],
     },
     base: {
-      type: Object as PropType<{ name: string; to: LocationAsName }>,
+      type: Object as PropType<LocationAsName>,
       required: true,
     },
   },

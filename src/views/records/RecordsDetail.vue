@@ -1,8 +1,7 @@
 <template>
-  <BoxLoader :show="true">
-    <div class="grid gap-6 2xl:grid-cols-2 max-w-screen-2xl mx-auto">
+  <BoxLoader :show="!!record">
+    <div class="grid gap-6 mx-auto 2xl:grid-cols-2 max-w-screen-2xl">
       <BreadcrumbsBar
-        v-if="record"
         class="2xl:col-span-2"
         :base="{ name: 'records-dashboard' }"
         :pages="[
@@ -14,17 +13,20 @@
       >
         <CollectionIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div class="bg-white shadow px-5 py-4 rounded">
+      <div class="px-5 py-4 bg-white rounded shadow">
         <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
-        <div v-if="record">
+        <div>
           <FormRecord :record="record"></FormRecord>
         </div>
       </div>
 
-      <div v-if="record" class="flex space-y-6 flex-col">
-        <div class="bg-white shadow px-5 py-4 rounded">
+      <div class="flex flex-col space-y-6">
+        <div
+          v-if="record && record.old_client"
+          class="px-5 py-4 bg-white rounded shadow"
+        >
           <h2 class="text-lg font-bold text-gray-800">Client</h2>
-          <p class="text-sm text-gray-600 mb-5">
+          <p class="mb-5 text-sm text-gray-600">
             The following data could not be copied over into the new format, due
             to the way the encryption was built.
           </p>
@@ -33,7 +35,7 @@
           <p>Client note: {{ record.client.note }}</p>
         </div>
 
-        <div class="bg-white shadow px-5 py-4 rounded">
+        <div class="px-5 py-4 bg-white rounded shadow">
           <h2 class="mb-5 text-lg font-bold text-gray-800">Files</h2>
           <div>
             <div>
@@ -71,14 +73,14 @@
           </div>
         </div>
 
-        <div class="bg-white shadow px-5 py-4 rounded">
+        <div class="px-5 py-4 bg-white rounded shadow">
           <h2 class="mb-5 text-lg font-bold text-gray-800">Messages</h2>
           <div>
             <ul class="space-y-5">
               <li v-for="message in messages" :key="message.id">
                 <div style="width: 100%">
                   <div
-                    class="w-full flex-col-reverse flex justify-between items-baseline md:flex-row"
+                    class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
                   >
                     <b>
                       {{
@@ -106,7 +108,7 @@
           </div>
         </div>
 
-        <div class="bg-white shadow rounded">
+        <div class="bg-white rounded shadow">
           <div
             class="flex items-baseline justify-between px-5 pt-4 pb-4 border-b-4 border-gray-200"
           >
@@ -120,21 +122,21 @@
             </ButtonNormal>
           </div>
           <div v-if="!!recordQuestionnaires.length" class="">
-            <ul class="space-y-4d divide-y-2 divide-gray-200">
+            <ul class="divide-y-2 divide-gray-200 space-y-4d">
               <li v-for="item in recordQuestionnaires" :key="item.id">
-                <div class="px-5 py-5 sm:px-6 flex justify-between">
+                <div class="flex justify-between px-5 py-5 sm:px-6">
                   <div class="flex-shrink">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900">
                       {{ item.template.name }}
                     </h3>
                     <div
-                      class="mt-1 text-gray-500 text-sm flex flex-col lg:space-x-4 lg:flex-row"
+                      class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
                     >
                       <p class="">Published: {{ formatDate(item.created) }}</p>
                       <p class="">
                         Link:
                         <button
-                          class="underline break-all text-left hover:text-gray-700"
+                          class="text-left underline break-all hover:text-gray-700"
                           @click="copyLink(item)"
                         >
                           {{ base }}/records/upload/{{ item.code }}/
@@ -152,7 +154,7 @@
                     </ButtonNormal>
                   </div>
                 </div>
-                <div class="border-t border-gray-200 px-5 py-5 sm:px-6">
+                <div class="px-5 py-5 border-t border-gray-200 sm:px-6">
                   <dl class="grid grid-cols-1 gap-x-4 gap-y-8">
                     <div
                       v-for="answer in item.answers"
@@ -173,17 +175,17 @@
                         class="mt-1 text-sm text-gray-900"
                       >
                         <div
-                          class="border border-gray-200 rounded-md divide-y divide-gray-200"
+                          class="border border-gray-200 divide-y divide-gray-200 rounded-md"
                         >
                           <div
-                            class="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
+                            class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
                           >
-                            <div class="w-0 flex-1 flex items-center">
+                            <div class="flex items-center flex-1 w-0">
                               <PaperClipIcon
-                                class="flex-shrink-0 h-5 w-5 text-gray-400"
+                                class="flex-shrink-0 w-5 h-5 text-gray-400"
                                 aria-hidden="true"
                               />
-                              <span class="ml-2 flex-1 w-0 truncate">
+                              <span class="flex-1 w-0 ml-2 truncate">
                                 {{
                                   answer.data
                                     ? answer.data.split("/").at(-1)
@@ -191,7 +193,7 @@
                                 }}
                               </span>
                             </div>
-                            <div class="ml-4 flex-shrink-0">
+                            <div class="flex-shrink-0 ml-4">
                               <ButtonNormal
                                 size="xs"
                                 kind="action"
@@ -217,10 +219,10 @@
           </div>
         </div>
 
-        <div class="bg-white shadow rounded">
-          <div class="pt-5 px-5">
+        <div class="bg-white rounded shadow">
+          <div class="px-5 pt-5">
             <h2 class="text-lg font-bold text-gray-800">Access</h2>
-            <p class="text-gray-600 text-sm">
+            <p class="text-sm text-gray-600">
               The following persons have access to this record.
             </p>
           </div>
