@@ -1,3 +1,5 @@
+import { JsonModel } from "./shared";
+
 export interface RecordTemplate {
   id: number;
   name: string;
@@ -7,21 +9,21 @@ export interface RecordTemplate {
   show: string[];
 }
 
-export interface Record {
+export interface Record extends JsonModel {
   id: number;
   created: string;
   updated: string;
   // delete: boolean;
   entries: { [key: string]: RecordEntry };
   fields: RecordField[];
-  show?: string[];
+  show: string[];
   old_record: number;
-  delete?: boolean;
+  delete: boolean;
 }
 
 type RecordValue = string | number | boolean | string[] | number[];
 
-export interface RecordEntry {
+export interface RecordEntry extends JsonModel {
   id: number;
   name: string;
   order: number;
@@ -31,7 +33,7 @@ export interface RecordEntry {
   url: string;
 }
 
-export interface RecordField {
+export interface RecordField extends JsonModel {
   id: number;
   url: string;
   entry_url: string;
@@ -75,14 +77,13 @@ export interface Message {
   record: number;
 }
 
-export interface RecordsDocument {
+export interface RecordsDocument extends JsonModel {
   id: number;
   name: string;
   creator: string;
   created_on: Date;
   last_edited: Date;
   file_size: number;
-  tags: Tag[];
 }
 
 export interface Tag {

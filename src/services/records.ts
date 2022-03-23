@@ -342,9 +342,9 @@ class RecordsService {
   }
 
   // documents
-  getDocuments(id: number | string): Promise<RecordsDocument[]> {
+  getDocuments(record: { id: number | string }): Promise<RecordsDocument[]> {
     return axios
-      .get<RecordsDocument[]>(`records/records/${id}/documents/`)
+      .get<RecordsDocument[]>(`records/records/${record.id}/documents/`)
       .then((response) => response.data);
   }
 

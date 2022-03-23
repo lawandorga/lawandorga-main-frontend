@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-screen-2xl mx-auto space-y-6">
+    <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar
         v-if="!!folder"
         :base="{ name: 'files-dashboard' }"
@@ -28,7 +28,7 @@
         :data="items"
       >
         <template #head-action>
-          <div class="flex space-x-3 justify-end">
+          <div class="flex justify-end space-x-3">
             <ButtonNormal
               size="xs"
               kind="action"
@@ -77,7 +77,7 @@
           {{ formatDate(slotProps.created) }}
         </template>
         <template #action="slotProps">
-          <div class="flex space-x-3 justify-end">
+          <div class="flex justify-end space-x-3">
             <ButtonNormal
               v-if="slotProps.type === 'FOLDER'"
               size="xs"
@@ -136,7 +136,7 @@
       <TableGenerator
         :head="[
           { name: 'Permission', key: 'type' },
-          { name: 'Group', key: ['group_has_permission', 'name'] },
+          { name: 'Group', key: (obj) => obj.group_has_permission?.name },
           { name: 'Source', key: 'folder' },
           { name: '', key: 'action' },
         ]"

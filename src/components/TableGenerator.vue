@@ -2,9 +2,9 @@
   <Table>
     <Thead>
       <Tr class="divide-x divide-gray-200">
-        <Th v-for="item in head" :key="item.key">
+        <Th v-for="item in head" :key="item.name">
           <div v-if="item.key === 'action'" class="flex justify-end space-x-3">
-            <slot :name="`head-${item.key}`" />
+            <slot :name="`head-${item.key}`"></slot>
           </div>
           <slot v-else :name="`head-${item.key}`">
             {{ item.name }}
@@ -18,12 +18,12 @@
         :key="index"
         class="divide-x divide-gray-100"
       >
-        <Td v-for="headItem in head" :key="headItem.key">
+        <Td v-for="headItem in head" :key="headItem.name">
           <div
             v-if="headItem.key === 'action'"
             class="flex justify-end space-x-3"
           >
-            <slot v-bind="dataItem" name="action" />
+            <slot v-bind="dataItem" name="action"></slot>
           </div>
           <slot v-else v-bind="dataItem" :name="headItem.key">
             {{ getData(dataItem, headItem.key) }}
@@ -53,12 +53,8 @@ import Thead from "./TableHeader.vue";
 import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
 import { defineComponent, PropType } from "vue";
-import { JsonModel } from "@/types/shared";
+import { JsonModel, JsonValues } from "@/types/shared";
 import CircleLoader from "./CircleLoader.vue";
-
-interface NestedObject {
-  [key: string]: string | NestedObject;
-}
 
 type KeyFunction = (_: JsonModel) => string | number | boolean;  // eslint-disable-line
 
@@ -74,9 +70,7 @@ export default defineComponent({
   },
   props: {
     head: {
-      type: Array as PropType<
-        { key: NestedObject | KeyFunction; name: string }[]
-      >,
+      type: Array as PropType<{ key: KeyFunction | string; name: string }[]>,
       required: true,
     },
     data: {
@@ -97,20 +91,11 @@ export default defineComponent({
   },
   methods: {
     getData(
-      data: NestedObject,
-      key: string | string[] | KeyFunction,
-    ): string | number | boolean {
-      if (typeof key === "function") {
-        return key(data);
-      } else if (Array.isArray(key)) {
-        let newData = data as NestedObject | string | number | boolean;
-        key.forEach((key) => {
-          if (newData) newData = (newData as NestedObject)[key];
-          else return "";
-        });
-        return newData as unknown as string | number | boolean;
-      }
-      return data[key] as number | string | boolean;
+      data: JsonModel,
+      key: string | KeyFunction,
+    ): JsonModel | JsonModel[] | JsonValues {
+      if (typeof key === "function") return key(data);
+      else return data[key];
     },
   },
 });

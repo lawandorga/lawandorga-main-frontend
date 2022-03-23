@@ -29,16 +29,16 @@
             leave-to="opacity-0 scale-95"
           >
             <div
-              class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-md"
+              class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white rounded-md shadow-xl"
             >
-              <div class="block absolute top-0 right-0 pt-3 pr-3">
+              <div class="absolute top-0 right-0 block pt-3 pr-3">
                 <button
                   type="button"
                   class="bg-white p-0.5 border-2 border-transparent rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 hover:border-gray-100 focus:outline-none focus:ring-0"
                   @click="$emit('update:modelValue', false)"
                 >
                   <span class="sr-only">Close</span>
-                  <XIcon class="h-6 w-6" aria-hidden="true" />
+                  <XIcon class="w-6 h-6" aria-hidden="true" />
                 </button>
               </div>
               <DialogTitle
@@ -62,7 +62,7 @@
                 </p>
               </div>
 
-              <div class="mt-4 flex space-x-3 justify-end">
+              <div class="flex justify-end mt-4 space-x-3">
                 <ButtonBlue
                   kind="secondary"
                   type="button"
@@ -117,7 +117,7 @@ export default defineComponent({
       default: "Delete",
     },
     object: {
-      type: Object as PropType<JsonModel>,
+      type: Object as PropType<JsonModel | null>,
       required: false,
       default: () => null,
     },
@@ -152,12 +152,13 @@ export default defineComponent({
     deleteClicked() {
       this.loading = true;
       this.error = null;
-      this.request(this.object)
-        .then(() => this.$emit("deleted", this.object))
-        .finally(() => (this.loading = false))
-        .catch((error: AxiosError<DjangoError>) =>
-          this.handleError(error.response ? error.response.data : {}),
-        );
+      if (this.object)
+        this.request(this.object)
+          .then(() => this.$emit("deleted", this.object))
+          .finally(() => (this.loading = false))
+          .catch((error: AxiosError<DjangoError>) =>
+            this.handleError(error.response ? error.response.data : {}),
+          );
     },
     handleError(errors: DjangoError) {
       if (errors.detail) this.error = errors.detail as string;

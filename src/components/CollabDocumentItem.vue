@@ -1,14 +1,14 @@
 <template>
   <!-- single document -->
   <div
-    class="bg-white shadow rounded-md p-5 2xl:col-span-2 print:p-0 print:shadow-none"
+    class="p-5 bg-white rounded-md shadow 2xl:col-span-2 print:p-0 print:shadow-none"
   >
     <div v-if="document">
       <div
         class="flex flex-col justify-between lg:flex-row lg:items-center print:hidden"
       >
-        <div class="text-sm text-gray-500 mb-2">{{ document.path }}</div>
-        <div class="flex space-x-3 self-end">
+        <div class="mb-2 text-sm text-gray-500">{{ document.path }}</div>
+        <div class="flex self-end space-x-3">
           <ButtonNormal
             kind="action"
             :to="{ name: 'collab-detail', params: { id: document.id } }"
@@ -48,8 +48,8 @@
     <TableGenerator
       :head="[
         { name: 'Type', key: 'type' },
-        { name: 'Group', key: ['group_has_permission', 'name'] },
-        { name: 'Source', key: ['document', 'path'] },
+        { name: 'Group', key: (obj) => obj.group_has_permission.name },
+        { name: 'Source', key: (obj) => obj.document.path },
         { name: '', key: 'action' },
       ]"
       :data="documentPermissions"
@@ -90,7 +90,7 @@
       <li v-for="item in versions" :key="item.id">
         <button
           type="button"
-          class="w-full border-2 border-gray-300 rounded px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200"
+          class="w-full px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 border-2 border-gray-300 rounded hover:bg-gray-200"
           @click="versionSelected(item)"
         >
           {{ formatDate(item.updated) }}

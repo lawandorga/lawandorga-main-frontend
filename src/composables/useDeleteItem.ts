@@ -36,7 +36,10 @@ export default function useDeleteItem<
     });
   };
 
+  const temporary = ref<JsonModel | null>(null);
+
   return {
+    temporary,
     deleteRequest,
     deleteModalOpen,
   };

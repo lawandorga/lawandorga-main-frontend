@@ -14,7 +14,7 @@ export type BooleanFunction = () => void;
 export type RequestFunction = (
   data: JsonModel, // eslint-disable-line no-unused-vars
   item?: DjangoModel, // eslint-disable-line no-unused-vars
-) => Promise<DjangoModel>;
+) => Promise<JsonModel>;
 // get
 export type GetMultipleFunction = (
   data?: DjangoModel, // eslint-disable-line no-unused-vars
@@ -29,18 +29,19 @@ export type DeleteFunction = (
 /*
 // models
 */
-interface KeyValueModel {
-  [key: string]:
-    | string
-    | boolean
-    | number
-    | number[]
-    | string[]
-    | null
-    | KeyValueModel;
-}
+export type JsonValues =
+  | string
+  | boolean
+  | number
+  | Date
+  | null
+  | number[]
+  | string[];
 
-export type JsonModel = KeyValueModel;
+export interface JsonModel {
+  // [key: string]: JsonValues | JsonModel | JsonModel[];
+  [key: string]: any; // eslint-disable-line
+}
 
 export type DjangoModel = { id: number; url?: string; type?: string };
 

@@ -21,6 +21,7 @@
       </div>
 
       <div class="flex flex-col space-y-6">
+        <!-- client -->
         <div
           v-if="record && record.old_client"
           class="px-5 py-4 bg-white rounded shadow"
@@ -35,42 +36,42 @@
           <p>Client note: {{ record.client.note }}</p>
         </div>
 
-        <div class="px-5 py-4 bg-white rounded shadow">
-          <h2 class="mb-5 text-lg font-bold text-gray-800">Files</h2>
-          <div>
-            <div>
-              <div v-for="item in documents" :key="item.id">
-                <div>
-                  <b>{{ item.name }}</b>
-                </div>
-                <div>
-                  <i>{{ item.created_on }}</i>
-                </div>
-                <button
-                  mat-button
-                  color="primary"
-                  @click="downloadDocument(item)"
-                >
-                  Download
-                </button>
-                <button
-                  mat-button
-                  color="warn"
-                  @click="openDocumentDelete(item)"
-                >
-                  Delete
-                </button>
-              </div>
-              <div style="height: auto; padding-top: 16px">
-                <FormGenerator
-                  :fields="documentFields"
-                  :initial="{ record: $route.params.id }"
-                  :request="createDocument"
-                  @success="documents.push($event)"
-                ></FormGenerator>
-              </div>
-            </div>
-          </div>
+        <!-- files -->
+        <div>
+          <TableGenerator
+            :head="[
+              { name: 'File', key: 'name' },
+              { name: 'Created', key: 'created' },
+              { name: '', key: 'action' },
+            ]"
+            :data="documents"
+          >
+            <template #created="slotProps">
+              {{ formatDate(slotProps.created_on) }}
+            </template>
+            <template #head-action>
+              <ButtonNormal
+                kind="action"
+                @click="uploadDocumentModalOpen = true"
+              >
+                Upload File
+              </ButtonNormal>
+            </template>
+            <template #action="item">
+              <ButtonNormal kind="action" @click="downloadDocument(item)">
+                Download
+              </ButtonNormal>
+              <ButtonNormal
+                kind="delete"
+                @click="
+                  deleteDocumentModalOpen = true;
+                  documentTemporary = item;
+                "
+              >
+                Delete
+              </ButtonNormal>
+            </template>
+          </TableGenerator>
         </div>
 
         <div class="px-5 py-4 bg-white rounded shadow">
@@ -264,12 +265,19 @@
       Are you sure you want to delete these keys?
     </ModalDelete>
     <!-- document -->
+    <ModalFree v-model="uploadDocumentModalOpen" title="Upload Document">
+      <FormGenerator
+        :fields="documentFields"
+        :request="uploadDocumentRequest"
+        :initial="{ record: $route.params.id }"
+        submit="Upload"
+      />
+    </ModalFree>
     <ModalDelete
-      v-model="deleteDocumentOpen"
-      :object="document"
-      :request="deleteDocument"
+      v-model="deleteDocumentModalOpen"
+      :object="documentTemporary"
+      :request="deleteDocumentRequest"
       title="Delete Document"
-      @deleted="documentDeleted"
     />
     <!-- questionnaire -->
     <ModalDelete
@@ -307,7 +315,7 @@ import {
   RecordsClient,
   RecordsDocument,
 } from "@/types/records";
-import { defineComponent, ref } from "vue";
+import { defineComponent, Ref, ref } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -322,6 +330,8 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
+import useCreateItem from "@/composables/useCreateItem";
+import { FormField } from "@/types/form";
 
 export default defineComponent({
   components: {
@@ -343,26 +353,9 @@ export default defineComponent({
     const record = ref<null | Record>(null);
     useGet(RecordsService.getRecord, record, route.params.id as string);
 
-    // encryptions
-    const encryptions = ref<null | RecordEncryption[]>(null);
-
-    // get
-    useGet(RecordsService.getEncryptions, encryptions, record);
-
-    // delete
-    const encryptionTemporary = ref<null | RecordEncryption>(null);
-
-    const {
-      deleteRequest: deleteEncryptionRequest,
-      deleteModalOpen: deleteEncryptionModalOpen,
-    } = useDeleteItem(RecordsService.deleteEncryption, encryptions);
-
     return {
-      encryptions,
-      // delete
-      encryptionTemporary,
-      deleteEncryptionRequest,
-      deleteEncryptionModalOpen,
+      ...encryptionsGetDelete(record),
+      ...recordDocumentsGetUploadDownloadDelete(record),
     };
   },
   data() {
@@ -371,20 +364,12 @@ export default defineComponent({
       formatDate: formatDate,
       // record
       record: null as Record | null,
-      updateRecord: RecordsService.updateRecord,
       // client
       client: null as RecordsClient | null,
       updateClient: RecordsService.updateClient,
       // messages
       messages: [] as Message[],
       createMessage: RecordsService.createMessage,
-      // documents
-      documents: [] as RecordsDocument[],
-      createDocument: RecordsService.createDocument,
-      downloadDocument: RecordsService.downloadDocument,
-      deleteDocument: RecordsService.deleteDocument,
-      deleteDocumentOpen: false,
-      document: null as RecordsDocument | null,
       // record-questionnaires
       recordQuestionnaires: [] as Questionnaire[],
       createRecordQuestionnaire: RecordsService.createQuestionnaire,
@@ -393,14 +378,6 @@ export default defineComponent({
       deleteRecordQuestionnaireOpen: false,
       recordQuestionnaire: null as Questionnaire | null,
       // fields
-      documentFields: [
-        {
-          label: "File",
-          type: "file",
-          name: "file",
-          required: true,
-        },
-      ],
       messageFields: [
         {
           label: "Message",
@@ -431,15 +408,6 @@ export default defineComponent({
     },
   },
   created() {
-    // RecordsService.getCountries().then(
-    //   (countries) => (this.clientFields[2].options = countries),
-    // );
-    // RecordsService.getConsultants().then(
-    //   (consultants) => (this.recordFields[5].options = consultants),
-    // );
-    // RecordsService.getTags().then(
-    //   (tags) => (this.recordFields[6].options = tags),
-    // );
     RecordsService.getRecord(this.$route.params.id as string).then(
       (record) => (this.record = record),
     );
@@ -449,23 +417,11 @@ export default defineComponent({
     RecordsService.getMessages(this.$route.params.id as string).then(
       (messages) => (this.messages = messages),
     );
-    RecordsService.getDocuments(this.$route.params.id as string).then(
-      (documents) => (this.documents = documents),
-    );
   },
   methods: {
     // client
     getClient(id: number) {
       RecordsService.getClient(id).then((client) => (this.client = client));
-    },
-    // delete document
-    openDocumentDelete(document: RecordsDocument) {
-      this.document = document;
-      this.deleteDocumentOpen = true;
-    },
-    documentDeleted(document: RecordsDocument) {
-      this.documents = this.documents.filter((item) => item.id !== document.id);
-      this.deleteDocumentOpen = false;
     },
     // record questionnaire
     copyLink(recordQuestionnaire: Questionnaire): void {
@@ -501,4 +457,72 @@ export default defineComponent({
     },
   },
 });
+
+function recordDocumentsGetUploadDownloadDelete(record: Ref<Record | null>) {
+  const documents = ref<null | RecordsDocument[]>(null);
+
+  // get
+  useGet(RecordsService.getDocuments, documents, record);
+
+  // upload
+  const documentFields = [
+    {
+      label: "File",
+      type: "file",
+      name: "file",
+      required: true,
+    },
+  ] as FormField[];
+  const {
+    createModalOpen: uploadDocumentModalOpen,
+    createRequest: uploadDocumentRequest,
+  } = useCreateItem(RecordsService.createDocument, documents);
+
+  // download
+  const downloadDocument = RecordsService.downloadDocument;
+
+  // delete
+  const {
+    deleteModalOpen: deleteDocumentModalOpen,
+    deleteRequest: deleteDocumentRequest,
+    temporary: documentTemporary,
+  } = useDeleteItem(RecordsService.deleteDocument, documents);
+
+  return {
+    documents,
+    // upload
+    documentFields,
+    uploadDocumentModalOpen,
+    uploadDocumentRequest,
+    // download
+    downloadDocument,
+    // delete
+    documentTemporary,
+    deleteDocumentModalOpen,
+    deleteDocumentRequest,
+  };
+}
+
+function encryptionsGetDelete(record: Ref<Record | null>) {
+  const encryptions = ref<null | RecordEncryption[]>(null);
+
+  // get
+  useGet(RecordsService.getEncryptions, encryptions, record);
+
+  // delete
+  const encryptionTemporary = ref<null | RecordEncryption>(null);
+
+  const {
+    deleteRequest: deleteEncryptionRequest,
+    deleteModalOpen: deleteEncryptionModalOpen,
+  } = useDeleteItem(RecordsService.deleteEncryption, encryptions);
+
+  return {
+    encryptions,
+    // delete
+    encryptionTemporary,
+    deleteEncryptionRequest,
+    deleteEncryptionModalOpen,
+  };
+}
 </script>
