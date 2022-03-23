@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import CircleLoader from "@lawandorga/components";
+import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
   components: {
