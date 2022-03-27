@@ -81,7 +81,7 @@
 <script lang="ts">
 import TableRecords from "@/components/TableRecords.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { defineComponent, ref, Ref, reactive, watch } from "vue";
+import { defineComponent, ref, Ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { RecordDeletion, RecordTemplate, Record } from "@/types/records";
 import ButtonNormal from "@/components/ButtonNormal.vue";
@@ -96,6 +96,7 @@ import useGet from "@/composables/useGet";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
+import { FormField } from "@/types/form";
 
 export default defineComponent({
   components: {
@@ -170,7 +171,7 @@ function createDeletionRequest(records: Ref<Record[] | null>) {
 function createRecord(records: Ref<Record[] | null>) {
   const router = useRouter();
 
-  const createFields = reactive([
+  const createFields = ref<FormField[]>([
     {
       label: "Template",
       type: "select",
@@ -191,7 +192,7 @@ function createRecord(records: Ref<Record[] | null>) {
 
   watch(createModalOpen, () => {
     RecordsService.getTemplates().then(
-      (templates) => (createFields[0].options = templates),
+      (templates) => (createFields.value[0].options = templates),
     );
   });
 
