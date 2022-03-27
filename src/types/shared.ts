@@ -38,10 +38,12 @@ export type JsonValues =
   | number[]
   | string[];
 
-export interface JsonModel {
+type test = { a: null };
+
+export type JsonModel = null | {
   // [key: string]: JsonValues | JsonModel | JsonModel[];
   [key: string]: any; // eslint-disable-line
-}
+};
 
 export type DjangoModel = { id: number; url?: string; type?: string };
 

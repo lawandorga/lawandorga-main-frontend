@@ -1,4 +1,4 @@
-export interface FormField {
+export type FormField = {
   label: string;
   name: string;
   type:
@@ -36,4 +36,4 @@ export interface FormField {
   options?: { name: string; value?: string; id?: number }[];
   room?: string;
   helptext?: string;
-}
+};

@@ -159,7 +159,7 @@ export interface RecordEncryption {
   user_object: { name: string; id: number };
 }
 
-export interface RecordDeletion {
+export type RecordDeletion = JsonModel & {
   requested_by_detail: string;
   record_detail: string;
   processed_by_detail: string;
@@ -173,7 +173,7 @@ export interface RecordDeletion {
   record: number;
   created: string;
   updated: string;
-}
+};
 
 export interface Pool {
   type: string;

@@ -1,4 +1,4 @@
-import { DjangoModel, Reffed } from "@/types/shared";
+import { DjangoModel, JsonModel, Reffed } from "@/types/shared";
 import { ref, Ref, unref } from "vue";
 
 export default function useUpdateItem<
@@ -38,7 +38,10 @@ Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
     });
   };
 
+  const temporary = ref<JsonModel | null>(null);
+
   return {
+    temporary,
     updateRequest,
     updateModalOpen,
   };

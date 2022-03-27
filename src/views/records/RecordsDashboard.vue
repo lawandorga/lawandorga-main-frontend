@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="$store.getters['user/loaded']">
-    <div class="max-w-screen-2xl mx-auto space-y-6">
+    <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <CollectionIcon class="w-6 h-6" />
         <template #buttons>
@@ -69,7 +69,6 @@
         ]"
         :initial="{
           record: record ? record.id : null,
-          requested_by: $store.getters['user/user'].id,
         }"
         :request="createDeletionRequestRequest"
         submit="Request Deletion"
@@ -123,7 +122,7 @@ export default defineComponent({
     const requestAccess = (record: Record) => {
       RecordsService.createRecordAccess({
         record: record.id,
-        requested_by: store.getters["user/user"].id,
+        requested_by: store.getters["user/user"].user,
       }).then(() =>
         store.dispatch("alert/createAlert", {
           heading: "Access Requested",
@@ -152,6 +151,7 @@ function createDeletionRequest(records: Ref<Record[] | null>) {
     createRequest: createDeletionRequestRequest,
     createModalOpen: createDeletionRequestModalOpen,
   } = useCreateItem(RecordsService.createDeletionRequest, ref(null));
+
   const deletionRequestCreated = (deletionRequest: RecordDeletion) => {
     if (records.value === null) return;
     const index = records.value.findIndex(

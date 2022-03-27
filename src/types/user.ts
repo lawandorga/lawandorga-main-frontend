@@ -43,7 +43,7 @@ export interface LoginResponse {
   access: string;
   refresh: string;
   rlc: Rlc;
-  user: User;
+  user: RlcUser;
   permissions: string[];
 }
 

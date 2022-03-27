@@ -19,7 +19,10 @@ export default function useCreateItem<
     });
   };
 
+  const temporary = ref<JsonModel | null>(null);
+
   return {
+    temporary,
     createRequest,
     createModalOpen,
   };

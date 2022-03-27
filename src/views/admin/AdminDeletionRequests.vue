@@ -38,7 +38,7 @@
           <span v-if="slotProps.state === 'gr'">Accepted</span>
         </template>
         <template #explanation="slotProps">
-          <div class="w-40 line-clamp-3 whitespace-normal">
+          <div class="w-40 whitespace-normal line-clamp-3">
             <abbr class="underline-dotted" :title="slotProps.explanation">
               {{ slotProps.explanation }}
             </abbr>
@@ -68,11 +68,7 @@
     >
       <FormGenerator
         :fields="fields"
-        :initial="{
-          ...deletionRequest,
-          processed_by: $store.getters['user/user'].id,
-          processed: new Date(),
-        }"
+        :initial="deletionRequest"
         :request="updateRequest"
       />
     </ModalFree>
@@ -93,6 +89,7 @@ import { RecordDeletion } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
+import { FormField } from "@/types/form";
 
 const fields = [
   {
@@ -100,12 +97,12 @@ const fields = [
     name: "state",
     type: "select",
     options: [
-      { name: "Accept (Delete Record)", id: "gr" },
-      { name: "Decline (Record will not be deleted)", id: "de" },
+      { name: "Accept (Delete Record)", value: "gr" },
+      { name: "Decline (Record will not be deleted)", value: "de" },
     ],
     required: true,
   },
-];
+] as FormField[];
 
 export default defineComponent({
   components: {
@@ -119,16 +116,16 @@ export default defineComponent({
   },
   setup() {
     const deletionRequests = ref(null) as Ref<RecordDeletion[] | null>;
-    const deletionRequest = ref(null) as Ref<RecordDeletion | null>;
 
     // get
     useGet(RecordsService.getRecordDeletions, deletionRequests);
 
     // update
-    const { updateRequest, updateModalOpen } = useUpdateItem(
-      RecordsService.updateRecordDeletion,
-      deletionRequests,
-    );
+    const {
+      updateRequest,
+      updateModalOpen,
+      temporary: deletionRequest,
+    } = useUpdateItem(RecordsService.updateRecordDeletion, deletionRequests);
 
     return {
       deletionRequests,
