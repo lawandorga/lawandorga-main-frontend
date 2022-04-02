@@ -1,7 +1,7 @@
 <template>
   <Table>
     <Thead>
-      <Tr class="border-b border-gray-200 bg-white">
+      <Tr class="bg-white border-b border-gray-200">
         <Td :colspan="head.length + 3" class="!py-1.5">
           <FormInput
             v-model="search"
@@ -18,11 +18,11 @@
           <div class="flex items-center justify-between">
             <button
               type="button"
-              class="relative min-w-5 h-5 flex-grow"
+              class="relative flex-grow h-5 min-w-5"
               @click="changeSort(item)"
             >
               <div
-                class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap pr-8"
+                class="pr-8 text-xs font-medium tracking-wider text-left text-gray-500 uppercase whitespace-nowrap"
               >
                 {{ item }}
               </div>
@@ -74,16 +74,16 @@
                   params: { id: record.id },
                 }"
               >
-                {{ record.entries[headItem]?.value ?? "undefined" }}
+                {{ record.entries[headItem]?.value | "undefined" }}
               </ButtonLink>
               <div v-else>
-                {{ record.entries[headItem]?.value ?? "undefined" }}
+                {{ record.entries[headItem]?.value | "undefined" }}
               </div>
             </template>
             <template v-else-if="record.entries[headItem]">
               <button
                 v-if="record.entries[headItem].type === 'text'"
-                class="max-w-xs whitespace-normal line-clamp-3 cursor-pointer hover:underline text-left"
+                class="max-w-xs text-left whitespace-normal cursor-pointer line-clamp-3 hover:underline"
                 @click="search = record.entries[headItem].value"
               >
                 {{ record.entries[headItem].value }}
@@ -93,7 +93,7 @@
                   record.entries[headItem].type === 'date' ||
                   record.entries[headItem].type === 'datetime-local'
                 "
-                class="cursor-pointer hover:underline text-left"
+                class="text-left cursor-pointer hover:underline"
                 @click="search = record.entries[headItem].value"
               >
                 {{ formatDate(record.entries[headItem].value) }}
@@ -104,16 +104,16 @@
               >
                 <li v-for="item in record.entries[headItem].value" :key="item">
                   <button
-                    class="cursor-pointer hover:underline text-left"
-                    @click="search = item.name ?? item"
+                    class="text-left cursor-pointer hover:underline"
+                    @click="search = item.name | item"
                   >
-                    {{ item.name ?? item }}
+                    {{ item.name | item }}
                   </button>
                 </li>
               </ul>
               <button
                 v-else
-                class="cursor-pointer hover:underline text-left"
+                class="text-left cursor-pointer hover:underline"
                 @click="search = record.entries[headItem].value"
               >
                 {{ record.entries[headItem].value }}

@@ -29,7 +29,7 @@
           :label="field.label"
           :name="field.name"
           required
-          :options="field.options ?? []"
+          :options="field.options | []"
           @update:model-value="change(field, $event)"
         />
         <FormMultiple
@@ -38,7 +38,7 @@
           :label="field.label"
           :name="field.name"
           required
-          :options="field.options ?? []"
+          :options="field.options | []"
           @update:model-value="change(field, $event)"
         />
         <FormFile

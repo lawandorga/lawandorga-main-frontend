@@ -31,7 +31,7 @@
           :label="field.label"
           :name="field.name"
           :required="field.required"
-          :options="field.options ?? []"
+          :options="field.options | []"
           @update:model-value="showSuccess = false"
         />
         <FormMultiple
@@ -40,7 +40,7 @@
           :label="field.label"
           :name="field.name"
           :required="field.required"
-          :options="field.options ?? []"
+          :options="field.options | []"
           @update:model-value="showSuccess = false"
         />
         <FormTiptap
