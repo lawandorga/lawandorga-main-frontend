@@ -1,15 +1,15 @@
 <template>
   <main class="divide-y divide-gray-100">
-    <section class="bg-lorgablue mx-auto max-w-7xl py-8 px-8">
+    <section class="px-8 py-8 mx-auto bg-lorgablue max-w-7xl">
       <div class="max-w-7xl">
-        <div class="grid lg:grid-cols-2 gap-6">
+        <div class="grid gap-6 lg:grid-cols-2">
           <div class="">
             <div>
               <h1
-                class="m-0 text-4xl tracking-tight font-extrabold text-white sm:leading-none lg:text-5xl xl:text-6xl"
+                class="m-0 text-4xl font-extrabold tracking-tight text-white sm:leading-none lg:text-5xl xl:text-6xl"
               >
-                <div class="flex space-x-5 items-center flex-wrap">
-                  <div class="flex space-x-3 items-center">
+                <div class="flex flex-wrap items-center space-x-5">
+                  <div class="flex items-center space-x-3">
                     <img
                       src="/logo.svg"
                       alt="Law&Orga Logo"
@@ -21,7 +21,7 @@
                   <img
                     src="/sponsor-cms.jpg"
                     alt="CMS Stiftung"
-                    class="w-40 h-auto rounded overflow-hidden"
+                    class="w-40 h-auto overflow-hidden rounded"
                   />
                 </div>
               </h1>
@@ -47,13 +47,12 @@
           </div>
           <div class="flex flex-col justify-center">
             <div class="p-6 bg-white rounded-sm shadow-sm">
-              <h2 class="text-2xl font-bold mb-8">Login</h2>
+              <h2 class="mb-8 text-2xl font-bold">Login</h2>
               <FormGenerator
                 :fields="[
                   {
                     label: 'E-Mail',
                     type: 'email',
-                    tag: 'input',
                     name: 'email',
                     autocomplete: 'email',
                     required: true,
@@ -61,8 +60,7 @@
                   {
                     label: 'Password',
                     type: 'password',
-                    autocomplete: 'current-passwort',
-                    tag: 'input',
+                    autocomplete: 'current-password',
                     name: 'password',
                     required: true,
                   },
@@ -70,7 +68,7 @@
                 :request="loginRequest"
                 submit="Login"
               />
-              <div class="pt-6 text-right space-x-4">
+              <div class="pt-6 space-x-4 text-right">
                 <router-link
                   :to="{ name: 'user-register' }"
                   class="hover:underline"
@@ -89,7 +87,7 @@
         </div>
       </div>
     </section>
-    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
+    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
       <div
         class="relative max-w-lg mx-auto divide-y-2 divide-gray-200 lg:max-w-7xl"
       >
@@ -102,23 +100,23 @@
       </div>
     </section>
 
-    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
+    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
         <div>
           <h2
-            class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl"
+            class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
           >
             More News
           </h2>
         </div>
-        <div class="pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
+        <div class="grid gap-16 pt-10 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
           <div v-for="article in articles" :key="article.id">
             <p class="text-sm text-gray-500">
               <time>{{ formatDate(article.date) }}</time>
             </p>
             <router-link
               :to="{ name: 'internal-article', params: { id: article.id } }"
-              class="mt-2 block"
+              class="block mt-2"
             >
               <p class="text-xl font-semibold text-gray-900">
                 {{ article.title }}
@@ -139,11 +137,11 @@
         </div>
       </div>
     </section>
-    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
+    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
         <div>
           <h2
-            class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl"
+            class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
           >
             Roadmap
           </h2>
@@ -171,23 +169,23 @@
         </div>
       </div>
     </section>
-    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
+    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
       <div class="relative max-w-lg mx-auto lg:max-w-7xl">
         <div class="mb-6">
           <h2
-            class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl"
+            class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
           >
             Sponsors
           </h2>
         </div>
-        <div class="flex justify-start flex-wrap -my-2 -mx-6">
+        <div class="flex flex-wrap justify-start -mx-6 -my-2">
           <div
             v-for="group in sponsorGroups"
             :key="group.name"
-            class="py-2 px-6"
+            class="px-6 py-2"
             :class="[group.class]"
           >
-            <h3 class="text-xl tracking-tight font-bold text-gray-900 mb-4">
+            <h3 class="mb-4 text-xl font-bold tracking-tight text-gray-900">
               {{ group.name }}
             </h3>
             <ul class="flex flex-wrap justify-start -m-3">
@@ -205,7 +203,7 @@
                     class="mx-auto w-auto max-h-[5rem] rounded-md overflow-hidden border-2 border-gray-300 shadow"
                     :class="[sponsor.class]"
                   />
-                  <figcaption class="text-gray-500 text-sm mt-2 text-center">
+                  <figcaption class="mt-2 text-sm text-center text-gray-500">
                     {{ sponsor.name }}
                   </figcaption>
                 </figure>
@@ -215,8 +213,8 @@
         </div>
       </div>
     </section>
-    <section class="bg-white mx-auto max-w-7xl py-12 px-8">
-      <div class="text-right space-x-4">
+    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
+      <div class="space-x-4 text-right">
         <router-link :to="{ name: 'internal-imprint' }">Imprint</router-link>
         <a target="_blank" href="http://rlc-deutschland.de/datenschutz/">
           Privacy

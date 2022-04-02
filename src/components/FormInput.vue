@@ -1,9 +1,9 @@
 <template>
-  <label :for="name" class="block relative">
+  <label :for="`form--${name}`" class="relative block">
     <div>
       <FormLabel :required="required" :label="label" />
     </div>
-    <div class="flex space-x-2 items-center" :class="{ 'mt-1': !!label }">
+    <div class="flex items-center space-x-2" :class="{ 'mt-1': !!label }">
       <div class="relative w-full">
         <input
           :id="`form--${name}`"
@@ -16,7 +16,7 @@
           :required="required"
           :disabled="disabled"
           :autocomplete="autocomplete"
-          class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus-within:ring-1 focus-within:ring-lorgablue focus-within:border-lorgablue focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
+          class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus-within:ring-1 focus-within:ring-lorgablue focus-within:border-lorgablue focus:ring-lorgablue focus:border-lorgablue sm:text-sm"
           :class="{
             'opacity-50 bg-gray-100 pointer-events-none': disabled,
           }"
@@ -28,7 +28,7 @@
       v-if="
         type === 'datetime-local' && modelValue && !modelValue.includes('T')
       "
-      class="mt-1 text-right text-sm text-gray-700"
+      class="mt-1 text-sm text-right text-gray-700"
     >
       Error: {{ modelValue }}
     </div>
