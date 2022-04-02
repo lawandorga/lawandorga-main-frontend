@@ -2,6 +2,7 @@ export type FormField = {
   label: string;
   name: string;
   type:
+    | "multiple"
     | "list"
     | "input"
     | "select"

@@ -5,7 +5,7 @@
         <p
           v-for="(error, index) in nonFieldErrors"
           :key="index"
-          class="text-red-700 text-sm leading-tight mt-2"
+          class="mt-2 text-sm leading-tight text-red-700"
         >
           {{ error }}
         </p>
