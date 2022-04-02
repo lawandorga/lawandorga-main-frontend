@@ -6,13 +6,13 @@
       </ComboboxLabel>
 
       <div class="relative">
-        <span class="inline-block w-full rounded-md shadow-sm">
+        <div class="inline-block w-full rounded-md shadow-sm">
           <div
             class="relative w-full py-2 pl-2 pr-10 text-left transition duration-150 ease-in-out bg-white border border-gray-300 cursor-default group focus-within:border-blue-700 focus-within:outline-none focus-within:ring-1 focus-within:ring-blue-700 sm:text-sm sm:leading-5"
             :class="[open ? 'rounded-t-md' : 'rounded-md']"
             @click="focusInput()"
           >
-            <span class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2">
               <span
                 v-for="option in model"
                 :key="option"
@@ -35,7 +35,7 @@
                 placeholder="Search..."
                 @change="search = $event.target.value"
               />
-            </span>
+            </div>
             <ComboboxButton
               class="absolute inset-y-0 right-0 flex items-center pr-2"
             >
@@ -54,7 +54,7 @@
               </svg>
             </ComboboxButton>
           </div>
-        </span>
+        </div>
 
         <div
           class="absolute z-10 w-full bg-white border-2 border-none rounded-b-md"
@@ -133,7 +133,9 @@ import {
 import { XIcon } from "@heroicons/vue/solid";
 
 type FormOption = { name: string; value: string };
-type FormOptionInput = { name?: string; value?: string; id?: number } | string;
+type FormOptionInput =
+  | { name?: string; value?: string | number; id?: number }
+  | string;
 
 export default defineComponent({
   components: {
@@ -162,11 +164,6 @@ export default defineComponent({
       default: () => [],
       type: Array as PropType<string[]>,
     },
-    name: {
-      required: false,
-      type: String,
-      default: "",
-    },
     options: {
       required: true,
       type: Array as PropType<FormOptionInput[]>,
@@ -180,10 +177,7 @@ export default defineComponent({
   emits: ["update:modelValue"],
   data() {
     return {
-      // open: false,
-      clickListener: null,
       search: "",
-      activePersons: [],
     };
   },
   computed: {
@@ -193,13 +187,7 @@ export default defineComponent({
       },
       set(value: string) {
         this.update(value);
-
-        // console.log(newValue);
-        // this.$emit("update:modelValue", newValue);
       },
-    },
-    modelValueStringArray(): string[] {
-      return this.modelValue.map((item) => item.toString());
     },
     formOptions(): FormOption[] {
       return this.options.map((o: FormOptionInput) => {
@@ -208,11 +196,15 @@ export default defineComponent({
             name: o,
             value: o,
           };
-        else
+        else {
+          let value = "-";
+          if (o.value) value = String(o.value);
+          else if (o.id) value = String(o.id);
           return {
             name: o.name || "-",
-            value: o.value || String(o.id) || "-",
+            value: value,
           };
+        }
       });
     },
     optionsSorted(): FormOption[] {
@@ -234,26 +226,15 @@ export default defineComponent({
       (this.$refs.input as InstanceType<typeof ComboboxInput>).$el.focus();
     },
     resetInput() {
-      console.log("reset");
       (this.$refs.input as InstanceType<typeof ComboboxInput>).$el.value = "";
     },
-    getOptionName(option: FormOptionInput): string {
-      if (typeof option === "string") return option;
-      else if (
-        typeof option === "object" &&
-        Object.keys(option).includes("name") &&
-        option.name
-      )
-        return option.name;
-      return "-";
-    },
     checkOptionSelected(option: FormOption): boolean {
-      return this.modelValueStringArray.includes(option.value as string);
+      return this.model.includes(option.value);
     },
     update(value: string) {
-      let values = [...this.modelValue];
+      let values = [...this.model];
 
-      const index = this.modelValueStringArray.indexOf(value);
+      const index = this.model.indexOf(value);
       if (index === -1) values.push(value);
       else values.splice(index, 1);
 
@@ -262,10 +243,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-/* select[multiple]:focus option:checked {
-  @apply bg-gradient-to-r from-gray-600 to-gray-600;
-  color: black !important;
-} */
-</style>
