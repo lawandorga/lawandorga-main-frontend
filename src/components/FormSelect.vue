@@ -1,19 +1,19 @@
 <template>
-  <label :for="name" class="block relative">
+  <label :for="name" class="relative block">
     <FormLabel :required="required" :label="label" />
-    <div class="flex mt-1 space-x-2 items-center">
+    <div class="flex items-center mt-1 space-x-2">
       <select
         :id="`form--${name}`"
         v-model="model"
         :name="name"
-        class="cursor-pointer mt-1 appearance-none block w-full pl-3 pr-6 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lorgablue focus:border-lorgablue focus:ring-1 sm:text-sm"
+        class="block w-full py-2 pl-3 pr-6 mt-1 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none cursor-pointer focus:outline-none focus:ring-lorgablue focus:border-lorgablue focus:ring-1 sm:text-sm"
       >
         <option
           v-for="option in internalOptions"
           :key="option.name || option"
           :value="option.id || option.value || option"
         >
-          {{ option.name ?? option }}
+          {{ option.name || option }}
         </option>
       </select>
     </div>
