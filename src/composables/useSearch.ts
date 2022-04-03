@@ -6,11 +6,11 @@ export default function useSearch() {
 
   const filterRecord =
     (search2: string) =>
-    (record2: Record): boolean => {
+    (record: Record): boolean => {
       const filter = search2.toLowerCase();
       let ret = false;
-      for (const key in record2.entries) {
-        const entry = record2.entries[key];
+      for (const key in record.entries) {
+        const entry = record.entries[key];
         if (Array.isArray(entry.value))
           ret =
             ret ||

@@ -66,6 +66,7 @@
                 {{ formatDate(record.updated) }}
               </span>
             </template>
+
             <template v-else-if="index === 0">
               <ButtonLink
                 v-if="record.access"
@@ -74,12 +75,13 @@
                   params: { id: record.id },
                 }"
               >
-                {{ record.entries[headItem]?.value | "undefined" }}
+                {{ record.entries[headItem]?.value }}
               </ButtonLink>
               <div v-else>
-                {{ record.entries[headItem]?.value | "undefined" }}
+                {{ record.entries[headItem]?.value }}
               </div>
             </template>
+
             <template v-else-if="record.entries[headItem]">
               <button
                 v-if="record.entries[headItem].type === 'text'"
@@ -88,6 +90,7 @@
               >
                 {{ record.entries[headItem].value }}
               </button>
+
               <button
                 v-else-if="
                   record.entries[headItem].type === 'date' ||
@@ -98,6 +101,7 @@
               >
                 {{ formatDate(record.entries[headItem].value) }}
               </button>
+
               <ul
                 v-else-if="record.entries[headItem].type === 'multiple'"
                 class="list-disc pl-3.5"
@@ -105,9 +109,9 @@
                 <li v-for="item in record.entries[headItem].value" :key="item">
                   <button
                     class="text-left cursor-pointer hover:underline"
-                    @click="search = item.name | item"
+                    @click="search = item"
                   >
-                    {{ item.name | item }}
+                    {{ item }}
                   </button>
                 </li>
               </ul>

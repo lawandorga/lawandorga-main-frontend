@@ -9,7 +9,7 @@ export interface RecordTemplate {
   show: string[];
 }
 
-export interface Record extends JsonModel {
+export type Record = JsonModel & {
   id: number;
   created: string;
   updated: string;
@@ -19,11 +19,11 @@ export interface Record extends JsonModel {
   show: string[];
   old_record: number;
   delete: boolean;
-}
+};
 
 type RecordValue = string | number | boolean | string[] | number[];
 
-export interface RecordEntry extends JsonModel {
+export type RecordEntry = JsonModel & {
   id: number;
   name: string;
   order: number;
@@ -31,9 +31,9 @@ export interface RecordEntry extends JsonModel {
   field: number;
   type: string;
   url: string;
-}
+};
 
-export interface RecordField extends JsonModel {
+export type RecordField = JsonModel & {
   id: number;
   url: string;
   entry_url: string;
@@ -41,7 +41,8 @@ export interface RecordField extends JsonModel {
   type: string;
   name: string;
   kind: string;
-}
+  options?: ({ name: string; id: number } | string)[];
+};
 
 export interface RecordsClient {
   id: number;
@@ -77,14 +78,14 @@ export interface Message {
   record: number;
 }
 
-export interface RecordsDocument extends JsonModel {
+export type RecordsDocument = JsonModel & {
   id: number;
   name: string;
   creator: string;
   created_on: Date;
   last_edited: Date;
   file_size: number;
-}
+};
 
 export interface Tag {
   id: number;

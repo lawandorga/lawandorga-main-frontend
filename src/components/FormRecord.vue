@@ -1,5 +1,5 @@
 <template>
-  <form ref="form" @submit.prevent="handleSubmit">
+  <form ref="form" @submit.prevent="">
     <div class="grid grid-cols-1 gap-4">
       <div v-if="nonFieldErrors && nonFieldErrors.length">
         <p
@@ -29,7 +29,7 @@
           :label="field.label"
           :name="field.name"
           required
-          :options="field.options | []"
+          :options="field.options"
           @update:model-value="change(field, $event)"
         />
         <FormMultiple
@@ -38,7 +38,7 @@
           :label="field.label"
           :name="field.name"
           required
-          :options="field.options | []"
+          :options="field.options"
           @update:model-value="change(field, $event)"
         />
         <FormFile
@@ -73,11 +73,10 @@
 <script lang="ts">
 import FormInput from "./FormInput.vue";
 import FormTextarea from "./FormTextarea.vue";
-import FormSelect from "./FormSelect.vue";
+import { FormSelect, FormMultiple } from "@lawandorga/components";
 import { defineComponent, PropType } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
-import FormMultiple from "./FormMultiple.vue";
 import { RecordEntry, Record, RecordField } from "@/types/records";
 import RecordsService from "@/services/records";
 import FormFile from "@/components/FormFile.vue";

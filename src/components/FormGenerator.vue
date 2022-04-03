@@ -31,7 +31,7 @@
           :label="field.label"
           :name="field.name"
           :required="field.required"
-          :options="field.options | []"
+          :options="field.options"
           @update:model-value="showSuccess = false"
         />
         <FormMultiple
@@ -40,7 +40,7 @@
           :label="field.label"
           :name="field.name"
           :required="field.required"
-          :options="field.options | []"
+          :options="field.options"
           @update:model-value="showSuccess = false"
         />
         <FormTiptap
@@ -122,14 +122,12 @@
 <script lang="ts">
 import FormInput from "./FormInput.vue";
 import FormTextarea from "./FormTextarea.vue";
-import FormSelect from "./FormSelect.vue";
+import { FormSelect, types, FormMultiple } from "@lawandorga/components";
 import ButtonBlue from "./ButtonNormal.vue";
-import { FormField } from "@/types/form";
 import { defineComponent, PropType } from "vue";
 import FormTiptap from "./FormTiptap.vue";
 import { DjangoError, JsonModel, JsonValues } from "@/types/shared";
 import { AxiosError } from "axios";
-import FormMultiple from "./FormMultiple.vue";
 import FormList from "./FormList.vue";
 import FormCheckbox from "@/components/FormCheckbox.vue";
 
@@ -146,7 +144,7 @@ export default defineComponent({
   },
   props: {
     fields: {
-      type: Array as PropType<FormField[]>,
+      type: Array as PropType<types.FormField[]>,
       required: true,
     },
     initial: {
