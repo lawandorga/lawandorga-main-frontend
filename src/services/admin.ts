@@ -90,10 +90,10 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  removeMember(data: JsonModel, group: Group): Promise<void> {
+  removeMember(data: RlcUser, group: Group): Promise<void> {
     return axios
       .delete(`groups/${group.id}/member/`, {
-        data: { member: data.rlcuserid },
+        data: { member: data.id },
       })
       .then();
   }
