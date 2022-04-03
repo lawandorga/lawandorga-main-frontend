@@ -75,10 +75,14 @@
                   params: { id: record.id },
                 }"
               >
-                {{ record.entries[headItem]?.value }}
+                {{
+                  record.entries[headItem]
+                    ? record.entries[headItem].value
+                    : "no-identifier-set"
+                }}
               </ButtonLink>
               <div v-else>
-                {{ record.entries[headItem]?.value }}
+                {{ record.entries[headItem].value }}
               </div>
             </template>
 
