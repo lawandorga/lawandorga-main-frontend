@@ -86,7 +86,7 @@ class AdminService {
 
   addMember(data: JsonModel, group: Group): Promise<User> {
     return axios
-      .post(`groups/${group.id}/member/`, { member: data.user })
+      .post(`groups/${group.id}/member/`, data)
       .then((response) => response.data);
   }
 

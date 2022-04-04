@@ -17,8 +17,8 @@
       >
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div v-if="group" class="bg-white shadow rounded px-5 py-4">
-        <h2 class="text-lg font-bold mb-4">
+      <div v-if="group" class="px-5 py-4 bg-white rounded shadow">
+        <h2 class="mb-4 text-lg font-bold">
           {{ group.name }}
         </h2>
         <div>
@@ -227,7 +227,7 @@ export default defineComponent({
     const memberFields = reactive([
       {
         label: "User",
-        name: "user",
+        name: "member",
         type: "select",
         required: true,
         options: [] as RlcUser[],
