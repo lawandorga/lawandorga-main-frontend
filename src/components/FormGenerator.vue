@@ -120,9 +120,13 @@
 </template>
 
 <script lang="ts">
-import FormInput from "./FormInput.vue";
-import FormTextarea from "./FormTextarea.vue";
-import { FormSelect, types, FormMultiple } from "@lawandorga/components";
+import { FormTextarea } from "@lawandorga/components";
+import {
+  FormSelect,
+  types,
+  FormMultiple,
+  FormInput,
+} from "@lawandorga/components";
 import ButtonBlue from "./ButtonNormal.vue";
 import { defineComponent, PropType } from "vue";
 import FormTiptap from "./FormTiptap.vue";

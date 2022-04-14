@@ -21,7 +21,7 @@
           :label="field.label"
           :name="field.name"
           required
-          @change="change(field, $event.target.value)"
+          @change:model-value="change(field, $event)"
         />
         <FormSelect
           v-else-if="field.type === 'select'"
@@ -54,10 +54,9 @@
           v-else
           v-bind="getAttrs(field.name)"
           :label="field.label"
-          :name="field.name"
           :type="field.type"
           required
-          @focusout="change(field, $event.target.value)"
+          @change:model-value="change(field, $event)"
         />
         <p
           v-if="errors[field.name]"
@@ -71,9 +70,12 @@
 </template>
 
 <script lang="ts">
-import FormInput from "./FormInput.vue";
-import FormTextarea from "./FormTextarea.vue";
-import { FormSelect, FormMultiple } from "@lawandorga/components";
+import {
+  FormSelect,
+  FormMultiple,
+  FormTextarea,
+  FormInput,
+} from "@lawandorga/components";
 import { defineComponent, PropType } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
@@ -127,10 +129,12 @@ export default defineComponent({
     },
     change(field: RecordField, value: RecordEntry["value"]) {
       this.errors = {};
-      if (Object.keys(this.entries).includes(field.name)) {
-        if (value) this.updateEntry(field, value);
-        else this.deleteEntry(field);
-      } else if (value) {
+      const entries_include = Object.keys(this.entries).includes(field.name);
+      if (entries_include && value) {
+        this.updateEntry(field, value);
+      } else if (entries_include && !value) {
+        this.deleteEntry(field);
+      } else if (!entries_include && value) {
         this.createEntry(field, value);
       }
     },

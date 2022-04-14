@@ -171,7 +171,7 @@ import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/solid";
 import useSort from "@/composables/useSort";
-import FormInput from "@/components/FormInput.vue";
+import { FormInput } from "@lawandorga/components";
 import useSearch from "@/composables/useSearch";
 
 export default defineComponent({
