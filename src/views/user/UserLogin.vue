@@ -227,7 +227,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import InternalService from "@/services/internal";
 import { Article, LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";

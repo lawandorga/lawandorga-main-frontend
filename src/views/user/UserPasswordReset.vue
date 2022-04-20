@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import UserService from "@/services/user";
 import { useRoute } from "vue-router";
 

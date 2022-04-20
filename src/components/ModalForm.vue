@@ -20,11 +20,12 @@
 
 <script lang="ts">
 import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import { PropType } from "@vue/runtime-core";
 import { JsonModel } from "@/types/shared";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     ModalFree,
     FormGenerator,
@@ -77,5 +78,5 @@ export default {
       else this.disabled = true;
     },
   },
-};
+});
 </script>

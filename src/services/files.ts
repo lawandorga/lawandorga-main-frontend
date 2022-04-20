@@ -6,6 +6,7 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import downloadFile from "@/utils/download";
+import { JsonModel } from "@lawandorga/components/dist/src/types";
 import axios from "axios";
 
 class FilesService {
@@ -86,9 +87,15 @@ class FilesService {
   }
 
   // files
-  createFile(data: FormData): Promise<FilesFile> {
+  createFile(data: JsonModel): Promise<FilesFile> {
+    console.log(data);
+
+    const formData = new FormData();
+    if (data.folder) formData.append("folder", data.folder.toString());
+    if (data.file) formData.append("file", data.file as File);
+
     return axios
-      .post<FilesFile>("files/file_base/", data, {
+      .post<FilesFile>("files/file_base/", formData, {
         headers: {
           "content-type": "multipart/form-data",
         },

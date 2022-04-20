@@ -303,7 +303,7 @@
 </template>
 
 <script lang="ts">
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import FormRecord from "@/components/FormRecord.vue";
 import {
   Message,

@@ -152,7 +152,7 @@ import {
 } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";

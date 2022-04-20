@@ -51,7 +51,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import { Pool } from "@/types/records";
 import { JsonModel } from "@/types/shared";

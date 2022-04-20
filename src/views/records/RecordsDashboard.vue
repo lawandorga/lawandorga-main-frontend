@@ -86,7 +86,7 @@ import RecordsService from "@/services/records";
 import { RecordDeletion, RecordTemplate, Record } from "@/types/records";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";

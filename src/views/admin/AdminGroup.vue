@@ -144,7 +144,7 @@ import ButtonNormal from "@/components/ButtonNormal.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import { watch, defineComponent, ref, Ref, reactive } from "vue";
 import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";

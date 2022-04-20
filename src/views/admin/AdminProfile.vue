@@ -146,7 +146,7 @@ import ButtonBlue from "@/components/ButtonNormal.vue";
 import useGet from "@/composables/useGet";
 import { ref, Ref } from "vue";
 import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
 import ModalDelete from "@/components/ModalDelete.vue";
 import TableGenerator from "@/components/TableGenerator.vue";

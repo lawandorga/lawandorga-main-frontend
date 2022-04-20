@@ -1,14 +1,14 @@
 <template>
   <div
     v-if="recordQuestionnaire"
-    class="max-w-2xl bg-white shadow mx-auto px-6 py-5"
+    class="max-w-2xl px-6 py-5 mx-auto bg-white shadow"
   >
-    <h2 class="text-2xl font-bold mb-3">
+    <h2 class="mb-3 text-2xl font-bold">
       Questionnaire: {{ recordQuestionnaire.template.name }}
     </h2>
     <p
       v-if="recordQuestionnaire.template.notes"
-      class="text-lg text-gray-500 mb-10"
+      class="mb-10 text-lg text-gray-500"
     >
       {{ recordQuestionnaire.template.notes }}
     </p>
@@ -18,18 +18,18 @@
         <li v-for="file in recordQuestionnaire.template.files" :key="file.id">
           <div class="border border-gray-200 rounded-md">
             <div
-              class="pl-2 pr-3 py-2 flex items-center justify-between text-sm"
+              class="flex items-center justify-between py-2 pl-2 pr-3 text-sm"
             >
-              <div class="w-0 flex-1 flex items-center">
+              <div class="flex items-center flex-1 w-0">
                 <PaperClipIcon
-                  class="flex-shrink-0 h-5 w-5 text-gray-400"
+                  class="flex-shrink-0 w-5 h-5 text-gray-400"
                   aria-hidden="true"
                 />
-                <span class="ml-2 flex-1 w-0 truncate">
+                <span class="flex-1 w-0 ml-2 truncate">
                   {{ file.name }}
                 </span>
               </div>
-              <div class="ml-4 flex-shrink-0">
+              <div class="flex-shrink-0 ml-4">
                 <ButtonNormal
                   kind="action"
                   size="xs"
@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "@vue/runtime-core";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import { Questionnaire } from "@/types/records";
 import useGet from "@/composables/useGet";
 import RecordsService from "@/services/records";

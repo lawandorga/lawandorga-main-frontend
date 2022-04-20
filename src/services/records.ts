@@ -126,13 +126,14 @@ class RecordsService {
     return axios.delete(url).then();
   }
 
-  createFileEntry(data: FormData): Promise<RecordEntry> {
+  createFileEntry(data: JsonModel): Promise<RecordEntry> {
+    const formData = new FormData();
+    if (data.field) formData.append("field", data.field);
+    if (data.record) formData.append("record", data.record);
+    if (data.file) formData.append("file", data.file);
+
     return axios
-      .post<RecordEntry>(data.get("url") as string, data, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
+      .post<RecordEntry>(data.url as string, formData)
       .then((response) => response.data);
   }
 
@@ -270,10 +271,13 @@ class RecordsService {
     data: JsonModel,
     recordQuestionnaire: Questionnaire,
   ): Promise<Questionnaire> {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => formData.append(key, data[key]));
+
     return axios
       .patch<Questionnaire>(
         `records/questionnaires/${recordQuestionnaire.id}/`,
-        data,
+        formData,
       )
       .then((response) => response.data);
   }
@@ -316,11 +320,15 @@ class RecordsService {
       .then((response) => downloadFile(response, file.name));
   }
 
-  createQuestionnaireFile(
-    file: QuestionnaireTemplateFile,
-  ): Promise<QuestionnaireTemplateFile> {
+  createQuestionnaireFile(data: JsonModel): Promise<QuestionnaireTemplateFile> {
+    const formData = new FormData();
+    if (data.file) formData.append("file", data.file);
+    if (data.name) formData.append("name", data.name);
+    if (data.questionnaire)
+      formData.append("questionnaire", data.questionnaire);
+
     return axios
-      .post<QuestionnaireTemplateFile>("records/questionnaire_files/", file)
+      .post<QuestionnaireTemplateFile>("records/questionnaire_files/", formData)
       .then((response) => response.data);
   }
 
@@ -348,9 +356,13 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createDocument(document: RecordsDocument): Promise<RecordsDocument> {
+  createDocument(data: JsonModel): Promise<RecordsDocument> {
+    const formData = new FormData();
+    if (data.record) formData.append("record", data.record);
+    if (data.file) formData.append("file", data.file);
+
     return axios
-      .post<RecordsDocument>(`records/record_documents/`, document)
+      .post<RecordsDocument>(`records/record_documents/`, formData)
       .then((response) => response.data);
   }
 

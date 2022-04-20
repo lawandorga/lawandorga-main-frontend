@@ -21,7 +21,7 @@ export type Record = JsonModel & {
   delete: boolean;
 };
 
-type RecordValue = string | number | boolean | string[] | number[];
+type RecordValue = string | number | boolean | string[] | number[] | File;
 
 export type RecordEntry = JsonModel & {
   id: number;

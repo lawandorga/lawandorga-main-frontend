@@ -38,9 +38,7 @@ export type JsonValues =
   | number[]
   | string[];
 
-type test = { a: null };
-
-export type JsonModel = null | {
+export type JsonModel = {
   // [key: string]: JsonValues | JsonModel | JsonModel[];
   [key: string]: any; // eslint-disable-line
 };

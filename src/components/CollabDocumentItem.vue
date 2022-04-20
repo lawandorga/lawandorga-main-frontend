@@ -141,7 +141,7 @@ import {
 } from "@/types/collab";
 import BoxAlert from "@/components/BoxAlert.vue";
 import ModalFree from "@/components/ModalFree.vue";
-import FormGenerator from "@/components/FormGenerator.vue";
+import { FormGenerator } from "@lawandorga/components";
 import ModalDelete from "@/components/ModalDelete.vue";
 import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";

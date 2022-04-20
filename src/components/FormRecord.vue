@@ -48,8 +48,24 @@
           :name="field.name"
           required
           @update:model-value="change(field, $event)"
-          @download="downloadFile(field.name)"
-        />
+        >
+          <ButtonNormal
+            v-if="field.name in entries"
+            kind="action"
+            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            @click="downloadFile(field.name)"
+          >
+            Download
+          </ButtonNormal>
+          <ButtonNormal
+            v-if="field.name in entries"
+            kind="delete"
+            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            @click="change(field, '')"
+          >
+            Delete
+          </ButtonNormal>
+        </FormFile>
         <FormInput
           v-else
           v-bind="getAttrs(field.name)"
@@ -75,13 +91,14 @@ import {
   FormMultiple,
   FormTextarea,
   FormInput,
+  FormFile,
 } from "@lawandorga/components";
 import { defineComponent, PropType } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
 import { RecordEntry, Record, RecordField } from "@/types/records";
 import RecordsService from "@/services/records";
-import FormFile from "@/components/FormFile.vue";
+import ButtonNormal from "./ButtonNormal.vue";
 
 export default defineComponent({
   components: {
@@ -90,6 +107,7 @@ export default defineComponent({
     FormInput,
     FormTextarea,
     FormMultiple,
+    ButtonNormal,
   },
   props: {
     record: {
@@ -139,24 +157,21 @@ export default defineComponent({
       }
     },
     createEntry(field: RecordField, value: RecordEntry["value"]) {
+      const data = {
+        field: field.id,
+        record: this.record.id,
+        url: field.entry_url,
+        value: value,
+        file: null as File | null,
+      };
       if (field.type === "file") {
-        const formData = new FormData();
-        formData.append("file", this.getFilesFromInput(field.name));
-        formData.append("field", field.id.toString());
-        formData.append("record", this.record.id.toString());
-        formData.append("url", field.entry_url);
-        RecordsService.createFileEntry(formData)
+        data["file"] = value as File;
+        RecordsService.createFileEntry(data)
           .then((entry) => this.handleSuccess(field, entry))
           .catch((e: AxiosError) => {
             if (e.response) this.handleError(field, e.response.data);
           });
       } else {
-        const data = {
-          value: value,
-          field: field.id,
-          record: this.record.id,
-          url: field.entry_url,
-        };
         RecordsService.createEntry(data)
           .then((entry) => this.handleSuccess(field, entry))
           .catch((e: AxiosError) => {
