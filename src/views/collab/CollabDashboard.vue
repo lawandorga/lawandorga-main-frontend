@@ -76,7 +76,7 @@ import { defineComponent } from "vue";
 import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import ModalDelete from "@/components/ModalDelete.vue";
+import { ModalDelete } from '@lawandorga/components';
 import CollabService from "@/services/collab";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -89,7 +89,7 @@ import CircleLoader from "@/components/CircleLoader.vue";
 import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
 import CollabHelp from "@/components/CollabHelp.vue";
 import CollabPermissions from "@/components/CollabPermissions.vue";
-import ModalForm from "@/components/ModalForm.vue";
+import { ModalForm } from "@lawandorga/components";
 
 export default defineComponent({
   components: {

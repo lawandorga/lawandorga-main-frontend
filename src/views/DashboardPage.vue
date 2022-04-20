@@ -11,11 +11,11 @@
       <h1 class="text-4xl font-bold text-gray-700">
         Welcome {{ $store.getters["user/user"].name }}
       </h1>
-      <div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <div class="lg:col-span-2 xl:col-span-3">
           <div class="flex justify-between mt-8">
             <h2
-              class="text-lg leading-6 font-medium text-gray-700 items-baseline"
+              class="items-baseline text-lg font-medium leading-6 text-gray-700"
             >
               Notes from your LC
             </h2>
@@ -24,18 +24,18 @@
             </ButtonNormal>
           </div>
           <div
-            class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-2"
+            class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
           >
             <article
               v-for="note in notes"
               :key="note.id"
-              class="bg-white rounded shadow px-6 pt-4 pb-4"
+              class="px-6 pt-4 pb-4 bg-white rounded shadow"
             >
-              <h3 class="font-medium text-gray-700 mb-2">
+              <h3 class="mb-2 font-medium text-gray-700">
                 {{ note.title }}
               </h3>
               <p class="text-sm text-gray-700">{{ note.note }}</p>
-              <div class="flex space-x-3 justify-end mt-2">
+              <div class="flex justify-end mt-2 space-x-3">
                 <ButtonNormal
                   kind="action"
                   @click="
@@ -59,19 +59,19 @@
           </div>
         </div>
         <div v-if="data.records">
-          <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
+          <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Active Records
           </h2>
-          <ul class="bg-white rounded shadow mt-2 p-1 space-y-1">
+          <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li v-for="record in data.records" :key="record" class="block">
               <router-link
                 :to="{ name: 'records-detail', params: { id: record.id } }"
-                class="block group transition relative px-4 py-2 rounded-sm w-full text-left text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ record.identifier }}
                 ({{ record.state }})
                 <div
-                  class="absolute opacity-0 right-0 top-0 bottom-0 flex items-center justify-center transition group-hover:opacity-100"
+                  class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
                 >
                   <ChevronRightIcon class="w-6 h-6 text-gray-300 mr-1.5" />
                 </div>
@@ -80,10 +80,10 @@
           </ul>
         </div>
         <div v-if="data.changed_records">
-          <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
+          <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Records updated in the last 10 days
           </h2>
-          <ul class="bg-white rounded shadow mt-2 p-1 space-y-1">
+          <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
               v-for="record in data.changed_records"
               :key="record"
@@ -91,12 +91,12 @@
             >
               <router-link
                 :to="{ name: 'records-detail', params: { id: record.id } }"
-                class="block group transition relative px-4 py-2 rounded-sm w-full text-left text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ record.identifier }}
                 ({{ formatDate(record.updated) }})
                 <div
-                  class="absolute opacity-0 right-0 top-0 bottom-0 flex items-center justify-center transition group-hover:opacity-100"
+                  class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
                 >
                   <ChevronRightIcon class="w-6 h-6 text-gray-300 mr-1.5" />
                 </div>
@@ -105,21 +105,21 @@
           </ul>
         </div>
         <div v-if="data.members">
-          <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
+          <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             New Members in no groups
           </h2>
-          <ul class="bg-white rounded shadow mt-2 p-1 space-y-1">
+          <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li v-for="member in data.members" :key="member.id" class="block">
               <router-link
                 :to="{
                   name: 'admin-profile',
                   params: { id: member.rlcuserid },
                 }"
-                class="block group transition relative px-4 py-2 rounded-sm w-full text-left text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ member.name }}
                 <div
-                  class="absolute opacity-0 right-0 top-0 bottom-0 flex items-center justify-center transition group-hover:opacity-100"
+                  class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
                 >
                   <ChevronRightIcon class="w-6 h-6 text-gray-300 mr-1.5" />
                 </div>
@@ -128,10 +128,10 @@
           </ul>
         </div>
         <div v-if="data.questionnaires">
-          <h2 class="mt-8 text-lg leading-6 font-medium text-gray-700">
+          <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Questionnaires
           </h2>
-          <ul class="bg-white rounded shadow mt-2 p-1 space-y-1">
+          <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
               v-for="questionnaire in data.questionnaires"
               :key="questionnaire.id"
@@ -142,12 +142,12 @@
                   name: 'records-detail',
                   params: { id: questionnaire.record_id },
                 }"
-                class="block group transition relative px-4 py-2 rounded-sm w-full text-left text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ questionnaire.name }}
                 ({{ questionnaire.record }})
                 <div
-                  class="absolute opacity-0 right-0 top-0 bottom-0 flex items-center justify-center transition group-hover:opacity-100"
+                  class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
                 >
                   <ChevronRightIcon class="w-6 h-6 text-gray-300 mr-1.5" />
                 </div>
@@ -193,8 +193,8 @@ import useGet from "@/composables/useGet";
 import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
-import ModalForm from "@/components/ModalForm.vue";
-import ModalDelete from "@/components/ModalDelete.vue";
+import { ModalForm } from "@lawandorga/components";
+import { ModalDelete } from "@lawandorga/components";
 
 export default defineComponent({
   components: {

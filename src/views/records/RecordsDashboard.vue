@@ -85,7 +85,7 @@ import { defineComponent, ref, Ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { RecordDeletion, RecordTemplate, Record } from "@/types/records";
 import ButtonNormal from "@/components/ButtonNormal.vue";
-import ModalFree from "@/components/ModalFree.vue";
+import { ModalFree } from '@lawandorga/components';
 import { FormGenerator } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";

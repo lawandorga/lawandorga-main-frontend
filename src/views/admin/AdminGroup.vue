@@ -143,10 +143,10 @@ import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import { watch, defineComponent, ref, Ref, reactive } from "vue";
-import ModalFree from "@/components/ModalFree.vue";
+import { ModalFree } from '@lawandorga/components';
 import { FormGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
-import ModalDelete from "@/components/ModalDelete.vue";
+import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
 

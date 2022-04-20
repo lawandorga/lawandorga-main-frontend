@@ -151,9 +151,9 @@ import {
   QuestionnaireTemplate,
 } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import ModalFree from "@/components/ModalFree.vue";
+import { ModalFree } from '@lawandorga/components';
 import { FormGenerator } from "@lawandorga/components";
-import ModalDelete from "@/components/ModalDelete.vue";
+import { ModalDelete } from "@lawandorga/components";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import RecordsService from "@/services/records";

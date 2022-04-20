@@ -145,10 +145,10 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import ButtonBlue from "@/components/ButtonNormal.vue";
 import useGet from "@/composables/useGet";
 import { ref, Ref } from "vue";
-import ModalFree from "@/components/ModalFree.vue";
+import { ModalFree } from '@lawandorga/components';
 import { FormGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
-import ModalDelete from "@/components/ModalDelete.vue";
+import { ModalDelete } from "@lawandorga/components";
 import TableGenerator from "@/components/TableGenerator.vue";
 import ButtonNormal from "@/components/ButtonNormal.vue";
 import useCreateItem from "@/composables/useCreateItem";
@@ -159,7 +159,7 @@ import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
-import ModalForm from "@/components/ModalForm.vue";
+import { ModalForm } from "@lawandorga/components";
 
 const userFields = [
   {
