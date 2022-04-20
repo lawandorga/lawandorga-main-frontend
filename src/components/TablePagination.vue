@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { TableData, TableRow } from "@lawandorga/components";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
 
@@ -99,7 +99,7 @@ export default defineComponent({
       required: true,
     },
     pages: {
-      type: Array,
+      type: Array as PropType<number[]>,
       required: true,
     },
     colspan: {
