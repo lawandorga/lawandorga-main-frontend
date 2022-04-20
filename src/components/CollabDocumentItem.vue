@@ -146,13 +146,13 @@ import { ModalDelete } from "@lawandorga/components";
 import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";
-import TableGenerator from "@/components/TableGenerator.vue";
+import { TableGenerator } from "@lawandorga/components";
 import CoreService from "@/services/core";
-import ButtonNormal from "@/components/ButtonNormal.vue";
+import { ButtonNormal } from "@lawandorga/components";
 import { ref, watch } from "vue";
 import useCreateItem from "@/composables/useCreateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
-import CircleLoader from "@/components/CircleLoader.vue";
+import { CircleLoader } from '@lawandorga/components';
 
 export default defineComponent({
   components: {

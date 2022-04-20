@@ -16,16 +16,19 @@
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
       <div class="grid grid-cols-2 gap-y-6">
-        <div v-if="user" class="bg-white rounded shadow max-w-lg px-6 py-5">
+        <div v-if="user" class="max-w-lg px-6 py-5 bg-white rounded shadow">
           <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             <div class="flex items-center space-x-4">
-              <ButtonBlue kind="action" @click="changePasswordModalOpen = true">
+              <ButtonNormal
+                kind="action"
+                @click="changePasswordModalOpen = true"
+              >
                 Change Password
-              </ButtonBlue>
-              <ButtonBlue kind="action" @click="updateModalOpen = true">
+              </ButtonNormal>
+              <ButtonNormal kind="action" @click="updateModalOpen = true">
                 Edit
-              </ButtonBlue>
+              </ButtonNormal>
             </div>
           </div>
           <div class="mt-4">
@@ -142,15 +145,13 @@
 <script lang="ts">
 import { defineComponent, reactive, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import ButtonBlue from "@/components/ButtonNormal.vue";
 import useGet from "@/composables/useGet";
 import { ref, Ref } from "vue";
-import { ModalFree } from '@lawandorga/components';
+import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { ModalDelete } from "@lawandorga/components";
-import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonNormal from "@/components/ButtonNormal.vue";
+import { TableGenerator } from "@lawandorga/components";
 import useCreateItem from "@/composables/useCreateItem";
 import AdminService from "@/services/admin";
 import { HasPermission, Permission } from "@/types/core";
@@ -159,7 +160,7 @@ import { useRoute } from "vue-router";
 import useUpdateItem from "@/composables/useUpdateItem";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
-import { ModalForm } from "@lawandorga/components";
+import { ModalForm, ButtonNormal } from "@lawandorga/components";
 
 const userFields = [
   {
@@ -224,7 +225,7 @@ const passwordFields = [
 export default defineComponent({
   components: {
     BoxLoader,
-    ButtonBlue,
+    ButtonNormal,
     ModalFree,
     TableGenerator,
     ButtonNormal,

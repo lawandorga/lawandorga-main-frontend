@@ -71,13 +71,13 @@ import { defineComponent } from "vue";
 import RecordsService from "@/services/records";
 import { Tag } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalFree } from '@lawandorga/components';
+import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
-import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonNormal from "@/components/ButtonNormal.vue";
+import { TableGenerator } from "@lawandorga/components";
+import { ButtonNormal } from "@lawandorga/components";
 
 export default defineComponent({
   components: {

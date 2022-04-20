@@ -27,7 +27,7 @@ import { defineComponent } from "@vue/runtime-core";
 import { ModalFree } from '@lawandorga/components';
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import FilesService from "@/services/files";
-import TableGenerator from "@/components/TableGenerator.vue";
+import { TableGenerator } from "@lawandorga/components";
 import { HasPermission } from "@/types/core";
 
 export default defineComponent({

@@ -188,7 +188,7 @@ import UsersService from "@/services/user";
 import { ViewGridIcon, ChevronRightIcon } from "@heroicons/vue/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
-import ButtonNormal from "@/components/ButtonNormal.vue";
+import { ButtonNormal } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";

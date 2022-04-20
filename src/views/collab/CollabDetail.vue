@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="!!doc">
-    <div class="grid gap-6 max-w-screen-xl mx-auto">
+    <div class="grid max-w-screen-xl gap-6 mx-auto">
       <BreadcrumbsBar
         v-if="doc"
         :base="{ name: 'collab-dashboard' }"
@@ -14,15 +14,15 @@
         <DocumentTextIcon class="w-6 h-6" />
       </BreadcrumbsBar>
       <div
-        class="bg-white shadow rounded px-6 py-5 print:shadow-none print:p-0"
+        class="px-6 py-5 bg-white rounded shadow print:shadow-none print:p-0"
       >
         <FormTiptap v-model="model" :room="`Room ${doc.id}`">
-          <div class="border-b-2 border-gray-800 flex justify-between">
+          <div class="flex justify-between border-b-2 border-gray-800">
             <div class="w-full">
               <input
                 v-model="doc.name"
                 type="doc"
-                class="border-none bg-transparent px-3 py-2 text-3xl font-bold focus:border-none focus:outline-none focus:ring-offset-transparent focus:shadow-none shadow-none"
+                class="px-3 py-2 text-3xl font-bold bg-transparent border-none shadow-none focus:border-none focus:outline-none focus:ring-offset-transparent focus:shadow-none"
                 @update:model-value="currentVersionSaved = false"
               />
             </div>
@@ -46,7 +46,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { DocumentTextIcon } from "@heroicons/vue/outline";
 import FormTiptap from "@/components/FormTiptap.vue";
 import { CheckIcon } from "@heroicons/vue/outline";
-import CircleLoader from "@/components/CircleLoader.vue";
+import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
   components: {

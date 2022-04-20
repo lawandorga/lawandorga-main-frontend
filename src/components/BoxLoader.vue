@@ -3,7 +3,7 @@
     <div v-if="show"><slot /></div>
     <div v-if="!show">
       <div class="flex items-center">
-        <Loader class="mr-2" />
+        <CircleLoader class="mr-2" />
         <div class="text-lg font-medium text-gray-600">
           One moment please. Loading...
         </div>
@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts">
-import Loader from "@/components/CircleLoader.vue";
+import { CircleLoader } from "@lawandorga/components";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {
-    Loader,
+    CircleLoader,
   },
   props: {
     show: {

@@ -251,10 +251,10 @@ import {
 } from "@/types/files";
 import { defineComponent, Ref, ref, watch } from "vue";
 import FilesService from "@/services/files";
-import TableGenerator from "@/components/TableGenerator.vue";
-import ButtonNormal from "@/components/ButtonNormal.vue";
+import { TableGenerator } from "@lawandorga/components";
+import { ButtonNormal } from "@lawandorga/components";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalFree } from '@lawandorga/components';
+import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import { ModalDelete } from "@lawandorga/components";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";

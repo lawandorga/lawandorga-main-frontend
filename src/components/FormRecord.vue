@@ -92,13 +92,13 @@ import {
   FormTextarea,
   FormInput,
   FormFile,
+  ButtonNormal,
 } from "@lawandorga/components";
 import { defineComponent, PropType } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
 import { RecordEntry, Record, RecordField } from "@/types/records";
 import RecordsService from "@/services/records";
-import ButtonNormal from "./ButtonNormal.vue";
 
 export default defineComponent({
   components: {

@@ -13,18 +13,18 @@
     :type="type"
     @click="emitClick()"
   >
-    <Loader v-show="loading" color="text-white" class="mr-2" />
+    <CircleLoader v-show="loading" color="text-white" class="mr-2" />
     <slot />
   </component>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Loader from "./CircleLoader.vue";
+import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
   components: {
-    Loader,
+    CircleLoader,
   },
   props: {
     to: {

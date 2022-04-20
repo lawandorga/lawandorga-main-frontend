@@ -1,8 +1,8 @@
 <template>
-  <Table>
-    <Thead>
-      <Tr class="bg-white border-b border-gray-200">
-        <Td :colspan="head.length + 3" class="!py-1.5">
+  <TableTable>
+    <TableHead>
+      <TableRow class="bg-white border-b border-gray-200">
+        <TableData :colspan="head.length + 3" class="!py-1.5">
           <FormInput
             v-model="search"
             label=""
@@ -11,10 +11,10 @@
             required
             class="max-w-md ml-auto"
           />
-        </Td>
-      </Tr>
-      <Tr class="divide-x divide-gray-200">
-        <Th v-for="item in head" :key="item" class="!pr-2 group">
+        </TableData>
+      </TableRow>
+      <TableRow class="divide-x divide-gray-200">
+        <TableHeader v-for="item in head" :key="item" class="!pr-2 group">
           <div class="flex items-center justify-between">
             <button
               type="button"
@@ -44,20 +44,20 @@
               />
             </button>
           </div>
-        </Th>
-        <Th>
+        </TableHeader>
+        <TableHeader>
           <slot name="head-action"></slot>
-        </Th>
-      </Tr>
-    </Thead>
-    <Tbody>
+        </TableHeader>
+      </TableRow>
+    </TableHead>
+    <TableBody>
       <template v-if="records !== null">
-        <Tr
+        <TableRow
           v-for="record in paginatedRecords"
           :key="record.id"
           class="divide-x divide-gray-100"
         >
-          <Td v-for="(headItem, index) in head" :key="headItem">
+          <TableData v-for="(headItem, index) in head" :key="headItem">
             <template v-if="headItem === 'Created' || headItem === 'Updated'">
               <span v-if="headItem === 'Created'">
                 {{ formatDate(record.created) }}
@@ -127,17 +127,17 @@
                 {{ record.entries[headItem].value }}
               </button>
             </template>
-          </Td>
-          <Td>
+          </TableData>
+          <TableData>
             <slot :record="record" name="action"></slot>
-          </Td>
-        </Tr>
+          </TableData>
+        </TableRow>
       </template>
-      <Tr v-show="innerLoading">
-        <Td :colspan="head.length + 3">
+      <TableRow v-show="innerLoading">
+        <TableData :colspan="head.length + 3">
           <CircleLoader />
-        </Td>
-      </Tr>
+        </TableData>
+      </TableRow>
 
       <TablePagination
         :colspan="head.length + 3"
@@ -151,19 +151,21 @@
         :pages="pages"
         name="records"
       />
-    </Tbody>
-  </Table>
+    </TableBody>
+  </TableTable>
 </template>
 
 <script lang="ts">
-import Table from "./TableTable.vue";
-import Td from "./TableData.vue";
-import Tbody from "./TableBody.vue";
-import Thead from "./TableHeader.vue";
-import Tr from "./TableRow.vue";
-import Th from "./TableHead.vue";
 import { defineComponent, PropType, toRefs, computed } from "vue";
-import CircleLoader from "./CircleLoader.vue";
+import {
+  CircleLoader,
+  TableTable,
+  TableData,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableHeader,
+} from "@lawandorga/components";
 import { Record } from "@/types/records";
 import usePagination from "@/composables/usePagination";
 import TablePagination from "@/components/TablePagination.vue";
@@ -179,12 +181,12 @@ export default defineComponent({
     FormInput,
     ChevronUpIcon,
     ChevronDownIcon,
-    Th,
-    Td,
-    Tbody,
-    Thead,
-    Tr,
-    Table,
+    TableHeader,
+    TableData,
+    TableBody,
+    TableHead,
+    TableRow,
+    TableTable,
     CircleLoader,
     TablePagination,
     ButtonLink,

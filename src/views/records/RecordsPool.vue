@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="grid gap-6 max-w-screen-sm mx-auto">
+    <div class="grid max-w-screen-sm gap-6 mx-auto">
       <BreadcrumbsBar
         :base="{ name: 'records-dashboard' }"
         :pages="[
@@ -23,9 +23,9 @@
             {{ pool.type === "consultants" ? pool.entries.length : "-" }}
             <br />
             <br />
-            <ButtonBlue type="button" @click="enlist()">
+            <ButtonNormal type="button" @click="enlist()">
               {{ pool.type === "records" ? "Take record" : "Enlist" }}
-            </ButtonBlue>
+            </ButtonNormal>
           </div>
         </div>
       </div>
@@ -51,16 +51,15 @@ import { defineComponent, onMounted, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { FormGenerator } from "@lawandorga/components";
+import { FormGenerator, ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import { Pool } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import ButtonBlue from "@/components/ButtonNormal.vue";
 
 export default defineComponent({
   components: {
     BoxLoader,
-    ButtonBlue,
+    ButtonNormal,
     BreadcrumbsBar,
     CollectionIcon,
     FormGenerator,

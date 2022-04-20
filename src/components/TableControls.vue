@@ -20,8 +20,8 @@
         >
           <Td v-for="headItem in head" :key="headItem.key">
             <slot
-              :dataItem="dataItem"
-              :headItem="headItem"
+              :data-item="dataItem"
+              :head-item="headItem"
               :name="headItem.key"
             >
               {{ getData(dataItem, headItem.key) }}
@@ -117,7 +117,7 @@ import Tr from "./TableRow.vue";
 import Th from "./TableHead.vue";
 import { defineComponent, PropType } from "vue";
 import { JsonModel } from "@/types/shared";
-import CircleLoader from "./CircleLoader.vue";
+import { CircleLoader } from "@lawandorga/components";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
 
 interface NestedObject {

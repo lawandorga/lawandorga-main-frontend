@@ -41,7 +41,7 @@
 import { defineComponent, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { SupportIcon } from "@heroicons/vue/outline";
-import TableGenerator from "@/components/TableGenerator.vue";
+import { TableGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import HelpService from "@/services/help";
 

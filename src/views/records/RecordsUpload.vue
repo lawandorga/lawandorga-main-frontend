@@ -20,7 +20,7 @@
 import { defineComponent, ref } from "@vue/runtime-core";
 import { FormInput } from "@lawandorga/components";
 import { useRouter } from "vue-router";
-import ButtonNormal from "@/components/ButtonNormal.vue";
+import { ButtonNormal } from "@lawandorga/components";
 
 export default defineComponent({
   components: {
