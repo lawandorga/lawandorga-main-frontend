@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="!!template">
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-5xl mx-auto space-y-6">
       <BreadcrumbsBar
         :base="{ name: 'admin-dashboard' }"
         :pages="[
@@ -46,6 +46,7 @@
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
             <ButtonNormal
+              v-if="slotProps.url"
               size="xs"
               kind="action"
               @click="
@@ -56,6 +57,7 @@
               Change
             </ButtonNormal>
             <ButtonNormal
+              v-if="slotProps.url"
               size="xs"
               kind="delete"
               @click="

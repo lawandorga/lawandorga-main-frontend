@@ -13,7 +13,11 @@
       <div
         v-for="field in fields"
         :key="field.name"
-        :class="{ hidden: field.type === 'hidden' }"
+        :class="{
+          hidden: field.type === 'hidden',
+          'border-green-500 border px-2 pb-2 pt-2 rounded bg-gradient-to-t from-green-100 to-transparent':
+            field.kind === 'Statistic',
+        }"
       >
         <FormTextarea
           v-if="field.type === 'textarea'"
@@ -80,6 +84,11 @@
         >
           {{ errors[field.name][0] }}
         </p>
+      </div>
+      <div class="text-sm text-green-800">
+        Green fields are statistic fields that are used by Law&Orga internally
+        to help us [todo: understand our customers]. It is in no way required to
+        fill out these fields. But it would help us a lot.
       </div>
     </div>
   </form>
