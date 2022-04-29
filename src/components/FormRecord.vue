@@ -87,8 +87,8 @@
       </div>
       <div class="text-sm text-green-800">
         Green fields are statistic fields that are used by Law&Orga internally
-        to help us [todo: understand our customers]. It is in no way required to
-        fill out these fields. But it would help us a lot.
+        to help us and you. It is in no way required to fill out these fields.
+        But it would help us a lot.
       </div>
     </div>
   </form>

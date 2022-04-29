@@ -53,6 +53,10 @@
                 {{ user.note }}
               </p>
             </div>
+            <p>
+              Speciality of Study:
+              {{ user.speciality_of_study_display }}
+            </p>
           </div>
         </div>
 
@@ -191,6 +195,24 @@ const userFields = [
     label: "Postal Code",
     type: "text",
     name: "postal_code",
+    required: false,
+  },
+  {
+    label: "Speciality of Study",
+    type: "select",
+    name: "speciality_of_study",
+    options: [
+      { value: "LAW", name: "Law Sciences" },
+      { value: "PSYCH", name: "Psychology" },
+      { value: "POL", name: "Political Science" },
+      { value: "SOC", name: "Social Sciences" },
+      { value: "ECO", name: "Economics" },
+      { value: "MED", name: "Medicine / Medical Psychology" },
+      { value: "PHA", name: "Pharmacy" },
+      { value: "CUL", name: "Cultural Studies" },
+      { value: "OTHER", name: "Other" },
+      { value: "NONE", name: "None" },
+    ],
     required: false,
   },
   {

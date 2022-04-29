@@ -26,6 +26,8 @@ export interface RlcUser {
   name: string;
   email: string;
   created: string;
+  speciality_of_study: string | null;
+  speciality_of_study_display: string | null;
 }
 
 export interface DashboardInformation {
