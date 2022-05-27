@@ -28,22 +28,12 @@
         :data="items"
       >
         <template #head-action>
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="createFolderModalOpen = true"
-            >
-              Create Folder
-            </ButtonNormal>
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="createFileModalOpen = true"
-            >
-              Upload File
-            </ButtonNormal>
-          </div>
+          <ButtonNormal kind="action" @click="createFolderModalOpen = true">
+            Create Folder
+          </ButtonNormal>
+          <ButtonNormal kind="action" @click="createFileModalOpen = true">
+            Upload File
+          </ButtonNormal>
         </template>
         <template #type="slotProps">
           <FolderIcon

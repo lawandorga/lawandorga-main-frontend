@@ -2,13 +2,13 @@
   <div v-if="editor" class="border-2 border-gray-800 rounded-xl">
     <slot></slot>
     <MenuBar
-      class="flex items-center border-b-2 border-gray-800 p-2 print:hidden"
+      class="flex items-center p-2 border-b-2 border-gray-800 print:hidden"
       :editor="editor"
     />
 
     <EditorContent ref="tiptap" :editor="editor" />
     <div
-      class="text-gray-800 flex items-center justify-between border-t-2 border-gray-800 px-2 py-1 print:hidden"
+      class="flex items-center justify-between px-2 py-1 text-gray-800 border-t-2 border-gray-800 print:hidden"
     >
       <div class="space-x-4">
         <span class="text-sm">{{ room }}:</span>
@@ -131,7 +131,7 @@ export default defineComponent({
         StarterKit.configure({
           history: false,
         }),
-        Highlight,
+        Highlight.configure({ multicolor: true }),
         Collaboration.configure({
           document: ydoc,
         }),

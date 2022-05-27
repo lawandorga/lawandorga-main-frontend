@@ -4,7 +4,7 @@
       <div
         v-if="item.type === 'divider'"
         :key="`divider${index}`"
-        class="divider mx-3"
+        class="mx-3 divider"
       />
       <MenuItem v-else :key="index" v-bind="item" />
     </template>
@@ -51,9 +51,57 @@ export default defineComponent({
         },
         {
           icon: "mark-pen-line",
-          title: "Highlight",
-          action: () => this.editor.chain().focus().toggleHighlight().run(),
-          isActive: () => this.editor.isActive("highlight"),
+          title: "Highlight Yellow",
+          action: () =>
+            this.editor
+              .chain()
+              .focus()
+              .toggleHighlight({ color: "#ffff00" })
+              .run(),
+          isActive: () =>
+            this.editor.isActive("highlight", { color: "#ffff00" }),
+        },
+        {
+          icon: "mark-pen-line",
+          title: "Highlight Red",
+          action: () =>
+            this.editor
+              .chain()
+              .focus()
+              .toggleHighlight({ color: "#ff005d" })
+              .run(),
+          isActive: () =>
+            this.editor.isActive("highlight", {
+              color: "#ff005d",
+            }),
+        },
+        {
+          icon: "mark-pen-line",
+          title: "Highlight Blue",
+          action: () =>
+            this.editor
+              .chain()
+              .focus()
+              .toggleHighlight({ color: "#00b3ff" })
+              .run(),
+          isActive: () =>
+            this.editor.isActive("highlight", {
+              color: "#00b3ff",
+            }),
+        },
+        {
+          icon: "mark-pen-line",
+          title: "Highlight Green",
+          action: () =>
+            this.editor
+              .chain()
+              .focus()
+              .toggleHighlight({ color: "#00ff26" })
+              .run(),
+          isActive: () =>
+            this.editor.isActive("highlight", {
+              color: "#00ff26",
+            }),
         },
         {
           icon: "format-clear",
