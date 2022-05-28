@@ -65,12 +65,12 @@
     </div>
     <!-- create -->
     <ModalFree v-model="createModalOpen" title="Create Template">
-      <FormGenerator :fields="fields" :request="createRequest" />
+      <FormGenerator :fields="createFields" :request="createRequest" />
     </ModalFree>
     <!-- update -->
     <ModalFree v-model="updateModalOpen" title="Update Template">
       <FormGenerator
-        :fields="fields"
+        :fields="updateFields"
         :initial="template"
         :request="updateRequest"
       />
@@ -102,7 +102,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 
-const fields = [
+const updateFields = [
   {
     label: "Name",
     name: "name",
@@ -113,6 +113,15 @@ const fields = [
     label: "Fields in Table",
     name: "show",
     type: "list",
+    required: true,
+  },
+];
+
+const createFields = [
+  {
+    label: "Name",
+    name: "name",
+    type: "text",
     required: true,
   },
 ];
@@ -157,11 +166,12 @@ export default defineComponent({
     return {
       templates,
       template,
-      fields,
       // create
+      createFields,
       createRequest,
       createModalOpen,
       // update
+      updateFields,
       updateRequest,
       updateModalOpen,
       // delete
