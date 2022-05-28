@@ -15,34 +15,30 @@
       </BreadcrumbsBar>
       <TableRecords :records="records">
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal kind="action" @click="createModalOpen = true">
-              Create Record
-            </ButtonNormal>
-          </div>
+          <ButtonNormal kind="action" @click="createModalOpen = true">
+            Create Record
+          </ButtonNormal>
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              v-if="!slotProps.record.access"
-              size="xs"
-              kind="action"
-              @click="requestAccess(slotProps.record)"
-            >
-              Request Access
-            </ButtonNormal>
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              :disabled="slotProps.record.delete"
-              @click="
-                record = slotProps.record;
-                createDeletionRequestModalOpen = true;
-              "
-            >
-              Request Deletion
-            </ButtonNormal>
-          </div>
+          <ButtonNormal
+            v-if="!slotProps.record.access"
+            size="xs"
+            kind="action"
+            @click="requestAccess(slotProps.record)"
+          >
+            Request Access
+          </ButtonNormal>
+          <ButtonNormal
+            size="xs"
+            kind="delete"
+            :disabled="slotProps.record.delete"
+            @click="
+              record = slotProps.record;
+              createDeletionRequestModalOpen = true;
+            "
+          >
+            Request Deletion
+          </ButtonNormal>
         </template>
       </TableRecords>
     </div>

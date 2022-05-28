@@ -1,7 +1,7 @@
 <template>
   <TableRow>
-    <TableData :colspan="colspan">
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <TableData :colspan="colspan" class="md:!pr-0">
+      <div class="flex items-center justify-between flex-1">
         <div>
           <p class="text-sm text-gray-700">
             Showing
@@ -23,7 +23,7 @@
             {{ name }}
           </p>
         </div>
-        <div>
+        <div class="right-0 md:sticky md:pr-6">
           <nav
             class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination"

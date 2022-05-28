@@ -171,10 +171,6 @@
           </div>
         </template>
       </TableGenerator>
-      <BoxAlert type="warning">
-        There seems to be a problem with the Safari Browser. At the moment we
-        can only guarantee that the download works in Chrome or Firefox.
-      </BoxAlert>
     </div>
     <!-- folder -->
     <ModalFree v-model="createFolderModalOpen" title="Create Folder">

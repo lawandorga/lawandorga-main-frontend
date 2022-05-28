@@ -2,15 +2,16 @@
   <TableTable>
     <TableHead>
       <TableRow class="bg-white border-b border-gray-200">
-        <TableData :colspan="head.length + 3" class="!py-1.5">
-          <FormInput
-            v-model="search"
-            label=""
-            placeholder="AZ-123 / Open / Consultant / Tag"
-            type="search"
-            required
-            class="max-w-md ml-auto"
-          />
+        <TableData :colspan="head.length + 1" class="!py-1.5 !px-0">
+          <div class="right-0 max-w-md px-6 md:ml-auto md:sticky">
+            <FormInput
+              v-model="search"
+              label=""
+              placeholder="AZ-123 / Open / Consultant / Tag"
+              type="search"
+              required
+            />
+          </div>
         </TableData>
       </TableRow>
       <TableRow class="divide-x divide-gray-200">
@@ -45,8 +46,13 @@
             </button>
           </div>
         </TableHeader>
-        <TableHeader>
+        <TableHeader
+          class="text-right md:sticky right-0 space-x-3 md:!border-l-0"
+        >
           <slot name="head-action"></slot>
+          <div
+            class="hidden md:block absolute top-0 bottom-0 left-0 w-px h-full bg-gray-200 !m-0"
+          ></div>
         </TableHeader>
       </TableRow>
     </TableHead>
@@ -58,16 +64,16 @@
           class="divide-x divide-gray-100"
         >
           <TableData v-for="(headItem, index) in head" :key="headItem">
-            <template v-if="headItem === 'Created' || headItem === 'Updated'">
+            <!-- <template v-if="headItem === 'Created' || headItem === 'Updated'">
               <span v-if="headItem === 'Created'">
                 {{ formatDate(record.created) }}
               </span>
               <span v-else-if="headItem === 'Updated'">
                 {{ formatDate(record.updated) }}
               </span>
-            </template>
+            </template> -->
 
-            <template v-else-if="index === 0">
+            <template v-if="index === 0">
               <ButtonLink
                 v-if="record.access"
                 :to="{
@@ -128,8 +134,13 @@
               </button>
             </template>
           </TableData>
-          <TableData>
+          <TableData
+            class="md:sticky right-0 text-right space-x-3 md:!border-l-0"
+          >
             <slot :record="record" name="action"></slot>
+            <div
+              class="hidden md:block absolute top-0 bottom-0 left-0 w-px h-full bg-gray-100 !m-0"
+            ></div>
           </TableData>
         </TableRow>
       </template>
@@ -140,7 +151,7 @@
       </TableRow>
 
       <TablePagination
-        :colspan="head.length + 3"
+        :colspan="head.length + 1"
         :previous-page="previousPage"
         :set-page="setPage"
         :next-page="nextPage"
@@ -249,8 +260,6 @@ export default defineComponent({
       const head = Array.from(
         new Set(paginatedRecords.value.map((r: Record) => r.show).flat()),
       );
-      head.push("Created");
-      head.push("Updated");
       return head;
     });
 

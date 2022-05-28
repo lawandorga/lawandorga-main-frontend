@@ -1,12 +1,12 @@
 <template>
-  <div v-if="editor" class="border-2 border-gray-800 rounded-xl">
+  <div v-if="editor" class="break-words border-2 border-gray-800 rounded-xl">
     <slot></slot>
     <MenuBar
       class="flex items-center p-2 border-b-2 border-gray-800 print:hidden"
       :editor="editor"
     />
 
-    <EditorContent ref="tiptap" :editor="editor" />
+    <EditorContent ref="tiptap" :editor="editor" class="break-words" />
     <div
       class="flex items-center justify-between px-2 py-1 text-gray-800 border-t-2 border-gray-800 print:hidden"
     >
@@ -186,7 +186,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss">
+<style lang="css">
 /* give a remote user a caret */
 .collaboration-cursor__caret {
   position: relative;
@@ -222,5 +222,10 @@ export default defineComponent({
   z-index: 2;
   @apply absolute inset-0 bg-gray-600 bg-opacity-10 pointer-events-none;
   content: "";
+}
+
+/* break words within the editor */
+.ProseMirror {
+  word-break: break-all;
 }
 </style>
