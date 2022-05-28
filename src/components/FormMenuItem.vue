@@ -1,16 +1,16 @@
 <template>
   <button
-    class="w-7 h-7 rounded-md p-1 mr-1.5"
+    class="w-7 h-7 rounded-md p-1 mr-1.5 border-2 border-transparent"
     type="button"
     :class="{
-      'text-white bg-gray-900': active,
+      'text-white bg-gray-900 !border-transparent': active,
       'text-gray-900': !active,
     }"
     :title="title"
     tabindex="-1"
     @click.prevent="action"
   >
-    <svg class="remix w-full h-full fill-current">
+    <svg class="w-full h-full fill-current remix">
       <use :xlink:href="`${remixiconUrl}#ri-${icon}`" />
     </svg>
   </button>

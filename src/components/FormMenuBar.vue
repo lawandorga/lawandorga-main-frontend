@@ -56,10 +56,11 @@ export default defineComponent({
             this.editor
               .chain()
               .focus()
-              .toggleHighlight({ color: "#ffff00" })
+              .toggleHighlight({ color: "#ffff99" })
               .run(),
           isActive: () =>
-            this.editor.isActive("highlight", { color: "#ffff00" }),
+            this.editor.isActive("highlight", { color: "#ffff99" }),
+          class: "border-yellow-200",
         },
         {
           icon: "mark-pen-line",
@@ -68,12 +69,13 @@ export default defineComponent({
             this.editor
               .chain()
               .focus()
-              .toggleHighlight({ color: "#ff005d" })
+              .toggleHighlight({ color: "#fecddf" })
               .run(),
           isActive: () =>
             this.editor.isActive("highlight", {
-              color: "#ff005d",
+              color: "#fecddf",
             }),
+          class: "border-red-200",
         },
         {
           icon: "mark-pen-line",
@@ -82,12 +84,13 @@ export default defineComponent({
             this.editor
               .chain()
               .focus()
-              .toggleHighlight({ color: "#00b3ff" })
+              .toggleHighlight({ color: "#b3e8ff" })
               .run(),
           isActive: () =>
             this.editor.isActive("highlight", {
-              color: "#00b3ff",
+              color: "#b3e8ff",
             }),
+          class: "border-blue-200",
         },
         {
           icon: "mark-pen-line",
@@ -96,12 +99,13 @@ export default defineComponent({
             this.editor
               .chain()
               .focus()
-              .toggleHighlight({ color: "#00ff26" })
+              .toggleHighlight({ color: "#b3ffbe" })
               .run(),
           isActive: () =>
             this.editor.isActive("highlight", {
-              color: "#00ff26",
+              color: "#b3ffbe",
             }),
+          class: "border-green-200",
         },
         {
           icon: "format-clear",

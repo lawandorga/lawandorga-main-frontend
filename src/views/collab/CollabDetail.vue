@@ -17,7 +17,7 @@
         class="px-6 py-5 bg-white rounded shadow print:shadow-none print:p-0"
       >
         <FormTiptap v-model="model" :room="`Room ${doc.id}`">
-          <div class="flex justify-between border-b-2 border-gray-800">
+          <div class="flex justify-between">
             <div class="w-full">
               <input
                 v-model="doc.name"
