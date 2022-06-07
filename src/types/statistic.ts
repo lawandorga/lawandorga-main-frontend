@@ -15,10 +15,12 @@ export interface TagCount {
 
 export interface RecordTagStats {
   tags: TagCount[];
-  state: [
-    { state: "Set"; count: number },
-    { state: "Not-Existing"; count: number },
-  ];
+  state:
+    | [
+        { state: "Tags"; count: number },
+        { state: "Not-Existing"; count: number },
+      ]
+    | [{ state: "Tags"; count: number }];
 }
 
 export interface UserAction {

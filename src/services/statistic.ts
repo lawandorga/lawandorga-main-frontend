@@ -108,7 +108,10 @@ class StatisticService {
         const ret = response.data["tags"];
         ret.push({
           tag: "Unknown",
-          count: response.data["state"][1]["count"],
+          count:
+            response.data["state"].length == 2
+              ? response.data["state"][1]["count"]
+              : 0,
         });
         return ret;
       });
