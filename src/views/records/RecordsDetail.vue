@@ -230,7 +230,7 @@
           <div class="mt-5 border-t border-gray-200">
             <TableGenerator
               :head="[
-                { name: 'Person', key: (obj) => obj.user_object.name },
+                { name: 'Person', key: 'user_detail' },
                 { name: 'Since', key: 'created' },
                 { name: '', key: 'action' },
               ]"
@@ -320,12 +320,12 @@ import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { ModalDelete } from "@lawandorga/components";
-import { ModalFree } from '@lawandorga/components';
+import { ModalFree } from "@lawandorga/components";
 import { CollectionIcon } from "@heroicons/vue/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { formatDate } from "@/utils/date";
 import { PaperClipIcon } from "@heroicons/vue/solid";
-import { ButtonNormal } from '@lawandorga/components';
+import { ButtonNormal } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { useRoute } from "vue-router";
