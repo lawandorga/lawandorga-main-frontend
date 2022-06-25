@@ -8,6 +8,21 @@ export const isAuthenticated: NavigationGuard = (to) => {
       query: { next: to.fullPath },
     };
   }
+
+  if (store.getters["user/user"].locked) {
+    return {
+      name: "user-keys",
+    };
+  }
+};
+
+export const isAuthenticatedButLockedAllowed: NavigationGuard = (to) => {
+  if (!store.getters["user/isAuthenticated"]) {
+    return {
+      name: "user-login",
+      query: { next: to.fullPath },
+    };
+  }
 };
 
 export const notAuthenticated: NavigationGuard = (to) => {

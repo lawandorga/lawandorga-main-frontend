@@ -1,9 +1,11 @@
 import { Rlc } from "@/types/core";
+import { Key } from "@/types/key";
 import {
   DashboardInformation,
   DashboardNote,
   LoginResponse,
   RefreshResponse,
+  RlcUser,
   User,
 } from "@/types/user";
 import axios from "axios";
@@ -80,6 +82,10 @@ class UserService {
       .then();
   }
 
+  unlockSelf(): Promise<RlcUser> {
+    return axios.post("rlc_users/unlock_self/", {}).then((r) => r.data);
+  }
+
   // notes
   getNotes(): Promise<DashboardNote[]> {
     return axios.get("notes/").then((response) => response.data);
@@ -99,6 +105,19 @@ class UserService {
 
   deleteNote(note: DashboardNote): Promise<void> {
     return axios.delete(`notes/${note.id}/`);
+  }
+
+  // keys
+  getKeys(): Promise<Key[]> {
+    return axios.get("keys/").then((response) => response.data);
+  }
+
+  deleteKey(key: Key): Promise<void> {
+    return axios.delete(`keys/${key.id}/`).then();
+  }
+
+  testKeys(): Promise<Key[]> {
+    return axios.post("keys/test/", {}).then((response) => response.data);
   }
 
   // getPermissions(): Promise<Permission[]> {

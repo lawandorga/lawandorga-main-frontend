@@ -67,6 +67,9 @@ const actions = {
     }
     return;
   },
+  setUser(context: ActionContext<UserState, RootState>, user: RlcUser) {
+    context.commit("setUser", user);
+  },
   login: (
     context: ActionContext<UserState, RootState>,
     data: LoginResponse,

@@ -11,7 +11,7 @@ export interface User {
 
 export interface RlcUser {
   id: number;
-  user: number;
+  user_id: number;
   birthday: string;
   phone_number: string;
   street: string;

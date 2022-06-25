@@ -9,15 +9,18 @@ import axios from "axios";
 // vue
 const app = createApp(App);
 
-app.use(router);
-
 app.use(store);
-
-// mount
-app.mount("#app");
 
 // setup axios
 setupDefaultAxios(axios);
 
 // auto login on reload
-store.dispatch("user/autoLogin");
+store
+  .dispatch("user/autoLogin")
+  .then(() => {
+    app.use(router);
+    app.mount("#app");
+  })
+  .catch(() => {
+    alert("Unknown error occurred. Please contact it@law-orga.de.");
+  });
