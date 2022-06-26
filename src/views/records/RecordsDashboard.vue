@@ -24,7 +24,10 @@
             v-if="!slotProps.record.access"
             size="xs"
             kind="action"
-            @click="requestAccess(slotProps.record)"
+            @click="
+              record = slotProps.record;
+              createRecordAccessModalOpen = true;
+            "
           >
             Request Access
           </ButtonNormal>
@@ -71,6 +74,24 @@
         @success="deletionRequestCreated"
       ></FormGenerator>
     </ModalFree>
+    <ModalFree v-model="createRecordAccessModalOpen" title="Request Access">
+      <FormGenerator
+        :fields="[
+          {
+            label: 'Explanation',
+            name: 'explanation',
+            type: 'textarea',
+            required: false,
+          },
+        ]"
+        :initial="{
+          record: record ? record.id : null,
+          requested_by: $store.getters['user/user'].user,
+        }"
+        :request="createRecordAccessRequest"
+        submit="Request Access"
+      ></FormGenerator>
+    </ModalFree>
   </BoxLoader>
 </template>
 
@@ -89,7 +110,6 @@ import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { formatDate } from "@/utils/date";
 import useCreateItem from "@/composables/useCreateItem";
 import useGet from "@/composables/useGet";
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { FormField } from "@/types/form";
@@ -107,27 +127,10 @@ export default defineComponent({
     ModalFree,
   },
   setup() {
-    // store
-    const store = useStore();
-
     // records
     const records = ref(null) as Ref<Record[] | null>;
     const record = ref(null) as Ref<Record | null>;
     useGet(RecordsService.getRecords, records);
-
-    // request access
-    const requestAccess = (record: Record) => {
-      RecordsService.createRecordAccess({
-        record: record.id,
-        requested_by: store.getters["user/user"].user,
-      }).then(() =>
-        store.dispatch("alert/createAlert", {
-          heading: "Access Requested",
-          type: "success",
-          message: "An admin needs to allow you to see this record now.",
-        }),
-      );
-    };
 
     return {
       // utils
@@ -136,12 +139,24 @@ export default defineComponent({
       records,
       record,
       // access
-      requestAccess,
+      ...createRecordAccess(),
       ...createRecord(records),
       ...createDeletionRequest(records),
     };
   },
 });
+
+function createRecordAccess() {
+  const {
+    createRequest: createRecordAccessRequest,
+    createModalOpen: createRecordAccessModalOpen,
+  } = useCreateItem(RecordsService.createRecordAccess, ref(null));
+
+  return {
+    createRecordAccessRequest,
+    createRecordAccessModalOpen,
+  };
+}
 
 function createDeletionRequest(records: Ref<Record[] | null>) {
   const {

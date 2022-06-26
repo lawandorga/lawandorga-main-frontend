@@ -18,6 +18,7 @@
           { name: 'Record', key: 'record_detail' },
           { name: 'Requested', key: 'created' },
           { name: 'Requested By', key: 'requested_by_detail' },
+          { name: 'Explanation', key: 'explanation' },
           { name: 'Processed', key: 'processed_on' },
           { name: 'Processed By', key: 'processed_by_detail' },
           { name: 'State', key: 'state' },
@@ -35,6 +36,13 @@
           <span v-if="slotProps.state === 're'">Requested</span>
           <span v-if="slotProps.state === 'de'">Declined</span>
           <span v-if="slotProps.state === 'gr'">Accepted</span>
+        </template>
+        <template #explanation="slotProps">
+          <div class="w-40 whitespace-normal line-clamp-3">
+            <abbr class="underline-dotted" :title="slotProps.explanation">
+              {{ slotProps.explanation }}
+            </abbr>
+          </div>
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
