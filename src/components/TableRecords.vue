@@ -167,7 +167,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, toRefs, computed } from "vue";
+import { defineComponent, PropType, toRefs, computed, watch } from "vue";
 import {
   CircleLoader,
   TableTable,
@@ -261,6 +261,14 @@ export default defineComponent({
         new Set(paginatedRecords.value.map((r: Record) => r.show).flat()),
       );
       return head;
+    });
+
+    // set default sort
+    watch(head, (newValue) => {
+      if (newValue.length > 0 && sortBy.value == "" && sortOrder.value == "") {
+        sortBy.value = newValue[0];
+        sortOrder.value = "DESC";
+      }
     });
 
     // return

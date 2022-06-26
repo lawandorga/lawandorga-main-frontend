@@ -32,10 +32,6 @@ export default function useSort() {
   };
 
   function getValueRecord(record: Record): string {
-    if (sortBy.value === "Created")
-      return new Date(record.created).toISOString();
-    if (sortBy.value === "Updated")
-      return new Date(record.created).toISOString();
     const entry = record.entries[sortBy.value];
     if (entry && !Array.isArray(entry.value))
       return entry.value.toLocaleString().toLocaleLowerCase();
