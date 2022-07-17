@@ -62,7 +62,8 @@ const actions = {
           context.commit("setPermissions", statics.permissions);
         })
         .catch((error) => {
-          throw error.response.data;
+          context.commit("logout");
+          throw error;
         });
     }
     return;

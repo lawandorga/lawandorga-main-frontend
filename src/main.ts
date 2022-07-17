@@ -19,8 +19,13 @@ store
   .dispatch("user/autoLogin")
   .then(() => {
     app.use(router);
-    app.mount("#app");
   })
   .catch(() => {
-    alert("Unknown error occurred. Please contact it@law-orga.de.");
+    app.use(router);
+    router.push({ name: "dashboard" });
+    // window.location.reload();
+    // alert("Unknown error occurred. Please contact it@law-orga.de.");
+  })
+  .finally(() => {
+    app.mount("#app");
   });
