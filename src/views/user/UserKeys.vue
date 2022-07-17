@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="true" class="pb-64">
+  <BoxLoader :show="!!$store.getters['user/user']" class="pb-64">
     <div class="max-w-2xl mx-auto space-y-6">
       <BreadcrumbsBar
         v-if="$store.getters['user/user']"
@@ -82,7 +82,7 @@
               Other users in your LC can go to Admin > Profiles and press the
               unlock button next to your account. This will try to correct as
               many of your keys as possible. After this, you need to test all
-              keys, as it might not update the correct field.
+              keys.
             </li>
             <li>
               You can delete keys that do not work and request access again for
