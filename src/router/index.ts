@@ -9,13 +9,13 @@ import helpRoutes from "./help";
 import internalRoutes from "./internal";
 import Dashboard from "@/views/DashboardPage.vue";
 import { isAuthenticated } from "./utils";
+import NotFoundPage from "@/views/NotFoundPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "index",
     redirect: { name: "dashboard" },
-    // component: () => import("@/views/Index.vue"),
   },
   {
     path: "/dashboard/",
@@ -31,6 +31,10 @@ const routes: Array<RouteRecordRaw> = [
   ...adminRoutes,
   ...helpRoutes,
   ...internalRoutes,
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFoundPage,
+  },
 ];
 
 const router = createRouter({
