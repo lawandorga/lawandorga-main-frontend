@@ -26,7 +26,7 @@
       </div>
       <!-- eslint-disable vue/no-v-html -->
       <article
-        class="pt-8 prose print:p-0"
+        class="pt-8 prose break-words print:p-0 max-w-none"
         v-html="document.content_html"
       ></article>
       <!-- eslint-enable vue/no-v-html -->
@@ -152,7 +152,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import { ref, watch } from "vue";
 import useCreateItem from "@/composables/useCreateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
-import { CircleLoader } from '@lawandorga/components';
+import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
   components: {
