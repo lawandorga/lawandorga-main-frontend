@@ -77,11 +77,6 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       }
       // authentication error
       else if (error.response.status === 401) {
-        store.dispatch("alert/createAlert", {
-          type: "error",
-          heading: `Error 401`,
-          message: "Your token expired, please login again.",
-        });
         if (store.getters["user/isAuthenticated"]) {
           const next = window.location.pathname;
           store.dispatch("user/logout");
@@ -90,15 +85,6 @@ export function setupDefaultAxios($axios: AxiosInstance) {
             query: { next: next },
           });
         }
-        // } else if (error.response.status === 401) {
-        //   const originalConfig = error.config;
-        //   const newToken = await UserService.refresh({
-        //     refresh: store.getters["user/refresh"],
-        //   });
-        //   await store.dispatch("user/refresh", newToken);
-        //   originalConfig._retry = true;
-        //   originalConfig.headers.Authorization = store.getters["user/token"];
-        //   return $axios(originalConfig);
       }
       // error with detail message
       else if (
@@ -112,15 +98,17 @@ export function setupDefaultAxios($axios: AxiosInstance) {
           heading: `Error ${error.response.status}`,
           message: error.response.data.detail,
         });
-        // 500 error
-      } else if (error.response && error.response.status === 500) {
+      }
+      // 500 error
+      else if (error.response && error.response.status === 500) {
         store.dispatch("alert/createAlert", {
           type: "error",
           heading: "Error 500",
           message: "Server Error",
         });
-        // error without detail
-      } else if (
+      }
+      // error without detail
+      else if (
         error.response &&
         error.response.status &&
         error.response.statusText &&
