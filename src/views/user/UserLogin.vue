@@ -48,39 +48,47 @@
           <div class="flex flex-col justify-center">
             <div class="p-6 bg-white rounded-sm shadow-sm">
               <h2 class="mb-8 text-2xl font-bold">Login</h2>
-              <FormGenerator
-                :fields="[
-                  {
-                    label: 'E-Mail',
-                    type: 'email',
-                    name: 'email',
-                    autocomplete: 'email',
-                    required: true,
-                  },
-                  {
-                    label: 'Password',
-                    type: 'password',
-                    autocomplete: 'current-password',
-                    name: 'password',
-                    required: true,
-                  },
-                ]"
-                :request="loginRequest"
-                submit="Login"
-              />
-              <div class="pt-6 space-x-4 text-right">
-                <router-link
-                  :to="{ name: 'user-register' }"
-                  class="hover:underline"
-                >
-                  Register
-                </router-link>
-                <router-link
-                  :to="{ name: 'user-passwordreset' }"
-                  class="hover:underline"
-                >
-                  Forgot Password?
-                </router-link>
+              <div v-if="!authenticated">
+                <FormGenerator
+                  :fields="[
+                    {
+                      label: 'E-Mail',
+                      type: 'email',
+                      name: 'email',
+                      autocomplete: 'email',
+                      required: true,
+                    },
+                    {
+                      label: 'Password',
+                      type: 'password',
+                      autocomplete: 'current-password',
+                      name: 'password',
+                      required: true,
+                    },
+                  ]"
+                  :request="loginRequest"
+                  submit="Login"
+                />
+                <div class="pt-6 space-x-4 text-right">
+                  <router-link
+                    :to="{ name: 'user-register' }"
+                    class="hover:underline"
+                  >
+                    Register
+                  </router-link>
+                  <router-link
+                    :to="{ name: 'user-passwordreset' }"
+                    class="hover:underline"
+                  >
+                    Forgot Password?
+                  </router-link>
+                </div>
+              </div>
+              <div v-else>
+                <p class="mb-4">You are logged in already.</p>
+                <ButtonNormal :to="{ name: 'dashboard' }">
+                  To the dashboard
+                </ButtonNormal>
               </div>
             </div>
           </div>
@@ -215,6 +223,9 @@
     </section>
     <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
       <div class="space-x-4 text-right">
+        <a href="https://github.com/lawandorga" target="_blank">
+          Open Source Code
+        </a>
         <router-link :to="{ name: 'internal-imprint' }">Imprint</router-link>
         <a target="_blank" href="http://rlc-deutschland.de/datenschutz/">
           Privacy
@@ -227,7 +238,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { FormGenerator } from "@lawandorga/components";
+import { FormGenerator, ButtonNormal } from "@lawandorga/components";
 import InternalService from "@/services/internal";
 import { Article, LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
@@ -235,10 +246,7 @@ import UsersService from "@/services/user";
 import { LoginResponse } from "@/types/user";
 
 export default defineComponent({
-  components: { FormGenerator },
-  // beforeRouteUpdate() {
-  // if (this.authenticated) this.next();
-  // },
+  components: { FormGenerator, ButtonNormal },
   data: function () {
     return {
       roadmapItems: [] as RoadmapItem[],
@@ -295,16 +303,6 @@ export default defineComponent({
       return this.$store.getters["user/isAuthenticated"];
     },
   },
-  watch: {
-    authenticated: function (newValue) {
-      if (newValue) {
-        this.next();
-      }
-    },
-  },
-  beforeMount() {
-    if (this.authenticated) this.next();
-  },
   mounted() {
     InternalService.getArticles().then(
       (articles) => (this.articles = articles),
@@ -313,7 +311,6 @@ export default defineComponent({
       (roadmapItems) => (this.roadmapItems = roadmapItems),
     );
     InternalService.getLoginPage().then((page) => (this.page = page));
-    if (this.authenticated) this.next();
   },
   methods: {
     next() {

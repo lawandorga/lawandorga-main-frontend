@@ -1,27 +1,43 @@
 <template>
   <div
-    class="relative z-10 flex-shrink-0 flex h-16 bg-lorgablue shadow border-b border-white border-opacity-20 print:hidden"
+    class="relative z-10 flex flex-shrink-0 h-16 border-b border-white shadow bg-lorgablue border-opacity-20 print:hidden"
   >
     <div
       type="button"
-      class="cursor-pointer flex items-center justify-center px-4 border-r border-white border-opacity-20 text-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
+      class="flex items-center justify-center px-4 text-gray-200 border-r border-white cursor-pointer border-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
       @click="setOpen(true)"
     >
       <span class="sr-only">Open sidebar</span>
-      <MenuAlt2Icon class="h-6 w-6" aria-hidden="true" />
+      <MenuAlt2Icon class="w-6 h-6" aria-hidden="true" />
     </div>
-    <div class="flex-1 px-6 flex justify-between">
-      <div class="flex-1 flex"></div>
-      <div class="ml-4 flex items-center md:ml-6">
+    <div class="flex justify-between flex-1 px-4">
+      <div class="flex items-center flex-1">
+        <div v-show="!inside" class="flex space-x-3">
+          <router-link
+            :to="{ name: 'index' }"
+            class="flex items-center space-x-2"
+          >
+            <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
+            <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
+          </router-link>
+          <div class="w-px h-8 bg-white"></div>
+          <img
+            src="/sponsor-cms.jpg"
+            alt="CMS Stiftung"
+            class="w-auto h-8 overflow-hidden rounded"
+          />
+        </div>
+      </div>
+      <div class="flex items-center ml-4 md:ml-6">
         <router-link
           :to="{ name: 'admin-notifications' }"
-          class="p-1 block relative rounded-full text-gray-300 hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          class="relative block p-1 text-gray-300 rounded-full hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
           <span class="sr-only">View notifications</span>
-          <BellIcon class="h-6 w-6" aria-hidden="true" />
+          <BellIcon class="w-6 h-6" aria-hidden="true" />
           <div
             v-if="notifications > 0"
-            class="flex items-center text-sm font-bold justify-center absolute top-0 text-red-800 left-0 transform translate-x-4 -translate-y-1 w-6 h-6 rounded-full bg-red-200"
+            class="absolute top-0 left-0 flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 transform translate-x-4 -translate-y-1 bg-red-200 rounded-full"
           >
             {{ notifications }}
           </div>
@@ -37,6 +53,7 @@
 import { computed } from "vue";
 import { BellIcon, MenuAlt2Icon } from "@heroicons/vue/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
+import { useRoute } from "vue-router";
 
 export default {
   components: {
@@ -53,8 +70,14 @@ export default {
   setup() {
     const notifications = computed(() => 0);
 
+    const route = useRoute();
+    const inside = computed(() => {
+      return route.name !== "user-login";
+    });
+
     return {
       notifications,
+      inside,
     };
   },
 };

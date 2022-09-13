@@ -372,6 +372,7 @@ function createUpdateDeleteFolder(
   ]);
   const { createRequest, createModalOpen: createFolderModalOpen } =
     useCreateItem(FilesService.createFolder, items);
+
   const createFolderRequest = (data: DjangoModel) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 

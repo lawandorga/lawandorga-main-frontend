@@ -3,7 +3,7 @@
     <div class="flex h-screen overflow-hidden print:h-auto print:overflow-auto">
       <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
-      <NavigationSidebar v-if="authenticated" />
+      <NavigationSidebar v-if="authenticated && inside" />
 
       <div class="flex flex-col flex-1 w-0 overflow-hidden">
         <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
@@ -52,6 +52,9 @@ export default defineComponent({
   computed: {
     authenticated(): boolean {
       return this.$store.getters["user/isAuthenticated"];
+    },
+    inside(): boolean {
+      return this.$route.name !== "user-login";
     },
   },
   methods: {
