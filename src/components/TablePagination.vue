@@ -72,7 +72,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { TableData, TableRow } from "@lawandorga/components";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/20/solid";
 
 export default defineComponent({
   components: {

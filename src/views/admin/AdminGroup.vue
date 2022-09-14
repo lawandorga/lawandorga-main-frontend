@@ -148,7 +148,7 @@ import { FormGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/outline";
+import { CogIcon } from "@heroicons/vue/24/outline";
 
 const groupFields = [
   {

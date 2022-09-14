@@ -78,7 +78,7 @@ import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { ModalDelete } from "@lawandorga/components";
 import CollabService from "@/services/collab";
-import { DocumentTextIcon } from "@heroicons/vue/outline";
+import { DocumentTextIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ButtonNormal } from "@lawandorga/components";
 import { ref } from "vue";

@@ -5,7 +5,7 @@
       :base="{ name: 'help-dashboard' }"
       :pages="[{ name: 'Permissions', to: { name: 'help-permissions' } }]"
     >
-      <SupportIcon class="w-6 h-6" />
+      <LifebuoyIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <TableGenerator
       :head="[
@@ -40,7 +40,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { SupportIcon } from "@heroicons/vue/outline";
+import { LifebuoyIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import HelpService from "@/services/help";
@@ -48,7 +48,7 @@ import HelpService from "@/services/help";
 export default defineComponent({
   components: {
     BreadcrumbsBar,
-    SupportIcon,
+    LifebuoyIcon,
     TableGenerator,
   },
   setup() {

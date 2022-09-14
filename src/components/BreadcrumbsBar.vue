@@ -6,6 +6,13 @@
     <ol role="list" class="flex px-6 space-x-4 bg-white rounded-md shadow-sm">
       <li class="flex h-11">
         <div class="flex items-center">
+          <button class="text-gray-400 hover:text-gray-500">
+            <ChevronLeftIcon class="w-6 h-6" />
+          </button>
+        </div>
+      </li>
+      <li class="flex h-11">
+        <div class="flex items-center">
           <router-link :to="base" class="text-gray-400 hover:text-gray-500">
             <div class="flex-shrink-0">
               <slot />
@@ -44,6 +51,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { RouteParams } from "vue-router";
+import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 
 interface LocationAsName {
   name: string;
@@ -51,7 +59,9 @@ interface LocationAsName {
 }
 
 export default defineComponent({
-  components: {},
+  components: {
+    ChevronLeftIcon,
+  },
   props: {
     pages: {
       type: Array as PropType<{ name: string; to: LocationAsName }[]>,

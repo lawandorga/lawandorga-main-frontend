@@ -1,13 +1,13 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import {
-  CollectionIcon,
+  RectangleStackIcon,
   FolderOpenIcon,
   DocumentTextIcon,
   ChartPieIcon,
   CogIcon,
-  SupportIcon,
-} from "@heroicons/vue/outline";
+  LifebuoyIcon,
+} from "@heroicons/vue/24/outline";
 
 // interface SidebarItem {
 //   label: string;
@@ -25,7 +25,7 @@ export default function useNavigationItems() {
   //   navigationItems.value = [
   //     {
   //       label: "Records",
-  //       icon: CollectionIcon,
+  //       icon: RectangleStackIcon,
   //       link: { name: "records-dashboard" },
   //       permissions: [],
   //     },
@@ -56,7 +56,7 @@ export default function useNavigationItems() {
   //     },
   //     {
   //       label: "Help",
-  //       icon: SupportIcon,
+  //       icon: LifebuoyIcon,
   //       link: { name: "help-dashboard" },
   //       permissions: [],
   //     },
@@ -80,7 +80,7 @@ export default function useNavigationItems() {
   const navigationItems = computed(() => [
     {
       label: "Records",
-      icon: CollectionIcon,
+      icon: RectangleStackIcon,
       link: { name: "records-dashboard" },
       permissions: [],
     },
@@ -111,7 +111,7 @@ export default function useNavigationItems() {
     },
     {
       label: "Help",
-      icon: SupportIcon,
+      icon: LifebuoyIcon,
       link: { name: "help-dashboard" },
       permissions: [],
     },

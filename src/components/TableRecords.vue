@@ -182,7 +182,7 @@ import usePagination from "@/composables/usePagination";
 import TablePagination from "@/components/TablePagination.vue";
 import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/solid";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/20/solid";
 import useSort from "@/composables/useSort";
 import { FormInput } from "@lawandorga/components";
 import useSearch from "@/composables/useSearch";

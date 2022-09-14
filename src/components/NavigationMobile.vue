@@ -44,7 +44,7 @@
                 @click="setOpen(false)"
               >
                 <span class="sr-only">Close sidebar</span>
-                <XIcon class="h-6 w-6 text-white" aria-hidden="true" />
+                <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
               </button>
             </div>
           </TransitionChild>
@@ -89,12 +89,12 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import { XIcon } from "@heroicons/vue/outline";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {
-    XIcon,
+    XMarkIcon,
     Dialog,
     DialogOverlay,
     TransitionChild,

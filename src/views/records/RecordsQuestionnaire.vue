@@ -65,7 +65,7 @@ import useGet from "@/composables/useGet";
 import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
-import { PaperClipIcon } from "@heroicons/vue/outline";
+import { PaperClipIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal } from "@lawandorga/components";
 
 export default defineComponent({

@@ -70,7 +70,7 @@ import {
   UsersIcon,
   UserIcon,
   CogIcon,
-} from "@heroicons/vue/outline";
+} from "@heroicons/vue/24/outline";
 import { defineComponent, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useStore } from "vuex";

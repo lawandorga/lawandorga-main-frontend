@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { ModalFree } from '@lawandorga/components';
+import { defineComponent } from "vue";
+import { ModalFree } from "@lawandorga/components";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 
 export default defineComponent({

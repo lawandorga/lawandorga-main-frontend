@@ -6,7 +6,7 @@
         :base="{ name: 'dashboard' }"
         :pages="[]"
       >
-        <ViewGridIcon class="w-6 h-6" />
+        <Squares2X2Icon class="w-6 h-6" />
       </BreadcrumbsBar>
       <h1 class="text-4xl font-bold text-gray-700">
         Welcome {{ $store.getters["user/user"].name }}
@@ -187,7 +187,7 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { defineComponent, ref } from "vue";
 import UsersService from "@/services/user";
-import { ViewGridIcon, ChevronRightIcon } from "@heroicons/vue/outline";
+import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
 import { ButtonNormal } from "@lawandorga/components";
@@ -201,7 +201,7 @@ import { ModalDelete } from "@lawandorga/components";
 export default defineComponent({
   components: {
     ChevronRightIcon,
-    ViewGridIcon,
+    Squares2X2Icon,
     BreadcrumbsBar,
     BoxLoader,
     ButtonNormal,

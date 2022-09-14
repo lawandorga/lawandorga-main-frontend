@@ -98,7 +98,7 @@ import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/outline";
+import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 
 const fields = [

@@ -5,7 +5,7 @@
       :base="{ name: 'help-dashboard' }"
       :pages="[]"
     >
-      <SupportIcon class="w-6 h-6" />
+      <LifebuoyIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <div
       class="rounded-lg divide-y shadow bg-gray-200 divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
@@ -65,8 +65,8 @@ import {
   AnnotationIcon,
   ShieldCheckIcon,
   DocumentTextIcon,
-  SupportIcon,
-} from "@heroicons/vue/outline";
+  LifebuoyIcon,
+} from "@heroicons/vue/24/outline";
 import { defineComponent, ref, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import HelpService from "@/services/help";
@@ -76,7 +76,7 @@ import { HelpPage } from "@/types/page";
 export default defineComponent({
   components: {
     BreadcrumbsBar,
-    SupportIcon,
+    LifebuoyIcon,
     DocumentTextIcon,
   },
   setup() {
@@ -112,7 +112,7 @@ export default defineComponent({
       },
       {
         title: "Ask for help",
-        icon: SupportIcon,
+        icon: LifebuoyIcon,
         description:
           "You need help with how to setup Law&Orga or you have a question about how Law&Orga works? Just send an email to user_management@law-orga.de. We're happy to help.",
         attrs: {

@@ -88,7 +88,7 @@ import useUpdateItem from "@/composables/useUpdateItem";
 import { RecordAccess } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/outline";
+import { CogIcon } from "@heroicons/vue/24/outline";
 
 const fields = [
   {

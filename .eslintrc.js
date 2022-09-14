@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     "no-unused-vars": "warn",
     "vue/no-unused-components": "warn",
+    "vue/no-reserved-component-names": "off",
     "vue/component-name-in-template-casing": [
       "error",
       "PascalCase",

@@ -2,7 +2,7 @@
   <BoxLoader :show="$store.getters['user/loaded']">
     <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
-        <CollectionIcon class="w-6 h-6" />
+        <RectangleStackIcon class="w-6 h-6" />
         <template #buttons>
           <RecordsPermissions />
           <ButtonBreadcrumbs
@@ -105,7 +105,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CollectionIcon } from "@heroicons/vue/outline";
+import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { formatDate } from "@/utils/date";
 import useCreateItem from "@/composables/useCreateItem";
@@ -118,7 +118,7 @@ export default defineComponent({
   components: {
     RecordsPermissions,
     ButtonBreadcrumbs,
-    CollectionIcon,
+    RectangleStackIcon,
     BreadcrumbsBar,
     FormGenerator,
     BoxLoader,

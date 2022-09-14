@@ -8,7 +8,7 @@
       @click="setOpen(true)"
     >
       <span class="sr-only">Open sidebar</span>
-      <MenuAlt2Icon class="w-6 h-6" aria-hidden="true" />
+      <Bars3BottomLeftIcon class="w-6 h-6" aria-hidden="true" />
     </div>
     <div class="flex justify-between flex-1 px-4">
       <div class="flex items-center flex-1">
@@ -51,14 +51,14 @@
 
 <script lang="ts">
 import { computed } from "vue";
-import { BellIcon, MenuAlt2Icon } from "@heroicons/vue/outline";
+import { BellIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
 
 export default {
   components: {
     BellIcon,
-    MenuAlt2Icon,
+    Bars3BottomLeftIcon,
     NavigationDropdown,
   },
   props: {

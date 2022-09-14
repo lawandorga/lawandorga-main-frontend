@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import { ChevronRightIcon } from "@heroicons/vue/solid";
+import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 
 interface TreeItem {
   id: number;

@@ -75,7 +75,7 @@ import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/outline";
+import { CogIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 

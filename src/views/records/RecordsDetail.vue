@@ -11,7 +11,7 @@
           },
         ]"
       >
-        <CollectionIcon class="w-6 h-6" />
+        <RectangleStackIcon class="w-6 h-6" />
       </BreadcrumbsBar>
       <div class="px-5 py-4 bg-white rounded shadow">
         <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
@@ -321,10 +321,10 @@ import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { ModalDelete } from "@lawandorga/components";
 import { ModalFree } from "@lawandorga/components";
-import { CollectionIcon } from "@heroicons/vue/outline";
+import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { formatDate } from "@/utils/date";
-import { PaperClipIcon } from "@heroicons/vue/solid";
+import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
 import useDeleteItem from "@/composables/useDeleteItem";
@@ -343,7 +343,7 @@ export default defineComponent({
     FormRecord,
     ModalFree,
     BreadcrumbsBar,
-    CollectionIcon,
+    RectangleStackIcon,
     ButtonNormal,
   },
   setup() {

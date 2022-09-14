@@ -10,7 +10,7 @@
           },
         ]"
       >
-        <CollectionIcon class="w-6 h-6" />
+        <RectangleStackIcon class="w-6 h-6" />
       </BreadcrumbsBar>
       <div style="max-width: 500px">
         <h2 class="text-lg font-bold">Pool Status</h2>
@@ -49,7 +49,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { CollectionIcon } from "@heroicons/vue/outline";
+import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { FormGenerator, ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
@@ -61,7 +61,7 @@ export default defineComponent({
     BoxLoader,
     ButtonNormal,
     BreadcrumbsBar,
-    CollectionIcon,
+    RectangleStackIcon,
     FormGenerator,
   },
   setup() {
