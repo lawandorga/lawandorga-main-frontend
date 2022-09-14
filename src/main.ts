@@ -29,3 +29,15 @@ store
   .finally(() => {
     app.mount("#app");
   });
+
+// get the manifest working
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/serviceWorker.js")
+    .then(function () {
+      // registration successful
+    })
+    .catch(function () {
+      // registration failed
+    });
+}
