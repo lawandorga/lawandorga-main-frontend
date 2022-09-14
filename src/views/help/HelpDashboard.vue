@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import {
-  AnnotationIcon,
+  ChatBubbleBottomCenterTextIcon,
   ShieldCheckIcon,
   DocumentTextIcon,
   LifebuoyIcon,
@@ -98,7 +98,7 @@ export default defineComponent({
         description:
           "You've discovered something that doesn't work? Please send an email to it@law-orga.de. We're happy to help.",
         attrs: { href: "mailto:it@law-orga.de?subject=Bug%20Report" },
-        icon: AnnotationIcon,
+        icon: ChatBubbleBottomCenterTextIcon,
         class: "sm:rounded-tr-lg",
         is: "a",
       },

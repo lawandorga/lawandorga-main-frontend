@@ -27,8 +27,6 @@
           <router-link
             :to="{ name: 'admin-profile', params: { id: user.id } }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-            role="menuitem"
-            tabindex="-1"
           >
             Profile
           </router-link>
@@ -37,8 +35,6 @@
           <router-link
             :to="{ name: 'user-keys' }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-            role="menuitem"
-            tabindex="-1"
           >
             Keys
           </router-link>
@@ -47,8 +43,6 @@
           <button
             type="button"
             class="block w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer hover:bg-gray-100"
-            role="menuitem"
-            tabindex="-1"
             @click="$store.dispatch('user/logout')"
           >
             Logout

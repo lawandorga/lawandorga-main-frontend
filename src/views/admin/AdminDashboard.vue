@@ -65,7 +65,7 @@
 import {
   LockOpenIcon,
   QuestionMarkCircleIcon,
-  TemplateIcon,
+  RectangleGroupIcon,
   TrashIcon,
   UsersIcon,
   UserIcon,
@@ -107,7 +107,7 @@ export default defineComponent({
         description:
           "Add and edit your record templates. You can add, change and remove fields.",
         link: { name: "admin-templates" },
-        icon: TemplateIcon,
+        icon: RectangleGroupIcon,
         notifications: 0,
         class: "",
       },

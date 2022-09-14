@@ -1,5 +1,14 @@
 <template>
-  <div class="grid grid-cols-12 gap-4 p-4">
+  <div>
+    <BreadcrumbsBar
+      class="lg:col-span-2"
+      :base="{ name: 'dashboard' }"
+      :pages="[]"
+    >
+      <ChartBarIcon class="w-6 h-6" />
+    </BreadcrumbsBar>
+  </div>
+  <div class="grid grid-cols-12 gap-4 mt-6">
     <!-- general -->
     <StatisticChartWrapper
       title="Most Active Users In The Last 30 Days"
@@ -59,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { ChartBarIcon } from "@heroicons/vue/24/outline";
 import StatisticRecordStates from "@/components/StatisticRecordStates.vue";
 // import ChartMembers from "@/components/ChartMembers.vue";
 import StatisticChartWrapper from "@/components/StatisticChartWrapper.vue";
