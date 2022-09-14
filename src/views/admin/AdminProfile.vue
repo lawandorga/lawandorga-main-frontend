@@ -250,7 +250,6 @@ export default defineComponent({
     ButtonNormal,
     ModalFree,
     TableGenerator,
-    ButtonNormal,
     FormGenerator,
     ModalDelete,
     BreadcrumbsBar,
