@@ -1,4 +1,15 @@
 {
     "short_name": "Law&Orga",
-  "name": "Law&Orga"
-}
+    "name": "Law&Orga",
+    "icons": [
+      {
+        "src": "/logo.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "#3367D6",
+    "display": "standalone",
+    "scope": "/"
+  }
