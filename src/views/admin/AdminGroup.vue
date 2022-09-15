@@ -228,7 +228,7 @@ export default defineComponent({
       {
         label: "User",
         name: "member",
-        type: "select",
+        type: "combobox",
         required: true,
         options: [] as RlcUser[],
       },
