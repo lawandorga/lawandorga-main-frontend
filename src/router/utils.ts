@@ -10,6 +10,12 @@ export const isAuthenticated: NavigationGuard = (to) => {
   }
 
   if (store.getters["user/user"].locked) {
+    store.dispatch("alert/createAlert", {
+      heading: "Account locked",
+      type: "error",
+      message: "Your account is locked, please check your keys.",
+    });
+    console.log("hello");
     return {
       name: "user-keys",
     };
