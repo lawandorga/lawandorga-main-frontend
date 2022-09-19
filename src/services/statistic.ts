@@ -11,6 +11,7 @@ import {
   //   UserLogin,
   //   UserLoginMonth,
   TagCount,
+  RecordsCreatedClosed,
 } from "@/types/statistic";
 import axios from "axios";
 
@@ -115,6 +116,12 @@ class StatisticService {
         });
         return ret;
       });
+  }
+
+  getRecordsCreatedAndClosed(): Promise<RecordsCreatedClosed[]> {
+    return axios
+      .get<RecordsCreatedClosed[]>("statistics/org/records_created_and_closed/")
+      .then((response) => response.data);
   }
 }
 

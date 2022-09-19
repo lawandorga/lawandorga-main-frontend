@@ -19,6 +19,12 @@
 
     <!-- records -->
     <StatisticChartWrapper
+      title="Records Created And Closed"
+      class="col-span-12"
+    >
+      <StatisticRecordsCreatedAndClosed />
+    </StatisticChartWrapper>
+    <StatisticChartWrapper
       title="Different Record States"
       class="col-span-12 xl:col-span-6"
     >
@@ -56,6 +62,7 @@
     >
       <StatisticClientState />
     </StatisticChartWrapper>
+
     <StatisticChartWrapper title="Ideas?" class="col-span-12 xl:col-span-6">
       <p class="prose">
         If you've got any ideas for more statistic or anything you need, feel
@@ -79,6 +86,7 @@ import StatisticClientAge from "@/components/StatisticClientAge.vue";
 import StatisticClientNationality from "@/components/StatisticClientNationality.vue";
 import StatisticClientState from "@/components/StatisticClientState.vue";
 import StatisticActiveUsers from "@/components/StatisticActiveUsers.vue";
+import StatisticRecordsCreatedAndClosed from "@/components/StatisticRecordsCreatedAndClosed.vue";
 // import ChartLcUsage from "@/components/ChartLcUsage.vue";
 // import ChartUserActions from "@/components/ChartUserActions.vue";
 // import ChartUserLogins from "@/components/ChartUserLogins.vue";
