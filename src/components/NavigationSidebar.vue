@@ -17,14 +17,16 @@
         <div
           class="flex-col px-4 py-3 text-white border-b border-white border-opacity-20"
         >
-          <div>{{ user ? user.name : "" }}</div>
-          <div>{{ user ? user.email : "" }}</div>
+          <div class="truncate">
+            {{ userStore.rlc?.name }}: {{ userStore.user?.name }}
+          </div>
+          <div class="truncate">{{ userStore.user?.email }}</div>
         </div>
         <div class="flex flex-col justify-between flex-grow bg-white">
           <nav class="flex-1 px-2 py-2 space-y-1 bg-white">
             <router-link
-              v-for="item in sidebarItems"
-              :key="item.link"
+              v-for="item in navigationItems"
+              :key="item.label"
               :to="item.link"
               active-class="text-gray-700 bg-gray-100 hover:bg-gray-100"
               class="flex items-center justify-between py-2 pl-2 pr-3 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
@@ -72,27 +74,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import useNavigationItems from "@/composables/useNavigationItems";
-import { useStore } from "vuex";
-import { computed } from "vue";
-import UserService from "@/services/user";
+import { useUserStore } from "@/store/user";
 
-export default {
-  setup() {
-    const { navigationItems } = useNavigationItems();
-    const store = useStore();
-
-    UserService.admin().then((admin) => store.dispatch("user/setAdmin", admin));
-
-    const user = computed(() => store.getters["user/user"]);
-
-    return {
-      sidebarItems: navigationItems,
-      user,
-    };
-  },
-};
+const { navigationItems } = useNavigationItems();
+const userStore = useUserStore();
 </script>
-
-<style></style>

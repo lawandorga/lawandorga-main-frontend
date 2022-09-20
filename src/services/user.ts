@@ -1,26 +1,17 @@
 import { Rlc } from "@/types/core";
 import { Key } from "@/types/key";
 import {
+  BadgeInformation,
   DashboardInformation,
   DashboardNote,
+  DataResponse,
   LoginResponse,
   RefreshResponse,
   RlcUser,
+  Settings,
   User,
 } from "@/types/user";
 import axios from "axios";
-
-interface StaticsResponse {
-  user: User;
-  rlc: Rlc;
-  permissions: string[];
-}
-
-interface AdminInformation {
-  profiles: number;
-  record_deletion_requests: number;
-  record_permit_requests: number;
-}
 
 class UserService {
   getRlcs(): Promise<Rlc[]> {
@@ -39,16 +30,20 @@ class UserService {
       .then((response) => response.data);
   }
 
-  statics(): Promise<StaticsResponse> {
+  data(): Promise<DataResponse> {
     return axios
-      .get<StaticsResponse>(`profiles/statics/`)
+      .get<DataResponse>(`rlc_users/data_self/`)
       .then((response) => response.data);
   }
 
-  admin(): Promise<AdminInformation> {
+  admin(): Promise<BadgeInformation> {
     return axios
-      .get<AdminInformation>("profiles/admin/")
+      .get<BadgeInformation>("profiles/admin/")
       .then((response) => response.data);
+  }
+
+  updateSettings(data: Settings): Promise<void> {
+    return axios.put("rlc_users/settings_self/", data).then();
   }
 
   dashboard(): Promise<DashboardInformation> {
@@ -119,10 +114,6 @@ class UserService {
   testKeys(): Promise<Key[]> {
     return axios.post("keys/test/", {}).then((response) => response.data);
   }
-
-  // getPermissions(): Promise<Permission[]> {
-  //   return axios.get<Permission[]>('permission')
-  // }
 }
 
 export default new UserService();

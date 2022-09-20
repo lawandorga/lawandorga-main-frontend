@@ -1,5 +1,6 @@
 import { NavigationGuard } from "vue-router";
 import store from "../store";
+import { useUserStore } from "@/store/user";
 
 export const isAuthenticated: NavigationGuard = (to) => {
   if (!store.getters["user/isAuthenticated"]) {
@@ -9,7 +10,8 @@ export const isAuthenticated: NavigationGuard = (to) => {
     };
   }
 
-  if (store.getters["user/user"].locked) {
+  const userStore = useUserStore();
+  if (userStore.locked) {
     store.dispatch("alert/createAlert", {
       heading: "Account locked",
       type: "error",

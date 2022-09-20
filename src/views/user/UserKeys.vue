@@ -140,6 +140,9 @@ import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { Key } from "@/types/key";
 import { useStore } from "vuex";
+import { useUserStore } from "@/store/user";
+
+const userStore = useUserStore();
 
 const keys = ref(null) as Ref<Key[] | null>;
 useGet(UserService.getKeys, keys);

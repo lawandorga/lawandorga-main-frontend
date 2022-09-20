@@ -44,9 +44,6 @@ export interface DashboardInformation {
 export interface LoginResponse {
   access: string;
   refresh: string;
-  rlc: Rlc;
-  user: RlcUser;
-  permissions: string[];
 }
 
 export interface RefreshResponse {
@@ -58,4 +55,20 @@ export interface DashboardNote {
   id: number;
   title: string;
   note: string;
+}
+
+export interface BadgeInformation {
+  profiles: number;
+  record_deletion_requests: number;
+  record_permit_requests: number;
+}
+
+export type Settings = Record<string, string>;
+
+export interface DataResponse {
+  user: RlcUser;
+  rlc: Rlc;
+  permissions: string[];
+  badges: BadgeInformation;
+  settings: Settings;
 }

@@ -5,10 +5,14 @@ import "./main.css";
 import router from "./router";
 import store from "./store";
 import axios from "axios";
+import { createPinia } from "pinia";
 
 // vue
 const app = createApp(App);
 
+// stores
+const pinia = createPinia();
+app.use(pinia);
 app.use(store);
 
 // setup axios

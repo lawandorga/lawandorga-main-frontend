@@ -1,12 +1,12 @@
 <template>
-  <BoxLoader :show="$store.getters['user/loaded']">
+  <BoxLoader :show="userStore.loaded">
     <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
         <template #buttons>
           <RecordsPermissions />
           <ButtonBreadcrumbs
-            v-if="$store.getters['user/rlc'].use_record_pool"
+            v-if="userStore.rlc?.use_record_pool"
             :to="{ name: 'records-pool' }"
           >
             Go to the Record Pool
@@ -86,7 +86,7 @@
         ]"
         :initial="{
           record: record ? record.id : null,
-          requested_by: $store.getters['user/user'].user,
+          requested_by: userStore.user?.user_id,
         }"
         :request="createRecordAccessRequest"
         submit="Request Access"
@@ -113,6 +113,7 @@ import useGet from "@/composables/useGet";
 import { useRouter } from "vue-router";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { FormField } from "@/types/form";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
@@ -132,7 +133,11 @@ export default defineComponent({
     const record = ref(null) as Ref<Record | null>;
     useGet(RecordsService.getRecords, records);
 
+    const userStore = useUserStore();
+
     return {
+      // store
+      userStore,
       // utils
       formatDate,
       // records

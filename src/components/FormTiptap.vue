@@ -42,6 +42,7 @@ import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import MenuBar from "./FormMenuBar.vue";
 import { defineComponent } from "vue";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
@@ -71,11 +72,12 @@ export default defineComponent({
   },
   computed: {
     user() {
-      return this.$store.getters["user/user"];
+      const store = useUserStore();
+      return store.user;
     },
     editorUser() {
       return {
-        name: this.user.name,
+        name: this.user?.name,
         color: this.getRandomColor(),
       };
     },
@@ -114,10 +116,12 @@ export default defineComponent({
 
     const ydoc = new Y.Doc();
 
+    const userStore = useUserStore();
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.provider = new WebrtcProvider(this.room, ydoc, {
-      password: `${this.$store.getters["user/rlc"].id}${this.$store.getters["user/rlc"].name}`,
+      password: `${userStore.rlc?.id}${userStore.rlc?.name}`,
       signaling: ["wss://y-webrtc-signaling-eu.herokuapp.com/"],
     });
 

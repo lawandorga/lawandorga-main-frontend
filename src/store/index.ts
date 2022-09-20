@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import alert from "./alert";
-import user from "./user";
+import user from "./auth";
 
 const store = createStore({
   modules: {

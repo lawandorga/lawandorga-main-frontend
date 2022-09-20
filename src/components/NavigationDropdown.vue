@@ -56,6 +56,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
@@ -71,7 +72,8 @@ export default defineComponent({
   },
   computed: {
     user() {
-      return this.$store.getters["user/user"];
+      const userStore = useUserStore();
+      return userStore.user;
     },
   },
 });

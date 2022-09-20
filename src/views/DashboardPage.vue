@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="!!$store.getters['user/user'] && !!data">
+  <BoxLoader :show="!!data">
     <div class="max-w-5xl mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
@@ -8,9 +8,7 @@
       >
         <Squares2X2Icon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <h1 class="text-4xl font-bold text-gray-700">
-        Welcome {{ $store.getters["user/user"].name }}
-      </h1>
+      <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <div class="lg:col-span-2 xl:col-span-3">
           <div class="flex justify-between mt-8">
@@ -197,6 +195,8 @@ import useUpdateItem from "@/composables/useUpdateItem";
 import useDeleteItem from "@/composables/useDeleteItem";
 import { ModalForm } from "@lawandorga/components";
 import { ModalDelete } from "@lawandorga/components";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
   components: {
@@ -213,7 +213,12 @@ export default defineComponent({
 
     UsersService.dashboard().then((dashboard) => (data.value = dashboard));
 
+    const userStore = useUserStore();
+    const { rlc, user } = storeToRefs(userStore);
+
     return {
+      rlc,
+      user,
       data,
       formatDate,
       ...getCreateUpdateDeleteNotes(),
