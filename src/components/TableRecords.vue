@@ -186,6 +186,7 @@ import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/20/solid";
 import useSort from "@/composables/useSort";
 import { FormInput } from "@lawandorga/components";
 import useSearch from "@/composables/useSearch";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
@@ -264,11 +265,14 @@ export default defineComponent({
     });
 
     // set default sort
-    watch(head, (newValue) => {
-      if (newValue.length > 0 && sortBy.value == "" && sortOrder.value == "") {
-        sortBy.value = newValue[0];
-        sortOrder.value = "DESC";
-      }
+    const store = useUserStore();
+    sortBy.value = store.getSetting("recordsSortBy", "");
+    sortOrder.value = store.getSetting("recordsSortOrder", "");
+    watch(sortBy, (newValue) => {
+      store.updateSetting("recordsSortBy", newValue);
+    });
+    watch(sortOrder, (newValue) => {
+      store.updateSetting("recordsSortOrder", newValue);
     });
 
     // return

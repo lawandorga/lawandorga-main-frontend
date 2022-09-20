@@ -35,11 +35,15 @@ export const useUserStore = defineStore("user", () => {
     UserService.data().then((r) => setData(r));
   };
 
-  const updateSettings = (key: string, value: string) => {
+  const updateSetting = (key: string, value: string) => {
     const newSettings = Object.assign({}, settings.value, { [key]: value });
-    UserService.updateSettings(newSettings).then(
-      () => (settings.value = newSettings),
-    );
+    settings.value = newSettings;
+    UserService.updateSettings(newSettings);
+  };
+
+  const getSetting = (key: string, defaultValue: string) => {
+    if (settings.value && settings.value[key]) return settings.value[key];
+    return defaultValue;
   };
 
   const loaded = computed(() => {
@@ -59,6 +63,7 @@ export const useUserStore = defineStore("user", () => {
     loaded,
     locked,
     updateData,
-    updateSettings,
+    updateSetting,
+    getSetting,
   };
 });
