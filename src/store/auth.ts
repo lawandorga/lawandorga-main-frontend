@@ -101,7 +101,7 @@ const mutations = {
     state.refresh = null;
     //
     const userStore = useUserStore();
-    userStore.$reset();
+    userStore.reset();
   },
 };
 

@@ -67,6 +67,13 @@ export const useUserStore = defineStore("user", () => {
     return user.value?.locked;
   });
 
+  const reset = () => {
+    rlc.value = undefined;
+    user.value = undefined;
+    badges.value = undefined;
+    settings.value = undefined;
+  };
+
   return {
     rlc,
     user,
@@ -78,5 +85,6 @@ export const useUserStore = defineStore("user", () => {
     updateData,
     updateSetting,
     getSetting,
+    reset,
   };
 });
