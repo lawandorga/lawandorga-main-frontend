@@ -35,13 +35,26 @@ export const useUserStore = defineStore("user", () => {
     UserService.data().then((r) => setData(r));
   };
 
+  const updatePossible = ref(true);
+
+  const updateSettingRequest = () => {
+    if (updatePossible.value) {
+      updatePossible.value = false;
+      UserService.updateSettings(settings.value).then(
+        () => (updatePossible.value = true),
+      );
+    } else {
+      setTimeout(() => updateSettingRequest(), 500);
+    }
+  };
+
   const updateSetting = (key: string, value: string) => {
     const newSettings = Object.assign({}, settings.value, { [key]: value });
     settings.value = newSettings;
-    UserService.updateSettings(newSettings);
+    updateSettingRequest();
   };
 
-  const getSetting = (key: string, defaultValue: string) => {
+  const getSetting = (key: string, defaultValue = "") => {
     if (settings.value && settings.value[key]) return settings.value[key];
     return defaultValue;
   };

@@ -1,28 +1,30 @@
-import { Record } from "@/types/records";
-import { ref } from "vue";
+import { ref, computed, Ref } from "vue";
 
-export default function useSearch() {
+export default function useSearch<T, K>(
+  items: Ref<T[] | null>,
+  keys: Ref<K[]>,
+  // eslint-disable-next-line no-unused-vars
+  getValue: (item: T, key: K) => string,
+) {
   const search = ref("");
 
-  const filterRecord =
-    (search2: string) =>
-    (record: Record): boolean => {
-      const filter = search2.toLowerCase();
-      let ret = false;
-      for (const key in record.entries) {
-        const entry = record.entries[key];
-        if (Array.isArray(entry.value))
-          ret =
-            ret ||
-            entry.value
-              .map((i) => (i + "").toLowerCase())
-              .some((name: string) => name.includes(filter));
-        else ret = ret || (entry.value + "").toLowerCase().includes(filter);
-      }
-      return ret;
-    };
+  const filterFunc = computed(() => (item: T): boolean => {
+    const filter = search.value.toLowerCase();
+
+    for (const key of keys.value) {
+      if (getValue(item, key).toLowerCase().includes(filter)) return true;
+    }
+
+    return false;
+  });
+
+  const filteredItems = computed<T[] | null>(() => {
+    if (items.value === null) return null;
+    return items.value.filter(filterFunc.value);
+  });
+
   return {
     search,
-    filterRecord,
+    filteredItems,
   };
 }
