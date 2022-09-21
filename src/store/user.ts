@@ -40,7 +40,7 @@ export const useUserStore = defineStore("user", () => {
   const updateSettingRequest = () => {
     if (updatePossible.value) {
       updatePossible.value = false;
-      UserService.updateSettings(settings.value).then(
+      UserService.updateSettings(settings.value || {}).then(
         () => (updatePossible.value = true),
       );
     } else {

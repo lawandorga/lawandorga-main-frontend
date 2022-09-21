@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="true">
+  <BoxLoader :show="userStore.loaded">
     <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar
         v-if="!!folder"
@@ -17,15 +17,19 @@
           <FilesPermissions />
         </template>
       </BreadcrumbsBar>
-      <TableGenerator
+      <TableSortable
         :head="[
-          { name: '', key: 'type' },
-          { name: 'Name', key: 'name' },
-          { name: 'Updated', key: 'last_edited' },
-          { name: 'Created', key: 'created' },
+          { name: '', key: 'type', sortable: true },
+          { name: 'Name', key: 'name', sortable: true },
+          { name: 'Updated', key: 'last_edited', sortable: true },
+          { name: 'Created', key: 'created', sortable: true },
           { name: '', key: 'action' },
         ]"
         :data="items"
+        :sort-key="userStore.getSetting('filesSortKey')"
+        :sort-order="userStore.getSetting('filesSortOrder')"
+        @update:sort-key="userStore.updateSetting('filesSortKey', $event)"
+        @update:sort-order="userStore.updateSetting('filesSortOrder', $event)"
       >
         <template #head-action>
           <ButtonNormal kind="action" @click="createFolderModalOpen = true">
@@ -35,7 +39,7 @@
             Upload File
           </ButtonNormal>
         </template>
-        <template #type="slotProps">
+        <template #type="{ item: slotProps }">
           <FolderIcon
             v-if="slotProps.type === 'FOLDER'"
             class="w-5 h-5 text-gray-500"
@@ -45,7 +49,7 @@
             class="w-5 h-5 text-gray-500"
           />
         </template>
-        <template #name="slotProps">
+        <template #name="{ item: slotProps }">
           <ButtonLink
             v-if="slotProps.type === 'FOLDER'"
             :to="{
@@ -60,13 +64,13 @@
             <span v-if="!slotProps.exists" class="text-red-600">(ERROR)</span>
           </div>
         </template>
-        <template #last_edited="slotProps">
+        <template #last_edited="{ item: slotProps }">
           {{ formatDate(slotProps.last_edited) }}
         </template>
-        <template #created="slotProps">
+        <template #created="{ item: slotProps }">
           {{ formatDate(slotProps.created) }}
         </template>
-        <template #action="slotProps">
+        <template #action="{ item: slotProps }">
           <div class="flex justify-end space-x-3">
             <ButtonNormal
               v-if="slotProps.type === 'FOLDER'"
@@ -122,7 +126,7 @@
             </ButtonNormal>
           </div>
         </template>
-      </TableGenerator>
+      </TableSortable>
       <TableGenerator
         :head="[
           { name: 'Permission', key: 'type' },
@@ -143,7 +147,7 @@
             </ButtonNormal>
           </div>
         </template>
-        <template #folder="slotProps">
+        <template #folder="{ item: slotProps }">
           <router-link
             :to="{
               name: 'files-dashboard',
@@ -154,7 +158,7 @@
             {{ slotProps.folder.name }}
           </router-link>
         </template>
-        <template #action="slotProps">
+        <template #action="{ item: slotProps }">
           <div class="flex justify-end">
             <ButtonNormal
               v-if="slotProps.source === 'NORMAL'"
@@ -237,8 +241,12 @@ import {
 } from "@/types/files";
 import { defineComponent, Ref, ref, watch } from "vue";
 import FilesService from "@/services/files";
-import { TableGenerator } from "@lawandorga/components";
-import { ButtonNormal } from "@lawandorga/components";
+import {
+  TableGenerator,
+  TableSortable,
+  ButtonNormal,
+  types,
+} from "@lawandorga/components";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
@@ -250,7 +258,6 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { FolderOpenIcon } from "@heroicons/vue/24/outline";
 import { FolderIcon, DocumentIcon } from "@heroicons/vue/20/solid";
 import { formatDate } from "@/utils/date";
-import BoxAlert from "@/components/BoxAlert.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useCreateItem from "@/composables/useCreateItem";
 import useUpdateItem from "@/composables/useUpdateItem";
@@ -259,15 +266,16 @@ import useGet from "@/composables/useGet";
 import { DjangoModel } from "@/types/shared";
 import FilesPermissions from "@/components/FilesPermissions.vue";
 import FilesHelp from "@/components/FilesHelp.vue";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: {
     FilesHelp,
     FilesPermissions,
     ButtonLink,
-    BoxAlert,
     FolderIcon,
     DocumentIcon,
+    TableSortable,
     FolderOpenIcon, // eslint-disable-line vue/no-unused-components
     BreadcrumbsBar,
     ModalDelete,
@@ -312,7 +320,10 @@ export default defineComponent({
       );
     });
 
+    const userStore = useUserStore();
+
     return {
+      userStore,
       // utils
       formatDate: formatDate,
       // current folder
@@ -341,13 +352,13 @@ function createUpdateDeleteFolder(
   items: Ref<(FilesFolder | FilesFile)[] | null>,
   currentFolder: Ref<FilesFolder | null>,
 ) {
-  const folderOpen = ref(null);
+  const folderOpen = ref<FilesFolder | null>(null);
 
   // helper
   const removeFolderFromItemsIfParentMismatches = (folder: FilesFolder) => {
     if (items.value === null || currentFolder.value === null) return folder;
 
-    let index = items.value.findIndex((item) => item.id === folder.id);
+    const index = items.value.findIndex((item) => item.id === folder.id);
     if (index !== -1 && folder.parent !== currentFolder.value.id)
       items.value.splice(index, 1);
 
@@ -373,13 +384,13 @@ function createUpdateDeleteFolder(
   const { createRequest, createModalOpen: createFolderModalOpen } =
     useCreateItem(FilesService.createFolder, items);
 
-  const createFolderRequest = (data: DjangoModel) =>
+  const createFolderRequest = (data: types.JsonModel) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // update
   const { updateRequest, updateModalOpen: updateFolderModalOpen } =
     useUpdateItem(FilesService.updateFolder, items);
-  const updateFolderRequest = (data: DjangoModel) =>
+  const updateFolderRequest = (data: types.JsonModel) =>
     updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // create and update
@@ -474,7 +485,7 @@ function createUpdateDeleteFile(
   const removeFileFromItemsIfParentMismatches = (file: FilesFile) => {
     if (items.value === null || currentFolder.value === null) return file;
 
-    let index = items.value.findIndex(
+    const index = items.value.findIndex(
       (item) => item.id === file.id && item.type === file.type,
     );
     if (index !== -1 && file.folder !== currentFolder.value.id)
