@@ -147,7 +147,7 @@
             </ButtonNormal>
           </div>
         </template>
-        <template #folder="{ item: slotProps }">
+        <template #folder="slotProps">
           <router-link
             :to="{
               name: 'files-dashboard',
@@ -158,7 +158,7 @@
             {{ slotProps.folder.name }}
           </router-link>
         </template>
-        <template #action="{ item: slotProps }">
+        <template #action="slotProps">
           <div class="flex justify-end">
             <ButtonNormal
               v-if="slotProps.source === 'NORMAL'"
