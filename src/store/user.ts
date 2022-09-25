@@ -21,7 +21,7 @@ export const useUserStore = defineStore("user", () => {
       Object.entries(badges.value).reduce(
         (prev, [, value]) => prev + value,
         0,
-      ) - badges.value["legal"]
+      ) - (badges.value["legal"] || 0)
     );
   });
 
