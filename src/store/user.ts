@@ -16,9 +16,12 @@ export const useUserStore = defineStore("user", () => {
 
   const badges = ref<BadgeInformation>();
   const adminBadges = computed(() => {
-    return Object.entries(badges.value || {}).reduce(
-      (prev, [, value]) => prev + value,
-      0,
+    if (badges.value === undefined) return 0;
+    return (
+      Object.entries(badges.value).reduce(
+        (prev, [, value]) => prev + value,
+        0,
+      ) - badges.value["legal"]
     );
   });
 

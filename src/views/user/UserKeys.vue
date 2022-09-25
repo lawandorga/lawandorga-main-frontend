@@ -1,17 +1,16 @@
 <template>
-  <BoxLoader :show="!!$store.getters['user/user']" class="pb-64">
+  <BoxLoader :show="userStore.loaded" class="pb-64">
     <div class="max-w-2xl mx-auto space-y-6">
       <BreadcrumbsBar
-        v-if="$store.getters['user/user']"
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[
           { name: 'Profiles', to: { name: 'admin-profiles' } },
           {
-            name: $store.getters['user/user'].name,
+            name: userStore.user?.name || '',
             to: {
               name: 'admin-profile',
-              params: { id: $store.getters['user/user'].id },
+              params: { id: userStore.user?.id.toString() || '0' },
             },
           },
           { name: 'Keys', to: { name: 'user-keys' } },
@@ -64,7 +63,7 @@
         </template>
       </TableGenerator>
       <div
-        v-if="$store.getters['user/user'].locked"
+        v-if="userStore.user?.locked"
         class="max-w-lg px-6 py-5 bg-white rounded shadow"
       >
         <div class="prose">

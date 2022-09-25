@@ -1,13 +1,17 @@
-import { DjangoModel } from "@/types/shared";
 import { Ref, watch, unref, computed, isRef } from "vue";
 
-type Nullable<T> = T extends (infer U)[] ? Array<U | Ref<U | null>> : null;
+type Nullable<T> = T extends (infer U)[]
+  ? Array<U | Ref<U | null> | null>
+  : never;
 
 function useGet<
-  Fn extends (...args: any[]) => Promise<DjangoModel | DjangoModel[]>, // eslint-disable-line
+  /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
+  Type extends { [key: string]: any; id: number },
+  Fn extends (...args: any[]) => Promise<Type | Type[]>,
+  /* eslint-enable */
 >(
   getFunc: Fn,
-  obj: Ref<DjangoModel | DjangoModel[] | null>,
+  obj: Ref<Type | Type[] | null>,
   ...params: Nullable<Parameters<Fn>>
 ) {
   const getRequest = () => {

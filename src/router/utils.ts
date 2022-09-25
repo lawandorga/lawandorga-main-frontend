@@ -11,7 +11,7 @@ export const isAuthenticated: NavigationGuard = (to) => {
   }
 
   const userStore = useUserStore();
-  if (userStore.locked) {
+  if (userStore.user?.locked && to.name !== "user-keys") {
     store.dispatch("alert/createAlert", {
       heading: "Account locked",
       type: "error",
@@ -21,13 +21,15 @@ export const isAuthenticated: NavigationGuard = (to) => {
       name: "user-keys",
     };
   }
-};
-
-export const isAuthenticatedButLockedAllowed: NavigationGuard = (to) => {
-  if (!store.getters["user/isAuthenticated"]) {
+  if (userStore.user?.locked_legal && to.name !== "legal-dashboard") {
+    store.dispatch("alert/createAlert", {
+      heading: "Account legally locked",
+      type: "error",
+      message:
+        "Your account is legally locked, please accept the legal requirements.",
+    });
     return {
-      name: "user-login",
-      query: { next: to.fullPath },
+      name: "legal-dashboard",
     };
   }
 };

@@ -28,7 +28,7 @@
               v-for="item in navigationItems"
               :key="item.label"
               :to="item.link"
-              active-class="text-gray-700 bg-gray-100 hover:bg-gray-100"
+              active-class="text-gray-700 !bg-gray-100 hover:bg-gray-100"
               class="flex items-center justify-between py-2 pl-2 pr-3 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
             >
               <div class="flex items-center">
@@ -39,7 +39,7 @@
                 {{ item.label }}
               </div>
               <div
-                v-if="item.notifications > 0"
+                v-if="item.notifications && item.notifications > 0"
                 class="flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 bg-red-200 rounded-full"
               >
                 {{ item.notifications }}

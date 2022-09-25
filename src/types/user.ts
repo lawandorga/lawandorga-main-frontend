@@ -18,6 +18,7 @@ export interface RlcUser {
   city: string;
   postal_code: string;
   locked: boolean;
+  locked_legal: boolean;
   email_confirmed: boolean;
   is_active: boolean;
   accepted: boolean;
@@ -61,6 +62,7 @@ export interface BadgeInformation {
   profiles: number;
   record_deletion_requests: number;
   record_permit_requests: number;
+  legal: number;
 }
 
 export type Settings = Record<string, string>;

@@ -7,6 +7,7 @@ import recordsRoutes from "./records";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import internalRoutes from "./internal";
+import legalRoutes from "./legal";
 import Dashboard from "@/views/DashboardPage.vue";
 import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
@@ -31,6 +32,7 @@ const routes: Array<RouteRecordRaw> = [
   ...adminRoutes,
   ...helpRoutes,
   ...internalRoutes,
+  ...legalRoutes,
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,

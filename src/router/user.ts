@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { isAuthenticatedButLockedAllowed, notAuthenticated } from "./utils";
+import { isAuthenticated, notAuthenticated } from "./utils";
 import UserLogin from "@/views/user/UserLogin.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user/keys/",
     name: "user-keys",
     component: () => import("@/views/user/UserKeys.vue"),
-    beforeEnter: isAuthenticatedButLockedAllowed,
+    beforeEnter: isAuthenticated,
   },
   {
     path: "/user/password-reset/",

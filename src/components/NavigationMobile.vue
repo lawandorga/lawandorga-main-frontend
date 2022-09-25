@@ -2,7 +2,7 @@
   <TransitionRoot as="template" :show="open">
     <Dialog
       as="div"
-      class="fixed inset-0 flex z-40 md:hidden print:hidden"
+      class="fixed inset-0 z-40 flex md:hidden print:hidden"
       @close="setOpen(false)"
     >
       <TransitionChild
@@ -26,7 +26,7 @@
         leave-to="-translate-x-full"
       >
         <div
-          class="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-white"
+          class="relative flex flex-col flex-1 w-full max-w-xs pb-4 bg-white"
         >
           <TransitionChild
             as="template"
@@ -37,36 +37,36 @@
             leave-from="opacity-100"
             leave-to="opacity-0"
           >
-            <div class="absolute top-0 right-0 -mr-12 pt-2">
+            <div class="absolute top-0 right-0 pt-2 -mr-12">
               <button
                 type="button"
-                class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                class="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="setOpen(false)"
               >
                 <span class="sr-only">Close sidebar</span>
-                <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
+                <XMarkIcon class="w-6 h-6 text-white" aria-hidden="true" />
               </button>
             </div>
           </TransitionChild>
-          <div class="flex-shrink-0 h-16 flex items-center px-4 bg-lorgablue">
-            <router-link to="/" class="flex space-x-2 items-center">
-              <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
-              <h1 class="text-white font-bold text-2xl">Law&Orga</h1>
+          <div class="flex items-center flex-shrink-0 h-16 px-4 bg-lorgablue">
+            <router-link to="/" class="flex items-center space-x-2">
+              <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
+              <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
             </router-link>
           </div>
           <div class="flex-1 h-0 overflow-y-auto">
-            <nav class="py-2 px-2 space-y-1">
+            <nav class="px-2 py-2 space-y-1">
               <router-link
                 v-for="item in sidebarItems"
-                :key="item.link"
+                :key="item.label"
                 :to="item.link"
                 to-active="bg-gray-100 hover:bg-gray-100 text-gray-700"
-                class="group text-gray-600 group hover:bg-gray-50 hover:text-gray-900 flex items-center px-2 py-2 text-base font-medium rounded-md"
+                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
                 @click="setOpen(false)"
               >
                 <component
                   :is="item.icon"
-                  class="text-gray-400 mr-4 flex-shrink-0 h-6 w-6 group-hover:text-gray-500"
+                  class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                 />
                 {{ item.label }}
               </router-link>
