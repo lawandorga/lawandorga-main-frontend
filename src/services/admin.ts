@@ -1,25 +1,31 @@
 import { Group, HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
-import { RlcUser, User } from "@/types/user";
+import { RlcUser, RlcUserSmall, User } from "@/types/user";
 import axios from "axios";
 
 class AdminService {
   /*
   // Users
   */
-  getUsers(): Promise<RlcUser[]> {
-    return axios.get<RlcUser[]>("profiles/").then((response) => response.data);
+  getUsers(): Promise<RlcUserSmall[]> {
+    return axios.get("/rlc_users/").then((response) => response.data);
   }
 
   updateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<RlcUser>(`profiles/${user.id}/`, user)
+      .patch<RlcUser>(`/rlc_users/${user.id}/update_information/`, user)
+      .then((response) => response.data);
+  }
+
+  activateUser(user: JsonModel): Promise<RlcUser> {
+    return axios
+      .patch<RlcUser>(`/rlc_users/${user.id}/activate/`, user)
       .then((response) => response.data);
   }
 
   getUser(id: number | string): Promise<RlcUser> {
     return axios
-      .get<RlcUser>(`profiles/${id}/`)
+      .get<RlcUser>(`rlc_users/${id}/`)
       .then((response) => response.data);
   }
 
@@ -116,7 +122,7 @@ class AdminService {
 
   getUserPermissions(user: RlcUser): Promise<HasPermission[]> {
     return axios
-      .get<HasPermission[]>(`has_permissions/?user=${user.user}`)
+      .get<HasPermission[]>(`has_permissions/?user=${user.user_id}`)
       .then((response) => response.data);
   }
 

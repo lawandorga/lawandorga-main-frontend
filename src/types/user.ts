@@ -9,6 +9,18 @@ export interface User {
   rlcuserid: number;
 }
 
+export interface RlcUserSmall {
+  id: number;
+  user_id: number;
+  phone_number: string | null;
+  name: string;
+  email: string;
+  accepted: boolean;
+  email_confirmed: boolean;
+  locked: boolean;
+  is_active: boolean;
+}
+
 export interface RlcUser {
   id: number;
   user_id: number;

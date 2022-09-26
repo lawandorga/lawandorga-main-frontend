@@ -114,7 +114,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ref, Ref } from "vue";
-import { User } from "@/types/user";
+import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -138,7 +138,7 @@ export default defineComponent({
     ModalDelete,
   },
   setup() {
-    const profiles = ref(null) as Ref<User[] | null>;
+    const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
     useGet(AdminService.getUsers, profiles);
 
     // accept
@@ -148,7 +148,7 @@ export default defineComponent({
     } = useUpdateItem(AdminService.acceptUser, profiles);
 
     // delete
-    const profile = ref(null) as Ref<User | null>;
+    const profile = ref(null) as Ref<RlcUserSmall | null>;
     const { deleteRequest, deleteModalOpen } = useDeleteItem(
       AdminService.deleteUser,
       profiles,
@@ -164,7 +164,7 @@ export default defineComponent({
     const {
       updateRequest: activateUserRequest,
       updateModalOpen: activateUserModalOpen,
-    } = useUpdateItem(AdminService.updateUser, profiles);
+    } = useUpdateItem(AdminService.activateUser, profiles);
 
     return {
       profiles,

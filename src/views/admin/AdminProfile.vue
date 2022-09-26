@@ -1,15 +1,14 @@
 <template>
-  <BoxLoader :show="true">
-    <div class="max-w-screen-lg mx-auto space-y-6">
+  <BoxLoader :show="!!user">
+    <div v-if="user" class="max-w-screen-lg mx-auto space-y-6">
       <BreadcrumbsBar
-        v-if="user"
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[
           { name: 'Profiles', to: { name: 'admin-profiles' } },
           {
             name: user.name,
-            to: { name: 'admin-profile', params: { id: user.id } },
+            to: { name: 'admin-profile', params: { id: user.id.toString() } },
           },
         ]"
       >
@@ -37,7 +36,7 @@
             <div
               v-if="
                 ['street', 'city', 'postal_code', 'note'].every((item) =>
-                  Object.keys(user).includes(item),
+                  Object.keys(user || {}).includes(item),
                 )
               "
             >
@@ -132,7 +131,7 @@
     <ModalFree v-model="addPermissionModalOpen" title="Add Permission">
       <FormGenerator
         :fields="permissionFields"
-        :initial="{ user_has_permission: user.user }"
+        :initial="{ user_has_permission: user?.user_id }"
         :request="addPermissionRequest"
       />
     </ModalFree>
@@ -202,6 +201,7 @@ const userFields = [
     type: "select",
     name: "speciality_of_study",
     options: [
+      { value: "", name: "------" },
       { value: "LAW", name: "Law Sciences" },
       { value: "PSYCH", name: "Psychology" },
       { value: "POL", name: "Political Science" },
@@ -213,7 +213,7 @@ const userFields = [
       { value: "OTHER", name: "Other" },
       { value: "NONE", name: "None" },
     ],
-    required: false,
+    required: true,
   },
   {
     label: "Note",

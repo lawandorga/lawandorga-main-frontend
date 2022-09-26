@@ -3,7 +3,7 @@
     <div
       class="hidden px-6 space-x-5 bg-white border border-gray-300 rounded-md shadow-sm xl:items-center xl:flex"
     >
-      <div>
+      <div class="leading-none">
         <ButtonNormal
           kind="action"
           @click="search = userStore.user?.name || ''"
@@ -11,7 +11,7 @@
           Show My Records
         </ButtonNormal>
       </div>
-      <div>
+      <div class="leading-none">
         <ButtonNormal kind="action" @click="search = '2022'">
           Show Contains '2022'
         </ButtonNormal>
@@ -158,15 +158,17 @@ export default defineComponent({
     });
 
     // head
-    const head = computed(() => {
-      if (records.value === null) return [];
-      const head1 = Array.from(
-        new Set(records.value.map((r: Record) => r.show).flat()),
-      );
-      const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
-      head2.push({ name: "", key: "action", sortable: false });
-      return head2;
-    });
+    const head = computed<{ name: string; key: string; sortable: boolean }[]>(
+      () => {
+        if (records.value === null) return [];
+        const head1 = Array.from(
+          new Set(records.value.map((r: Record) => r.show).flat()),
+        );
+        const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
+        head2.push({ name: "", key: "action", sortable: false });
+        return head2;
+      },
+    );
 
     // filter
     const filterKeys = computed(() => head.value.map((h) => h.name));
