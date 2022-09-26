@@ -1,12 +1,31 @@
 <template>
-  <div class="right-0 max-w-md md:ml-auto md:sticky">
-    <FormInput
-      v-model="search"
-      label=""
-      placeholder="AZ-123 / Open / Consultant / Tag"
-      type="search"
-      required
-    />
+  <div class="flex">
+    <div
+      class="hidden px-6 space-x-5 bg-white border border-gray-300 rounded-md shadow-sm xl:items-center xl:flex"
+    >
+      <div>
+        <ButtonNormal
+          kind="action"
+          @click="search = userStore.user?.name || ''"
+        >
+          Show My Records
+        </ButtonNormal>
+      </div>
+      <div>
+        <ButtonNormal kind="action" @click="search = '2022'">
+          Show Contains '2022'
+        </ButtonNormal>
+      </div>
+    </div>
+    <div class="right-0 w-full max-w-md md:ml-auto md:sticky">
+      <FormInput
+        v-model="search"
+        label=""
+        placeholder="AZ-123 / Open / Consultant / Tag"
+        type="search"
+        required
+      />
+    </div>
   </div>
   <TableSortable
     :head="head"
@@ -77,7 +96,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRefs, computed } from "vue";
-import { FormInput, TableSortable, types } from "@lawandorga/components";
+import {
+  FormInput,
+  TableSortable,
+  types,
+  ButtonNormal,
+} from "@lawandorga/components";
 import { Record } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
@@ -87,6 +111,7 @@ import { useUserStore } from "@/store/user";
 export default defineComponent({
   components: {
     TableSortable,
+    ButtonNormal,
     FormInput,
     ButtonLink,
   },
@@ -154,12 +179,8 @@ export default defineComponent({
     // set default sort
     const userStore = useUserStore();
 
-    // ts error
-    const getKey = (h): string => h.key;
-
     // return
     return {
-      getKey,
       search,
       formatDate,
       filteredRecords,
