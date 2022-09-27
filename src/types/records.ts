@@ -82,8 +82,8 @@ export type RecordsDocument = JsonModel & {
   id: number;
   name: string;
   creator: string;
-  created_on: Date;
-  last_edited: Date;
+  created_on: string;
+  last_edited: string;
   file_size: number;
 };
 
@@ -124,7 +124,7 @@ export interface QuestionnaireTemplate {
 export interface Questionnaire {
   id: number;
   record: number;
-  template: number | QuestionnaireTemplate;
+  template: QuestionnaireTemplate;
   answer: string;
   answered: boolean;
   created: string;
