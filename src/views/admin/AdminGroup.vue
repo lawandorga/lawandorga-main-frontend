@@ -145,7 +145,7 @@ import useCreate from "@/composables/useCreate";
 import { watch, defineComponent, ref, Ref, reactive } from "vue";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -221,7 +221,7 @@ export default defineComponent({
     const {
       deleteRequest: removePermissionRequest,
       deleteModalOpen: removePermissionModalOpen,
-    } = useDeleteItem(AdminService.deleteHasPermission, permissions);
+    } = useDelete(AdminService.deleteHasPermission, permissions);
 
     // add member
     const memberFields = reactive([
@@ -252,7 +252,7 @@ export default defineComponent({
     const {
       deleteRequest: removeMemberRequest,
       deleteModalOpen: removeMemberModalOpen,
-    } = useDeleteItem(AdminService.removeMember, members, group);
+    } = useDelete(AdminService.removeMember, members, group);
 
     return {
       permissions,

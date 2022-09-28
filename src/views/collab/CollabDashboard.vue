@@ -84,7 +84,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import { ref } from "vue";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { CircleLoader } from "@lawandorga/components";
 import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
 import CollabHelp from "@/components/CollabHelp.vue";
@@ -135,7 +135,7 @@ export default defineComponent({
     const {
       deleteRequest: deleteDocumentRequest,
       deleteModalOpen: deleteDocumentModalOpen,
-    } = useDeleteItem(CollabService.deleteDocument, documents);
+    } = useDelete(CollabService.deleteDocument, documents);
 
     const documentDeleted = () => {
       documentId.value = null;

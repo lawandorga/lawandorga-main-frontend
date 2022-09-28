@@ -159,7 +159,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -255,7 +255,7 @@ export default defineComponent({
     const {
       deleteRequest: deleteFileRequest,
       deleteModalOpen: deleteFileModalOpen,
-    } = useDeleteItem(RecordsService.deleteQuestionnaireFile, files);
+    } = useDelete(RecordsService.deleteQuestionnaireFile, files);
 
     // create field
     const {
@@ -273,7 +273,7 @@ export default defineComponent({
     const {
       deleteRequest: deleteFieldRequest,
       deleteModalOpen: deleteFieldModalOpen,
-    } = useDeleteItem(RecordsService.deleteQuestionnaireQuestion, fields);
+    } = useDelete(RecordsService.deleteQuestionnaireQuestion, fields);
 
     return {
       questionnaire,

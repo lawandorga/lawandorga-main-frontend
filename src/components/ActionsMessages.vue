@@ -5,7 +5,7 @@ import useGet from "@/composables/useGet";
 import { Message } from "@/types/records";
 import RecordsService from "@/services/records";
 import { ref } from "vue";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import { useRoute } from "vue-router";
 
 // route
@@ -28,7 +28,7 @@ const fields = [
 useGet(RecordsService.getMessages, messages, route.params.id as string);
 
 // create
-const { createRequest } = useCreateItem(RecordsService.createMessage, messages);
+const { createRequest } = useCreate(RecordsService.createMessage, messages);
 
 // expose
 defineExpose({

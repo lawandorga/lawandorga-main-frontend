@@ -419,7 +419,7 @@ import { formatDate } from "@/utils/date";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
@@ -565,7 +565,7 @@ function recordDocumentsGetUploadDownloadDelete(
     deleteModalOpen: deleteDocumentModalOpen,
     deleteRequest: deleteDocumentRequest,
     temporary: documentTemporary,
-  } = useDeleteItem(RecordsService.deleteDocument, documents);
+  } = useDelete(RecordsService.deleteDocument, documents);
 
   return {
     documents,
@@ -594,7 +594,7 @@ function encryptionsGetDelete(record: Ref<Record | null>) {
   const {
     deleteRequest: deleteEncryptionRequest,
     deleteModalOpen: deleteEncryptionModalOpen,
-  } = useDeleteItem(RecordsService.deleteEncryption, encryptions);
+  } = useDelete(RecordsService.deleteEncryption, encryptions);
 
   return {
     encryptions,

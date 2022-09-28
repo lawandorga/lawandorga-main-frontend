@@ -19,7 +19,7 @@ import { ref } from "vue";
 import { Link } from "@/types/org";
 import useGet from "@/composables/useGet";
 import OrgService from "@/services/org";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import useCreate from "@/composables/useCreate";
 
 // get
@@ -54,7 +54,7 @@ const { createRequest, createModalOpen } = useCreate(
 );
 
 // delete
-const { deleteRequest, deleteModalOpen, temporary } = useDeleteItem(
+const { deleteRequest, deleteModalOpen, temporary } = useDelete(
   OrgService.deleteLink,
   links,
 );

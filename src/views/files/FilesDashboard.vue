@@ -261,7 +261,7 @@ import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useCreate from "@/composables/useCreate";
 import useUpdate from "@/composables/useUpdate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
 import { DjangoModel } from "@/types/shared";
 import FilesPermissions from "@/components/FilesPermissions.vue";
@@ -390,8 +390,10 @@ function createUpdateDeleteFolder(
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // update
-  const { updateRequest, updateModalOpen: updateFolderModalOpen } =
-    useUpdate(FilesService.updateFolder, items);
+  const { updateRequest, updateModalOpen: updateFolderModalOpen } = useUpdate(
+    FilesService.updateFolder,
+    items,
+  );
   const updateFolderRequest = (data: types.JsonModel) =>
     updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
@@ -406,7 +408,7 @@ function createUpdateDeleteFolder(
   const {
     deleteRequest: deleteFolderRequest,
     deleteModalOpen: deleteFolderModalOpen,
-  } = useDeleteItem(FilesService.deleteFolder, items);
+  } = useDelete(FilesService.deleteFolder, items);
 
   return {
     // current
@@ -462,7 +464,7 @@ function createDeletePermission(permissions: Ref<FilesPermission[] | null>) {
   const {
     deleteRequest: deletePermissionRequest,
     deleteModalOpen: deletePermissionModalOpen,
-  } = useDeleteItem(FilesService.deletePermission, permissions);
+  } = useDelete(FilesService.deletePermission, permissions);
 
   return {
     // current
@@ -553,7 +555,7 @@ function createUpdateDeleteFile(
   const {
     deleteRequest: deleteFileRequest,
     deleteModalOpen: deleteFileModalOpen,
-  } = useDeleteItem(FilesService.deleteFile, items);
+  } = useDelete(FilesService.deleteFile, items);
 
   return {
     // current

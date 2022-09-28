@@ -95,7 +95,7 @@ import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -148,7 +148,7 @@ export default defineComponent({
     );
 
     // delete
-    const { deleteRequest, deleteModalOpen } = useDeleteItem(
+    const { deleteRequest, deleteModalOpen } = useDelete(
       AdminService.deleteGroup,
       groups,
     );

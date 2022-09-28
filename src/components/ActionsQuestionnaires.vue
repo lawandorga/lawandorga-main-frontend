@@ -25,9 +25,9 @@ import {
 import { ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { ModalDelete } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import { FormField } from "@/types/form";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -67,7 +67,7 @@ const downloadFile = (answer: QuestionnaireAnswer) => {
 };
 
 // create
-const { createRequest, createModalOpen, temporary } = useCreateItem(
+const { createRequest, createModalOpen, temporary } = useCreate(
   RecordsService.createQuestionnaire,
   questionnaires,
 );
@@ -79,7 +79,7 @@ watch(createModalOpen, (newValue) => {
 });
 
 // delete
-const { deleteModalOpen, deleteRequest } = useDeleteItem(
+const { deleteModalOpen, deleteRequest } = useDelete(
   RecordsService.deleteQuestionnaire,
   questionnaires,
 );
