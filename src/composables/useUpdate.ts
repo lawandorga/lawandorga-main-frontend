@@ -1,19 +1,26 @@
-import { DjangoModel, JsonModel, Reffed } from "@/types/shared";
+import { Reffed } from "@/types/shared";
 import { ref, Ref, unref } from "vue";
 
-export default function useUpdateItem<
-Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
+export default function useUpdate<
+  /* eslint-disable @typescript-eslint/no-explicit-any, no-unused-vars */
+  Type extends { [key: string]: any; id: string | number },
+  Fn extends (item: Type, ...args: any) => Promise<Type>,
+  /* eslint-enable */
 >(
-  updateItemFunc: Fn,
-  items: Ref<DjangoModel[] | DjangoModel | null>,
+  updateFunc: Fn,
+  items: Ref<Type[] | Type | null> | null,
   ...params: Reffed<Parameters<Fn>>
 ) {
   const updateModalOpen = ref(false);
 
-  const updateRequest = (data: DjangoModel) => {
-    return updateItemFunc(data, ...params.map(unref)).then((newItem) => {
+  function updateRequest(data: Type): Promise<Type> {
+    return updateFunc(data, ...params.map(unref)).then((newItem) => {
+      // close modal
       updateModalOpen.value = false;
 
+      if (items === null) return newItem;
+
+      // update items
       if (Array.isArray(items.value)) {
         let index = -1;
 
@@ -34,11 +41,16 @@ Fn extends (...args: any[]) => Promise<DjangoModel>, // eslint-disable-line
         items.value = newItem;
       }
 
+      // trigger computed setter
+      // eslint-disable-next-line no-self-assign
+      items.value = items.value;
+
+      // return the new item
       return newItem;
     });
-  };
+  }
 
-  const temporary = ref<JsonModel | null>(null);
+  const temporary = ref<Type | null>(null);
 
   return {
     temporary,

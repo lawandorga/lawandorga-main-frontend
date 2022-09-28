@@ -86,7 +86,7 @@
 <script lang="ts">
 import { Group } from "@/types/core";
 import { defineComponent, Ref, ref } from "vue";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
@@ -94,8 +94,8 @@ import { ButtonNormal } from "@lawandorga/components";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdateItem from "@/composables/useUpdateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useUpdate from "@/composables/useUpdate";
+import useDeleteItem from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -136,13 +136,13 @@ export default defineComponent({
     useGet(AdminService.getGroups, groups);
 
     // create
-    const { createRequest, createModalOpen } = useCreateItem(
+    const { createRequest, createModalOpen } = useCreate(
       AdminService.createGroup,
       groups,
     );
 
     // update
-    const { updateRequest, updateModalOpen } = useUpdateItem(
+    const { updateRequest, updateModalOpen } = useUpdate(
       AdminService.updateGroup,
       groups,
     );

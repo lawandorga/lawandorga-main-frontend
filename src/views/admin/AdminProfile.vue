@@ -152,15 +152,15 @@ import useGet from "@/composables/useGet";
 import { ref, Ref } from "vue";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useDeleteItem from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import AdminService from "@/services/admin";
 import { HasPermission, Permission } from "@/types/core";
 import { RlcUser, User } from "@/types/user";
 import { useRoute } from "vue-router";
-import useUpdateItem from "@/composables/useUpdateItem";
+import useUpdate from "@/composables/useUpdate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { ModalForm, ButtonNormal } from "@lawandorga/components";
@@ -267,10 +267,10 @@ export default defineComponent({
     const {
       updateModalOpen: changePasswordModalOpen,
       updateRequest: changePasswordRequest,
-    } = useUpdateItem(AdminService.changePassword, user);
+    } = useUpdate(AdminService.changePassword, user);
 
     // update user
-    const { updateRequest, updateModalOpen } = useUpdateItem(
+    const { updateRequest, updateModalOpen } = useUpdate(
       AdminService.updateUser,
       user,
     );
@@ -292,7 +292,7 @@ export default defineComponent({
     const {
       createRequest: addPermissionRequest,
       createModalOpen: addPermissionModalOpen,
-    } = useCreateItem(AdminService.createHasPermission, permissions);
+    } = useCreate(AdminService.createHasPermission, permissions);
 
     watch(addPermissionModalOpen, () =>
       AdminService.getPermissions().then(

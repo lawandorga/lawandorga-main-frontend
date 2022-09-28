@@ -120,8 +120,8 @@ import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
-import useUpdateItem from "@/composables/useUpdateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useUpdate from "@/composables/useUpdate";
+import useDeleteItem from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -145,7 +145,7 @@ export default defineComponent({
     const {
       updateRequest: acceptUserRequest,
       updateModalOpen: acceptUserModalOpen,
-    } = useUpdateItem(AdminService.acceptUser, profiles);
+    } = useUpdate(AdminService.acceptUser, profiles);
 
     // delete
     const profile = ref(null) as Ref<RlcUserSmall | null>;
@@ -158,13 +158,13 @@ export default defineComponent({
     const {
       updateRequest: unlockUserRequest,
       updateModalOpen: unlockUserModalOpen,
-    } = useUpdateItem(AdminService.unlockUser, profiles);
+    } = useUpdate(AdminService.unlockUser, profiles);
 
     // activate
     const {
       updateRequest: activateUserRequest,
       updateModalOpen: activateUserModalOpen,
-    } = useUpdateItem(AdminService.activateUser, profiles);
+    } = useUpdate(AdminService.activateUser, profiles);
 
     return {
       profiles,

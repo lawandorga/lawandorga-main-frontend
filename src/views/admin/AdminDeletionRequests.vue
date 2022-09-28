@@ -84,7 +84,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdateItem from "@/composables/useUpdateItem";
+import useUpdate from "@/composables/useUpdate";
 import { RecordDeletion } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -125,7 +125,7 @@ export default defineComponent({
       updateRequest,
       updateModalOpen,
       temporary: deletionRequest,
-    } = useUpdateItem(RecordsService.updateRecordDeletion, deletionRequests);
+    } = useUpdate(RecordsService.updateRecordDeletion, deletionRequests);
 
     return {
       deletionRequests,

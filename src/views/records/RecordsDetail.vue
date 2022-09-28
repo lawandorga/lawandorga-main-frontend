@@ -419,10 +419,10 @@ import { formatDate } from "@/utils/date";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useDeleteItem from "@/composables/useDelete";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import { FormField } from "@/types/form";
 import ActionsQuestionnaires from "@/components/ActionsQuestionnaires.vue";
 import ActionsMessages from "@/components/ActionsMessages.vue";
@@ -555,7 +555,7 @@ function recordDocumentsGetUploadDownloadDelete(
   const {
     createModalOpen: uploadDocumentModalOpen,
     createRequest: uploadDocumentRequest,
-  } = useCreateItem(RecordsService.createDocument, documents);
+  } = useCreate(RecordsService.createDocument, documents);
 
   // download
   const downloadDocument = RecordsService.downloadDocument;

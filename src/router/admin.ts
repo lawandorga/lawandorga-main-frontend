@@ -80,6 +80,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminTemplate.vue"),
     beforeEnter: isAuthenticated,
   },
+  {
+    path: "/admin/sidebar/",
+    name: "admin-sidebar",
+    component: () => import("@/views/admin/AdminSidebar.vue"),
+    beforeEnter: isAuthenticated,
+  },
 ];
 
 export default routes;

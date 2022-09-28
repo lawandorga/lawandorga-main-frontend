@@ -150,8 +150,8 @@ import { TableGenerator } from "@lawandorga/components";
 import CoreService from "@/services/core";
 import { ButtonNormal } from "@lawandorga/components";
 import { ref, watch } from "vue";
-import useCreateItem from "@/composables/useCreateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useCreate from "@/composables/useCreate";
+import useDeleteItem from "@/composables/useDelete";
 import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
@@ -199,10 +199,7 @@ export default defineComponent({
     const {
       createRequest: createPermissionRequest,
       createModalOpen: createPermissionModalOpen,
-    } = useCreateItem(
-      CollabService.createDocumentPermission,
-      documentPermissions,
-    );
+    } = useCreate(CollabService.createDocumentPermission, documentPermissions);
 
     // delete permission
     const {

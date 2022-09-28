@@ -80,7 +80,7 @@ class CollabService {
       .then((response) => response.data);
   }
 
-  deleteDocumentPermission(document: CollabDocument): Promise<void> {
+  deleteDocumentPermission(document: CollabDocumentPermission): Promise<void> {
     return axios.delete(`collab/document_permissions/${document.id}/`);
   }
 }

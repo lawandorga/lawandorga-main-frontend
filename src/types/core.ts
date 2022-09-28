@@ -1,3 +1,5 @@
+import { Link } from "./org";
+
 export interface Group {
   id: number;
   name: string;
@@ -12,6 +14,7 @@ export interface Rlc {
   id: number;
   name: string;
   use_record_pool: boolean;
+  links: Link[];
 }
 
 export interface Permission {

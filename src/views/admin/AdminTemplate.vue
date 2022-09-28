@@ -153,9 +153,9 @@ import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
-import useUpdateItem from "@/composables/useUpdateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
-import useCreateItem from "@/composables/useCreateItem";
+import useUpdate from "@/composables/useUpdate";
+import useDeleteItem from "@/composables/useDelete";
+import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
@@ -245,13 +245,13 @@ export default defineComponent({
     useGet(RecordsService.getTemplateFields, fields, template);
 
     // create
-    const { createRequest, createModalOpen } = useCreateItem(
+    const { createRequest, createModalOpen } = useCreate(
       RecordsService.createField,
       fields,
     );
 
     // update
-    const { updateRequest, updateModalOpen } = useUpdateItem(
+    const { updateRequest, updateModalOpen } = useUpdate(
       RecordsService.updateField,
       fields,
     );
