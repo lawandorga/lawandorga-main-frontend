@@ -83,9 +83,9 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ButtonNormal } from "@lawandorga/components";
 import { ref } from "vue";
 import useGet from "@/composables/useGet";
-import useCreateItem from "@/composables/useCreateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
-import { CircleLoader } from '@lawandorga/components';
+import useCreate from "@/composables/useCreate";
+import useDeleteItem from "@/composables/useDelete";
+import { CircleLoader } from "@lawandorga/components";
 import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
 import CollabHelp from "@/components/CollabHelp.vue";
 import CollabPermissions from "@/components/CollabPermissions.vue";
@@ -114,12 +114,12 @@ export default defineComponent({
     const {
       createRequest: createDocumentRequest,
       createModalOpen: createDocumentModalOpen,
-    } = useCreateItem(CollabService.createDocument, documents);
+    } = useCreate(CollabService.createDocument, documents);
 
     const documentCreated = (document: CollabDocument) => {
       if (documents.value === null) return;
       const parent = documents.value.find((item) => {
-        let path = document.path.split("/");
+        const path = document.path.split("/");
         path.pop();
         return item.path === path.join("/");
       });

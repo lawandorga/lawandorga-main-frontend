@@ -141,11 +141,11 @@ import { RlcUser } from "@/types/user";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import { watch, defineComponent, ref, Ref, reactive } from "vue";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useDeleteItem from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -207,7 +207,7 @@ export default defineComponent({
     const {
       createRequest: addPermissionRequest,
       createModalOpen: addPermissionModalOpen,
-    } = useCreateItem(AdminService.createHasPermission, permissions);
+    } = useCreate(AdminService.createHasPermission, permissions);
 
     watch(addPermissionModalOpen, () =>
       AdminService.getPermissions().then(
@@ -237,7 +237,7 @@ export default defineComponent({
     const {
       createRequest: addMemberRequest,
       createModalOpen: addMemberModalOpen,
-    } = useCreateItem(AdminService.addMember, members, group);
+    } = useCreate(AdminService.addMember, members, group);
 
     watch(addMemberModalOpen, (newValue) => {
       if (newValue)

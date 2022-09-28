@@ -108,7 +108,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { formatDate } from "@/utils/date";
-import useCreateItem from "@/composables/useCreateItem";
+import useCreate from "@/composables/useCreate";
 import useGet from "@/composables/useGet";
 import { useRouter } from "vue-router";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
@@ -155,7 +155,7 @@ function createRecordAccess() {
   const {
     createRequest: createRecordAccessRequest,
     createModalOpen: createRecordAccessModalOpen,
-  } = useCreateItem(RecordsService.createRecordAccess, ref(null));
+  } = useCreate(RecordsService.createRecordAccess, ref(null));
 
   return {
     createRecordAccessRequest,
@@ -167,7 +167,7 @@ function createDeletionRequest(records: Ref<Record[] | null>) {
   const {
     createRequest: createDeletionRequestRequest,
     createModalOpen: createDeletionRequestModalOpen,
-  } = useCreateItem(RecordsService.createDeletionRequest, ref(null));
+  } = useCreate(RecordsService.createDeletionRequest, ref(null));
 
   const deletionRequestCreated = (deletionRequest: RecordDeletion) => {
     if (records.value === null) return;
@@ -197,7 +197,7 @@ function createRecord(records: Ref<Record[] | null>) {
     },
   ]);
 
-  const { createRequest, createModalOpen } = useCreateItem(
+  const { createRequest, createModalOpen } = useCreate(
     RecordsService.createRecord,
     records,
   );

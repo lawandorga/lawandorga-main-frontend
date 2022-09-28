@@ -24,27 +24,34 @@
         </div>
         <div class="flex flex-col justify-between flex-grow bg-white">
           <nav class="flex-1 px-2 py-2 space-y-1 bg-white">
-            <router-link
-              v-for="item in navigationItems"
-              :key="item.label"
-              :to="item.link"
-              active-class="text-gray-700 !bg-gray-100 hover:bg-gray-100"
-              class="flex items-center justify-between py-2 pl-2 pr-3 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
-            >
-              <div class="flex items-center">
-                <component
-                  :is="item.icon"
-                  class="flex-shrink-0 w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500"
-                />
-                {{ item.label }}
+            <template v-for="item in navigationItems" :key="item.label">
+              <div v-if="item.divider">
+                <div class="w-full py-4">
+                  <div class="w-full border-t border-gray-100"></div>
+                </div>
               </div>
-              <div
-                v-if="item.notifications && item.notifications > 0"
-                class="flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 bg-red-200 rounded-full"
+              <component
+                :is="item.is"
+                v-else
+                v-bind="item.attrs"
+                active-class="text-gray-700 !bg-gray-100 hover:bg-gray-100"
+                class="flex items-center justify-between py-2 pl-2 pr-3 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
               >
-                {{ item.notifications }}
-              </div>
-            </router-link>
+                <div class="flex items-center">
+                  <component
+                    :is="item.icon"
+                    class="flex-shrink-0 w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500"
+                  />
+                  {{ item.label }}
+                </div>
+                <div
+                  v-if="item.notifications && item.notifications > 0"
+                  class="flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 bg-red-200 rounded-full"
+                >
+                  {{ item.notifications }}
+                </div>
+              </component>
+            </template>
           </nav>
           <div class="flex flex-col items-start justify-center px-4 pb-4">
             <figure class="mb-3">

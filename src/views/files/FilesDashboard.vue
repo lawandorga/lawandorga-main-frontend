@@ -259,9 +259,9 @@ import { FolderOpenIcon } from "@heroicons/vue/24/outline";
 import { FolderIcon, DocumentIcon } from "@heroicons/vue/20/solid";
 import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
-import useCreateItem from "@/composables/useCreateItem";
-import useUpdateItem from "@/composables/useUpdateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useCreate from "@/composables/useCreate";
+import useUpdate from "@/composables/useUpdate";
+import useDeleteItem from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
 import { DjangoModel } from "@/types/shared";
 import FilesPermissions from "@/components/FilesPermissions.vue";
@@ -381,15 +381,17 @@ function createUpdateDeleteFolder(
       required: true,
     },
   ]);
-  const { createRequest, createModalOpen: createFolderModalOpen } =
-    useCreateItem(FilesService.createFolder, items);
+  const { createRequest, createModalOpen: createFolderModalOpen } = useCreate(
+    FilesService.createFolder,
+    items,
+  );
 
   const createFolderRequest = (data: types.JsonModel) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // update
   const { updateRequest, updateModalOpen: updateFolderModalOpen } =
-    useUpdateItem(FilesService.updateFolder, items);
+    useUpdate(FilesService.updateFolder, items);
   const updateFolderRequest = (data: types.JsonModel) =>
     updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
@@ -444,7 +446,7 @@ function createDeletePermission(permissions: Ref<FilesPermission[] | null>) {
   const {
     createRequest: createPermissionRequest,
     createModalOpen: createPermissionModalOpen,
-  } = useCreateItem(FilesService.createPermission, permissions);
+  } = useCreate(FilesService.createPermission, permissions);
 
   watch(createPermissionModalOpen, () => {
     FilesService.getPossiblePermissions().then(
@@ -506,9 +508,9 @@ function createUpdateDeleteFile(
   const {
     createRequest: createFileRequest,
     createModalOpen: createFileModalOpen,
-  } = useCreateItem(FilesService.createFile, items);
+  } = useCreate(FilesService.createFile, items);
 
-  // const { createRequest, createModalOpen: createFileModalOpen } = useCreateItem(
+  // const { createRequest, createModalOpen: createFileModalOpen } = useCreate(
   //     FilesService.createFile,
   //     items,
   //   );
@@ -534,7 +536,7 @@ function createUpdateDeleteFile(
       required: true,
     },
   ]);
-  const { updateRequest, updateModalOpen: updateFileModalOpen } = useUpdateItem(
+  const { updateRequest, updateModalOpen: updateFileModalOpen } = useUpdate(
     FilesService.updateFile,
     items,
   );

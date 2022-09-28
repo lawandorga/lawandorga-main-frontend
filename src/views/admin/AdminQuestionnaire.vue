@@ -158,9 +158,9 @@ import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
-import useUpdateItem from "@/composables/useUpdateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
-import useCreateItem from "@/composables/useCreateItem";
+import useUpdate from "@/composables/useUpdate";
+import useDeleteItem from "@/composables/useDelete";
+import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
@@ -245,7 +245,7 @@ export default defineComponent({
     const {
       createRequest: createFileRequest,
       createModalOpen: createFileModalOpen,
-    } = useCreateItem(RecordsService.createQuestionnaireFile, files);
+    } = useCreate(RecordsService.createQuestionnaireFile, files);
 
     // download file
     const downloadFile = (file: QuestionnaireTemplateFile) =>
@@ -261,13 +261,13 @@ export default defineComponent({
     const {
       createRequest: createFieldRequest,
       createModalOpen: createFieldModalOpen,
-    } = useCreateItem(RecordsService.createQuestionnaireQuestion, fields);
+    } = useCreate(RecordsService.createQuestionnaireQuestion, fields);
 
     // update field
     const {
       updateRequest: updateFieldRequest,
       updateModalOpen: updateFieldModalOpen,
-    } = useUpdateItem(RecordsService.updateQuestionnaireQuestion, fields);
+    } = useUpdate(RecordsService.updateQuestionnaireQuestion, fields);
 
     // delete field
     const {

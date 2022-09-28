@@ -190,9 +190,9 @@ import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
 import { ButtonNormal } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useCreateItem from "@/composables/useCreateItem";
-import useUpdateItem from "@/composables/useUpdateItem";
-import useDeleteItem from "@/composables/useDeleteItem";
+import useCreate from "@/composables/useCreate";
+import useUpdate from "@/composables/useUpdate";
+import useDeleteItem from "@/composables/useDelete";
 import { ModalForm } from "@lawandorga/components";
 import { ModalDelete } from "@lawandorga/components";
 import { useUserStore } from "@/store/user";
@@ -242,7 +242,7 @@ function getCreateUpdateDeleteNotes() {
   const {
     createModalOpen: createNoteModalOpen,
     createRequest: createNoteRequest,
-  } = useCreateItem(UsersService.createNote, notes);
+  } = useCreate(UsersService.createNote, notes);
 
   // update and delete
   const noteTemporary = ref<DashboardNote | null>(null);
@@ -251,7 +251,7 @@ function getCreateUpdateDeleteNotes() {
   const {
     updateModalOpen: updateNoteModalOpen,
     updateRequest: updateNoteRequest,
-  } = useUpdateItem(UsersService.updateNote, notes);
+  } = useUpdate(UsersService.updateNote, notes);
 
   // delete
   const {
