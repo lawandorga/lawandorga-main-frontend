@@ -148,9 +148,12 @@ class RecordsService {
   }
 
   downloadFileFromEntry(entry: RecordEntry): void {
+    const openedWindow = window.open();
     axios
       .get<Blob>(`${entry.url}download/`, { responseType: "blob" })
-      .then((response) => downloadFile(response, entry.value as string));
+      .then((response) =>
+        downloadFile(response, entry.value as string, openedWindow),
+      );
   }
 
   // permissions
@@ -286,6 +289,7 @@ class RecordsService {
   downloadQuestionnaireAnswerFile(
     questionnaireAnswer: QuestionnaireAnswer,
   ): void {
+    const openedWindow = window.open();
     axios
       .get<Blob>(
         `records/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
@@ -297,6 +301,7 @@ class RecordsService {
         downloadFile(
           response,
           questionnaireAnswer.data.split("/").at(-1) || "filename",
+          openedWindow,
         ),
       );
   }
@@ -313,11 +318,12 @@ class RecordsService {
   }
 
   downloadQuestionnaireFile(file: QuestionnaireTemplateFile): void {
+    const openedWindow = window.open();
     axios
       .get<Blob>(`records/questionnaire_files/${file.id}/`, {
         responseType: "blob",
       })
-      .then((response) => downloadFile(response, file.name));
+      .then((response) => downloadFile(response, file.name, openedWindow));
   }
 
   createQuestionnaireFile(data: JsonModel): Promise<QuestionnaireTemplateFile> {
@@ -367,11 +373,12 @@ class RecordsService {
   }
 
   downloadDocument(document: RecordsDocument): void {
+    const openedWindow = window.open();
     axios
       .get<Blob>(`records/record_documents/${document.id}/`, {
         responseType: "blob",
       })
-      .then((response) => downloadFile(response, document.name));
+      .then((response) => downloadFile(response, document.name, openedWindow));
   }
 
   deleteDocument(document: RecordsDocument): Promise<void> {

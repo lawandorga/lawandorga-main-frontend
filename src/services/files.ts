@@ -6,7 +6,7 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import downloadFile from "@/utils/download";
-import { JsonModel } from "@lawandorga/components/dist/src/types";
+import { types } from "@lawandorga/components";
 import axios from "axios";
 
 class FilesService {
@@ -87,7 +87,7 @@ class FilesService {
   }
 
   // files
-  createFile(data: JsonModel): Promise<FilesFile> {
+  createFile(data: types.JsonModel): Promise<FilesFile> {
     const formData = new FormData();
     if (data.folder) formData.append("folder", data.folder.toString());
     if (data.file) formData.append("file", data.file as File);
@@ -112,11 +112,12 @@ class FilesService {
   }
 
   downloadFile(file: FilesFile): void {
+    const openedWindow = window.open();
     axios
       .get<Blob>(`files/file_base/${file.id}/`, {
         responseType: "blob",
       })
-      .then((response) => downloadFile(response, file.name));
+      .then((response) => downloadFile(response, file.name, openedWindow));
   }
 }
 
