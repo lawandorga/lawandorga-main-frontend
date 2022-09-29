@@ -45,6 +45,9 @@ export function downloadFileRequest(
   fileName: string,
 ) {
   const openedWindow = window.open();
+  if (openedWindow && openedWindow.document)
+    openedWindow.document.body.innerHTML =
+      "One moment please. File is being downloaded...";
   axios
     .get<Blob>(url, {
       responseType: "blob",
