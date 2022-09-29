@@ -5,7 +5,7 @@ import {
   FilesFile,
   FilesPossiblePermission,
 } from "@/types/files";
-import downloadFile from "@/utils/download";
+import { downloadFileRequest } from "@/utils/download";
 import { types } from "@lawandorga/components";
 import axios from "axios";
 
@@ -112,12 +112,7 @@ class FilesService {
   }
 
   downloadFile(file: FilesFile): void {
-    const openedWindow = window.open();
-    axios
-      .get<Blob>(`files/file_base/${file.id}/`, {
-        responseType: "blob",
-      })
-      .then((response) => downloadFile(response, file.name, openedWindow));
+    downloadFileRequest(axios, `files/file_base/${file.id}/`, file.name);
   }
 }
 

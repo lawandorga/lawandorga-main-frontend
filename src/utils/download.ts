@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
 
 function createObjectURL(data: Blob): string {
   if (window.webkitURL) {
@@ -10,17 +10,26 @@ function createObjectURL(data: Blob): string {
   }
 }
 
-export default function downloadFile(
+export function downloadFile(
   response: AxiosResponse<Blob>,
   name: string,
-  openedWindow: Window,
+  openedWindow: Window | null,
 ): void {
   const filename: string = name;
   const objectUrl = createObjectURL(response.data);
 
   if (name.split(".").pop() === "pdf") {
-    openedWindow.location = objectUrl;
+    if (openedWindow) openedWindow.location = objectUrl;
+    else {
+      const downloadLink = document.createElement("a");
+      downloadLink.setAttribute("target", "_blank");
+      downloadLink.href = objectUrl;
+      downloadLink.setAttribute("download", filename);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+    }
   } else {
+    if (openedWindow) openedWindow.close();
     const downloadLink = document.createElement("a");
     downloadLink.setAttribute("target", "_blank");
     downloadLink.href = objectUrl;
@@ -28,4 +37,21 @@ export default function downloadFile(
     document.body.appendChild(downloadLink);
     downloadLink.click();
   }
+}
+
+export function downloadFileRequest(
+  axios: AxiosInstance,
+  url: string,
+  fileName: string,
+) {
+  const openedWindow = window.open();
+  axios
+    .get<Blob>(url, {
+      responseType: "blob",
+    })
+    .then((response) => downloadFile(response, fileName, openedWindow))
+    .catch((e) => {
+      openedWindow?.close();
+      throw e;
+    });
 }
