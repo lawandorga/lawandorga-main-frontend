@@ -57,7 +57,7 @@ class AdminService {
 
   getMembers(group: Group): Promise<RlcUser[]> {
     return axios
-      .get(`profiles/?group=${group.id}`)
+      .get(`groups/${group.id}/users/`)
       .then((response) => response.data);
   }
 
