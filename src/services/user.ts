@@ -11,6 +11,7 @@ import {
   Settings,
   User,
 } from "@/types/user";
+import { JsonModel } from "@lawandorga/components/dist/types/types";
 import axios from "axios";
 
 class UserService {
@@ -79,6 +80,13 @@ class UserService {
 
   unlockSelf(): Promise<RlcUser> {
     return axios.post("rlc_users/unlock_self/", {}).then((r) => r.data);
+  }
+
+  // grant
+  grantPermission(data: JsonModel, user: RlcUser): Promise<void> {
+    return axios
+      .post(`rlc_users/${user.id}/grant_permission/`, data)
+      .then((r) => r.data);
   }
 
   // notes

@@ -1,4 +1,4 @@
-import { Ref, watch, unref, computed, isRef } from "vue";
+import { Ref, unref } from "vue";
 
 type Nullable<T> = T extends (infer U)[]
   ? Array<U | Ref<U | null> | null>
@@ -13,20 +13,12 @@ function useGet<
   getFunc: Fn,
   obj: Ref<Type | Type[] | null>,
   ...params: Nullable<Parameters<Fn>>
-) {
+): () => void {
   const getRequest = () => {
     getFunc(...params.map(unref)).then((newItem) => (obj.value = newItem));
   };
 
-  const refParams = computed(() => {
-    return params.filter((p) => isRef(p));
-  });
-
-  watch(refParams.value, getRequest);
-
-  if (params.map(unref).every((i) => i !== null)) getRequest();
-
-  if (refParams.value.length === 0) getRequest();
+  return getRequest;
 }
 
 export default useGet;
