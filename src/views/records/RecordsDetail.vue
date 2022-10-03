@@ -97,6 +97,7 @@
       </div>
 
       <div class="col-span-8">
+        <!-- record -->
         <div v-show="selectedType === 'RECORD'">
           <div class="bg-white rounded shadow">
             <div class="flex justify-between px-5 py-5 sm:px-6">
@@ -332,40 +333,50 @@
             </div>
           </div>
         </template>
-      </div>
 
-      <!-- access -->
-      <div class="col-span-12 bg-white rounded shadow">
-        <div class="px-5 pt-5">
-          <h2 class="text-lg font-bold text-gray-800">Access</h2>
-          <p class="text-sm text-gray-600">
-            The following persons have access to this record.
-          </p>
-        </div>
-        <div class="mt-5 border-t border-gray-200">
-          <TableGenerator
-            :head="[
-              { name: 'Person', key: 'user_detail' },
-              { name: 'Since', key: 'created' },
-              { name: '', key: 'action' },
-            ]"
-            :data="encryptions"
-          >
-            <template #created="slotProps">
-              {{ formatDate(slotProps.created) }}
-            </template>
-            <template #action="slotProps">
-              <ButtonNormal
-                kind="delete"
-                @click="
-                  encryptionTemporary = slotProps;
-                  deleteEncryptionModalOpen = true;
-                "
+        <!-- access -->
+        <div v-show="selectedId === 'ACCESS' && selectedType === 'ACCESS'">
+          <div class="bg-white rounded shadow">
+            <div class="flex justify-between px-5 py-5 sm:px-6">
+              <div class="flex-shrink">
+                <h3 class="text-lg font-medium leading-6 text-gray-900">
+                  Access
+                </h3>
+                <div
+                  class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
+                >
+                  <p>The following persons have access to this record.</p>
+                </div>
+              </div>
+              <div class="space-x-3"></div>
+            </div>
+
+            <div class="border-t border-gray-200">
+              <TableGenerator
+                :head="[
+                  { name: 'Person', key: 'user_detail' },
+                  { name: 'Since', key: 'created' },
+                  { name: '', key: 'action' },
+                ]"
+                :data="encryptions"
               >
-                Remove Access
-              </ButtonNormal>
-            </template>
-          </TableGenerator>
+                <template #created="slotProps">
+                  {{ formatDate(slotProps.created) }}
+                </template>
+                <template #action="slotProps">
+                  <ButtonNormal
+                    kind="delete"
+                    @click="
+                      encryptionTemporary = slotProps;
+                      deleteEncryptionModalOpen = true;
+                    "
+                  >
+                    Remove Access
+                  </ButtonNormal>
+                </template>
+              </TableGenerator>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -467,17 +478,28 @@ export default defineComponent({
     // messages
     const actionsMessages = ref<typeof ActionsMessages>();
 
+    // encryptions
+    const encryptions = ref<null | RecordEncryption[]>(null);
+
+    // first entry
+    const firstEntry = computed<RecordEntry["value"] | string>(() => {
+      if (record.value !== null && Object.keys(record.value.entries).length > 0)
+        return Object.values(record.value.entries)[0].value;
+      return "undefined";
+    });
+
     // items
     const items = computed<ContentItem[]>(() => {
       const ret: ContentItem[] = [];
 
-      if (record.value !== null)
+      if (record.value !== null) {
         ret.push({
           id: record.value.id.toString(),
           type: "RECORD",
-          name: record.value.entries["Token"].value,
+          name: firstEntry.value,
           stats: [`Created ${formatDate(record.value.created)}`],
         });
+      }
 
       ret.push({
         id: "MESSAGES",
@@ -511,19 +533,19 @@ export default defineComponent({
           },
         );
 
+      ret.push({
+        id: "ACCESS",
+        type: "ACCESS",
+        name: "Access",
+        stats: [`${encryptions.value?.length || 0} Persons`],
+      });
+
       return ret;
     });
 
-    // first entry
-    const firstEntry = computed<RecordEntry["value"] | string>(() => {
-      if (record.value !== null && Object.keys(record.value.entries).length > 0)
-        return Object.values(record.value.entries)[0].value;
-      return "undefined";
-    });
-
     // selected
-    const selectedId = ref(route.params.id);
-    const selectedType = ref("RECORD");
+    const selectedId = ref<number | string>(route.params.id as string);
+    const selectedType = ref<string>("RECORD");
 
     return {
       record,
@@ -534,7 +556,7 @@ export default defineComponent({
       items,
       actionsQuestionnaires,
       actionsMessages,
-      ...encryptionsGetDelete(record),
+      ...encryptionsGetDelete(encryptions, record),
       ...recordDocumentsGetUploadDownloadDelete(documents),
     };
   },
@@ -582,9 +604,10 @@ function recordDocumentsGetUploadDownloadDelete(
   };
 }
 
-function encryptionsGetDelete(record: Ref<Record | null>) {
-  const encryptions = ref<null | RecordEncryption[]>(null);
-
+function encryptionsGetDelete(
+  encryptions: Ref<RecordEncryption[] | null>,
+  record: Ref<Record | null>,
+) {
   // get
   useGet(RecordsService.getEncryptions, encryptions, record);
 
