@@ -21,7 +21,7 @@ import {
   RecordEncryption,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import downloadFile from "@/utils/download";
+import { downloadFileRequest } from "@/utils/download";
 import axios from "axios";
 
 class RecordsService {
@@ -148,9 +148,7 @@ class RecordsService {
   }
 
   downloadFileFromEntry(entry: RecordEntry): void {
-    axios
-      .get<Blob>(`${entry.url}download/`, { responseType: "blob" })
-      .then((response) => downloadFile(response, entry.value as string));
+    downloadFileRequest(axios, `${entry.url}download/`, entry.value as string);
   }
 
   // permissions
@@ -286,19 +284,11 @@ class RecordsService {
   downloadQuestionnaireAnswerFile(
     questionnaireAnswer: QuestionnaireAnswer,
   ): void {
-    axios
-      .get<Blob>(
-        `records/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
-        {
-          responseType: "blob",
-        },
-      )
-      .then((response) =>
-        downloadFile(
-          response,
-          questionnaireAnswer.data.split("/").at(-1) || "filename",
-        ),
-      );
+    downloadFileRequest(
+      axios,
+      `records/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
+      questionnaireAnswer.data.split("/").at(-1) || "filename",
+    );
   }
 
   // questionnairefile
@@ -313,11 +303,11 @@ class RecordsService {
   }
 
   downloadQuestionnaireFile(file: QuestionnaireTemplateFile): void {
-    axios
-      .get<Blob>(`records/questionnaire_files/${file.id}/`, {
-        responseType: "blob",
-      })
-      .then((response) => downloadFile(response, file.name));
+    downloadFileRequest(
+      axios,
+      `records/questionnaire_files/${file.id}/`,
+      file.name,
+    );
   }
 
   createQuestionnaireFile(data: JsonModel): Promise<QuestionnaireTemplateFile> {
@@ -367,11 +357,11 @@ class RecordsService {
   }
 
   downloadDocument(document: RecordsDocument): void {
-    axios
-      .get<Blob>(`records/record_documents/${document.id}/`, {
-        responseType: "blob",
-      })
-      .then((response) => downloadFile(response, document.name));
+    downloadFileRequest(
+      axios,
+      `records/record_documents/${document.id}/`,
+      document.name,
+    );
   }
 
   deleteDocument(document: RecordsDocument): Promise<void> {

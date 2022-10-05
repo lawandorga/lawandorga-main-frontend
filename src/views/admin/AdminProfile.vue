@@ -149,14 +149,16 @@
 import { defineComponent, reactive, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
+import useQuery from "@/composables/useQuery";
 import { ref, Ref } from "vue";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
 import useDelete from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
-import useCreate from "@/composables/useCreate";
+import useCommand from "@/composables/useCommand";
 import AdminService from "@/services/admin";
+import UserService from "@/services/user";
 import { HasPermission, Permission } from "@/types/core";
 import { RlcUser, User } from "@/types/user";
 import { useRoute } from "vue-router";
@@ -290,9 +292,13 @@ export default defineComponent({
       },
     ]);
     const {
-      createRequest: addPermissionRequest,
-      createModalOpen: addPermissionModalOpen,
-    } = useCreate(AdminService.createHasPermission, permissions);
+      commandRequest: addPermissionRequest,
+      commandModalOpen: addPermissionModalOpen,
+    } = useCommand(
+      UserService.grantPermission,
+      user,
+      useQuery(AdminService.getUserPermissions, permissions, user),
+    );
 
     watch(addPermissionModalOpen, () =>
       AdminService.getPermissions().then(

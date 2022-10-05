@@ -56,20 +56,27 @@
           </div>
           <div class="flex-1 h-0 overflow-y-auto">
             <nav class="px-2 py-2 space-y-1">
-              <router-link
-                v-for="item in sidebarItems"
-                :key="item.label"
-                :to="item.link"
-                to-active="bg-gray-100 hover:bg-gray-100 text-gray-700"
-                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
-                @click="setOpen(false)"
-              >
+              <template v-for="item in sidebarItems" :key="item.label">
+                <div v-if="item.divider">
+                  <div class="w-full py-4">
+                    <div class="w-full border-t border-gray-100"></div>
+                  </div>
+                </div>
                 <component
-                  :is="item.icon"
-                  class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
-                />
-                {{ item.label }}
-              </router-link>
+                  :is="item.is"
+                  v-else
+                  v-bind="item.attrs"
+                  to-active="bg-gray-100 hover:bg-gray-100 text-gray-700"
+                  class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
+                  @click="setOpen(false)"
+                >
+                  <component
+                    :is="item.icon"
+                    class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                  />
+                  {{ item.label }}
+                </component>
+              </template>
             </nav>
           </div>
         </div>
