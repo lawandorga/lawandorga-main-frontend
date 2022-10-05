@@ -10,6 +10,12 @@ export interface Group {
   note: string;
 }
 
+export interface GroupMember {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface Rlc {
   id: number;
   name: string;

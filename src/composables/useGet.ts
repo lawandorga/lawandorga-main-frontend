@@ -24,9 +24,8 @@ function useGet<
 
   watch(refParams.value, getRequest);
 
-  if (params.map(unref).every((i) => i !== null)) getRequest();
-
   if (refParams.value.length === 0) getRequest();
+  else if (params.map(unref).every((i) => i !== null)) getRequest();
 }
 
 export default useGet;

@@ -4,7 +4,7 @@ type Nullable<T> = T extends (infer U)[]
   ? Array<U | Ref<U | null> | null>
   : never;
 
-function useGet<
+function useQuery<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
   Type extends { [key: string]: any; id: number | string },
   Fn extends (...args: any[]) => Promise<Type | Type[]>,
@@ -21,4 +21,4 @@ function useGet<
   return getRequest;
 }
 
-export default useGet;
+export default useQuery;

@@ -1,12 +1,13 @@
 import { NavigationGuard } from "vue-router";
 import store from "../store";
 import { useUserStore } from "@/store/user";
+import { getNextQuery } from "@/utils/router";
 
 export const isAuthenticated: NavigationGuard = (to) => {
   if (!store.getters["user/isAuthenticated"]) {
     return {
       name: "user-login",
-      query: { next: to.fullPath },
+      query: getNextQuery(to.fullPath),
     };
   }
 

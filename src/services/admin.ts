@@ -90,16 +90,16 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  addMember(data: JsonModel, group: Group): Promise<User> {
+  addMember(data: JsonModel, group: Group): Promise<void> {
     return axios
-      .post(`groups/${group.id}/member/`, data)
-      .then((response) => response.data);
+      .post(`groups/${group.id}/add_member/`, { new_member: data.member })
+      .then();
   }
 
-  removeMember(data: RlcUser, group: Group): Promise<void> {
+  removeMember(data: JsonModel, group: Group): Promise<void> {
     return axios
-      .delete(`groups/${group.id}/member/`, {
-        data: { member: data.id },
+      .post(`groups/${group.id}/remove_member/`, {
+        member: data.id,
       })
       .then();
   }
