@@ -316,7 +316,7 @@ export default defineComponent({
     next() {
       const url = this.$route.query.next as string;
       if (url) this.$router.push(url);
-      else this.$router.push({ name: "admin-dashboard" });
+      else this.$router.push({ name: "dashboard" });
     },
     loginRequest(data: { email: string; password: string }) {
       return UsersService.login(data).then((loginData: LoginResponse) => {

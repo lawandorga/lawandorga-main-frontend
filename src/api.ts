@@ -1,6 +1,7 @@
 import router from "./router";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import store from "./store";
+import { getNextQuery } from "./utils/router";
 
 export function setupDefaultAxios($axios: AxiosInstance) {
   $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
@@ -35,7 +36,8 @@ export function setupDefaultAxios($axios: AxiosInstance) {
           error.config.method === "patch" ||
           error.config.method === "put" ||
           error.config.method === "delete") &&
-        error.response.status.toString().startsWith(4)
+        error.response.status.toString().startsWith(4) &&
+        error.response.status !== 401
       ) {
         // ignore
       }
@@ -78,11 +80,10 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       // authentication error
       else if (error.response.status === 401) {
         if (store.getters["user/isAuthenticated"]) {
-          const next = window.location.pathname;
           store.dispatch("user/logout");
           router.push({
             name: "user-login",
-            query: { next: next },
+            query: getNextQuery(window.location.pathname),
           });
         }
       }
