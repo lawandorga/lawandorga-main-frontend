@@ -1,13 +1,16 @@
 <template>
-  <BoxLoader :show="!!record">
-    <div class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl">
+  <BoxLoader :show="!!record && !!actionsQuestionnaires">
+    <div
+      v-if="!!record && !!actionsQuestionnaires"
+      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl"
+    >
       <BreadcrumbsBar
         class="col-span-12"
         :base="{ name: 'records-dashboard' }"
         :pages="[
           {
             name: firstEntry,
-            to: { name: 'records-detail', params: { id: record.id } },
+            to: { name: 'records-detail', params: { id: String(record.id) } },
           },
         ]"
       >
@@ -15,7 +18,7 @@
       </BreadcrumbsBar>
       <div class="col-span-4 space-y-6">
         <!-- items -->
-        <div class="overflow-hidden bg-white shadow sm:rounded-md">
+        <div class="sticky top-0 overflow-hidden bg-white shadow sm:rounded-md">
           <ul role="list" class="divide-y divide-gray-200">
             <li class="px-4 py-3 space-x-5 sm:px-6">
               <ButtonNormal
@@ -98,34 +101,20 @@
 
       <div class="col-span-8">
         <!-- record -->
-        <div v-show="selectedType === 'RECORD'">
-          <div class="bg-white rounded shadow">
-            <div class="flex justify-between px-5 py-5 sm:px-6">
-              <div class="flex-shrink">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                  Record
-                </h3>
-                <div
-                  class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
-                >
-                  <p>Created: {{ formatDate(record.created) }}</p>
-                </div>
-              </div>
-              <div class="space-x-3"></div>
-            </div>
-            <div class="px-5 py-5 border-t border-gray-200 sm:px-6">
-              <FormRecord :record="record"></FormRecord>
-            </div>
-          </div>
-        </div>
+        <BoxHeadingStats
+          :show="selectedType === 'RECORD'"
+          title="Record"
+          :stats="[`Created: ${formatDate(record.created)}`]"
+        >
+          <FormRecord :record="record"></FormRecord>
+        </BoxHeadingStats>
 
         <!-- client -->
-        <div
-          v-show="selectedId === record?.id && selectedType === 'RECORD'"
-          v-if="record && record.old_client"
-          class="px-5 py-4 bg-white rounded shadow"
+        <BoxHeadingStats
+          title="Client"
+          :show="selectedType === 'RECORD' && record.client.name"
+          :stats="[' ']"
         >
-          <h2 class="text-lg font-bold text-gray-800">Client</h2>
           <p class="mb-5 text-sm text-gray-600">
             The following data could not be copied over into the new format, due
             to the way the encryption was built.
@@ -133,99 +122,80 @@
           <p>Client name: {{ record.client.name }}</p>
           <p>Client phone: {{ record.client.phone }}</p>
           <p>Client note: {{ record.client.note }}</p>
-        </div>
+        </BoxHeadingStats>
 
         <!-- messages -->
-        <div v-show="selectedType === 'MESSAGES'">
-          <div class="bg-white rounded shadow">
-            <div class="flex justify-between px-5 py-5 sm:px-6">
-              <div class="flex-shrink">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                  Messages
-                </h3>
+        <BoxHeadingStats
+          title="Messages"
+          :show="selectedType === 'MESSAGES'"
+          :stats="[`${actionsMessages?.messages?.length} messages in total`]"
+        >
+          <ul class="space-y-5">
+            <li v-for="message in actionsMessages?.messages" :key="message.id">
+              <div style="width: 100%">
                 <div
-                  class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
+                  class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
                 >
-                  <p>
-                    {{ actionsMessages?.messages?.length }} messages in total
-                  </p>
+                  <b>
+                    {{ message.sender ? message.sender.name : "Deleted user" }}:
+                  </b>
+                  <i class="text-sm tracking-tight">
+                    {{ formatDate(message.created) }}
+                  </i>
                 </div>
+                <p class="" style="margin-top: 2px; margin-bottom: 0">
+                  {{ message.message }}
+                </p>
               </div>
-              <div class="space-x-3"></div>
+            </li>
+            <div style="height: auto; padding-top: 16px">
+              <FormGenerator
+                :fields="actionsMessages?.fields"
+                :initial="{ record: $route.params.id }"
+                :request="actionsMessages?.createMessage"
+              ></FormGenerator>
             </div>
-            <div class="px-5 py-5 border-t border-gray-200 sm:px-6">
-              <ul class="space-y-5">
-                <li
-                  v-for="message in actionsMessages?.messages"
-                  :key="message.id"
-                >
-                  <div style="width: 100%">
-                    <div
-                      class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
-                    >
-                      <b>
-                        {{
-                          message.sender ? message.sender.name : "Deleted user"
-                        }}:
-                      </b>
-                      <i class="text-sm tracking-tight">
-                        {{ formatDate(message.created_on) }}
-                      </i>
-                    </div>
-                    <p class="" style="margin-top: 2px; margin-bottom: 0">
-                      {{ message.message }}
-                    </p>
-                  </div>
-                </li>
-                <div style="height: auto; padding-top: 16px">
-                  <FormGenerator
-                    :fields="actionsMessages?.fields"
-                    :initial="{ record: $route.params.id }"
-                    :request="actionsMessages?.createMessage"
-                  ></FormGenerator>
-                </div>
-              </ul>
-            </div>
-          </div>
-        </div>
+          </ul>
+        </BoxHeadingStats>
 
         <!-- files -->
         <template v-for="document in documents" :key="document.id">
-          <div v-show="selectedId === document.id && selectedType === 'FILE'">
-            <div class="bg-white rounded shadow">
-              <div class="flex justify-between px-5 py-5 sm:px-6">
-                <div class="flex-shrink">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    {{ document.name }}
-                  </h3>
-                  <div
-                    class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
-                  >
-                    <p class="">
-                      Created: {{ formatDate(document.created_on) }}
-                    </p>
-                  </div>
-                </div>
-                <div class="space-x-5">
-                  <ButtonNormal
-                    kind="action"
-                    @click="downloadDocument(document)"
-                  >
-                    Download
-                  </ButtonNormal>
-                  <ButtonNormal
-                    kind="delete"
-                    @click="
-                      deleteDocumentModalOpen = true;
-                      documentTemporary = document;
-                    "
-                  >
-                    Delete
-                  </ButtonNormal>
-                </div>
+          <BoxHeadingStats
+            :title="document.name"
+            :show="selectedId === document.id && selectedType === 'FILE'"
+            :stats="[`Created: ${formatDate(document.created_on)}`]"
+          >
+            <template #buttons>
+              <ButtonNormal kind="action" @click="downloadDocument(document)">
+                Download
+              </ButtonNormal>
+              <ButtonNormal
+                kind="delete"
+                @click="
+                  deleteDocumentModalOpen = true;
+                  documentTemporary = document;
+                "
+              >
+                Delete
+              </ButtonNormal>
+            </template>
+            <div>
+              <div v-if="iframeContent === null" class="w-full aspect-square">
+                <CircleLoader />
+              </div>
+              <div
+                v-else
+                class="aspect-square"
+                :class="{ 'flex h-full': !iframeContent.includes('image') }"
+              >
+                <object
+                  class="w-full max-w-full"
+                  :data="iframeContent"
+                  frameborder="0"
+                ></object>
               </div>
             </div>
-          </div>
+          </BoxHeadingStats>
         </template>
 
         <!-- questionnaires -->
@@ -233,151 +203,120 @@
           v-for="item in actionsQuestionnaires?.questionnaires"
           :key="item.id"
         >
-          <div
-            v-show="selectedId === item.id && selectedType === 'QUESTIONNAIRE'"
+          <BoxHeadingStats
+            :title="item.template.name"
+            :show="selectedId === item.id && selectedType === 'QUESTIONNAIRE'"
+            :stats="[
+              `Published: ${formatDate(item.created)}`,
+              `Link: ${actionsQuestionnaires.base}/records/upload/${item.code}/`,
+            ]"
           >
-            <div class="bg-white rounded shadow">
-              <div class="flex justify-between px-5 py-5 sm:px-6">
-                <div class="flex-shrink">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">
-                    {{ item.template.name }}
-                  </h3>
+            <template #buttons>
+              <ButtonNormal
+                kind="action"
+                @click="actionsQuestionnaires?.copyLink(item)"
+              >
+                Copy Link
+              </ButtonNormal>
+              <ButtonNormal
+                kind="delete"
+                size="xs"
+                @click="
+                  actionsQuestionnaires.deleteModalOpen = true;
+                  actionsQuestionnaires.temporary = item;
+                "
+              >
+                Delete
+              </ButtonNormal>
+            </template>
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8">
+              <div v-for="answer in item.answers" :key="answer.id" class="">
+                <dt class="text-sm font-medium text-gray-500">
+                  {{ answer.field.question }}
+                </dt>
+                <dd
+                  v-if="answer.field.type === 'TEXTAREA'"
+                  class="mt-1 text-sm text-gray-900 break-words"
+                >
+                  {{ answer.data }}
+                </dd>
+                <dd
+                  v-if="answer.field.type === 'FILE'"
+                  class="mt-1 text-sm text-gray-900"
+                >
                   <div
-                    class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
+                    class="border border-gray-200 divide-y divide-gray-200 rounded-md"
                   >
-                    <p class="">Published: {{ formatDate(item.created) }}</p>
-                    <p class="">
-                      Link:
-                      <button
-                        class="text-left underline break-all hover:text-gray-700"
-                        @click="actionsQuestionnaires?.copyLink(item)"
-                      >
-                        {{ actionsQuestionnaires.base }}/records/upload/{{
-                          item.code
-                        }}/
-                      </button>
-                    </p>
-                  </div>
-                </div>
-                <div class="space-x-3">
-                  <ButtonNormal
-                    kind="delete"
-                    size="xs"
-                    @click="
-                      actionsQuestionnaires.deleteModalOpen = true;
-                      actionsQuestionnaires.temporary = item;
-                    "
-                  >
-                    Delete
-                  </ButtonNormal>
-                </div>
-              </div>
-              <div class="px-5 py-5 border-t border-gray-200 sm:px-6">
-                <dl class="grid grid-cols-1 gap-x-4 gap-y-8">
-                  <div v-for="answer in item.answers" :key="answer.id" class="">
-                    <dt class="text-sm font-medium text-gray-500">
-                      {{ answer.field.question }}
-                    </dt>
-                    <dd
-                      v-if="answer.field.type === 'TEXTAREA'"
-                      class="mt-1 text-sm text-gray-900 break-words"
+                    <div
+                      class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
                     >
-                      {{ answer.data }}
-                    </dd>
-                    <dd
-                      v-if="answer.field.type === 'FILE'"
-                      class="mt-1 text-sm text-gray-900"
-                    >
-                      <div
-                        class="border border-gray-200 divide-y divide-gray-200 rounded-md"
-                      >
-                        <div
-                          class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
-                        >
-                          <div class="flex items-center flex-1 w-0">
-                            <PaperClipIcon
-                              class="flex-shrink-0 w-5 h-5 text-gray-400"
-                              aria-hidden="true"
-                            />
-                            <span class="flex-1 w-0 ml-2 truncate">
-                              {{
-                                answer.data
-                                  ? answer.data.split("/").at(-1)
-                                  : "Error"
-                              }}
-                            </span>
-                          </div>
-                          <div class="flex-shrink-0 ml-4">
-                            <ButtonNormal
-                              size="xs"
-                              kind="action"
-                              @click="
-                                actionsQuestionnaires?.downloadFile(answer)
-                              "
-                            >
-                              Download
-                            </ButtonNormal>
-                          </div>
-                        </div>
+                      <div class="flex items-center flex-1 w-0">
+                        <PaperClipIcon
+                          class="flex-shrink-0 w-5 h-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        <span class="flex-1 w-0 ml-2 truncate">
+                          {{
+                            answer.data
+                              ? answer.data.split("/").at(-1)
+                              : "Error"
+                          }}
+                        </span>
                       </div>
-                    </dd>
+                      <div class="flex-shrink-0 ml-4">
+                        <ButtonNormal
+                          size="xs"
+                          kind="action"
+                          @click="actionsQuestionnaires?.downloadFile(answer)"
+                        >
+                          Download
+                        </ButtonNormal>
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    v-if="!item.answers || item.answers.length === 0"
-                    class="text-base text-gray-500"
-                  >
-                    No answers yet.
-                  </div>
-                </dl>
+                </dd>
               </div>
-            </div>
-          </div>
+              <div
+                v-if="!item.answers || item.answers.length === 0"
+                class="text-base text-gray-500"
+              >
+                No answers yet.
+              </div>
+            </dl>
+          </BoxHeadingStats>
         </template>
 
         <!-- access -->
-        <div v-show="selectedId === 'ACCESS' && selectedType === 'ACCESS'">
-          <div class="bg-white rounded shadow">
-            <div class="flex justify-between px-5 py-5 sm:px-6">
-              <div class="flex-shrink">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                  Access
-                </h3>
-                <div
-                  class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
-                >
-                  <p>The following persons have access to this record.</p>
-                </div>
-              </div>
-              <div class="space-x-3"></div>
-            </div>
-
-            <div class="border-t border-gray-200">
-              <TableGenerator
-                :head="[
-                  { name: 'Person', key: 'user_detail' },
-                  { name: 'Since', key: 'created' },
-                  { name: '', key: 'action' },
-                ]"
-                :data="encryptions"
+        <BoxHeadingStats
+          title="Access"
+          :show="selectedId === 'ACCESS' && selectedType === 'ACCESS'"
+          :stats="['The following persons have access to this record']"
+          nopadding
+        >
+          <TableGenerator
+            :head="[
+              { name: 'Person', key: 'user_detail' },
+              { name: 'Since', key: 'created' },
+              { name: '', key: 'action' },
+            ]"
+            :data="encryptions"
+          >
+            <template #created="slotProps">
+              {{ formatDate(slotProps.created) }}
+            </template>
+            <template #action="slotProps">
+              <ButtonNormal
+                kind="delete"
+                @click="
+                  encryptionTemporary = slotProps;
+                  deleteEncryptionModalOpen = true;
+                "
               >
-                <template #created="slotProps">
-                  {{ formatDate(slotProps.created) }}
-                </template>
-                <template #action="slotProps">
-                  <ButtonNormal
-                    kind="delete"
-                    @click="
-                      encryptionTemporary = slotProps;
-                      deleteEncryptionModalOpen = true;
-                    "
-                  >
-                    Remove Access
-                  </ButtonNormal>
-                </template>
-              </TableGenerator>
-            </div>
-          </div>
-        </div>
+                Remove Access
+              </ButtonNormal>
+            </template>
+          </TableGenerator>
+        </BoxHeadingStats>
       </div>
     </div>
     <!-- access -->
@@ -410,7 +349,7 @@
 </template>
 
 <script lang="ts">
-import { FormGenerator } from "@lawandorga/components";
+import { FormGenerator, CircleLoader } from "@lawandorga/components";
 import FormRecord from "@/components/FormRecord.vue";
 import {
   Questionnaire,
@@ -418,7 +357,7 @@ import {
   RecordEntry,
   RecordsDocument,
 } from "@/types/records";
-import { computed, defineComponent, Ref, ref } from "vue";
+import { computed, defineComponent, Ref, ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -437,6 +376,8 @@ import useCreate from "@/composables/useCreate";
 import { FormField } from "@/types/form";
 import ActionsQuestionnaires from "@/components/ActionsQuestionnaires.vue";
 import ActionsMessages from "@/components/ActionsMessages.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import { isDataUrlDisplayable } from "@/utils/download";
 
 interface ContentItem {
   id: number | string;
@@ -458,8 +399,10 @@ export default defineComponent({
     FormRecord,
     ModalFree,
     BreadcrumbsBar,
+    CircleLoader,
     RectangleStackIcon,
     ButtonNormal,
+    BoxHeadingStats,
   },
   setup() {
     const route = useRoute();
@@ -547,7 +490,30 @@ export default defineComponent({
     const selectedId = ref<number | string>(route.params.id as string);
     const selectedType = ref<string>("RECORD");
 
+    //
+    const iframeContent = ref<string | null>(null);
+
+    const message = window.btoa(
+      "This file can't be displayed. If you think it should be, please contact it@law-orga.de. Maybe we can make it happen.",
+    );
+    const errorMessage = window.btoa("An error happened.");
+
+    watch(selectedId, () => {
+      iframeContent.value = null;
+      if (selectedType.value === "FILE") {
+        RecordsService.downloadDocumentDataUrl(selectedId.value)
+          .then((v) => {
+            if (isDataUrlDisplayable(v)) iframeContent.value = v;
+            else iframeContent.value = `data:text/plain;base64,${message}`;
+          })
+          .catch(() => {
+            iframeContent.value = `data:text/plain;base64,${errorMessage}`;
+          });
+      }
+    });
+
     return {
+      iframeContent,
       record,
       formatDate,
       firstEntry,
@@ -628,3 +594,9 @@ function encryptionsGetDelete(
   };
 }
 </script>
+
+<style>
+img {
+  max-width: 100%;
+}
+</style>

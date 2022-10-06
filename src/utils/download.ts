@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 
-function createObjectURL(data: Blob): string {
+export function createObjectURL(data: Blob): string {
   if (window.webkitURL) {
     return window.webkitURL.createObjectURL(data);
   } else if (window.URL && window.URL.createObjectURL) {
@@ -57,4 +57,30 @@ export function downloadFileRequest(
       openedWindow?.close();
       throw e;
     });
+}
+
+export function getMimetypeFromDataUrl(url: string) {
+  return url.substring(url.indexOf(":") + 1, url.indexOf(";"));
+}
+
+export function isDataUrlDisplayable(url: string): boolean {
+  const mimeType = getMimetypeFromDataUrl(url);
+  const displayable = [
+    "image/png",
+    "image/jpeg",
+    "image/pjpeg",
+    "application/pdf",
+    "text/plain",
+  ];
+  return displayable.includes(mimeType);
+}
+
+export function blobToDataURL(blob: Blob): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.onabort = () => reject(new Error("Read aborted"));
+    reader.readAsDataURL(blob);
+  });
 }

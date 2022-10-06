@@ -18,10 +18,13 @@ import {
   RecordTemplate,
   RecordEntry,
   RecordField,
-  RecordEncryption,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import { downloadFileRequest } from "@/utils/download";
+import {
+  downloadFileRequest,
+  createObjectURL,
+  blobToDataURL,
+} from "@/utils/download";
 import axios from "axios";
 
 class RecordsService {
@@ -362,6 +365,16 @@ class RecordsService {
       `records/record_documents/${document.id}/`,
       document.name,
     );
+  }
+
+  downloadDocumentDataUrl(id: number | string): Promise<string> {
+    return axios
+      .get(`records/record_documents/${id}/`, {
+        responseType: "blob",
+      })
+      .then((r) => {
+        return blobToDataURL(r.data);
+      });
   }
 
   deleteDocument(document: RecordsDocument): Promise<void> {
