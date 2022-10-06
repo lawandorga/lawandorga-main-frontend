@@ -145,7 +145,7 @@
 
 <script lang="ts" setup>
 import FormRecord from "@/components/FormRecord.vue";
-import { Questionnaire, RecordEntry, RecordsDocument } from "@/types/records";
+import { Questionnaire, RecordsDocument } from "@/types/records";
 import { computed, provide, ref } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
