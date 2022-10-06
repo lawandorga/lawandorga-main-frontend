@@ -171,6 +171,7 @@ import ActionsDocuments from "@/components/ActionsDocuments.vue";
 import RecordFiles from "@/components/RecordFiles.vue";
 import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
+import { getValueFromEntry } from "@/utils/record";
 
 interface ContentItem {
   id: number | string;
@@ -205,10 +206,8 @@ provide(actionsEncryptionsKey, actionsEncryptions);
 // first entry
 const firstEntry = computed<string>(() => {
   if (record.value !== null && Object.keys(record.value.entries).length > 0) {
-    const value = Object.values(record.value.entries)[0].value;
-    if (typeof value === "string") return value;
-    if (typeof value === "number") return value.toString();
-    if (Array.isArray(value)) return value.join(", ");
+    const entry = Object.values(record.value.entries)[0];
+    return getValueFromEntry(entry, "NO-IDENTIFIER");
   }
   return "NO-IDENTIFIER";
 });
@@ -230,7 +229,7 @@ const items = computed<ContentItem[]>(() => {
     id: "MESSAGES",
     type: "MESSAGES",
     name: "Chat",
-    stats: [`5 Messages`],
+    stats: [`${actionsMessages.value?.messages?.length} Messages`],
   });
 
   if (actionsDocuments.value?.documents)
