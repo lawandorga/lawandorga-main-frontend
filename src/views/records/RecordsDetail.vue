@@ -1,32 +1,181 @@
 <template>
-  <BoxLoader :show="!!record">
-    <div class="grid gap-6 mx-auto 2xl:grid-cols-2 max-w-screen-2xl">
+  <BoxLoader
+    :show="
+      userStore.loaded &&
+      !!record &&
+      !!actionsQuestionnaires &&
+      !!actionsDocuments &&
+      !!actionsEncryptions
+    "
+  >
+    <div
+      v-if="
+        userStore.loaded &&
+        !!record &&
+        !!actionsQuestionnaires &&
+        !!actionsDocuments &&
+        !!actionsEncryptions
+      "
+      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl"
+    >
       <BreadcrumbsBar
-        class="2xl:col-span-2"
+        class="col-span-12"
         :base="{ name: 'records-dashboard' }"
         :pages="[
           {
             name: firstEntry,
-            to: { name: 'records-detail', params: { id: record.id } },
+            to: { name: 'records-detail', params: { id: String(record.id) } },
           },
         ]"
       >
         <RectangleStackIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div class="px-5 py-4 bg-white rounded shadow">
-        <h2 class="mb-5 text-lg font-bold text-gray-800">Record</h2>
-        <div>
-          <FormRecord :record="record"></FormRecord>
+      <div class="col-span-12 space-y-6 lg:col-span-4">
+        <!-- items -->
+        <div class="sticky top-0 overflow-hidden bg-white shadow sm:rounded-md">
+          <ul role="list" class="">
+            <li v-if="!grouping" class="px-4 py-3 space-x-5 sm:px-6 bg-gray-50">
+              <ButtonNormal
+                kind="action"
+                @click="actionsDocuments.createModalOpen = true"
+              >
+                Upload File
+              </ButtonNormal>
+              <ButtonNormal
+                kind="action"
+                @click="actionsQuestionnaires.createModalOpen = true"
+              >
+                Publish a questionnaire
+              </ButtonNormal>
+            </li>
+
+            <li
+              v-for="(item, index) in groups"
+              :key="item.type"
+              class="relative w-full"
+            >
+              <button
+                v-show="grouping"
+                class="relative block w-full transition bg-gray-100 border-t"
+                :class="{
+                  '!bg-white': selectedType === item.type,
+                  'border-t-0': index === 0 && grouping,
+                }"
+                @click="
+                  selectedType = item.type;
+                  selectedId = null;
+                "
+              >
+                <div class="px-4 py-4 sm:px-6">
+                  <div class="flex items-center justify-between">
+                    <p class="text-base font-medium truncate text-lorgablue">
+                      {{ item.name }}
+                    </p>
+                    <div
+                      v-if="
+                        grouping && item.actions && selectedType === item.type
+                      "
+                      class="flex flex-shrink-0 ml-2"
+                    >
+                      <ButtonNormal
+                        v-for="action in item.actions"
+                        :key="action.text"
+                        kind="action"
+                        @click="action.action()"
+                      >
+                        {{ action.text }}
+                      </ButtonNormal>
+                    </div>
+                  </div>
+                </div>
+              </button>
+
+              <div
+                v-show="
+                  (!grouping || selectedType === item.type) &&
+                  item.children.length
+                "
+                class="border-t border-gray-200 divide-y divide-gray-200"
+              >
+                <button
+                  v-for="child in item.children"
+                  :key="child.id"
+                  class="relative block w-full px-4 sm:px-6"
+                  :class="{
+                    'py-4 px-6 sm:px-8': grouping,
+                    'py-3': !grouping,
+                  }"
+                  @click="
+                    selectedId = child.id;
+                    selectedType = item.type;
+                  "
+                >
+                  <div
+                    v-show="selectedId === child.id"
+                    class="absolute inset-y-0 right-0 w-1 bg-gray-300"
+                  ></div>
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium truncate text-lorgablue">
+                      {{ child.name }}
+                    </p>
+                    <div v-if="!grouping" class="flex flex-shrink-0 ml-2">
+                      <p
+                        class="inline-flex px-2 text-xs font-semibold leading-5 rounded-full text-sky-800 bg-sky-100"
+                      >
+                        {{ item.type }}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    v-if="grouping"
+                    class="sm:flex sm:space-x-5"
+                    :class="[grouping ? 'mt-0.5' : 'mt-2']"
+                  >
+                    <div
+                      v-for="stat in child.stats"
+                      :key="stat"
+                      class="flex items-center mt-2 text-sm text-gray-500 sm:mt-0"
+                    >
+                      <p>
+                        {{ stat }}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </li>
+
+            <li
+              class="px-4 py-3 space-x-5 bg-gray-100 border-t-4 border-gray-200 sm:px-6"
+            >
+              <ButtonToggle
+                v-model="grouping"
+                text="Grouping"
+                @update:model-value="
+                  userStore.updateSetting('recordGrouping', $event)
+                "
+              />
+            </li>
+          </ul>
         </div>
       </div>
 
-      <div class="flex flex-col space-y-6">
-        <!-- client -->
-        <div
-          v-if="record && record.old_client"
-          class="px-5 py-4 bg-white rounded shadow"
+      <div class="col-span-12 lg:col-span-8">
+        <!-- record -->
+        <BoxHeadingStats
+          :show="selectedType === 'RECORD'"
+          title="Record"
+          :stats="[`Created: ${formatDate(record.created)}`]"
         >
-          <h2 class="text-lg font-bold text-gray-800">Client</h2>
+          <FormRecord :record="record"></FormRecord>
+        </BoxHeadingStats>
+
+        <!-- client -->
+        <BoxHeadingStats
+          title="Client"
+          :show="selectedType === 'RECORD' && !!record.client.name"
+          :stats="[' ']"
+        >
           <p class="mb-5 text-sm text-gray-600">
             The following data could not be copied over into the new format, due
             to the way the encryption was built.
@@ -34,495 +183,198 @@
           <p>Client name: {{ record.client.name }}</p>
           <p>Client phone: {{ record.client.phone }}</p>
           <p>Client note: {{ record.client.note }}</p>
-        </div>
+        </BoxHeadingStats>
 
-        <!-- files -->
-        <div>
-          <TableGenerator
-            :head="[
-              { name: 'File', key: 'name' },
-              { name: 'Created', key: 'created' },
-              { name: '', key: 'action' },
-            ]"
-            :data="documents"
-          >
-            <template #created="slotProps">
-              {{ formatDate(slotProps.created_on) }}
-            </template>
-            <template #head-action>
-              <ButtonNormal
-                kind="action"
-                @click="uploadDocumentModalOpen = true"
-              >
-                Upload File
-              </ButtonNormal>
-            </template>
-            <template #action="item">
-              <ButtonNormal kind="action" @click="downloadDocument(item)">
-                Download
-              </ButtonNormal>
-              <ButtonNormal
-                kind="delete"
-                @click="
-                  deleteDocumentModalOpen = true;
-                  documentTemporary = item;
-                "
-              >
-                Delete
-              </ButtonNormal>
-            </template>
-          </TableGenerator>
-        </div>
+        <RecordMessages :selected-type="selectedType" />
 
-        <div class="px-5 py-4 bg-white rounded shadow">
-          <h2 class="mb-5 text-lg font-bold text-gray-800">Messages</h2>
-          <div>
-            <ul class="space-y-5">
-              <li v-for="message in messages" :key="message.id">
-                <div style="width: 100%">
-                  <div
-                    class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
-                  >
-                    <b>
-                      {{
-                        message.sender ? message.sender.name : "Deleted user"
-                      }}:
-                    </b>
-                    <i class="text-sm tracking-tight">
-                      {{ formatDate(message.created_on) }}
-                    </i>
-                  </div>
-                  <p class="" style="margin-top: 2px; margin-bottom: 0">
-                    {{ message.message }}
-                  </p>
-                </div>
-              </li>
-              <div style="height: auto; padding-top: 16px">
-                <FormGenerator
-                  :fields="messageFields"
-                  :initial="{ record: $route.params.id }"
-                  :request="createMessage"
-                  @success="messages.push($event)"
-                ></FormGenerator>
-              </div>
-            </ul>
-          </div>
-        </div>
+        <RecordFiles :selected-id="selectedId" :selected-type="selectedType" />
 
-        <div class="bg-white rounded shadow">
-          <div
-            class="flex items-baseline justify-between px-5 pt-4 pb-4 border-b-4 border-gray-200"
-          >
-            <h2 class="text-lg font-bold text-gray-800">Questionnaires</h2>
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="openCreateRecordQuestionnaire()"
-            >
-              Publish a questionnaire
-            </ButtonNormal>
-          </div>
-          <div v-if="!!recordQuestionnaires.length" class="">
-            <ul class="divide-y-2 divide-gray-200 space-y-4d">
-              <li v-for="item in recordQuestionnaires" :key="item.id">
-                <div class="flex justify-between px-5 py-5 sm:px-6">
-                  <div class="flex-shrink">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">
-                      {{ item.template.name }}
-                    </h3>
-                    <div
-                      class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
-                    >
-                      <p class="">Published: {{ formatDate(item.created) }}</p>
-                      <p class="">
-                        Link:
-                        <button
-                          class="text-left underline break-all hover:text-gray-700"
-                          @click="copyLink(item)"
-                        >
-                          {{ base }}/records/upload/{{ item.code }}/
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="space-x-3">
-                    <ButtonNormal
-                      kind="delete"
-                      size="xs"
-                      @click="openDeleteRecordQuestionnaire(item)"
-                    >
-                      Delete
-                    </ButtonNormal>
-                  </div>
-                </div>
-                <div class="px-5 py-5 border-t border-gray-200 sm:px-6">
-                  <dl class="grid grid-cols-1 gap-x-4 gap-y-8">
-                    <div
-                      v-for="answer in item.answers"
-                      :key="answer.id"
-                      class=""
-                    >
-                      <dt class="text-sm font-medium text-gray-500">
-                        {{ answer.field.question }}
-                      </dt>
-                      <dd
-                        v-if="answer.field.type === 'TEXTAREA'"
-                        class="mt-1 text-sm text-gray-900 break-words"
-                      >
-                        {{ answer.data }}
-                      </dd>
-                      <dd
-                        v-if="answer.field.type === 'FILE'"
-                        class="mt-1 text-sm text-gray-900"
-                      >
-                        <div
-                          class="border border-gray-200 divide-y divide-gray-200 rounded-md"
-                        >
-                          <div
-                            class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
-                          >
-                            <div class="flex items-center flex-1 w-0">
-                              <PaperClipIcon
-                                class="flex-shrink-0 w-5 h-5 text-gray-400"
-                                aria-hidden="true"
-                              />
-                              <span class="flex-1 w-0 ml-2 truncate">
-                                {{
-                                  answer.data
-                                    ? answer.data.split("/").at(-1)
-                                    : "Error"
-                                }}
-                              </span>
-                            </div>
-                            <div class="flex-shrink-0 ml-4">
-                              <ButtonNormal
-                                size="xs"
-                                kind="action"
-                                @click="downloadQuestionnaireAnswerFile(answer)"
-                              >
-                                Download
-                              </ButtonNormal>
-                            </div>
-                          </div>
-                        </div>
-                      </dd>
-                    </div>
-                    <div
-                      v-if="!item.answers || item.answers.length === 0"
-                      class="text-base text-gray-500"
-                    >
-                      No answers yet.
-                    </div>
-                  </dl>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <RecordQuestionnaires
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+        />
 
-        <div class="bg-white rounded shadow">
-          <div class="px-5 pt-5">
-            <h2 class="text-lg font-bold text-gray-800">Access</h2>
-            <p class="text-sm text-gray-600">
-              The following persons have access to this record.
-            </p>
-          </div>
-          <div class="mt-5 border-t border-gray-200">
-            <TableGenerator
-              :head="[
-                { name: 'Person', key: 'user_detail' },
-                { name: 'Since', key: 'created' },
-                { name: '', key: 'action' },
-              ]"
-              :data="encryptions"
-            >
-              <template #created="slotProps">
-                {{ formatDate(slotProps.created) }}
-              </template>
-              <template #action="slotProps">
-                <ButtonNormal
-                  kind="delete"
-                  @click="
-                    encryptionTemporary = slotProps;
-                    deleteEncryptionModalOpen = true;
-                  "
-                >
-                  Remove Access
-                </ButtonNormal>
-              </template>
-            </TableGenerator>
-          </div>
-        </div>
+        <RecordEncryptions :selected-type="selectedType" />
       </div>
     </div>
-    <!-- access -->
-    <ModalDelete
-      v-model="deleteEncryptionModalOpen"
-      :object="encryptionTemporary"
-      :request="deleteEncryptionRequest"
-      title="Delete Encryption Keys"
-    >
-      Are you sure you want to delete these keys?
-    </ModalDelete>
-    <!-- document -->
-    <ModalFree v-model="uploadDocumentModalOpen" title="Upload Document">
-      <FormGenerator
-        :fields="documentFields"
-        :request="uploadDocumentRequest"
-        :initial="{ record: $route.params.id }"
-        submit="Upload"
-      />
-    </ModalFree>
-    <ModalDelete
-      v-model="deleteDocumentModalOpen"
-      :object="documentTemporary"
-      :request="deleteDocumentRequest"
-      title="Delete Document"
-    />
-    <!-- questionnaire -->
-    <ModalDelete
-      v-model="deleteRecordQuestionnaireOpen"
-      :object="recordQuestionnaire"
-      :request="deleteRecordQuestionnaire"
-      title="Delete Questionnaire"
-      @deleted="recordQuestionnaireDeleted"
-    />
-    <ModalFree
-      v-model="createRecordQuestionnaireOpen"
-      title="Publish Questionnaire"
-    >
-      <FormGenerator
-        :fields="recordQuestionnaireFields"
-        :request="createRecordQuestionnaire"
-        :initial="{ record: $route.params.id }"
-        submit="Publish"
-        @success="recordQuestionnaireCreated"
-      />
-    </ModalFree>
   </BoxLoader>
+  <ActionsEncryptions ref="actionsEncryptions" :record="record" />
+  <ActionsQuestionnaires ref="actionsQuestionnaires" />
+  <ActionsMessages ref="actionsMessages" />
+  <ActionsDocuments ref="actionsDocuments" :record="record" />
 </template>
 
-<script lang="ts">
-import { FormGenerator } from "@lawandorga/components";
+<script lang="ts" setup>
 import FormRecord from "@/components/FormRecord.vue";
-import {
-  Message,
-  Questionnaire,
-  QuestionnaireAnswer,
-  QuestionnaireTemplate,
-  RecordEncryption,
-  RecordEntry,
-  RecordsClient,
-  RecordsDocument,
-} from "@/types/records";
-import { defineComponent, Ref, ref } from "vue";
+import { Questionnaire, RecordsDocument } from "@/types/records";
+import { computed, provide, ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalDelete } from "@lawandorga/components";
-import { ModalFree } from "@lawandorga/components";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { formatDate } from "@/utils/date";
-import { PaperClipIcon } from "@heroicons/vue/20/solid";
-import { ButtonNormal } from "@lawandorga/components";
-import { TableGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDelete";
+import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
-import useCreate from "@/composables/useCreate";
-import { FormField } from "@/types/form";
+import ActionsQuestionnaires from "@/components/ActionsQuestionnaires.vue";
+import ActionsMessages from "@/components/ActionsMessages.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import {
+  actionsMessagesKey,
+  actionsEncryptionsKey,
+  actionsQuestionnairesKey,
+  actionsDocumentsKey,
+} from "@/types/keys";
+import RecordMessages from "@/components/RecordMessages.vue";
+import RecordQuestionnaires from "@/components/RecordQuestionnaires.vue";
+import ActionsDocuments from "@/components/ActionsDocuments.vue";
+import RecordFiles from "@/components/RecordFiles.vue";
+import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
+import RecordEncryptions from "../../components/RecordEncryptions.vue";
+import { getValueFromEntry } from "@/utils/record";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
 
-export default defineComponent({
-  components: {
-    TableGenerator,
-    PaperClipIcon,
-    ModalDelete,
-    FormGenerator,
-    BoxLoader,
-    FormRecord,
-    ModalFree,
-    BreadcrumbsBar,
-    RectangleStackIcon,
-    ButtonNormal,
-  },
-  setup() {
-    const route = useRoute();
+// record
+const route = useRoute();
+const record = ref<null | Record>(null);
+useGet(RecordsService.getRecord, record, route.params.id as string);
 
-    // record
-    const record = ref<null | Record>(null);
-    useGet(RecordsService.getRecord, record, route.params.id as string);
+// questionnaires
+const actionsQuestionnaires = ref<typeof ActionsQuestionnaires>();
+provide(actionsQuestionnairesKey, actionsQuestionnaires);
 
-    return {
-      ...encryptionsGetDelete(record),
-      ...recordDocumentsGetUploadDownloadDelete(record),
-    };
-  },
-  data() {
-    return {
-      // utils
-      formatDate: formatDate,
-      // record
-      record: null as Record | null,
-      // client
-      client: null as RecordsClient | null,
-      updateClient: RecordsService.updateClient,
-      // messages
-      messages: [] as Message[],
-      createMessage: RecordsService.createMessage,
-      // record-questionnaires
-      recordQuestionnaires: [] as Questionnaire[],
-      createRecordQuestionnaire: RecordsService.createQuestionnaire,
-      deleteRecordQuestionnaire: RecordsService.deleteQuestionnaire,
-      createRecordQuestionnaireOpen: false,
-      deleteRecordQuestionnaireOpen: false,
-      recordQuestionnaire: null as Questionnaire | null,
-      // fields
-      messageFields: [
-        {
-          label: "Message",
-          type: "textarea",
-          name: "message",
-          required: true,
-        },
-      ],
-      recordQuestionnaireFields: [
-        {
-          label: "Template",
-          name: "template",
-          type: "select",
-          required: true,
-          options: [] as QuestionnaireTemplate[],
-        },
-      ],
-    };
-  },
-  computed: {
-    base() {
-      return window.location.origin;
-    },
-    firstEntry(): RecordEntry["value"] | string {
-      if (this.record !== null && Object.keys(this.record.entries).length > 0)
-        return Object.values(this.record.entries)[0].value;
-      return "undefined";
-    },
-  },
-  created() {
-    RecordsService.getRecord(this.$route.params.id as string).then(
-      (record) => (this.record = record),
-    );
-    RecordsService.getQuestionnaires(this.$route.params.id as string).then(
-      (questionnaires) => (this.recordQuestionnaires = questionnaires),
-    );
-    RecordsService.getMessages(this.$route.params.id as string).then(
-      (messages) => (this.messages = messages),
-    );
-  },
-  methods: {
-    // client
-    getClient(id: number) {
-      RecordsService.getClient(id).then((client) => (this.client = client));
-    },
-    // record questionnaire
-    copyLink(recordQuestionnaire: Questionnaire): void {
-      navigator.clipboard
-        .writeText(`${this.base}/records/upload/${recordQuestionnaire.code}/`)
-        .then(() => this.$store.dispatch("alert/showSuccess", "Link Copied"));
-    },
-    downloadQuestionnaireAnswerFile(answer: QuestionnaireAnswer): void {
-      RecordsService.downloadQuestionnaireAnswerFile(answer);
-    },
-    // create record questionnaire
-    openCreateRecordQuestionnaire() {
-      RecordsService.getQuestionnaireTemplates().then(
-        (questionnaires) =>
-          (this.recordQuestionnaireFields[0].options = questionnaires),
-      );
-      this.createRecordQuestionnaireOpen = true;
-    },
-    recordQuestionnaireCreated(recordQuestionnaire: Questionnaire) {
-      this.createRecordQuestionnaireOpen = false;
-      this.recordQuestionnaires.push(recordQuestionnaire);
-    },
-    // delete record questionnaire
-    openDeleteRecordQuestionnaire(recordQuestionnaire: Questionnaire) {
-      this.recordQuestionnaire = recordQuestionnaire;
-      this.deleteRecordQuestionnaireOpen = true;
-    },
-    recordQuestionnaireDeleted(recordQuestionnaire: Questionnaire) {
-      this.deleteRecordQuestionnaireOpen = false;
-      this.recordQuestionnaires = this.recordQuestionnaires.filter(
-        (item) => item.id !== recordQuestionnaire.id,
-      );
-    },
-  },
+// messages
+const actionsMessages = ref<typeof ActionsMessages>();
+provide(actionsMessagesKey, actionsMessages);
+
+// documents
+const actionsDocuments = ref<typeof ActionsDocuments>();
+provide(actionsDocumentsKey, actionsDocuments);
+
+// encryptions
+const actionsEncryptions = ref<typeof ActionsEncryptions>();
+provide(actionsEncryptionsKey, actionsEncryptions);
+
+// first entry
+const firstEntry = computed<string>(() => {
+  if (record.value !== null && Object.keys(record.value.entries).length > 0) {
+    const entry = Object.values(record.value.entries)[0];
+    return getValueFromEntry(entry, "NO-IDENTIFIER");
+  }
+  return "NO-IDENTIFIER";
 });
 
-function recordDocumentsGetUploadDownloadDelete(record: Ref<Record | null>) {
-  const documents = ref<null | RecordsDocument[]>(null);
+// items
+interface ContentItem {
+  id: number | string;
+  created?: string;
+  name: string;
+  type: string;
+  stats: string[];
+}
 
-  // get
-  useGet(RecordsService.getDocuments, documents, record);
+interface ContentGroupItem {
+  type: string;
+  name: string;
+  children: ContentItem[];
+  actions: { text: string; action: () => void }[];
+}
 
-  // upload
-  const documentFields = [
+const groups = computed<ContentGroupItem[]>(() => {
+  const g: ContentGroupItem[] = [
+    { name: "Record", type: "RECORD", children: [], actions: [] },
+    { name: "Chat", type: "MESSAGES", children: [], actions: [] },
     {
-      label: "File",
-      type: "file",
-      name: "file",
-      required: true,
+      name: "Files",
+      type: "FILE",
+      children: [],
+      actions: [],
     },
-  ] as FormField[];
-  const {
-    createModalOpen: uploadDocumentModalOpen,
-    createRequest: uploadDocumentRequest,
-  } = useCreate(RecordsService.createDocument, documents);
+    {
+      name: "Questionnaires",
+      type: "QUESTIONNAIRE",
+      children: [],
+      actions: [],
+    },
+    { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
+  ];
 
-  // download
-  const downloadDocument = RecordsService.downloadDocument;
+  if (actionsDocuments.value)
+    g[2].actions.push({
+      action: () => (actionsDocuments.value.createModalOpen = true),
+      text: "Upload File",
+    });
 
-  // delete
-  const {
-    deleteModalOpen: deleteDocumentModalOpen,
-    deleteRequest: deleteDocumentRequest,
-    temporary: documentTemporary,
-  } = useDeleteItem(RecordsService.deleteDocument, documents);
+  if (actionsQuestionnaires.value)
+    g[3].actions.push({
+      action: () => (actionsQuestionnaires.value.createModalOpen = true),
+      text: "Publish A Questionnaire",
+    });
 
-  return {
-    documents,
-    // upload
-    documentFields,
-    uploadDocumentModalOpen,
-    uploadDocumentRequest,
-    // download
-    downloadDocument,
-    // delete
-    documentTemporary,
-    deleteDocumentModalOpen,
-    deleteDocumentRequest,
-  };
-}
+  if (record.value !== null) {
+    g[0].children.push({
+      id: record.value.id.toString(),
+      type: "RECORD",
+      name: firstEntry.value,
+      stats: [`Created ${formatDate(record.value.created)}`],
+    });
+  }
 
-function encryptionsGetDelete(record: Ref<Record | null>) {
-  const encryptions = ref<null | RecordEncryption[]>(null);
+  g[1].children.push({
+    id: "MESSAGES",
+    type: "MESSAGES",
+    name: "Chat",
+    stats: [`${actionsMessages.value?.messages?.length} Messages`],
+  });
 
-  // get
-  useGet(RecordsService.getEncryptions, encryptions, record);
+  if (actionsDocuments.value?.documents)
+    actionsDocuments.value?.documents.forEach((d: RecordsDocument) => {
+      g[2].children.push({
+        id: d.id,
+        type: "FILE",
+        name: d.name,
+        stats: [`Created ${formatDate(d.created_on)}`],
+      });
+    });
 
-  // delete
-  const encryptionTemporary = ref<null | RecordEncryption>(null);
+  if (actionsQuestionnaires.value?.questionnaires)
+    actionsQuestionnaires.value?.questionnaires.forEach((q: Questionnaire) => {
+      g[3].children.push({
+        id: q.id,
+        type: "QUESTIONNAIRE",
+        name: q.template.name,
+        stats: [
+          `Created ${formatDate(q.created)}`,
+          `${q.answers.length} Answers`,
+        ],
+      });
+    });
 
-  const {
-    deleteRequest: deleteEncryptionRequest,
-    deleteModalOpen: deleteEncryptionModalOpen,
-  } = useDeleteItem(RecordsService.deleteEncryption, encryptions);
+  g[4].children.push({
+    id: "ACCESS",
+    type: "ACCESS",
+    name: "Access",
+    stats: [`${actionsEncryptions.value?.encryptions?.length || 0} Persons`],
+  });
 
-  return {
-    encryptions,
-    // delete
-    encryptionTemporary,
-    deleteEncryptionRequest,
-    deleteEncryptionModalOpen,
-  };
-}
+  return g;
+});
+
+// selected
+const selectedId = ref<number | string | null>(route.params.id as string);
+const selectedType = ref<string>("RECORD");
+
+// user store
+const userStore = useUserStore();
+const { loaded } = storeToRefs(userStore);
+
+// grouping
+const grouping = ref<boolean>(
+  userStore.getSetting("recordGrouping", true) as boolean,
+);
+watch(loaded, () => {
+  grouping.value = userStore.getSetting("recordGrouping") as boolean;
+});
 </script>

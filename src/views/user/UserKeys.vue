@@ -132,7 +132,7 @@ import UserService from "@/services/user";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { ModalDelete, ModalConfirm } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -156,7 +156,7 @@ const testKeysRequest = () => {
 };
 
 // delete
-const { deleteRequest, deleteModalOpen, temporary } = useDeleteItem(
+const { deleteRequest, deleteModalOpen, temporary } = useDelete(
   UserService.deleteKey,
   keys,
 );

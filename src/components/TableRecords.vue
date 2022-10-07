@@ -96,17 +96,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRefs, computed } from "vue";
-import {
-  FormInput,
-  TableSortable,
-  types,
-  ButtonNormal,
-} from "@lawandorga/components";
+import { FormInput, TableSortable, ButtonNormal } from "@lawandorga/components";
 import { Record } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useSearch from "@/composables/useSearch";
 import { useUserStore } from "@/store/user";
+import { getValueFromRecord } from "@/utils/record";
 
 export default defineComponent({
   components: {
@@ -126,31 +122,6 @@ export default defineComponent({
   setup(props) {
     // records
     const { records } = toRefs(props);
-
-    // helpers
-    const getValueFromEntry = (
-      entry: types.JsonModel,
-      defaultValue = "",
-    ): string => {
-      if (entry.type === "date" || entry.type === "datetime-local")
-        return formatDate(entry.value);
-      else if (entry.type === "text" || entry.type === "select")
-        return entry.value;
-      else if (entry.type === "multiple" && Array.isArray(entry.value))
-        return entry.value.join(", ");
-      return defaultValue;
-    };
-
-    const getValueFromRecord = (
-      r: types.JsonModel,
-      key: string,
-      defaultValue = "",
-    ): string => {
-      const entry = r.entries[key];
-
-      if (entry !== undefined) return getValueFromEntry(entry, defaultValue);
-      return defaultValue;
-    };
 
     // loading
     const innerLoading = computed(() => {

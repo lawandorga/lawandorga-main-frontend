@@ -153,7 +153,7 @@ import useQuery from "@/composables/useQuery";
 import { ref, Ref } from "vue";
 import { ModalFree } from "@lawandorga/components";
 import { FormGenerator } from "@lawandorga/components";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import { TableGenerator } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
@@ -312,7 +312,7 @@ export default defineComponent({
     const {
       deleteRequest: removePermissionRequest,
       deleteModalOpen: removePermissionModalOpen,
-    } = useDeleteItem(AdminService.deleteHasPermission, permissions);
+    } = useDelete(AdminService.deleteHasPermission, permissions);
 
     return {
       user,

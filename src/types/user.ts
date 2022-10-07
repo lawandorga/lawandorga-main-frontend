@@ -77,7 +77,7 @@ export interface BadgeInformation {
   legal: number;
 }
 
-export type Settings = Record<string, string>;
+export type Settings = Record<string, string | boolean>;
 
 export interface DataResponse {
   user: RlcUser;

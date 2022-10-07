@@ -192,7 +192,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import useUpdate from "@/composables/useUpdate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { ModalForm } from "@lawandorga/components";
 import { ModalDelete } from "@lawandorga/components";
 import { useUserStore } from "@/store/user";
@@ -257,7 +257,7 @@ function getCreateUpdateDeleteNotes() {
   const {
     deleteModalOpen: deleteNoteModalOpen,
     deleteRequest: deleteNoteRequest,
-  } = useDeleteItem(UsersService.deleteNote, notes);
+  } = useDelete(UsersService.deleteNote, notes);
 
   return {
     notes,

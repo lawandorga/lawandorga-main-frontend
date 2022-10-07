@@ -57,8 +57,8 @@ export const useUserStore = defineStore("user", () => {
     updateSettingRequest();
   };
 
-  const getSetting = (key: string, defaultValue = "") => {
-    if (settings.value && settings.value[key]) return settings.value[key];
+  const getSetting = (key: string, defaultValue: string | boolean = "") => {
+    if (settings.value && key in settings.value) return settings.value[key];
     return defaultValue;
   };
 

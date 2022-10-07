@@ -96,7 +96,7 @@ import { ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -158,7 +158,7 @@ export default defineComponent({
     );
 
     // delete
-    const { deleteRequest, deleteModalOpen } = useDeleteItem(
+    const { deleteRequest, deleteModalOpen } = useDelete(
       RecordsService.deleteTemplate,
       templates,
     );

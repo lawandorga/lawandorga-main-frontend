@@ -151,7 +151,7 @@ import CoreService from "@/services/core";
 import { ButtonNormal } from "@lawandorga/components";
 import { ref, watch } from "vue";
 import useCreate from "@/composables/useCreate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
@@ -205,10 +205,7 @@ export default defineComponent({
     const {
       deleteRequest: deletePermissionRequest,
       deleteModalOpen: deletePermissionModalOpen,
-    } = useDeleteItem(
-      CollabService.deleteDocumentPermission,
-      documentPermissions,
-    );
+    } = useDelete(CollabService.deleteDocumentPermission, documentPermissions);
 
     // versions
     const versions = ref<CollabVersion[] | null>(null);

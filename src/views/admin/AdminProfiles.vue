@@ -121,7 +121,7 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 import useUpdate from "@/composables/useUpdate";
-import useDeleteItem from "@/composables/useDelete";
+import useDelete from "@/composables/useDelete";
 import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -149,7 +149,7 @@ export default defineComponent({
 
     // delete
     const profile = ref(null) as Ref<RlcUserSmall | null>;
-    const { deleteRequest, deleteModalOpen } = useDeleteItem(
+    const { deleteRequest, deleteModalOpen } = useDelete(
       AdminService.deleteUser,
       profiles,
     );

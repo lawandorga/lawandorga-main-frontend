@@ -21,7 +21,7 @@ import {
   RecordEncryption,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import { downloadFileRequest } from "@/utils/download";
+import { downloadFileRequest, blobToDataURL } from "@/utils/download";
 import axios from "axios";
 
 class RecordsService {
@@ -247,7 +247,7 @@ class RecordsService {
   ): Promise<Questionnaire> {
     return axios
       .post<Questionnaire>(
-        `records/questionnairetemplates/publish/`,
+        `records/questionnaires/v2/publish/`,
         recordQuestionnaire,
       )
       .then((response) => response.data);
@@ -362,6 +362,16 @@ class RecordsService {
       `records/record_documents/${document.id}/`,
       document.name,
     );
+  }
+
+  downloadDocumentDataUrl(id: number | string): Promise<string> {
+    return axios
+      .get(`records/record_documents/${id}/`, {
+        responseType: "blob",
+      })
+      .then((r) => {
+        return blobToDataURL(r.data);
+      });
   }
 
   deleteDocument(document: RecordsDocument): Promise<void> {
