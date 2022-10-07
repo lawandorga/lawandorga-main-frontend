@@ -2,7 +2,7 @@
   <div v-if="!!actionsEncryptions">
     <BoxHeadingStats
       title="Access"
-      :show="selectedId === 'ACCESS' && selectedType === 'ACCESS'"
+      :show="selectedType === 'ACCESS'"
       :stats="['The following persons have access to this record']"
       nopadding
     >
@@ -41,7 +41,6 @@ import { formatDate } from "@/utils/date";
 import { inject } from "vue";
 
 defineProps<{
-  selectedId: number | string;
   selectedType: string;
 }>();
 

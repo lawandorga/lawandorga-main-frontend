@@ -18,13 +18,10 @@ import {
   RecordTemplate,
   RecordEntry,
   RecordField,
+  RecordEncryption,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import {
-  downloadFileRequest,
-  createObjectURL,
-  blobToDataURL,
-} from "@/utils/download";
+import { downloadFileRequest, blobToDataURL } from "@/utils/download";
 import axios from "axios";
 
 class RecordsService {
@@ -250,7 +247,7 @@ class RecordsService {
   ): Promise<Questionnaire> {
     return axios
       .post<Questionnaire>(
-        `records/questionnairetemplates/publish/`,
+        `records/questionnaires/v2/publish/`,
         recordQuestionnaire,
       )
       .then((response) => response.data);

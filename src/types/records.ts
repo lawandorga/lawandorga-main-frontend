@@ -113,29 +113,32 @@ export interface QuestionnaireTemplate {
   id: number;
   rlc: number;
   name: string;
-  note: string;
-  questionnaire: string;
-  allow_file_upload: boolean;
+  notes: string;
   updated: string;
   created: string;
-  fields?: QuestionnaireQuestion[];
 }
 
 export interface Questionnaire {
   id: number;
+  code: string;
   record: number;
   template: QuestionnaireTemplate;
-  answer: string;
-  answered: boolean;
+  answers: QuestionnaireAnswer[];
   created: string;
   updated: string;
-  code: string;
-  fields?: { id: number; name: string; question: string; type: "FILE" }[];
+}
+
+interface QuestionnaireField {
+  id: number;
+  type: string;
+  name: string;
+  question: string;
 }
 
 export interface QuestionnaireAnswer {
   id: number;
   data: string;
+  field: QuestionnaireField;
 }
 
 export interface RecordAccess {

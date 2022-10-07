@@ -39,7 +39,6 @@ import { formatDate } from "@/utils/date";
 import { inject } from "vue";
 
 defineProps<{
-  selectedId: number | string;
   selectedType: string;
 }>();
 

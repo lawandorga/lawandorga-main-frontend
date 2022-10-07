@@ -55,7 +55,7 @@ import RecordsService from "@/services/records";
 
 // props
 const props = defineProps<{
-  selectedId: number | string;
+  selectedId: number | string | null;
   selectedType: string;
 }>();
 const { selectedId, selectedType } = toRefs(props);
@@ -73,7 +73,7 @@ const errorMessage = window.btoa("An error happened.");
 
 watch(selectedId, () => {
   iframeContent.value = null;
-  if (selectedType.value === "FILE") {
+  if (selectedType.value === "FILE" && selectedId.value) {
     RecordsService.downloadDocumentDataUrl(selectedId.value)
       .then((v: string) => {
         if (isDataUrlDisplayable(v)) iframeContent.value = v;

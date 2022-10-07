@@ -1,7 +1,7 @@
 <template>
   <div v-if="!!actionsQuestionnaires">
     <template
-      v-for="item in actionsQuestionnaires.questionnaires"
+      v-for="(item, index) in actionsQuestionnaires.questionnaires"
       :key="item.id"
     >
       <BoxHeadingStats
@@ -97,7 +97,7 @@ import { actionsQuestionnairesKey } from "@/types/keys";
 import { formatDate } from "@/utils/date";
 
 defineProps<{
-  selectedId: number | string;
+  selectedId: number | string | null;
   selectedType: string;
 }>();
 
