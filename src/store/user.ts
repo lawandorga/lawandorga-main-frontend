@@ -51,7 +51,7 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  const updateSetting = (key: string, value: string) => {
+  const updateSetting = (key: string, value: string | boolean) => {
     const newSettings = Object.assign({}, settings.value, { [key]: value });
     settings.value = newSettings;
     updateSettingRequest();

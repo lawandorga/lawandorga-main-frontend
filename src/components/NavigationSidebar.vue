@@ -9,65 +9,52 @@
           <button
             class="flex items-center justify-center w-10 h-10 border border-transparent rounded focus:outline-none hover:bg-gray-50/10"
             :class="{ 'mx-auto': !expanded, 'ml-2 mr-2': expanded }"
-            @click="expanded = !expanded"
+            @click="
+              expanded = !expanded;
+              userStore.updateSetting('navigationExpanded', expanded);
+            "
           >
             <Bars3CenterLeftIcon class="w-6 h-6 text-white" />
           </button>
+        </div>
+        <div
+          v-show="expanded"
+          class="flex items-center px-4 border-b h-14 border-white/20"
+        >
           <router-link
-            v-show="expanded"
             :to="{ name: 'user-login' }"
-            class="flex items-center space-x-2"
+            class="flex items-center h-10 px-4 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
           >
-            <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
+            <div class="-ml-2">
+              <LogoWhite />
+            </div>
             <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
           </router-link>
         </div>
         <div
-          v-show="expanded"
-          class="flex-col px-4 py-3 text-white border-b border-white border-opacity-20"
+          v-show="!expanded"
+          class="flex items-center border-b h-14 border-white/20"
         >
-          <div class="truncate">
-            {{ userStore.rlc?.name }}: {{ userStore.user?.name }}
-          </div>
-          <div class="truncate">{{ userStore.user?.email }}</div>
-        </div>
-        <div v-show="!expanded" class="flex items-center justify-center h-14">
           <router-link
             :to="{ name: 'user-login' }"
             class="flex items-center justify-center w-10 h-10 mx-auto rounded hover:bg-gray-50/10"
           >
-            <svg
-              class="w-8 h-8"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              width="256px"
-              height="256px"
-              viewBox="0 0 256 256"
-              enable-background="new 0 0 256 256"
-              xml:space="preserve"
-            >
-              <g id="Hintergrund"></g>
-              <g id="Ebene_1">
-                <path
-                  fill="#FFFFFF"
-                  d="M55,201h104v44H11V127.727C11,98.287,22.764,71.45,40.834,51l30.083,31C60.776,94.41,55,110.438,55,127.717
-		V201z"
-                />
-                <path
-                  fill="#FFFFFF"
-                  d="M127.667,19c29.116,0,56.395,11.055,76.981,31.644c20.587,20.587,32.019,48.243,32.019,77.356
-		c0,24.463-7.286,47.124-22,66l-22-21c8.806-12.858,14-28.238,14-45c0-43.561-35.439-79-79-79c-16.636,0-32.94,5.062-46,14l-21-22
-		C79.892,26.09,103.24,19,127.667,19L127.667,19z M127.667,12c-26,0-52.314,9.087-72.095,24.777
-		c-1.73,1.359-3.256,2.732-4.905,4.223l30,31c12.46-10.329,29.56-16,47-16c39.76,0,72,32.24,72,72c0,17.439-5.67,33.539-16,46l31,30
-		c18.25-20.48,29-46.4,29-76C243.667,63.939,190.667,12,127.667,12L127.667,12z"
-                />
-              </g>
-            </svg>
+            <LogoWhite />
           </router-link>
         </div>
+        <div
+          v-show="expanded"
+          class="px-4 py-3 text-white border-b border-white border-opacity-20"
+        >
+          <div v-show="userStore.loaded">
+            <div class="truncate">
+              {{ userStore.rlc?.name }}: {{ userStore.user?.name }}
+            </div>
+            <div class="truncate">{{ userStore.user?.email }}</div>
+          </div>
+          <CircleLoader v-show="!userStore.loaded" class="text-white" />
+        </div>
+
         <div class="flex flex-col justify-between flex-grow bg-white">
           <nav
             class="flex-1 pb-2 bg-white"
@@ -169,10 +156,18 @@
 import { Bars3CenterLeftIcon } from "@heroicons/vue/24/outline";
 import useNavigationItems from "@/composables/useNavigationItems";
 import { useUserStore } from "@/store/user";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import LogoWhite from "./LogoWhite.vue";
+import { CircleLoader } from "@lawandorga/components";
+import { storeToRefs } from "pinia";
 
 const { navigationItems } = useNavigationItems();
 const userStore = useUserStore();
+const { loaded } = storeToRefs(userStore);
 
-const expanded = ref(false);
+const expanded = ref(userStore.getSetting("navigationExpanded", true));
+
+watch(loaded, () => {
+  expanded.value = userStore.getSetting("navigationExpanded", true);
+});
 </script>
