@@ -8,6 +8,7 @@ import {
   CogIcon,
   LifebuoyIcon,
   ScaleIcon,
+  Squares2X2Icon,
 } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
@@ -27,6 +28,13 @@ export default function useNavigationItems() {
 
   const navigationItems = computed<NavigationItem[]>(() => {
     const items1: NavigationItem[] = [
+      {
+        label: "Dashboard",
+        icon: Squares2X2Icon,
+        is: "router-link",
+        attrs: { to: { name: "dashboard" } },
+        permissions: [],
+      },
       {
         label: "Records",
         icon: RectangleStackIcon,
