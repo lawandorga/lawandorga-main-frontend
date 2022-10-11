@@ -30,6 +30,7 @@
       </div>
       <div class="flex items-center ml-4 md:ml-6">
         <router-link
+          v-if="false"
           :to="{ name: 'admin-notifications' }"
           class="relative block p-1 text-gray-300 rounded-full hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >

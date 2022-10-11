@@ -2,13 +2,13 @@
   <Menu as="div" class="relative ml-3">
     <div>
       <MenuButton
-        class="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        class="flex text-sm bg-gray-100 rounded-full focus:outline-none ring-gray-100 ring-2 hover:ring-gray-200 focus:ring-gray-200 focus:ring-2"
       >
-        <span class="sr-only">Open user menu</span>
-        <div
-          class="flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-100 rounded-full"
-        >
-          Me
+        <span class="sr-only">Oepn user menu</span>
+        <div class="relative overflow-hidden rounded-full h-7 w-7">
+          <UserIcon
+            class="transform scale-110 w-full h-full text-blue-700 absolute -bottom-0.5 left-0 right-0"
+          />
         </div>
       </MenuButton>
     </div>
@@ -57,10 +57,12 @@
 import { defineComponent } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useUserStore } from "@/store/user";
+import { UserIcon } from "@heroicons/vue/20/solid";
 
 export default defineComponent({
   components: {
     Menu,
+    UserIcon,
     MenuButton,
     MenuItem,
     MenuItems,
