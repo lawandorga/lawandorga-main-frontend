@@ -9,10 +9,7 @@
           <button
             class="flex items-center justify-center w-10 h-10 border border-transparent rounded focus:outline-none hover:bg-gray-50/10"
             :class="{ 'mx-auto': !expanded, 'ml-2 mr-2': expanded }"
-            @click="
-              expanded = !expanded;
-              userStore.updateSetting('navigationExpanded', expanded);
-            "
+            @click="expandClicked()"
           >
             <Bars3CenterLeftIcon class="w-6 h-6 text-white" />
           </button>
@@ -170,4 +167,10 @@ const expanded = ref(userStore.getSetting("navigationExpanded", true));
 watch(loaded, () => {
   expanded.value = userStore.getSetting("navigationExpanded", true);
 });
+
+const expandClicked = () => {
+  expanded.value = !expanded.value;
+  userStore.updateSetting("navigationExpanded", expanded.value);
+  return undefined;
+};
 </script>
