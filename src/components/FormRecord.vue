@@ -1,5 +1,5 @@
 <template>
-  <form ref="form" @submit.prevent="">
+  <form ref="form" novalidate @submit.prevent="">
     <div class="grid grid-cols-1 gap-4">
       <div v-if="nonFieldErrors && nonFieldErrors.length">
         <p
