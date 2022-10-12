@@ -8,12 +8,12 @@
       <div class="flex flex-col flex-1 w-0 overflow-hidden">
         <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
 
-        <div
+        <!-- <div
           class="px-5 py-2 font-bold leading-none text-center text-orange-900 bg-orange-300"
         >
           Updates in progress. Errors can happen. We will be back to normal
           functionality soon.
-        </div>
+        </div> -->
 
         <NavigationDefault v-if="!authenticated" />
 
