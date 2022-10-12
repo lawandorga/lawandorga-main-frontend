@@ -32,7 +32,7 @@
       </BreadcrumbsBar>
       <div class="col-span-12 space-y-6 lg:col-span-4">
         <!-- items -->
-        <div class="sticky top-0 overflow-hidden bg-white shadow sm:rounded-md">
+        <div class="sticky top-0 overflow-hidden bg-white rounded shadow">
           <ul role="list" class="">
             <li v-if="!grouping" class="px-4 py-3 space-x-5 sm:px-6 bg-gray-50">
               <ButtonNormal
