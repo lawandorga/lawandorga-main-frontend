@@ -8,12 +8,13 @@
       <div class="flex flex-col flex-1 w-0 overflow-hidden">
         <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
 
-        <!-- <div
+        <div
+          v-if="updating"
           class="px-5 py-2 font-bold leading-none text-center text-orange-900 bg-orange-300"
         >
           Updates in progress. Errors can happen. We will be back to normal
           functionality soon.
-        </div> -->
+        </div>
 
         <NavigationDefault v-if="!authenticated" />
 
@@ -34,40 +35,38 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import NavigationDefault from "@/components/NavigationDefault.vue";
-import { defineComponent } from "vue";
+import { ref, computed } from "vue";
 import { AlertList } from "@lawandorga/components";
 import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { getUpdateStatus } from "./services/other";
 
-export default defineComponent({
-  components: {
-    AlertList,
-    NavigationTop,
-    NavigationDefault,
-    NavigationMobile,
-    NavigationSidebar,
-  },
-  data: function () {
-    return {
-      menuOpen: false,
-      mobileMenuOpen: false,
-    };
-  },
-  computed: {
-    authenticated(): boolean {
-      return this.$store.getters["user/isAuthenticated"];
-    },
-    inside(): boolean {
-      return this.$route.name !== "user-login";
-    },
-  },
-  methods: {
-    setMenuOpen(open: boolean) {
-      this.menuOpen = open;
-    },
-  },
+const route = useRoute();
+const store = useStore();
+
+const updating = ref(false);
+const menuOpen = ref(false);
+
+const authenticated = computed<boolean>(() => {
+  return store.getters["user/isAuthenticated"];
 });
+
+const inside = computed<boolean>(() => {
+  return route.name !== "user-login";
+});
+
+const setMenuOpen = (open: boolean) => {
+  menuOpen.value = open;
+};
+
+const setUpdateStatus = () => {
+  getUpdateStatus().then((d) => (updating.value = d.updating));
+  setTimeout(() => setUpdateStatus(), 60000);
+};
+setUpdateStatus();
 </script>
