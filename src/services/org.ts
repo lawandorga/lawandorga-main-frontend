@@ -17,7 +17,7 @@ class OrgService {
   }
 
   deleteLink(data: types.JsonModel): Promise<void> {
-    return axios.post(`org/links/${data.id}/`).then(() => {
+    return axios.delete(`org/links/${data.id}/`).then(() => {
       const store = useUserStore();
       store.updateData();
       return;
