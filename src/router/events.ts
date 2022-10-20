@@ -4,8 +4,8 @@ import { isAuthenticated } from "@/router/utils";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/events/",
-    name: "event-dashboard",
-    component: () => import("@/views/events/EventDashboard.vue"),
+    name: "events-dashboard",
+    component: () => import("@/views/events/EventsDashboard.vue"),
     beforeEnter: isAuthenticated,
   },
 ];
