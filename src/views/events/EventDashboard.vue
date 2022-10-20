@@ -23,5 +23,3 @@ import { ref } from "vue";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 </script>
-
-<style scoped></style>
