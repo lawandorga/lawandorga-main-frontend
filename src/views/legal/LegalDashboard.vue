@@ -1,12 +1,21 @@
 <template>
-  <BoxLoader :show="userStore.loaded">
-    <div class="max-w-3xl mx-auto space-y-6">
+  <BoxLoader :show="userStore.loaded && !!actionsLegalRequirements">
+    <div
+      v-if="userStore.loaded && !!actionsLegalRequirements"
+      class="max-w-3xl mx-auto space-y-6"
+    >
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <ScaleIcon class="w-6 h-6" />
       </BreadcrumbsBar>
 
-      <div v-if="legalRequirements" class="mt-10 space-y-10">
-        <div v-for="lr in legalRequirements" :key="lr.id">
+      <div
+        v-if="actionsLegalRequirements.legalRequirements"
+        class="mt-10 space-y-10"
+      >
+        <div
+          v-for="lr in actionsLegalRequirements.legalRequirements"
+          :key="lr.id"
+        >
           <div class="bg-white border rounded shadow">
             <div class="px-6 pt-5">
               <Disclosure v-slot="{ open }" :default-open="!lr.accepted">
@@ -39,7 +48,9 @@
                       <span v-if="event.actor">
                         {{ event.actor.name }} -{{ " " }}
                       </span>
-                      <span v-if="event.accepted">Accepted</span>
+                      <span v-if="event.accepted">
+                        {{ lr.legal_requirement.accept_text }}
+                      </span>
                       <span v-if="event.text">{{ event.text }}</span>
                     </p>
                   </div>
@@ -47,10 +58,10 @@
                 <div v-if="!lr.accepted">
                   <div class="flex items-center justify-between px-6 py-2">
                     <p class="text-lg font-bold text-gray-800">
-                      Approval required:
+                      Action required:
                     </p>
                     <ButtonNormal @click="actionsLegalRequirements?.accept(lr)">
-                      Accept
+                      {{ lr.legal_requirement.button_text }}
                     </ButtonNormal>
                   </div>
                 </div>
@@ -69,9 +80,7 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ScaleIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-import { provide, ref } from "vue";
-import { legalRequirementsKey } from "@/types/keys";
-import { LegalRequirement } from "@/types/legal";
+import { ref } from "vue";
 import ActionsLegalRequirements from "@/components/ActionsLegalRequirements.vue";
 import { ButtonNormal } from "@lawandorga/components";
 import { formatDate } from "@/utils/date";
@@ -79,9 +88,6 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
 
 const userStore = useUserStore();
-
-const legalRequirements = ref<LegalRequirement[] | null>(null);
-provide(legalRequirementsKey, legalRequirements);
 
 const actionsLegalRequirements = ref<typeof ActionsLegalRequirements>();
 </script>

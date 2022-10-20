@@ -3,31 +3,27 @@
 </template>
 
 <script setup lang="ts">
-import { legalRequirementsKey } from "@/types/keys";
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import useGet from "@/composables/useGet";
 import LegalService from "@/services/legal";
-import { LegalRequirement } from "@/types/legal";
 import { useUserStore } from "@/store/user";
+import useCommand from "@/composables/useCommand";
+import useQuery from "@/composables/useQuery";
+import { LegalRequirement } from "@/types/legal";
 
 const userStore = useUserStore();
-const legalRequirements = inject(legalRequirementsKey, ref(null));
+const legalRequirements = ref<LegalRequirement[] | null>(null);
 
 useGet(LegalService.getLegalRequirements, legalRequirements);
 
-const accept = (lr: LegalRequirement) => {
-  return LegalService.acceptLegalRequirement(lr).then((newItem) => {
-    userStore.updateData();
-    const index = legalRequirements.value?.findIndex(
-      (i) => i.id === newItem.id,
-    );
-
-    if (index !== undefined && index !== -1)
-      legalRequirements.value?.splice(index, 1, newItem);
-  });
-};
+const { commandRequest: accept } = useCommand(
+  LegalService.acceptLegalRequirement,
+  useQuery(LegalService.getLegalRequirements, legalRequirements),
+  () => userStore.updateData(),
+);
 
 defineExpose({
+  legalRequirements,
   accept,
 });
 </script>

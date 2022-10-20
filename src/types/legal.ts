@@ -1,6 +1,8 @@
 interface LegalRequirementGlobal {
   title: string;
   content: string;
+  button_text: string;
+  accept_text: string;
 }
 
 interface RlcUser {

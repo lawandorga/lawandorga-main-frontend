@@ -8,10 +8,8 @@ class LegalService {
       .then((response) => response.data);
   }
 
-  acceptLegalRequirement(lr: LegalRequirement): Promise<LegalRequirement> {
-    return axios
-      .post(`legal/legal_requirements/${lr.id}/accept/`)
-      .then((r) => r.data);
+  acceptLegalRequirement(lr: LegalRequirement): Promise<void> {
+    return axios.post(`legal/legal_requirements/${lr.id}/accept/`).then();
   }
 }
 
