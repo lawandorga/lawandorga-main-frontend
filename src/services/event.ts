@@ -1,7 +1,7 @@
 import { Event, EventCreate, EventUpdate } from "@/types/event";
 import axios from "axios";
 
-class EventService {
+class EventsService {
   async getEvents(): Promise<Event[]> {
     return (await axios.get<Event[]>("events/")).data;
   }
@@ -21,4 +21,4 @@ class EventService {
   }
 }
 
-export default new EventService();
+export default new EventsService();
