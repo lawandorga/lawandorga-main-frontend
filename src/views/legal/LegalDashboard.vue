@@ -23,9 +23,9 @@
                   class="flex items-center justify-between w-full"
                 >
                   <div class="prose-sm prose max-w-none">
-                    <h2 class="">
+                    <h1 class="">
                       {{ lr.legal_requirement.title }}
-                    </h2>
+                    </h1>
                   </div>
                   <ChevronUpIcon
                     :class="open ? 'rotate-180 transform' : ''"
