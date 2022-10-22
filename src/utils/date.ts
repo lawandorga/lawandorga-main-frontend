@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const formatDate = (dateString: string) => {
   if (!dateString) return "";
   const date = new Date(dateString);
@@ -14,4 +16,25 @@ export const formatDate = (dateString: string) => {
     dateStyle: "short",
     timeStyle: "short",
   }).format(date);
+};
+
+export interface FormattedDate {
+  day: string;
+  month: string;
+  shortMonth: string;
+  year: string;
+  shortYear: string;
+  formatted: string;
+}
+
+export const formatDateToObject = (date: Date): FormattedDate => {
+  const momentDate = moment(date);
+  return {
+    day: momentDate.format("DD"),
+    month: momentDate.format("MMMM"),
+    shortMonth: momentDate.format("MMM"),
+    shortYear: momentDate.format("YY"),
+    year: momentDate.format("YYYY"),
+    formatted: formatDate(momentDate.toISOString()),
+  };
 };
