@@ -25,6 +25,7 @@ export interface FormattedDate {
   year: string;
   shortYear: string;
   formatted: string;
+  groupDate: string;
 }
 
 export const formatDateToObject = (date: Date): FormattedDate => {
@@ -36,5 +37,6 @@ export const formatDateToObject = (date: Date): FormattedDate => {
     shortYear: momentDate.format("YY"),
     year: momentDate.format("YYYY"),
     formatted: formatDate(momentDate.toISOString()),
+    groupDate: momentDate.format("YYYY-MM-DD"),
   };
 };
