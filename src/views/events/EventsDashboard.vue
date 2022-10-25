@@ -54,6 +54,17 @@
                     {{ event.org.name }}
                   </h2>
                 </div>
+                <ButtonNormal
+                  v-if="userStore.rlc && userStore.rlc.id === event.org.id"
+                  size="xs"
+                  kind="delete"
+                  @click="
+                    actionsEvents.deleteEventModalOpen = true;
+                    actionsEvents.eventTemporary = event;
+                  "
+                >
+                  Delete
+                </ButtonNormal>
               </div>
 
               <div class="text-gray-500">
@@ -81,8 +92,10 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { Event } from "@/types/event";
 import { formatDateToObject, FormattedDate } from "@/utils/date";
+import { useUserStore } from "@/store/user";
 
 const actionsEvents = ref<typeof ActionsEvents>();
+const userStore = useUserStore();
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(xs: T[], getKey: (element: T) => string) {
@@ -102,7 +115,7 @@ const eventsWithFormattedDate = computed(() => {
       end_time_object: formatDateToObject(event.end_time),
     };
   });
-  const days = groupBy(
+  return groupBy(
     events,
     (
       event: Event & {
@@ -111,7 +124,5 @@ const eventsWithFormattedDate = computed(() => {
       },
     ) => event.start_time_object.groupDate,
   );
-  console.log(days);
-  return days;
 });
 </script>

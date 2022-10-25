@@ -6,6 +6,13 @@
     :fields="eventFields"
     :request="addEventRequest"
   />
+  <ModalDelete
+    v-model="deleteEventModalOpen"
+    title="Delete Event"
+    verb="delete"
+    :request="deleteEventRequest"
+    :object="eventTemporary"
+  />
 </template>
 
 <script setup lang="ts">
@@ -13,9 +20,10 @@ import { Ref, ref } from "vue";
 import useGet from "@/composables/useGet";
 import EventService from "@/services/event";
 import { Event } from "@/types/event";
-import { ModalCreate } from "@lawandorga/components";
+import { ModalCreate, ModalDelete } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import useQuery from "@/composables/useQuery";
+import useDelete from "@/composables/useDelete";
 
 const events = ref(null) as Ref<Event[] | null>;
 useGet(EventService.getEvents, events);
@@ -54,10 +62,21 @@ const eventFields = ref([
 ]);
 
 const { commandRequest: addEventRequest, commandModalOpen: addEventModalOpen } =
-  useCommand(EventService.createEvent, useQuery(EventService.getEvents, events));
+  useCommand(
+    EventService.createEvent,
+    useQuery(EventService.getEvents, events),
+  );
+
+const {
+  temporary: eventTemporary,
+  deleteRequest: deleteEventRequest,
+  deleteModalOpen: deleteEventModalOpen,
+} = useDelete((item) => EventService.deleteEvent(item.id), events);
 
 defineExpose({
   events,
+  eventTemporary,
   addEventModalOpen,
+  deleteEventModalOpen,
 });
 </script>
