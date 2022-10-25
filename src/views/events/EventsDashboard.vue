@@ -41,8 +41,8 @@
               class="grow flex flex-col gap-2"
               :class="{ 'pt-6': index !== 0 }"
             >
-              <div class="flex flex-row gap-6 items-baseline justify-between">
-                <h2 class="text-xl font-medium">
+              <div class="flex flex-row gap-6 items-baseline">
+                <h2 class="text-xl font-medium flex-grow">
                   {{ event.name }}
                 </h2>
                 <div
