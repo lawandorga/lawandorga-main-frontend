@@ -57,6 +57,17 @@
                 <ButtonNormal
                   v-if="userStore.rlc && userStore.rlc.id === event.org.id"
                   size="xs"
+                  kind="action"
+                  @click="
+                    actionsEvents.updateEventModalOpen = true;
+                    actionsEvents.eventUpdateTemporary = event;
+                  "
+                >
+                  Edit
+                </ButtonNormal>
+                <ButtonNormal
+                  v-if="userStore.rlc && userStore.rlc.id === event.org.id"
+                  size="xs"
                   kind="delete"
                   @click="
                     actionsEvents.deleteEventModalOpen = true;
@@ -93,6 +104,7 @@ import { computed, ref } from "vue";
 import { Event } from "@/types/event";
 import { formatDateToObject, FormattedDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
+import moment from "moment";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const userStore = useUserStore();
@@ -111,6 +123,9 @@ const eventsWithFormattedDate = computed(() => {
   const events = actionsEvents?.value?.events?.map((event: Event) => {
     return {
       ...event,
+      // Necessary to display the date in the update modal
+      start_time: moment(event.start_time).format("YYYY-MM-DDTHH:mm"),
+      end_time: moment(event.end_time).format("YYYY-MM-DDTHH:mm"),
       start_time_object: formatDateToObject(event.start_time),
       end_time_object: formatDateToObject(event.end_time),
     };

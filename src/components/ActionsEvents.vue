@@ -6,6 +6,13 @@
     :fields="eventFields"
     :request="addEventRequest"
   />
+  <ModalUpdate
+    v-model="updateEventModalOpen"
+    title="Update Event"
+    :fields="eventFields"
+    :request="updateEventRequest"
+    :initial="eventUpdateTemporary"
+  />
   <ModalDelete
     v-model="deleteEventModalOpen"
     title="Delete Event"
@@ -20,10 +27,11 @@ import { Ref, ref } from "vue";
 import useGet from "@/composables/useGet";
 import EventService from "@/services/event";
 import { Event } from "@/types/event";
-import { ModalCreate, ModalDelete } from "@lawandorga/components";
+import { ModalCreate, ModalDelete, ModalUpdate } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import useQuery from "@/composables/useQuery";
 import useDelete from "@/composables/useDelete";
+import useUpdate from "@/composables/useUpdate";
 
 const events = ref(null) as Ref<Event[] | null>;
 useGet(EventService.getEvents, events);
@@ -68,6 +76,12 @@ const { commandRequest: addEventRequest, commandModalOpen: addEventModalOpen } =
   );
 
 const {
+  temporary: eventUpdateTemporary,
+  updateRequest: updateEventRequest,
+  updateModalOpen: updateEventModalOpen,
+} = useUpdate((item) => EventService.updateEvent(item.id, item), events);
+
+const {
   temporary: eventTemporary,
   deleteRequest: deleteEventRequest,
   deleteModalOpen: deleteEventModalOpen,
@@ -75,8 +89,10 @@ const {
 
 defineExpose({
   events,
+  eventUpdateTemporary,
   eventTemporary,
   addEventModalOpen,
+  updateEventModalOpen,
   deleteEventModalOpen,
 });
 </script>
