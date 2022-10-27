@@ -9,6 +9,7 @@ import {
   LifebuoyIcon,
   ScaleIcon,
   Squares2X2Icon,
+  CalendarDaysIcon,
 } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
@@ -54,6 +55,13 @@ export default function useNavigationItems() {
         icon: DocumentTextIcon,
         is: "router-link",
         attrs: { to: { name: "collab-dashboard" } },
+        permissions: [],
+      },
+      {
+        label: "Events",
+        icon: CalendarDaysIcon,
+        is: "router-link",
+        attrs: { to: { name: "events-dashboard" } },
         permissions: [],
       },
       {

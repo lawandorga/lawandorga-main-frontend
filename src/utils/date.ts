@@ -15,3 +15,24 @@ export const formatDate = (dateString: string) => {
     timeStyle: "short",
   }).format(date);
 };
+
+export interface FormattedDate {
+  day: string;
+  month: string;
+  shortMonth: string;
+  year: string;
+  formatted: string;
+  groupDate: string;
+}
+
+export const formatDateToObject = (dateString: string): FormattedDate => {
+  const date = new Date(dateString);
+  return {
+    day: date.getDate().toString(),
+    month: date.getMonth().toString(),
+    shortMonth: date.toLocaleDateString("default", { month: "short" }),
+    year: date.getFullYear().toString(),
+    formatted: formatDate(date.toISOString()),
+    groupDate: date.toLocaleDateString(),
+  };
+};
