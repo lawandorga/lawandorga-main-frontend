@@ -10,14 +10,14 @@
     v-model="updateEventModalOpen"
     title="Update Event"
     :fields="eventFields"
-    :request="updateEventRequest"
+    :request="updateRequest"
     :initial="eventUpdateTemporary"
   />
   <ModalDelete
     v-model="deleteEventModalOpen"
     title="Delete Event"
     verb="delete"
-    :request="deleteEventRequest"
+    :request="deleteRequest"
     :object="eventTemporary"
   />
 </template>
@@ -77,15 +77,15 @@ const { commandRequest: addEventRequest, commandModalOpen: addEventModalOpen } =
 
 const {
   temporary: eventUpdateTemporary,
-  updateRequest: updateEventRequest,
+  updateRequest,
   updateModalOpen: updateEventModalOpen,
-} = useUpdate((item) => EventService.updateEvent(item.id, item), events);
+} = useUpdate(EventService.updateEvent, events);
 
 const {
   temporary: eventTemporary,
-  deleteRequest: deleteEventRequest,
+  deleteRequest,
   deleteModalOpen: deleteEventModalOpen,
-} = useDelete((item) => EventService.deleteEvent(item.id), events);
+} = useDelete(EventService.deleteEvent, events);
 
 defineExpose({
   events,

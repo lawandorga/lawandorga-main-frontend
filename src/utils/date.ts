@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const formatDate = (dateString: string) => {
   if (!dateString) return "";
   const date = new Date(dateString);
@@ -23,20 +21,18 @@ export interface FormattedDate {
   month: string;
   shortMonth: string;
   year: string;
-  shortYear: string;
   formatted: string;
   groupDate: string;
 }
 
-export const formatDateToObject = (date: Date): FormattedDate => {
-  const momentDate = moment(date);
+export const formatDateToObject = (dateString: string): FormattedDate => {
+  const date = new Date(dateString);
   return {
-    day: momentDate.format("DD"),
-    month: momentDate.format("MMMM"),
-    shortMonth: momentDate.format("MMM"),
-    shortYear: momentDate.format("YY"),
-    year: momentDate.format("YYYY"),
-    formatted: formatDate(momentDate.toISOString()),
-    groupDate: momentDate.format("YYYY-MM-DD"),
+    day: date.getDate().toString(),
+    month: date.getMonth().toString(),
+    shortMonth: date.toLocaleDateString("default", { month: "short" }),
+    year: date.getFullYear().toString(),
+    formatted: formatDate(date.toISOString()),
+    groupDate: date.toLocaleDateString(),
   };
 };

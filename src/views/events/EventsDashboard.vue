@@ -21,9 +21,9 @@
         <div
           v-for="day in eventsWithFormattedDate"
           :key="day[0].start_time_object.groupDate"
-          class="bg-white rounded-lg shadow p-6 flex flex-row flex-nowrap gap-8"
+          class="flex flex-row gap-8 p-6 bg-white rounded-lg shadow flex-nowrap"
         >
-          <div class="flex-none flex flex-col items-center font-light">
+          <div class="flex flex-col items-center flex-none font-light">
             <h3 class="text-base">
               {{ day[0].start_time_object.shortMonth }}
             </h3>
@@ -34,20 +34,20 @@
               {{ day[0].start_time_object.year }}
             </h3>
           </div>
-          <div class="flex flex-col divide-y divide gap-6 w-full">
+          <div class="flex flex-col w-full gap-6 divide-y divide">
             <div
               v-for="(event, index) in day"
               :key="index"
-              class="grow flex flex-col gap-2"
+              class="flex flex-col gap-2 grow"
               :class="{ 'pt-6': index !== 0 }"
             >
-              <div class="flex flex-row gap-6 items-baseline">
-                <h2 class="text-xl font-medium flex-grow">
+              <div class="flex flex-row items-baseline gap-6">
+                <h2 class="flex-grow text-xl font-medium">
                   {{ event.name }}
                 </h2>
                 <div
                   v-if="event.is_global"
-                  class="text-gray-500 flex flex-row items-baseline gap-1"
+                  class="flex flex-row items-baseline gap-1 text-gray-500"
                 >
                   <GlobeAltIcon class="w-3 h-3" />
                   <h2 class="text-base">
@@ -79,8 +79,8 @@
               </div>
 
               <div class="text-gray-500">
-                {{ event.start_time_object.formatted }} –
-                {{ event.end_time_object.formatted }}
+                {{ formatDate(event.start_time) }} –
+                {{ formatDate(event.end_time) }}
               </div>
               <p>
                 {{ event.description }}
@@ -102,9 +102,8 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { Event } from "@/types/event";
-import { formatDateToObject, FormattedDate } from "@/utils/date";
+import { formatDateToObject, FormattedDate, formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
-import moment from "moment";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const userStore = useUserStore();
@@ -124,8 +123,6 @@ const eventsWithFormattedDate = computed(() => {
     return {
       ...event,
       // Necessary to display the date in the update modal
-      start_time: moment(event.start_time).format("YYYY-MM-DDTHH:mm"),
-      end_time: moment(event.end_time).format("YYYY-MM-DDTHH:mm"),
       start_time_object: formatDateToObject(event.start_time),
       end_time_object: formatDateToObject(event.end_time),
     };
