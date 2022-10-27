@@ -88,15 +88,14 @@ export default function useNavigationItems() {
       },
     ];
 
-    if (store.user?.email.endsWith("law-orga.de"))
-      items1.push({
-        label: "Legal",
-        icon: ScaleIcon,
-        notifications: store.badges?.legal,
-        is: "router-link",
-        attrs: { to: { name: "legal-dashboard" } },
-        permissions: [],
-      });
+    items1.push({
+      label: "Legal",
+      icon: ScaleIcon,
+      notifications: store.badges?.legal,
+      is: "router-link",
+      attrs: { to: { name: "legal-dashboard" } },
+      permissions: [],
+    });
 
     if (store.rlc?.links.length) {
       items1.push({ divider: true });
