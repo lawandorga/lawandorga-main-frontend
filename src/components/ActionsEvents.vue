@@ -49,12 +49,12 @@ const eventFields = ref([
     type: "textarea",
     required: true,
   },
-  {
+  /*{
     label: "Global Event?",
     name: "is_global",
     type: "checkbox",
     required: false,
-  },
+  },*/
   {
     label: "Start time",
     name: "start_time",
