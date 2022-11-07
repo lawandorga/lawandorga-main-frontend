@@ -32,11 +32,11 @@
             class="aspect-square"
             :class="{ 'flex h-full': !iframeContent.includes('image') }"
           >
-            <object
+            <iframe
               class="w-full max-w-full"
-              :data="iframeContent"
+              :src="iframeContent"
               frameborder="0"
-            ></object>
+            ></iframe>
           </div>
         </div>
       </BoxHeadingStats>
