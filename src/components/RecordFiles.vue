@@ -28,7 +28,7 @@
             <CircleLoader />
           </div>
           <div
-            v-else
+            v-else-if="iframeContent.includes('pdf')"
             class="aspect-square"
             :class="{ 'flex h-full': !iframeContent.includes('image') }"
           >
@@ -37,6 +37,17 @@
               :src="iframeContent"
               frameborder="0"
             ></iframe>
+          </div>
+          <div
+            v-else
+            class="aspect-square"
+            :class="{ 'flex h-full': !iframeContent.includes('image') }"
+          >
+            <object
+              class="w-full max-w-full"
+              :data="iframeContent"
+              frameborder="0"
+            ></object>
           </div>
         </div>
       </BoxHeadingStats>
