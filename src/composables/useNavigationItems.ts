@@ -10,6 +10,7 @@ import {
   ScaleIcon,
   Squares2X2Icon,
   CalendarDaysIcon,
+  FolderIcon,
 } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
@@ -17,7 +18,12 @@ import { RouteLocationRaw } from "vue-router";
 type NavigationItem = {
   label?: string;
   icon?: Component;
-  attrs?: { to?: RouteLocationRaw; href?: string; target?: "_blank" };
+  attrs?: {
+    to?: RouteLocationRaw;
+    href?: string;
+    target?: "_blank";
+    class?: string;
+  };
   permissions?: string[];
   notifications?: number;
   divider?: boolean;
@@ -34,6 +40,18 @@ export default function useNavigationItems() {
         icon: Squares2X2Icon,
         is: "router-link",
         attrs: { to: { name: "dashboard" } },
+        permissions: [],
+      },
+      {
+        label: "Folders",
+        icon: FolderIcon,
+        is: "router-link",
+        attrs: {
+          to: { name: "folders-dashboard" },
+          class: !store.user?.email.includes("dummy@law-orga.de")
+            ? "hidden"
+            : "",
+        },
         permissions: [],
       },
       {
@@ -86,16 +104,15 @@ export default function useNavigationItems() {
         attrs: { to: { name: "help-dashboard" } },
         permissions: [],
       },
+      {
+        label: "Legal",
+        icon: ScaleIcon,
+        notifications: store.badges?.legal,
+        is: "router-link",
+        attrs: { to: { name: "legal-dashboard" } },
+        permissions: [],
+      },
     ];
-
-    items1.push({
-      label: "Legal",
-      icon: ScaleIcon,
-      notifications: store.badges?.legal,
-      is: "router-link",
-      attrs: { to: { name: "legal-dashboard" } },
-      permissions: [],
-    });
 
     if (store.rlc?.links.length) {
       items1.push({ divider: true });

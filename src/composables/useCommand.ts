@@ -8,7 +8,7 @@ type Nullable<T> = T extends (infer U)[]
 
 export default function useCommand<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-  Type extends { [key: string]: any; id: number | string },
+  Type extends { [key: string]: any },
   CFn extends (...args: any[]) => Promise<void>,
   VFn extends (...args: any[]) => void,
   /* eslint-enable */

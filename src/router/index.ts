@@ -6,6 +6,7 @@ import filesRoutes from "./files";
 import recordsRoutes from "./records";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
+import foldersRoutes from "./folders";
 import internalRoutes from "./internal";
 import legalRoutes from "./legal";
 import eventsRoutes from "./events";
@@ -25,6 +26,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Dashboard,
     beforeEnter: isAuthenticated,
   },
+  ...foldersRoutes,
   ...userRoutes,
   ...recordsRoutes,
   ...filesRoutes,

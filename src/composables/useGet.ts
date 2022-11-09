@@ -6,7 +6,7 @@ type Nullable<T> = T extends (infer U)[]
 
 function useGet<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-  Type extends { [key: string]: any; id: number | string },
+  Type extends { [key: string]: any },
   Fn extends (...args: any[]) => Promise<Type | Type[]>,
   /* eslint-enable */
 >(
