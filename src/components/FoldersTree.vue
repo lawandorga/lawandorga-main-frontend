@@ -1,23 +1,34 @@
 <template>
-  <ul v-if="folders">
-    <li
-      v-for="[folder, children] in folders"
-      :key="folder.name"
-      class="list-disc list-inside"
-    >
-      <span>
-        <span class="inline-block w-32">
-          {{ folder.name }}
-        </span>
-        <ButtonNormal kind="action" @click="emit('createClicked', folder.id)">
-          Create
-        </ButtonNormal>
-        <ButtonNormal kind="delete" @click="emit('deleteClicked', folder.id)">
-          Delete
-        </ButtonNormal>
+  <ul v-if="folders" class="">
+    <li v-for="item in folders" :key="item.folder.id" class="list-inside">
+      <span class="inline-block w-full">
+        <div class="flex justify-between">
+          <span class="">
+            {{ item.folder.name }}
+          </span>
+          <span class="flex space-x-3">
+            <ButtonNormal
+              kind="action"
+              @click="emit('createClicked', item.folder.id)"
+            >
+              Add Child
+            </ButtonNormal>
+            <ButtonNormal
+              kind="delete"
+              @click="emit('deleteClicked', item.folder.id)"
+            >
+              Delete
+            </ButtonNormal>
+          </span>
+        </div>
       </span>
-      <div class="pl-8">
-        <FoldersTree v-if="children.length" :children="children" />
+      <div class="pl-4">
+        <FoldersTree
+          v-if="item.children.length"
+          :folders="item.children"
+          @delete-clicked="emit('deleteClicked', $event)"
+          @create-clicked="emit('createClicked', $event)"
+        />
       </div>
     </li>
   </ul>

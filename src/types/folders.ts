@@ -3,6 +3,6 @@ export interface IFolder {
   id: string;
 }
 
-export type IFolderTree = [IFolder, [[IFolder, IFolderTree]]];
+export type IFolderTree = { folder: IFolder; children: [IFolderTree] };
 
 export type ITree<T> = [T, ITree<T>];

@@ -7,22 +7,31 @@
       <BreadcrumbsBar :base="{ name: 'folders-dashboard' }" :pages="[]">
         <FolderIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div>
-        <ButtonNormal
-          @click="
-            parent = null;
-            foldersActions.createModalOpen = true;
-          "
-        >
-          Create
-        </ButtonNormal>
-        <FoldersTree
-          :folders="foldersActions.folders"
-          @create-clicked="
-            parent = $event;
-            foldersActions.createModalOpen = true;
-          "
-        />
+      <div class="bg-white divide-y-2 rounded shadow">
+        <div class="px-3 py-2">
+          <ButtonNormal
+            kind="action"
+            @click="
+              parent = null;
+              foldersActions.createModalOpen = true;
+            "
+          >
+            Create Root Folder
+          </ButtonNormal>
+        </div>
+        <div class="px-6 py-4">
+          <FoldersTree
+            :folders="foldersActions.folders"
+            @create-clicked="
+              parent = $event;
+              foldersActions.createModalOpen = true;
+            "
+            @delete-clicked="
+              foldersActions.temporary = { id: $event };
+              foldersActions.deleteModalOpen = true;
+            "
+          />
+        </div>
       </div>
     </div>
   </BoxLoader>
