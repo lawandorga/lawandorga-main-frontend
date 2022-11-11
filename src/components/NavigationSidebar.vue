@@ -16,7 +16,7 @@
         </div>
         <div
           v-show="expanded"
-          class="flex items-center px-4 border-b h-14 border-white/20"
+          class="flex items-center px-4 py-1 border-b h-14 border-white/20"
         >
           <router-link
             :to="{ name: 'user-login' }"
