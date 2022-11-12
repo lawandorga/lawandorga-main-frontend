@@ -17,6 +17,9 @@
           </ButtonNormal>
         </template>
       </BreadcrumbsBar>
+      <div class="flex justify-end">
+        <ButtonToggle v-model="showGlobal" text="Show global events" />
+      </div>
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <div
           v-for="day in eventsWithFormattedDate"
@@ -101,7 +104,7 @@
 
 <script setup lang="ts">
 import ActionsEvents from "@/components/ActionsEvents.vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -111,6 +114,7 @@ import { formatDateToObject, FormattedDate, formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 
 const actionsEvents = ref<typeof ActionsEvents>();
+const showGlobal = ref(true);
 const userStore = useUserStore();
 
 // eslint-disable-next-line no-unused-vars
@@ -124,7 +128,10 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
 }
 
 const eventsWithFormattedDate = computed(() => {
-  const events = actionsEvents?.value?.events?.map((event: Event) => {
+  const fileredGlobal = actionsEvents?.value?.events.filter(
+    (event: Event) => showGlobal.value || !event.is_global,
+  );
+  const events = fileredGlobal?.map((event: Event) => {
     return {
       ...event,
       // Necessary to display the date in the update modal
