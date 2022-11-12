@@ -5,6 +5,7 @@ import { getNextQuery } from "./utils/router";
 
 export function setupDefaultAxios($axios: AxiosInstance) {
   $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
+  $axios.defaults.withCredentials = true;
 
   $axios.interceptors.request.use(function (
     config: AxiosRequestConfig,

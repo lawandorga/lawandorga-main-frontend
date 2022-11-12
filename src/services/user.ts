@@ -21,7 +21,7 @@ class UserService {
 
   login(data: { email: string; password: string }): Promise<LoginResponse> {
     return axios
-      .post<LoginResponse>(`profiles/login/`, data)
+      .post<LoginResponse>(`session_login/`, data, { withCredentials: true })
       .then((response) => response.data);
   }
 
