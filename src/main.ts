@@ -6,6 +6,7 @@ import router from "./router";
 import store from "./store";
 import axios from "axios";
 import { createPinia } from "pinia";
+import { useUserStore } from "@/store/user";
 
 // vue
 const app = createApp(App);
@@ -21,6 +22,8 @@ setupDefaultAxios(axios);
 app.use(router);
 router.push({ name: "dashboard" });
 app.mount("#app");
+const userStore = useUserStore();
+userStore.updateData();
 // auto login on reload
 // store
 //   .dispatch("user/autoLogin")
