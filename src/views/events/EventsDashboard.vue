@@ -11,6 +11,13 @@
           <ButtonNormal
             size="xs"
             kind="action"
+            @click="modalCalendarLink.modalOpen = true"
+          >
+            Get Calendar Link
+          </ButtonNormal>
+          <ButtonNormal
+            size="xs"
+            kind="action"
             @click="actionsEvents.addEventModalOpen = true"
           >
             Add Event
@@ -92,6 +99,7 @@
     </div>
   </BoxLoader>
   <ActionsEvents ref="actionsEvents" />
+  <ModalCalendarLink ref="modalCalendarLink" />
 </template>
 
 <script setup lang="ts">
@@ -104,8 +112,10 @@ import { computed, ref } from "vue";
 import { Event } from "@/types/event";
 import { formatDateToObject, FormattedDate, formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
+import ModalCalendarLink from "@/components/ModalCalendarLink.vue";
 
 const actionsEvents = ref<typeof ActionsEvents>();
+const modalCalendarLink = ref<typeof ModalCalendarLink>();
 const userStore = useUserStore();
 
 // eslint-disable-next-line no-unused-vars
