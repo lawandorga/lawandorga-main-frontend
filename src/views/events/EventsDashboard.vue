@@ -37,13 +37,14 @@
           <div class="flex flex-col w-full gap-6">
             <div v-for="(event, index) in day" :key="index">
               <div
-                class="w-full h-2 rounded-b"
+                class="w-full h-1 rounded-b-sm"
                 :class="{
-                  'bg-lorgablue': !event.is_global,
-                  'bg-gray-300': event.is_global,
+                  'bg-lorgablue': !event.is_global && !event.is_past_event,
+                  'bg-globalevent': event.is_global && !event.is_past_event,
+                  'bg-gray-300': event.is_past_event,
                 }"
               />
-              <div class="flex flex-col gap-2 grow pt-4">
+              <div class="flex flex-col gap-2 grow pt-5">
                 <div class="flex flex-row items-baseline gap-6">
                   <h2 class="flex-grow text-xl font-medium">
                     {{ event.name }}
@@ -127,6 +128,7 @@ const eventsWithFormattedDate = computed(() => {
     return {
       ...event,
       // Necessary to display the date in the update modal
+      is_past_event: event.end_time < new Date().toISOString(),
       start_time_object: formatDateToObject(event.start_time),
       end_time_object: formatDateToObject(event.end_time),
     };
@@ -142,3 +144,9 @@ const eventsWithFormattedDate = computed(() => {
   );
 });
 </script>
+
+<style scoped>
+.bg-globalevent {
+  background-color: #89a4b7;
+}
+</style>
