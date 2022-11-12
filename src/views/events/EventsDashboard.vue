@@ -21,9 +21,9 @@
         <div
           v-for="day in eventsWithFormattedDate"
           :key="day[0].start_time_object.groupDate"
-          class="flex flex-row gap-8 p-6 bg-white rounded-lg shadow flex-nowrap"
+          class="flex flex-row gap-8 p-6 pt-0 bg-white rounded-lg shadow flex-nowrap"
         >
-          <div class="flex flex-col items-center flex-none font-light">
+          <div class="flex flex-col items-center flex-none font-light pt-6">
             <h3 class="text-base">
               {{ day[0].start_time_object.shortMonth }}
             </h3>
@@ -34,57 +34,61 @@
               {{ day[0].start_time_object.year }}
             </h3>
           </div>
-          <div class="flex flex-col w-full gap-6 divide-y divide">
-            <div
-              v-for="(event, index) in day"
-              :key="index"
-              class="flex flex-col gap-2 grow"
-              :class="{ 'pt-6': index !== 0 }"
-            >
-              <div class="flex flex-row items-baseline gap-6">
-                <h2 class="flex-grow text-xl font-medium">
-                  {{ event.name }}
-                </h2>
-                <div
-                  v-if="event.is_global"
-                  class="flex flex-row items-baseline gap-1 text-gray-500"
-                >
-                  <GlobeAltIcon class="w-3 h-3" />
-                  <h2 class="text-base">
-                    {{ event.org.name }}
+          <div class="flex flex-col w-full gap-6">
+            <div v-for="(event, index) in day" :key="index">
+              <div
+                class="w-full h-2 rounded-b"
+                :class="{
+                  'bg-lorgablue': !event.is_global,
+                  'bg-gray-300': event.is_global,
+                }"
+              />
+              <div class="flex flex-col gap-2 grow pt-4">
+                <div class="flex flex-row items-baseline gap-6">
+                  <h2 class="flex-grow text-xl font-medium">
+                    {{ event.name }}
                   </h2>
+                  <div
+                    v-if="event.is_global"
+                    class="flex flex-row items-baseline gap-1 text-gray-500"
+                  >
+                    <GlobeAltIcon class="w-3 h-3" />
+                    <h2 class="text-base">
+                      {{ event.org.name }}
+                    </h2>
+                  </div>
+                  <ButtonNormal
+                    v-if="userStore.rlc && userStore.rlc.id === event.org.id"
+                    size="xs"
+                    kind="action"
+                    @click="
+                      actionsEvents.updateEventModalOpen = true;
+                      actionsEvents.eventUpdateTemporary = event;
+                    "
+                  >
+                    Edit
+                  </ButtonNormal>
+                  <ButtonNormal
+                    v-if="userStore.rlc && userStore.rlc.id === event.org.id"
+                    size="xs"
+                    kind="delete"
+                    @click="
+                      actionsEvents.deleteEventModalOpen = true;
+                      actionsEvents.eventTemporary = event;
+                    "
+                  >
+                    Delete
+                  </ButtonNormal>
                 </div>
-                <ButtonNormal
-                  v-if="userStore.rlc && userStore.rlc.id === event.org.id"
-                  size="xs"
-                  kind="action"
-                  @click="
-                    actionsEvents.updateEventModalOpen = true;
-                    actionsEvents.eventUpdateTemporary = event;
-                  "
-                >
-                  Edit
-                </ButtonNormal>
-                <ButtonNormal
-                  v-if="userStore.rlc && userStore.rlc.id === event.org.id"
-                  size="xs"
-                  kind="delete"
-                  @click="
-                    actionsEvents.deleteEventModalOpen = true;
-                    actionsEvents.eventTemporary = event;
-                  "
-                >
-                  Delete
-                </ButtonNormal>
-              </div>
 
-              <div class="text-gray-500">
-                {{ formatDate(event.start_time) }} –
-                {{ formatDate(event.end_time) }}
+                <div class="text-gray-500">
+                  {{ formatDate(event.start_time) }} –
+                  {{ formatDate(event.end_time) }}
+                </div>
+                <p>
+                  {{ event.description }}
+                </p>
               </div>
-              <p>
-                {{ event.description }}
-              </p>
             </div>
           </div>
         </div>
