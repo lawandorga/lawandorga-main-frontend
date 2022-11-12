@@ -17,6 +17,9 @@
           </ButtonNormal>
         </template>
       </BreadcrumbsBar>
+      <div class="flex justify-end">
+        <ButtonNormal size="xs" kind="action">Show earlier</ButtonNormal>
+      </div>
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <div
           v-for="day in eventsWithFormattedDate"
