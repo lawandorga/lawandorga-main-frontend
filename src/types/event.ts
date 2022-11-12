@@ -26,3 +26,9 @@ export interface EventUpdate {
   start_time?: string;
   end_time?: string;
 }
+
+export interface CalendarIcsInfo {
+  id: number;
+  calendar_uuid: string;
+  calendar_url: string;
+}
