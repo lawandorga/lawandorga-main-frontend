@@ -54,6 +54,8 @@ const eventFields = ref([
     name: "is_global",
     type: "checkbox",
     required: false,
+    helptext:
+      "Global events are visible to all users in your meta-organization.",
   },*/
   {
     label: "Start time",
