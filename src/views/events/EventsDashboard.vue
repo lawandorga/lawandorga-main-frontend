@@ -96,13 +96,11 @@
 
 <script setup lang="ts">
 import ActionsEvents from "@/components/ActionsEvents.vue";
-import { ButtonNormal } from "@lawandorga/components";
-import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { Event } from "@/types/event";
-import { formatDateToObject, FormattedDate, formatDate } from "@/utils/date";
+import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 
 const actionsEvents = ref<typeof ActionsEvents>();
@@ -118,8 +116,22 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
   }, {});
 }
 
+function findNextEventIndex() {
+  return actionsEvents?.value?.events.findIndex(
+    (event: Event) => new Date(event.end_time) > new Date(Date.now()),
+  );
+}
+
 const eventsWithFormattedDate = computed(() => {
-  const events = actionsEvents?.value?.events?.map((event: Event) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  let earlier = 0;
+  if (urlParams.has("earlier")) {
+    earlier = Number(urlParams.get("earlier"));
+  }
+  const current_events = actionsEvents?.value?.events?.slice(
+    findNextEventIndex() - Math.max(0, earlier),
+  );
+  const events = current_events?.map((event: Event) => {
     return {
       ...event,
       // Necessary to display the date in the update modal
