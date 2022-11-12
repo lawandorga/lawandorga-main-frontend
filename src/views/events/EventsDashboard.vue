@@ -3,7 +3,7 @@
     <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar
         class="lg:col-span-2"
-        :base="{ name: 'dashboard' }"
+        :base="{ name: 'events-dashboard' }"
         :pages="[]"
       >
         <CalendarDaysIcon class="w-6 h-6" />
