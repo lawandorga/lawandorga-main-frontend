@@ -18,21 +18,23 @@ app.use(store);
 // setup axios
 setupDefaultAxios(axios);
 
+app.use(router);
+router.push({ name: "dashboard" });
+app.mount("#app");
 // auto login on reload
-store
-  .dispatch("user/autoLogin")
-  .then(() => {
-    app.use(router);
-  })
-  .catch(() => {
-    app.use(router);
-    router.push({ name: "dashboard" });
-    // window.location.reload();
-    // alert("Unknown error occurred. Please contact it@law-orga.de.");
-  })
-  .finally(() => {
-    app.mount("#app");
-  });
+// store
+//   .dispatch("user/autoLogin")
+//   .then(() => {
+//     app.use(router);
+//   })
+//   .catch(() => {
+
+//     // window.location.reload();
+//     // alert("Unknown error occurred. Please contact it@law-orga.de.");
+//   })
+//   .finally(() => {
+//     app.mount("#app");
+//   });
 
 // get the manifest working
 if ("serviceWorker" in navigator) {

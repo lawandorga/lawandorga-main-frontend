@@ -244,6 +244,7 @@ import { Article, LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import UsersService from "@/services/user";
 import { LoginResponse } from "@/types/user";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   components: { FormGenerator, ButtonNormal },
@@ -300,7 +301,8 @@ export default defineComponent({
   },
   computed: {
     authenticated(): boolean {
-      return this.$store.getters["user/isAuthenticated"];
+      const userStore = useUserStore();
+      return userStore.isAuthenticated;
     },
   },
   mounted() {
@@ -314,13 +316,16 @@ export default defineComponent({
   },
   methods: {
     next() {
+      console.log("next");
       const url = this.$route.query.next as string;
       if (url) this.$router.push(url);
       else this.$router.push({ name: "dashboard" });
     },
     loginRequest(data: { email: string; password: string }) {
+      const userStore = useUserStore();
       return UsersService.login(data).then((loginData: LoginResponse) => {
-        this.$store.dispatch("user/login", loginData);
+        // this.$store.dispatch("user/login", loginData);
+        userStore.updateData();
         this.next();
       });
     },

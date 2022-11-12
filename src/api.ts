@@ -2,27 +2,11 @@ import router from "./router";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import store from "./store";
 import { getNextQuery } from "./utils/router";
+import { useUserStore } from "./store/user";
 
 export function setupDefaultAxios($axios: AxiosInstance) {
   $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
   $axios.defaults.withCredentials = true;
-
-  $axios.interceptors.request.use(function (
-    config: AxiosRequestConfig,
-  ): AxiosRequestConfig {
-    if (store.getters["user/isAuthenticated"]) {
-      config.headers = {
-        ...config.headers,
-        Authorization: store.getters["user/token"],
-      };
-    } else {
-      config.headers = {
-        ...config.headers,
-        Authorization: "",
-      };
-    }
-    return config;
-  });
 
   $axios.interceptors.response.use(
     function (response) {
@@ -80,7 +64,8 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       }
       // authentication error
       else if (error.response.status === 401) {
-        if (store.getters["user/isAuthenticated"]) {
+        const userStore = useUserStore();
+        if (userStore.isAuthenticated) {
           store.dispatch("user/logout");
           router.push({
             name: "user-login",

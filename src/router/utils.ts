@@ -4,14 +4,17 @@ import { useUserStore } from "@/store/user";
 import { getNextQuery } from "@/utils/router";
 
 export const isAuthenticated: NavigationGuard = (to) => {
-  if (!store.getters["user/isAuthenticated"]) {
+  const userStore = useUserStore();
+
+  console.log(userStore.isAuthenticated);
+
+  if (!userStore.isAuthenticated) {
     return {
       name: "user-login",
       query: getNextQuery(to.fullPath),
     };
   }
 
-  const userStore = useUserStore();
   if (userStore.user?.locked && to.name !== "user-keys") {
     store.dispatch("alert/createAlert", {
       heading: "Account locked",
@@ -36,7 +39,8 @@ export const isAuthenticated: NavigationGuard = (to) => {
 };
 
 export const notAuthenticated: NavigationGuard = (to) => {
-  if (store.getters["user/isAuthenticated"]) {
+  const userStore = useUserStore();
+  if (userStore.isAuthenticated) {
     const url = to.query.next as string;
     if (url) return url;
     else return { name: "admin-dashboard" };

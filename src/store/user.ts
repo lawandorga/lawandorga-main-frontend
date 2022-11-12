@@ -70,6 +70,10 @@ export const useUserStore = defineStore("user", () => {
     return user.value?.locked;
   });
 
+  const isAuthenticated = computed(() => {
+    return !!user.value;
+  });
+
   const reset = () => {
     rlc.value = undefined;
     user.value = undefined;
@@ -82,6 +86,7 @@ export const useUserStore = defineStore("user", () => {
     user,
     badges,
     adminBadges,
+    isAuthenticated,
     settings,
     loaded,
     locked,

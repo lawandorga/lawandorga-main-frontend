@@ -3,10 +3,13 @@
     <div class="flex h-screen overflow-hidden print:h-auto print:overflow-auto">
       <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
-      <NavigationSidebar v-if="authenticated && inside" />
+      <NavigationSidebar v-if="userStore.isAuthenticated && inside" />
 
       <div class="flex flex-col flex-1 w-0 overflow-hidden">
-        <NavigationTop v-if="authenticated" :set-open="setMenuOpen" />
+        <NavigationTop
+          v-if="userStore.isAuthenticated"
+          :set-open="setMenuOpen"
+        />
 
         <div
           v-if="updating"
@@ -16,13 +19,13 @@
           functionality in a moment.
         </div>
 
-        <NavigationDefault v-if="!authenticated" />
+        <NavigationDefault v-if="!userStore.isAuthenticated" />
 
         <!-- Main Panel -->
         <main
           class="relative flex-1 px-6 py-6 overflow-y-auto focus:outline-none"
         >
-          <!-- <div class="px-6" :class="{ 'py-6': authenticated }"> -->
+          <!-- <div class="px-6" :class="{ 'py-6': userStore.isAuthenticated }"> -->
           <router-view></router-view>
           <!-- </div> -->
         </main>
@@ -43,18 +46,15 @@ import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
 import { getUpdateStatus } from "./services/other";
+import { useUserStore } from "./store/user";
 
 const route = useRoute();
-const store = useStore();
 
 const updating = ref(false);
 const menuOpen = ref(false);
 
-const authenticated = computed<boolean>(() => {
-  return store.getters["user/isAuthenticated"];
-});
+const userStore = useUserStore();
 
 const inside = computed<boolean>(() => {
   return route.name !== "user-login";
