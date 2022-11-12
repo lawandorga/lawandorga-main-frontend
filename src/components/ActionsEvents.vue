@@ -1,5 +1,4 @@
 <template>
-  <div></div>
   <ModalCreate
     v-model="addEventModalOpen"
     title="Add Event"
