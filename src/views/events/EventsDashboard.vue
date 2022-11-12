@@ -128,7 +128,7 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
 }
 
 const eventsWithFormattedDate = computed(() => {
-  const fileredGlobal = actionsEvents?.value?.events.filter(
+  const fileredGlobal = actionsEvents?.value?.events?.filter(
     (event: Event) => showGlobal.value || !event.is_global,
   );
   const events = fileredGlobal?.map((event: Event) => {
