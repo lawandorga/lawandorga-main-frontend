@@ -1,5 +1,4 @@
 <template>
-  <div></div>
   <ModalCreate
     v-model="addEventModalOpen"
     title="Add Event"
@@ -49,12 +48,14 @@ const eventFields = ref([
     type: "textarea",
     required: true,
   },
-  /*{
+  {
     label: "Global Event?",
     name: "is_global",
     type: "checkbox",
     required: false,
-  },*/
+    helptext:
+      "Global events are visible to all users in your meta-organization.",
+  },
   {
     label: "Start time",
     name: "start_time",
