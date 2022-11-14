@@ -1,30 +1,33 @@
-import { Alert } from "@/types/alert";
+import { types } from "@lawandorga/components";
 import { AlertState } from "@/types/state";
 import { defineStore } from "pinia";
 
 export const useAlertStore = defineStore("alert", {
   state: () => ({
-    alerts: [] as Alert[],
+    alerts: [] as types.AlertItem[],
   }),
   getters: {
-    // alerts: (state: AlertState) => state.alerts,
     similar: (state: AlertState) => (alert: { message: string }) =>
       state.alerts.find((item) => item.message === alert.message),
   },
   actions: {
-    createAlert(data: { heading: string; type: string; message: string }) {
+    createAlert(data: {
+      heading: string;
+      type: "success" | "error";
+      message: string;
+    }) {
       if (!("heading" in data) || !("type" in data)) return;
       const similar = this.similar(data);
       if (similar && new Date().valueOf() - similar.created < 1000) return;
 
-      const id = Math.random();
+      const id = Math.random().toString();
       const created = new Date().valueOf();
-      const alert: Alert = { ...data, id, created };
+      const alert: types.AlertItem = { ...data, id, created };
       this.alerts = [alert].concat(this.alerts);
     },
-    closeAlert(alert: Alert) {
+    closeAlert(alert: types.AlertItem) {
       const index = this.alerts.findIndex(
-        (item: Alert) => item.id === alert.id,
+        (item: types.AlertItem) => item.id === alert.id,
       );
       if (index !== -1) this.alerts.splice(index, 1);
     },
