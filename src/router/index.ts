@@ -48,6 +48,4 @@ const router = createRouter({
   routes,
 });
 
-console.info("router created");
-
 export default router;

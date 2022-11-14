@@ -1,27 +1,16 @@
 import router from "./router";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import store from "./store";
+import axios, { AxiosInstance } from "axios";
 import { getNextQuery } from "./utils/router";
+import { useUserStore } from "./store/user";
+import { useAlertStore } from "./store/alert";
 
 export function setupDefaultAxios($axios: AxiosInstance) {
-  $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
+  const alertStore = useAlertStore();
 
-  $axios.interceptors.request.use(function (
-    config: AxiosRequestConfig,
-  ): AxiosRequestConfig {
-    if (store.getters["user/isAuthenticated"]) {
-      config.headers = {
-        ...config.headers,
-        Authorization: store.getters["user/token"],
-      };
-    } else {
-      config.headers = {
-        ...config.headers,
-        Authorization: "",
-      };
-    }
-    return config;
-  });
+  $axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
+  $axios.defaults.withCredentials = true;
+  $axios.defaults.xsrfHeaderName = "x-csrftoken";
+  $axios.defaults.xsrfCookieName = "csrftoken";
 
   $axios.interceptors.response.use(
     function (response) {
@@ -43,7 +32,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       }
       // error without a response object attached
       else if (!error.response) {
-        store.dispatch("alert/createAlert", {
+        alertStore.createAlert({
           type: "error",
           heading: `Network Error`,
           message:
@@ -61,7 +50,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
           const reader = new FileReader();
           reader.onload = () => {
             error.response.data = JSON.parse(reader.result as string);
-            store.dispatch("alert/createAlert", {
+            alertStore.createAlert({
               type: "error",
               heading: `Error ${error.response.status}`,
               message:
@@ -79,8 +68,9 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       }
       // authentication error
       else if (error.response.status === 401) {
-        if (store.getters["user/isAuthenticated"]) {
-          store.dispatch("user/logout");
+        const userStore = useUserStore();
+        if (userStore.isAuthenticated) {
+          userStore.reset();
           router.push({
             name: "user-login",
             query: getNextQuery(window.location.pathname),
@@ -94,7 +84,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
         error.response.data.detail &&
         error.response.status !== 400
       ) {
-        store.dispatch("alert/createAlert", {
+        alertStore.createAlert({
           type: "error",
           heading: `Error ${error.response.status}`,
           message: error.response.data.detail,
@@ -102,7 +92,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       }
       // 500 error
       else if (error.response && error.response.status === 500) {
-        store.dispatch("alert/createAlert", {
+        alertStore.createAlert({
           type: "error",
           heading: "Error 500",
           message: "Server Error",
@@ -115,7 +105,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
         error.response.statusText &&
         error.response.status !== 400
       ) {
-        store.dispatch("alert/createAlert", {
+        alertStore.createAlert({
           type: "error",
           heading: `Error ${error.response.status}`,
           message: error.response.statusText,
@@ -126,8 +116,6 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       return Promise.reject(error);
     },
   );
-
-  console.info("axios setup");
 
   return $axios;
 }

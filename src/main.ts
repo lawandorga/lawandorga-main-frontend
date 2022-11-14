@@ -3,36 +3,29 @@ import { setupDefaultAxios } from "./api";
 import App from "./App.vue";
 import "./main.css";
 import router from "./router";
-import store from "./store";
 import axios from "axios";
 import { createPinia } from "pinia";
+import { useUserStore } from "./store/user";
 
 // vue
 const app = createApp(App);
 
-// stores
+// store
 const pinia = createPinia();
 app.use(pinia);
-app.use(store);
 
 // setup axios
 setupDefaultAxios(axios);
 
-// auto login on reload
-store
-  .dispatch("user/autoLogin")
-  .then(() => {
-    app.use(router);
-  })
-  .catch(() => {
-    app.use(router);
-    router.push({ name: "dashboard" });
-    // window.location.reload();
-    // alert("Unknown error occurred. Please contact it@law-orga.de.");
-  })
-  .finally(() => {
-    app.mount("#app");
-  });
+// use router
+app.use(router);
+
+// mount
+app.mount("#app");
+
+// check login status
+const userStore = useUserStore();
+userStore.updateData();
 
 // get the manifest working
 if ("serviceWorker" in navigator) {

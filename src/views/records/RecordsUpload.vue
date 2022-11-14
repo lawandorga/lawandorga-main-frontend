@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/runtime-core";
+import { defineComponent, ref } from "vue";
 import { FormInput } from "@lawandorga/components";
 import { useRouter } from "vue-router";
 import { ButtonNormal } from "@lawandorga/components";

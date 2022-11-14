@@ -1,7 +1,7 @@
 <template>
   <div v-if="!!actionsQuestionnaires">
     <template
-      v-for="(item, index) in actionsQuestionnaires.questionnaires"
+      v-for="item in actionsQuestionnaires.questionnaires"
       :key="item.id"
     >
       <BoxHeadingStats

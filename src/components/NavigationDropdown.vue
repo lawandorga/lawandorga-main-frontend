@@ -23,27 +23,27 @@
       <MenuItems
         class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       >
-        <MenuItem v-if="user">
-          <router-link
-            :to="{ name: 'admin-profile', params: { id: user.id } }"
+        <MenuItem v-if="userStore.user">
+          <RouterLink
+            :to="{ name: 'admin-profile', params: { id: userStore.user.id } }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
           >
             Profile
-          </router-link>
+          </RouterLink>
         </MenuItem>
-        <MenuItem v-if="user">
-          <router-link
+        <MenuItem v-if="userStore.user">
+          <RouterLink
             :to="{ name: 'user-keys' }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
           >
             Keys
-          </router-link>
+          </RouterLink>
         </MenuItem>
         <MenuItem>
           <button
             type="button"
             class="block w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer hover:bg-gray-100"
-            @click="$store.dispatch('user/logout')"
+            @click="logout()"
           >
             Logout
           </button>
@@ -53,30 +53,18 @@
   </Menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useUserStore } from "@/store/user";
 import { UserIcon } from "@heroicons/vue/20/solid";
+import { useRouter } from "vue-router";
 
-export default defineComponent({
-  components: {
-    Menu,
-    UserIcon,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-  },
-  data: function () {
-    return {
-      open: false,
-    };
-  },
-  computed: {
-    user() {
-      const userStore = useUserStore();
-      return userStore.user;
-    },
-  },
-});
+const userStore = useUserStore();
+
+const router = useRouter();
+
+const logout = () => {
+  userStore.logout();
+  router.push({ name: "user-login" });
+};
 </script>
