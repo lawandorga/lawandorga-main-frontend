@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "@vue/runtime-core";
+import { computed, defineComponent, ref } from "vue";
 import { FormGenerator } from "@lawandorga/components";
 import { Questionnaire } from "@/types/records";
 import useGet from "@/composables/useGet";

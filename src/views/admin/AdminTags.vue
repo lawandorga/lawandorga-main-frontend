@@ -134,7 +134,7 @@ export default defineComponent({
     tagUpdated(tag: Tag) {
       this.updateOpen = false;
       if (Array.isArray(this.tags)) {
-        let index = this.tags.findIndex((item) => item.id === tag.id);
+        const index = this.tags.findIndex((item) => item.id === tag.id);
         if (index) this.tags.splice(index, 1, tag);
       }
     },

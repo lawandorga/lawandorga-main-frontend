@@ -4,22 +4,6 @@ import { getNextQuery } from "./utils/router";
 import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 
-function getCookie(cname: string) {
-  const name = cname + "=";
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
 export function setupDefaultAxios($axios: AxiosInstance) {
   const alertStore = useAlertStore();
 
@@ -27,16 +11,6 @@ export function setupDefaultAxios($axios: AxiosInstance) {
   $axios.defaults.withCredentials = true;
   $axios.defaults.xsrfHeaderName = "x-csrftoken";
   $axios.defaults.xsrfCookieName = "csrftoken";
-
-  // $axios.interceptors.request.use(
-  //   function (config) {
-  //     config.headers["X-CSRF-TOKEN"] = getCookie("csrftoken");
-  //     return config;
-  //   },
-  //   function (error) {
-  //     return error;
-  //   },
-  // );
 
   $axios.interceptors.response.use(
     function (response) {
@@ -52,8 +26,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
           error.config.method === "put" ||
           error.config.method === "delete") &&
         error.response.status.toString().startsWith(4) &&
-        error.response.status !== 401 &&
-        error.response.status !== 403
+        error.response.status !== 401
       ) {
         // ignore
       }
@@ -143,8 +116,6 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       return Promise.reject(error);
     },
   );
-
-  console.info("axios setup");
 
   return $axios;
 }

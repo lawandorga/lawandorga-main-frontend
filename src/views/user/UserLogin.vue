@@ -49,26 +49,7 @@
             <div class="p-6 bg-white rounded-sm shadow-sm">
               <h2 class="mb-8 text-2xl font-bold">Login</h2>
               <div v-if="!authenticated">
-                <FormGenerator
-                  :fields="[
-                    {
-                      label: 'E-Mail',
-                      type: 'email',
-                      name: 'email',
-                      autocomplete: 'email',
-                      required: true,
-                    },
-                    {
-                      label: 'Password',
-                      type: 'password',
-                      autocomplete: 'current-password',
-                      name: 'password',
-                      required: true,
-                    },
-                  ]"
-                  :request="loginRequest"
-                  submit="Login"
-                />
+                <ButtonNormal @click="login()">To the login page</ButtonNormal>
                 <div class="pt-6 space-x-4 text-right">
                   <router-link
                     :to="{ name: 'user-register' }"
@@ -238,7 +219,7 @@
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
-import { FormGenerator, ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "@lawandorga/components";
 import InternalService from "@/services/internal";
 import { Article, LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
@@ -247,19 +228,33 @@ import { useUserStore } from "@/store/user";
 import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
-  components: { FormGenerator, ButtonNormal },
+  components: { ButtonNormal },
   setup() {
     const route = useRoute();
     const router = useRouter();
     const userStore = useUserStore();
 
+    // login
+    const login = () => {
+      const path = route.query.next ? route.query.next : "/dashboard/";
+      const next = window.location.origin + path;
+      const url = `${import.meta.env.VITE_AUTH_URL}?next=${next}`;
+      window.location.href = url;
+    };
+
+    // redirect
     watch(userStore, () => {
       if (userStore.isAuthenticated) {
         const url = route.query.next as string;
         if (url) router.push(url);
       }
     });
+
+    return {
+      login,
+    };
   },
+
   data: function () {
     return {
       roadmapItems: [] as RoadmapItem[],

@@ -31,7 +31,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import UserService from "@/services/user";
 import { useRoute } from "vue-router";
-import { CircleLoader } from '@lawandorga/components';
+import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
   components: { CircleLoader },
