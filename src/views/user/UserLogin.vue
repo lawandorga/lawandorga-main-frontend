@@ -237,17 +237,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watch } from "vue";
 import { FormGenerator, ButtonNormal } from "@lawandorga/components";
 import InternalService from "@/services/internal";
 import { Article, LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import UsersService from "@/services/user";
-import { LoginResponse } from "@/types/user";
 import { useUserStore } from "@/store/user";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: { FormGenerator, ButtonNormal },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const userStore = useUserStore();
+
+    watch(userStore, () => {
+      if (userStore.isAuthenticated) {
+        const url = route.query.next as string;
+        if (url) router.push(url);
+      }
+    });
+  },
   data: function () {
     return {
       roadmapItems: [] as RoadmapItem[],
@@ -316,21 +328,16 @@ export default defineComponent({
   },
   methods: {
     next() {
-      console.log("next");
       const url = this.$route.query.next as string;
       if (url) this.$router.push(url);
       else this.$router.push({ name: "dashboard" });
     },
     loginRequest(data: { email: string; password: string }) {
       const userStore = useUserStore();
-      return UsersService.login(data).then((loginData: LoginResponse) => {
-        // this.$store.dispatch("user/login", loginData);
+      return UsersService.login(data).then(() => {
         userStore.updateData();
         this.next();
       });
-    },
-    test() {
-      UsersService.login({ email: "test@test.de", password: "none" });
     },
   },
 });

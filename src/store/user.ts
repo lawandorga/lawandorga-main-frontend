@@ -35,7 +35,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const updateData = () => {
-    UserService.data().then((r) => setData(r));
+    return UserService.data().then((r) => setData(r));
   };
 
   const updatePossible = ref(true);
@@ -81,6 +81,12 @@ export const useUserStore = defineStore("user", () => {
     settings.value = undefined;
   };
 
+  const logout = () => {
+    UserService.logout().then(() => {
+      reset();
+    });
+  };
+
   return {
     rlc,
     user,
@@ -94,5 +100,6 @@ export const useUserStore = defineStore("user", () => {
     updateSetting,
     getSetting,
     reset,
+    logout,
   };
 });

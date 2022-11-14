@@ -5,7 +5,6 @@ import {
   DashboardInformation,
   DashboardNote,
   DataResponse,
-  LoginResponse,
   RefreshResponse,
   RlcUser,
   Settings,
@@ -19,10 +18,12 @@ class UserService {
     return axios.get<Rlc[]>("rlcs/").then((response) => response.data);
   }
 
-  login(data: { email: string; password: string }): Promise<LoginResponse> {
-    return axios
-      .post<LoginResponse>(`session_login/`, data, { withCredentials: true })
-      .then((response) => response.data);
+  login(data: { email: string; password: string }): Promise<void> {
+    return axios.post("login/", data).then();
+  }
+
+  logout(): Promise<void> {
+    return axios.post("logout/").then();
   }
 
   refresh(data: { refresh: string }): Promise<RefreshResponse> {

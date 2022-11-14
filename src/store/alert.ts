@@ -1,66 +1,39 @@
 import { Alert } from "@/types/alert";
-import { AlertState, RootState } from "@/types/state";
-import { ActionContext } from "vuex";
+import { AlertState } from "@/types/state";
+import { defineStore } from "pinia";
 
-const state: AlertState = {
-  alerts: [],
-};
+export const useAlertStore = defineStore("alert", {
+  state: () => ({
+    alerts: [] as Alert[],
+  }),
+  getters: {
+    // alerts: (state: AlertState) => state.alerts,
+    similar: (state: AlertState) => (alert: { message: string }) =>
+      state.alerts.find((item) => item.message === alert.message),
+  },
+  actions: {
+    createAlert(data: { heading: string; type: string; message: string }) {
+      if (!("heading" in data) || !("type" in data)) return;
+      const similar = this.similar(data);
+      if (similar && new Date().valueOf() - similar.created < 1000) return;
 
-const getters = {
-  alerts: (state: AlertState) => state.alerts,
-  similar: (state: AlertState) => (alert: Alert) =>
-    state.alerts.find((item) => item.message === alert.message),
-};
-
-const actions = {
-  createAlert: (context: ActionContext<AlertState, RootState>, data: Alert) => {
-    if (!("heading" in data) || !("type" in data)) return;
-    const similar = context.getters.similar(data);
-    if (similar && new Date().valueOf() - similar.created < 1000) return;
-    context.commit("addAlert", data);
+      const id = Math.random();
+      const created = new Date().valueOf();
+      const alert: Alert = { ...data, id, created };
+      this.alerts = [alert].concat(this.alerts);
+    },
+    closeAlert(alert: Alert) {
+      const index = this.alerts.findIndex(
+        (item: Alert) => item.id === alert.id,
+      );
+      if (index !== -1) this.alerts.splice(index, 1);
+    },
+    showSuccess(message: string) {
+      this.createAlert({
+        type: "success",
+        heading: message,
+        message: "",
+      });
+    },
   },
-  closeAlert: (context: ActionContext<AlertState, RootState>, alert: Alert) => {
-    context.commit("removeAlert", alert);
-  },
-  showSuccess: (
-    context: ActionContext<AlertState, RootState>,
-    message: string,
-  ) => {
-    context.dispatch("createAlert", {
-      type: "success",
-      heading: message,
-    });
-  },
-  createAlerts: (context: ActionContext<AlertState, RootState>) => {
-    context.dispatch("createAlert", {
-      type: "success",
-      heading: "Success",
-      message: "Hello, I'm a success alert.",
-    });
-    context.dispatch("createAlert", {
-      type: "error",
-      heading: "Error",
-      message: "Hello, I'm an error alert.",
-    });
-  },
-};
-
-const mutations = {
-  addAlert(state: AlertState, alert: Alert) {
-    alert["id"] = Math.random();
-    alert["created"] = new Date().valueOf();
-    state.alerts = [alert].concat(state.alerts);
-  },
-  removeAlert(state: AlertState, alert: Alert) {
-    const index = state.alerts.findIndex((item: Alert) => item.id === alert.id);
-    if (index !== -1) state.alerts.splice(index, 1);
-  },
-};
-
-export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
-};
+});

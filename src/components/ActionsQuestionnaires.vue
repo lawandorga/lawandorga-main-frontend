@@ -29,7 +29,7 @@ import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import { FormField } from "@/types/form";
-import { useStore } from "vuex";
+import { useAlertStore } from "@/store/alert";
 import { useRoute } from "vue-router";
 
 // get
@@ -53,12 +53,12 @@ const fields = ref<FormField[]>([
 ]);
 
 // copy
-const store = useStore();
+const alertStore = useAlertStore();
 const base = window.location.origin;
 const copyLink = (recordQuestionnaire: Questionnaire) => {
   navigator.clipboard
     .writeText(`${base}/records/upload/${recordQuestionnaire.code}/`)
-    .then(() => store.dispatch("alert/showSuccess", "Link Copied"));
+    .then(() => alertStore.showSuccess("Link Copied"));
 };
 
 // download

@@ -32,8 +32,8 @@
       </div>
     </div>
     <AlertList
-      :alerts="$store.getters['alert/alerts']"
-      @close="$store.dispatch('alert/closeAlert', $event)"
+      :alerts="alertStore.alerts"
+      @close="alertStore.closeAlert($event)"
     />
   </div>
 </template>
@@ -48,6 +48,9 @@ import NavigationMobile from "./components/NavigationMobile.vue";
 import { useRoute } from "vue-router";
 import { getUpdateStatus } from "./services/other";
 import { useUserStore } from "./store/user";
+import { useAlertStore } from "./store/alert";
+
+const alertStore = useAlertStore();
 
 const route = useRoute();
 

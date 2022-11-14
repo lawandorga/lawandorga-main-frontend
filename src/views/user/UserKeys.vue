@@ -138,7 +138,6 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { Key } from "@/types/key";
-import { useStore } from "vuex";
 import { useUserStore } from "@/store/user";
 
 const userStore = useUserStore();
@@ -162,11 +161,10 @@ const { deleteRequest, deleteModalOpen, temporary } = useDelete(
 );
 
 // unlock
-const store = useStore();
 const unlockModalOpen = ref(false);
 const unlockRequest = () => {
-  return UserService.unlockSelf().then((rlcUser) => {
-    store.dispatch("user/setUser", rlcUser);
+  return UserService.unlockSelf().then(() => {
+    userStore.updateData();
     unlockModalOpen.value = false;
   });
 };
