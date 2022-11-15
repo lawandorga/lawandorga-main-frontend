@@ -60,7 +60,7 @@ const menuOpen = ref(false);
 const userStore = useUserStore();
 
 const inside = computed<boolean>(() => {
-  return route.name !== "user-login";
+  return route.name !== "start";
 });
 
 const setMenuOpen = (open: boolean) => {

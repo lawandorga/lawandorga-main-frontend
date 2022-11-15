@@ -10,20 +10,26 @@ import foldersRoutes from "./folders";
 import internalRoutes from "./internal";
 import legalRoutes from "./legal";
 import eventsRoutes from "./events";
-import Dashboard from "@/views/DashboardPage.vue";
+import DashboardPage from "@/views/DashboardPage.vue";
 import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
+import StartPage from "@/views/StartPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "index",
-    redirect: { name: "user-login" },
+    redirect: { name: "start" },
+  },
+  {
+    path: "/start/",
+    name: "start",
+    component: StartPage,
   },
   {
     path: "/dashboard/",
     name: "dashboard",
-    component: Dashboard,
+    component: DashboardPage,
     beforeEnter: isAuthenticated,
   },
   ...foldersRoutes,

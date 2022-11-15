@@ -1,22 +1,22 @@
 <template>
   <section
-    class="bg-white mx-auto max-w-7xl py-4 px-8 border-b border-gray-100"
+    class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
   >
     <router-link
       class="text-lg font-medium text-lorgablue"
-      :to="{ name: 'user-login' }"
+      :to="{ name: 'start' }"
     >
       &#x21b5; Back
     </router-link>
   </section>
-  <section class="bg-white mx-auto max-w-7xl py-12 px-8">
-    <article v-if="article" class="prose prose-lg mx-auto">
+  <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
+    <article v-if="article" class="mx-auto prose prose-lg">
       <em>{{ formatDate(article.date) }}</em>
       <h1>{{ article.title }}</h1>
       <p class="lead">{{ article.description }}</p>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="article.content"></div>
-      <small v-if="article.author" class="text-right block pt-6">
+      <small v-if="article.author" class="block pt-6 text-right">
         Author: {{ article.author }}
       </small>
     </article>

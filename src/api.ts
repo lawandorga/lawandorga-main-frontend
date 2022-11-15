@@ -72,7 +72,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
         if (userStore.isAuthenticated) {
           userStore.reset();
           router.push({
-            name: "user-login",
+            name: "start",
             query: getNextQuery(window.location.pathname),
           });
         }

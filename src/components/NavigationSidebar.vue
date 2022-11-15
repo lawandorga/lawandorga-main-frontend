@@ -19,7 +19,7 @@
           class="flex items-center px-4 py-1 border-b h-14 border-white/20"
         >
           <router-link
-            :to="{ name: 'user-login' }"
+            :to="{ name: 'start' }"
             class="flex items-center h-10 px-4 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
           >
             <div class="-ml-2">
@@ -33,7 +33,7 @@
           class="flex items-center border-b h-14 border-white/20"
         >
           <router-link
-            :to="{ name: 'user-login' }"
+            :to="{ name: 'start' }"
             class="flex items-center justify-center w-10 h-10 mx-auto rounded hover:bg-gray-50/10"
           >
             <LogoWhite />

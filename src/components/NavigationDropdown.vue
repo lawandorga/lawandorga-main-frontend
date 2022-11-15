@@ -65,6 +65,6 @@ const router = useRouter();
 
 const logout = () => {
   userStore.logout();
-  router.push({ name: "user-login" });
+  router.push({ name: "start" });
 };
 </script>
