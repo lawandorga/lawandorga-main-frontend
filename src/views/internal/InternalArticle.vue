@@ -27,12 +27,12 @@
 import { defineComponent, ref, onMounted } from "vue";
 import InternalService from "@/services/internal";
 import { useRoute } from "vue-router";
-import { Article } from "@/types/internal";
+import { IArticle } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 
 export default defineComponent({
   setup() {
-    const article = ref<Article | null>(null);
+    const article = ref<IArticle | null>(null);
     const route = useRoute();
 
     onMounted(() =>
