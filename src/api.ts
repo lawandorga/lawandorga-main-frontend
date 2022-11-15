@@ -81,8 +81,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       else if (
         error.response &&
         error.response.data &&
-        error.response.data.detail &&
-        error.response.status !== 400
+        error.response.data.detail
       ) {
         alertStore.createAlert({
           type: "error",
