@@ -149,11 +149,11 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
   }, {});
 }
 
-function findNextEventIndex() {
+const nextEventIndex = computed(() => {
   return actionsEvents?.value?.events.findIndex(
     (event: Event) => new Date(event.end_time) > new Date(Date.now()),
   );
-}
+});
 
 function loadPastEvents() {
   const newEarlier = earlierValue?.value + 10;
@@ -168,7 +168,7 @@ const isEventsListEmpty = computed(() => {
 
 const eventsWithFormattedDate = computed(() => {
   const current_events = actionsEvents?.value?.events?.slice(
-    Math.max(0, findNextEventIndex() - earlierValue?.value),
+    Math.max(0, nextEventIndex?.value - earlierValue?.value),
   );
   const fileredGlobal = current_events?.filter(
     (event: Event) => showGlobal.value || !event.is_global,
