@@ -99,12 +99,17 @@
 
 <script setup lang="ts">
 import ActionsEvents from "@/components/ActionsEvents.vue";
+import { ButtonNormal } from "@lawandorga/components";
+import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { Event } from "@/types/event";
 import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
+import router from "@/router";
+import { find } from "lodash";
+import { useRoute } from "vue-router";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const userStore = useUserStore();
@@ -125,31 +130,41 @@ function findNextEventIndex() {
   );
 }
 
-const eventsWithFormattedDate = computed(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  let earlier = 0;
-  if (urlParams.has("earlier")) {
-    earlier = Number(urlParams.get("earlier"));
-  }
-  const current_events = actionsEvents?.value?.events?.slice(
-    findNextEventIndex() - Math.max(0, earlier),
-  );
-  const events = current_events?.map((event: Event) => {
-    return {
-      ...event,
-      // Necessary to display the date in the update modal
-      start_time_object: formatDateToObject(event.start_time),
-      end_time_object: formatDateToObject(event.end_time),
-    };
-  });
-  return groupBy(
-    events,
-    (
-      event: Event & {
-        start_time_object: FormattedDate;
-        end_time_object: FormattedDate;
-      },
-    ) => event.start_time_object.groupDate,
-  );
-});
+function loadPastEvents() {
+  earlier += 10;
+  //router.push({ path: "/events/", query: { earlier: 10 } });
+  //location.reload();
+}
+
+const eventsWithFormattedDate = computed(
+  () => {
+    const route = useRoute();
+    const earlier = Number(route.query.earlier ?? 0);
+    const current_events = actionsEvents?.value?.events?.slice(
+      Math.max(0, findNextEventIndex() - earlier),
+    );
+    const events = current_events?.map((event: Event) => {
+      return {
+        ...event,
+        // Necessary to display the date in the update modal
+        start_time_object: formatDateToObject(event.start_time),
+        end_time_object: formatDateToObject(event.end_time),
+      };
+    });
+    return groupBy(
+      events,
+      (
+        event: Event & {
+          start_time_object: FormattedDate;
+          end_time_object: FormattedDate;
+        },
+      ) => event.start_time_object.groupDate,
+    );
+  },
+  /*set: (newEarlier) => {
+    earlier += newEarlier;
+    urlParams.set("earlier", earlier.toString());
+    console.log("Function called");
+  },*/
+);
 </script>
