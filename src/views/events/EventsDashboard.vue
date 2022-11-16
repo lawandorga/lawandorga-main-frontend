@@ -24,7 +24,7 @@
           </ButtonNormal>
         </template>
       </BreadcrumbsBar>
-      <div class="flex justify-end">
+      <div class="flex justify-end align-baseline gap-4">
         <ButtonToggle v-model="showGlobal" text="Show global events" />
         <ButtonNormal size="xs" kind="action" @click="loadPastEvents">
           Show earlier
@@ -170,7 +170,7 @@ const eventsWithFormattedDate = computed(() => {
   const current_events = actionsEvents?.value?.events?.slice(
     Math.max(0, findNextEventIndex() - earlierValue?.value),
   );
-  const fileredGlobal = current_events?.value?.events?.filter(
+  const fileredGlobal = current_events?.filter(
     (event: Event) => showGlobal.value || !event.is_global,
   );
   const events = fileredGlobal?.map((event: Event) => {
