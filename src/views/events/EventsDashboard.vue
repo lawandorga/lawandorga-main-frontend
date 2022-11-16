@@ -28,6 +28,12 @@
         <ButtonToggle v-model="showGlobal" text="Show global events" />
       </div>
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
+        <h2
+          v-if="isEventsListEmpty"
+          class="text-xl text-lorgablue text-center font-medium"
+        >
+          No event matches the filter criteria.
+        </h2>
         <div
           v-for="day in eventsWithFormattedDate"
           :key="day[0].start_time_object.groupDate"
@@ -136,6 +142,10 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
     return rv;
   }, {});
 }
+
+const isEventsListEmpty = computed(() => {
+  return Object.keys(eventsWithFormattedDate?.value || {}).length === 0;
+});
 
 const eventsWithFormattedDate = computed(() => {
   const fileredGlobal = actionsEvents?.value?.events?.filter(
