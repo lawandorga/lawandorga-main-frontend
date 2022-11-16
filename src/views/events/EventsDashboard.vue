@@ -24,8 +24,11 @@
           </ButtonNormal>
         </template>
       </BreadcrumbsBar>
-      <div class="flex justify-end">
+      <div class="flex justify-end align-baseline gap-4">
         <ButtonToggle v-model="showGlobal" text="Show global events" />
+        <ButtonNormal size="xs" kind="action" @click="loadPastEvents">
+          Show earlier
+        </ButtonNormal>
       </div>
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <h2
@@ -124,14 +127,17 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { Event } from "@/types/event";
-import { formatDateToObject, FormattedDate, formatDate } from "@/utils/date";
+import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import ModalCalendarLink from "@/components/ModalCalendarLink.vue";
+import { useRoute, useRouter } from "vue-router";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const showGlobal = ref(true);
 const modalCalendarLink = ref<typeof ModalCalendarLink>();
 const userStore = useUserStore();
+const router = useRouter();
+const route = useRoute();
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(xs: T[], getKey: (element: T) => string) {
@@ -143,12 +149,28 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
   }, {});
 }
 
+const nextEventIndex = computed(() => {
+  return actionsEvents?.value?.events.findIndex(
+    (event: Event) => new Date(event.end_time) > new Date(Date.now()),
+  );
+});
+
+function loadPastEvents() {
+  const newEarlier = earlierValue?.value + 10;
+  router.push({ path: "/events/", query: { earlier: newEarlier } });
+}
+
+const earlierValue = computed(() => Number(route.query?.earlier ?? 0));
+
 const isEventsListEmpty = computed(() => {
   return Object.keys(eventsWithFormattedDate?.value || {}).length === 0;
 });
 
 const eventsWithFormattedDate = computed(() => {
-  const fileredGlobal = actionsEvents?.value?.events?.filter(
+  const current_events = actionsEvents?.value?.events?.slice(
+    Math.max(0, nextEventIndex?.value - earlierValue?.value),
+  );
+  const fileredGlobal = current_events?.filter(
     (event: Event) => showGlobal.value || !event.is_global,
   );
   const events = fileredGlobal?.map((event: Event) => {
