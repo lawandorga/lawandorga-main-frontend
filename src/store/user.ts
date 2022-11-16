@@ -35,7 +35,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const updateData = () => {
-    UserService.data().then((r) => setData(r));
+    return UserService.data().then((r) => setData(r));
   };
 
   const updatePossible = ref(true);
@@ -70,6 +70,10 @@ export const useUserStore = defineStore("user", () => {
     return user.value?.locked;
   });
 
+  const isAuthenticated = computed(() => {
+    return !!user.value;
+  });
+
   const reset = () => {
     rlc.value = undefined;
     user.value = undefined;
@@ -77,11 +81,18 @@ export const useUserStore = defineStore("user", () => {
     settings.value = undefined;
   };
 
+  const logout = () => {
+    UserService.logout().then(() => {
+      reset();
+    });
+  };
+
   return {
     rlc,
     user,
     badges,
     adminBadges,
+    isAuthenticated,
     settings,
     loaded,
     locked,
@@ -89,5 +100,6 @@ export const useUserStore = defineStore("user", () => {
     updateSetting,
     getSetting,
     reset,
+    logout,
   };
 });

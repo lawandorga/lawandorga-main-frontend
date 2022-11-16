@@ -1,4 +1,4 @@
-import { Alert } from "./alert";
+import { types } from "@lawandorga/components";
 import { Rlc } from "./core";
 import { RlcUser } from "./user";
 
@@ -7,7 +7,7 @@ export interface CollabState {
 }
 
 export interface AlertState {
-  alerts: Alert[];
+  alerts: types.AlertItem[];
 }
 
 export interface UserState {

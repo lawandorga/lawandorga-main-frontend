@@ -7,7 +7,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user/login",
     name: "user-login",
     component: UserLogin,
-    // beforeEnter: notAuthenticated,
   },
   {
     path: "/user/register/",

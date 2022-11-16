@@ -1,6 +1,6 @@
 <template>
-  <div class="max-w-2xl mx-auto bg-white shadow px-4 pt-4 pb-6 mt-12">
-    <h2 class="text-2xl font-medium mb-4">E-Mail Confirmation</h2>
+  <div class="max-w-2xl px-4 pt-4 pb-6 mx-auto mt-12 bg-white shadow">
+    <h2 class="mb-4 text-2xl font-medium">E-Mail Confirmation</h2>
     <div v-if="loading" class="text-lg">
       <p>One Moment please, we are checking the confirmation link.</p>
       <CircleLoader />
@@ -31,7 +31,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import UserService from "@/services/user";
 import { useRoute } from "vue-router";
-import { CircleLoader } from '@lawandorga/components';
+import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
   components: { CircleLoader },

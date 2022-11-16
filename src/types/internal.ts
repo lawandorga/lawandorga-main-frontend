@@ -1,4 +1,4 @@
-export interface Article {
+export interface IArticle {
   id: number;
   title: string;
   description: string;
@@ -7,14 +7,14 @@ export interface Article {
   author?: string;
 }
 
-export interface RoadmapItem {
+export interface IRoadmapItem {
   id: number;
   title: string;
   description: string;
   date: string;
 }
 
-export interface LoginPage {
+export interface ILoginPage {
   id: number;
   content: string;
 }

@@ -73,7 +73,7 @@ export default {
 
     const route = useRoute();
     const inside = computed(() => {
-      return route.name !== "user-login";
+      return route.name !== "start";
     });
 
     return {

@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot as="template" :show="open">
-    <Dialog
+    <HeadlessDialog
       as="div"
       class="fixed inset-0 z-40 flex md:hidden print:hidden"
       @close="setOpen(false)"
@@ -84,14 +84,14 @@
       <div class="flex-shrink-0 w-14" aria-hidden="true">
         <!-- Dummy element to force sidebar to shrink to fit close icon -->
       </div>
-    </Dialog>
+    </HeadlessDialog>
   </TransitionRoot>
 </template>
 
 <script lang="ts">
 import useNavigationItems from "@/composables/useNavigationItems";
 import {
-  Dialog,
+  Dialog as HeadlessDialog,
   DialogOverlay,
   TransitionChild,
   TransitionRoot,
@@ -102,7 +102,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   components: {
     XMarkIcon,
-    Dialog,
+    HeadlessDialog,
     DialogOverlay,
     TransitionChild,
     TransitionRoot,

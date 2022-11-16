@@ -9,12 +9,6 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
-    path: "/admin/notifications/",
-    name: "admin-notifications",
-    component: () => import("@/views/admin/Notifications.vue"),
-    beforeEnter: isAuthenticated,
-  },
-  {
     path: "/admin/profiles/",
     name: "admin-profiles",
     component: () => import("@/views/admin/AdminProfiles.vue"),

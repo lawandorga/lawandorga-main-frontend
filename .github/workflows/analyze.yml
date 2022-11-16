@@ -1,0 +1,23 @@
+name: Analyze
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Lint
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Up Node
+        uses: actions/setup-node@v3
+      
+      - name: Install Packages
+        run: npm install
+
+      - name: Run Lint
+        run: npm run lint
