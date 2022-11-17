@@ -11,6 +11,7 @@ import {
   Squares2X2Icon,
   CalendarDaysIcon,
   FolderIcon,
+  EnvelopeIcon,
 } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
@@ -87,6 +88,16 @@ export default function useNavigationItems() {
         icon: ChartPieIcon,
         is: "router-link",
         attrs: { to: { name: "statistics-dashboard" } },
+        permissions: [],
+      },
+      {
+        label: "Mail",
+        icon: EnvelopeIcon,
+        is: "router-link",
+        attrs: {
+          to: { name: "mail-dashboard" },
+          class: !store.user?.email.includes("@law-orga.de") ? "hidden" : "",
+        },
         permissions: [],
       },
       {
