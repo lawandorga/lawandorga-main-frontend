@@ -10,6 +10,7 @@ import foldersRoutes from "./folders";
 import internalRoutes from "./internal";
 import legalRoutes from "./legal";
 import eventsRoutes from "./events";
+import mailRoutes from "./mail";
 import DashboardPage from "@/views/DashboardPage.vue";
 import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
@@ -43,6 +44,7 @@ const routes: Array<RouteRecordRaw> = [
   ...internalRoutes,
   ...legalRoutes,
   ...eventsRoutes,
+  ...mailRoutes,
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
