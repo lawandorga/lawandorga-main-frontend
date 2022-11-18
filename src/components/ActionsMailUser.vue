@@ -31,6 +31,8 @@
     Do you want to generate a new password? Be aware that your IMAP and SMTP
     settings will change.
     <br />
+    Please store the password somewhere safe. You can only see it once.
+    <br />
     <br />
     <span v-if="password">
       Your new password is:
