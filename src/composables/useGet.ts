@@ -5,15 +5,11 @@ type Nullable<T> = T extends (infer U)[]
   : never;
 
 function useGet<
+  Type,
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-  Type extends { [key: string]: any },
-  Fn extends (...args: any[]) => Promise<Type | Type[]>,
+  Fn extends (...args: any[]) => Promise<Type>,
   /* eslint-enable */
->(
-  getFunc: Fn,
-  obj: Ref<Type | Type[] | null>,
-  ...params: Nullable<Parameters<Fn>>
-) {
+>(getFunc: Fn, obj: Ref<Type>, ...params: Nullable<Parameters<Fn>>) {
   const getRequest = () => {
     getFunc(...params.map(unref)).then((newItem) => (obj.value = newItem));
   };

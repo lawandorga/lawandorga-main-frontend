@@ -1,4 +1,4 @@
-import { Component, computed } from "vue";
+import { type Component, computed } from "vue";
 import {
   RectangleStackIcon,
   FolderOpenIcon,

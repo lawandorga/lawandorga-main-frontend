@@ -5,13 +5,13 @@ type Nullable<T> = T extends (infer U)[]
   : never;
 
 function useQuery<
+  Type,
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-  Type extends { [key: string]: any },
-  Fn extends (...args: any[]) => Promise<Type | Type[]>,
+  Fn extends (...args: any[]) => Promise<Type>,
   /* eslint-enable */
 >(
   getFunc: Fn,
-  obj: Ref<Type | Type[] | null>,
+  obj: Ref<Type>,
   ...params: Nullable<Parameters<Fn>>
 ): () => void {
   const getRequest = () => {

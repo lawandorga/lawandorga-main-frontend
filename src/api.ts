@@ -30,6 +30,10 @@ export function setupDefaultAxios($axios: AxiosInstance) {
       ) {
         // ignore
       }
+      // ignore everything with code 444 because it is custom
+      else if (error.response && error.response.status === 444) {
+        // ignore
+      }
       // error without a response object attached
       else if (!error.response) {
         alertStore.createAlert({

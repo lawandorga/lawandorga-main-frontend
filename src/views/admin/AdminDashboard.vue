@@ -25,7 +25,7 @@
             <span
               class="inline-flex p-3 text-gray-700 rounded-lg bg-gray-50 ring-4 ring-white"
             >
-              <component :is="item.icon" class="w-6 h-6 text-gray-600" />
+              <Component :is="item.icon" class="w-6 h-6 text-gray-600" />
             </span>
             <div
               v-if="item.notifications && item.notifications > 0"
@@ -77,14 +77,26 @@ import {
   UserIcon,
   CogIcon,
   WindowIcon,
+  EnvelopeIcon,
 } from "@heroicons/vue/24/outline";
-import { computed } from "vue";
+import { type Component, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";
+import { RouteLocationRaw } from "vue-router";
 
 const store = useUserStore();
 
-const items = computed(() => [
+interface AdminItem {
+  title: string;
+  description: string;
+  link: RouteLocationRaw;
+  icon?: Component;
+  notifications?: number;
+  class?: string;
+  placeholder?: boolean;
+}
+
+const items = computed<AdminItem[]>(() => [
   {
     title: "Profiles",
     description:
@@ -148,7 +160,10 @@ const items = computed(() => [
     class: "sm:rounded-bl-lg",
   },
   {
-    placeholder: true,
+    title: "Mail",
+    description: "Here you can add groups and a domain.",
+    link: { name: "admin-mail" },
+    icon: EnvelopeIcon,
     class: "rounded-b-lg sm:rounded-bl-none",
   },
 ]);
