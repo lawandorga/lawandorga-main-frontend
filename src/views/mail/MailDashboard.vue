@@ -26,8 +26,7 @@
                 </ButtonNormal>
                 <p>
                   As soon as you have a mail role you can assign yourself an
-                  address and setup your local mail client. Yes, you can send
-                  secure emails with the mail server from Law&Orga!
+                  address and setup your local mail client.
                 </p>
               </div>
             </div>
