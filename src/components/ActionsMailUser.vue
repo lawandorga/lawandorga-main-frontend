@@ -9,9 +9,10 @@
     v-model="setDefaultAddressModalOpen"
     :data="temporary"
     :request="setDefaultAddress"
+    title="Set Default Address"
   >
     Do you want to set {{ temporary?.localpart }}@{{ temporary?.domain.name }}
-    as default? Be aware that your IMAP and SMPT settings will change.
+    as default? Be aware that your IMAP and SMTP settings will change.
   </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
@@ -22,6 +23,21 @@
       temporary?.domain.name
     }}?
   </ModalDelete>
+  <ModalConfirm
+    v-model="regeneratePasswordModalOpen"
+    :request="regeneratePassword"
+    title="Regenerate Password"
+  >
+    Do you want to generate a new password? Be aware that your IMAP and SMTP
+    settings will change.
+    <br />
+    <br />
+    <span v-if="password">
+      Your new password is:
+      <br />
+      {{ password }}
+    </span>
+  </ModalConfirm>
 </template>
 
 <script setup lang="ts">
@@ -34,9 +50,15 @@ import {
   mailAddAddress,
   mailDeleteAddress,
   mailSetDefaultAddress,
+  mailRegeneratePassword,
 } from "@/services/mail";
 import { MailPageMail, MailAddress, MailUser } from "@/types/mail";
-import { ModalConfirm, ModalCreate, ModalDelete } from "@lawandorga/components";
+import {
+  ModalConfirm,
+  ModalCreate,
+  ModalDelete,
+  types,
+} from "@lawandorga/components";
 import { computed, ref } from "vue";
 
 // get page
@@ -63,7 +85,7 @@ const addresses = computed<MailAddress[] | null>(() => {
 });
 
 // create address
-const fields = computed(() => {
+const fields = computed<types.FormField[]>(() => {
   return [
     { label: "Localpart", name: "localpart", type: "string", required: true },
     {
@@ -73,7 +95,7 @@ const fields = computed(() => {
       required: true,
       options: page.value ? page.value.available_domains : [],
     },
-  ];
+  ] as types.FormField[];
 });
 const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
   useCommand(mailAddAddress, useQuery(mailGetPageMail, page));
@@ -91,6 +113,12 @@ const {
   commandModalOpen: setDefaultAddressModalOpen,
 } = useCommand(mailSetDefaultAddress, useQuery(mailGetPageMail, page));
 
+// regenerate password
+const regeneratePasswordModalOpen = ref(false);
+const password = ref("");
+const regeneratePassword = () =>
+  mailRegeneratePassword().then((d) => (password.value = d.password));
+
 // expose
 defineExpose({
   page,
@@ -102,5 +130,6 @@ defineExpose({
   deleteAddress,
   deleteAddressModalOpen,
   setDefaultAddressModalOpen,
+  regeneratePasswordModalOpen,
 });
 </script>

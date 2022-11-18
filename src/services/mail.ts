@@ -5,7 +5,9 @@ export function mailGetPageMail(): Promise<MailPageMail | false> {
   return axios
     .get("mail/query/page/mail/")
     .then((response) => response.data)
-    .catch(() => false);
+    .catch((error) => {
+      if (error.response.status === 444) return false;
+    });
 }
 
 export function mailCreateUser(): Promise<void> {
@@ -26,4 +28,8 @@ export function mailDeleteAddress(data: { id: string }): Promise<void> {
 
 export function mailSetDefaultAddress(data: { id: string }): Promise<void> {
   return axios.post(`mail/users/set_default_address/${data.id}/`, data).then();
+}
+
+export function mailRegeneratePassword(): Promise<{ password: string }> {
+  return axios.post(`mail/users/regenerate_password/`).then((r) => r.data);
 }

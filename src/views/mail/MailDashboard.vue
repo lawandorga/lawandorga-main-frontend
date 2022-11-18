@@ -36,7 +36,7 @@
         <template v-else>
           <div class="px-6 py-5 mt-10 bg-white rounded shadow">
             <div
-              class="mt-4 prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg"
+              class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg"
             >
               <h1 class="">Mail User Role</h1>
               <p>
@@ -46,6 +46,12 @@
                   Aliases: {{ actionsMailUser.user.aliases.join(", ") }}
                 </span>
               </p>
+              <ButtonNormal
+                kind="action"
+                @click="actionsMailUser.regeneratePasswordModalOpen = true"
+              >
+                Regenerate password
+              </ButtonNormal>
               <h2 class="">IMAP & SMTP Settings</h2>
               <table>
                 <thead>
@@ -66,8 +72,8 @@
                   </tr>
                   <tr>
                     <th>Username</th>
-                    <td>{{ actionsMailUser.user.email }}</td>
-                    <td>{{ actionsMailUser.user.email }}</td>
+                    <td>{{ actionsMailUser.user.email || "None yet" }}</td>
+                    <td>{{ actionsMailUser.user.email || "None yet" }}</td>
                   </tr>
                   <tr>
                     <th>Password</th>
