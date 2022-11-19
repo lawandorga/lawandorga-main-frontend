@@ -3,7 +3,7 @@
     v-model="addAddressModalOpen"
     :request="addAddress"
     :fields="fields"
-    :initial="{ user: user ? user?.id : '' }"
+    :initial="{ user: user?.id }"
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
@@ -51,12 +51,7 @@ import {
   mailSetDefaultAddress,
   mailRegeneratePassword,
 } from "@/services/mail";
-import {
-  MailDashboardPage,
-  MailAddress,
-  MailUser,
-  NoMailAccount,
-} from "@/types/mail";
+import { MailDomain, MailUser } from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
@@ -67,16 +62,20 @@ import { computed, PropType, ref, toRefs } from "vue";
 
 // page
 const props = defineProps({
-  page: {
-    required: true,
-    type: Object as PropType<MailDashboardPage | NoMailAccount>,
+  availableDomains: {
+    required: false,
+    type: Object as PropType<MailDomain[]>,
+  },
+  user: {
+    required: false,
+    type: Object as PropType<MailUser>,
   },
   queryPage: {
     type: Function as PropType<() => void>,
     required: true,
   },
 });
-const { page, queryPage } = toRefs(props);
+const { availableDomains, queryPage, user } = toRefs(props);
 
 // create mail user
 const { commandRequest: createMailUserRole } = useCommand(
@@ -84,22 +83,8 @@ const { commandRequest: createMailUserRole } = useCommand(
   queryPage.value,
 );
 
-// user
-const user = computed<MailUser | null | false>(() => {
-  if (page.value == undefined) return null;
-  else if (page.value.noMailAccount) return false;
-  return page.value.user;
-});
-
-// addresses
-const addresses = computed<MailAddress[] | null>(() => {
-  if (user.value === null || user.value === false) return null;
-  return user.value.account.addresses;
-});
-
 // create address
 const fields = computed<types.FormField[]>(() => {
-  if (page.value.noMailAccount) return [];
   return [
     { label: "Localpart", name: "localpart", type: "string", required: true },
     {
@@ -107,7 +92,7 @@ const fields = computed<types.FormField[]>(() => {
       name: "domain",
       type: "select",
       required: true,
-      options: page.value ? page.value.available_domains : [],
+      options: availableDomains?.value as types.FormField["options"],
     },
   ] as types.FormField[];
 });
@@ -135,13 +120,9 @@ const regeneratePassword = () =>
 
 // expose
 defineExpose({
-  page,
-  user,
-  addresses,
+  temporary,
   createMailUserRole,
   addAddressModalOpen,
-  temporary,
-  deleteAddress,
   deleteAddressModalOpen,
   setDefaultAddressModalOpen,
   regeneratePasswordModalOpen,

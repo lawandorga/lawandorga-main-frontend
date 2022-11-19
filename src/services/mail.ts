@@ -40,6 +40,13 @@ export function mailRegeneratePassword(): Promise<{ password: string }> {
   return axios.post(`mail/users/regenerate_password/`).then((r) => r.data);
 }
 
-export function mailAddDomain(data: { domain: string }): Promise<void> {
+export function mailAddDomain(data: { name: string }): Promise<void> {
   return axios.post(`mail/domains/`, data).then();
+}
+
+export function mailChangeDomain(data: {
+  id: string;
+  name: string;
+}): Promise<void> {
+  return axios.post(`mail/domains/${data.id}/`, data).then();
 }

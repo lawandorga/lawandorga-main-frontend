@@ -1,15 +1,15 @@
 <template>
-  <template v-if="!!actionsMailUser">
+  <template v-if="!!actionsMailUser && !!user">
     <div class="px-6 py-5 bg-white rounded shadow">
       <div
         class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg"
       >
         <h1 class="">Mail User Role</h1>
         <p>
-          E-Mail: {{ actionsMailUser.user.email || "None yet" }}
+          E-Mail: {{ user.email || "None yet" }}
           <br />
-          <span v-if="actionsMailUser.user.aliases.length">
-            Aliases: {{ actionsMailUser.user.aliases.join(", ") }}
+          <span v-if="user.aliases.length">
+            Aliases: {{ user.aliases.join(", ") }}
           </span>
         </p>
         <ButtonNormal
@@ -38,8 +38,8 @@
             </tr>
             <tr>
               <th>Username</th>
-              <td>{{ actionsMailUser.user.email || "None yet" }}</td>
-              <td>{{ actionsMailUser.user.email || "None yet" }}</td>
+              <td>{{ user.email || "None yet" }}</td>
+              <td>{{ user.email || "None yet" }}</td>
             </tr>
             <tr>
               <th>Password</th>
@@ -58,7 +58,7 @@
           { name: 'default', key: 'is_default' },
           { name: '', key: 'action' },
         ]"
-        :data="actionsMailUser.addresses"
+        :data="addresses"
       >
         <template #head-action>
           <div class="flex justify-end">
@@ -102,8 +102,37 @@
 
 <script setup lang="ts">
 import { actionsMailUserKey } from "@/types/keys";
+import {
+  MailAddress,
+  MailDashboardPage,
+  MailUser,
+  NoMailAccount,
+} from "@/types/mail";
 import { ButtonNormal, TableGenerator } from "@lawandorga/components";
-import { inject } from "vue";
+import { computed, inject, PropType, toRefs } from "vue";
 
+// page
+const props = defineProps({
+  page: {
+    required: true,
+    type: Object as PropType<MailDashboardPage | NoMailAccount>,
+  },
+});
+const { page } = toRefs(props);
+
+// user
+const user = computed<MailUser | null | false>(() => {
+  if (page.value == undefined) return null;
+  else if (page.value.noMailAccount) return false;
+  return page.value.user;
+});
+
+// addresses
+const addresses = computed<MailAddress[] | null>(() => {
+  if (user.value === null || user.value === false) return null;
+  return user.value.account.addresses;
+});
+
+// actions
 const actionsMailUser = inject(actionsMailUserKey);
 </script>

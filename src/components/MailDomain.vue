@@ -7,25 +7,51 @@
         <h1>Domain Settings</h1>
         <p>
           Domain:
-          {{ domainActions.domain ? domainActions.domain.name : "None yet" }}
+          {{ domain ? domain.name : "None yet" }}
         </p>
         <ButtonNormal
-          v-if="domainActions.domain === null"
+          v-if="domain === null"
           kind="action"
           @click="domainActions.commandModalOpen = true"
         >
           Add a domain
         </ButtonNormal>
-        <p v-if="domainActions.domain === null">
+        <ButtonNormal
+          v-if="domain"
+          kind="action"
+          @click="
+            domainActions.temporary = domain;
+            domainActions.changeDomainModalOpen = true;
+          "
+        >
+          Change the domain
+        </ButtonNormal>
+        <p v-if="domain === null">
           Once you have added a domain you can setup the MX-Records and get
           started adding mail addresses.
         </p>
-        <div v-if="domainActions.domain">
+        <div v-if="domain">
           <p>
             You need to setup the correct MX-Records on your domain. In order to
             do that you need to login to your domain hosting provider and setup
             the following records:
           </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Hostname</th>
+                <th>Destination</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>@</td>
+                <td>mail.law-orga.de</td>
+                <td>10</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -34,8 +60,25 @@
 
 <script lang="ts" setup>
 import { actionsDomainKey } from "@/types/keys";
+import { MailDashboardPage, MailDomain, NoMailAccount } from "@/types/mail";
 import { ButtonNormal } from "@lawandorga/components";
-import { inject } from "vue";
+import { computed, inject, PropType, toRefs } from "vue";
 
+// page
+const props = defineProps({
+  page: {
+    required: true,
+    type: Object as PropType<MailDashboardPage | NoMailAccount>,
+  },
+});
+const { page } = toRefs(props);
+
+// domain
+const domain = computed<MailDomain | null>(() => {
+  if (page.value && !page.value.noMailAccount) return page.value.domain;
+  return null;
+});
+
+// actions
 const domainActions = inject(actionsDomainKey);
 </script>

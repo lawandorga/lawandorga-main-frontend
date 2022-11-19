@@ -37,28 +37,26 @@
           <TabControls
             :tabs="[
               { name: 'Mail User Role', key: 'mailUserRole' },
+              { name: 'Mail Users', key: 'users' },
               { name: 'Domain', key: 'domain' },
             ]"
           >
-            <template #mailUserRole><MailUserRole /></template>
-            <template #domain><MailDomain /></template>
+            <template #mailUserRole><MailUserRole :page="page" /></template>
+            <template #users><MailUsers :page="page" /></template>
+            <template #domain><MailDomain :page="page" /></template>
           </TabControls>
         </template>
       </template>
     </div>
   </BoxLoader>
   <ActionsMailUser
-    v-if="page !== undefined"
+    v-if="page"
     ref="actionsMailUser"
-    :page="page"
+    :available-domains="page.noMailAccount ? undefined : page.available_domains"
+    :user="page.noMailAccount ? undefined : page.user"
     :query-page="queryPage"
   />
-  <ActionsDomain
-    v-if="page !== undefined"
-    ref="actionsDomain"
-    :page="page"
-    :query-page="queryPage"
-  />
+  <ActionsMailDomain ref="actionsDomain" :query-page="queryPage" />
 </template>
 
 <script setup lang="ts">
@@ -73,11 +71,12 @@ import TabControls from "@/components/TabControls.vue";
 import { actionsDomainKey, actionsMailUserKey } from "@/types/keys";
 import MailUserRole from "@/components/MailUserRole.vue";
 import MailDomain from "@/components/MailDomain.vue";
-import ActionsDomain from "@/components/ActionsDomain.vue";
+import ActionsMailDomain from "@/components/ActionsMailDomain.vue";
 import { MailDashboardPage, NoMailAccount } from "@/types/mail";
 import useQuery from "@/composables/useQuery";
 import { mailGetDashboardPage } from "@/services/mail";
 import useGet from "@/composables/useGet";
+import MailUsers from "@/components/MailUsers.vue";
 
 // user store
 const userStore = useUserStore();
@@ -94,6 +93,6 @@ const actionsMailUser = ref<typeof ActionsMailUser>();
 provide(actionsMailUserKey, actionsMailUser);
 
 // domain actions
-const actionsDomain = ref<typeof ActionsDomain>();
+const actionsDomain = ref<typeof ActionsMailDomain>();
 provide(actionsDomainKey, actionsDomain);
 </script>
