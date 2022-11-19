@@ -16,14 +16,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ModalDelete, ModalCreate } from "@lawandorga/components";
+import { ModalDelete, ModalCreate, types } from "@lawandorga/components";
 import { RecordsDocument } from "@/types/records";
 import { ref, toRefs } from "vue";
 import RecordsService from "@/services/records";
 import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
-import { FormField } from "@/types/form";
 import { Record } from "@/types/records";
 
 // props
@@ -42,7 +41,7 @@ const fields = [
     name: "file",
     required: true,
   },
-] as FormField[];
+] as types.FormField[];
 const { createModalOpen, createRequest } = useCreate(
   RecordsService.createDocument,
   documents,

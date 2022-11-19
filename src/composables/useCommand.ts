@@ -10,7 +10,7 @@ export default function useCommand<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
   Type extends { [key: string]: any },
   CFn extends (...args: any[]) => Promise<void>,
-  VFn extends (...args: any[]) => void,
+  VFn extends () => void,
   /* eslint-enable */
 >(commandFunc: CFn, ...params: Nullable<Parameters<CFn>> | VFn[]) {
   const commandModalOpen = ref(false);

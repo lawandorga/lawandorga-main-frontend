@@ -13,16 +13,18 @@ export interface MailUser {
   aliases: string[];
 }
 
-interface MailDomain {
+export interface MailDomain {
   id: string;
   name: string;
 }
 
-export interface MailPageMail {
+export interface MailDashboardPage {
   user: MailUser;
   available_domains: MailDomain;
+  domain: MailDomain;
+  noMailAccount: false;
 }
 
 export interface NoMailAccount {
-  no_mail_account: true;
+  noMailAccount: true;
 }

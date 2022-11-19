@@ -44,39 +44,50 @@
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import useGet from "@/composables/useGet";
-import useQuery from "@/composables/useQuery";
 import {
-  mailGetPageMail,
   mailCreateUser,
   mailAddAddress,
   mailDeleteAddress,
   mailSetDefaultAddress,
   mailRegeneratePassword,
 } from "@/services/mail";
-import { MailPageMail, MailAddress, MailUser } from "@/types/mail";
+import {
+  MailDashboardPage,
+  MailAddress,
+  MailUser,
+  NoMailAccount,
+} from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
   ModalDelete,
   types,
 } from "@lawandorga/components";
-import { computed, ref } from "vue";
+import { computed, PropType, ref, toRefs } from "vue";
 
-// get page
-const page = ref<MailPageMail | null | false>(null);
-useGet(mailGetPageMail, page);
+// page
+const props = defineProps({
+  page: {
+    required: true,
+    type: Object as PropType<MailDashboardPage | NoMailAccount>,
+  },
+  queryPage: {
+    type: Function as PropType<() => void>,
+    required: true,
+  },
+});
+const { page, queryPage } = toRefs(props);
 
 // create mail user
 const { commandRequest: createMailUserRole } = useCommand(
   mailCreateUser,
-  useQuery(mailGetPageMail, page),
+  queryPage.value,
 );
 
 // user
 const user = computed<MailUser | null | false>(() => {
-  if (page.value == null) return null;
-  else if (page.value === false) return false;
+  if (page.value == undefined) return null;
+  else if (page.value.noMailAccount) return false;
   return page.value.user;
 });
 
@@ -88,6 +99,7 @@ const addresses = computed<MailAddress[] | null>(() => {
 
 // create address
 const fields = computed<types.FormField[]>(() => {
+  if (page.value.noMailAccount) return [];
   return [
     { label: "Localpart", name: "localpart", type: "string", required: true },
     {
@@ -100,20 +112,20 @@ const fields = computed<types.FormField[]>(() => {
   ] as types.FormField[];
 });
 const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
-  useCommand(mailAddAddress, useQuery(mailGetPageMail, page));
+  useCommand(mailAddAddress, queryPage.value);
 
 // delete address
 const {
   commandRequest: deleteAddress,
   commandModalOpen: deleteAddressModalOpen,
   temporary,
-} = useCommand(mailDeleteAddress, useQuery(mailGetPageMail, page));
+} = useCommand(mailDeleteAddress, queryPage.value);
 
 // set default address
 const {
   commandRequest: setDefaultAddress,
   commandModalOpen: setDefaultAddressModalOpen,
-} = useCommand(mailSetDefaultAddress, useQuery(mailGetPageMail, page));
+} = useCommand(mailSetDefaultAddress, queryPage.value);
 
 // regenerate password
 const regeneratePasswordModalOpen = ref(false);

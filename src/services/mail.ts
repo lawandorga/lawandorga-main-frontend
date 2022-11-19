@@ -1,12 +1,18 @@
-import { MailPageMail } from "@/types/mail";
+import { MailDashboardPage, NoMailAccount } from "@/types/mail";
 import axios from "axios";
 
-export function mailGetPageMail(): Promise<MailPageMail | false> {
+export function mailGetDashboardPage(): Promise<
+  MailDashboardPage | NoMailAccount
+> {
   return axios
     .get("mail/query/page/mail/")
-    .then((response) => response.data)
+    .then((response) => {
+      const data = response.data;
+      data["noMailAccount"] = false;
+      return data;
+    })
     .catch((error) => {
-      if (error.response.status === 444) return false;
+      if (error.response.status === 444) return { noMailAccount: true };
     });
 }
 
@@ -32,4 +38,8 @@ export function mailSetDefaultAddress(data: { id: string }): Promise<void> {
 
 export function mailRegeneratePassword(): Promise<{ password: string }> {
   return axios.post(`mail/users/regenerate_password/`).then((r) => r.data);
+}
+
+export function mailAddDomain(data: { domain: string }): Promise<void> {
+  return axios.post(`mail/domains/`, data).then();
 }

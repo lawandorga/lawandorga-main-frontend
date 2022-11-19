@@ -4,7 +4,7 @@
     aria-label="Breadcrumb"
   >
     <div class="flex items-center space-x-2">
-      <div class="flex items-center px-4 bg-white rounded-md shadow-sm">
+      <div class="flex items-center px-4 rounded-md shadow-sm bg-gray-50">
         <div class="flex items-center justify-center h-11">
           <button
             class="text-gray-400 hover:text-gray-500"
@@ -24,7 +24,10 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
           </svg> -->
       </div>
-      <ol role="list" class="flex px-6 space-x-4 bg-white rounded-md shadow-sm">
+      <ol
+        role="list"
+        class="flex px-6 space-x-4 rounded-md shadow-sm bg-gray-50"
+      >
         <li class="flex h-11">
           <div class="flex items-center">
             <router-link :to="base" class="text-gray-400 hover:text-gray-500">
