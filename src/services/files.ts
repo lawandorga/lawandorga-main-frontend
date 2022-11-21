@@ -89,15 +89,11 @@ class FilesService {
   // files
   createFile(data: types.JsonModel): Promise<FilesFile> {
     const formData = new FormData();
-    if (data.folder) formData.append("folder", data.folder.toString());
-    if (data.file) formData.append("file", data.file as File);
+    if (data.record) formData.append("record", data.record);
+    if (data.file) formData.append("file", data.file);
 
     return axios
-      .post<FilesFile>("files/file_base/", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
+      .post<FilesFile>("files/file_base/", formData)
       .then((response) => response.data);
   }
 
