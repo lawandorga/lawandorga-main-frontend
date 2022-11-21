@@ -56,7 +56,7 @@ class FilesService {
       .then((response) => response.data);
   }
 
-  createFolder(folder: FilesFolder): Promise<FilesFolder> {
+  foldersCreateFolder(folder: FilesFolder): Promise<FilesFolder> {
     return axios
       .post<FilesFolder>("files/folder/", folder)
       .then((response) => response.data);
@@ -68,7 +68,7 @@ class FilesService {
       .then((response) => response.data);
   }
 
-  deleteFolder(folder: FilesFolder): Promise<void> {
+  foldersDeleteFolder(folder: FilesFolder): Promise<void> {
     return axios
       .delete<void>(`files/folder/${folder.id}/`)
       .then((response) => response.data);

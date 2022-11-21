@@ -3,21 +3,18 @@
     <li v-for="item in folders" :key="item.folder.id" class="list-inside">
       <span class="inline-block w-full">
         <div class="flex justify-between">
-          <span class="">
+          <button
+            class="focus:outline-none hover:underline tranistion"
+            @click="emit('folderClicked', item.folder.id)"
+          >
             {{ item.folder.name }}
-          </span>
+          </button>
           <span class="flex space-x-3">
             <ButtonNormal
               kind="action"
               @click="emit('createClicked', item.folder.id)"
             >
               Add Child
-            </ButtonNormal>
-            <ButtonNormal
-              kind="delete"
-              @click="emit('deleteClicked', item.folder.id)"
-            >
-              Delete
             </ButtonNormal>
           </span>
         </div>
@@ -26,8 +23,8 @@
         <FoldersTree
           v-if="item.children.length"
           :folders="item.children"
-          @delete-clicked="emit('deleteClicked', $event)"
           @create-clicked="emit('createClicked', $event)"
+          @folder-clicked="emit('folderClicked', $event)"
         />
       </div>
     </li>
@@ -35,12 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import { IFolderTree } from "@/types/folders";
+import { IFolderItem } from "@/types/folders";
 import { ButtonNormal } from "@lawandorga/components";
 
 defineProps<{
-  folders: IFolderTree[] | null;
+  folders: IFolderItem[] | null;
 }>();
 
-const emit = defineEmits(["createClicked", "deleteClicked"]);
+const emit = defineEmits(["createClicked", "folderClicked"]);
 </script>

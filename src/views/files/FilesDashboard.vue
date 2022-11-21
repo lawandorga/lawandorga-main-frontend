@@ -32,7 +32,7 @@
         @update:sort-order="userStore.updateSetting('filesSortOrder', $event)"
       >
         <template #head-action>
-          <ButtonNormal kind="action" @click="createFolderModalOpen = true">
+          <ButtonNormal kind="action" @click="foldersCreateFolderModalOpen = true">
             Create Folder
           </ButtonNormal>
           <ButtonNormal kind="action" @click="createFileModalOpen = true">
@@ -89,7 +89,7 @@
               kind="delete"
               @click="
                 folderOpen = slotProps;
-                deleteFolderModalOpen = true;
+                foldersDeleteFolderModalOpen = true;
               "
             >
               Delete
@@ -177,10 +177,10 @@
       </TableGenerator>
     </div>
     <!-- folder -->
-    <ModalFree v-model="createFolderModalOpen" title="Create Folder">
+    <ModalFree v-model="foldersCreateFolderModalOpen" title="Create Folder">
       <FormGenerator
         :fields="folderFields"
-        :request="createFolderRequest"
+        :request="foldersCreateFolderRequest"
         :initial="{ parent: folder.id }"
       />
     </ModalFree>
@@ -192,8 +192,8 @@
       />
     </ModalFree>
     <ModalDelete
-      v-model="deleteFolderModalOpen"
-      :request="deleteFolderRequest"
+      v-model="foldersDeleteFolderModalOpen"
+      :request="foldersDeleteFolderRequest"
       :object="folderOpen"
     />
     <!-- file -->
@@ -381,12 +381,12 @@ function createUpdateDeleteFolder(
       required: true,
     },
   ]);
-  const { createRequest, createModalOpen: createFolderModalOpen } = useCreate(
-    FilesService.createFolder,
+  const { createRequest, createModalOpen: foldersCreateFolderModalOpen } = useCreate(
+    FilesService.foldersCreateFolder,
     items,
   );
 
-  const createFolderRequest = (data: types.JsonModel) =>
+  const foldersCreateFolderRequest = (data: types.JsonModel) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // update
@@ -398,7 +398,7 @@ function createUpdateDeleteFolder(
     updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // create and update
-  watch([createFolderModalOpen, updateFolderModalOpen], () => {
+  watch([foldersCreateFolderModalOpen, updateFolderModalOpen], () => {
     FilesService.getFolders().then(
       (items) => (folderFields.value[0].options = items),
     );
@@ -406,23 +406,23 @@ function createUpdateDeleteFolder(
 
   // delete
   const {
-    deleteRequest: deleteFolderRequest,
-    deleteModalOpen: deleteFolderModalOpen,
-  } = useDelete(FilesService.deleteFolder, items);
+    deleteRequest: foldersDeleteFolderRequest,
+    deleteModalOpen: foldersDeleteFolderModalOpen,
+  } = useDelete(FilesService.foldersDeleteFolder, items);
 
   return {
     // current
     folderOpen,
     // create
     folderFields,
-    createFolderRequest,
-    createFolderModalOpen,
+    foldersCreateFolderRequest,
+    foldersCreateFolderModalOpen,
     // update
     updateFolderRequest,
     updateFolderModalOpen,
     // delete
-    deleteFolderRequest,
-    deleteFolderModalOpen,
+    foldersDeleteFolderRequest,
+    foldersDeleteFolderModalOpen,
   };
 }
 

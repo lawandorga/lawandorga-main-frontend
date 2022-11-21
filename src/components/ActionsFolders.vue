@@ -5,8 +5,16 @@
     :request="createRequest"
     :initial="{ parent: parent }"
   />
+  <ModalUpdate
+    v-model="updateModalOpen"
+    title="Change name"
+    :fields="fields"
+    :request="updateRequest"
+    :initial="temporary"
+  />
   <ModalDelete
     v-model="deleteModalOpen"
+    title="Delete folder"
     :request="deleteRequest"
     :object="temporary"
   />
@@ -14,36 +22,46 @@
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import useGet from "@/composables/useGet";
-import useQuery from "@/composables/useQuery";
-import { listFolders, createFolder, deleteFolder } from "@/services/folders";
-import { IFolderTree } from "@/types/folders";
-import { ModalCreate, ModalDelete, types } from "@lawandorga/components";
-import { ref } from "vue";
+import {
+  foldersCreateFolder,
+  foldersDeleteFolder,
+  foldersUpdateFolder,
+} from "@/services/folders";
+import {
+  ModalCreate,
+  ModalDelete,
+  ModalUpdate,
+  types,
+} from "@lawandorga/components";
+import { toRefs } from "vue";
 
-defineProps<{ parent: string | null }>();
+const props = defineProps<{ parent: string | null; query: () => void }>();
+const { query } = toRefs(props);
 
+// fields
 const fields: types.FormField[] = [
   { label: "Name", name: "name", type: "text", required: true },
 ];
 
-const folders = ref<IFolderTree | null>(null);
-
-useGet(listFolders, folders);
-
+// create folder
 const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
-  useCommand(createFolder, useQuery(listFolders, folders));
+  useCommand(foldersCreateFolder, query.value);
 
+// update folder
+const { commandRequest: updateRequest, commandModalOpen: updateModalOpen } =
+  useCommand(foldersUpdateFolder, query.value);
+
+// delete folder
 const {
   commandRequest: deleteRequest,
   commandModalOpen: deleteModalOpen,
   temporary,
-} = useCommand(deleteFolder, useQuery(listFolders, folders));
+} = useCommand(foldersDeleteFolder, query.value);
 
 defineExpose({
   deleteModalOpen,
   temporary,
   createModalOpen,
-  folders,
+  updateModalOpen,
 });
 </script>
