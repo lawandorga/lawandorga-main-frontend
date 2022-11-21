@@ -37,7 +37,7 @@
               </h2>
               <ButtonClose @click="selected = null" />
             </div>
-            <div class="flex mt-2 space-x-5">
+            <div class="flex mt-2 space-x-3">
               <ButtonNormal
                 kind="action"
                 @click="
@@ -61,7 +61,7 @@
               The following persons have access to this folder:
               {{ selectedItem.access.join(", ") }}
             </p>
-            <div class="flex mt-1 space-x-5">
+            <div class="flex mt-1 space-x-3">
               <ButtonNormal kind="action">Grant access</ButtonNormal>
               <ButtonNormal kind="delete">Revoke access</ButtonNormal>
             </div>
