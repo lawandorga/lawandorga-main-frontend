@@ -19,10 +19,15 @@ import {
   RecordEntry,
   RecordField,
   RecordEncryption,
+  IRecordListPage,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
 import { downloadFileRequest, blobToDataURL } from "@/utils/download";
 import axios from "axios";
+
+export function recordsGetPage(): Promise<IRecordListPage> {
+  return axios.get("records/query/").then((r) => r.data);
+}
 
 class RecordsService {
   // record templates
@@ -439,9 +444,9 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createRecordAccess(data: JsonModel): Promise<RecordAccess> {
+  createRecordAccess(data: JsonModel): Promise<void> {
     return axios
-      .post<RecordAccess>(`records/accesses/`, data)
+      .post(`records/accesses/`, data)
       .then((response) => response.data);
   }
 
@@ -463,9 +468,9 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createDeletionRequest(data: JsonModel): Promise<RecordDeletion> {
+  createDeletionRequest(data: JsonModel): Promise<void> {
     return axios
-      .post<RecordDeletion>("records/deletions/", data)
+      .post("records/deletions/", data)
       .then((response) => response.data);
   }
 

@@ -9,7 +9,11 @@ function useGet<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
   Fn extends (...args: any[]) => Promise<Type>,
   /* eslint-enable */
->(getFunc: Fn, obj: Ref<Type>, ...params: Nullable<Parameters<Fn>>) {
+>(
+  getFunc: Fn,
+  obj: Ref<Type>,
+  ...params: Nullable<Parameters<Fn>>
+): () => void {
   const getRequest = () => {
     getFunc(...params.map(unref)).then((newItem) => (obj.value = newItem));
   };
@@ -22,6 +26,8 @@ function useGet<
 
   if (refParams.value.length === 0) getRequest();
   else if (params.map(unref).every((i) => i !== null)) getRequest();
+
+  return getRequest;
 }
 
 export default useGet;

@@ -12,14 +12,3 @@ export const getValueFromEntry = (
     return entry.value.join(", ");
   return defaultValue;
 };
-
-export const getValueFromRecord = (
-  r: types.JsonModel,
-  key: string,
-  defaultValue = "",
-): string => {
-  const entry = r.entries[key];
-
-  if (entry !== undefined) return getValueFromEntry(entry, defaultValue);
-  return defaultValue;
-};

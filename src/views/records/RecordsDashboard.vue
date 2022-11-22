@@ -1,6 +1,21 @@
 <template>
-  <BoxLoader :show="userStore.loaded">
-    <div class="mx-auto space-y-6 max-w-screen-2xl">
+  <BoxLoader
+    :show="
+      userStore.loaded &&
+      !!actionsRecordDeletions &&
+      !!actionsRecordAccesses &&
+      !!actionsRecords
+    "
+  >
+    <div
+      v-if="
+        userStore.loaded &&
+        !!actionsRecordDeletions &&
+        !!actionsRecordAccesses &&
+        !!actionsRecords
+      "
+      class="mx-auto space-y-6 max-w-screen-2xl"
+    >
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
         <template #buttons>
@@ -13,31 +28,34 @@
           </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
-      <TableRecords :records="records">
+      <TableRecords :records="records" :columns="page?.columns">
         <template #head-action>
-          <ButtonNormal kind="action" @click="createModalOpen = true">
+          <ButtonNormal
+            kind="action"
+            @click="actionsRecords.createModalOpen = true"
+          >
             Create Record
           </ButtonNormal>
         </template>
         <template #action="slotProps">
           <ButtonNormal
-            v-if="!slotProps.record.access"
+            v-if="!slotProps.record.has_access"
             size="xs"
             kind="action"
             @click="
-              record = slotProps.record;
-              createRecordAccessModalOpen = true;
+              actionsRecordAccesses.temporary = slotProps.record;
+              actionsRecordAccesses.createRecordAccessModalOpen = true;
             "
           >
             Request Access
           </ButtonNormal>
           <ButtonNormal
+            v-if="!slotProps.record.delete_requested"
             size="xs"
             kind="delete"
-            :disabled="slotProps.record.delete"
             @click="
-              record = slotProps.record;
-              createDeletionRequestModalOpen = true;
+              actionsRecordDeletions.temporary = slotProps.record;
+              actionsRecordDeletions.createDeletionRequestModalOpen = true;
             "
           >
             Request Deletion
@@ -45,178 +63,44 @@
         </template>
       </TableRecords>
     </div>
-    <!-- modals -->
-    <ModalFree v-model="createModalOpen" title="Create Record">
-      <FormGenerator
-        :fields="createFields"
-        :request="createRequest"
-        @success="recordCreated($event)"
-      ></FormGenerator>
-    </ModalFree>
-    <ModalFree
-      v-model="createDeletionRequestModalOpen"
-      title="Request Deletion"
-    >
-      <FormGenerator
-        :fields="[
-          {
-            label: 'Explanation',
-            name: 'explanation',
-            type: 'textarea',
-            required: true,
-          },
-        ]"
-        :initial="{
-          record: record ? record.id : null,
-        }"
-        :request="createDeletionRequestRequest"
-        submit="Request Deletion"
-        @success="deletionRequestCreated"
-      ></FormGenerator>
-    </ModalFree>
-    <ModalFree v-model="createRecordAccessModalOpen" title="Request Access">
-      <FormGenerator
-        :fields="[
-          {
-            label: 'Explanation',
-            name: 'explanation',
-            type: 'textarea',
-            required: false,
-          },
-        ]"
-        :initial="{
-          record: record ? record.id : null,
-          requested_by: userStore.user?.user_id,
-        }"
-        :request="createRecordAccessRequest"
-        submit="Request Access"
-      ></FormGenerator>
-    </ModalFree>
   </BoxLoader>
+  <ActionsRecordAccesses ref="actionsRecordAccesses" :query="query" />
+  <ActionsRecordDeletions ref="actionsRecordDeletions" :query="query" />
+  <ActionsRecords ref="actionsRecords" :query="query" />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import TableRecords from "@/components/TableRecords.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { defineComponent, ref, Ref, watch } from "vue";
-import RecordsService from "@/services/records";
-import { RecordDeletion, RecordTemplate, Record } from "@/types/records";
+import { computed, ref } from "vue";
+import { recordsGetPage } from "@/services/records";
+import { IListRecord, IRecordListPage } from "@/types/records";
 import { ButtonNormal } from "@lawandorga/components";
-import { ModalFree } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import { formatDate } from "@/utils/date";
-import useCreate from "@/composables/useCreate";
 import useGet from "@/composables/useGet";
-import { useRouter } from "vue-router";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
-import { FormField } from "@/types/form";
 import { useUserStore } from "@/store/user";
+import ActionsRecordDeletions from "@/components/ActionsRecordDeletions.vue";
+import ActionsRecordAccesses from "@/components/ActionsRecordAccesses.vue";
+import ActionsRecords from "@/components/ActionsRecords.vue";
 
-export default defineComponent({
-  components: {
-    RecordsPermissions,
-    ButtonBreadcrumbs,
-    RectangleStackIcon,
-    BreadcrumbsBar,
-    FormGenerator,
-    BoxLoader,
-    TableRecords,
-    ButtonNormal,
-    ModalFree,
-  },
-  setup() {
-    // records
-    const records = ref(null) as Ref<Record[] | null>;
-    const record = ref(null) as Ref<Record | null>;
-    useGet(RecordsService.getRecords, records);
+// page
+const page = ref<IRecordListPage | null>(null);
+const query = useGet(recordsGetPage, page);
 
-    const userStore = useUserStore();
+// actions
+const actionsRecordDeletions = ref<typeof ActionsRecordDeletions>();
+const actionsRecordAccesses = ref<typeof ActionsRecordAccesses>();
+const actionsRecords = ref<typeof ActionsRecords>();
 
-    return {
-      // store
-      userStore,
-      // utils
-      formatDate,
-      // records
-      records,
-      record,
-      // access
-      ...createRecordAccess(),
-      ...createRecord(records),
-      ...createDeletionRequest(records),
-    };
-  },
+// records
+const records = computed<IListRecord[] | null>(() => {
+  if (page.value === null) return null;
+  return page.value.records;
 });
 
-function createRecordAccess() {
-  const {
-    createRequest: createRecordAccessRequest,
-    createModalOpen: createRecordAccessModalOpen,
-  } = useCreate(RecordsService.createRecordAccess, ref(null));
-
-  return {
-    createRecordAccessRequest,
-    createRecordAccessModalOpen,
-  };
-}
-
-function createDeletionRequest(records: Ref<Record[] | null>) {
-  const {
-    createRequest: createDeletionRequestRequest,
-    createModalOpen: createDeletionRequestModalOpen,
-  } = useCreate(RecordsService.createDeletionRequest, ref(null));
-
-  const deletionRequestCreated = (deletionRequest: RecordDeletion) => {
-    if (records.value === null) return;
-    const index = records.value.findIndex(
-      (item) => item.id === deletionRequest.record,
-    );
-    if (index !== -1) records.value[index].delete = true;
-  };
-
-  return {
-    createDeletionRequestRequest,
-    createDeletionRequestModalOpen,
-    deletionRequestCreated,
-  };
-}
-
-function createRecord(records: Ref<Record[] | null>) {
-  const router = useRouter();
-
-  const createFields = ref<FormField[]>([
-    {
-      label: "Template",
-      type: "select",
-      name: "template",
-      required: true,
-      options: [] as RecordTemplate[],
-    },
-  ]);
-
-  const { createRequest, createModalOpen } = useCreate(
-    RecordsService.createRecord,
-    records,
-  );
-
-  const recordCreated = (record: Record) => {
-    router.push({ name: "records-detail", params: { id: record.id } });
-  };
-
-  watch(createModalOpen, () => {
-    RecordsService.getTemplates().then(
-      (templates) => (createFields.value[0].options = templates),
-    );
-  });
-
-  return {
-    createFields,
-    createRequest,
-    createModalOpen,
-    recordCreated,
-  };
-}
+// store
+const userStore = useUserStore();
 </script>

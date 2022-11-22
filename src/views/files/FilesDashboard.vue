@@ -32,7 +32,10 @@
         @update:sort-order="userStore.updateSetting('filesSortOrder', $event)"
       >
         <template #head-action>
-          <ButtonNormal kind="action" @click="foldersCreateFolderModalOpen = true">
+          <ButtonNormal
+            kind="action"
+            @click="foldersCreateFolderModalOpen = true"
+          >
             Create Folder
           </ButtonNormal>
           <ButtonNormal kind="action" @click="createFileModalOpen = true">
@@ -381,10 +384,8 @@ function createUpdateDeleteFolder(
       required: true,
     },
   ]);
-  const { createRequest, createModalOpen: foldersCreateFolderModalOpen } = useCreate(
-    FilesService.foldersCreateFolder,
-    items,
-  );
+  const { createRequest, createModalOpen: foldersCreateFolderModalOpen } =
+    useCreate(FilesService.foldersCreateFolder, items);
 
   const foldersCreateFolderRequest = (data: types.JsonModel) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
