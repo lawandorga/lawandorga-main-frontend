@@ -9,7 +9,7 @@ type Nullable<T> = T extends (infer U)[]
 export default function useCommand<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
   Type extends { [key: string]: any },
-  CFn extends (...args: any[]) => Promise<void>,
+  CFn extends (...args: any[]) => Promise<void | any>,
   VFn extends () => void,
   /* eslint-enable */
 >(commandFunc: CFn, ...params: Nullable<Parameters<CFn>> | VFn[]) {
@@ -19,9 +19,10 @@ export default function useCommand<
   const queryFunctions = params.filter((p) => isFunction(p));
 
   const commandRequest = (data: types.JsonModel) => {
-    return commandFunc(data, ...commandParams.map(unref)).then(() => {
+    return commandFunc(data, ...commandParams.map(unref)).then((d) => {
       queryFunctions.forEach((qf) => qf());
       commandModalOpen.value = false;
+      return d;
     });
   };
 

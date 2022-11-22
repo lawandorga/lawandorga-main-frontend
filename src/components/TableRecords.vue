@@ -30,9 +30,9 @@
   <TableSortable
     :head="head"
     :data="filteredRecords"
-    :get-value-func="getValueFunc"
-    :sort-key="userStore.getSetting('recordsSortKey')"
-    :sort-order="userStore.getSetting('recordsSortOrder')"
+    :get-value-func="getValueFromRecord"
+    :sort-key="(userStore.getSetting('recordsSortKey') as string)"
+    :sort-order="(userStore.getSetting('recordsSortOrder') as string)"
     @update:sort-key="userStore.updateSetting('recordsSortKey', $event)"
     @update:sort-order="userStore.updateSetting('recordsSortOrder', $event)"
   >
@@ -47,25 +47,25 @@
       <div>
         <template v-if="index === 0">
           <ButtonLink
-            v-if="item.access"
+            v-if="item.has_access"
             :to="{
               name: 'records-detail',
               params: { id: item.id },
             }"
           >
-            {{ getValueFunc(item, headItem.key, "NO-IDENTIFIER") }}
+            {{ getValueFromRecord(item, headItem.key, "NO-IDENTIFIER") }}
           </ButtonLink>
           <div v-else>
-            {{ getValueFunc(item, headItem.key, "NO-IDENTIFIER") }}
+            {{ getValueFromRecord(item, headItem.key, "NO-IDENTIFIER") }}
           </div>
         </template>
 
-        <template v-else-if="item.entries[headItem.key]">
+        <template v-else-if="item.attributes[headItem.key]">
           <ul
-            v-if="item.entries[headItem.key].type === 'multiple'"
+            v-if="Array.isArray(item.attributes[headItem.key])"
             class="list-disc pl-3.5"
           >
-            <li v-for="i in item.entries[headItem.key].value" :key="i">
+            <li v-for="i in item.attributes[headItem.key]" :key="i">
               <button
                 class="text-left cursor-pointer hover:underline"
                 @click="search = i"
@@ -78,9 +78,9 @@
           <button
             v-else
             class="max-w-xs text-left whitespace-normal cursor-pointer line-clamp-3 hover:underline"
-            @click="search = getValueFunc(item, headItem.key)"
+            @click="search = getValueFromRecord(item, headItem.key)"
           >
-            {{ getValueFunc(item, headItem.key) }}
+            {{ getValueFromRecord(item, headItem.key) }}
           </button>
         </template>
 
@@ -94,74 +94,72 @@
   </TableSortable>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, toRefs, computed } from "vue";
-import { FormInput, TableSortable, ButtonNormal } from "@lawandorga/components";
-import { Record } from "@/types/records";
-import { formatDate } from "@/utils/date";
+<script lang="ts" setup>
+import { PropType, toRefs, computed } from "vue";
+import {
+  FormInput,
+  TableSortable,
+  ButtonNormal,
+  types,
+} from "@lawandorga/components";
+import { IListRecord } from "@/types/records";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useSearch from "@/composables/useSearch";
 import { useUserStore } from "@/store/user";
-import { getValueFromRecord } from "@/utils/record";
 
-export default defineComponent({
-  components: {
-    TableSortable,
-    ButtonNormal,
-    FormInput,
-    ButtonLink,
+// get values
+const getValueFromEntry = (entry: string[] | string): string => {
+  if (Array.isArray(entry)) return entry.join(", ");
+  return entry;
+};
+
+const getValueFromRecord = (
+  r: types.JsonModel,
+  key: string,
+  defaultValue = "",
+): string => {
+  const entry = r.attributes[key];
+
+  if (entry !== undefined) return getValueFromEntry(entry);
+  return defaultValue;
+};
+
+// props
+const props = defineProps({
+  records: {
+    type: Array as PropType<IListRecord[] | null>,
+    required: false,
+    default: null,
   },
-  props: {
-    records: {
-      type: Array as PropType<Record[] | null>,
-      required: false,
-      default: null,
-    },
-  },
-  emits: ["search"],
-  setup(props) {
-    // records
-    const { records } = toRefs(props);
-
-    // loading
-    const innerLoading = computed(() => {
-      return records.value === null;
-    });
-
-    // head
-    const head = computed<{ name: string; key: string; sortable: boolean }[]>(
-      () => {
-        if (records.value === null) return [];
-        const head1 = Array.from(
-          new Set(records.value.map((r: Record) => r.show).flat()),
-        );
-        const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
-        head2.push({ name: "", key: "action", sortable: false });
-        return head2;
-      },
-    );
-
-    // filter
-    const filterKeys = computed(() => head.value.map((h) => h.name));
-    const { filteredItems: filteredRecords, search } = useSearch(
-      records,
-      filterKeys,
-      getValueFromRecord,
-    );
-
-    // set default sort
-    const userStore = useUserStore();
-
-    // return
-    return {
-      search,
-      formatDate,
-      filteredRecords,
-      getValueFunc: getValueFromRecord,
-      innerLoading,
-      head,
-      userStore,
-    };
+  columns: {
+    type: Array as PropType<string[] | null>,
+    required: false,
+    default: null,
   },
 });
+
+// records
+const { records, columns } = toRefs(props);
+
+// head
+const head = computed<{ name: string; key: string; sortable: boolean }[]>(
+  () => {
+    if (records.value === null || columns.value === null) return [];
+    const head1 = columns.value;
+    const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
+    head2.push({ name: "", key: "action", sortable: false });
+    return head2;
+  },
+);
+
+// filter
+const filterKeys = computed(() => head.value.map((h) => h.name));
+const { filteredItems: filteredRecords, search } = useSearch(
+  records,
+  filterKeys,
+  getValueFromRecord,
+);
+
+// set default sort
+const userStore = useUserStore();
 </script>

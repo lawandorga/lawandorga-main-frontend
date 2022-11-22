@@ -9,6 +9,18 @@ export interface RecordTemplate {
   show: string[];
 }
 
+export interface IRecordListPage {
+  records: IListRecord[];
+  columns: string[];
+}
+
+export interface IListRecord {
+  id: number;
+  entries: { [key: string]: RecordValue };
+  delete_requested: boolean;
+  has_access: boolean;
+}
+
 export type Record = JsonModel & {
   id: number;
   created: string;
