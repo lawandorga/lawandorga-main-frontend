@@ -59,18 +59,39 @@
             </div>
             <p class="mt-4">
               The following persons have access to this folder:
-              {{ selectedItem.access.join(", ") }}
+              {{ selectedItem.access.map((i) => i.name).join(", ") }}
             </p>
             <div class="flex mt-1 space-x-3">
-              <ButtonNormal kind="action">Grant access</ButtonNormal>
-              <ButtonNormal kind="delete">Revoke access</ButtonNormal>
+              <ButtonNormal
+                kind="action"
+                @click="
+                  foldersActions.temporary = selectedItem;
+                  foldersActions.grantAccessModalOpen = true;
+                "
+              >
+                Grant access
+              </ButtonNormal>
+              <ButtonNormal
+                kind="delete"
+                @click="
+                  foldersActions.temporary = selectedItem;
+                  foldersActions.revokeAccessModalOpen = true;
+                "
+              >
+                Revoke access
+              </ButtonNormal>
             </div>
           </div>
         </div>
       </div>
     </div>
   </BoxLoader>
-  <ActionsFolders ref="foldersActions" :parent="parent" :query="query" />
+  <ActionsFolders
+    ref="foldersActions"
+    :parent="parent"
+    :query="query"
+    :available-persons="page ? page.available_persons : null"
+  />
 </template>
 
 <script setup lang="ts">
@@ -82,21 +103,27 @@ import ActionsFolders from "@/components/ActionsFolders.vue";
 import { computed, ref } from "vue";
 import { ButtonNormal } from "@lawandorga/components";
 import FoldersTree from "@/components/FoldersTree.vue";
-import { IFolderItem } from "@/types/folders";
+import { IFolderItem, IFolderPage } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
 import useGet from "@/composables/useGet";
-import { foldersListFolders } from "@/services/folders";
+import { foldersGetFolderPage } from "@/services/folders";
 import useQuery from "@/composables/useQuery";
 
 // store
 const userStore = useUserStore();
 
 // folders
-const folderItems = ref<IFolderItem[] | null>(null);
-useGet(foldersListFolders, folderItems);
+const page = ref<IFolderPage | null>(null);
+useGet(foldersGetFolderPage, page);
 
 // query
-const query = useQuery(foldersListFolders, folderItems);
+const query = useQuery(foldersGetFolderPage, page);
+
+// folder items
+const folderItems = computed<IFolderItem[] | null>(() => {
+  if (page.value === null) return null;
+  return page.value.tree;
+});
 
 // actions
 const foldersActions = ref<typeof ActionsFolders>();

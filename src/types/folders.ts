@@ -3,10 +3,18 @@ export interface IFolder {
   id: string;
 }
 
-export type IFolderItem = {
+export interface IAccess {
+  name: string;
+  slug: string | null;
+}
+
+export interface IFolderItem {
   folder: IFolder;
   children: IFolderItem[];
-  access: string[];
-};
+  access: IAccess[];
+}
 
-export type ITree<T> = [T, ITree<T>];
+export interface IFolderPage {
+  tree: IFolderItem[];
+  available_persons: IAccess[];
+}
