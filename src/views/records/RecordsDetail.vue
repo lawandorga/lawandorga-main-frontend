@@ -298,7 +298,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       children: [],
       actions: [],
     },
-    { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
+    // { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
   ];
 
   if (actionsDocuments.value)
@@ -352,12 +352,12 @@ const groups = computed<ContentGroupItem[]>(() => {
       });
     });
 
-  g[4].children.push({
-    id: "ACCESS",
-    type: "ACCESS",
-    name: "Access",
-    stats: [`${actionsEncryptions.value?.encryptions?.length || 0} Persons`],
-  });
+  // g[4].children.push({
+  //   id: "ACCESS",
+  //   type: "ACCESS",
+  //   name: "Access",
+  //   stats: [`${actionsEncryptions.value?.encryptions?.length || 0} Persons`],
+  // });
 
   return g;
 });

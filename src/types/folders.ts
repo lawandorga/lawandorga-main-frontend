@@ -8,10 +8,19 @@ export interface IAccess {
   slug: string | null;
 }
 
+interface Actions {
+  [key: string]: string;
+}
+
+export interface IContent {
+  name: string;
+  actions: Actions;
+}
 export interface IFolderItem {
   folder: IFolder;
   children: IFolderItem[];
   access: IAccess[];
+  content: IContent[];
 }
 
 export interface IFolderPage {
