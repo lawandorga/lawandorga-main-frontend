@@ -27,3 +27,8 @@ export interface IFolderPage {
   tree: IFolderItem[];
   available_persons: IAccess[];
 }
+
+export interface IAvailableFolder {
+  name: string;
+  id: string;
+}

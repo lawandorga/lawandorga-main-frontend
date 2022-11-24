@@ -10,13 +10,13 @@
     title="Change name"
     :fields="fields"
     :request="updateRequest"
-    :initial="temporary"
+    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
   />
   <ModalDelete
     v-model="deleteModalOpen"
     title="Delete folder"
     :request="deleteRequest"
-    :object="temporary"
+    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
   />
   <ModalUpdate
     v-model="grantAccessModalOpen"

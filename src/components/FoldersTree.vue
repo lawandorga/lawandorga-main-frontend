@@ -3,15 +3,15 @@
     <li v-for="item in folders" :key="item.folder.id" class="list-inside">
       <span class="inline-block w-full">
         <div class="flex justify-between">
-          <div class="flex items-center">
-            <FolderIcon class="w-5 h-5 text-gray-500" />
-            <button
-              class="ml-1.5 focus:outline-none hover:underline tranistion"
-              @click="emit('folderClicked', item.folder.id)"
-            >
-              {{ item.folder.name }}
-            </button>
-          </div>
+          <button
+            class="flex items-center transition focus:outline-none hover:underline group"
+            @click="emit('folderClicked', item.folder.id)"
+          >
+            <FolderIcon
+              class="w-5 h-5 text-gray-500 group-hover:text-gray-600"
+            />
+            <span class="ml-1.5">{{ item.folder.name }}</span>
+          </button>
           <span class="flex space-x-3">
             <ButtonNormal
               kind="action"
