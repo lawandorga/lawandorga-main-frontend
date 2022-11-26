@@ -89,7 +89,7 @@ class FilesService {
   // files
   createFile(data: types.JsonModel): Promise<FilesFile> {
     const formData = new FormData();
-    if (data.record) formData.append("record", data.record);
+    if (data.folder) formData.append("folder", data.folder);
     if (data.file) formData.append("file", data.file);
 
     return axios
