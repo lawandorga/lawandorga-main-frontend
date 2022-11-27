@@ -293,7 +293,7 @@ export default defineComponent({
         updateFields.value.push({
           label: "Share Keys",
           name: "share_keys",
-          type: "checkbox",
+          type: "toggle",
           required: false,
           helptext:
             "If this option is selected every user selected will get access to the record.",

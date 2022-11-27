@@ -1,5 +1,15 @@
 import { Rlc } from "./core";
 
+export interface IRegisterPage {
+  orgs: { name: string; id: number }[];
+  legal_requirements: {
+    title: string;
+    id: number;
+    content: string;
+    accept_required: boolean;
+  }[];
+}
+
 export interface User {
   id: number;
   email: string;
