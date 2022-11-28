@@ -5,13 +5,27 @@ import {
   DashboardInformation,
   DashboardNote,
   DataResponse,
+  IRegisterPage,
   RefreshResponse,
   RlcUser,
   Settings,
-  User,
 } from "@/types/user";
 import { JsonModel } from "@lawandorga/components/dist/types/types";
 import axios from "axios";
+
+export function usersGetRegisterPage(): Promise<IRegisterPage> {
+  return axios.get("auth/query/page/register/").then((r) => r.data);
+}
+
+export function usersRegisterUser(data: {
+  email: string;
+  name: string;
+  org: number;
+  password: string;
+  password_confirm: string;
+}): Promise<void> {
+  return axios.post("rlc_users/", data).then();
+}
 
 class UserService {
   getRlcs(): Promise<Rlc[]> {
@@ -52,10 +66,6 @@ class UserService {
     return axios
       .get<DashboardInformation>("profiles/dashboard/")
       .then((response) => response.data);
-  }
-
-  register(data: User): Promise<void> {
-    return axios.post("profiles/", data).then();
   }
 
   requestPasswordReset(data: { email: string }): Promise<void> {

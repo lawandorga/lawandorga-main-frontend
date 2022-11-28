@@ -1,77 +1,116 @@
 <template>
-  <div class="max-w-2xl mx-auto bg-white shadow px-4 pt-4 pb-6 mt-12">
-    <h2 class="text-2xl font-medium mb-4">Register</h2>
-    <div v-if="!success" class="">
-      <FormGenerator
-        :fields="fields"
-        :request="register"
-        submit="Register"
-        @success="success = true"
-      />
+  <div class="max-w-2xl pb-40 mx-auto mt-12 space-y-6">
+    <div class="px-4 pt-4 pb-6 bg-white shadow">
+      <h1 class="mb-4 text-2xl font-medium">Register</h1>
+      <div v-if="!success" class="">
+        <FormGenerator
+          :fields="fields"
+          :request="usersRegisterUser"
+          submit="Register"
+          @success="success = true"
+        />
+      </div>
+      <div v-if="success" class="prose">
+        <p>
+          Your account was created. 2 things need to happen before you can
+          login:
+        </p>
+        <ol>
+          <li>An admin from your LC needs to accept you as a member.</li>
+          <li>
+            You need to confirm your email. We've sent you an email to do that.
+          </li>
+        </ol>
+      </div>
     </div>
-    <div v-if="success" class="prose">
-      <p>
-        Your account was created. 2 things need to happen before you can login:
-      </p>
-      <ol>
-        <li>An admin from your LC needs to accept you as a member.</li>
-        <li>
-          You need to confirm your email. We've sent you an email to do that.
-        </li>
-      </ol>
-    </div>
+    <template v-if="!success">
+      <div
+        v-for="lr in page?.legal_requirements"
+        :key="lr.title"
+        class="px-5 py-4 bg-white shadow"
+      >
+        <Disclosure v-slot="{ open }" :default-open="false">
+          <DisclosureButton class="flex items-center justify-between w-full">
+            <div class="prose-sm prose max-w-none">
+              <h2 class="">
+                {{ lr.title }}
+              </h2>
+            </div>
+            <ChevronUpIcon
+              :class="open ? 'rotate-180 transform' : ''"
+              class="w-5 h-5 text-gray-700"
+            />
+          </DisclosureButton>
+          <DisclosurePanel class="prose-sm prose max-w-none">
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <div v-html="lr.content"></div>
+          </DisclosurePanel>
+        </Disclosure>
+      </div>
+    </template>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
-import { FormGenerator } from "@lawandorga/components";
-import UserService from "@/services/user";
-import { Rlc } from "@/types/core";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
+import { FormGenerator, types } from "@lawandorga/components";
+import { usersGetRegisterPage, usersRegisterUser } from "@/services/user";
+import { IRegisterPage } from "@/types/user";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
+import useGet from "@/composables/useGet";
+import { ChevronUpIcon } from "@heroicons/vue/20/solid";
 
-export default defineComponent({
-  components: {
-    FormGenerator,
-  },
-  setup() {
-    const fields = ref([
-      {
-        label: "RLC",
-        name: "rlc",
-        type: "select",
-        options: [] as Rlc[],
-        required: true,
-      },
-      {
-        label: "E-Mail",
-        name: "email",
-        type: "email",
-        required: true,
-      },
-      {
-        label: "Name",
-        name: "name",
-        type: "text",
-        required: true,
-      },
-      {
-        label: "Password",
-        name: "password",
-        type: "password",
-        required: true,
-      },
-      {
-        label: "Password Confirm",
-        name: "password_confirm",
-        type: "password",
-        required: true,
-      },
-    ]);
-    const success = ref(false);
+const page = ref<IRegisterPage | null>(null);
+useGet(usersGetRegisterPage, page);
 
-    UserService.getRlcs().then((rlcs) => (fields.value[0].options = rlcs));
+const fields = computed<types.FormField[]>(() => {
+  const fields1: types.FormField[] = [
+    {
+      label: "RLC",
+      name: "org",
+      type: "select",
+      options: page.value?.orgs as IRegisterPage["orgs"],
+      required: true,
+    },
+    {
+      label: "E-Mail",
+      name: "email",
+      type: "email",
+      required: true,
+    },
+    {
+      label: "Name",
+      name: "name",
+      type: "text",
+      required: true,
+    },
+    {
+      label: "Password",
+      name: "password",
+      type: "password",
+      required: true,
+    },
+    {
+      label: "Password Confirm",
+      name: "password_confirm",
+      type: "password",
+      required: true,
+    },
+    {
+      label: "Accept Legal Requirements",
+      name: "accepted_legal_requirements",
+      type: "checkbox",
+      required: true,
+      options: page.value?.legal_requirements.map((i) => ({
+        name: `Accept ${i.title}`,
+        value: i.id,
+        required: i.accept_required,
+      })),
+    },
+  ];
 
-    return { fields, register: UserService.register, success };
-  },
+  return fields1;
 });
+
+const success = ref(false);
 </script>
