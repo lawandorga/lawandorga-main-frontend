@@ -194,11 +194,18 @@
           :selected-type="selectedType"
         />
 
-        <RecordEncryptions :selected-type="selectedType" />
+        <RecordEncryptions
+          :access="folder ? folder.access : null"
+          :selected-type="selectedType"
+        />
       </div>
     </div>
   </BoxLoader>
-  <ActionsEncryptions ref="actionsEncryptions" :record="record" />
+  <ActionsEncryptions
+    ref="actionsEncryptions"
+    :folder="folder ? folder.folder : null"
+    :query="query"
+  />
   <ActionsQuestionnaires ref="actionsQuestionnaires" />
   <ActionsMessages ref="actionsMessages" />
   <ActionsDocuments ref="actionsDocuments" :record="record" />
@@ -235,6 +242,8 @@ import RecordEncryptions from "../../components/RecordEncryptions.vue";
 import { getValueFromEntry } from "@/utils/record";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
+import { IFolderDetail } from "@/types/folders";
+import { foldersGetFolderDetail } from "@/services/folders";
 
 // record
 const route = useRoute();
@@ -256,6 +265,10 @@ provide(actionsDocumentsKey, actionsDocuments);
 // encryptions
 const actionsEncryptions = ref<typeof ActionsEncryptions>();
 provide(actionsEncryptionsKey, actionsEncryptions);
+
+// folder
+const folder = ref<null | IFolderDetail>(null);
+const query = useGet(foldersGetFolderDetail, folder, record);
 
 // first entry
 const firstEntry = computed<string>(() => {
@@ -298,7 +311,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       children: [],
       actions: [],
     },
-    // { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
+    { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
   ];
 
   if (actionsDocuments.value)
@@ -352,12 +365,12 @@ const groups = computed<ContentGroupItem[]>(() => {
       });
     });
 
-  // g[4].children.push({
-  //   id: "ACCESS",
-  //   type: "ACCESS",
-  //   name: "Access",
-  //   stats: [`${actionsEncryptions.value?.encryptions?.length || 0} Persons`],
-  // });
+  g[4].children.push({
+    id: "ACCESS",
+    type: "ACCESS",
+    name: "Access",
+    stats: [`${folder.value?.access.length || 0} Persons`],
+  });
 
   return g;
 });

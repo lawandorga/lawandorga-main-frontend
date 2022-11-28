@@ -1,6 +1,7 @@
 <template>
   <ModalCreate
     v-model="createModalOpen"
+    title="Create Folder"
     :fields="fields"
     :request="createRequest"
     :initial="{ parent: parent }"

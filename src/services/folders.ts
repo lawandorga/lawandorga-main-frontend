@@ -1,9 +1,15 @@
-import { IAvailableFolder, IFolderPage } from "@/types/folders";
+import { IAvailableFolder, IFolderDetail, IFolderPage } from "@/types/folders";
 import axios from "axios";
 
 // query
 export function foldersGetFolderPage(): Promise<IFolderPage> {
   return axios.get("folders/query/").then((r) => r.data);
+}
+
+export function foldersGetFolderDetail(data): Promise<IFolderDetail> {
+  return axios
+    .get(`folders/query/${data?.upgrade?.raw_folder_id}/`)
+    .then((r) => r.data);
 }
 
 export function foldersGetAvailableFolders(): Promise<IAvailableFolder[]> {

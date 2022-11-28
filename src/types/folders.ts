@@ -28,6 +28,11 @@ export interface IFolderPage {
   available_persons: IAccess[];
 }
 
+export interface IFolderDetail {
+  folder: IFolder;
+  access: IAccess[];
+}
+
 export interface IAvailableFolder {
   name: string;
   id: string;
