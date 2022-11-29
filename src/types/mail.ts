@@ -14,13 +14,13 @@ interface MailAccount {
 
 export interface MailUser {
   email: string | null;
-  id: string | null;
+  uuid: string | null;
   account: MailAccount;
   aliases: string[];
 }
 
 export interface MailDomain {
-  id: string;
+  uuid: string;
   name: string;
 }
 

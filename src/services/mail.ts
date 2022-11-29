@@ -28,12 +28,14 @@ export function mailAddAddress(data: {
   return axios.post(`mail/users/${data.user}/add_address/`, data).then();
 }
 
-export function mailDeleteAddress(data: { id: string }): Promise<void> {
-  return axios.delete(`mail/users/delete_address/${data.id}/`).then();
+export function mailDeleteAddress(data: { uuid: string }): Promise<void> {
+  return axios.delete(`mail/users/delete_address/${data.uuid}/`).then();
 }
 
-export function mailSetDefaultAddress(data: { id: string }): Promise<void> {
-  return axios.post(`mail/users/set_default_address/${data.id}/`, data).then();
+export function mailSetDefaultAddress(data: { uuid: string }): Promise<void> {
+  return axios
+    .post(`mail/users/set_default_address/${data.uuid}/`, data)
+    .then();
 }
 
 export function mailRegeneratePassword(): Promise<{ password: string }> {
@@ -45,8 +47,8 @@ export function mailAddDomain(data: { name: string }): Promise<void> {
 }
 
 export function mailChangeDomain(data: {
-  id: string;
+  uuid: string;
   name: string;
 }): Promise<void> {
-  return axios.post(`mail/domains/${data.id}/`, data).then();
+  return axios.post(`mail/domains/${data.uuid}/`, data).then();
 }

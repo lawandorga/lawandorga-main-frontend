@@ -3,7 +3,7 @@
     v-model="addAddressModalOpen"
     :request="addAddress"
     :fields="fields"
-    :initial="{ user: user?.id }"
+    :initial="{ user: user?.uuid }"
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
