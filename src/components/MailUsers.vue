@@ -1,10 +1,8 @@
 <template>
   <TableGenerator
     :head="[
-      { name: 'User', key: (o) => o.account.user.name },
-      { name: 'Mail', key: (o) => `${o.localpart}@${o.domain.name}` },
-      { name: 'Default', key: 'is_default' },
-      //   { name: '', key: 'action' },
+      { name: 'User', key: 'email' },
+      { name: '', key: 'action' },
     ]"
     :data="addresses"
   >
@@ -19,6 +17,11 @@
         </ButtonNormal>
       </div>
     </template> -->
+    <template #email="item">
+      <ButtonLink :to="{ name: 'mail-user', params: { uuid: item.uuid } }">
+        {{ item.email }}
+      </ButtonLink>
+    </template>
     <!-- <template #action="item">
       <div class="flex justify-end space-x-3">
         <ButtonNormal
@@ -47,9 +50,15 @@
 </template>
 
 <script setup lang="ts">
-import { MailAddress, MailDashboardPage, NoMailAccount } from "@/types/mail";
+import {
+  IMailUser,
+  MailAddress,
+  MailDashboardPage,
+  NoMailAccount,
+} from "@/types/mail";
 import { TableGenerator } from "@lawandorga/components";
 import { computed, PropType, toRefs } from "vue";
+import ButtonLink from "./ButtonLink.vue";
 
 // page
 const props = defineProps({
@@ -61,8 +70,8 @@ const props = defineProps({
 const { page } = toRefs(props);
 
 // addresses
-const addresses = computed<MailAddress[] | null>(() => {
-  if (page.value && !page.value.noMailAccount) return page.value.addresses;
+const addresses = computed<IMailUser[] | null>(() => {
+  if (page.value && !page.value.noMailAccount) return page.value.users;
   return null;
 });
 </script>

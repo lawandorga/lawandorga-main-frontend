@@ -1,13 +1,25 @@
 <template>
   <ModalCreate
+    v-model="createModalOpen"
+    :request="createRequest"
+    :fields="fields"
+    title="Create Group"
+  />
+  <ModalDelete
+    v-model="deleteModalOpen"
+    title="Delete Group"
+    :object="{ group: temporary?.uuid }"
+    :request="deleteRequest"
+  />
+  <ModalCreate
     v-model="addAddressModalOpen"
     :request="addAddress"
     :fields="addressFields"
-    :initial="{ user: userId }"
+    :initial="{ group: groupId }"
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
-    :data="{ address: temporary?.uuid, user: userId }"
+    :data="{ address: temporary?.uuid, group: groupId }"
     :request="setDefaultAddress"
     title="Set Default Address"
   >
@@ -16,7 +28,7 @@
   </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
-    :object="{ address: temporary?.uuid, user: userId }"
+    :object="{ address: temporary?.uuid, group: groupId }"
     :request="deleteAddress"
   >
     Are you sure you want to delete {{ temporary?.localpart }}@{{
@@ -28,9 +40,11 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import {
-  mailAddAddress,
-  mailDeleteAddress,
-  mailSetDefaultAddress,
+  mailCreateGroup,
+  mailDeleteGroup,
+  mailGroupAddAddress,
+  mailGroupDeleteAddress,
+  mailGroupSetDefaultAddress,
 } from "@/services/mail";
 import { IMailDomain } from "@/types/mail";
 import {
@@ -47,8 +61,8 @@ const props = defineProps({
     required: true,
     type: Function as PropType<() => void>,
   },
-  userId: {
-    required: true,
+  groupId: {
+    required: false,
     type: String,
   },
   availableDomains: {
@@ -57,6 +71,29 @@ const props = defineProps({
   },
 });
 const { availableDomains, query } = toRefs(props);
+
+// create group
+const fields = computed<types.FormField[]>(() => {
+  return [
+    { label: "Localpart", name: "localpart", type: "string", required: true },
+    {
+      label: "Domain",
+      name: "domain",
+      type: "select",
+      required: true,
+      options: availableDomains?.value as types.FormField["options"],
+    },
+  ] as types.FormField[];
+});
+const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
+  useCommand(mailCreateGroup, query.value);
+
+// delete group
+const {
+  commandRequest: deleteRequest,
+  commandModalOpen: deleteModalOpen,
+  temporary,
+} = useCommand(mailDeleteGroup, query.value);
 
 // create address
 const addressFields = computed<types.FormField[]>(() => {
@@ -72,26 +109,27 @@ const addressFields = computed<types.FormField[]>(() => {
   ] as types.FormField[];
 });
 const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
-  useCommand(mailAddAddress, query.value);
+  useCommand(mailGroupAddAddress, query.value);
 
 // delete address
 const {
   commandRequest: deleteAddress,
   commandModalOpen: deleteAddressModalOpen,
-  temporary,
-} = useCommand(mailDeleteAddress, query.value);
+} = useCommand(mailGroupDeleteAddress, query.value);
 
 // set default address
 const {
   commandRequest: setDefaultAddress,
   commandModalOpen: setDefaultAddressModalOpen,
-} = useCommand(mailSetDefaultAddress, query.value);
+} = useCommand(mailGroupSetDefaultAddress, query.value);
 
 // expose
 defineExpose({
   addAddressModalOpen,
   deleteAddressModalOpen,
   setDefaultAddressModalOpen,
+  createModalOpen,
+  deleteModalOpen,
   temporary,
 });
 </script>

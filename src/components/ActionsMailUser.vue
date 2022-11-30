@@ -7,7 +7,7 @@
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
-    :data="temporary"
+    :data="{ user: user?.uuid, address: temporary?.uuid }"
     :request="setDefaultAddress"
     title="Set Default Address"
   >
@@ -16,7 +16,7 @@
   </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
-    :object="temporary"
+    :object="{ user: user?.uuid, address: temporary?.uuid }"
     :request="deleteAddress"
   >
     Are you sure you want to delete {{ temporary?.localpart }}@{{
@@ -27,6 +27,7 @@
     v-model="regeneratePasswordModalOpen"
     :request="regeneratePassword"
     title="Regenerate Password"
+    submit="Regenerate Password"
   >
     Do you want to generate a new password? Be aware that your IMAP and SMTP
     settings will change.
@@ -51,7 +52,7 @@ import {
   mailSetDefaultAddress,
   mailRegeneratePassword,
 } from "@/services/mail";
-import { MailDomain, MailUser } from "@/types/mail";
+import { IMailDomain, ISelfMailUser } from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
@@ -64,11 +65,11 @@ import { computed, PropType, ref, toRefs } from "vue";
 const props = defineProps({
   availableDomains: {
     required: false,
-    type: Object as PropType<MailDomain[]>,
+    type: Object as PropType<IMailDomain[]>,
   },
   user: {
     required: false,
-    type: Object as PropType<MailUser>,
+    type: Object as PropType<ISelfMailUser>,
   },
   queryPage: {
     type: Function as PropType<() => void>,

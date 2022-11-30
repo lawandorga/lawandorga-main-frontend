@@ -2,36 +2,58 @@ export interface MailAddress {
   localpart: string;
 }
 
-interface MailAddressWithUser {
-  localpart: string;
-  domain: { name: string };
-  user: { name: string };
-}
-
 interface MailAccount {
   addresses: MailAddress[];
 }
 
-export interface MailUser {
+export interface ISelfMailUser {
   email: string | null;
   uuid: string | null;
   account: MailAccount;
   aliases: string[];
 }
 
-export interface MailDomain {
+export interface IMailDomain {
   uuid: string;
   name: string;
 }
 
+export interface IMailGroup {
+  uuid: string;
+  email: string;
+}
+
+export interface IMailUser {
+  uuid: string;
+  email: string;
+}
+
 export interface MailDashboardPage {
-  user: MailUser;
-  available_domains: MailDomain[];
-  domain: MailDomain;
+  user: ISelfMailUser;
+  available_domains: IMailDomain[];
+  domain: IMailDomain;
   noMailAccount: false;
-  addresses: MailAddressWithUser[];
+  users: IMailUser[];
+  groups: IMailGroup[];
 }
 
 export interface NoMailAccount {
   noMailAccount: true;
+}
+
+export interface IMailAddress {
+  uuid: string;
+  is_default: boolean;
+  localpart: string;
+  domain: IMailDomain;
+}
+
+export interface IMailGroupPage {
+  available_domains: IMailDomain[];
+  addresses: IMailAddress[];
+}
+
+export interface IMailUserPage {
+  available_domains: IMailDomain[];
+  addresses: IMailAddress[];
 }
