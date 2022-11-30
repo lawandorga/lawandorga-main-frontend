@@ -103,3 +103,11 @@ export function mailGroupDeleteAddress(data: {
 }): Promise<void> {
   return axios.post(`mail/groups/${data.group}/delete_address/`, data).then();
 }
+
+export function mailGroupAddMember(data: { group: string; member: string }) {
+  return axios.post(`mail/groups/${data.group}/add_member/`, data).then();
+}
+
+export function mailGroupRemoveMember(data: { group: string; member: string }) {
+  return axios.post(`mail/groups/${data.group}/remove_member/`, data).then();
+}

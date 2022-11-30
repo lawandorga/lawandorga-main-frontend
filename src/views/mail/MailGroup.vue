@@ -2,7 +2,7 @@
   <BoxLoader :show="userStore.loaded && !!actionsMailGroups">
     <div
       v-if="userStore.loaded && !!actionsMailGroups"
-      class="max-w-3xl mx-auto"
+      class="max-w-3xl mx-auto space-y-8"
     >
       <BreadcrumbsBar
         :base="{ name: 'mail-dashboard' }"
@@ -58,11 +58,42 @@
           </div>
         </template>
       </TableGenerator>
+      <TableGenerator
+        :head="[
+          { name: 'Member', key: 'name' },
+          { name: 'E-Mail', key: 'email' },
+          { name: '', key: 'action' },
+        ]"
+        :data="members"
+      >
+        <template #head-action>
+          <div class="flex justify-end">
+            <ButtonNormal
+              kind="action"
+              @click="actionsMailGroups.addMemberModalOpen = true"
+            >
+              Add Member
+            </ButtonNormal>
+          </div>
+        </template>
+        <template #action="item">
+          <ButtonNormal
+            kind="delete"
+            @click="
+              actionsMailGroups.temporary = item;
+              actionsMailGroups.removeMemberModalOpen = true;
+            "
+          >
+            Remove
+          </ButtonNormal>
+        </template>
+      </TableGenerator>
     </div>
   </BoxLoader>
   <ActionsMailGroups
     ref="actionsMailGroups"
     :available-domains="availableDomains"
+    :available-users="availableUsers"
     :query="query"
     :group-id="($route.params.uuid as string)"
   />
@@ -75,7 +106,12 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
 import { mailGetGroupPage } from "@/services/mail";
 import { useUserStore } from "@/store/user";
-import { IMailAddress, IMailDomain, IMailGroupPage } from "@/types/mail";
+import {
+  IMailAddress,
+  IMailDomain,
+  IMailGroupPage,
+  IMailUser,
+} from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator, ButtonNormal } from "@lawandorga/components";
 import { computed, ref } from "vue";
@@ -96,6 +132,18 @@ const query = useGet(mailGetGroupPage, page, route.params.uuid as string);
 const availableDomains = computed<IMailDomain[]>(() => {
   if (!page.value) return [];
   return page.value.available_domains;
+});
+
+// members
+const members = computed<IMailUser[] | null>(() => {
+  if (!page.value) return null;
+  return page.value.members;
+});
+
+// available users
+const availableUsers = computed<IMailUser[]>(() => {
+  if (!page.value) return [];
+  return page.value.available_users;
 });
 
 // addresses

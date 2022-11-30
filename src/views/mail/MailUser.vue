@@ -36,26 +36,24 @@
           </div>
         </template>
         <template #action="item">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              kind="action"
-              @click="
-                actionsMailUsers.temporary = item;
-                actionsMailUsers.setDefaultAddressModalOpen = true;
-              "
-            >
-              Set as default
-            </ButtonNormal>
-            <ButtonNormal
-              kind="delete"
-              @click="
-                actionsMailUsers.temporary = item;
-                actionsMailUsers.deleteAddressModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <ButtonNormal
+            kind="action"
+            @click="
+              actionsMailUsers.temporary = item;
+              actionsMailUsers.setDefaultAddressModalOpen = true;
+            "
+          >
+            Set as default
+          </ButtonNormal>
+          <ButtonNormal
+            kind="delete"
+            @click="
+              actionsMailUsers.temporary = item;
+              actionsMailUsers.deleteAddressModalOpen = true;
+            "
+          >
+            Delete
+          </ButtonNormal>
         </template>
       </TableGenerator>
     </div>
