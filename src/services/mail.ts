@@ -1,4 +1,9 @@
-import { IMailGroupPage, MailDashboardPage, NoMailAccount } from "@/types/mail";
+import {
+  IMailCheckDomain,
+  IMailGroupPage,
+  MailDashboardPage,
+  NoMailAccount,
+} from "@/types/mail";
 import axios from "axios";
 
 export function mailGetDashboardPage(): Promise<
@@ -18,6 +23,10 @@ export function mailGetDashboardPage(): Promise<
 
 export function mailGetGroupPage(uuid: string): Promise<IMailGroupPage> {
   return axios.get(`mail/query/page/group/${uuid}/`).then((r) => r.data);
+}
+
+export function mailCheckDomain(): Promise<IMailCheckDomain> {
+  return axios.get("mail/query/check_domain/").then((r) => r.data);
 }
 
 export function mailGetUserPage(uuid: string): Promise<IMailGroupPage> {

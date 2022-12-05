@@ -52,6 +52,17 @@
               </tr>
             </tbody>
           </table>
+          <p>
+            Status:
+            <span v-if="check && check.valid">
+              Your MX-Records Settings are correct.
+            </span>
+            <span v-if="check && !check.valid" class="font-medium text-red-700">
+              Your MX-Records Settings are not correct. They contain the
+              following domains: {{ check.mx_records }}
+            </span>
+            <span v-if="!check">Loading...</span>
+          </p>
         </div>
       </div>
     </div>
@@ -59,10 +70,17 @@
 </template>
 
 <script lang="ts" setup>
+import useGet from "@/composables/useGet";
+import { mailCheckDomain } from "@/services/mail";
 import { actionsDomainKey } from "@/types/keys";
-import { MailDashboardPage, MailDomain, NoMailAccount } from "@/types/mail";
+import {
+  IMailCheckDomain,
+  IMailDomain,
+  MailDashboardPage,
+  NoMailAccount,
+} from "@/types/mail";
 import { ButtonNormal } from "@lawandorga/components";
-import { computed, inject, PropType, toRefs } from "vue";
+import { computed, inject, PropType, toRefs, ref } from "vue";
 
 // page
 const props = defineProps({
@@ -73,8 +91,12 @@ const props = defineProps({
 });
 const { page } = toRefs(props);
 
+// check
+const check = ref<IMailCheckDomain>();
+useGet(mailCheckDomain, check);
+
 // domain
-const domain = computed<MailDomain | null>(() => {
+const domain = computed<IMailDomain | null>(() => {
   if (page.value && !page.value.noMailAccount) return page.value.domain;
   return null;
 });

@@ -60,3 +60,8 @@ export interface IMailUserPage {
   available_domains: IMailDomain[];
   addresses: IMailAddress[];
 }
+
+export interface IMailCheckDomain {
+  mx_records: string[];
+  valid: boolean;
+}
