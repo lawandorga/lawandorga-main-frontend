@@ -37,12 +37,16 @@
           <TabControls
             :tabs="[
               { name: 'Mail User Role', key: 'mailUserRole' },
-              { name: 'Mail Users', key: 'users' },
+              { name: 'Users', key: 'users' },
+              { name: 'Groups', key: 'groups' },
               { name: 'Domain', key: 'domain' },
             ]"
           >
             <template #mailUserRole><MailUserRole :page="page" /></template>
             <template #users><MailUsers :page="page" /></template>
+            <template #groups>
+              <MailGroups :page="page" :query="query" />
+            </template>
             <template #domain><MailDomain :page="page" /></template>
           </TabControls>
         </template>
@@ -54,9 +58,9 @@
     ref="actionsMailUser"
     :available-domains="page.noMailAccount ? undefined : page.available_domains"
     :user="page.noMailAccount ? undefined : page.user"
-    :query-page="queryPage"
+    :query-page="query"
   />
-  <ActionsMailDomain ref="actionsDomain" :query-page="queryPage" />
+  <ActionsMailDomain ref="actionsDomain" :query-page="query" />
 </template>
 
 <script setup lang="ts">
@@ -73,20 +77,17 @@ import MailUserRole from "@/components/MailUserRole.vue";
 import MailDomain from "@/components/MailDomain.vue";
 import ActionsMailDomain from "@/components/ActionsMailDomain.vue";
 import { MailDashboardPage, NoMailAccount } from "@/types/mail";
-import useQuery from "@/composables/useQuery";
 import { mailGetDashboardPage } from "@/services/mail";
 import useGet from "@/composables/useGet";
 import MailUsers from "@/components/MailUsers.vue";
+import MailGroups from "@/components/MailGroups.vue";
 
 // user store
 const userStore = useUserStore();
 
 // load the page
 const page = ref<MailDashboardPage | NoMailAccount>();
-useGet(mailGetDashboardPage, page);
-
-// query function
-const queryPage = useQuery(mailGetDashboardPage, page);
+const query = useGet(mailGetDashboardPage, page);
 
 // mail user actions
 const actionsMailUser = ref<typeof ActionsMailUser>();

@@ -1,11 +1,16 @@
-import { MailDashboardPage, NoMailAccount } from "@/types/mail";
+import {
+  IMailCheckDomain,
+  IMailGroupPage,
+  MailDashboardPage,
+  NoMailAccount,
+} from "@/types/mail";
 import axios from "axios";
 
 export function mailGetDashboardPage(): Promise<
   MailDashboardPage | NoMailAccount
 > {
   return axios
-    .get("mail/query/page/mail/")
+    .get("mail/query/page/dashboard/")
     .then((response) => {
       const data = response.data;
       data["noMailAccount"] = false;
@@ -14,6 +19,18 @@ export function mailGetDashboardPage(): Promise<
     .catch((error) => {
       if (error.response.status === 444) return { noMailAccount: true };
     });
+}
+
+export function mailGetGroupPage(uuid: string): Promise<IMailGroupPage> {
+  return axios.get(`mail/query/page/group/${uuid}/`).then((r) => r.data);
+}
+
+export function mailCheckDomain(): Promise<IMailCheckDomain> {
+  return axios.get("mail/query/check_domain/").then((r) => r.data);
+}
+
+export function mailGetUserPage(uuid: string): Promise<IMailGroupPage> {
+  return axios.get(`mail/query/page/user/${uuid}/`).then((r) => r.data);
 }
 
 export function mailCreateUser(): Promise<void> {
@@ -28,12 +45,22 @@ export function mailAddAddress(data: {
   return axios.post(`mail/users/${data.user}/add_address/`, data).then();
 }
 
-export function mailDeleteAddress(data: { id: string }): Promise<void> {
-  return axios.delete(`mail/users/delete_address/${data.id}/`).then();
+export function mailDeleteAddress(data: {
+  user: string;
+  address: string;
+}): Promise<void> {
+  return axios
+    .delete(`mail/users/${data.user}/delete_address/${data.address}/`)
+    .then();
 }
 
-export function mailSetDefaultAddress(data: { id: string }): Promise<void> {
-  return axios.post(`mail/users/set_default_address/${data.id}/`, data).then();
+export function mailSetDefaultAddress(data: {
+  user: string;
+  address: string;
+}): Promise<void> {
+  return axios
+    .post(`mail/users/${data.user}/set_default_address/${data.address}/`, data)
+    .then();
 }
 
 export function mailRegeneratePassword(): Promise<{ password: string }> {
@@ -45,8 +72,51 @@ export function mailAddDomain(data: { name: string }): Promise<void> {
 }
 
 export function mailChangeDomain(data: {
-  id: string;
+  uuid: string;
   name: string;
 }): Promise<void> {
-  return axios.post(`mail/domains/${data.id}/`, data).then();
+  return axios.post(`mail/domains/${data.uuid}/`, data).then();
+}
+
+export function mailCreateGroup(data: {
+  localpart: string;
+  domain: string;
+}): Promise<void> {
+  return axios.post("mail/groups/", data).then();
+}
+
+export function mailDeleteGroup(data: { group: string }): Promise<void> {
+  return axios.delete(`mail/groups/${data.group}/`).then();
+}
+
+export function mailGroupAddAddress(data: {
+  group: string;
+  localpart: string;
+  domain: string;
+}): Promise<void> {
+  return axios.post(`mail/groups/${data.group}/add_address/`, data).then();
+}
+
+export function mailGroupSetDefaultAddress(data: {
+  group: string;
+  address: string;
+}): Promise<void> {
+  return axios
+    .post(`mail/groups/${data.group}/set_default_address/`, data)
+    .then();
+}
+
+export function mailGroupDeleteAddress(data: {
+  group: string;
+  address: string;
+}): Promise<void> {
+  return axios.post(`mail/groups/${data.group}/delete_address/`, data).then();
+}
+
+export function mailGroupAddMember(data: { group: string; member: string }) {
+  return axios.post(`mail/groups/${data.group}/add_member/`, data).then();
+}
+
+export function mailGroupRemoveMember(data: { group: string; member: string }) {
+  return axios.post(`mail/groups/${data.group}/remove_member/`, data).then();
 }
