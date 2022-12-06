@@ -47,10 +47,16 @@ watch(createModalOpen, () => {
 const createFields = computed<types.FormField[]>(() => [
   {
     label: "Folder",
-    type: "select",
+    type: "hidden",
     name: "folder",
     required: true,
     options: availableFolders.value,
+  },
+  {
+    label: "Name",
+    type: "text",
+    name: "name",
+    required: true,
   },
   {
     label: "Template",
