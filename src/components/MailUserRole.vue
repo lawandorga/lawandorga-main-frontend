@@ -38,7 +38,11 @@
             </tr>
             <tr>
               <th>Port</th>
-              <td>993 with STARTTLS</td>
+              <td>
+                993 with implicit TLS
+                <br />
+                (or 143 with STARTTLS)
+              </td>
               <td>587 with STARTTLS</td>
             </tr>
             <tr>
