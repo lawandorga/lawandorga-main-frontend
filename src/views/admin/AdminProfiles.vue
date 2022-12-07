@@ -82,13 +82,14 @@
       :object="profile"
     />
     <!-- accept -->
-    <ModalDelete
+    <ModalConfirm
       v-model="acceptUserModalOpen"
       title="Accept User"
       :request="acceptUserRequest"
-      :object="profile"
-      verb="accept"
-    />
+      :data="{ user: profile?.id }"
+    >
+      Are your sure you want to accept '{{ profile?.name }}'?
+    </ModalConfirm>
     <!-- unlock -->
     <ModalDelete
       v-model="unlockUserModalOpen"
@@ -118,7 +119,7 @@ import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "@lawandorga/components";
+import { ModalConfirm, TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
@@ -126,6 +127,7 @@ import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
+import useCommand from "@/composables/useCommand";
 
 export default defineComponent({
   components: {
@@ -136,16 +138,17 @@ export default defineComponent({
     TableGenerator,
     ButtonNormal,
     ModalDelete,
+    ModalConfirm,
   },
   setup() {
     const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
-    useGet(AdminService.getUsers, profiles);
+    const query = useGet(AdminService.getUsers, profiles);
 
     // accept
     const {
-      updateRequest: acceptUserRequest,
-      updateModalOpen: acceptUserModalOpen,
-    } = useUpdate(AdminService.acceptUser, profiles);
+      commandRequest: acceptUserRequest,
+      commandModalOpen: acceptUserModalOpen,
+    } = useCommand(AdminService.acceptUser, query);
 
     // delete
     const profile = ref(null) as Ref<RlcUserSmall | null>;

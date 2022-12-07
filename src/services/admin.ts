@@ -33,10 +33,8 @@ class AdminService {
     return axios.delete(`profiles/${user.id}/`).then();
   }
 
-  acceptUser(user: User): Promise<RlcUser> {
-    return axios
-      .post<Promise<RlcUser>>(`profiles/${user.id}/accept/`)
-      .then((response) => response.data);
+  acceptUser(data: { user: number }): Promise<void> {
+    return axios.post(`org/accept_member/`, data).then((r) => r.data);
   }
 
   unlockUser(user: User): Promise<RlcUser> {

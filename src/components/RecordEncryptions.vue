@@ -3,16 +3,18 @@
     <BoxHeadingStats
       title="Access"
       :show="selectedType === 'ACCESS'"
-      :stats="['The following persons have access to this record']"
+      :stats="[
+        'The following persons have access to this record because they have access to its folder.',
+      ]"
       nopadding
     >
       <TableGenerator
         :head="[
-          { name: 'Person', key: 'user_detail' },
-          { name: 'Since', key: 'created' },
+          { name: 'Person', key: 'name' },
+          // { name: 'Since', key: 'created' },
           { name: '', key: 'action' },
         ]"
-        :data="actionsEncryptions.encryptions"
+        :data="access"
       >
         <template #created="slotProps">
           {{ formatDate(slotProps.created) }}
@@ -25,7 +27,7 @@
               actionsEncryptions.deleteModalOpen = true;
             "
           >
-            Remove Access
+            Revoke Access
           </ButtonNormal>
         </template>
       </TableGenerator>
@@ -39,9 +41,11 @@ import { TableGenerator, ButtonNormal } from "@lawandorga/components";
 import { actionsEncryptionsKey } from "@/types/keys";
 import { formatDate } from "@/utils/date";
 import { inject } from "vue";
+import { IAccess } from "@/types/folders";
 
 defineProps<{
   selectedType: string;
+  access: IAccess[] | null;
 }>();
 
 const actionsEncryptions = inject(actionsEncryptionsKey);

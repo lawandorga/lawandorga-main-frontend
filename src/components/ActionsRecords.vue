@@ -13,9 +13,12 @@
 import useCommand from "@/composables/useCommand";
 import { RecordTemplate, Record } from "@/types/records";
 import { ModalForm, types } from "@lawandorga/components";
-import { ref, toRefs, watch } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
 import RecordsService from "@/services/records";
+import useGet from "@/composables/useGet";
+import { IAvailableFolder } from "@/types/folders";
+import { foldersGetAvailableFolders } from "@/services/folders";
 
 // props
 const props = defineProps<{
@@ -26,16 +29,6 @@ const { query } = toRefs(props);
 //
 const router = useRouter();
 
-const createFields = ref<types.FormField[]>([
-  {
-    label: "Template",
-    type: "select",
-    name: "template",
-    required: true,
-    options: [] as RecordTemplate[],
-  },
-]);
-
 const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
   useCommand(RecordsService.createRecord, query);
 
@@ -43,11 +36,36 @@ const recordCreated = (record: Record) => {
   router.push({ name: "records-detail", params: { id: record.id } });
 };
 
+const availableFolders = ref<IAvailableFolder[]>([]);
+const availableTemplates = ref<RecordTemplate[]>([]);
+
 watch(createModalOpen, () => {
-  RecordsService.getTemplates().then(
-    (templates) => (createFields.value[0].options = templates),
-  );
+  useGet(RecordsService.getTemplates, availableTemplates);
+  useGet(foldersGetAvailableFolders, availableFolders);
 });
+
+const createFields = computed<types.FormField[]>(() => [
+  {
+    label: "Folder",
+    type: "hidden",
+    name: "folder",
+    required: true,
+    options: availableFolders.value,
+  },
+  {
+    label: "Name",
+    type: "text",
+    name: "name",
+    required: true,
+  },
+  {
+    label: "Template",
+    type: "select",
+    name: "template",
+    required: true,
+    options: availableTemplates.value,
+  },
+]);
 
 defineExpose({
   createModalOpen,
