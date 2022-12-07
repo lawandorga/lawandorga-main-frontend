@@ -21,7 +21,7 @@ export interface IListRecord {
   has_access: boolean;
 }
 
-export type Record = JsonModel & {
+export interface Record {
   id: number;
   created: string;
   updated: string;
@@ -31,7 +31,8 @@ export type Record = JsonModel & {
   show: string[];
   old_record: number;
   delete: boolean;
-};
+  folder: string;
+}
 
 type RecordValue = string | number | boolean | string[] | number[] | File;
 
