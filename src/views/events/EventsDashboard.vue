@@ -1,4 +1,20 @@
 <template>
+  <FormGenerator
+    :request="(data: JsonModel) => {return Promise.resolve({data: data})}"
+    :fields="[
+      {
+        name: 'custom',
+        type: 'custom',
+        label: 'Custom',
+      },
+    ]"
+    @submit="console.log($event)"
+  >
+    <template #custom="{ data }">
+      <FormWysiwyg v-model="data['custom']" />
+    </template>
+  </FormGenerator>
+  <p v-html="textdata"></p>
   <BoxLoader :show="!!eventsWithFormattedDate">
     <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar
@@ -121,7 +137,11 @@
 
 <script setup lang="ts">
 import ActionsEvents from "@/components/ActionsEvents.vue";
-import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
+import {
+  ButtonNormal,
+  ButtonToggle,
+  FormGenerator,
+} from "@lawandorga/components";
 import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -131,6 +151,8 @@ import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import ModalCalendarLink from "@/components/ModalCalendarLink.vue";
 import { useRoute, useRouter } from "vue-router";
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
+import { JsonModel } from "@lawandorga/components/dist/types/types";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const showGlobal = ref(true);
@@ -138,6 +160,8 @@ const modalCalendarLink = ref<typeof ModalCalendarLink>();
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
+
+const textdata = ref("test");
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(xs: T[], getKey: (element: T) => string) {
