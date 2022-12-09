@@ -52,20 +52,20 @@ import {
   mailSetDefaultAddress,
   mailRegeneratePassword,
 } from "@/services/mail";
-import { IMailDomain, ISelfMailUser } from "@/types/mail";
+import { IAvailableMailDomain, ISelfMailUser } from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
   ModalDelete,
   types,
 } from "@lawandorga/components";
-import { computed, PropType, ref, toRefs } from "vue";
+import { computed, PropType, ref, toRefs, watch } from "vue";
 
 // page
 const props = defineProps({
   availableDomains: {
     required: false,
-    type: Object as PropType<IMailDomain[]>,
+    type: Object as PropType<IAvailableMailDomain[]>,
   },
   user: {
     required: false,
@@ -118,6 +118,9 @@ const regeneratePasswordModalOpen = ref(false);
 const password = ref("");
 const regeneratePassword = () =>
   mailRegeneratePassword().then((d) => (password.value = d.password));
+watch(regeneratePasswordModalOpen, (newValue) => {
+  if (!newValue) password.value = "";
+});
 
 // expose
 defineExpose({

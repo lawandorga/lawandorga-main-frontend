@@ -1,6 +1,12 @@
 export interface IMailDomain {
   uuid: string;
   name: string;
+  is_active: boolean;
+}
+
+export interface IAvailableMailDomain {
+  uuid: string;
+  name: string;
 }
 
 export interface IMailGroup {
@@ -42,7 +48,7 @@ export interface NoMailAccount {
 
 export interface MailDashboardPage {
   user: ISelfMailUser;
-  available_domains: IMailDomain[];
+  available_domains: IAvailableMailDomain[];
   domain: IMailDomain;
   noMailAccount: false;
   users: IMailUser[];
