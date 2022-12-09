@@ -1,6 +1,6 @@
 <template>
   <FormGenerator
-    :request="(data: JsonModel) => {return Promise.resolve({data: data})}"
+    :request="f"
     :fields="[
       {
         name: 'custom',
@@ -8,7 +8,7 @@
         label: 'Custom',
       },
     ]"
-    @submit="console.log($event)"
+    @success="s"
   >
     <template #custom="{ data }">
       <FormWysiwyg v-model="data['custom']" />
@@ -40,7 +40,7 @@
           </ButtonNormal>
         </template>
       </BreadcrumbsBar>
-      <div class="flex justify-end align-baseline gap-4">
+      <div class="flex justify-end gap-4 align-baseline">
         <ButtonToggle v-model="showGlobal" text="Show global events" />
         <ButtonNormal size="xs" kind="action" @click="loadPastEvents">
           Show earlier
@@ -49,7 +49,7 @@
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <h2
           v-if="isEventsListEmpty"
-          class="text-xl text-lorgablue text-center font-medium"
+          class="text-xl font-medium text-center text-lorgablue"
         >
           No event matches the filter criteria.
         </h2>
@@ -58,7 +58,7 @@
           :key="day[0].start_time_object.groupDate"
           class="flex flex-row gap-8 p-6 pt-0 bg-white rounded-lg shadow flex-nowrap"
         >
-          <div class="flex flex-col items-center flex-none font-light pt-6">
+          <div class="flex flex-col items-center flex-none pt-6 font-light">
             <h3 class="text-base">
               {{ day[0].start_time_object.shortMonth }}
             </h3>
@@ -79,7 +79,7 @@
                   'bg-gray-300': event.is_past_event,
                 }"
               />
-              <div class="flex flex-col gap-2 grow pt-5">
+              <div class="flex flex-col gap-2 pt-5 grow">
                 <div class="flex flex-row items-baseline gap-6">
                   <h2 class="flex-grow text-xl font-medium">
                     {{ event.name }}
@@ -162,6 +162,13 @@ const router = useRouter();
 const route = useRoute();
 
 const textdata = ref("test");
+
+const f = (data: JsonModel) => {
+  return Promise.resolve({ data: data });
+};
+const s = (d) => {
+  console.log(d);
+};
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(xs: T[], getKey: (element: T) => string) {
