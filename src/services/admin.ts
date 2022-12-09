@@ -13,13 +13,13 @@ class AdminService {
 
   updateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<RlcUser>(`/rlc_users/${user.id}/update_information/`, user)
+      .put<RlcUser>(`/rlc_users/${user.id}/update_information/`, user)
       .then((response) => response.data);
   }
 
   activateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<RlcUser>(`/rlc_users/${user.id}/activate/`, user)
+      .put<RlcUser>(`/rlc_users/${user.id}/activate/`, user)
       .then((response) => response.data);
   }
 
