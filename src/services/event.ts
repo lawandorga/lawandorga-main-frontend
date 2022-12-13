@@ -32,6 +32,24 @@ class EventsService {
   async resetCalendarIcsInfo(): Promise<void> {
     await axios.post<CalendarIcsInfo>("events/ics_url/reset/");
   }
+
+  async updateAttendance(data: {
+    id: number;
+    rlc_user: number;
+    attendance: boolean;
+  }) {
+    console.log(data);
+    const response = await axios.put<Event>(`events/${data.id}/`, data);
+    return response.data;
+  } // TODO: Necessary?
 }
+
+/*export function updateAttendance(data: {
+  id: number;
+  rlc_user: number;
+  attendance: boolean;
+}): Promise<void> {
+  return axios.put(`api/events/${data.id}/`, data).then();
+}*/
 
 export default new EventsService();

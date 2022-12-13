@@ -19,6 +19,15 @@
     :request="deleteRequest"
     :object="eventTemporary"
   />
+  <ModalConfirm
+    v-model="updateAttendanceEventModalOpen"
+    title="Update Attendance"
+    :data="{ id: temporary?.id }"
+    :request="attendanceRequest"
+    :object="eventUpdateTemporary"
+  >
+    Do you want to attend?
+  </ModalConfirm>
 </template>
 
 <script setup lang="ts">
@@ -26,7 +35,7 @@ import { Ref, ref } from "vue";
 import useGet from "@/composables/useGet";
 import EventService from "@/services/event";
 import { Event } from "@/types/event";
-import { ModalCreate, ModalDelete, ModalUpdate } from "@lawandorga/components";
+import { ModalCreate, ModalDelete, ModalUpdate, ModalConfirm } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import useQuery from "@/composables/useQuery";
 import useDelete from "@/composables/useDelete";
@@ -83,6 +92,12 @@ const {
 } = useUpdate(EventService.updateEvent, events);
 
 const {
+  temporary: eventAttendanceTemporary, //TODO: Figure out how to use temporaries
+  commandRequest: attendanceRequest,
+  commandModalOpen: updateAttendanceEventModalOpen,
+} = useCommand(EventService.updateAttendance);
+
+const {
   temporary: eventTemporary,
   deleteRequest,
   deleteModalOpen: deleteEventModalOpen,
@@ -94,6 +109,7 @@ defineExpose({
   eventTemporary,
   addEventModalOpen,
   updateEventModalOpen,
+  updateAttendanceEventModalOpen,
   deleteEventModalOpen,
 });
 </script>

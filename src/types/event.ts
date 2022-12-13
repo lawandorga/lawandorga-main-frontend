@@ -25,6 +25,8 @@ export interface EventUpdate {
   description?: string;
   start_time?: string;
   end_time?: string;
+  attendance?: boolean;
+  rlc_user?: number;
 }
 
 export interface CalendarIcsInfo {

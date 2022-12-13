@@ -82,6 +82,17 @@
                     size="xs"
                     kind="action"
                     @click="
+                      actionsEvents.updateAttendanceEventModalOpen = true; // TODO: Final Implementation
+                      actionsEvents.eventUpdateTemporary = event;
+                    "
+                  >
+                    Attend
+                  </ButtonNormal>
+                  <ButtonNormal
+                    v-if="userStore.rlc && userStore.rlc.id === event.org.id"
+                    size="xs"
+                    kind="action"
+                    @click="
                       actionsEvents.updateEventModalOpen = true;
                       actionsEvents.eventUpdateTemporary = event;
                     "
