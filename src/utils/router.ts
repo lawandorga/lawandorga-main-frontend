@@ -1,5 +1,4 @@
-export function getNextQuery(nextPath: string) {
-  let query = {};
-  if (!nextPath.includes("login")) query = { next: nextPath };
+export function getNextQuery(nextPath: string, query = {}) {
+  if (!nextPath.includes("login")) query = { ...query, next: nextPath };
   return query;
 }
