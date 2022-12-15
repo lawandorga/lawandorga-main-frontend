@@ -29,6 +29,10 @@ export function recordsGetPage(): Promise<IRecordListPage> {
   return axios.get("records/query/").then((r) => r.data);
 }
 
+export function recordsOptimize(): Promise<void> {
+  return axios.post("records/records/v2/optimize/").then();
+}
+
 class RecordsService {
   // record templates
   getTemplates(): Promise<RecordTemplate[]> {
@@ -100,7 +104,7 @@ class RecordsService {
 
   createRecord(data: JsonModel): Promise<Record> {
     return axios
-      .post<Record>("records/records/", data)
+      .post<Record>("records/records/v2/", data)
       .then((response) => response.data);
   }
 
