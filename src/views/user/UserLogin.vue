@@ -1,7 +1,9 @@
-<template><div class="p-2 text-sm">One moment please...</div></template>
+<template><BoxLoader /></template>
 
 <script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
 import { useUserStore } from "@/store/user";
+import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
@@ -15,24 +17,26 @@ const next = () => {
   else router.push({ name: "dashboard" });
 };
 
+// tried
+const tried = "tried" in route.query;
+
 // login
 const login = () => {
-  const path = route.query.next ? route.query.next : "/dashboard/";
-  const next = window.location.origin + path;
-  const url = `${import.meta.env.VITE_AUTH_URL}/login/?next=${next}`;
+  const next = route.query.next ? route.query.next : "/dashboard/";
+  const current = window.location.origin + route.path;
+  const query = `?next=${next}&tried`;
+  const base = import.meta.env.VITE_AUTH_URL;
+  const authNext = encodeURIComponent(`${current}${query}`);
+  const url = `${base}/login/?next=${authNext}`;
   window.location.href = url;
 };
 
-// login or go to statistics
+// login or go to next
 if (userStore.isAuthenticated) next();
-else {
-  userStore
-    .updateData()
-    .then(() => {
-      next();
-    })
-    .catch((error) => {
-      if (error && error.response && error.response.status === 401) login();
-    });
-}
+else if (!tried) login();
+
+// watch user login
+watch(userStore, (newValue) => {
+  if (newValue) next();
+});
 </script>
