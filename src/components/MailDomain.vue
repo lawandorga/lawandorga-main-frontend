@@ -53,15 +53,22 @@
             </tbody>
           </table>
           <p>
-            Status:
-            <span v-if="check && check.valid">
-              Your MX-Records Settings are correct.
+            <span
+              v-if="domain && !domain.is_active"
+              class="text-sm font-medium text-red-700"
+            >
+              Your domain is not active, please check the settings.
             </span>
-            <span v-if="check && !check.valid" class="font-medium text-red-700">
-              Your MX-Records Settings are not correct. They contain the
-              following domains: {{ check.mx_records }}
+            <span v-if="domain && domain.is_active" class="text-sm font-medium">
+              Your domain is active.
             </span>
-            <span v-if="!check">Loading...</span>
+            <br />
+            <ButtonNormal
+              kind="action"
+              @click="domainActions.checkDomainSettings(domain)"
+            >
+              Check Settings
+            </ButtonNormal>
           </p>
         </div>
       </div>
@@ -70,17 +77,10 @@
 </template>
 
 <script lang="ts" setup>
-import useGet from "@/composables/useGet";
-import { mailCheckDomain } from "@/services/mail";
 import { actionsDomainKey } from "@/types/keys";
-import {
-  IMailCheckDomain,
-  IMailDomain,
-  MailDashboardPage,
-  NoMailAccount,
-} from "@/types/mail";
+import { IMailDomain, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { ButtonNormal } from "@lawandorga/components";
-import { computed, inject, PropType, toRefs, ref } from "vue";
+import { computed, inject, PropType, toRefs } from "vue";
 
 // page
 const props = defineProps({
@@ -90,10 +90,6 @@ const props = defineProps({
   },
 });
 const { page } = toRefs(props);
-
-// check
-const check = ref<IMailCheckDomain>();
-useGet(mailCheckDomain, check);
 
 // domain
 const domain = computed<IMailDomain | null>(() => {

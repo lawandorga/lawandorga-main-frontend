@@ -25,8 +25,12 @@ export function mailGetGroupPage(uuid: string): Promise<IMailGroupPage> {
   return axios.get(`mail/query/page/group/${uuid}/`).then((r) => r.data);
 }
 
-export function mailCheckDomain(): Promise<IMailCheckDomain> {
-  return axios.get("mail/query/check_domain/").then((r) => r.data);
+export function mailCheckDomain(data: {
+  uuid: string;
+}): Promise<IMailCheckDomain> {
+  return axios
+    .post(`mail/domains/${data.uuid}/check_domain/`)
+    .then((r) => r.data);
 }
 
 export function mailGetUserPage(uuid: string): Promise<IMailGroupPage> {

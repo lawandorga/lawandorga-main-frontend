@@ -38,7 +38,11 @@
             </tr>
             <tr>
               <th>Port</th>
-              <td>993 with STARTTLS</td>
+              <td>
+                993 with implicit TLS
+                <br />
+                (or 143 with STARTTLS)
+              </td>
               <td>587 with STARTTLS</td>
             </tr>
             <tr>
@@ -53,35 +57,35 @@
             </tr>
           </tbody>
         </table>
-        <h2 v-if="user.groups.length" class="">
-          IMAP & SMTP Settings For Groups
-        </h2>
-        <p>
-          In order to setup the group account you need to add it as an extra
-          account in your favorite mail program.
-        </p>
-        <p>
-          For groups all the settings are the same as above. Port is the same.
-          Server is the same. Even the password is the same.
-        </p>
-        <p>However, the username changes for every group.</p>
-        <p class="text-red-700">
-          Never share your mail password with anybody. If someone else needs
-          access to the group account you can add them on the group page to the
-          group and they can use their own password.
-        </p>
-        <table v-for="(group, index) in user.groups" :key="index">
-          <thead>
-            <th>Group</th>
-            <th>Username</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ group.email }}</td>
-              <td>{{ group.email }}*{{ user.email }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="user.groups.length">
+          <h2 class="">IMAP & SMTP Settings For Groups</h2>
+          <p>
+            In order to setup the group account you need to add it as an extra
+            account in your favorite mail program.
+          </p>
+          <p>
+            For groups all the settings are the same as above. Port is the same.
+            Server is the same. Even the password is the same.
+          </p>
+          <p>However, the username changes for every group.</p>
+          <p class="text-red-700">
+            Never share your mail password with anybody. If someone else needs
+            access to the group account you can add them on the group page to
+            the group and they can use their own password.
+          </p>
+          <table v-for="(group, index) in user.groups" :key="index">
+            <thead>
+              <th>Group</th>
+              <th>Username</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ group.email }}</td>
+                <td>{{ group.email }}*{{ user.email }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="mt-4">
