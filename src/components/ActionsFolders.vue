@@ -85,7 +85,7 @@ const revokeAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_slug",
+      name: "user_uuid",
       type: "select",
       required: true,
       options: temporary.value
@@ -104,7 +104,7 @@ const grantAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_slug",
+      name: "user_uuid",
       type: "select",
       required: true,
       options: availablePersons.value
