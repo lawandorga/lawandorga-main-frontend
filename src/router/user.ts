@@ -21,6 +21,12 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
+    path: "/user/optimize/",
+    name: "user-optimize",
+    component: () => import("@/views/user/UserOptimize.vue"),
+    beforeEnter: isAuthenticated,
+  },
+  {
     path: "/user/password-reset/",
     name: "user-passwordreset",
     component: () => import("@/views/user/UserRequestPasswordReset.vue"),

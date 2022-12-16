@@ -13,13 +13,13 @@ class AdminService {
 
   updateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<RlcUser>(`/rlc_users/${user.id}/update_information/`, user)
+      .put<RlcUser>(`/rlc_users/${user.id}/update_information/`, user)
       .then((response) => response.data);
   }
 
   activateUser(user: JsonModel): Promise<RlcUser> {
     return axios
-      .patch<RlcUser>(`/rlc_users/${user.id}/activate/`, user)
+      .put<RlcUser>(`/rlc_users/${user.id}/activate/`, user)
       .then((response) => response.data);
   }
 
@@ -33,16 +33,14 @@ class AdminService {
     return axios.delete(`profiles/${user.id}/`).then();
   }
 
-  acceptUser(user: User): Promise<RlcUser> {
-    return axios
-      .post<Promise<RlcUser>>(`profiles/${user.id}/accept/`)
-      .then((response) => response.data);
+  acceptUser(data: { user: number }): Promise<void> {
+    return axios.post(`org/accept_member/`, data).then((r) => r.data);
   }
 
-  unlockUser(user: User): Promise<RlcUser> {
+  unlockUser(user: User): Promise<void> {
     return axios
-      .post<Promise<RlcUser>>(`profiles/${user.id}/unlock/`)
-      .then((response) => response.data);
+      .post<Promise<void>>(`rlc_users/${user.id}/unlock_user/`)
+      .then();
   }
 
   changePassword(data: {

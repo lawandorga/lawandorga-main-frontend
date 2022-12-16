@@ -80,12 +80,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminSidebar.vue"),
     beforeEnter: isAuthenticated,
   },
-  {
-    path: "/admin/mail/",
-    name: "admin-mail",
-    component: () => import("@/views/admin/AdminMail.vue"),
-    beforeEnter: isAuthenticated,
-  },
 ];
 
 export default routes;

@@ -1,6 +1,7 @@
 <template>
   <ModalCreate
     v-model="createModalOpen"
+    title="Create Folder"
     :fields="fields"
     :request="createRequest"
     :initial="{ parent: parent }"
@@ -10,13 +11,13 @@
     title="Change name"
     :fields="fields"
     :request="updateRequest"
-    :initial="temporary"
+    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
   />
   <ModalDelete
     v-model="deleteModalOpen"
     title="Delete folder"
     :request="deleteRequest"
-    :object="temporary"
+    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
   />
   <ModalUpdate
     v-model="grantAccessModalOpen"
@@ -84,7 +85,7 @@ const revokeAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_slug",
+      name: "user_uuid",
       type: "select",
       required: true,
       options: temporary.value
@@ -103,7 +104,7 @@ const grantAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_slug",
+      name: "user_uuid",
       type: "select",
       required: true,
       options: availablePersons.value

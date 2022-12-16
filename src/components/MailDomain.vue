@@ -52,6 +52,24 @@
               </tr>
             </tbody>
           </table>
+          <p>
+            <span
+              v-if="domain && !domain.is_active"
+              class="text-sm font-medium text-red-700"
+            >
+              Your domain is not active, please check the settings.
+            </span>
+            <span v-if="domain && domain.is_active" class="text-sm font-medium">
+              Your domain is active.
+            </span>
+            <br />
+            <ButtonNormal
+              kind="action"
+              @click="domainActions.checkDomainSettings(domain)"
+            >
+              Check Settings
+            </ButtonNormal>
+          </p>
         </div>
       </div>
     </div>
@@ -60,7 +78,7 @@
 
 <script lang="ts" setup>
 import { actionsDomainKey } from "@/types/keys";
-import { MailDashboardPage, MailDomain, NoMailAccount } from "@/types/mail";
+import { IMailDomain, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { ButtonNormal } from "@lawandorga/components";
 import { computed, inject, PropType, toRefs } from "vue";
 
@@ -74,7 +92,7 @@ const props = defineProps({
 const { page } = toRefs(props);
 
 // domain
-const domain = computed<MailDomain | null>(() => {
+const domain = computed<IMailDomain | null>(() => {
   if (page.value && !page.value.noMailAccount) return page.value.domain;
   return null;
 });

@@ -14,13 +14,33 @@
     :request="changeDomainRequest"
     :initial="temporary"
   />
+  <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
+    <span v-if="check && check.valid">
+      Your MX-Records Settings are correct.
+    </span>
+    <span v-if="check && !check.valid" class="text-red-700">
+      Your MX-Records Settings are not correct. They contain the following
+      domains: {{ check.mx_records }}.
+    </span>
+    <span v-if="!check">Loading...</span>
+  </ModalFree>
 </template>
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import { mailAddDomain, mailChangeDomain } from "@/services/mail";
-import { ModalCreate, ModalUpdate, types } from "@lawandorga/components";
-import { PropType, toRefs } from "vue";
+import {
+  mailAddDomain,
+  mailChangeDomain,
+  mailCheckDomain,
+} from "@/services/mail";
+import { IMailCheckDomain } from "@/types/mail";
+import {
+  ModalCreate,
+  ModalFree,
+  ModalUpdate,
+  types,
+} from "@lawandorga/components";
+import { PropType, ref, toRefs } from "vue";
 
 // page
 const props = defineProps({
@@ -53,6 +73,22 @@ const {
   temporary,
 } = useCommand(mailChangeDomain, queryPage.value);
 
+// check domain
+const check = ref<IMailCheckDomain>();
+const checkModalOpen = ref(false);
+const checkDomainSettings = (data: { uuid: string }) => {
+  checkModalOpen.value = true;
+  mailCheckDomain(data).then((d) => {
+    queryPage.value();
+    check.value = d;
+  });
+};
+
 // expose
-defineExpose({ commandModalOpen, changeDomainModalOpen, temporary });
+defineExpose({
+  commandModalOpen,
+  changeDomainModalOpen,
+  temporary,
+  checkDomainSettings,
+});
 </script>

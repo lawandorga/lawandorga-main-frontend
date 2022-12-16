@@ -1,9 +1,19 @@
-import { IFolderPage } from "@/types/folders";
+import { IAvailableFolder, IFolderDetail, IFolderPage } from "@/types/folders";
 import axios from "axios";
 
 // query
 export function foldersGetFolderPage(): Promise<IFolderPage> {
   return axios.get("folders/query/").then((r) => r.data);
+}
+
+export function foldersGetFolderDetail(data: {
+  folder: string;
+}): Promise<IFolderDetail> {
+  return axios.get(`folders/query/${data?.folder}/`).then((r) => r.data);
+}
+
+export function foldersGetAvailableFolders(): Promise<IAvailableFolder[]> {
+  return axios.get("folders/query/available_folders/").then((r) => r.data);
 }
 
 // commands
@@ -17,14 +27,14 @@ export function foldersDeleteFolder(data: { id: string }): Promise<void> {
 
 export function foldersGrantAccess(data: {
   id: string;
-  user_slug: string;
+  user_uuid: string;
 }): Promise<void> {
   return axios.post(`folders/folders/${data.id}/grant_access/`, data).then();
 }
 
 export function foldersRevokeAccess(data: {
   id: string;
-  user_slug: string;
+  user_uuid: string;
 }): Promise<void> {
   return axios.post(`folders/folders/${data.id}/revoke_access/`, data).then();
 }
@@ -34,4 +44,8 @@ export function foldersUpdateFolder(data: {
   id: string;
 }): Promise<void> {
   return axios.post(`folders/folders/${data.id}/`, data).then();
+}
+
+export function foldersOptimize(): Promise<void> {
+  return axios.post("folders/folders/optimize/").then();
 }

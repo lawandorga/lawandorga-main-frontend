@@ -41,7 +41,7 @@
               <ButtonNormal
                 kind="action"
                 @click="
-                  foldersActions.temporary = selectedItem.folder;
+                  foldersActions.temporary = selectedItem;
                   foldersActions.updateModalOpen = true;
                 "
               >
@@ -50,7 +50,7 @@
               <ButtonNormal
                 kind="delete"
                 @click="
-                  foldersActions.temporary = selectedItem.folder;
+                  foldersActions.temporary = selectedItem;
                   foldersActions.deleteModalOpen = true;
                 "
               >

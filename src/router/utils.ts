@@ -10,7 +10,7 @@ export const isAuthenticated: NavigationGuard = (to) => {
   if (!userStore.isAuthenticated) {
     return {
       name: "user-login",
-      query: getNextQuery(to.fullPath),
+      query: getNextQuery(to.fullPath, to.query),
     };
   }
 

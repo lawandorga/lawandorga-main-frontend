@@ -1,7 +1,9 @@
 <template>
-  <div class="flex">
+  <div
+    class="flex flex-col items-start space-y-3 xl:items-stretch xl:flex-row xl:space-y-0"
+  >
     <div
-      class="hidden px-6 space-x-5 bg-white border border-gray-300 rounded-md shadow-sm xl:items-center xl:flex"
+      class="flex items-center px-6 py-1 space-x-5 bg-white border border-gray-300 rounded-md shadow-sm xl:py-0"
     >
       <div class="leading-none">
         <ButtonNormal
@@ -12,7 +14,7 @@
         </ButtonNormal>
       </div>
       <div class="leading-none">
-        <ButtonNormal kind="action" @click="search = '2022'">
+        <ButtonNormal kind="action" @click="search = '22'">
           Show Contains '2022'
         </ButtonNormal>
       </div>

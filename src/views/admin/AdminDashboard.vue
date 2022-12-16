@@ -77,7 +77,6 @@ import {
   UserIcon,
   CogIcon,
   WindowIcon,
-  EnvelopeIcon,
 } from "@heroicons/vue/24/outline";
 import { type Component, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -86,15 +85,17 @@ import { RouteLocationRaw } from "vue-router";
 
 const store = useUserStore();
 
-interface AdminItem {
-  title: string;
-  description: string;
-  link: RouteLocationRaw;
-  icon?: Component;
-  notifications?: number;
-  class?: string;
-  placeholder?: boolean;
-}
+type AdminItem =
+  | {
+      title: string;
+      description: string;
+      link: RouteLocationRaw;
+      icon?: Component;
+      notifications?: number;
+      class?: string;
+      placeholder?: false;
+    }
+  | { placeholder: true; class?: string };
 
 const items = computed<AdminItem[]>(() => [
   {
@@ -160,10 +161,7 @@ const items = computed<AdminItem[]>(() => [
     class: "sm:rounded-bl-lg",
   },
   {
-    title: "Mail",
-    description: "Here you can add groups and a domain.",
-    link: { name: "admin-mail" },
-    icon: EnvelopeIcon,
+    placeholder: true,
     class: "rounded-b-lg sm:rounded-bl-none",
   },
 ]);
