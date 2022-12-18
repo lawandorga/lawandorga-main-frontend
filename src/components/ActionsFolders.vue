@@ -18,7 +18,10 @@
     title="Delete folder"
     :request="deleteRequest"
     :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
-  />
+  >
+    Are you sure you want to delete '{{ temporary?.folder?.name }}'? This will
+    delete all subfolders and the content.
+  </ModalDelete>
   <ModalUpdate
     v-model="grantAccessModalOpen"
     title="Grant access"
