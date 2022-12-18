@@ -48,6 +48,24 @@
                 Change name
               </ButtonNormal>
               <ButtonNormal
+                kind="action"
+                @click="
+                  foldersActions.temporary = selectedItem;
+                  foldersActions.toggleInheritanceModalOpen = true;
+                "
+              >
+                Toggle inheritance
+              </ButtonNormal>
+              <ButtonNormal
+                kind="action"
+                @click="
+                  foldersActions.temporary = selectedItem;
+                  foldersActions.moveFolderModalOpen = true;
+                "
+              >
+                Move
+              </ButtonNormal>
+              <ButtonNormal
                 kind="delete"
                 @click="
                   foldersActions.temporary = selectedItem;
@@ -91,6 +109,7 @@
     :parent="parent"
     :query="query"
     :available-persons="page ? page.available_persons : null"
+    :available-folders="folderList"
   />
 </template>
 
@@ -103,7 +122,7 @@ import ActionsFolders from "@/components/ActionsFolders.vue";
 import { computed, ref } from "vue";
 import { ButtonNormal } from "@lawandorga/components";
 import FoldersTree from "@/components/FoldersTree.vue";
-import { IFolderItem, IFolderPage } from "@/types/folders";
+import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
 import useGet from "@/composables/useGet";
 import { foldersGetFolderPage } from "@/services/folders";
@@ -123,6 +142,21 @@ const query = useQuery(foldersGetFolderPage, page);
 const folderItems = computed<IFolderItem[] | null>(() => {
   if (page.value === null) return null;
   return page.value.tree;
+});
+
+// folders as list
+const pushIntoList = (l: IFolder[], item: IFolderItem) => {
+  l.push(item.folder);
+  for (let i of item.children) pushIntoList(l, i);
+};
+
+const folderList = computed<IFolder[] | null>(() => {
+  if (folderItems.value === null) return null;
+  const fl: IFolder[] = [];
+  for (let i of folderItems.value) {
+    pushIntoList(fl, i);
+  }
+  return fl;
 });
 
 // actions

@@ -32,6 +32,21 @@ export function foldersGrantAccess(data: {
   return axios.post(`folders/folders/${data.id}/grant_access/`, data).then();
 }
 
+export function foldersToggleInheritance(data: {
+  folder: string;
+}): Promise<void> {
+  return axios
+    .post(`folders/folders/${data.folder}/toggle_inheritance/`)
+    .then();
+}
+
+export function foldersMoveFolder(data: {
+  folder: string;
+  target: string;
+}): Promise<void> {
+  return axios.post(`folders/folders/${data.folder}/move/`, data).then();
+}
+
 export function foldersRevokeAccess(data: {
   id: string;
   user_uuid: string;
