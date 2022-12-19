@@ -19,85 +19,118 @@
             Create Root Folder
           </ButtonNormal>
         </div>
-        <div class="px-6 py-4">
-          <FoldersTree
-            :folders="folderItems"
-            @create-clicked="
-              parent = $event;
-              foldersActions.createModalOpen = true;
-            "
-            @folder-clicked="selected = $event"
-          />
-        </div>
-        <div v-if="selectedItem" class="px-6 py-4">
-          <div class="">
-            <div class="flex justify-between">
-              <h2 class="text-lg font-medium text-gray-800">
-                {{ selectedItem.folder.name }}
-              </h2>
-              <ButtonClose @click="selected = null" />
-            </div>
-            <div class="flex mt-2 space-x-3">
-              <ButtonNormal
-                kind="action"
-                @click="
-                  foldersActions.temporary = selectedItem;
-                  foldersActions.updateModalOpen = true;
-                "
+        <div
+          class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x"
+        >
+          <div class="w-full px-6 py-4">
+            <FoldersTree
+              :folders="folderItems"
+              @create-clicked="
+                parent = $event;
+                foldersActions.createModalOpen = true;
+              "
+              @folder-clicked="selected = $event"
+            />
+          </div>
+          <div
+            v-if="selectedItem"
+            class="w-full px-6 py-4 xl:max-w-xl bg-gray-50"
+          >
+            <div class="sticky top-0">
+              <div class="flex justify-between">
+                <h2 class="text-lg font-medium text-gray-800 truncate">
+                  {{ selectedItem.folder.name }}
+                </h2>
+                <ButtonClose @click="selected = null" />
+              </div>
+
+              <div class="flex mt-2 space-x-3">
+                <ButtonNormal
+                  kind="action"
+                  @click="
+                    foldersActions.temporary = selectedItem;
+                    foldersActions.updateModalOpen = true;
+                  "
+                >
+                  Change name
+                </ButtonNormal>
+                <ButtonNormal
+                  kind="action"
+                  @click="
+                    foldersActions.temporary = selectedItem;
+                    foldersActions.toggleInheritanceModalOpen = true;
+                  "
+                >
+                  Toggle inheritance
+                </ButtonNormal>
+                <ButtonNormal
+                  kind="action"
+                  @click="
+                    foldersActions.temporary = selectedItem;
+                    foldersActions.moveFolderModalOpen = true;
+                  "
+                >
+                  Move
+                </ButtonNormal>
+                <ButtonNormal
+                  kind="delete"
+                  @click="
+                    foldersActions.temporary = selectedItem;
+                    foldersActions.deleteModalOpen = true;
+                  "
+                >
+                  Delete
+                </ButtonNormal>
+              </div>
+              <p
+                v-if="selectedItem.folder.stop_inherit"
+                class="mt-4 text-sm text-green-700"
               >
-                Change name
-              </ButtonNormal>
-              <ButtonNormal
-                kind="action"
-                @click="
-                  foldersActions.temporary = selectedItem;
-                  foldersActions.toggleInheritanceModalOpen = true;
-                "
+                Info: This folder has an inheritance stop. That means that
+                persons who have access to its parent will
+                <b>not</b>
+                have access to this folder.
+              </p>
+              <h3 class="mt-4 mb-2 font-medium text-gray-800">
+                Persons with access:
+              </h3>
+              <TableGenerator
+                :data="selectedItem.access"
+                :head="[
+                  { name: 'Name', key: 'name' },
+                  { name: 'Source', key: 'source' },
+                  { name: '', key: 'action' },
+                ]"
               >
-                Toggle inheritance
-              </ButtonNormal>
-              <ButtonNormal
-                kind="action"
-                @click="
-                  foldersActions.temporary = selectedItem;
-                  foldersActions.moveFolderModalOpen = true;
-                "
-              >
-                Move
-              </ButtonNormal>
-              <ButtonNormal
-                kind="delete"
-                @click="
-                  foldersActions.temporary = selectedItem;
-                  foldersActions.deleteModalOpen = true;
-                "
-              >
-                Delete
-              </ButtonNormal>
-            </div>
-            <p class="mt-4">
-              The following persons have access to this folder:
-              {{ selectedItem.access.map((i) => i.name).join(", ") }}
-            </p>
-            <div class="flex mt-1 space-x-3">
-              <ButtonNormal
-                kind="action"
-                @click="
-                  foldersActions.temporary = selectedItem;
-                  foldersActions.grantAccessModalOpen = true;
-                "
-              >
-                Grant access
-              </ButtonNormal>
-              <ButtonNormal
-                kind="delete"
-                @click="
-                  foldersActions.temporary = selectedItem;
-                  foldersActions.revokeAccessModalOpen = true;
-                "
-              >
-                Revoke access
-              </ButtonNormal>
+                <template #head-action>
+                  <ButtonNormal
+                    kind="action"
+                    @click="
+                      foldersActions.temporary = selectedItem;
+                      foldersActions.grantAccessModalOpen = true;
+                    "
+                  >
+                    Grant access
+                  </ButtonNormal>
+                </template>
+                <template #action="item">
+                  <ButtonNormal
+                    v-if="item.actions.REVOKE_ACCESS"
+                    kind="delete"
+                    @click="
+                      foldersActions.temporary = {
+                        user_uuid: item.actions.REVOKE_ACCESS.user_uuid,
+                        id: selectedItem.folder.id,
+                        access: selectedItem.access,
+                        url: item.actions.REVOKE_ACCESS.url,
+                      };
+                      foldersActions.revokeAccessModalOpen = true;
+                    "
+                  >
+                    Revoke access
+                  </ButtonNormal>
+                </template>
+              </TableGenerator>
             </div>
           </div>
         </div>
@@ -120,7 +153,7 @@ import { useUserStore } from "@/store/user";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import ActionsFolders from "@/components/ActionsFolders.vue";
 import { computed, ref } from "vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal, TableGenerator } from "@lawandorga/components";
 import FoldersTree from "@/components/FoldersTree.vue";
 import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
