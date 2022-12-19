@@ -159,9 +159,9 @@ export default defineComponent({
 
     // unlock
     const {
-      updateRequest: unlockUserRequest,
-      updateModalOpen: unlockUserModalOpen,
-    } = useUpdate(AdminService.unlockUser, profiles);
+      commandRequest: unlockUserRequest,
+      commandModalOpen: unlockUserModalOpen,
+    } = useCommand(AdminService.unlockUser, query);
 
     // activate
     const {
