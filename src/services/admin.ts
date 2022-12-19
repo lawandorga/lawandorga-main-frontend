@@ -37,10 +37,10 @@ class AdminService {
     return axios.post(`org/accept_member/`, data).then((r) => r.data);
   }
 
-  unlockUser(user: User): Promise<RlcUser> {
+  unlockUser(user: User): Promise<void> {
     return axios
-      .post<Promise<RlcUser>>(`profiles/${user.id}/unlock/`)
-      .then((response) => response.data);
+      .post<Promise<void>>(`rlc_users/${user.id}/unlock_user/`)
+      .then();
   }
 
   changePassword(data: {

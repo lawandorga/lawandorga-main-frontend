@@ -5,7 +5,8 @@
       !!record &&
       !!actionsQuestionnaires &&
       !!actionsDocuments &&
-      !!actionsEncryptions
+      !!actionsEncryptions &&
+      !!actionsRecord
     "
   >
     <div
@@ -14,7 +15,8 @@
         !!record &&
         !!actionsQuestionnaires &&
         !!actionsDocuments &&
-        !!actionsEncryptions
+        !!actionsEncryptions &&
+        !!actionsRecord
       "
       class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl"
     >
@@ -164,10 +166,18 @@
         <!-- record -->
         <BoxHeadingStats
           :show="selectedType === 'RECORD'"
-          title="Record"
+          :title="record.name"
           :stats="[`Created: ${formatDate(record.created)}`]"
         >
           <FormRecord :record="record"></FormRecord>
+          <template #buttons>
+            <ButtonNormal
+              kind="action"
+              @click="actionsRecord.commandModalOpen = true"
+            >
+              Change name
+            </ButtonNormal>
+          </template>
         </BoxHeadingStats>
 
         <!-- client -->
@@ -209,6 +219,7 @@
   <ActionsQuestionnaires ref="actionsQuestionnaires" />
   <ActionsMessages ref="actionsMessages" />
   <ActionsDocuments ref="actionsDocuments" :record="record" />
+  <ActionsRecord ref="actionsRecord" :record="record" :query="recordQuery" />
 </template>
 
 <script lang="ts" setup>
@@ -244,11 +255,17 @@ import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { IFolderDetail } from "@/types/folders";
 import { foldersGetFolderDetail } from "@/services/folders";
+import ActionsRecord from "@/components/ActionsRecord.vue";
 
 // record
 const route = useRoute();
 const record = ref<null | Record>(null);
-useGet(RecordsService.getRecord, record, route.params.id as string);
+const recordQuery = useGet(
+  RecordsService.getRecord,
+  record,
+  route.params.id as string,
+);
+const actionsRecord = ref<typeof ActionsRecord>();
 
 // questionnaires
 const actionsQuestionnaires = ref<typeof ActionsQuestionnaires>();
@@ -330,7 +347,7 @@ const groups = computed<ContentGroupItem[]>(() => {
     g[0].children.push({
       id: record.value.id.toString(),
       type: "RECORD",
-      name: firstEntry.value,
+      name: record.value.name,
       stats: [`Created ${formatDate(record.value.created)}`],
     });
   }
