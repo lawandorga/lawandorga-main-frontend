@@ -3,7 +3,7 @@
     v-model="deleteModalOpen"
     :object="{
       id: folder?.id,
-      user_slug: temporary?.slug,
+      user_uuid: temporary?.uuid,
     }"
     :request="deleteRequest"
     title="Revoke access"

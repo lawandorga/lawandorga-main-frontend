@@ -33,6 +33,13 @@ export function recordsOptimize(): Promise<void> {
   return axios.post("records/records/v2/optimize/").then();
 }
 
+export function recordsChangeName(data: {
+  id: number;
+  name: string;
+}): Promise<void> {
+  return axios.post(`records/records/v2/${data.id}/change_name/`, data).then();
+}
+
 class RecordsService {
   // record templates
   getTemplates(): Promise<RecordTemplate[]> {

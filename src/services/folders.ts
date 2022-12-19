@@ -27,16 +27,32 @@ export function foldersDeleteFolder(data: { id: string }): Promise<void> {
 
 export function foldersGrantAccess(data: {
   id: string;
-  user_slug: string;
+  user_uuid: string;
 }): Promise<void> {
   return axios.post(`folders/folders/${data.id}/grant_access/`, data).then();
 }
 
+export function foldersToggleInheritance(data: {
+  folder: string;
+}): Promise<void> {
+  return axios
+    .post(`folders/folders/${data.folder}/toggle_inheritance/`)
+    .then();
+}
+
+export function foldersMoveFolder(data: {
+  folder: string;
+  target: string;
+}): Promise<void> {
+  return axios.post(`folders/folders/${data.folder}/move/`, data).then();
+}
+
 export function foldersRevokeAccess(data: {
   id: string;
-  user_slug: string;
+  user_uuid: string;
+  url: string;
 }): Promise<void> {
-  return axios.post(`folders/folders/${data.id}/revoke_access/`, data).then();
+  return axios.post(data.url, data).then();
 }
 
 export function foldersUpdateFolder(data: {
@@ -44,4 +60,8 @@ export function foldersUpdateFolder(data: {
   id: string;
 }): Promise<void> {
   return axios.post(`folders/folders/${data.id}/`, data).then();
+}
+
+export function foldersOptimize(): Promise<void> {
+  return axios.post("folders/folders/optimize/").then();
 }
