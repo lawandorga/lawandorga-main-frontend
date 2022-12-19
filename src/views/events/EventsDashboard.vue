@@ -150,9 +150,12 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
 }
 
 const nextEventIndex = computed(() => {
-  return actionsEvents?.value?.events.findIndex(
+  const rawNextEvent = actionsEvents?.value?.events.findIndex(
     (event: Event) => new Date(event.end_time) > new Date(Date.now()),
   );
+  return rawNextEvent === -1
+    ? actionsEvents?.value?.events?.length
+    : rawNextEvent;
 });
 
 function loadPastEvents() {

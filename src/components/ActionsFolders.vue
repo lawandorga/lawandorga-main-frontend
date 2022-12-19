@@ -11,14 +11,17 @@
     title="Change name"
     :fields="fields"
     :request="updateRequest"
-    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
+    :initial="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
   />
   <ModalDelete
     v-model="deleteModalOpen"
     title="Delete folder"
     :request="deleteRequest"
     :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
-  />
+  >
+    Are you sure you want to delete '{{ temporary?.folder?.name }}'? This will
+    delete all subfolders and the content.
+  </ModalDelete>
   <ModalUpdate
     v-model="grantAccessModalOpen"
     title="Grant access"
@@ -31,7 +34,24 @@
     title="Revoke access"
     :fields="revokeAccessFields"
     :request="revokeAccessRequest"
-    :initial="{ id: temporary?.folder?.id }"
+    :initial="temporary"
+  />
+  <ModalConfirm
+    v-model="toggleInheritanceModalOpen"
+    title="Toggle inheritance"
+    :request="toggleInheritanceRequest"
+    :data="{ folder: temporary?.folder?.id }"
+  >
+    Are you sure you want to toggle the inheritance of '{{
+      temporary?.folder?.name
+    }}'?
+  </ModalConfirm>
+  <ModalUpdate
+    v-model="moveFolderModalOpen"
+    title="Move folder"
+    :fields="moveFolderFields"
+    :request="moveFolderRequest"
+    :initial="{ folder: temporary?.folder?.id }"
   />
 </template>
 
@@ -41,11 +61,14 @@ import {
   foldersCreateFolder,
   foldersDeleteFolder,
   foldersGrantAccess,
+  foldersMoveFolder,
   foldersRevokeAccess,
+  foldersToggleInheritance,
   foldersUpdateFolder,
 } from "@/services/folders";
-import { IAccess } from "@/types/folders";
+import { IAccess, IFolder } from "@/types/folders";
 import {
+  ModalConfirm,
   ModalCreate,
   ModalDelete,
   ModalUpdate,
@@ -57,8 +80,9 @@ const props = defineProps<{
   parent: string | null;
   query: () => void;
   availablePersons: IAccess[] | null;
+  availableFolders: IFolder[] | null;
 }>();
-const { query, availablePersons } = toRefs(props);
+const { query, availablePersons, availableFolders } = toRefs(props);
 
 // fields
 const fields: types.FormField[] = [
@@ -85,7 +109,7 @@ const revokeAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_slug",
+      name: "user_uuid",
       type: "select",
       required: true,
       options: temporary.value
@@ -104,7 +128,7 @@ const grantAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_slug",
+      name: "user_uuid",
       type: "select",
       required: true,
       options: availablePersons.value
@@ -118,12 +142,38 @@ const {
   commandModalOpen: grantAccessModalOpen,
 } = useCommand(foldersGrantAccess, query.value);
 
+// move
+const moveFolderFields = computed<types.FormField[]>(() => {
+  return [
+    {
+      label: "Target folder",
+      name: "target",
+      type: "select",
+      required: true,
+      options: availableFolders.value,
+    },
+  ] as types.FormField[];
+});
+const {
+  commandRequest: moveFolderRequest,
+  commandModalOpen: moveFolderModalOpen,
+} = useCommand(foldersMoveFolder, query.value);
+
+// toggle inheritance
+const {
+  commandRequest: toggleInheritanceRequest,
+  commandModalOpen: toggleInheritanceModalOpen,
+} = useCommand(foldersToggleInheritance, query.value);
+
+// expose
 defineExpose({
   deleteModalOpen,
   revokeAccessModalOpen,
   grantAccessModalOpen,
+  toggleInheritanceModalOpen,
   temporary,
   createModalOpen,
   updateModalOpen,
+  moveFolderModalOpen,
 });
 </script>
