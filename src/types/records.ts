@@ -23,6 +23,7 @@ export interface IListRecord {
 
 export interface Record {
   id: number;
+  name: string;
   created: string;
   updated: string;
   // delete: boolean;
