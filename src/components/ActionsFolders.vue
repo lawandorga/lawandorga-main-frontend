@@ -11,7 +11,7 @@
     title="Change name"
     :fields="fields"
     :request="updateRequest"
-    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
+    :initial="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
   />
   <ModalDelete
     v-model="deleteModalOpen"
@@ -34,7 +34,7 @@
     title="Revoke access"
     :fields="revokeAccessFields"
     :request="revokeAccessRequest"
-    :initial="{ id: temporary?.folder?.id }"
+    :initial="temporary"
   />
   <ModalConfirm
     v-model="toggleInheritanceModalOpen"

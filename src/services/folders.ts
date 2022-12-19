@@ -50,8 +50,9 @@ export function foldersMoveFolder(data: {
 export function foldersRevokeAccess(data: {
   id: string;
   user_uuid: string;
+  url: string;
 }): Promise<void> {
-  return axios.post(`folders/folders/${data.id}/revoke_access/`, data).then();
+  return axios.post(data.url, data).then();
 }
 
 export function foldersUpdateFolder(data: {

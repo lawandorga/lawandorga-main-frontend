@@ -1,7 +1,7 @@
 <template>
   <template v-for="(item, index) in folders" :key="item.folder.id">
     <div
-      class="flex w-full leading-none rounded-sm h-7 even:bg-gray-100 odd:bg-white"
+      class="flex w-full leading-snug rounded-sm h-7 even:bg-gray-100 odd:bg-white"
       :style="{ paddingLeft: `${depth * 18}px` }"
     >
       <button
@@ -14,13 +14,15 @@
         />
       </button>
       <button
-        class="flex items-center transition focus:outline-none hover:underline group"
+        class="flex items-center max-w-xs transition focus:outline-none hover:underline group"
         @click="emit('folderClicked', item.folder.id)"
       >
-        <FolderIcon class="w-5 h-5 text-gray-500 group-hover:text-gray-600" />
-        <span class="ml-1.5">{{ item.folder.name }}</span>
+        <FolderIcon
+          class="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
+        />
+        <span class="ml-1.5 truncate">{{ item.folder.name }}</span>
       </button>
-      <div class="flex items-center pr-2 ml-auto space-x-3">
+      <div class="flex items-center pr-2 ml-auto space-x-3 whitespace-nowrap">
         <ButtonNormal
           kind="action"
           @click="emit('createClicked', item.folder.id)"
