@@ -25,7 +25,13 @@
       <div class="flex items-center pr-2 ml-auto space-x-3 whitespace-nowrap">
         <ButtonNormal
           kind="action"
-          @click="emit('createClicked', item.folder.id)"
+          @click="emit('addContentClicked', item.folder.id)"
+        >
+          Add Content
+        </ButtonNormal>
+        <ButtonNormal
+          kind="action"
+          @click="emit('addChildClicked', item.folder.id)"
         >
           Add Child
         </ButtonNormal>
@@ -59,7 +65,8 @@
         v-if="item.children.length"
         :depth="depth + 1"
         :folders="item.children"
-        @create-clicked="emit('createClicked', $event)"
+        @add-child-clicked="emit('addChildClicked', $event)"
+        @add-content-clicked="emit('addContentClicked', $event)"
         @folder-clicked="emit('folderClicked', $event)"
       />
     </template>
@@ -83,7 +90,11 @@ withDefaults(
 
 const open = ref<number[]>([]);
 
-const emit = defineEmits(["createClicked", "folderClicked"]);
+const emit = defineEmits([
+  "addChildClicked",
+  "addContentClicked",
+  "folderClicked",
+]);
 
 const chevronClicked = (index: number) => {
   if (!open.value.includes(index)) open.value.push(index);

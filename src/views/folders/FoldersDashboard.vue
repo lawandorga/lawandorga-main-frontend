@@ -25,9 +25,13 @@
           <div class="w-full px-6 py-4">
             <FoldersTree
               :folders="folderItems"
-              @create-clicked="
+              @add-child-clicked="
                 parent = $event;
                 foldersActions.createModalOpen = true;
+              "
+              @add-content-clicked="
+                parent = $event;
+                addContentModalOpen = true;
               "
               @folder-clicked="selected = $event"
             />
@@ -144,6 +148,57 @@
     :available-persons="page ? page.available_persons : null"
     :available-folders="folderList"
   />
+  <ActionsRecords ref="recordsActions" :query="query" />
+  <Dialog
+    :open="addContentModalOpen"
+    title="Add content"
+    as="div"
+    class="fixed inset-0 z-30"
+    @close="addContentModalOpen = false"
+  >
+    <div class="fixed inset-0 bg-black/25" />
+    <div class="fixed inset-0 overflow-y-auto">
+      <div class="flex items-center justify-center min-h-full">
+        <DialogPanel class="w-72">
+          <div
+            class="w-full bg-white divide-y divide-gray-100 rounded-md shadow-lg focus:outline-none"
+          >
+            <div v-if="recordsActions" class="px-1 py-1">
+              <div>
+                <button
+                  :class="[
+                    'focus:bg-lorgablue focus:text-white focus:outline-none',
+                    'text-gray-900',
+                    'group flex w-full items-center rounded-md px-4 py-2 text-sm',
+                  ]"
+                  @click="
+                    close();
+                    recordsActions.createWithinFolderModalOpen = true;
+                    recordsActions.data = { folder: parent };
+                  "
+                >
+                  Record
+                </button>
+              </div>
+            </div>
+            <!-- <div class="px-1 py-1">
+              <div>
+                <button
+                  :class="[
+                    'focus:bg-lorgablue focus:text-white focus:outline-none',
+                    'text-gray-900',
+                    'group flex w-full items-center rounded-md px-4 py-2 text-sm',
+                  ]"
+                >
+                  File
+                </button>
+              </div>
+            </div> -->
+          </div>
+        </DialogPanel>
+      </div>
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -160,6 +215,17 @@ import ButtonClose from "@/components/ButtonClose.vue";
 import useGet from "@/composables/useGet";
 import { foldersGetFolderPage } from "@/services/folders";
 import useQuery from "@/composables/useQuery";
+import { Dialog, DialogPanel } from "@headlessui/vue";
+import ActionsRecords from "@/components/ActionsRecords.vue";
+
+// content
+const addContentModalOpen = ref(false);
+function close() {
+  addContentModalOpen.value = false;
+}
+
+// records
+const recordsActions = ref<typeof ActionsRecords>();
 
 // store
 const userStore = useUserStore();
