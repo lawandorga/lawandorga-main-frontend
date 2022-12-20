@@ -40,6 +40,14 @@ export function recordsChangeName(data: {
   return axios.post(`records/records/v2/${data.id}/change_name/`, data).then();
 }
 
+export function recordsCreateRecord(data: {
+  name: string;
+  folder: string;
+  template: number;
+}) {
+  return axios.post(`records/records/v2/within_folder/`, data).then();
+}
+
 class RecordsService {
   // record templates
   getTemplates(): Promise<RecordTemplate[]> {
