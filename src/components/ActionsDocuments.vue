@@ -4,7 +4,7 @@
     title="Upload Document"
     :fields="fields"
     :request="createRequest"
-    :initial="{ record: $route.params.id }"
+    :initial="{ record: $route.params.id, folder: record?.folder_uuid }"
     submit="Upload"
   />
   <ModalDelete
@@ -24,6 +24,7 @@ import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import { Record } from "@/types/records";
+import { filesNewUploadFile } from "@/services/files_new";
 
 // props
 const props = defineProps<{ record: Record | null }>();
@@ -43,7 +44,7 @@ const fields = [
   },
 ] as types.FormField[];
 const { createModalOpen, createRequest } = useCreate(
-  RecordsService.createDocument,
+  filesNewUploadFile,
   documents,
 );
 
