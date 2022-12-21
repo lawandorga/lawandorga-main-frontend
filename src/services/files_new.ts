@@ -1,3 +1,5 @@
+import { RecordsDocument } from "@/types/records";
+import { blobToDataURL } from "@/utils/download";
 import axios from "axios";
 
 export function filesNewUploadFile(data: {
@@ -11,4 +13,18 @@ export function filesNewUploadFile(data: {
   if (data.name) formData.append("name", data.name);
 
   return axios.post(`files/v2/`, formData).then();
+}
+
+export function filesDownloadFile(uuid: string): Promise<string> {
+  return axios
+    .get(`files/v2/query/${uuid}/download/`, {
+      responseType: "blob",
+    })
+    .then((r) => {
+      return blobToDataURL(r.data);
+    });
+}
+
+export function filesRetrieveFile(uuid: string): Promise<RecordsDocument> {
+  return axios.get(`files/v2/query/${uuid}/`).then((r) => r.data);
 }

@@ -17,22 +17,15 @@
 
 <script lang="ts" setup>
 import { ModalDelete, ModalCreate, types } from "@lawandorga/components";
-import { RecordsDocument } from "@/types/records";
-import { ref, toRefs } from "vue";
+import { toRefs } from "vue";
 import RecordsService from "@/services/records";
-import useDelete from "@/composables/useDelete";
-import useGet from "@/composables/useGet";
-import useCreate from "@/composables/useCreate";
 import { Record } from "@/types/records";
 import { filesNewUploadFile } from "@/services/files_new";
+import useCommand from "@/composables/useCommand";
 
 // props
-const props = defineProps<{ record: Record | null }>();
-const { record } = toRefs(props);
-
-// documents
-const documents = ref<null | RecordsDocument[]>(null);
-useGet(RecordsService.getDocuments, documents, record);
+const props = defineProps<{ record: Record | null; query: () => void }>();
+const { record, query } = toRefs(props);
 
 // create
 const fields = [
@@ -43,24 +36,21 @@ const fields = [
     required: true,
   },
 ] as types.FormField[];
-const { createModalOpen, createRequest } = useCreate(
-  filesNewUploadFile,
-  documents,
-);
+const { commandModalOpen: createModalOpen, commandRequest: createRequest } =
+  useCommand(filesNewUploadFile, query.value);
 
 // download
 const downloadDocument = RecordsService.downloadDocument;
 
 // delete
 const {
-  deleteModalOpen: deleteModalOpen,
-  deleteRequest,
+  commandModalOpen: deleteModalOpen,
+  commandRequest: deleteRequest,
   temporary,
-} = useDelete(RecordsService.deleteDocument, documents);
+} = useCommand(RecordsService.deleteDocument, query.value);
 
 // expose
 defineExpose({
-  documents,
   // upload
   createModalOpen,
   // download

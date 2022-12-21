@@ -93,14 +93,12 @@ export interface Message {
   record: number;
 }
 
-export type RecordsDocument = JsonModel & {
-  id: number;
+export interface RecordsDocument {
+  uuid: string;
   name: string;
-  creator: string;
-  created_on: string;
-  last_edited: string;
-  file_size: number;
-};
+  created: string;
+  updated: string;
+}
 
 export interface Tag {
   id: number;

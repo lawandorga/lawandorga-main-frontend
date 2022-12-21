@@ -343,13 +343,14 @@ const groups = computed<ContentGroupItem[]>(() => {
       text: "Publish A Questionnaire",
     });
 
-  if (record.value !== null) {
-    g[0].children.push({
-      id: record.value.id.toString(),
-      type: "RECORD",
-      name: record.value.name,
-      stats: [`Created ${formatDate(record.value.created)}`],
-    });
+  if (folder.value !== null) {
+    g[0].children = folder.value.content
+      .filter((c) => c.repository === "RECORD")
+      .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid, stats: [] }));
+
+    g[2].children = folder.value.content
+      .filter((c) => c.repository === "FILE")
+      .map((c) => ({ name: c.name, type: "FILE", id: c.uuid, stats: [] }));
   }
 
   g[1].children.push({
