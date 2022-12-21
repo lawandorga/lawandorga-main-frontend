@@ -35,7 +35,11 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const updateData = () => {
-    return UserService.data().then((r) => setData(r));
+    return UserService.data()
+      .then((r) => setData(r))
+      .catch(() => {
+        /* ignore */
+      });
   };
 
   const updatePossible = ref(true);
