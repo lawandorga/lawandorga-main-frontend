@@ -62,7 +62,9 @@ import { actionsDocumentsKey } from "@/types/keys";
 import { formatDate } from "@/utils/date";
 import { isDataUrlDisplayable } from "@/utils/download";
 import { inject, watch, ref, toRefs } from "vue";
-import RecordsService from "@/services/records";
+import { filesDownloadFile } from "@/services/files_new";
+import useGet from "@/composables/useGet";
+import { RecordsDocument } from "@/types/records";
 
 // props
 const props = defineProps<{
@@ -71,21 +73,26 @@ const props = defineProps<{
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
+// file
+const file = ref<null | RecordsDocument[]>(null);
+
 // actions
 const actionsDocuments = inject(actionsDocumentsKey);
 
 // data url
 const iframeContent = ref<string | null>(null);
 
+// errors
 const message = window.btoa(
   "This file can't be displayed. If you think it should be, please contact it@law-orga.de. Maybe we can make it happen.",
 );
 const errorMessage = window.btoa("An error happened.");
 
+// get file
 watch(selectedId, () => {
   iframeContent.value = null;
   if (selectedType.value === "FILE" && selectedId.value) {
-    RecordsService.downloadDocumentDataUrl(selectedId.value)
+    filesDownloadFile(selectedId.value)
       .then((v: string) => {
         if (isDataUrlDisplayable(v)) iframeContent.value = v;
         else iframeContent.value = `data:text/plain;base64,${message}`;
@@ -93,6 +100,7 @@ watch(selectedId, () => {
       .catch(() => {
         iframeContent.value = `data:text/plain;base64,${errorMessage}`;
       });
+    useGet(files, file, selectedId);
   }
 });
 </script>
