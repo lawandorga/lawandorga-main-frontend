@@ -59,28 +59,6 @@ export type RecordField = JsonModel & {
   options?: ({ name: string; id: number } | string)[];
 };
 
-export interface RecordsClient {
-  id: number;
-  name: string;
-  created_on: Date;
-  last_edited: Date;
-  birthday: Date;
-  origin_country: string;
-  note: string;
-  phone_number: string;
-}
-
-export interface Consultant {
-  id: number;
-  name: string;
-}
-
-export interface Country {
-  id: number;
-  name: string;
-  state: string;
-}
-
 export interface Message {
   id: number;
   message: string;
@@ -95,14 +73,6 @@ export interface Message {
 
 export interface RecordsDocument {
   uuid: string;
-  name: string;
-  created: string;
-  updated: string;
-}
-
-export interface Tag {
-  id: number;
-  rlc: number;
   name: string;
   created: string;
   updated: string;
@@ -167,13 +137,6 @@ export interface RecordAccess {
   state: string;
   created: string;
   updated: string;
-}
-
-export interface RecordEncryption {
-  id: number;
-  user: number;
-  record: number;
-  user_object: { name: string; id: number };
 }
 
 export type RecordDeletion = JsonModel & {

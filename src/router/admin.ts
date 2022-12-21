@@ -21,12 +21,6 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
-    path: "/admin/tags/",
-    name: "admin-tags",
-    component: () => import("@/views/admin/AdminTags.vue"),
-    beforeEnter: isAuthenticated,
-  },
-  {
     path: "/admin/groups/",
     name: "admin-groups",
     component: () => import("@/views/admin/AdminGroups.vue"),

@@ -1,5 +1,5 @@
 import { RecordsDocument } from "@/types/records";
-import { blobToDataURL } from "@/utils/download";
+import { blobToDataURL, downloadFileRequest } from "@/utils/download";
 import axios from "axios";
 
 export function filesNewUploadFile(data: {
@@ -27,4 +27,16 @@ export function filesDownloadFile(uuid: string): Promise<string> {
 
 export function filesRetrieveFile(uuid: string): Promise<RecordsDocument> {
   return axios.get(`files/v2/query/${uuid}/`).then((r) => r.data);
+}
+
+export function filesDownloadFileToMachine(file: RecordsDocument): void {
+  downloadFileRequest(
+    axios,
+    `files/v2/query/${file.uuid}/download/`,
+    file.name,
+  );
+}
+
+export function filesDeleteFile(file: RecordsDocument): Promise<void> {
+  return axios.delete(`files/v2/${file.uuid}/`).then();
 }

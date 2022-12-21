@@ -218,7 +218,12 @@
   />
   <ActionsQuestionnaires ref="actionsQuestionnaires" />
   <ActionsMessages ref="actionsMessages" />
-  <ActionsDocuments ref="actionsDocuments" :record="record" />
+  <ActionsDocuments
+    ref="actionsDocuments"
+    :folder="folder"
+    :query="query"
+    @deleted="selectedId = null"
+  />
   <ActionsRecord ref="actionsRecord" :record="record" :query="recordQuery" />
 </template>
 

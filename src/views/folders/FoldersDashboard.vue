@@ -124,7 +124,7 @@
                     @click="
                       foldersActions.temporary = {
                         user_uuid: item.actions.REVOKE_ACCESS.user_uuid,
-                        id: selectedItem.folder.id,
+                        id: selectedItem.folder.uuid,
                         access: selectedItem.access,
                         url: item.actions.REVOKE_ACCESS.url,
                       };
@@ -272,7 +272,7 @@ const findFolder = (
   folderItems: IFolderItem[],
 ): IFolderItem | null => {
   for (let i of folderItems) {
-    if (i.folder.id === selected.value) return i;
+    if (i.folder.uuid === selected.value) return i;
     const innerFound = findFolder(id, i.children);
     if (innerFound) return innerFound;
   }

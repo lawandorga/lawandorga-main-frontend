@@ -1,6 +1,6 @@
 export interface IFolder {
   name: string;
-  id: string;
+  uuid: string;
   stop_inherit: boolean;
 }
 
