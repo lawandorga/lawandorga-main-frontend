@@ -25,9 +25,7 @@
         <main
           class="relative flex-1 px-6 py-6 overflow-y-auto focus:outline-none"
         >
-          <!-- <div class="px-6" :class="{ 'py-6': userStore.isAuthenticated }"> -->
           <router-view></router-view>
-          <!-- </div> -->
         </main>
       </div>
     </div>
@@ -35,6 +33,7 @@
       :alerts="alertStore.alerts"
       @close="alertStore.closeAlert($event)"
     />
+    <BannerList v-if="userStore.loaded" />
   </div>
 </template>
 
@@ -49,6 +48,7 @@ import { useRoute } from "vue-router";
 import { getUpdateStatus } from "./services/other";
 import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
+import BannerList from "./components/BannerList.vue";
 
 const alertStore = useAlertStore();
 

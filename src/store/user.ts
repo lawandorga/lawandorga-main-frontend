@@ -55,13 +55,19 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  const updateSetting = (key: string, value: string | boolean) => {
+  const updateSetting = (
+    key: string,
+    value: string | boolean | number | string[],
+  ) => {
     const newSettings = Object.assign({}, settings.value, { [key]: value });
     settings.value = newSettings;
     updateSettingRequest();
   };
 
-  const getSetting = (key: string, defaultValue: string | boolean = "") => {
+  const getSetting = (
+    key: string,
+    defaultValue: string | boolean | number | string[] = "",
+  ) => {
     if (settings.value && key in settings.value) return settings.value[key];
     return defaultValue;
   };
