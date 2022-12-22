@@ -7,6 +7,14 @@
     submit="Create"
     @success="recordCreated($event)"
   />
+  <ModalForm
+    v-model="createWithinFolderModalOpen"
+    title="Create Record"
+    :fields="createWithinFolderFields"
+    :request="createWithinFolderRequest"
+    submit="Create"
+    :initial="data"
+  />
 </template>
 
 <script setup lang="ts">
@@ -15,7 +23,7 @@ import { RecordTemplate, Record } from "@/types/records";
 import { ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
-import RecordsService from "@/services/records";
+import RecordsService, { recordsCreateRecord } from "@/services/records";
 import useGet from "@/composables/useGet";
 import { IAvailableFolder } from "@/types/folders";
 import { foldersGetAvailableFolders } from "@/services/folders";
@@ -29,8 +37,16 @@ const { query } = toRefs(props);
 //
 const router = useRouter();
 
+// create within folder
+const {
+  commandRequest: createWithinFolderRequest,
+  commandModalOpen: createWithinFolderModalOpen,
+  temporary: data,
+} = useCommand(recordsCreateRecord, query.value);
+
+// create within records folder
 const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
-  useCommand(RecordsService.createRecord, query);
+  useCommand(RecordsService.createRecord);
 
 const recordCreated = (record: Record) => {
   router.push({ name: "records-detail", params: { id: record.id } });
@@ -39,7 +55,7 @@ const recordCreated = (record: Record) => {
 const availableFolders = ref<IAvailableFolder[]>([]);
 const availableTemplates = ref<RecordTemplate[]>([]);
 
-watch(createModalOpen, () => {
+watch([createModalOpen, createWithinFolderModalOpen], () => {
   useGet(RecordsService.getTemplates, availableTemplates);
   useGet(foldersGetAvailableFolders, availableFolders);
 });
@@ -67,7 +83,32 @@ const createFields = computed<types.FormField[]>(() => [
   },
 ]);
 
+const createWithinFolderFields = computed<types.FormField[]>(() => [
+  {
+    label: "Folder",
+    type: "select",
+    name: "folder",
+    required: true,
+    options: availableFolders.value,
+  },
+  {
+    label: "Name",
+    type: "text",
+    name: "name",
+    required: true,
+  },
+  {
+    label: "Template",
+    type: "select",
+    name: "template",
+    required: true,
+    options: availableTemplates.value,
+  },
+]);
+
 defineExpose({
   createModalOpen,
+  createWithinFolderModalOpen,
+  data,
 });
 </script>
