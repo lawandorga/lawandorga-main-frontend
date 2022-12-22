@@ -1,16 +1,11 @@
 import { HasPermission } from "@/types/core";
 import {
-  Consultant,
-  Country,
   Message,
   Record,
   RecordDeletion,
   RecordAccess,
-  RecordsClient,
-  RecordsDocument,
   QuestionnaireTemplate,
   Questionnaire,
-  Tag,
   Pool,
   QuestionnaireAnswer,
   QuestionnaireQuestion,
@@ -18,11 +13,10 @@ import {
   RecordTemplate,
   RecordEntry,
   RecordField,
-  RecordEncryption,
   IRecordListPage,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import { downloadFileRequest, blobToDataURL } from "@/utils/download";
+import { downloadFileRequest } from "@/utils/download";
 import axios from "axios";
 
 export function recordsGetPage(): Promise<IRecordListPage> {
@@ -363,93 +357,6 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  // documents
-  getDocuments(record: { id: number | string }): Promise<RecordsDocument[]> {
-    return axios
-      .get<RecordsDocument[]>(`records/records/${record.id}/documents/`)
-      .then((response) => response.data);
-  }
-
-  createDocument(data: JsonModel): Promise<RecordsDocument> {
-    const formData = new FormData();
-    if (data.record) formData.append("record", data.record);
-    if (data.file) formData.append("file", data.file);
-
-    return axios
-      .post<RecordsDocument>(`records/record_documents/`, formData)
-      .then((response) => response.data);
-  }
-
-  downloadDocument(document: RecordsDocument): void {
-    downloadFileRequest(
-      axios,
-      `records/record_documents/${document.id}/`,
-      document.name,
-    );
-  }
-
-  downloadDocumentDataUrl(id: number | string): Promise<string> {
-    return axios
-      .get(`records/record_documents/${id}/`, {
-        responseType: "blob",
-      })
-      .then((r) => {
-        return blobToDataURL(r.data);
-      });
-  }
-
-  deleteDocument(document: RecordsDocument): Promise<void> {
-    return axios.delete(`records/record_documents/${document.id}/`).then();
-  }
-
-  // client
-  getClient(id: number): Promise<RecordsClient> {
-    return axios
-      .get<RecordsClient>(`records/e_clients/${id}/`)
-      .then((response) => response.data);
-  }
-
-  updateClient(client: RecordsClient): Promise<RecordsClient> {
-    return axios
-      .patch<RecordsClient>(`records/e_clients/${client.id}/`, client)
-      .then((response) => response.data);
-  }
-
-  // consultants
-  getConsultants(): Promise<Consultant[]> {
-    return axios
-      .get<Consultant[]>("records/consultants/")
-      .then((response) => response.data);
-  }
-
-  // tags
-  getTags(): Promise<Tag[]> {
-    return axios.get<Tag[]>(`records/tags/`).then((response) => response.data);
-  }
-
-  createTag(tag: Tag): Promise<Tag> {
-    return axios
-      .post<Tag>("records/tags/", tag)
-      .then((response) => response.data);
-  }
-
-  updateTag(tag: Tag): Promise<Tag> {
-    return axios
-      .patch<Tag>(`records/tags/${tag.id}/`, tag)
-      .then((response) => response.data);
-  }
-
-  deleteTag(tag: Tag): Promise<void> {
-    return axios.delete(`records/tags/${tag.id}/`);
-  }
-
-  // countries
-  getCountries(): Promise<Country[]> {
-    return axios
-      .get<Country[]>("records/origin_countries/")
-      .then((response) => response.data);
-  }
-
   // access
   getRecordAccesses(): Promise<RecordAccess[]> {
     return axios
@@ -467,17 +374,6 @@ class RecordsService {
     return axios
       .post(`records/accesses/`, data)
       .then((response) => response.data);
-  }
-
-  // encryption
-  getEncryptions(record: { id: number }): Promise<RecordEncryption[]> {
-    return axios
-      .get(`records/encryptions/?record=${record.id}`)
-      .then((response) => response.data);
-  }
-
-  deleteEncryption(encryption: RecordEncryption): Promise<void> {
-    return axios.delete(`records/encryptions/${encryption.id}/`).then();
   }
 
   // deletion-requests

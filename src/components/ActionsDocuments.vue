@@ -4,7 +4,7 @@
     title="Upload Document"
     :fields="fields"
     :request="createRequest"
-    :initial="{ record: $route.params.id }"
+    :initial="{ record: $route.params.id, folder: folder?.folder.uuid }"
     submit="Upload"
   />
   <ModalDelete
@@ -12,26 +12,30 @@
     :object="temporary"
     :request="deleteRequest"
     title="Delete Document"
+    @deleted="emit('deleted')"
   />
 </template>
 
 <script lang="ts" setup>
 import { ModalDelete, ModalCreate, types } from "@lawandorga/components";
-import { RecordsDocument } from "@/types/records";
-import { ref, toRefs } from "vue";
-import RecordsService from "@/services/records";
-import useDelete from "@/composables/useDelete";
-import useGet from "@/composables/useGet";
-import useCreate from "@/composables/useCreate";
-import { Record } from "@/types/records";
+import { toRefs } from "vue";
+import {
+  filesDeleteFile,
+  filesDownloadFileToMachine,
+  filesNewUploadFile,
+} from "@/services/files_new";
+import useCommand from "@/composables/useCommand";
+import { IFolderDetail } from "@/types/folders";
+
+// emits
+const emit = defineEmits(["deleted"]);
 
 // props
-const props = defineProps<{ record: Record | null }>();
-const { record } = toRefs(props);
-
-// documents
-const documents = ref<null | RecordsDocument[]>(null);
-useGet(RecordsService.getDocuments, documents, record);
+const props = defineProps<{
+  folder: IFolderDetail | null;
+  query: () => void;
+}>();
+const { folder, query } = toRefs(props);
 
 // create
 const fields = [
@@ -42,24 +46,21 @@ const fields = [
     required: true,
   },
 ] as types.FormField[];
-const { createModalOpen, createRequest } = useCreate(
-  RecordsService.createDocument,
-  documents,
-);
+const { commandModalOpen: createModalOpen, commandRequest: createRequest } =
+  useCommand(filesNewUploadFile, query.value);
 
 // download
-const downloadDocument = RecordsService.downloadDocument;
+const downloadDocument = filesDownloadFileToMachine;
 
 // delete
 const {
-  deleteModalOpen: deleteModalOpen,
-  deleteRequest,
+  commandModalOpen: deleteModalOpen,
+  commandRequest: deleteRequest,
   temporary,
-} = useDelete(RecordsService.deleteDocument, documents);
+} = useCommand(filesDeleteFile, query.value);
 
 // expose
 defineExpose({
-  documents,
   // upload
   createModalOpen,
   // download

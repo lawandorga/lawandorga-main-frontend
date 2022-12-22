@@ -1,5 +1,5 @@
 <template>
-  <template v-for="(item, index) in folders" :key="item.folder.id">
+  <template v-for="(item, index) in folders" :key="item.folder.uuid">
     <div
       class="flex w-full leading-snug rounded-sm h-7 even:bg-gray-100 odd:bg-white"
       :style="{ paddingLeft: `${depth * 18}px` }"
@@ -15,7 +15,7 @@
       </button>
       <button
         class="flex items-center max-w-xs transition focus:outline-none hover:underline group"
-        @click="emit('folderClicked', item.folder.id)"
+        @click="emit('folderClicked', item.folder.uuid)"
       >
         <FolderIcon
           class="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
@@ -25,13 +25,13 @@
       <div class="flex items-center pr-2 ml-auto space-x-3 whitespace-nowrap">
         <ButtonNormal
           kind="action"
-          @click="emit('addContentClicked', item.folder.id)"
+          @click="emit('addContentClicked', item.folder.uuid)"
         >
           Add Content
         </ButtonNormal>
         <ButtonNormal
           kind="action"
-          @click="emit('addChildClicked', item.folder.id)"
+          @click="emit('addChildClicked', item.folder.uuid)"
         >
           Add Child
         </ButtonNormal>

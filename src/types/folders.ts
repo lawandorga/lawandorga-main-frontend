@@ -1,6 +1,6 @@
 export interface IFolder {
   name: string;
-  id: string;
+  uuid: string;
   stop_inherit: boolean;
 }
 
@@ -21,8 +21,10 @@ interface Actions {
 }
 
 export interface IContent {
+  uuid: string;
   name: string;
   actions: Actions;
+  repository: "RECORD" | "FILE";
 }
 export interface IFolderItem {
   folder: IFolder;
@@ -39,6 +41,7 @@ export interface IFolderPage {
 export interface IFolderDetail {
   folder: IFolder;
   access: IAccess[];
+  content: IContent[];
 }
 
 export interface IAvailableFolder {
