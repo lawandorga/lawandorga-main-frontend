@@ -1,11 +1,19 @@
 export interface IFolder {
   name: string;
   id: string;
+  stop_inherit: boolean;
 }
 
 export interface IAccess {
   name: string;
   slug: string | null;
+  source: string;
+  actions: {
+    REVOKE_ACCESS: {
+      url: string;
+      user_uuid: string;
+    };
+  };
 }
 
 interface Actions {
