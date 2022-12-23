@@ -181,7 +181,7 @@
                 </button>
               </div>
             </div>
-            <!-- <div class="px-1 py-1">
+            <div class="px-1 py-1">
               <div>
                 <button
                   :class="[
@@ -189,16 +189,49 @@
                     'text-gray-900',
                     'group flex w-full items-center rounded-md px-4 py-2 text-sm',
                   ]"
+                  @click="
+                    close();
+                    filesUploadFile.commandModalOpen = true;
+                  "
                 >
                   File
                 </button>
               </div>
-            </div> -->
+            </div>
+            <div class="px-1 py-1">
+              <div>
+                <button
+                  :class="[
+                    'focus:bg-lorgablue focus:text-white focus:outline-none',
+                    'text-gray-900',
+                    'group flex w-full items-center rounded-md px-4 py-2 text-sm',
+                  ]"
+                  @click="
+                    close();
+                    filesUploadMultipleFiles.commandModalOpen = true;
+                  "
+                >
+                  Multiple Files
+                </button>
+              </div>
+            </div>
           </div>
         </DialogPanel>
       </div>
     </div>
   </Dialog>
+  <FilesUploadFile
+    ref="filesUploadFile"
+    class="hidden"
+    :query="query"
+    :folder-uuid="parent ? parent : undefined"
+  />
+  <FilesUploadMultipleFiles
+    ref="filesUploadMultipleFiles"
+    class="hidden"
+    :query="query"
+    :folder-uuid="parent ? parent : undefined"
+  />
 </template>
 
 <script setup lang="ts">
@@ -217,6 +250,8 @@ import { foldersGetFolderPage } from "@/services/folders";
 import useQuery from "@/composables/useQuery";
 import { Dialog, DialogPanel } from "@headlessui/vue";
 import ActionsRecords from "@/components/ActionsRecords.vue";
+import FilesUploadFile from "@/actions/FilesUploadFile.vue";
+import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 
 // content
 const addContentModalOpen = ref(false);
@@ -226,6 +261,8 @@ function close() {
 
 // records
 const recordsActions = ref<typeof ActionsRecords>();
+const filesUploadFile = ref();
+const filesUploadMultipleFiles = ref();
 
 // store
 const userStore = useUserStore();
