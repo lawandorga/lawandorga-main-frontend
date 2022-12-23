@@ -1,26 +1,21 @@
 <template>
-  <div v-if="!!actionsDocuments && file">
+  <div v-if="!!file">
     <BoxHeadingStats
       :title="file.name"
       :show="selectedId === file.uuid && selectedType === 'FILE'"
       :stats="[`Created: ${formatDate(file.created)}`]"
     >
       <template #buttons>
-        <ButtonNormal
-          kind="action"
-          @click="actionsDocuments.downloadDocument(file)"
-        >
-          Download
-        </ButtonNormal>
-        <ButtonNormal
-          kind="delete"
-          @click="
-            actionsDocuments.deleteModalOpen = true;
-            actionsDocuments.temporary = file;
-          "
-        >
-          Delete
-        </ButtonNormal>
+        <FilesDownloadFile
+          :name="file.name"
+          :file-uuid="file.uuid"
+          :query="query"
+        />
+        <FilesDeleteFile
+          :file-uuid="file.uuid"
+          :query="query"
+          @deleted="file = null"
+        />
       </template>
       <div>
         <div v-if="iframeContent === null" class="w-full aspect-square">
@@ -54,27 +49,26 @@
 
 <script lang="ts" setup>
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { CircleLoader, ButtonNormal } from "@lawandorga/components";
-import { actionsDocumentsKey } from "@/types/keys";
+import FilesDownloadFile from "@/actions/FilesDownloadFile.vue";
+import { CircleLoader } from "@lawandorga/components";
 import { formatDate } from "@/utils/date";
 import { isDataUrlDisplayable } from "@/utils/download";
-import { inject, watch, ref, toRefs } from "vue";
+import { watch, ref, toRefs, Ref } from "vue";
 import { filesDownloadFile, filesRetrieveFile } from "@/services/files_new";
 import { RecordsDocument } from "@/types/records";
 import useQuery from "@/composables/useQuery";
+import FilesDeleteFile from "@/actions/FilesDeleteFile.vue";
 
 // props
 const props = defineProps<{
-  selectedId: string | null;
+  selectedId: string | number | null;
   selectedType: string;
+  query: () => void;
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
 // file
 const file = ref<null | RecordsDocument>(null);
-
-// actions
-const actionsDocuments = inject(actionsDocumentsKey);
 
 // data url
 const iframeContent = ref<string | null>(null);
@@ -89,7 +83,7 @@ const errorMessage = window.btoa("An error happened.");
 watch(selectedId, () => {
   iframeContent.value = null;
   if (selectedType.value === "FILE" && selectedId.value) {
-    filesDownloadFile(selectedId.value)
+    filesDownloadFile(selectedId.value as string)
       .then((v: string) => {
         if (isDataUrlDisplayable(v)) iframeContent.value = v;
         else iframeContent.value = `data:text/plain;base64,${message}`;
@@ -97,7 +91,7 @@ watch(selectedId, () => {
       .catch(() => {
         iframeContent.value = `data:text/plain;base64,${errorMessage}`;
       });
-    useQuery(filesRetrieveFile, file, selectedId)();
+    useQuery(filesRetrieveFile, file, selectedId as Ref<string>)();
   }
 });
 </script>

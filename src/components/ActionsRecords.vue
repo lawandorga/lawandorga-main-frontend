@@ -13,7 +13,7 @@
     :fields="createWithinFolderFields"
     :request="createWithinFolderRequest"
     submit="Create"
-    :initial="data"
+    :initial="temporary"
   />
 </template>
 
@@ -41,7 +41,7 @@ const router = useRouter();
 const {
   commandRequest: createWithinFolderRequest,
   commandModalOpen: createWithinFolderModalOpen,
-  temporary: data,
+  temporary,
 } = useCommand(recordsCreateRecord, query.value);
 
 // create within records folder
@@ -109,6 +109,6 @@ const createWithinFolderFields = computed<types.FormField[]>(() => [
 defineExpose({
   createModalOpen,
   createWithinFolderModalOpen,
-  data,
+  temporary,
 });
 </script>

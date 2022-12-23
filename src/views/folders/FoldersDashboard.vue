@@ -124,7 +124,7 @@
                     @click="
                       foldersActions.temporary = {
                         user_uuid: item.actions.REVOKE_ACCESS.user_uuid,
-                        id: selectedItem.folder.uuid,
+                        uuid: selectedItem.folder.uuid,
                         access: selectedItem.access,
                         url: item.actions.REVOKE_ACCESS.url,
                       };
@@ -174,7 +174,7 @@
                   @click="
                     close();
                     recordsActions.createWithinFolderModalOpen = true;
-                    recordsActions.data = { folder: parent };
+                    recordsActions.temporary = { folder: parent };
                   "
                 >
                   Record

@@ -11,13 +11,13 @@
     title="Change name"
     :fields="fields"
     :request="updateRequest"
-    :initial="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
+    :initial="{ uuid: temporary?.folder?.uuid, name: temporary?.folder?.name }"
   />
   <ModalDelete
     v-model="deleteModalOpen"
     title="Delete folder"
     :request="deleteRequest"
-    :object="{ id: temporary?.folder?.id, name: temporary?.folder?.name }"
+    :object="{ uuid: temporary?.folder?.uuid, name: temporary?.folder?.name }"
   >
     Are you sure you want to delete '{{ temporary?.folder?.name }}'? This will
     delete all subfolders and the content.
@@ -27,7 +27,7 @@
     title="Grant access"
     :fields="grantAccessFields"
     :request="grantAccessRequest"
-    :initial="{ id: temporary?.folder?.id }"
+    :initial="{ uuid: temporary?.folder?.uuid }"
   />
   <ModalUpdate
     v-model="revokeAccessModalOpen"
@@ -36,11 +36,12 @@
     :request="revokeAccessRequest"
     :initial="temporary"
   />
+  {{ temporary }}
   <ModalConfirm
     v-model="toggleInheritanceModalOpen"
     title="Toggle inheritance"
     :request="toggleInheritanceRequest"
-    :data="{ folder: temporary?.folder?.id }"
+    :data="{ folder: temporary?.folder?.uuid }"
   >
     Are you sure you want to toggle the inheritance of '{{
       temporary?.folder?.name
@@ -51,7 +52,7 @@
     title="Move folder"
     :fields="moveFolderFields"
     :request="moveFolderRequest"
-    :initial="{ folder: temporary?.folder?.id }"
+    :initial="{ folder: temporary?.folder?.uuid }"
   />
 </template>
 
@@ -112,9 +113,7 @@ const revokeAccessFields = computed<types.FormField[]>(() => {
       name: "user_uuid",
       type: "select",
       required: true,
-      options: temporary.value
-        ? temporary.value.access.map((i: IAccess) => ({ ...i, id: i.slug }))
-        : [],
+      options: temporary.value ? temporary.value.access : [],
     },
   ] as types.FormField[];
 });
@@ -131,9 +130,7 @@ const grantAccessFields = computed<types.FormField[]>(() => {
       name: "user_uuid",
       type: "select",
       required: true,
-      options: availablePersons.value
-        ? availablePersons.value.map((i: IAccess) => ({ ...i, id: i.slug }))
-        : [],
+      options: availablePersons.value ? availablePersons.value : [],
     },
   ] as types.FormField[];
 });
