@@ -4,7 +4,6 @@
       userStore.loaded &&
       !!record &&
       !!actionsQuestionnaires &&
-      !!actionsDocuments &&
       !!actionsEncryptions &&
       !!actionsRecord
     "
@@ -14,7 +13,6 @@
         userStore.loaded &&
         !!record &&
         !!actionsQuestionnaires &&
-        !!actionsDocuments &&
         !!actionsEncryptions &&
         !!actionsRecord
       "
@@ -37,12 +35,14 @@
         <div class="sticky top-0 overflow-hidden bg-white rounded shadow">
           <ul role="list" class="">
             <li v-if="!grouping" class="px-4 py-3 space-x-5 sm:px-6 bg-gray-50">
-              <ButtonNormal
-                kind="action"
-                @click="actionsDocuments.createModalOpen = true"
-              >
-                Upload File
-              </ButtonNormal>
+              <FilesUploadFile
+                :folder-uuid="folder?.folder.uuid"
+                :query="query"
+              />
+              <FilesUploadMultipleFiles
+                :folder-uuid="folder?.folder.uuid"
+                :query="query"
+              />
               <ButtonNormal
                 kind="action"
                 @click="actionsQuestionnaires.createModalOpen = true"
@@ -77,7 +77,7 @@
                       v-if="
                         grouping && item.actions && selectedType === item.type
                       "
-                      class="flex flex-shrink-0 ml-2"
+                      class="flex flex-shrink-0 ml-2 space-x-3"
                     >
                       <ButtonNormal
                         v-for="action in item.actions"
@@ -197,7 +197,11 @@
 
         <RecordMessages :selected-type="selectedType" />
 
-        <RecordFiles :selected-id="selectedId" :selected-type="selectedType" />
+        <RecordFiles
+          :query="query"
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+        />
 
         <RecordQuestionnaires
           :selected-id="selectedId"
@@ -218,18 +222,24 @@
   />
   <ActionsQuestionnaires ref="actionsQuestionnaires" />
   <ActionsMessages ref="actionsMessages" />
-  <ActionsDocuments
-    ref="actionsDocuments"
-    :folder="folder"
-    :query="query"
-    @deleted="selectedId = null"
-  />
   <ActionsRecord ref="actionsRecord" :record="record" :query="recordQuery" />
+  <FilesUploadMultipleFiles
+    ref="filesUploadMultipleFiles"
+    class="hidden"
+    :folder-uuid="folder?.folder.uuid"
+    :query="query"
+  />
+  <FilesUploadFile
+    ref="filesUploadFile"
+    class="hidden"
+    :folder-uuid="folder?.folder.uuid"
+    :query="query"
+  />
 </template>
 
 <script lang="ts" setup>
 import FormRecord from "@/components/FormRecord.vue";
-import { Questionnaire, RecordsDocument } from "@/types/records";
+import { Questionnaire } from "@/types/records";
 import { computed, provide, ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
@@ -247,11 +257,9 @@ import {
   actionsMessagesKey,
   actionsEncryptionsKey,
   actionsQuestionnairesKey,
-  actionsDocumentsKey,
 } from "@/types/keys";
 import RecordMessages from "@/components/RecordMessages.vue";
 import RecordQuestionnaires from "@/components/RecordQuestionnaires.vue";
-import ActionsDocuments from "@/components/ActionsDocuments.vue";
 import RecordFiles from "@/components/RecordFiles.vue";
 import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
@@ -261,6 +269,8 @@ import { storeToRefs } from "pinia";
 import { IFolderDetail } from "@/types/folders";
 import { foldersGetFolderDetail } from "@/services/folders";
 import ActionsRecord from "@/components/ActionsRecord.vue";
+import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
+import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 
 // record
 const route = useRoute();
@@ -272,6 +282,10 @@ const recordQuery = useGet(
 );
 const actionsRecord = ref<typeof ActionsRecord>();
 
+//
+const filesUploadMultipleFiles = ref();
+const filesUploadFile = ref();
+
 // questionnaires
 const actionsQuestionnaires = ref<typeof ActionsQuestionnaires>();
 provide(actionsQuestionnairesKey, actionsQuestionnaires);
@@ -279,10 +293,6 @@ provide(actionsQuestionnairesKey, actionsQuestionnaires);
 // messages
 const actionsMessages = ref<typeof ActionsMessages>();
 provide(actionsMessagesKey, actionsMessages);
-
-// documents
-const actionsDocuments = ref<typeof ActionsDocuments>();
-provide(actionsDocumentsKey, actionsDocuments);
 
 // encryptions
 const actionsEncryptions = ref<typeof ActionsEncryptions>();
@@ -336,11 +346,15 @@ const groups = computed<ContentGroupItem[]>(() => {
     { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
   ];
 
-  if (actionsDocuments.value)
-    g[2].actions.push({
-      action: () => (actionsDocuments.value.createModalOpen = true),
-      text: "Upload File",
-    });
+  g[2].actions.push({
+    action: () => (filesUploadMultipleFiles.value.commandModalOpen = true),
+    text: "Upload Multiple Files",
+  });
+
+  g[2].actions.push({
+    action: () => (filesUploadFile.value.commandModalOpen = true),
+    text: "Upload File",
+  });
 
   if (actionsQuestionnaires.value)
     g[3].actions.push({
@@ -364,16 +378,6 @@ const groups = computed<ContentGroupItem[]>(() => {
     name: "Chat",
     stats: [`${actionsMessages.value?.messages?.length} Messages`],
   });
-
-  if (actionsDocuments.value?.documents)
-    actionsDocuments.value?.documents.forEach((d: RecordsDocument) => {
-      g[2].children.push({
-        id: d.id,
-        type: "FILE",
-        name: d.name,
-        stats: [`Created ${formatDate(d.created_on)}`],
-      });
-    });
 
   if (actionsQuestionnaires.value?.questionnaires)
     actionsQuestionnaires.value?.questionnaires.forEach((q: Questionnaire) => {

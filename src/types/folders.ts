@@ -6,7 +6,7 @@ export interface IFolder {
 
 export interface IAccess {
   name: string;
-  slug: string | null;
+  uuid: string | null;
   source: string;
   actions: {
     REVOKE_ACCESS: {
