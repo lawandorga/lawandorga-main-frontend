@@ -16,7 +16,10 @@
     title="Update Event"
   >
     <FormGenerator
-      :initial="eventUpdateTemporary"
+      :initial="{
+        description: eventUpdateTemporary?.description,
+        name: eventUpdateTemporary?.name,
+      }"
       :fields="eventFields"
       :request="updateRequest"
     >

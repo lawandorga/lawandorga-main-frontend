@@ -12,6 +12,7 @@
     </div>
     <FormHelptext :helptext="helptext" />
   </label>
+  {{ modelValue }}
 </template>
 
 <script setup lang="ts">
