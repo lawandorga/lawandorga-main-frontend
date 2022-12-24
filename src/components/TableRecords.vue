@@ -51,8 +51,8 @@
           <ButtonLink
             v-if="item.has_access"
             :to="{
-              name: 'records-detail',
-              params: { id: item.id },
+              name: 'folders-detail',
+              params: { uuid: item.folder_uuid, record: item.id },
             }"
           >
             {{ getValueFromRecord(item, headItem.key, "NO-IDENTIFIER") }}

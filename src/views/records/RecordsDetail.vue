@@ -1,30 +1,19 @@
 <template>
-  <BoxLoader
-    :show="
-      userStore.loaded &&
-      !!record &&
-      !!actionsQuestionnaires &&
-      !!actionsEncryptions &&
-      !!actionsRecord
-    "
-  >
+  <BoxLoader :show="userStore.loaded && !!folder">
     <div
-      v-if="
-        userStore.loaded &&
-        !!record &&
-        !!actionsQuestionnaires &&
-        !!actionsEncryptions &&
-        !!actionsRecord
-      "
+      v-if="userStore.loaded && !!folder"
       class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl"
     >
       <BreadcrumbsBar
         class="col-span-12"
-        :base="{ name: 'records-dashboard' }"
+        :base="{ name: 'folders-dashboard' }"
         :pages="[
           {
-            name: firstEntry,
-            to: { name: 'records-detail', params: { id: String(record.id) } },
+            name: folder.folder.name,
+            to: {
+              name: 'folders-detail',
+              params: { uuid: folder.folder.uuid },
+            },
           },
         ]"
       >
@@ -43,12 +32,12 @@
                 :folder-uuid="folder?.folder.uuid"
                 :query="query"
               />
-              <ButtonNormal
+              <!-- <ButtonNormal
                 kind="action"
                 @click="actionsQuestionnaires.createModalOpen = true"
               >
                 Publish a questionnaire
-              </ButtonNormal>
+              </ButtonNormal> -->
             </li>
 
             <li
@@ -163,39 +152,13 @@
       </div>
 
       <div class="col-span-12 lg:col-span-8">
-        <!-- record -->
-        <BoxHeadingStats
-          :show="selectedType === 'RECORD'"
-          :title="record.name"
-          :stats="[`Created: ${formatDate(record.created)}`]"
-        >
-          <FormRecord :record="record"></FormRecord>
-          <template #buttons>
-            <ButtonNormal
-              kind="action"
-              @click="actionsRecord.commandModalOpen = true"
-            >
-              Change name
-            </ButtonNormal>
-          </template>
-        </BoxHeadingStats>
+        <FolderRecord
+          :query="query"
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+        />
 
-        <!-- client -->
-        <BoxHeadingStats
-          title="Client"
-          :show="selectedType === 'RECORD' && !!record.client.name"
-          :stats="[' ']"
-        >
-          <p class="mb-5 text-sm text-gray-600">
-            The following data could not be copied over into the new format, due
-            to the way the encryption was built.
-          </p>
-          <p>Client name: {{ record.client.name }}</p>
-          <p>Client phone: {{ record.client.phone }}</p>
-          <p>Client note: {{ record.client.note }}</p>
-        </BoxHeadingStats>
-
-        <RecordMessages :selected-type="selectedType" />
+        <RecordMessages v-if="recordId" :selected-type="selectedType" />
 
         <RecordFiles
           :query="query"
@@ -204,6 +167,7 @@
         />
 
         <RecordQuestionnaires
+          v-if="recordId"
           :selected-id="selectedId"
           :selected-type="selectedType"
         />
@@ -220,9 +184,8 @@
     :folder="folder ? folder.folder : null"
     :query="query"
   />
-  <ActionsQuestionnaires ref="actionsQuestionnaires" />
-  <ActionsMessages ref="actionsMessages" />
-  <ActionsRecord ref="actionsRecord" :record="record" :query="recordQuery" />
+  <ActionsQuestionnaires v-if="recordId" ref="actionsQuestionnaires" />
+  <ActionsMessages v-if="recordId" ref="actionsMessages" />
   <FilesUploadMultipleFiles
     ref="filesUploadMultipleFiles"
     class="hidden"
@@ -240,6 +203,7 @@
 <script lang="ts" setup>
 import FormRecord from "@/components/FormRecord.vue";
 import { Questionnaire } from "@/types/records";
+import FolderRecord from "@/components/FolderRecord.vue";
 import { computed, provide, ref, watch } from "vue";
 import RecordsService from "@/services/records";
 import { Record } from "@/types/records";
@@ -263,24 +227,18 @@ import RecordQuestionnaires from "@/components/RecordQuestionnaires.vue";
 import RecordFiles from "@/components/RecordFiles.vue";
 import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
-import { getValueFromEntry } from "@/utils/record";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { IFolderDetail } from "@/types/folders";
 import { foldersGetFolderDetail } from "@/services/folders";
-import ActionsRecord from "@/components/ActionsRecord.vue";
+import ActionsRecord from "@/actions/RecordsChangeName.vue";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 
 // record
 const route = useRoute();
-const record = ref<null | Record>(null);
-const recordQuery = useGet(
-  RecordsService.getRecord,
-  record,
-  route.params.id as string,
-);
-const actionsRecord = ref<typeof ActionsRecord>();
+const folderUuid = route.params.uuid as string;
+const recordId = route.params.record as string;
 
 //
 const filesUploadMultipleFiles = ref();
@@ -300,16 +258,7 @@ provide(actionsEncryptionsKey, actionsEncryptions);
 
 // folder
 const folder = ref<null | IFolderDetail>(null);
-const query = useGet(foldersGetFolderDetail, folder, record);
-
-// first entry
-const firstEntry = computed<string>(() => {
-  if (record.value !== null && Object.keys(record.value.entries).length > 0) {
-    const entry = Object.values(record.value.entries)[0];
-    return getValueFromEntry(entry, "NO-IDENTIFIER");
-  }
-  return "NO-IDENTIFIER";
-});
+const query = useGet(foldersGetFolderDetail, folder, folderUuid);
 
 // items
 interface ContentItem {
@@ -328,89 +277,100 @@ interface ContentGroupItem {
 }
 
 const groups = computed<ContentGroupItem[]>(() => {
-  const g: ContentGroupItem[] = [
-    { name: "Record", type: "RECORD", children: [], actions: [] },
-    { name: "Chat", type: "MESSAGES", children: [], actions: [] },
-    {
+  const g: ContentGroupItem[] = [];
+
+  if (folder.value)
+    g.push({
+      name: "Records",
+      type: "RECORD",
+      children: folder.value.content
+        .filter((c) => c.repository === "RECORD")
+        .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid, stats: [] })),
+      actions: [],
+    });
+
+  if (recordId)
+    g.push({
+      name: "Chat",
+      type: "MESSAGES",
+      children: [
+        {
+          id: "MESSAGES",
+          type: "MESSAGES",
+          name: "Chat",
+          stats: [],
+        },
+      ],
+      actions: [],
+    });
+
+  if (folder.value)
+    g.push({
       name: "Files",
       type: "FILE",
-      children: [],
-      actions: [],
-    },
-    {
+      children: folder.value.content
+        .filter((c) => c.repository === "FILE")
+        .map((c) => ({ name: c.name, type: "FILE", id: c.uuid, stats: [] })),
+      actions: [
+        {
+          action: () => (filesUploadFile.value.commandModalOpen = true),
+          text: "Upload File",
+        },
+        {
+          action: () =>
+            (filesUploadMultipleFiles.value.commandModalOpen = true),
+          text: "Upload Multiple Files",
+        },
+      ],
+    });
+
+  if (recordId && actionsQuestionnaires.value?.questionnaires)
+    g.push({
       name: "Questionnaires",
       type: "QUESTIONNAIRE",
-      children: [],
-      actions: [],
-    },
-    { name: "Encryptions", type: "ACCESS", children: [], actions: [] },
-  ];
-
-  g[2].actions.push({
-    action: () => (filesUploadMultipleFiles.value.commandModalOpen = true),
-    text: "Upload Multiple Files",
-  });
-
-  g[2].actions.push({
-    action: () => (filesUploadFile.value.commandModalOpen = true),
-    text: "Upload File",
-  });
-
-  if (actionsQuestionnaires.value)
-    g[3].actions.push({
-      action: () => (actionsQuestionnaires.value.createModalOpen = true),
-      text: "Publish A Questionnaire",
+      children: actionsQuestionnaires.value?.questionnaires.map(
+        (q: Questionnaire) => ({
+          id: q.id,
+          type: "QUESTIONNAIRE",
+          name: q.template.name,
+          stats: [
+            `Created ${formatDate(q.created)}`,
+            `${q.answers.length} Answers`,
+          ],
+        }),
+      ),
+      actions: [
+        {
+          action: () => (actionsQuestionnaires.value.createModalOpen = true),
+          text: "Publish A Questionnaire",
+        },
+      ],
     });
 
-  if (folder.value !== null) {
-    g[0].children = folder.value.content
-      .filter((c) => c.repository === "RECORD")
-      .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid, stats: [] }));
-
-    g[2].children = folder.value.content
-      .filter((c) => c.repository === "FILE")
-      .map((c) => ({ name: c.name, type: "FILE", id: c.uuid, stats: [] }));
-  }
-
-  g[1].children.push({
-    id: "MESSAGES",
-    type: "MESSAGES",
-    name: "Chat",
-    stats: [`${actionsMessages.value?.messages?.length} Messages`],
-  });
-
-  if (actionsQuestionnaires.value?.questionnaires)
-    actionsQuestionnaires.value?.questionnaires.forEach((q: Questionnaire) => {
-      g[3].children.push({
-        id: q.id,
-        type: "QUESTIONNAIRE",
-        name: q.template.name,
-        stats: [
-          `Created ${formatDate(q.created)}`,
-          `${q.answers.length} Answers`,
-        ],
-      });
-    });
-
-  g[4].children.push({
-    id: "ACCESS",
+  g.push({
+    name: "Encryptions",
     type: "ACCESS",
-    name: "Access",
-    stats: [`${folder.value?.access.length || 0} Persons`],
+    children: [
+      {
+        id: "ACCESS",
+        type: "ACCESS",
+        name: "Access",
+        stats: [`${folder.value?.access.length || 0} Persons`],
+      },
+    ],
+    actions: [],
   });
 
   return g;
 });
 
 // selected
-const selectedId = ref<number | string | null>(route.params.id as string);
+const selectedId = ref<number | string | null>(null);
 const selectedType = ref<string>("RECORD");
 
-// user store
+// user settings
 const userStore = useUserStore();
 const { loaded } = storeToRefs(userStore);
-
-// grouping
 const grouping = ref<boolean>(
   userStore.getSetting("recordGrouping", true) as boolean,
 );

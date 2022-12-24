@@ -25,7 +25,7 @@ const fields = [
 ];
 
 // get
-useGet(RecordsService.getMessages, messages, route.params.id as string);
+useGet(RecordsService.getMessages, messages, route.params.record as string);
 
 // create
 const { createRequest } = useCreate(RecordsService.createMessage, messages);

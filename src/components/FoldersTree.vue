@@ -13,15 +13,23 @@
           class="w-5 h-5 text-gray-500"
         />
       </button>
-      <button
-        class="flex items-center max-w-xs transition focus:outline-none hover:underline group"
-        @click="emit('folderClicked', item.folder.uuid)"
-      >
-        <FolderIcon
-          class="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
-        />
-        <span class="ml-1.5 truncate">{{ item.folder.name }}</span>
-      </button>
+      <div class="flex items-center">
+        <button
+          class="flex items-center max-w-xs transition focus:outline-none hover:underline group"
+          @click="emit('folderClicked', item.folder.uuid)"
+        >
+          <FolderIcon
+            class="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
+          />
+          <span class="ml-1.5 truncate mr-3">{{ item.folder.name }}</span>
+        </button>
+        <ButtonNormal
+          kind="action"
+          :to="{ name: 'folders-detail', params: { uuid: item.folder.uuid } }"
+        >
+          Open
+        </ButtonNormal>
+      </div>
       <div class="flex items-center pr-2 ml-auto space-x-3 whitespace-nowrap">
         <ButtonNormal
           kind="action"

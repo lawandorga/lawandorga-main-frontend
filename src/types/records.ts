@@ -22,6 +22,7 @@ export interface IListRecord {
 }
 
 export interface Record {
+  uuid: string;
   id: number;
   name: string;
   created: string;
@@ -34,6 +35,11 @@ export interface Record {
   old_record: number;
   delete: boolean;
   folder: string;
+  client?: {
+    name: string;
+    phone: string;
+    note: string;
+  };
 }
 
 type RecordValue = string | number | boolean | string[] | number[] | File;
