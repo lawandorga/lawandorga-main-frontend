@@ -152,7 +152,7 @@ import { useUserStore } from "@/store/user";
 import ModalCalendarLink from "@/components/ModalCalendarLink.vue";
 import { useRoute, useRouter } from "vue-router";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
-import { JsonModel } from "@lawandorga/components/dist/types/types";
+import { types } from "@lawandorga/components";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const showGlobal = ref(true);
@@ -163,7 +163,7 @@ const route = useRoute();
 
 const textdata = ref("test");
 
-const f = (data: JsonModel) => {
+const f = (data: types.JsonModel) => {
   return Promise.resolve({ data: data });
 };
 const s = (d) => {

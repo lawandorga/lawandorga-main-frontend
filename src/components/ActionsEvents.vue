@@ -1,17 +1,34 @@
 <template>
-  <ModalCreate
-    v-model="addEventModalOpen"
-    title="Add Event"
-    :fields="eventFields"
-    :request="addEventRequest"
-  />
-  <ModalUpdate
+  <ModalFree v-model="addEventModalOpen" width="max-w-2xl" title="Add Event">
+    <FormGenerator :fields="eventFields" :request="addEventRequest">
+      <template #custom="{ data }">
+        <FormWysiwyg
+          v-model="data['description']"
+          required
+          label="Description"
+        />
+      </template>
+    </FormGenerator>
+  </ModalFree>
+  <ModalFree
     v-model="updateEventModalOpen"
+    width="max-w-2xl"
     title="Update Event"
-    :fields="eventFields"
-    :request="updateRequest"
-    :initial="eventUpdateTemporary"
-  />
+  >
+    <FormGenerator
+      :initial="eventUpdateTemporary"
+      :fields="eventFields"
+      :request="updateRequest"
+    >
+      <template #custom="{ data }">
+        <FormWysiwyg
+          v-model="data['description']"
+          required
+          label="Description"
+        />
+      </template>
+    </FormGenerator>
+  </ModalFree>
   <ModalDelete
     v-model="deleteEventModalOpen"
     title="Delete Event"
@@ -26,16 +43,22 @@ import { Ref, ref } from "vue";
 import useGet from "@/composables/useGet";
 import EventService from "@/services/event";
 import { Event } from "@/types/event";
-import { ModalCreate, ModalDelete, ModalUpdate } from "@lawandorga/components";
+import {
+  FormGenerator,
+  ModalDelete,
+  ModalFree,
+  types,
+} from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import useQuery from "@/composables/useQuery";
 import useDelete from "@/composables/useDelete";
 import useUpdate from "@/composables/useUpdate";
+import FormWysiwyg from "./FormWysiwyg.vue";
 
 const events = ref(null) as Ref<Event[] | null>;
 useGet(EventService.getEvents, events);
 
-const eventFields = ref([
+const eventFields = ref<types.FormField[]>([
   {
     label: "Name",
     name: "name",
@@ -45,7 +68,7 @@ const eventFields = ref([
   {
     label: "Description",
     name: "description",
-    type: "textarea",
+    type: "custom",
     required: true,
   },
   {
@@ -68,7 +91,7 @@ const eventFields = ref([
     type: "datetime-local",
     required: true,
   },
-]);
+] as types.FormField[]);
 
 const { commandRequest: addEventRequest, commandModalOpen: addEventModalOpen } =
   useCommand(
