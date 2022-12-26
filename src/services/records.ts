@@ -42,6 +42,10 @@ export function recordsCreateRecord(data: {
   return axios.post(`records/records/v2/within_folder/`, data).then();
 }
 
+export function recordsGetRecord(uuid: string): Promise<Record> {
+  return axios.get(`records/query/${uuid}/`).then((r) => r.data);
+}
+
 class RecordsService {
   // record templates
   getTemplates(): Promise<RecordTemplate[]> {
@@ -91,23 +95,21 @@ class RecordsService {
   }
 
   updateField(field: RecordField): Promise<RecordField> {
-    return axios.patch(field.url, field).then((response) => response.data);
+    return axios
+      .patch(field.url, field, { baseURL: import.meta.env.VITE_BACKEND_URL })
+      .then((response) => response.data);
   }
 
   deleteField(field: RecordField): Promise<void> {
-    return axios.delete(field.url).then();
+    return axios
+      .delete(field.url, { baseURL: import.meta.env.VITE_BACKEND_URL })
+      .then();
   }
 
   // records
   getRecords(): Promise<Record[]> {
     return axios
       .get<Record[]>("records/records/")
-      .then((response) => response.data);
-  }
-
-  getRecord(id: number | string): Promise<Record> {
-    return axios
-      .get<Record>(`records/records/${id}/`)
       .then((response) => response.data);
   }
 
@@ -130,18 +132,24 @@ class RecordsService {
   // entries
   createEntry(data: JsonModel): Promise<RecordEntry> {
     return axios
-      .post<RecordEntry>(data.url as string, data)
+      .post<RecordEntry>(data.url as string, data, {
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
       .then((response) => response.data);
   }
 
   updateEntry(data: JsonModel): Promise<RecordEntry> {
     return axios
-      .patch<RecordEntry>(data.url as string, data)
+      .patch<RecordEntry>(data.url as string, data, {
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
       .then((response) => response.data);
   }
 
   deleteEntry(url: string): Promise<void> {
-    return axios.delete(url).then();
+    return axios
+      .delete(url, { baseURL: import.meta.env.VITE_BACKEND_URL })
+      .then();
   }
 
   createFileEntry(data: JsonModel): Promise<RecordEntry> {
@@ -151,7 +159,9 @@ class RecordsService {
     if (data.file) formData.append("file", data.file);
 
     return axios
-      .post<RecordEntry>(data.url as string, formData)
+      .post<RecordEntry>(data.url as string, formData, {
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
       .then((response) => response.data);
   }
 
@@ -161,6 +171,7 @@ class RecordsService {
         headers: {
           "content-type": "multipart/form-data",
         },
+        baseURL: import.meta.env.VITE_BACKEND_URL,
       })
       .then((response) => response.data);
   }

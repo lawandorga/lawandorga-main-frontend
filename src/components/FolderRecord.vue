@@ -36,11 +36,11 @@
 <script lang="ts" setup>
 import RecordsChangeName from "@/actions/RecordsChangeName.vue";
 import { formatDate } from "@/utils/date";
-import { ref, toRefs, watch } from "vue";
+import { Ref, ref, toRefs, watch } from "vue";
 import BoxHeadingStats from "./BoxHeadingStats.vue";
 import FormRecord from "./FormRecord.vue";
 import { Record } from "@/types/records";
-import RecordsService from "@/services/records";
+import { recordsGetRecord } from "@/services/records";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "@lawandorga/components";
 
@@ -54,7 +54,11 @@ const { selectedId, selectedType, query } = toRefs(props);
 
 // record
 const record = ref<Record | null>(null);
-const recordsQuery = useQuery(RecordsService.getRecord, record, selectedId);
+const recordsQuery = useQuery(
+  recordsGetRecord,
+  record,
+  selectedId as Ref<string>,
+);
 watch(selectedId, () => {
   if (record.value && selectedId.value !== record.value.uuid)
     record.value = null;
