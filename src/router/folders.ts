@@ -11,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/folders/:uuid/:record?/",
     name: "folders-detail",
-    component: () => import("@/views/records/RecordsDetail.vue"),
+    component: () => import("@/views/folders/FoldersDetail.vue"),
     beforeEnter: isAuthenticated,
   },
 ];

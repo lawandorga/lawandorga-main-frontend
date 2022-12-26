@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
-    path: "/records/:id/",
+    path: "/records/:record/",
     name: "records-detail",
     component: () => import("@/views/records/RecordsDetail.vue"),
     beforeEnter: isAuthenticated,
