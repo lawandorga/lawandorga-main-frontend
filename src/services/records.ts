@@ -34,6 +34,10 @@ export function recordsChangeName(data: {
   return axios.post(`records/records/v2/${data.id}/change_name/`, data).then();
 }
 
+export function recordsGetDeletions(): Promise<RecordDeletion[]> {
+  return axios.get("records/query/deletions/").then((r) => r.data);
+}
+
 export function recordsCreateRecord(data: {
   name: string;
   folder: string;
@@ -384,25 +388,6 @@ class RecordsService {
   createRecordAccess(data: JsonModel): Promise<void> {
     return axios
       .post(`records/accesses/`, data)
-      .then((response) => response.data);
-  }
-
-  // deletion-requests
-  getRecordDeletions(): Promise<RecordDeletion[]> {
-    return axios
-      .get<RecordDeletion[]>("records/deletions/")
-      .then((response) => response.data);
-  }
-
-  createDeletionRequest(data: JsonModel): Promise<void> {
-    return axios
-      .post("records/deletions/", data)
-      .then((response) => response.data);
-  }
-
-  updateRecordDeletion(data: RecordDeletion): Promise<RecordDeletion> {
-    return axios
-      .patch<RecordDeletion>(`records/deletions/${data.id}/`, data)
       .then((response) => response.data);
   }
 

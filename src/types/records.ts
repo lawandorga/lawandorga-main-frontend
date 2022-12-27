@@ -145,21 +145,16 @@ export interface RecordAccess {
   updated: string;
 }
 
-export type RecordDeletion = JsonModel & {
+export interface RecordDeletion {
   requested_by_detail: string;
   record_detail: string;
   processed_by_detail: string;
-
   id: number;
-  requested_by: number;
-  processed_by: number;
   processed: string;
   state: string;
   explanation: string;
-  record: number;
   created: string;
-  updated: string;
-};
+}
 
 export interface Pool {
   type: string;
