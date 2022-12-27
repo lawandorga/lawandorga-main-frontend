@@ -10,7 +10,7 @@
     title="Publish Questionnaire"
     :fields="fields"
     :request="createRequest"
-    :initial="{ record: $route.params.id }"
+    :initial="{ record: $route.params.record }"
     submit="Publish"
   ></ModalCreate>
 </template>
@@ -38,7 +38,7 @@ const questionnaires = ref<Questionnaire[] | null>(null);
 useGet(
   RecordsService.getQuestionnaires,
   questionnaires,
-  route.params.id as string,
+  route.params.record as string,
 );
 
 // fields
