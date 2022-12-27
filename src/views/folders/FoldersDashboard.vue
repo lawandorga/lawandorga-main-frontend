@@ -35,6 +35,21 @@
               "
               @folder-clicked="selected = $event"
             />
+            <div
+              class="inline-block px-3 py-2 mt-10 border shadow-sm bg-gray-50"
+            >
+              <h2 class="font-medium text-gray-600">Folder properties:</h2>
+              <ul class="text-sm text-gray-600">
+                <li>
+                  <span class="font-mono text-sm">(IS)</span>
+                  stands for inheritance stop.
+                </li>
+                <li>
+                  <span class="font-mono">(R)&nbsp;</span>
+                  means the folder contains a record.
+                </li>
+              </ul>
+            </div>
           </div>
           <div
             v-if="selectedItem"

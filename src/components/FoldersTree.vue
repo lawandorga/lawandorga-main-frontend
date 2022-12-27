@@ -23,12 +23,20 @@
           />
           <span class="ml-1.5 truncate mr-3">{{ item.folder.name }}</span>
         </button>
-        <ButtonNormal
-          kind="action"
-          :to="{ name: 'folders-detail', params: { uuid: item.folder.uuid } }"
+        <div
+          v-if="item.folder.stop_inherit"
+          class="px-1 py-0 text-xs font-medium leading-tight tracking-wide text-gray-800 uppercase rounded shadow whitespace-nowrap ring-1 ring-gray-700"
         >
-          Open
-        </ButtonNormal>
+          {{ getFolderProperties(item) }}
+        </div>
+        <div class="ml-3">
+          <ButtonNormal
+            kind="action"
+            :to="{ name: 'folders-detail', params: { uuid: item.folder.uuid } }"
+          >
+            Open
+          </ButtonNormal>
+        </div>
       </div>
       <div class="flex items-center pr-2 ml-auto space-x-3 whitespace-nowrap">
         <ButtonNormal
@@ -54,11 +62,14 @@
         <div class="flex items-center">
           <div :style="{ width: `${(depth + 1) * 18}px` }"></div>
           <div class="block w-5 h-5"></div>
-          <DocumentTextIcon class="w-5 h-5 text-gray-500" />
-          <div class="ml-2">
+          <!-- <DocumentTextIcon class="w-5 h-5 text-gray-500" /> -->
+          <FoldersBadge>
+            {{ content.repository }}
+          </FoldersBadge>
+          <div class="ml-2 text-sm leading-normal">
             {{ content.name }}
           </div>
-          <div class="ml-4">
+          <!-- <div class="ml-4">
             <ButtonNormal
               v-if="content.actions['OPEN']"
               kind="action"
@@ -66,7 +77,7 @@
             >
               Open
             </ButtonNormal>
-          </div>
+          </div> -->
         </div>
       </div>
       <FoldersTree
@@ -82,11 +93,12 @@
 </template>
 
 <script setup lang="ts">
-import { IFolderItem } from "@/types/folders";
-import { DocumentTextIcon, FolderIcon } from "@heroicons/vue/20/solid";
+import { IContent, IFolderItem } from "@/types/folders";
+import { FolderIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ref } from "vue";
+import FoldersBadge from "./FoldersBadge.vue";
 
 withDefaults(
   defineProps<{
@@ -107,5 +119,13 @@ const emit = defineEmits([
 const chevronClicked = (index: number) => {
   if (!open.value.includes(index)) open.value.push(index);
   else open.value = open.value.filter((i) => i !== index);
+};
+
+const getFolderProperties = (item: IFolderItem): string => {
+  const properties: string[] = [];
+  if (item.folder.stop_inherit) properties.push("IS");
+  if (item.content.some((i: IContent) => i.repository === "RECORD"))
+    properties.push("R");
+  return properties.join(", ");
 };
 </script>
