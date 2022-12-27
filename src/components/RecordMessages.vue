@@ -23,7 +23,7 @@
       <div style="height: auto; padding-top: 16px">
         <FormGenerator
           :fields="actionsMessages?.fields"
-          :initial="{ record: $route.params.id }"
+          :initial="{ record: $route.params.record }"
           :request="actionsMessages?.createRequest"
         ></FormGenerator>
       </div>
