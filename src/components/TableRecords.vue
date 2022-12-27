@@ -52,7 +52,7 @@
             v-if="item.has_access"
             :to="{
               name: 'records-detail',
-              params: { id: item.id },
+              params: { record: item.uuid },
             }"
           >
             {{ getValueFromRecord(item, headItem.key, "NO-IDENTIFIER") }}

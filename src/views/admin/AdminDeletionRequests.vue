@@ -45,98 +45,30 @@
           </div>
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              v-if="slotProps.state === 're'"
-              size="xs"
-              kind="action"
-              @click="
-                deletionRequest = slotProps;
-                updateModalOpen = true;
-              "
-            >
-              Accept or Decline
-            </ButtonNormal>
-          </div>
+          <template v-if="slotProps.state === 're'">
+            <RecordsAcceptDeletion :id="slotProps.id" :query="query" />
+            <RecordsDeclineDeletion :id="slotProps.id" :query="query" />
+          </template>
         </template>
       </TableGenerator>
     </div>
-    <!-- update -->
-    <ModalFree
-      v-model="updateModalOpen"
-      title="Accept / Decline Deletion-Request"
-    >
-      <FormGenerator
-        :fields="fields"
-        :initial="deletionRequest"
-        :request="updateRequest"
-      />
-    </ModalFree>
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref } from "vue";
-import RecordsService from "@/services/records";
+<script lang="ts" setup>
+import { Ref, ref } from "vue";
+import { recordsGetDeletions } from "@/services/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
-import { ButtonNormal } from "@lawandorga/components";
-import { ModalFree } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
 import { RecordDeletion } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import { FormField } from "@/types/form";
+import RecordsDeclineDeletion from "@/actions/RecordsDeclineDeletion.vue";
+import RecordsAcceptDeletion from "@/actions/RecordsAcceptDeletion.vue";
 
-const fields = [
-  {
-    label: "Accept or decline",
-    name: "state",
-    type: "select",
-    options: [
-      { name: "Accept (Delete Record)", value: "gr" },
-      { name: "Decline (Record will not be deleted)", value: "de" },
-    ],
-    required: true,
-  },
-] as FormField[];
+const deletionRequests = ref(null) as Ref<RecordDeletion[] | null>;
 
-export default defineComponent({
-  components: {
-    CogIcon,
-    BreadcrumbsBar,
-    BoxLoader,
-    TableGenerator,
-    ButtonNormal,
-    ModalFree,
-    FormGenerator,
-  },
-  setup() {
-    const deletionRequests = ref(null) as Ref<RecordDeletion[] | null>;
-
-    // get
-    useGet(RecordsService.getRecordDeletions, deletionRequests);
-
-    // update
-    const {
-      updateRequest,
-      updateModalOpen,
-      temporary: deletionRequest,
-    } = useUpdate(RecordsService.updateRecordDeletion, deletionRequests);
-
-    return {
-      deletionRequests,
-      deletionRequest,
-      // update
-      fields,
-      updateRequest,
-      updateModalOpen,
-      // data
-      formatDate,
-    };
-  },
-});
+const query = useGet(recordsGetDeletions, deletionRequests);
 </script>

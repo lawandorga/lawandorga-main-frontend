@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
-import { toRefs, ref, Ref } from "vue";
+import { toRefs, ref, Ref, computed } from "vue";
 import useCommand from "@/composables/useCommand";
 import axios, { AxiosProgressEvent } from "axios";
 
@@ -24,7 +24,7 @@ function request(
     files: File[];
     folder: string;
   },
-  percentage: Ref<number>,
+  percentage: Ref<string>,
 ): Promise<void> {
   const formData = new FormData();
 
@@ -34,22 +34,30 @@ function request(
     });
   if (data.folder) formData.append("folder", data.folder);
 
-  percentage.value = 0;
+  percentage.value = "(0%)";
 
   const config = {
     onUploadProgress: function (progressEvent: AxiosProgressEvent) {
-      if (progressEvent.total)
-        percentage.value = Math.round(
+      if (progressEvent.total) {
+        const percentage = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total,
         );
+        addon.value = `(${percentage}%)`;
+        if (percentage === 100) addon.value = "(Server processing...)";
+      }
     },
   };
 
-  return axios.post("files/v2/multiple/", formData, config).then(() => {
-    setTimeout(() => {
-      percentage.value = 0;
-    }, 500);
-  });
+  return axios
+    .post("files/v2/multiple/", formData, config)
+    .then(() => {
+      /* */
+    })
+    .finally(() => {
+      setTimeout(() => {
+        percentage.value = "";
+      }, 500);
+    });
 }
 
 // props
@@ -60,19 +68,21 @@ const props = defineProps<{
 const { folderUuid, query } = toRefs(props);
 
 // create
-const percentage = ref<number>(0);
-const fieldsMultiple = [
-  {
-    label: "Files",
-    type: "files",
-    name: "files",
-    required: true,
-    percentage: percentage,
-  },
-] as types.FormField[];
+const addon = ref<string>("(0%)");
+const fieldsMultiple = computed<types.FormField[]>(() => {
+  return [
+    {
+      label: `Files ${addon.value}`,
+      type: "files",
+      name: "files",
+      required: true,
+      percentage: ref(0),
+    },
+  ];
+});
 const { commandModalOpen, commandRequest } = useCommand(
   request,
-  percentage,
+  addon,
   query.value,
 );
 
