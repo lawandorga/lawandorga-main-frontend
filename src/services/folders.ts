@@ -6,10 +6,8 @@ export function foldersGetFolderPage(): Promise<IFolderPage> {
   return axios.get("folders/query/").then((r) => r.data);
 }
 
-export function foldersGetFolderDetail(data: {
-  folder: string;
-}): Promise<IFolderDetail> {
-  return axios.get(`folders/query/${data?.folder}/`).then((r) => r.data);
+export function foldersGetFolderDetail(uuid: string): Promise<IFolderDetail> {
+  return axios.get(`folders/query/${uuid}/`).then((r) => r.data);
 }
 
 export function foldersGetAvailableFolders(): Promise<IAvailableFolder[]> {
