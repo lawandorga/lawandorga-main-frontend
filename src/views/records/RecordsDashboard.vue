@@ -40,6 +40,7 @@
             Request Access
           </ButtonNormal>
           <RecordsCreateDeletion
+            v-if="!slotProps.record.delete_requested"
             :record-id="slotProps.record.id"
             :query="query"
           />
