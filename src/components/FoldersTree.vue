@@ -31,8 +31,12 @@
         </div>
         <div class="ml-3">
           <ButtonNormal
+            v-if="item.folder.actions.OPEN"
             kind="action"
-            :to="{ name: 'folders-detail', params: { uuid: item.folder.uuid } }"
+            :to="{
+              name: 'folders-detail',
+              params: { uuid: item.folder.actions.OPEN.uuid },
+            }"
           >
             Open
           </ButtonNormal>
@@ -123,6 +127,10 @@ const chevronClicked = (index: number) => {
 
 const getFolderProperties = (item: IFolderItem): string => {
   const properties: string[] = [];
+  if (!item.folder.has_access) {
+    properties.push("N");
+    return properties.join(", ");
+  }
   if (item.folder.stop_inherit) properties.push("IS");
   if (item.content.some((i: IContent) => i.repository === "RECORD"))
     properties.push("R");
