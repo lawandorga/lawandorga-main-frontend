@@ -14,15 +14,36 @@
     :request="changeDomainRequest"
     :initial="temporary"
   />
-  <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
-    <span v-if="check && check.valid">
+  <ModalFree
+    v-model="checkModalOpen"
+    title="Check Domain Settings"
+    @update:model-value="check = undefined"
+  >
+    <div v-if="check && check.error">
+      An error happened: {{ check.message }}
+    </div>
+    <div v-else-if="check && check.valid">
       Your MX-Records Settings are correct.
-    </span>
-    <span v-if="check && !check.valid" class="text-red-700">
-      Your MX-Records Settings are not correct. They contain the following
-      domains: {{ check.mx_records }}.
-    </span>
-    <span v-if="!check">Loading...</span>
+    </div>
+    <div v-else-if="check && !check.valid" class="text-red-700">
+      The following record settings are not correct:
+      <br />
+      <span class="font-mono text-xs italic">
+        Type: {{ check.wrong_setting["type"] }}
+        <br />
+        Host: {{ check.wrong_setting["host"] }}
+        <br />
+        Destination Check: {{ check.wrong_setting["check"] }}
+      </span>
+      <br />
+      <br />
+      Your settings are the following:
+      <br />
+      <span class="font-mono text-xs italic">
+        {{ check.mx_records.join(", ") }}
+      </span>
+    </div>
+    <div v-else-if="!check">Loading...</div>
   </ModalFree>
 </template>
 
@@ -74,14 +95,19 @@ const {
 } = useCommand(mailChangeDomain, queryPage.value);
 
 // check domain
-const check = ref<IMailCheckDomain>();
+const check = ref<IMailCheckDomain | { error: true; message: string }>();
 const checkModalOpen = ref(false);
 const checkDomainSettings = (data: { uuid: string }) => {
   checkModalOpen.value = true;
-  mailCheckDomain(data).then((d) => {
-    queryPage.value();
-    check.value = d;
-  });
+  mailCheckDomain(data)
+    .then((d) => {
+      queryPage.value();
+      check.value = { ...d, error: false };
+    })
+    .catch((e) => {
+      console.log(e);
+      check.value = { error: true, message: e.response.data.title };
+    });
 };
 
 // expose
