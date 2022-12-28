@@ -19,29 +19,9 @@
     title="Check Domain Settings"
     @update:model-value="check = undefined"
   >
-    <div v-if="check && check.error">
-      An error happened: {{ check.message }}
-    </div>
-    <div v-else-if="check && check.valid">
-      Your MX-Records Settings are correct.
-    </div>
+    <div v-if="check && check.valid">Your MX-Records Settings are correct.</div>
     <div v-else-if="check && !check.valid" class="text-red-700">
-      The following record settings are not correct:
-      <br />
-      <span class="font-mono text-xs italic">
-        Type: {{ check.wrong_setting["type"] }}
-        <br />
-        Host: {{ check.wrong_setting["host"] }}
-        <br />
-        Destination Check: {{ check.wrong_setting["check"] }}
-      </span>
-      <br />
-      <br />
-      Your settings are the following:
-      <br />
-      <span class="font-mono text-xs italic">
-        {{ check.mx_records.join(", ") }}
-      </span>
+      {{ check.wrong_setting }}
     </div>
     <div v-else-if="!check">Loading...</div>
   </ModalFree>
@@ -95,19 +75,14 @@ const {
 } = useCommand(mailChangeDomain, queryPage.value);
 
 // check domain
-const check = ref<IMailCheckDomain | { error: true; message: string }>();
+const check = ref<IMailCheckDomain>();
 const checkModalOpen = ref(false);
 const checkDomainSettings = (data: { uuid: string }) => {
   checkModalOpen.value = true;
-  mailCheckDomain(data)
-    .then((d) => {
-      queryPage.value();
-      check.value = { ...d, error: false };
-    })
-    .catch((e) => {
-      console.log(e);
-      check.value = { error: true, message: e.response.data.title };
-    });
+  mailCheckDomain(data).then((d) => {
+    queryPage.value();
+    check.value = d;
+  });
 };
 
 // expose

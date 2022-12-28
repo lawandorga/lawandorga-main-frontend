@@ -68,8 +68,6 @@ export interface IMailUserPage {
 }
 
 export interface IMailCheckDomain {
-  error: false;
-  mx_records: string[];
   valid: boolean;
-  wrong_setting: { type: string; host: string; check: string };
+  wrong_setting: string | null;
 }

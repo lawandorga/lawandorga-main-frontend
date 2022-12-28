@@ -55,21 +55,21 @@
                 <td>10</td>
               </tr>
               <tr>
-                <td>TXT (spf)</td>
+                <td>TXT (SPF)</td>
                 <td>{{ domain.name }}</td>
                 <td>v=spf1 include:spf.{{ domain.name }} -all</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
               <tr>
-                <td>CNAME (dmarc)</td>
+                <td>CNAME (DMARC)</td>
                 <td>_dmarc.{{ domain.name }}</td>
                 <td>dmarc.mail.law-orga.de.</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
               <tr>
-                <td>CNAME (dkim)</td>
+                <td>CNAME (DKIM)</td>
                 <td>2022-12._domainkey.{{ domain.name }}</td>
                 <td>2022-12.dkim.mail.law-orga.de.</td>
                 <td>3600</td>
