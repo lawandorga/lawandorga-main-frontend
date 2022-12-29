@@ -1,16 +1,11 @@
 import { HasPermission } from "@/types/core";
 import {
-  Consultant,
-  Country,
   Message,
   Record,
   RecordDeletion,
   RecordAccess,
-  RecordsClient,
-  RecordsDocument,
   QuestionnaireTemplate,
   Questionnaire,
-  Tag,
   Pool,
   QuestionnaireAnswer,
   QuestionnaireQuestion,
@@ -18,15 +13,41 @@ import {
   RecordTemplate,
   RecordEntry,
   RecordField,
-  RecordEncryption,
   IRecordListPage,
 } from "@/types/records";
 import { JsonModel } from "@/types/shared";
-import { downloadFileRequest, blobToDataURL } from "@/utils/download";
+import { downloadFileRequest } from "@/utils/download";
 import axios from "axios";
 
 export function recordsGetPage(): Promise<IRecordListPage> {
   return axios.get("records/query/").then((r) => r.data);
+}
+
+export function recordsOptimize(): Promise<void> {
+  return axios.post("records/records/v2/optimize/").then();
+}
+
+export function recordsChangeName(data: {
+  id: number;
+  name: string;
+}): Promise<void> {
+  return axios.post(`records/records/v2/${data.id}/change_name/`, data).then();
+}
+
+export function recordsGetDeletions(): Promise<RecordDeletion[]> {
+  return axios.get("records/query/deletions/").then((r) => r.data);
+}
+
+export function recordsCreateRecord(data: {
+  name: string;
+  folder: string;
+  template: number;
+}) {
+  return axios.post(`records/records/v2/within_folder/`, data).then();
+}
+
+export function recordsGetRecord(uuid: string): Promise<Record> {
+  return axios.get(`records/query/${uuid}/`).then((r) => r.data);
 }
 
 class RecordsService {
@@ -78,11 +99,15 @@ class RecordsService {
   }
 
   updateField(field: RecordField): Promise<RecordField> {
-    return axios.patch(field.url, field).then((response) => response.data);
+    return axios
+      .patch(field.url, field, { baseURL: import.meta.env.VITE_BACKEND_URL })
+      .then((response) => response.data);
   }
 
   deleteField(field: RecordField): Promise<void> {
-    return axios.delete(field.url).then();
+    return axios
+      .delete(field.url, { baseURL: import.meta.env.VITE_BACKEND_URL })
+      .then();
   }
 
   // records
@@ -92,15 +117,9 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  getRecord(id: number | string): Promise<Record> {
-    return axios
-      .get<Record>(`records/records/${id}/`)
-      .then((response) => response.data);
-  }
-
   createRecord(data: JsonModel): Promise<Record> {
     return axios
-      .post<Record>("records/records/", data)
+      .post<Record>("records/records/v2/", data)
       .then((response) => response.data);
   }
 
@@ -117,18 +136,24 @@ class RecordsService {
   // entries
   createEntry(data: JsonModel): Promise<RecordEntry> {
     return axios
-      .post<RecordEntry>(data.url as string, data)
+      .post<RecordEntry>(data.url as string, data, {
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
       .then((response) => response.data);
   }
 
   updateEntry(data: JsonModel): Promise<RecordEntry> {
     return axios
-      .patch<RecordEntry>(data.url as string, data)
+      .patch<RecordEntry>(data.url as string, data, {
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
       .then((response) => response.data);
   }
 
   deleteEntry(url: string): Promise<void> {
-    return axios.delete(url).then();
+    return axios
+      .delete(url, { baseURL: import.meta.env.VITE_BACKEND_URL })
+      .then();
   }
 
   createFileEntry(data: JsonModel): Promise<RecordEntry> {
@@ -138,7 +163,9 @@ class RecordsService {
     if (data.file) formData.append("file", data.file);
 
     return axios
-      .post<RecordEntry>(data.url as string, formData)
+      .post<RecordEntry>(data.url as string, formData, {
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
       .then((response) => response.data);
   }
 
@@ -148,6 +175,7 @@ class RecordsService {
         headers: {
           "content-type": "multipart/form-data",
         },
+        baseURL: import.meta.env.VITE_BACKEND_URL,
       })
       .then((response) => response.data);
   }
@@ -344,93 +372,6 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  // documents
-  getDocuments(record: { id: number | string }): Promise<RecordsDocument[]> {
-    return axios
-      .get<RecordsDocument[]>(`records/records/${record.id}/documents/`)
-      .then((response) => response.data);
-  }
-
-  createDocument(data: JsonModel): Promise<RecordsDocument> {
-    const formData = new FormData();
-    if (data.record) formData.append("record", data.record);
-    if (data.file) formData.append("file", data.file);
-
-    return axios
-      .post<RecordsDocument>(`records/record_documents/`, formData)
-      .then((response) => response.data);
-  }
-
-  downloadDocument(document: RecordsDocument): void {
-    downloadFileRequest(
-      axios,
-      `records/record_documents/${document.id}/`,
-      document.name,
-    );
-  }
-
-  downloadDocumentDataUrl(id: number | string): Promise<string> {
-    return axios
-      .get(`records/record_documents/${id}/`, {
-        responseType: "blob",
-      })
-      .then((r) => {
-        return blobToDataURL(r.data);
-      });
-  }
-
-  deleteDocument(document: RecordsDocument): Promise<void> {
-    return axios.delete(`records/record_documents/${document.id}/`).then();
-  }
-
-  // client
-  getClient(id: number): Promise<RecordsClient> {
-    return axios
-      .get<RecordsClient>(`records/e_clients/${id}/`)
-      .then((response) => response.data);
-  }
-
-  updateClient(client: RecordsClient): Promise<RecordsClient> {
-    return axios
-      .patch<RecordsClient>(`records/e_clients/${client.id}/`, client)
-      .then((response) => response.data);
-  }
-
-  // consultants
-  getConsultants(): Promise<Consultant[]> {
-    return axios
-      .get<Consultant[]>("records/consultants/")
-      .then((response) => response.data);
-  }
-
-  // tags
-  getTags(): Promise<Tag[]> {
-    return axios.get<Tag[]>(`records/tags/`).then((response) => response.data);
-  }
-
-  createTag(tag: Tag): Promise<Tag> {
-    return axios
-      .post<Tag>("records/tags/", tag)
-      .then((response) => response.data);
-  }
-
-  updateTag(tag: Tag): Promise<Tag> {
-    return axios
-      .patch<Tag>(`records/tags/${tag.id}/`, tag)
-      .then((response) => response.data);
-  }
-
-  deleteTag(tag: Tag): Promise<void> {
-    return axios.delete(`records/tags/${tag.id}/`);
-  }
-
-  // countries
-  getCountries(): Promise<Country[]> {
-    return axios
-      .get<Country[]>("records/origin_countries/")
-      .then((response) => response.data);
-  }
-
   // access
   getRecordAccesses(): Promise<RecordAccess[]> {
     return axios
@@ -447,36 +388,6 @@ class RecordsService {
   createRecordAccess(data: JsonModel): Promise<void> {
     return axios
       .post(`records/accesses/`, data)
-      .then((response) => response.data);
-  }
-
-  // encryption
-  getEncryptions(record: { id: number }): Promise<RecordEncryption[]> {
-    return axios
-      .get(`records/encryptions/?record=${record.id}`)
-      .then((response) => response.data);
-  }
-
-  deleteEncryption(encryption: RecordEncryption): Promise<void> {
-    return axios.delete(`records/encryptions/${encryption.id}/`).then();
-  }
-
-  // deletion-requests
-  getRecordDeletions(): Promise<RecordDeletion[]> {
-    return axios
-      .get<RecordDeletion[]>("records/deletions/")
-      .then((response) => response.data);
-  }
-
-  createDeletionRequest(data: JsonModel): Promise<void> {
-    return axios
-      .post("records/deletions/", data)
-      .then((response) => response.data);
-  }
-
-  updateRecordDeletion(data: RecordDeletion): Promise<RecordDeletion> {
-    return axios
-      .patch<RecordDeletion>(`records/deletions/${data.id}/`, data)
       .then((response) => response.data);
   }
 

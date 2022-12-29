@@ -1,91 +1,89 @@
 <template>
-  <div v-if="!!actionsDocuments">
-    <template v-for="document in actionsDocuments.documents" :key="document.id">
-      <BoxHeadingStats
-        :title="document.name"
-        :show="selectedId === document.id && selectedType === 'FILE'"
-        :stats="[`Created: ${formatDate(document.created_on)}`]"
-      >
-        <template #buttons>
-          <ButtonNormal
-            kind="action"
-            @click="actionsDocuments.downloadDocument(document)"
-          >
-            Download
-          </ButtonNormal>
-          <ButtonNormal
-            kind="delete"
-            @click="
-              actionsDocuments.deleteModalOpen = true;
-              actionsDocuments.temporary = document;
-            "
-          >
-            Delete
-          </ButtonNormal>
-        </template>
-        <div>
-          <div v-if="iframeContent === null" class="w-full aspect-square">
-            <CircleLoader />
-          </div>
-          <div
-            v-else-if="iframeContent.includes('pdf')"
-            class="aspect-square"
-            :class="{ 'flex h-full': !iframeContent.includes('image') }"
-          >
-            <iframe
-              class="w-full max-w-full"
-              :src="iframeContent"
-              frameborder="0"
-            ></iframe>
-          </div>
-          <div
-            v-else
-            class="aspect-square"
-            :class="{ 'flex h-full': !iframeContent.includes('image') }"
-          >
-            <object
-              class="w-full max-w-full"
-              :data="iframeContent"
-              frameborder="0"
-            ></object>
-          </div>
+  <div v-if="!!file">
+    <BoxHeadingStats
+      :title="file.name"
+      :show="selectedId === file.uuid && selectedType === 'FILE'"
+      :stats="[`Created: ${formatDate(file.created)}`]"
+    >
+      <template #buttons>
+        <FilesDownloadFile
+          :name="file.name"
+          :file-uuid="file.uuid"
+          :query="query"
+        />
+        <FilesDeleteFile
+          :file-uuid="file.uuid"
+          :query="query"
+          @deleted="file = null"
+        />
+      </template>
+      <div>
+        <div v-if="iframeContent === null" class="w-full aspect-square">
+          <CircleLoader />
         </div>
-      </BoxHeadingStats>
-    </template>
+        <div
+          v-else-if="iframeContent.includes('data:application/pdf')"
+          class="flex h-full aspect-square"
+        >
+          <iframe
+            class="w-full max-w-full"
+            :src="iframeContent"
+            frameborder="0"
+          ></iframe>
+        </div>
+        <div
+          v-else
+          class="aspect-square"
+          :class="{ 'flex h-full': !iframeContent.includes('data:image') }"
+        >
+          <object
+            class="w-full max-w-full"
+            :data="iframeContent"
+            frameborder="0"
+          ></object>
+        </div>
+      </div>
+    </BoxHeadingStats>
   </div>
 </template>
 
 <script lang="ts" setup>
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { CircleLoader, ButtonNormal } from "@lawandorga/components";
-import { actionsDocumentsKey } from "@/types/keys";
+import FilesDownloadFile from "@/actions/FilesDownloadFile.vue";
+import { CircleLoader } from "@lawandorga/components";
 import { formatDate } from "@/utils/date";
 import { isDataUrlDisplayable } from "@/utils/download";
-import { inject, watch, ref, toRefs } from "vue";
-import RecordsService from "@/services/records";
+import { watch, ref, toRefs, Ref } from "vue";
+import { filesDownloadFile, filesRetrieveFile } from "@/services/files_new";
+import { RecordsDocument } from "@/types/records";
+import useQuery from "@/composables/useQuery";
+import FilesDeleteFile from "@/actions/FilesDeleteFile.vue";
 
 // props
 const props = defineProps<{
-  selectedId: number | string | null;
+  selectedId: string | number | null;
   selectedType: string;
+  query: () => void;
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
-// actions
-const actionsDocuments = inject(actionsDocumentsKey);
+// file
+const file = ref<null | RecordsDocument>(null);
 
 // data url
 const iframeContent = ref<string | null>(null);
 
+// errors
 const message = window.btoa(
   "This file can't be displayed. If you think it should be, please contact it@law-orga.de. Maybe we can make it happen.",
 );
 const errorMessage = window.btoa("An error happened.");
 
+// get file
 watch(selectedId, () => {
   iframeContent.value = null;
   if (selectedType.value === "FILE" && selectedId.value) {
-    RecordsService.downloadDocumentDataUrl(selectedId.value)
+    filesDownloadFile(selectedId.value as string)
       .then((v: string) => {
         if (isDataUrlDisplayable(v)) iframeContent.value = v;
         else iframeContent.value = `data:text/plain;base64,${message}`;
@@ -93,6 +91,7 @@ watch(selectedId, () => {
       .catch(() => {
         iframeContent.value = `data:text/plain;base64,${errorMessage}`;
       });
+    useQuery(filesRetrieveFile, file, selectedId as Ref<string>)();
   }
 });
 </script>

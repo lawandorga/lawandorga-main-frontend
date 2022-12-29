@@ -7,7 +7,7 @@
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
-    :data="temporary"
+    :data="{ user: user?.uuid, address: temporary?.uuid }"
     :request="setDefaultAddress"
     title="Set Default Address"
   >
@@ -16,7 +16,7 @@
   </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
-    :object="temporary"
+    :object="{ user: user?.uuid, address: temporary?.uuid }"
     :request="deleteAddress"
   >
     Are you sure you want to delete {{ temporary?.localpart }}@{{
@@ -27,6 +27,7 @@
     v-model="regeneratePasswordModalOpen"
     :request="regeneratePassword"
     title="Regenerate Password"
+    submit="Regenerate Password"
   >
     Do you want to generate a new password? Be aware that your IMAP and SMTP
     settings will change.
@@ -51,24 +52,24 @@ import {
   mailSetDefaultAddress,
   mailRegeneratePassword,
 } from "@/services/mail";
-import { MailDomain, MailUser } from "@/types/mail";
+import { IAvailableMailDomain, ISelfMailUser } from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
   ModalDelete,
   types,
 } from "@lawandorga/components";
-import { computed, PropType, ref, toRefs } from "vue";
+import { computed, PropType, ref, toRefs, watch } from "vue";
 
 // page
 const props = defineProps({
   availableDomains: {
     required: false,
-    type: Object as PropType<MailDomain[]>,
+    type: Object as PropType<IAvailableMailDomain[]>,
   },
   user: {
     required: false,
-    type: Object as PropType<MailUser>,
+    type: Object as PropType<ISelfMailUser>,
   },
   queryPage: {
     type: Function as PropType<() => void>,
@@ -117,6 +118,9 @@ const regeneratePasswordModalOpen = ref(false);
 const password = ref("");
 const regeneratePassword = () =>
   mailRegeneratePassword().then((d) => (password.value = d.password));
+watch(regeneratePasswordModalOpen, (newValue) => {
+  if (!newValue) password.value = "";
+});
 
 // expose
 defineExpose({

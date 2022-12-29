@@ -53,18 +53,15 @@
                   To the login page
                 </ButtonNormal>
                 <div class="pt-6 space-x-4 text-right">
-                  <router-link
-                    :to="{ name: 'user-register' }"
-                    class="hover:underline"
-                  >
+                  <a :href="registerLink" class="inline-block hover:underline">
                     Register
-                  </router-link>
-                  <router-link
-                    :to="{ name: 'user-passwordreset' }"
-                    class="hover:underline"
+                  </a>
+                  <a
+                    :href="passwordForgottenLink"
+                    class="inline-block hover:underline"
                   >
                     Forgot Password?
-                  </router-link>
+                  </a>
                 </div>
               </div>
               <div v-else>
@@ -283,4 +280,12 @@ useGet(InternalService.getRoadmapItems, roadmapItems);
 
 const page = ref<ILoginPage | null>(null);
 useGet(InternalService.getLoginPage, page);
+
+const passwordForgottenLink = `${
+  import.meta.env.VITE_AUTH_URL
+}/auth/password_reset/`;
+
+const registerLink = `${import.meta.env.VITE_AUTH_URL}/redirect/?next=${
+  window.location.origin
+}/user/register`;
 </script>

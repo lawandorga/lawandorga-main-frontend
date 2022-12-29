@@ -21,12 +21,6 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: isAuthenticated,
   },
   {
-    path: "/admin/tags/",
-    name: "admin-tags",
-    component: () => import("@/views/admin/AdminTags.vue"),
-    beforeEnter: isAuthenticated,
-  },
-  {
     path: "/admin/groups/",
     name: "admin-groups",
     component: () => import("@/views/admin/AdminGroups.vue"),
@@ -78,12 +72,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin/sidebar/",
     name: "admin-sidebar",
     component: () => import("@/views/admin/AdminSidebar.vue"),
-    beforeEnter: isAuthenticated,
-  },
-  {
-    path: "/admin/mail/",
-    name: "admin-mail",
-    component: () => import("@/views/admin/AdminMail.vue"),
     beforeEnter: isAuthenticated,
   },
 ];

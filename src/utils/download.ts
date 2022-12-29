@@ -70,7 +70,9 @@ export function isDataUrlDisplayable(url: string): boolean {
     "image/jpeg",
     "image/pjpeg",
     "application/pdf",
+    "application/json",
     "text/plain",
+    "application/javascript",
   ];
   return displayable.includes(mimeType);
 }

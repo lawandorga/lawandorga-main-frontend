@@ -1,19 +1,9 @@
 <template>
   <BoxLoader
-    :show="
-      userStore.loaded &&
-      !!actionsRecordDeletions &&
-      !!actionsRecordAccesses &&
-      !!actionsRecords
-    "
+    :show="userStore.loaded && !!actionsRecordAccesses && !!actionsRecords"
   >
     <div
-      v-if="
-        userStore.loaded &&
-        !!actionsRecordDeletions &&
-        !!actionsRecordAccesses &&
-        !!actionsRecords
-      "
+      v-if="userStore.loaded && !!actionsRecordAccesses && !!actionsRecords"
       class="mx-auto space-y-6 max-w-screen-2xl"
     >
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
@@ -49,23 +39,16 @@
           >
             Request Access
           </ButtonNormal>
-          <ButtonNormal
+          <RecordsCreateDeletion
             v-if="!slotProps.record.delete_requested"
-            size="xs"
-            kind="delete"
-            @click="
-              actionsRecordDeletions.temporary = slotProps.record;
-              actionsRecordDeletions.createDeletionRequestModalOpen = true;
-            "
-          >
-            Request Deletion
-          </ButtonNormal>
+            :record-id="slotProps.record.id"
+            :query="query"
+          />
         </template>
       </TableRecords>
     </div>
   </BoxLoader>
   <ActionsRecordAccesses ref="actionsRecordAccesses" :query="query" />
-  <ActionsRecordDeletions ref="actionsRecordDeletions" :query="query" />
   <ActionsRecords ref="actionsRecords" :query="query" />
 </template>
 
@@ -82,7 +65,7 @@ import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import useGet from "@/composables/useGet";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { useUserStore } from "@/store/user";
-import ActionsRecordDeletions from "@/components/ActionsRecordDeletions.vue";
+import RecordsCreateDeletion from "@/actions/RecordCreateDeletion.vue";
 import ActionsRecordAccesses from "@/components/ActionsRecordAccesses.vue";
 import ActionsRecords from "@/components/ActionsRecords.vue";
 
@@ -91,7 +74,6 @@ const page = ref<IRecordListPage | null>(null);
 const query = useGet(recordsGetPage, page);
 
 // actions
-const actionsRecordDeletions = ref<typeof ActionsRecordDeletions>();
 const actionsRecordAccesses = ref<typeof ActionsRecordAccesses>();
 const actionsRecords = ref<typeof ActionsRecords>();
 

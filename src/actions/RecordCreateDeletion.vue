@@ -1,4 +1,7 @@
 <template>
+  <ButtonNormal kind="delete" @click="createDeletionRequestModalOpen = true">
+    Request Deletion
+  </ButtonNormal>
   <ModalForm
     v-model="createDeletionRequestModalOpen"
     title="Request Deletion"
@@ -11,7 +14,7 @@
       },
     ]"
     :initial="{
-      record: temporary?.id,
+      record: recordId,
     }"
     :request="createDeletionRequestRequest"
     submit="Request Deletion"
@@ -20,22 +23,30 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import RecordsService from "@/services/records";
-import { ModalForm } from "@lawandorga/components";
+import { ButtonNormal, ModalForm } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
+import axios from "axios";
 
 // props
 const props = defineProps<{
   query: () => void;
+  recordId: number;
 }>();
-const { query } = toRefs(props);
+const { query, recordId } = toRefs(props);
 
+// request
+function createDeletionRequest(data: {
+  record: number;
+  explanation: string;
+}): Promise<void> {
+  return axios.post("/records/deletions/", data).then();
+}
 // create
 const {
   commandRequest: createDeletionRequestRequest,
   commandModalOpen: createDeletionRequestModalOpen,
   temporary,
-} = useCommand(RecordsService.createDeletionRequest, query.value);
+} = useCommand(createDeletionRequest, query.value);
 
 // expose
 defineExpose({

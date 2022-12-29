@@ -1,43 +1,36 @@
 <template>
   <ModalDelete
     v-model="deleteModalOpen"
-    :object="temporary"
+    :object="{
+      id: folder?.id,
+      user_uuid: temporary?.actions.REVOKE_ACCESS.user_uuid,
+      url: temporary?.actions.REVOKE_ACCESS.url,
+    }"
     :request="deleteRequest"
-    title="Delete Encryption Keys"
+    title="Revoke access"
   >
-    Are you sure you want to delete these keys?
+    Are you sure you want to revoke this access?
   </ModalDelete>
 </template>
 
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
-import RecordsService from "@/services/records";
-import useGet from "@/composables/useGet";
-import useDelete from "@/composables/useDelete";
-import { Record, RecordEncryption } from "@/types/records";
 import { ModalDelete } from "@lawandorga/components";
+import useCommand from "@/composables/useCommand";
+import { foldersRevokeAccess } from "@/services/folders";
+import { IAccess, IFolder } from "@/types/folders";
 
 // props
-const props = defineProps<{ record: Record | null }>();
-
-const { record } = toRefs(props);
-
-// get
-const encryptions = ref<null | RecordEncryption[]>(null);
-
-useGet(RecordsService.getEncryptions, encryptions, record);
+const props = defineProps<{ folder: IFolder | null; query: () => void }>();
+const { query } = toRefs(props);
 
 // delete
-const temporary = ref<null | RecordEncryption>(null);
-
-const { deleteRequest, deleteModalOpen } = useDelete(
-  RecordsService.deleteEncryption,
-  encryptions,
-);
+const temporary = ref<null | IAccess>(null);
+const { commandRequest: deleteRequest, commandModalOpen: deleteModalOpen } =
+  useCommand(foldersRevokeAccess, query.value);
 
 // expose
 defineExpose({
-  encryptions,
   temporary,
   deleteModalOpen,
 });
