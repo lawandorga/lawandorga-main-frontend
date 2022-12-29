@@ -37,7 +37,7 @@ import {
   ModalUpdate,
   types,
 } from "@lawandorga/components";
-import { PropType, ref, toRefs, watch } from "vue";
+import { PropType, ref, toRefs } from "vue";
 
 // page
 const props = defineProps({
