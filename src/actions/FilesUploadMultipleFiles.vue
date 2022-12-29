@@ -18,6 +18,13 @@ import { toRefs, ref, Ref, computed } from "vue";
 import useCommand from "@/composables/useCommand";
 import axios, { AxiosProgressEvent } from "axios";
 
+// props
+const props = defineProps<{
+  folderUuid?: string;
+  query: () => void;
+}>();
+const { folderUuid, query } = toRefs(props);
+
 // request
 function request(
   data: {
@@ -60,13 +67,6 @@ function request(
     });
 }
 
-// props
-const props = defineProps<{
-  folderUuid?: string;
-  query: () => void;
-}>();
-const { folderUuid, query } = toRefs(props);
-
 // create
 const addon = ref<string>("(0%)");
 const fieldsMultiple = computed<types.FormField[]>(() => {
@@ -76,7 +76,6 @@ const fieldsMultiple = computed<types.FormField[]>(() => {
       type: "files",
       name: "files",
       required: true,
-      percentage: ref(0),
     },
   ];
 });
