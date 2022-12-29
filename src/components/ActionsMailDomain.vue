@@ -15,14 +15,11 @@
     :initial="temporary"
   />
   <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
-    <span v-if="check && check.valid">
-      Your MX-Records Settings are correct.
-    </span>
-    <span v-if="check && !check.valid" class="text-red-700">
-      Your MX-Records Settings are not correct. They contain the following
-      domains: {{ check.mx_records }}.
-    </span>
-    <span v-if="!check">Loading...</span>
+    <div v-if="check && check.valid">Your settings are correct.</div>
+    <div v-else-if="check && !check.valid" class="text-red-700">
+      {{ check.wrong_setting }}
+    </div>
+    <div v-else-if="!check">Loading...</div>
   </ModalFree>
 </template>
 
@@ -77,6 +74,7 @@ const {
 const check = ref<IMailCheckDomain>();
 const checkModalOpen = ref(false);
 const checkDomainSettings = (data: { uuid: string }) => {
+  check.value = undefined;
   checkModalOpen.value = true;
   mailCheckDomain(data).then((d) => {
     queryPage.value();

@@ -36,7 +36,6 @@
     :request="revokeAccessRequest"
     :initial="temporary"
   />
-  {{ temporary }}
   <ModalConfirm
     v-model="toggleInheritanceModalOpen"
     title="Toggle inheritance"

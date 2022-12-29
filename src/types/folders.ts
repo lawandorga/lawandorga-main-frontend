@@ -4,6 +4,18 @@ export interface IFolder {
   stop_inherit: boolean;
 }
 
+export interface ITreeFolder {
+  name: string;
+  uuid: string;
+  stop_inherit: boolean;
+  has_access: boolean;
+  actions: {
+    OPEN?: {
+      uuid: string;
+    };
+  };
+}
+
 export interface IAccess {
   name: string;
   uuid: string | null;
@@ -26,8 +38,9 @@ export interface IContent {
   actions: Actions;
   repository: "RECORD" | "FILE";
 }
+
 export interface IFolderItem {
-  folder: IFolder;
+  folder: ITreeFolder;
   children: IFolderItem[];
   access: IAccess[];
   content: IContent[];

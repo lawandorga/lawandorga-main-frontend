@@ -2,7 +2,7 @@
   <template v-if="!!domainActions">
     <div class="px-6 py-5 bg-white rounded shadow">
       <div
-        class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg"
+        class="prose prose-th:align-middle max-w-none prose-h1:text-2xl prose-h2:text-lg"
       >
         <h1>Domain Settings</h1>
         <p>
@@ -32,23 +32,48 @@
         </p>
         <div v-if="domain">
           <p>
-            You need to setup the correct MX-Records on your domain. In order to
-            do that you need to login to your domain hosting provider and setup
-            the following records:
+            You need to setup the correct Records on your domain. In order to do
+            that you need to login to your domain hosting provider and setup the
+            following records:
           </p>
           <table>
             <thead>
               <tr>
+                <th>Type</th>
                 <th>Hostname</th>
                 <th>Destination</th>
+                <th>TTL</th>
                 <th>Priority</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>@</td>
+                <td>MX</td>
+                <td>{{ domain.name }}</td>
                 <td>mail.law-orga.de</td>
+                <td>3600</td>
                 <td>10</td>
+              </tr>
+              <tr>
+                <td>TXT (SPF)</td>
+                <td>{{ domain.name }}</td>
+                <td>v=spf1 include:spf.{{ domain.name }} -all</td>
+                <td>3600</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>CNAME (DMARC)</td>
+                <td>_dmarc.{{ domain.name }}</td>
+                <td>dmarc.mail.law-orga.de.</td>
+                <td>3600</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>CNAME (DKIM)</td>
+                <td>2022-12._domainkey.{{ domain.name }}</td>
+                <td>2022-12.dkim.mail.law-orga.de.</td>
+                <td>3600</td>
+                <td>-</td>
               </tr>
             </tbody>
           </table>

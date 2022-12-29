@@ -48,6 +48,13 @@
                   <span class="font-mono">(R)&nbsp;</span>
                   means the folder contains a record.
                 </li>
+                <li>
+                  <span class="font-mono">(N)&nbsp;</span>
+                  means you can not see the content of the folder,
+                  <br />
+                  <span class="font-mono">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  because you have no access to this folder.
+                </li>
               </ul>
             </div>
           </div>
