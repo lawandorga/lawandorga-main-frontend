@@ -49,7 +49,7 @@
             <tbody>
               <tr>
                 <td>MX</td>
-                <td>@</td>
+                <td>{{ domain.name }}</td>
                 <td>mail.law-orga.de</td>
                 <td>3600</td>
                 <td>10</td>

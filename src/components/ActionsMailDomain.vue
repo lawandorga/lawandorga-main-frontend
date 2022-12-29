@@ -14,12 +14,8 @@
     :request="changeDomainRequest"
     :initial="temporary"
   />
-  <ModalFree
-    v-model="checkModalOpen"
-    title="Check Domain Settings"
-    @update:model-value="check = undefined"
-  >
-    <div v-if="check && check.valid">Your MX-Records Settings are correct.</div>
+  <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
+    <div v-if="check && check.valid">Your settings are correct.</div>
     <div v-else-if="check && !check.valid" class="text-red-700">
       {{ check.wrong_setting }}
     </div>
@@ -41,7 +37,7 @@ import {
   ModalUpdate,
   types,
 } from "@lawandorga/components";
-import { PropType, ref, toRefs } from "vue";
+import { PropType, ref, toRefs, watch } from "vue";
 
 // page
 const props = defineProps({
@@ -78,6 +74,7 @@ const {
 const check = ref<IMailCheckDomain>();
 const checkModalOpen = ref(false);
 const checkDomainSettings = (data: { uuid: string }) => {
+  check.value = undefined;
   checkModalOpen.value = true;
   mailCheckDomain(data).then((d) => {
     queryPage.value();
