@@ -17,6 +17,7 @@
   >
     <FormGenerator
       :initial="{
+        id: eventUpdateTemporary?.id,
         description: eventUpdateTemporary?.description,
         name: eventUpdateTemporary?.name,
       }"

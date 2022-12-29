@@ -1,20 +1,4 @@
 <template>
-  <FormGenerator
-    :request="f"
-    :fields="[
-      {
-        name: 'custom',
-        type: 'custom',
-        label: 'Custom',
-      },
-    ]"
-    @success="s"
-  >
-    <template #custom="{ data }">
-      <FormWysiwyg v-model="data['custom']" />
-    </template>
-  </FormGenerator>
-  <p v-html="textdata"></p>
   <BoxLoader :show="!!eventsWithFormattedDate">
     <div class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar
@@ -98,8 +82,8 @@
                     size="xs"
                     kind="action"
                     @click="
-                      actionsEvents.updateEventModalOpen = true;
                       actionsEvents.eventUpdateTemporary = event;
+                      actionsEvents.updateEventModalOpen = true;
                     "
                   >
                     Edit
@@ -109,8 +93,8 @@
                     size="xs"
                     kind="delete"
                     @click="
-                      actionsEvents.deleteEventModalOpen = true;
                       actionsEvents.eventTemporary = event;
+                      actionsEvents.deleteEventModalOpen = true;
                     "
                   >
                     Delete
@@ -121,9 +105,12 @@
                   {{ formatDate(event.start_time) }} –
                   {{ formatDate(event.end_time) }}
                 </div>
-                <p>
-                  {{ event.description }}
-                </p>
+                <!-- eslint-disable vue/no-v-html -->
+                <div
+                  class="prose prose-p:mt-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-p:mb-0"
+                  v-html="event.description"
+                ></div>
+                <!-- eslint-enable vue/no-v-html -->
               </div>
             </div>
           </div>
@@ -137,11 +124,7 @@
 
 <script setup lang="ts">
 import ActionsEvents from "@/components/ActionsEvents.vue";
-import {
-  ButtonNormal,
-  ButtonToggle,
-  FormGenerator,
-} from "@lawandorga/components";
+import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -151,8 +134,6 @@ import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import ModalCalendarLink from "@/components/ModalCalendarLink.vue";
 import { useRoute, useRouter } from "vue-router";
-import FormWysiwyg from "@/components/FormWysiwyg.vue";
-import { types } from "@lawandorga/components";
 
 const actionsEvents = ref<typeof ActionsEvents>();
 const showGlobal = ref(true);
@@ -160,15 +141,6 @@ const modalCalendarLink = ref<typeof ModalCalendarLink>();
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
-
-const textdata = ref("test");
-
-const f = (data: types.JsonModel) => {
-  return Promise.resolve({ data: data });
-};
-const s = (d) => {
-  console.log(d);
-};
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(xs: T[], getKey: (element: T) => string) {
