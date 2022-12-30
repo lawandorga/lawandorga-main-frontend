@@ -1,9 +1,10 @@
 <template>
   <FormGenerator
     :fields="fields"
-    :initial="{ folder: folderUuid, message: message }"
+    :data="{ folder: folderUuid }"
     :request="commandRequest"
-    @success="message = ''"
+    @success="data['message'] = ''"
+    @change="data = $event"
   ></FormGenerator>
 </template>
 
@@ -21,7 +22,7 @@ const props = defineProps<{
 const { query, folderUuid } = toRefs(props);
 
 // send message
-const message = ref("");
+const data = ref();
 const fields: types.FormField[] = [
   {
     label: "Message",
