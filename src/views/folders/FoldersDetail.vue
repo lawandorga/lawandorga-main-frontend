@@ -322,14 +322,7 @@ const groups = computed<ContentGroupItem[]>(() => {
   g.push({
     name: "Encryptions",
     type: "ACCESS",
-    children: [
-      {
-        id: "ACCESS",
-        type: "ACCESS",
-        name: "Access",
-        stats: [`${folder.value?.access.length || 0} Persons`],
-      },
-    ],
+    children: [],
     actions: [],
     buttons: [],
   });
