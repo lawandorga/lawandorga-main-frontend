@@ -71,14 +71,14 @@
     <ModalFree v-model="updateModalOpen" title="Update Group">
       <FormGenerator
         :fields="fields"
-        :initial="group"
+        :data="group"
         :request="updateRequest"
       />
     </ModalFree>
     <ModalDelete
       v-model="deleteModalOpen"
       :request="deleteRequest"
-      :object="group"
+      :data="group"
     />
   </BoxLoader>
 </template>

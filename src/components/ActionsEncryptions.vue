@@ -1,7 +1,7 @@
 <template>
   <ModalDelete
     v-model="deleteModalOpen"
-    :object="{
+    :data="{
       id: folder?.id,
       user_uuid: temporary?.actions.REVOKE_ACCESS.user_uuid,
       url: temporary?.actions.REVOKE_ACCESS.url,

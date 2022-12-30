@@ -154,7 +154,11 @@
           :selected-type="selectedType"
         />
 
-        <RecordMessages v-if="recordId" :selected-type="selectedType" />
+        <RecordMessages
+          v-if="recordId"
+          :folder-uuid="folder.folder.uuid"
+          :selected-type="selectedType"
+        />
 
         <RecordFiles
           :query="query"
@@ -181,7 +185,6 @@
     :query="query"
   />
   <ActionsQuestionnaires v-if="recordId" ref="actionsQuestionnaires" />
-  <ActionsMessages v-if="recordId" ref="actionsMessages" />
 </template>
 
 <script lang="ts" setup>
@@ -196,12 +199,7 @@ import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
 import ActionsQuestionnaires from "@/components/ActionsQuestionnaires.vue";
-import ActionsMessages from "@/components/ActionsMessages.vue";
-import {
-  actionsMessagesKey,
-  actionsEncryptionsKey,
-  actionsQuestionnairesKey,
-} from "@/types/keys";
+import { actionsEncryptionsKey, actionsQuestionnairesKey } from "@/types/keys";
 import RecordMessages from "@/components/RecordMessages.vue";
 import RecordQuestionnaires from "@/components/RecordQuestionnaires.vue";
 import RecordFiles from "@/components/RecordFiles.vue";
@@ -223,10 +221,6 @@ const recordId = route.params.record as string;
 // questionnaires
 const actionsQuestionnaires = ref<typeof ActionsQuestionnaires>();
 provide(actionsQuestionnairesKey, actionsQuestionnaires);
-
-// messages
-const actionsMessages = ref<typeof ActionsMessages>();
-provide(actionsMessagesKey, actionsMessages);
 
 // encryptions
 const actionsEncryptions = ref<typeof ActionsEncryptions>();
@@ -276,14 +270,7 @@ const groups = computed<ContentGroupItem[]>(() => {
     g.push({
       name: "Chat",
       type: "MESSAGES",
-      children: [
-        {
-          id: "MESSAGES",
-          type: "MESSAGES",
-          name: "Chat",
-          stats: [],
-        },
-      ],
+      children: [],
       actions: [],
       buttons: [],
     });

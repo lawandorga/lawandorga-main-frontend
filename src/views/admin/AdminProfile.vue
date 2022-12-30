@@ -117,7 +117,7 @@
     <ModalFree v-model="updateModalOpen" title="Update User">
       <FormGenerator
         :fields="userFields"
-        :initial="user"
+        :data="user"
         :request="updateRequest"
       />
     </ModalFree>
@@ -131,7 +131,7 @@
     <ModalFree v-model="addPermissionModalOpen" title="Add Permission">
       <FormGenerator
         :fields="permissionFields"
-        :initial="{ user_has_permission: user?.user_id }"
+        :data="{ user_has_permission: user?.user_id }"
         :request="addPermissionRequest"
       />
     </ModalFree>
@@ -140,7 +140,7 @@
       title="Remove Permission"
       verb="remove"
       :request="removePermissionRequest"
-      :object="permission"
+      :data="permission"
     />
   </BoxLoader>
 </template>

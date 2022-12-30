@@ -76,14 +76,14 @@
       <FormGenerator
         :fields="createFields"
         :request="createRequest"
-        :initial="{ template: template.id }"
+        :data="{ template: template.id }"
       />
     </ModalFree>
     <!-- update -->
     <ModalFree v-model="updateModalOpen" title="Update Field">
       <FormGenerator
         :fields="updateFields"
-        :initial="field"
+        :data="field"
         :request="updateRequest"
       />
     </ModalFree>
@@ -91,7 +91,7 @@
     <ModalDelete
       v-model="deleteModalOpen"
       :request="deleteRequest"
-      :object="field"
+      :data="field"
     />
     <!-- help -->
     <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">

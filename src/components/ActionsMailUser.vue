@@ -3,7 +3,7 @@
     v-model="addAddressModalOpen"
     :request="addAddress"
     :fields="fields"
-    :initial="{ user: user?.uuid }"
+    :data="{ user: user?.uuid }"
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
@@ -16,7 +16,7 @@
   </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
-    :object="{ user: user?.uuid, address: temporary?.uuid }"
+    :data="{ user: user?.uuid, address: temporary?.uuid }"
     :request="deleteAddress"
   >
     Are you sure you want to delete {{ temporary?.localpart }}@{{

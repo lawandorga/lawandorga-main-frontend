@@ -71,7 +71,7 @@
     <ModalFree v-model="updateModalOpen" title="Update Template">
       <FormGenerator
         :fields="updateFields"
-        :initial="template"
+        :data="template"
         :request="updateRequest"
       />
     </ModalFree>
@@ -79,7 +79,7 @@
     <ModalDelete
       v-model="deleteModalOpen"
       :request="deleteRequest"
-      :object="template"
+      :data="template"
     />
   </BoxLoader>
 </template>

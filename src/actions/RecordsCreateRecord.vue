@@ -7,7 +7,7 @@
       :fields="fields"
       :request="commandRequest"
       submit="Create"
-      :initial="{ folder: folderUuid }"
+      :data="{ folder: folderUuid }"
     />
   </ButtonNormal>
 </template>

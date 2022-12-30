@@ -1,7 +1,7 @@
 <template>
   <ModalDelete
     v-model="deleteModalOpen"
-    :object="temporary"
+    :data="temporary"
     :request="deleteRequest"
     title="Delete Questionnaire"
   />
@@ -10,7 +10,7 @@
     title="Publish Questionnaire"
     :fields="fields"
     :request="createRequest"
-    :initial="{ record: $route.params.record }"
+    :data="{ record: $route.params.record }"
     submit="Publish"
   ></ModalCreate>
 </template>
