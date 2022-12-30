@@ -2,15 +2,15 @@
   <BoxHeadingStats
     title="Messages"
     :show="selectedType === 'MESSAGES'"
-    :stats="[`${actionsMessages?.messages?.length} messages in total`]"
+    :stats="[`${messages?.length} messages in total`]"
   >
-    <ul class="space-y-5">
-      <li v-for="message in actionsMessages?.messages" :key="message.id">
+    <ul v-if="messages" class="space-y-5">
+      <li v-for="message in messages" :key="message.message">
         <div class="w-full">
           <div
             class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
           >
-            <b>{{ message.sender ? message.sender.name : "Deleted user" }}:</b>
+            <b>{{ message.sender_name }}:</b>
             <i class="text-sm tracking-tight">
               {{ formatDate(message.created) }}
             </i>
@@ -21,11 +21,7 @@
         </div>
       </li>
       <div style="height: auto; padding-top: 16px">
-        <FormGenerator
-          :fields="actionsMessages?.fields"
-          :initial="{ record: $route.params.record }"
-          :request="actionsMessages?.createRequest"
-        ></FormGenerator>
+        <MessagesSendMessage :query="query" :folder-uuid="folderUuid" />
       </div>
     </ul>
   </BoxHeadingStats>
@@ -33,14 +29,24 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { FormGenerator } from "@lawandorga/components";
-import { actionsMessagesKey } from "@/types/keys";
 import { formatDate } from "@/utils/date";
-import { inject } from "vue";
+import { ref, toRefs, watch } from "vue";
+import useGet from "@/composables/useGet";
+import { messagesGetMessages } from "@/services/messages";
+import { IMessage } from "@/types/messages";
+import MessagesSendMessage from "@/actions/MessagesSendMessage.vue";
 
-defineProps<{
+// props
+const props = defineProps<{
   selectedType: string;
+  folderUuid: string;
 }>();
+const { selectedType, folderUuid } = toRefs(props);
 
-const actionsMessages = inject(actionsMessagesKey);
+// messages
+const messages = ref<IMessage[] | null>(null);
+const query = useGet(messagesGetMessages, messages, folderUuid);
+watch(selectedType, (newValue) => {
+  if (newValue === "MESSAGES") query();
+});
 </script>
