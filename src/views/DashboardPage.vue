@@ -170,12 +170,12 @@
       title="UpdateNote"
       :fields="noteFields"
       :request="updateNoteRequest"
-      :initial="noteTemporary"
+      :data="noteTemporary"
     />
     <ModalDelete
       v-model="deleteNoteModalOpen"
       :request="deleteNoteRequest"
-      :object="noteTemporary"
+      :data="noteTemporary"
     />
   </BoxLoader>
 </template>

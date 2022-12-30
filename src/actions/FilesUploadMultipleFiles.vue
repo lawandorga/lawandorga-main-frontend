@@ -6,7 +6,7 @@
       title="Upload Multiple Files"
       :fields="fieldsMultiple"
       :request="commandRequest"
-      :initial="{ folder: folderUuid }"
+      :data="{ folder: folderUuid }"
       submit="Upload"
     />
   </ButtonNormal>

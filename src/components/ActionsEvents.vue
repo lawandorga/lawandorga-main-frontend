@@ -10,14 +10,14 @@
     title="Update Event"
     :fields="eventFields"
     :request="updateRequest"
-    :initial="eventUpdateTemporary"
+    :data="eventUpdateTemporary"
   />
   <ModalDelete
     v-model="deleteEventModalOpen"
     title="Delete Event"
     verb="delete"
     :request="deleteRequest"
-    :object="eventTemporary"
+    :data="eventTemporary"
   />
 </template>
 

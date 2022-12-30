@@ -13,7 +13,7 @@
         required: true,
       },
     ]"
-    :initial="{
+    :data="{
       record: recordId,
     }"
     :request="createDeletionRequestRequest"

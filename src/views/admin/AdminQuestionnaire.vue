@@ -109,14 +109,14 @@
       <FormGenerator
         :fields="formFieldFields"
         :request="createFieldRequest"
-        :initial="{ questionnaire: questionnaire.id }"
+        :data="{ questionnaire: questionnaire.id }"
       />
     </ModalFree>
     <!-- update field -->
     <ModalFree v-model="updateFieldModalOpen" title="Update Field">
       <FormGenerator
         :fields="formFieldFields"
-        :initial="field"
+        :data="field"
         :request="updateFieldRequest"
       />
     </ModalFree>
@@ -124,21 +124,21 @@
     <ModalDelete
       v-model="deleteFieldModalOpen"
       :request="deleteFieldRequest"
-      :object="field"
+      :data="field"
     />
     <!-- create file -->
     <ModalFree v-model="createFileModalOpen" title="Add File">
       <FormGenerator
         :fields="formFileFields"
         :request="createFileRequest"
-        :initial="{ questionnaire: questionnaire.id }"
+        :data="{ questionnaire: questionnaire.id }"
       />
     </ModalFree>
     <!-- delete file -->
     <ModalDelete
       v-model="deleteFileModalOpen"
       :request="deleteFileRequest"
-      :object="file"
+      :data="file"
     />
   </BoxLoader>
 </template>

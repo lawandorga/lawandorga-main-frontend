@@ -103,7 +103,7 @@
     <ModalDelete
       v-model="deleteModalOpen"
       :request="deleteRequest"
-      :object="temporary"
+      :data="temporary"
     />
     <!-- test -->
     <ModalConfirm

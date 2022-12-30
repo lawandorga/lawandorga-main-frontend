@@ -3,7 +3,7 @@
     Delete File
     <ModalDelete
       v-model="commandModalOpen"
-      :object="{ uuid: fileUuid }"
+      :data="{ uuid: fileUuid }"
       :request="commandRequest"
       title="Delete File"
       @deleted="emit('deleted')"

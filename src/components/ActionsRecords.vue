@@ -13,7 +13,7 @@
     :fields="createWithinFolderFields"
     :request="createWithinFolderRequest"
     submit="Create"
-    :initial="temporary"
+    :data="temporary"
   />
 </template>
 

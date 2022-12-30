@@ -68,7 +68,7 @@
     >
       <FormGenerator
         :fields="fields"
-        :initial="deletionRequest"
+        :data="deletionRequest"
         :request="updateRequest"
       />
     </ModalFree>
