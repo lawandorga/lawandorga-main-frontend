@@ -49,7 +49,10 @@ const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
   useCommand(RecordsService.createRecord);
 
 const recordCreated = (record: Record) => {
-  router.push({ name: "records-detail", params: { id: record.id } });
+  router.push({
+    name: "folders-detail",
+    params: { uuid: record.folder_uuid, record: record.id },
+  });
 };
 
 const availableFolders = ref<IAvailableFolder[]>([]);
