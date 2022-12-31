@@ -57,7 +57,7 @@
               <tr>
                 <td>TXT (SPF)</td>
                 <td>{{ domain.name }}</td>
-                <td>v=spf1 include:spf.{{ domain.name }} -all</td>
+                <td>v=spf1 include:spf.mail.law-orga.de -all</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
