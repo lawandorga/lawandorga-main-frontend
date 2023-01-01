@@ -164,6 +164,7 @@ import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
+import useCommand from "@/composables/useCommand";
 
 const formFieldFields = [
   {
@@ -234,7 +235,11 @@ export default defineComponent({
     // fields
     const fields = ref(null) as Ref<QuestionnaireQuestion[] | null>;
     const field = ref(null) as Ref<QuestionnaireQuestion | null>;
-    useGet(RecordsService.getQuestionnaireQuestions, fields, questionnaire);
+    const query = useGet(
+      RecordsService.getQuestionnaireQuestions,
+      fields,
+      questionnaire,
+    );
 
     // files
     const files = ref(null) as Ref<QuestionnaireTemplateFile[] | null>;
@@ -265,9 +270,9 @@ export default defineComponent({
 
     // update field
     const {
-      updateRequest: updateFieldRequest,
-      updateModalOpen: updateFieldModalOpen,
-    } = useUpdate(RecordsService.updateQuestionnaireQuestion, fields);
+      commandRequest: updateFieldRequest,
+      commandModalOpen: updateFieldModalOpen,
+    } = useCommand(RecordsService.updateQuestionnaireQuestion, query);
 
     // delete field
     const {

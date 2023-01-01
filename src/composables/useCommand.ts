@@ -1,29 +1,29 @@
 import { types } from "@lawandorga/components";
-import { ref } from "vue";
+import { ref, unref } from "vue";
 import { isFunction } from "lodash";
+import { Reffed } from "@/types/shared";
 
 type VoidFn = () => void;
 /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-type DropFirst<T> = T extends [any, ...infer U] ? U : boolean;
-type Combine<T1 extends VoidFn[], K1> = T1 extends (infer T2)[]
-  ? K1 extends (infer K2)[]
-    ? (T2 | K2)[]
-    : never
-  : never;
+type DropFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never;
 /* eslint-enable */
 
 export default function useCommand<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
   RFn extends (...args: any[]) => Promise<void | any>,
   /* eslint-enable */
->(requestFunc: RFn, ...params: Combine<VoidFn[], DropFirst<Parameters<RFn>>>) {
+>(
+  requestFunc: RFn,
+  queries: VoidFn[] | VoidFn = [],
+  ...params: Reffed<DropFirst<Parameters<RFn>>>
+) {
   const commandModalOpen = ref(false);
 
   const commandParams = params.filter((p) => !isFunction(p));
-  const queryFunctions = params.filter((p) => isFunction(p)) as VoidFn[];
+  const queryFunctions = Array.isArray(queries) ? queries : [queries];
 
   const commandRequest = (data: types.JsonModel) => {
-    return requestFunc(data, ...commandParams).then((d) => {
+    return requestFunc(data, ...commandParams.map(unref)).then((d) => {
       queryFunctions.forEach((qf) => qf());
       commandModalOpen.value = false;
       return d;

@@ -104,8 +104,8 @@ const {
   temporary: memberTemporary,
 } = useCommand(
   AdminService.addMember,
-  group,
   useQuery(AdminService.getMembers, members, group),
+  group,
 );
 
 watch(addMemberModalOpen, (newValue) => {
@@ -119,8 +119,8 @@ const {
   commandModalOpen: removeMemberModalOpen,
 } = useCommand(
   AdminService.removeMember,
-  group,
   useQuery(AdminService.getMembers, members, group),
+  group,
 );
 
 // expose

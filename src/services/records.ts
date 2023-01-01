@@ -123,16 +123,6 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  updateRecord(record: Record): Promise<Record> {
-    return axios
-      .patch<Record>(`records/oldrecords/${record.id}/`, record)
-      .then((response) => response.data);
-  }
-
-  deleteRecord(record: Record): Promise<void> {
-    return axios.delete(`records/oldrecords/${record.id}/`).then();
-  }
-
   // entries
   createEntry(data: JsonModel): Promise<RecordEntry> {
     return axios
@@ -194,7 +184,7 @@ class RecordsService {
   // questionnairetemplate
   getQuestionnaireTemplates(): Promise<QuestionnaireTemplate[]> {
     return axios
-      .get<QuestionnaireTemplate[]>("records/questionnairetemplates/")
+      .get<QuestionnaireTemplate[]>("questionnaires/questionnairetemplates/")
       .then((response) => response.data);
   }
 
@@ -202,7 +192,9 @@ class RecordsService {
     id: number | string,
   ): Promise<QuestionnaireTemplate> {
     return axios
-      .get<QuestionnaireTemplate>(`records/questionnairetemplates/${id}/`)
+      .get<QuestionnaireTemplate>(
+        `questionnaires/questionnairetemplates/${id}/`,
+      )
       .then((response) => response.data);
   }
 
@@ -211,7 +203,7 @@ class RecordsService {
   ): Promise<QuestionnaireTemplate> {
     return axios
       .post<QuestionnaireTemplate>(
-        "records/questionnairetemplates/",
+        "questionnaires/questionnairetemplates/",
         questionnaire,
       )
       .then((response) => response.data);
@@ -222,7 +214,7 @@ class RecordsService {
   ): Promise<QuestionnaireTemplate> {
     return axios
       .patch<QuestionnaireTemplate>(
-        `records/questionnairetemplates/${questionnaire.id}/`,
+        `questionnaires/questionnairetemplates/${questionnaire.id}/`,
         questionnaire,
       )
       .then((response) => response.data);
@@ -231,7 +223,9 @@ class RecordsService {
   deleteQuestionnaireTemplate(
     questionnaire: QuestionnaireTemplate,
   ): Promise<void> {
-    return axios.delete(`records/questionnairetemplates/${questionnaire.id}/`);
+    return axios.delete(
+      `questionnaires/questionnairetemplates/${questionnaire.id}/`,
+    );
   }
 
   // questionnairequestion
@@ -240,7 +234,7 @@ class RecordsService {
   ): Promise<QuestionnaireQuestion[]> {
     return axios
       .get<QuestionnaireQuestion[]>(
-        `records/questionnairetemplates/${questionnaire.id}/fields/`,
+        `questionnaires/questionnairetemplates/${questionnaire.id}/fields/`,
       )
       .then((response) => response.data);
   }
@@ -249,7 +243,10 @@ class RecordsService {
     field: QuestionnaireQuestion,
   ): Promise<QuestionnaireQuestion> {
     return axios
-      .post<QuestionnaireQuestion>("records/questionnaire_fields/", field)
+      .post<QuestionnaireQuestion>(
+        "questionnaires/questionnaire_fields/",
+        field,
+      )
       .then((response) => response.data);
   }
 
@@ -258,20 +255,20 @@ class RecordsService {
   ): Promise<QuestionnaireQuestion> {
     return axios
       .patch<QuestionnaireQuestion>(
-        `records/questionnaire_fields/${field.id}/`,
+        `questionnaires/questionnaire_fields/${field.id}/`,
         field,
       )
       .then((response) => response.data);
   }
 
   deleteQuestionnaireQuestion(field: QuestionnaireQuestion): Promise<void> {
-    return axios.delete(`records/questionnaire_fields/${field.id}/`);
+    return axios.delete(`questionnaires/questionnaire_fields/${field.id}/`);
   }
 
   // questionnaire
   getQuestionnaires(id: number | string): Promise<Questionnaire[]> {
     return axios
-      .get<Questionnaire[]>(`records/questionnaires/?record=${id}`)
+      .get<Questionnaire[]>(`questionnaires/questionnaires/?record=${id}`)
       .then((response) => response.data);
   }
 
@@ -280,7 +277,7 @@ class RecordsService {
   ): Promise<Questionnaire> {
     return axios
       .post<Questionnaire>(
-        `records/questionnaires/v2/publish/`,
+        `questionnaires/questionnaires/v2/publish/`,
         recordQuestionnaire,
       )
       .then((response) => response.data);
@@ -288,13 +285,13 @@ class RecordsService {
 
   deleteQuestionnaire(recordQuestionnaire: Questionnaire): Promise<void> {
     return axios
-      .delete(`records/questionnaires/${recordQuestionnaire.id}/`)
+      .delete(`questionnaires/questionnaires/${recordQuestionnaire.id}/`)
       .then();
   }
 
   getQuestionnaire(code: string): Promise<Questionnaire> {
     return axios
-      .get(`records/questionnaires/${code}/`)
+      .get(`questionnaires/questionnaires/${code}/`)
       .then((response) => response.data);
   }
 
@@ -307,7 +304,7 @@ class RecordsService {
 
     return axios
       .patch<Questionnaire>(
-        `records/questionnaires/${recordQuestionnaire.id}/`,
+        `questionnaires/questionnaires/${recordQuestionnaire.id}/`,
         formData,
       )
       .then((response) => response.data);
@@ -319,7 +316,7 @@ class RecordsService {
   ): void {
     downloadFileRequest(
       axios,
-      `records/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
+      `questionnaires/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
       questionnaireAnswer.data.split("/").at(-1) || "filename",
     );
   }
@@ -330,7 +327,7 @@ class RecordsService {
   ): Promise<QuestionnaireTemplateFile[]> {
     return axios
       .get<QuestionnaireTemplateFile[]>(
-        `records/questionnairetemplates/${questionnaire.id}/files/`,
+        `questionnaires/questionnairetemplates/${questionnaire.id}/files/`,
       )
       .then((response) => response.data);
   }
@@ -338,7 +335,7 @@ class RecordsService {
   downloadQuestionnaireFile(file: QuestionnaireTemplateFile): void {
     downloadFileRequest(
       axios,
-      `records/questionnaire_files/${file.id}/`,
+      `questionnaires/questionnaire_files/${file.id}/`,
       file.name,
     );
   }
@@ -351,12 +348,17 @@ class RecordsService {
       formData.append("questionnaire", data.questionnaire);
 
     return axios
-      .post<QuestionnaireTemplateFile>("records/questionnaire_files/", formData)
+      .post<QuestionnaireTemplateFile>(
+        "questionnaires/questionnaire_files/",
+        formData,
+      )
       .then((response) => response.data);
   }
 
   deleteQuestionnaireFile(file: QuestionnaireTemplateFile): Promise<void> {
-    return axios.delete(`records/questionnaire_files/${file.id}/`).then();
+    return axios
+      .delete(`questionnaires/questionnaire_files/${file.id}/`)
+      .then();
   }
 
   // messages
