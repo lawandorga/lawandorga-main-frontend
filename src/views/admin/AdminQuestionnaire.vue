@@ -158,7 +158,6 @@ import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
