@@ -69,11 +69,7 @@
       <FormGenerator :fields="fields" :request="createRequest" />
     </ModalFree>
     <ModalFree v-model="updateModalOpen" title="Update Group">
-      <FormGenerator
-        :fields="fields"
-        :data="group"
-        :request="updateRequest"
-      />
+      <FormGenerator :fields="fields" :data="group" :request="updateRequest" />
     </ModalFree>
     <ModalDelete
       v-model="deleteModalOpen"

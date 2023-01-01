@@ -81,8 +81,8 @@ const fieldsMultiple = computed<types.FormField[]>(() => {
 });
 const { commandModalOpen, commandRequest } = useCommand(
   request,
-  addon,
   query.value,
+  addon,
 );
 
 // expose

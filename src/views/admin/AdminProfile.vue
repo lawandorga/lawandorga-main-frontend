@@ -296,8 +296,8 @@ export default defineComponent({
       commandModalOpen: addPermissionModalOpen,
     } = useCommand(
       UserService.grantPermission,
-      user,
       useQuery(AdminService.getUserPermissions, permissions, user),
+      user,
     );
 
     watch(addPermissionModalOpen, () =>

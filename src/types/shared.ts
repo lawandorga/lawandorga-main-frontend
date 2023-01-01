@@ -3,7 +3,9 @@ import { Ref } from "vue";
 /*
 // helpers
 */
-export type Reffed<T> = T extends (infer U)[] ? Ref<U | null>[] : never;
+export type Reffed<T extends unknown[]> = T extends (infer U)[]
+  ? (Ref<U | null> | U)[]
+  : never;
 
 /*
 // functions
