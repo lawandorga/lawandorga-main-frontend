@@ -71,7 +71,7 @@
               <tr>
                 <td>CNAME (DKIM)</td>
                 <td>2022-12.law-orga._domainkey.{{ domain.name }}</td>
-                <td>2022-12.law-orga.dkim.mail.law-orga.de.</td>
+                <td>2022-12.dkim.mail.law-orga.de.</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
