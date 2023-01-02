@@ -28,6 +28,7 @@
           <iframe
             class="w-full max-w-full"
             :src="iframeContent"
+            title="File Content"
             frameborder="0"
           ></iframe>
         </div>
