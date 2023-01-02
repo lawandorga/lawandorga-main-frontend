@@ -29,7 +29,6 @@
             class="w-full max-w-full"
             :src="iframeContent"
             title="File Content"
-            frameborder="0"
           ></iframe>
         </div>
         <div
@@ -41,7 +40,9 @@
             class="w-full max-w-full"
             :data="iframeContent"
             frameborder="0"
-          ></object>
+          >
+            <span class="sr-only">File Content</span>
+          </object>
         </div>
       </div>
     </BoxHeadingStats>
