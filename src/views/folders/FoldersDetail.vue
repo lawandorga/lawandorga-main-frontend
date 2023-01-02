@@ -160,14 +160,15 @@
           :selected-type="selectedType"
         />
 
-        <RecordFiles
+        <FolderFile
           :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
         />
 
-        <RecordQuestionnaires
+        <FolderQuestionnaire
           v-if="recordId"
+          :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
         />
@@ -184,25 +185,21 @@
     :folder="folder ? folder.folder : null"
     :query="query"
   />
-  <ActionsQuestionnaires v-if="recordId" ref="actionsQuestionnaires" />
 </template>
 
 <script lang="ts" setup>
-import { Questionnaire } from "@/types/records";
 import FolderRecord from "@/components/FolderRecord.vue";
 import { computed, h, provide, ref, watch, VNode } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { formatDate } from "@/utils/date";
 import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
-import ActionsQuestionnaires from "@/components/ActionsQuestionnaires.vue";
-import { actionsEncryptionsKey, actionsQuestionnairesKey } from "@/types/keys";
+import { actionsEncryptionsKey } from "@/types/keys";
 import RecordMessages from "@/components/RecordMessages.vue";
-import RecordQuestionnaires from "@/components/RecordQuestionnaires.vue";
-import RecordFiles from "@/components/RecordFiles.vue";
+import FolderQuestionnaire from "@/components/FolderQuestionnaire.vue";
+import FolderFile from "@/components/FolderFile.vue";
 import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
 import { useUserStore } from "@/store/user";
@@ -212,15 +209,12 @@ import { foldersGetFolderDetail } from "@/services/folders";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import RecordsCreateRecord from "@/actions/RecordsCreateRecord.vue";
+import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
 
 // record
 const route = useRoute();
 const folderUuid = route.params.uuid as string;
 const recordId = route.params.record as string;
-
-// questionnaires
-const actionsQuestionnaires = ref<typeof ActionsQuestionnaires>();
-provide(actionsQuestionnairesKey, actionsQuestionnaires);
 
 // encryptions
 const actionsEncryptions = ref<typeof ActionsEncryptions>();
@@ -295,28 +289,25 @@ const groups = computed<ContentGroupItem[]>(() => {
       ],
     });
 
-  if (recordId && actionsQuestionnaires.value?.questionnaires)
+  if (folder.value)
     g.push({
       name: "Questionnaires",
       type: "QUESTIONNAIRE",
-      children: actionsQuestionnaires.value?.questionnaires.map(
-        (q: Questionnaire) => ({
-          id: q.id,
+      children: folder.value.content
+        .filter((c) => c.repository === "QUESTIONNAIRE")
+        .map((c) => ({
+          name: c.name,
           type: "QUESTIONNAIRE",
-          name: q.template.name,
-          stats: [
-            `Created ${formatDate(q.created)}`,
-            `${q.answers.length} Answers`,
-          ],
+          id: c.uuid,
+          stats: [],
+        })),
+      actions: [],
+      buttons: [
+        h(QuestionnairesPublishQuestionnaire, {
+          query: query,
+          folderUuid: folder.value?.folder.uuid,
         }),
-      ),
-      actions: [
-        {
-          action: () => (actionsQuestionnaires.value.createModalOpen = true),
-          text: "Publish A Questionnaire",
-        },
       ],
-      buttons: [],
     });
 
   g.push({

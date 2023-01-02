@@ -22,6 +22,7 @@
     <div class="right-0 w-full max-w-md md:ml-auto md:sticky">
       <FormInput
         v-model="search"
+        name="search"
         label=""
         placeholder="AZ-123 / Open / Consultant / Tag"
         type="search"

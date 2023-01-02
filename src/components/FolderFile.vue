@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!!file">
+  <div v-if="file">
     <BoxHeadingStats
       :title="file.name"
       :show="selectedId === file.uuid && selectedType === 'FILE'"
@@ -28,7 +28,7 @@
           <iframe
             class="w-full max-w-full"
             :src="iframeContent"
-            frameborder="0"
+            title="File Content"
           ></iframe>
         </div>
         <div
@@ -40,11 +40,14 @@
             class="w-full max-w-full"
             :data="iframeContent"
             frameborder="0"
-          ></object>
+          >
+            <span class="sr-only">File Content</span>
+          </object>
         </div>
       </div>
     </BoxHeadingStats>
   </div>
+  <div v-else-if="loading"><CircleLoader /></div>
 </template>
 
 <script lang="ts" setup>
@@ -79,10 +82,15 @@ const message = window.btoa(
 );
 const errorMessage = window.btoa("An error happened.");
 
+const loading = ref(false);
+
+const filesQuery = useQuery(filesRetrieveFile, file, selectedId as Ref<string>);
+
 // get file
 watch(selectedId, () => {
   iframeContent.value = null;
   if (selectedType.value === "FILE" && selectedId.value) {
+    loading.value = true;
     filesDownloadFile(selectedId.value as string)
       .then((v: string) => {
         if (isDataUrlDisplayable(v)) iframeContent.value = v;
@@ -91,7 +99,9 @@ watch(selectedId, () => {
       .catch(() => {
         iframeContent.value = `data:text/plain;base64,${errorMessage}`;
       });
-    useQuery(filesRetrieveFile, file, selectedId as Ref<string>)();
+    filesQuery().then(() => {
+      loading.value = false;
+    });
   }
 });
 </script>
