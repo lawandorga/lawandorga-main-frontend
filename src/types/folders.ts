@@ -36,7 +36,7 @@ export interface IContent {
   uuid: string;
   name: string;
   actions: Actions;
-  repository: "RECORD" | "FILE";
+  repository: "RECORD" | "FILE" | "QUESTIONNAIRE";
 }
 
 export interface IFolderItem {

@@ -72,6 +72,7 @@
         </FormFile>
         <FormInput
           v-else
+          :name="field.name"
           v-bind="getAttrs(field.name)"
           :label="field.label"
           :type="field.type"

@@ -84,52 +84,6 @@ export interface RecordsDocument {
   updated: string;
 }
 
-export interface QuestionnaireQuestion {
-  id: number;
-  question: string;
-  type: "FILE";
-}
-
-export interface QuestionnaireTemplateFile {
-  id: number;
-  questionnaire: number;
-  name: string;
-  created: string;
-  updated: string;
-}
-
-export interface QuestionnaireTemplate {
-  id: number;
-  rlc: number;
-  name: string;
-  notes: string;
-  updated: string;
-  created: string;
-}
-
-export interface Questionnaire {
-  id: number;
-  code: string;
-  record: number;
-  template: QuestionnaireTemplate;
-  answers: QuestionnaireAnswer[];
-  created: string;
-  updated: string;
-}
-
-interface QuestionnaireField {
-  id: number;
-  type: string;
-  name: string;
-  question: string;
-}
-
-export interface QuestionnaireAnswer {
-  id: number;
-  data: string;
-  field: QuestionnaireField;
-}
-
 export interface RecordAccess {
   requested_by_detail: string;
   record_detail: string;
