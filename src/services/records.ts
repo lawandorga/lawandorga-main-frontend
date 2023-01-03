@@ -171,7 +171,8 @@ class RecordsService {
   }
 
   downloadFileFromEntry(entry: RecordEntry): void {
-    downloadFileRequest(axios, `${entry.url}download/`, entry.value as string);
+    const url = `${entry.url}download/`.replace("api/", "");
+    downloadFileRequest(axios, url, entry.value as string);
   }
 
   // permissions
