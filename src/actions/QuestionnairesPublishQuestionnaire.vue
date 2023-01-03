@@ -1,15 +1,16 @@
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Publish Questionnaire
+
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Publish Questionnaire"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{ folder: folderUuid }"
+      submit="Publish"
+    />
   </ButtonNormal>
-  <ModalCreate
-    v-model="commandModalOpen"
-    title="Publish Questionnaire"
-    :fields="fields"
-    :request="commandRequest"
-    :data="{ folder: folderUuid }"
-    submit="Publish"
-  ></ModalCreate>
 </template>
 
 <script setup lang="ts">
@@ -42,5 +43,9 @@ watch(commandModalOpen, (newValue) => {
     RecordsService.getQuestionnaireTemplates().then(
       (templates) => (fields.value[0].options = templates),
     );
+});
+
+defineExpose({
+  commandModalOpen,
 });
 </script>
