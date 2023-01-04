@@ -1,47 +1,23 @@
 <template>
-  <ModalFree v-model="addEventModalOpen" width="max-w-2xl" title="Add Event">
-    <FormGenerator :fields="eventFields" :request="addEventRequest">
-      <template #custom="{ data }">
-        <FormWysiwyg
-          v-model="data['description']"
-          required
-          label="Description"
-        />
-      </template>
-    </FormGenerator>
-  </ModalFree>
-  <ModalFree
+  <ModalCreate
+    v-model="addEventModalOpen"
+    title="Add Event"
+    :fields="eventFields"
+    :request="addEventRequest"
+  />
+  <ModalUpdate
     v-model="updateEventModalOpen"
-    width="max-w-2xl"
     title="Update Event"
-  >
-    <FormGenerator
-      :initial="{
-        id: eventUpdateTemporary?.id,
-        description: eventUpdateTemporary?.description,
-        name: eventUpdateTemporary?.name,
-        is_global: eventUpdateTemporary?.is_global,
-        start_time: eventUpdateTemporary?.start_time,
-        end_time: eventUpdateTemporary?.end_time,
-      }"
-      :fields="eventFields"
-      :request="updateRequest"
-    >
-      <template #custom="{ data }">
-        <FormWysiwyg
-          v-model="data['description']"
-          required
-          label="Description"
-        />
-      </template>
-    </FormGenerator>
-  </ModalFree>
+    :fields="eventFields"
+    :request="updateRequest"
+    :data="eventUpdateTemporary"
+  />
   <ModalDelete
     v-model="deleteEventModalOpen"
     title="Delete Event"
     verb="delete"
     :request="deleteRequest"
-    :object="eventTemporary"
+    :data="eventTemporary"
   />
 </template>
 
@@ -50,22 +26,16 @@ import { Ref, ref } from "vue";
 import useGet from "@/composables/useGet";
 import EventService from "@/services/event";
 import { Event } from "@/types/event";
-import {
-  FormGenerator,
-  ModalDelete,
-  ModalFree,
-  types,
-} from "@lawandorga/components";
+import { ModalCreate, ModalDelete, ModalUpdate } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import useQuery from "@/composables/useQuery";
 import useDelete from "@/composables/useDelete";
 import useUpdate from "@/composables/useUpdate";
-import FormWysiwyg from "./FormWysiwyg.vue";
 
 const events = ref(null) as Ref<Event[] | null>;
 useGet(EventService.getEvents, events);
 
-const eventFields = ref<types.FormField[]>([
+const eventFields = ref([
   {
     label: "Name",
     name: "name",
@@ -75,7 +45,7 @@ const eventFields = ref<types.FormField[]>([
   {
     label: "Description",
     name: "description",
-    type: "custom",
+    type: "textarea",
     required: true,
   },
   {
@@ -98,7 +68,7 @@ const eventFields = ref<types.FormField[]>([
     type: "datetime-local",
     required: true,
   },
-] as types.FormField[]);
+]);
 
 const { commandRequest: addEventRequest, commandModalOpen: addEventModalOpen } =
   useCommand(
