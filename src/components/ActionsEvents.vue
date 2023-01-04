@@ -2,11 +2,7 @@
   <ModalFree v-model="addEventModalOpen" width="max-w-2xl" title="Add Event">
     <FormGenerator :fields="eventFields" :request="addEventRequest">
       <template #custom="{ data }">
-        <FormWysiwyg
-          v-model="data['description']"
-          required
-          label="Description"
-        />
+        <FormWysiwyg v-model="data.description" required label="Description" />
       </template>
     </FormGenerator>
   </ModalFree>
@@ -16,7 +12,7 @@
     title="Update Event"
   >
     <FormGenerator
-      :initial="{
+      :data="{
         id: eventUpdateTemporary?.id,
         description: eventUpdateTemporary?.description,
         name: eventUpdateTemporary?.name,
@@ -28,11 +24,7 @@
       :request="updateRequest"
     >
       <template #custom="{ data }">
-        <FormWysiwyg
-          v-model="data['description']"
-          required
-          label="Description"
-        />
+        <FormWysiwyg v-model="data.description" required label="Description" />
       </template>
     </FormGenerator>
   </ModalFree>
