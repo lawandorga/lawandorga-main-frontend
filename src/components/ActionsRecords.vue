@@ -23,7 +23,9 @@ import { RecordTemplate, Record } from "@/types/records";
 import { ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
-import RecordsService, { recordsCreateRecord } from "@/services/records";
+import RecordsService, {
+  recordsCreateRecordWithinFolder,
+} from "@/services/records";
 import useGet from "@/composables/useGet";
 import { IAvailableFolder } from "@/types/folders";
 import { foldersGetAvailableFolders } from "@/services/folders";
@@ -42,7 +44,7 @@ const {
   commandRequest: createWithinFolderRequest,
   commandModalOpen: createWithinFolderModalOpen,
   temporary,
-} = useCommand(recordsCreateRecord, query.value);
+} = useCommand(recordsCreateRecordWithinFolder, query.value);
 
 // create within records folder
 const { commandRequest: createRequest, commandModalOpen: createModalOpen } =

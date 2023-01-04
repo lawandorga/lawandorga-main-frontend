@@ -44,7 +44,15 @@ export function recordsGetDeletions(): Promise<RecordDeletion[]> {
   return axios.get("records/query/deletions/").then((r) => r.data);
 }
 
-export function recordsCreateRecord(data: {
+export function recordsCreateRecordAndFolder(data: {
+  name: string;
+  folder: string;
+  template: number;
+}): Promise<{ folder_uuid: string; id: number }> {
+  return axios.post(`records/records/v2/`, data).then((r) => r.data);
+}
+
+export function recordsCreateRecordWithinFolder(data: {
   name: string;
   folder: string;
   template: number;
