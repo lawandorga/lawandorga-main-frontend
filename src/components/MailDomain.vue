@@ -64,14 +64,14 @@
               <tr>
                 <td>CNAME (DMARC)</td>
                 <td>_dmarc.{{ domain.name }}</td>
-                <td>dmarc.mail.law-orga.de.</td>
+                <td>dmarc.mail.law-orga.de</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
               <tr>
                 <td>CNAME (DKIM)</td>
                 <td>2022-12.law-orga._domainkey.{{ domain.name }}</td>
-                <td>2022-12.dkim.mail.law-orga.de.</td>
+                <td>2022-12.dkim.mail.law-orga.de</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
