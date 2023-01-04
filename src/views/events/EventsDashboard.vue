@@ -24,7 +24,7 @@
           </ButtonNormal>
         </template>
       </BreadcrumbsBar>
-      <div class="flex justify-end align-baseline gap-4">
+      <div class="flex justify-end gap-4 align-baseline">
         <ButtonToggle v-model="showGlobal" text="Show global events" />
         <ButtonNormal size="xs" kind="action" @click="loadPastEvents">
           Show earlier
@@ -33,7 +33,7 @@
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <h2
           v-if="isEventsListEmpty"
-          class="text-xl text-lorgablue text-center font-medium"
+          class="text-xl font-medium text-center text-lorgablue"
         >
           No event matches the filter criteria.
         </h2>
@@ -42,7 +42,7 @@
           :key="day[0].start_time_object.groupDate"
           class="flex flex-row gap-8 p-6 pt-0 bg-white rounded-lg shadow flex-nowrap"
         >
-          <div class="flex flex-col items-center flex-none font-light pt-6">
+          <div class="flex flex-col items-center flex-none pt-6 font-light">
             <h3 class="text-base">
               {{ day[0].start_time_object.shortMonth }}
             </h3>
@@ -63,7 +63,7 @@
                   'bg-gray-300': event.is_past_event,
                 }"
               />
-              <div class="flex flex-col gap-2 grow pt-5">
+              <div class="flex flex-col gap-2 pt-5 grow">
                 <div class="flex flex-row items-baseline gap-6">
                   <h2 class="flex-grow text-xl font-medium">
                     {{ event.name }}
@@ -82,8 +82,8 @@
                     size="xs"
                     kind="action"
                     @click="
-                      actionsEvents.updateEventModalOpen = true;
                       actionsEvents.eventUpdateTemporary = event;
+                      actionsEvents.updateEventModalOpen = true;
                     "
                   >
                     Edit
@@ -93,8 +93,8 @@
                     size="xs"
                     kind="delete"
                     @click="
-                      actionsEvents.deleteEventModalOpen = true;
                       actionsEvents.eventTemporary = event;
+                      actionsEvents.deleteEventModalOpen = true;
                     "
                   >
                     Delete
@@ -105,9 +105,12 @@
                   {{ formatDate(event.start_time) }} –
                   {{ formatDate(event.end_time) }}
                 </div>
-                <p>
-                  {{ event.description }}
-                </p>
+                <!-- eslint-disable vue/no-v-html -->
+                <div
+                  class="prose prose-p:mt-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-p:mb-0"
+                  v-html="event.description"
+                ></div>
+                <!-- eslint-enable vue/no-v-html -->
               </div>
             </div>
           </div>
