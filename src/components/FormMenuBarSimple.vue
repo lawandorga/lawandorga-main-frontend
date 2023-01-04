@@ -98,5 +98,3 @@ const items = ref([
   isActive?: BooleanFunction;
 }[]);
 </script>
-
-<style scoped></style>
