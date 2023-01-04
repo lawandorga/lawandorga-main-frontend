@@ -109,14 +109,14 @@
       <FormGenerator
         :fields="formFieldFields"
         :request="createFieldRequest"
-        :initial="{ questionnaire: questionnaire.id }"
+        :data="{ questionnaire: questionnaire.id }"
       />
     </ModalFree>
     <!-- update field -->
     <ModalFree v-model="updateFieldModalOpen" title="Update Field">
       <FormGenerator
         :fields="formFieldFields"
-        :initial="field"
+        :data="field"
         :request="updateFieldRequest"
       />
     </ModalFree>
@@ -124,21 +124,21 @@
     <ModalDelete
       v-model="deleteFieldModalOpen"
       :request="deleteFieldRequest"
-      :object="field"
+      :data="field"
     />
     <!-- create file -->
     <ModalFree v-model="createFileModalOpen" title="Add File">
       <FormGenerator
         :fields="formFileFields"
         :request="createFileRequest"
-        :initial="{ questionnaire: questionnaire.id }"
+        :data="{ questionnaire: questionnaire.id }"
       />
     </ModalFree>
     <!-- delete file -->
     <ModalDelete
       v-model="deleteFileModalOpen"
       :request="deleteFileRequest"
-      :object="file"
+      :data="file"
     />
   </BoxLoader>
 </template>
@@ -158,12 +158,12 @@ import { TableGenerator } from "@lawandorga/components";
 import { ButtonNormal } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
+import useCommand from "@/composables/useCommand";
 
 const formFieldFields = [
   {
@@ -234,7 +234,11 @@ export default defineComponent({
     // fields
     const fields = ref(null) as Ref<QuestionnaireQuestion[] | null>;
     const field = ref(null) as Ref<QuestionnaireQuestion | null>;
-    useGet(RecordsService.getQuestionnaireQuestions, fields, questionnaire);
+    const query = useGet(
+      RecordsService.getQuestionnaireQuestions,
+      fields,
+      questionnaire,
+    );
 
     // files
     const files = ref(null) as Ref<QuestionnaireTemplateFile[] | null>;
@@ -265,9 +269,9 @@ export default defineComponent({
 
     // update field
     const {
-      updateRequest: updateFieldRequest,
-      updateModalOpen: updateFieldModalOpen,
-    } = useUpdate(RecordsService.updateQuestionnaireQuestion, fields);
+      commandRequest: updateFieldRequest,
+      commandModalOpen: updateFieldModalOpen,
+    } = useCommand(RecordsService.updateQuestionnaireQuestion, query);
 
     // delete field
     const {

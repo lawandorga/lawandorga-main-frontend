@@ -11,14 +11,14 @@
     verb="remove"
     title="Remove Member"
     :request="removeMember"
-    :object="memberTemporary"
+    :data="memberTemporary"
   />
   <!-- permission -->
   <ModalCreate
     v-model="addPermissionModalOpen"
     title="Add Permission"
     :fields="permissionFields"
-    :initial="{ group_has_permission: group?.id }"
+    :data="{ group_has_permission: group?.id }"
     :request="addPermissionRequest"
   />
   <ModalDelete
@@ -26,7 +26,7 @@
     title="Remove Permission"
     verb="remove"
     :request="removePermissionRequest"
-    :object="permissionTemporary"
+    :data="permissionTemporary"
   />
 </template>
 
@@ -104,8 +104,8 @@ const {
   temporary: memberTemporary,
 } = useCommand(
   AdminService.addMember,
-  group,
   useQuery(AdminService.getMembers, members, group),
+  group,
 );
 
 watch(addMemberModalOpen, (newValue) => {
@@ -119,8 +119,8 @@ const {
   commandModalOpen: removeMemberModalOpen,
 } = useCommand(
   AdminService.removeMember,
-  group,
   useQuery(AdminService.getMembers, members, group),
+  group,
 );
 
 // expose

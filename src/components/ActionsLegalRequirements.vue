@@ -18,8 +18,10 @@ useGet(LegalService.getLegalRequirements, legalRequirements);
 
 const { commandRequest: accept } = useCommand(
   LegalService.acceptLegalRequirement,
-  useQuery(LegalService.getLegalRequirements, legalRequirements),
-  () => userStore.updateData(),
+  [
+    useQuery(LegalService.getLegalRequirements, legalRequirements),
+    () => userStore.updateData(),
+  ],
 );
 
 defineExpose({

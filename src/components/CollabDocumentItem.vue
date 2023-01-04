@@ -118,7 +118,7 @@
           options: groupOptions,
         },
       ]"
-      :initial="{ document: document.id }"
+      :data="{ document: document.id }"
       :request="createPermissionRequest"
     />
   </ModalFree>
@@ -127,7 +127,7 @@
   <ModalDelete
     v-model="deletePermissionModalOpen"
     :request="deletePermissionRequest"
-    :object="permission"
+    :data="permission"
   />
 </template>
 

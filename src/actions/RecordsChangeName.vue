@@ -7,7 +7,7 @@
       submit="Save"
       :fields="fields"
       :request="commandRequest"
-      :initial="{ name, id }"
+      :data="{ name, id }"
     />
   </ButtonNormal>
 </template>

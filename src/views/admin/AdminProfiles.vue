@@ -79,7 +79,7 @@
     <ModalDelete
       v-model="deleteModalOpen"
       :request="deleteRequest"
-      :object="profile"
+      :data="profile"
     />
     <!-- accept -->
     <ModalConfirm
@@ -95,7 +95,7 @@
       v-model="unlockUserModalOpen"
       title="Unlock User"
       :request="unlockUserRequest"
-      :object="profile"
+      :data="profile"
       verb="unlock"
     />
     <ModalDelete
@@ -104,7 +104,7 @@
         profile && profile.is_active ? 'Deactivate user' : 'Activate user'
       "
       :request="activateUserRequest"
-      :object="
+      :data="
         Object.assign({}, profile, { is_active: profile && !profile.is_active })
       "
       :verb="profile && profile.is_active ? 'deactivate' : 'activate'"

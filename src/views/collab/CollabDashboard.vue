@@ -55,7 +55,7 @@
         { label: 'Path', name: 'path', disabled: true, required: true },
         { label: 'Name', name: 'name', required: true },
       ]"
-      :initial="{ path: document ? document.path + '/' : '/' }"
+      :data="{ path: document ? document.path + '/' : '/' }"
       submit="Create"
       :request="createDocumentRequest"
       @success="documentCreated($event)"
@@ -65,7 +65,7 @@
     <ModalDelete
       v-model="deleteDocumentModalOpen"
       :request="deleteDocumentRequest"
-      :object="document"
+      :data="document"
       @deleted="documentDeleted()"
     />
   </BoxLoader>

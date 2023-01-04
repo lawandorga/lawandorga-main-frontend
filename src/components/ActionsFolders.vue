@@ -4,20 +4,20 @@
     title="Create Folder"
     :fields="fields"
     :request="createRequest"
-    :initial="{ parent: parent }"
+    :data="{ parent: parent }"
   />
   <ModalUpdate
     v-model="updateModalOpen"
     title="Change name"
     :fields="fields"
     :request="updateRequest"
-    :initial="{ uuid: temporary?.folder?.uuid, name: temporary?.folder?.name }"
+    :data="{ uuid: temporary?.folder?.uuid, name: temporary?.folder?.name }"
   />
   <ModalDelete
     v-model="deleteModalOpen"
     title="Delete folder"
     :request="deleteRequest"
-    :object="{ uuid: temporary?.folder?.uuid, name: temporary?.folder?.name }"
+    :data="{ uuid: temporary?.folder?.uuid, name: temporary?.folder?.name }"
   >
     Are you sure you want to delete '{{ temporary?.folder?.name }}'? This will
     delete all subfolders and the content.
@@ -27,14 +27,14 @@
     title="Grant access"
     :fields="grantAccessFields"
     :request="grantAccessRequest"
-    :initial="{ uuid: temporary?.folder?.uuid }"
+    :data="{ uuid: temporary?.folder?.uuid }"
   />
   <ModalUpdate
     v-model="revokeAccessModalOpen"
     title="Revoke access"
     :fields="revokeAccessFields"
     :request="revokeAccessRequest"
-    :initial="temporary"
+    :data="temporary"
   />
   <ModalConfirm
     v-model="toggleInheritanceModalOpen"
@@ -51,7 +51,7 @@
     title="Move folder"
     :fields="moveFolderFields"
     :request="moveFolderRequest"
-    :initial="{ folder: temporary?.folder?.uuid }"
+    :data="{ folder: temporary?.folder?.uuid }"
   />
 </template>
 

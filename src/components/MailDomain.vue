@@ -57,7 +57,7 @@
               <tr>
                 <td>TXT (SPF)</td>
                 <td>{{ domain.name }}</td>
-                <td>v=spf1 include:spf.{{ domain.name }} -all</td>
+                <td>v=spf1 include:spf.mail.law-orga.de -all</td>
                 <td>3600</td>
                 <td>-</td>
               </tr>
@@ -70,7 +70,7 @@
               </tr>
               <tr>
                 <td>CNAME (DKIM)</td>
-                <td>2022-12._domainkey.{{ domain.name }}</td>
+                <td>2022-12.law-orga._domainkey.{{ domain.name }}</td>
                 <td>2022-12.dkim.mail.law-orga.de.</td>
                 <td>3600</td>
                 <td>-</td>

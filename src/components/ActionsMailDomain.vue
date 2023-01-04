@@ -12,7 +12,7 @@
     submit="Save"
     :fields="fields"
     :request="changeDomainRequest"
-    :initial="temporary"
+    :data="temporary"
   />
   <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
     <div v-if="check && check.valid">Your settings are correct.</div>

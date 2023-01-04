@@ -24,20 +24,11 @@
         <div class="sticky top-0 overflow-hidden bg-white rounded shadow">
           <ul role="list" class="">
             <li v-if="!grouping" class="px-4 py-3 space-x-5 sm:px-6 bg-gray-50">
-              <FilesUploadFile
-                :folder-uuid="folder?.folder.uuid"
-                :query="query"
+              <component
+                :is="button"
+                v-for="button in groups.map((i) => i.buttons).flat()"
+                :key="button"
               />
-              <FilesUploadMultipleFiles
-                :folder-uuid="folder?.folder.uuid"
-                :query="query"
-              />
-              <!-- <ButtonNormal
-                kind="action"
-                @click="actionsQuestionnaires.createModalOpen = true"
-              >
-                Publish a questionnaire
-              </ButtonNormal> -->
             </li>
 
             <li
@@ -58,16 +49,21 @@
                 "
               >
                 <div class="px-4 py-4 sm:px-6">
-                  <div class="flex items-center justify-between">
-                    <p class="text-base font-medium truncate text-lorgablue">
+                  <div class="flex flex-wrap items-center justify-between">
+                    <p class="text-base font-medium text-lorgablue">
                       {{ item.name }}
                     </p>
                     <div
-                      v-if="
+                      v-show="
                         grouping && item.actions && selectedType === item.type
                       "
                       class="flex flex-shrink-0 ml-2 space-x-3"
                     >
+                      <component
+                        :is="button"
+                        v-for="button in item.buttons"
+                        :key="button"
+                      />
                       <ButtonNormal
                         v-for="action in item.actions"
                         :key="action.text"
@@ -158,16 +154,21 @@
           :selected-type="selectedType"
         />
 
-        <RecordMessages v-if="recordId" :selected-type="selectedType" />
+        <RecordMessages
+          v-if="recordId"
+          :folder-uuid="folder.folder.uuid"
+          :selected-type="selectedType"
+        />
 
-        <RecordFiles
+        <FolderFile
           :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
         />
 
-        <RecordQuestionnaires
+        <FolderQuestionnaire
           v-if="recordId"
+          :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
         />
@@ -184,43 +185,21 @@
     :folder="folder ? folder.folder : null"
     :query="query"
   />
-  <ActionsQuestionnaires v-if="recordId" ref="actionsQuestionnaires" />
-  <ActionsMessages v-if="recordId" ref="actionsMessages" />
-  <FilesUploadMultipleFiles
-    ref="filesUploadMultipleFiles"
-    class="hidden"
-    :folder-uuid="folder?.folder.uuid"
-    :query="query"
-  />
-  <FilesUploadFile
-    ref="filesUploadFile"
-    class="hidden"
-    :folder-uuid="folder?.folder.uuid"
-    :query="query"
-  />
 </template>
 
 <script lang="ts" setup>
-import { Questionnaire } from "@/types/records";
 import FolderRecord from "@/components/FolderRecord.vue";
-import { computed, provide, ref, watch } from "vue";
+import { computed, h, provide, ref, watch, VNode } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { formatDate } from "@/utils/date";
 import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
-import ActionsQuestionnaires from "@/components/ActionsQuestionnaires.vue";
-import ActionsMessages from "@/components/ActionsMessages.vue";
-import {
-  actionsMessagesKey,
-  actionsEncryptionsKey,
-  actionsQuestionnairesKey,
-} from "@/types/keys";
+import { actionsEncryptionsKey } from "@/types/keys";
 import RecordMessages from "@/components/RecordMessages.vue";
-import RecordQuestionnaires from "@/components/RecordQuestionnaires.vue";
-import RecordFiles from "@/components/RecordFiles.vue";
+import FolderQuestionnaire from "@/components/FolderQuestionnaire.vue";
+import FolderFile from "@/components/FolderFile.vue";
 import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
 import { useUserStore } from "@/store/user";
@@ -229,23 +208,13 @@ import { IFolderDetail } from "@/types/folders";
 import { foldersGetFolderDetail } from "@/services/folders";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
+import RecordsCreateRecord from "@/actions/RecordsCreateRecord.vue";
+import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
 
 // record
 const route = useRoute();
 const folderUuid = route.params.uuid as string;
 const recordId = route.params.record as string;
-
-//
-const filesUploadMultipleFiles = ref();
-const filesUploadFile = ref();
-
-// questionnaires
-const actionsQuestionnaires = ref<typeof ActionsQuestionnaires>();
-provide(actionsQuestionnairesKey, actionsQuestionnaires);
-
-// messages
-const actionsMessages = ref<typeof ActionsMessages>();
-provide(actionsMessagesKey, actionsMessages);
 
 // encryptions
 const actionsEncryptions = ref<typeof ActionsEncryptions>();
@@ -269,6 +238,7 @@ interface ContentGroupItem {
   name: string;
   children: ContentItem[];
   actions: { text: string; action: () => void }[];
+  buttons: VNode[];
 }
 
 const groups = computed<ContentGroupItem[]>(() => {
@@ -282,21 +252,21 @@ const groups = computed<ContentGroupItem[]>(() => {
         .filter((c) => c.repository === "RECORD")
         .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid, stats: [] })),
       actions: [],
+      buttons: [
+        h(RecordsCreateRecord, {
+          query: query,
+          folderUuid: folder.value?.folder.uuid,
+        }),
+      ],
     });
 
   if (recordId)
     g.push({
       name: "Chat",
       type: "MESSAGES",
-      children: [
-        {
-          id: "MESSAGES",
-          type: "MESSAGES",
-          name: "Chat",
-          stats: [],
-        },
-      ],
+      children: [],
       actions: [],
+      buttons: [],
     });
 
   if (folder.value)
@@ -306,54 +276,46 @@ const groups = computed<ContentGroupItem[]>(() => {
       children: folder.value.content
         .filter((c) => c.repository === "FILE")
         .map((c) => ({ name: c.name, type: "FILE", id: c.uuid, stats: [] })),
-      actions: [
-        {
-          action: () => (filesUploadFile.value.commandModalOpen = true),
-          text: "Upload File",
-        },
-        {
-          action: () =>
-            (filesUploadMultipleFiles.value.commandModalOpen = true),
-          text: "Upload Multiple Files",
-        },
+      actions: [],
+      buttons: [
+        h(FilesUploadFile, {
+          query: query,
+          folderUuid: folder.value?.folder.uuid,
+        }),
+        h(FilesUploadMultipleFiles, {
+          query: query,
+          folderUuid: folder.value?.folder.uuid,
+        }),
       ],
     });
 
-  if (recordId && actionsQuestionnaires.value?.questionnaires)
+  if (folder.value)
     g.push({
       name: "Questionnaires",
       type: "QUESTIONNAIRE",
-      children: actionsQuestionnaires.value?.questionnaires.map(
-        (q: Questionnaire) => ({
-          id: q.id,
+      children: folder.value.content
+        .filter((c) => c.repository === "QUESTIONNAIRE")
+        .map((c) => ({
+          name: c.name,
           type: "QUESTIONNAIRE",
-          name: q.template.name,
-          stats: [
-            `Created ${formatDate(q.created)}`,
-            `${q.answers.length} Answers`,
-          ],
+          id: c.uuid,
+          stats: [],
+        })),
+      actions: [],
+      buttons: [
+        h(QuestionnairesPublishQuestionnaire, {
+          query: query,
+          folderUuid: folder.value?.folder.uuid,
         }),
-      ),
-      actions: [
-        {
-          action: () => (actionsQuestionnaires.value.createModalOpen = true),
-          text: "Publish A Questionnaire",
-        },
       ],
     });
 
   g.push({
     name: "Encryptions",
     type: "ACCESS",
-    children: [
-      {
-        id: "ACCESS",
-        type: "ACCESS",
-        name: "Access",
-        stats: [`${folder.value?.access.length || 0} Persons`],
-      },
-    ],
+    children: [],
     actions: [],
+    buttons: [],
   });
 
   return g;

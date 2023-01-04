@@ -10,7 +10,7 @@
         required: false,
       },
     ]"
-    :initial="{
+    :data="{
       record: temporary?.id,
       requested_by: userStore.user?.user_id,
     }"

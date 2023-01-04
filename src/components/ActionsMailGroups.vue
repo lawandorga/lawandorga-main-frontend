@@ -8,14 +8,14 @@
   <ModalDelete
     v-model="deleteModalOpen"
     title="Delete Group"
-    :object="{ group: temporary?.uuid }"
+    :data="{ group: temporary?.uuid }"
     :request="deleteRequest"
   />
   <ModalCreate
     v-model="addAddressModalOpen"
     :request="addAddress"
     :fields="addressFields"
-    :initial="{ group: groupId }"
+    :data="{ group: groupId }"
   />
   <ModalConfirm
     v-model="setDefaultAddressModalOpen"
@@ -28,7 +28,7 @@
   </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
-    :object="{ address: temporary?.uuid, group: groupId }"
+    :data="{ address: temporary?.uuid, group: groupId }"
     :request="deleteAddress"
   >
     Are you sure you want to delete {{ temporary?.localpart }}@{{
@@ -39,7 +39,7 @@
     v-model="addMemberModalOpen"
     :fields="addMemberFields"
     :request="addMemberRequest"
-    :initial="{ group: groupId }"
+    :data="{ group: groupId }"
     title="Add member"
     submit="Add"
   />

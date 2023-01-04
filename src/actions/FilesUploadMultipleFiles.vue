@@ -6,7 +6,7 @@
       title="Upload Multiple Files"
       :fields="fieldsMultiple"
       :request="commandRequest"
-      :initial="{ folder: folderUuid }"
+      :data="{ folder: folderUuid }"
       submit="Upload"
     />
   </ButtonNormal>
@@ -17,6 +17,13 @@ import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
 import { toRefs, ref, Ref, computed } from "vue";
 import useCommand from "@/composables/useCommand";
 import axios, { AxiosProgressEvent } from "axios";
+
+// props
+const props = defineProps<{
+  folderUuid?: string;
+  query: () => void;
+}>();
+const { folderUuid, query } = toRefs(props);
 
 // request
 function request(
@@ -60,13 +67,6 @@ function request(
     });
 }
 
-// props
-const props = defineProps<{
-  folderUuid?: string;
-  query: () => void;
-}>();
-const { folderUuid, query } = toRefs(props);
-
 // create
 const addon = ref<string>("(0%)");
 const fieldsMultiple = computed<types.FormField[]>(() => {
@@ -76,14 +76,13 @@ const fieldsMultiple = computed<types.FormField[]>(() => {
       type: "files",
       name: "files",
       required: true,
-      percentage: ref(0),
     },
   ];
 });
 const { commandModalOpen, commandRequest } = useCommand(
   request,
-  addon,
   query.value,
+  addon,
 );
 
 // expose

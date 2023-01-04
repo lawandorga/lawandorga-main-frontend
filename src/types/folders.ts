@@ -21,22 +21,17 @@ export interface IAccess {
   uuid: string | null;
   source: string;
   actions: {
-    REVOKE_ACCESS: {
+    REVOKE_ACCESS?: {
       url: string;
       user_uuid: string;
     };
   };
 }
 
-interface Actions {
-  [key: string]: string;
-}
-
 export interface IContent {
   uuid: string;
   name: string;
-  actions: Actions;
-  repository: "RECORD" | "FILE";
+  repository: "RECORD" | "FILE" | "QUESTIONNAIRE";
 }
 
 export interface IFolderItem {

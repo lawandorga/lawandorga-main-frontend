@@ -6,7 +6,7 @@
       title="Upload File"
       :fields="fields"
       :request="commandRequest"
-      :initial="{ folder: folderUuid }"
+      :data="{ folder: folderUuid }"
       submit="Upload"
     />
   </ButtonNormal>
@@ -18,6 +18,14 @@ import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
 import axios from "axios";
 
+// props
+const props = defineProps<{
+  folderUuid?: string;
+  query: () => void;
+}>();
+const { folderUuid, query } = toRefs(props);
+
+// request
 function request(data: {
   // name: string;
   folder: string;
@@ -30,13 +38,6 @@ function request(data: {
 
   return axios.post(`files/v2/`, formData).then();
 }
-
-// props
-const props = defineProps<{
-  folderUuid?: string;
-  query: () => void;
-}>();
-const { folderUuid, query } = toRefs(props);
 
 // create
 const fields = [

@@ -184,53 +184,53 @@
       <FormGenerator
         :fields="folderFields"
         :request="foldersCreateFolderRequest"
-        :initial="{ parent: folder.id }"
+        :data="{ parent: folder.id }"
       />
     </ModalFree>
     <ModalFree v-model="updateFolderModalOpen" title="Update Folder">
       <FormGenerator
         :fields="folderFields"
-        :initial="folderOpen"
+        :data="folderOpen"
         :request="updateFolderRequest"
       />
     </ModalFree>
     <ModalDelete
       v-model="foldersDeleteFolderModalOpen"
       :request="foldersDeleteFolderRequest"
-      :object="folderOpen"
+      :data="folderOpen"
     />
     <!-- file -->
     <ModalFree v-model="createFileModalOpen" title="Create File">
       <FormGenerator
         :fields="createFileFields"
         :request="createFileRequest"
-        :initial="{ folder: folder.id }"
+        :data="{ folder: folder.id }"
       />
     </ModalFree>
     <ModalFree v-model="updateFileModalOpen" title="Update File">
       <FormGenerator
         :fields="updateFileFields"
-        :initial="fileOpen"
+        :data="fileOpen"
         :request="updateFileRequest"
       />
     </ModalFree>
     <ModalDelete
       v-model="deleteFileModalOpen"
       :request="deleteFileRequest"
-      :object="fileOpen"
+      :data="fileOpen"
     />
     <!-- permission -->
     <ModalFree v-model="createPermissionModalOpen" title="Add Permission">
       <FormGenerator
         :fields="permissionFields"
         :request="createPermissionRequest"
-        :initial="{ folder: folder.id }"
+        :data="{ folder: folder.id }"
       />
     </ModalFree>
     <ModalDelete
       v-model="deletePermissionModalOpen"
       :request="deletePermissionRequest"
-      :object="permissionOpen"
+      :data="permissionOpen"
     />
   </BoxLoader>
 </template>

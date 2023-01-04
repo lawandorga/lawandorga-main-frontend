@@ -62,6 +62,8 @@
 <script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import { foldersOptimize } from "@/services/folders";
+import { messagesOptimize } from "@/services/messages";
+import { questionnairesOptimize } from "@/services/questionnaires";
 import { recordsOptimize } from "@/services/records";
 import { useUserStore } from "@/store/user";
 import {
@@ -79,6 +81,8 @@ interface IApps {
 const apps: IApps = {
   Records: recordsOptimize,
   Folders: foldersOptimize,
+  Messages: messagesOptimize,
+  Questionnaires: questionnairesOptimize,
 };
 
 const status = ref<{

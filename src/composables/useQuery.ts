@@ -13,9 +13,11 @@ function useQuery<
   getFunc: Fn,
   obj: Ref<Type>,
   ...params: Nullable<Parameters<Fn>>
-): () => void {
+): () => Promise<void> {
   const getRequest = () => {
-    getFunc(...params.map(unref)).then((newItem) => (obj.value = newItem));
+    return getFunc(...params.map(unref)).then((newItem) => {
+      obj.value = newItem;
+    });
   };
 
   return getRequest;
