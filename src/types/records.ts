@@ -84,15 +84,11 @@ export interface RecordsDocument {
   updated: string;
 }
 
-export interface RecordAccess {
+export interface IRecordAccess {
   requested_by_detail: string;
   record_detail: string;
   processed_by_detail: string;
-
   id: number;
-  requested_by: number;
-  processed_by: number;
-  record: number;
   processed_on: string;
   state: string;
   created: string;

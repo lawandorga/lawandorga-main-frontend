@@ -28,22 +28,18 @@
           </ButtonNormal>
         </template>
         <template #action="slotProps">
-          <ButtonNormal
-            v-if="!slotProps.record.has_access"
-            size="xs"
-            kind="action"
-            @click="
-              actionsRecordAccesses.temporary = slotProps.record;
-              actionsRecordAccesses.createRecordAccessModalOpen = true;
-            "
-          >
-            Request Access
-          </ButtonNormal>
-          <RecordsCreateDeletion
-            v-if="!slotProps.record.delete_requested"
-            :record-id="slotProps.record.id"
-            :query="query"
-          />
+          <div class="flex items-center justify-end space-x-3">
+            <RecordsCreateAccess
+              v-if="!slotProps.record.has_access"
+              :query="query"
+              :record-id="slotProps.record.id"
+            />
+            <RecordsCreateDeletion
+              v-if="!slotProps.record.delete_requested"
+              :record-id="slotProps.record.id"
+              :query="query"
+            />
+          </div>
         </template>
       </TableRecords>
     </div>
@@ -68,6 +64,7 @@ import { useUserStore } from "@/store/user";
 import RecordsCreateDeletion from "@/actions/RecordCreateDeletion.vue";
 import ActionsRecordAccesses from "@/components/ActionsRecordAccesses.vue";
 import ActionsRecords from "@/components/ActionsRecords.vue";
+import RecordsCreateAccess from "@/actions/RecordsCreateAccess.vue";
 
 // page
 const page = ref<IRecordListPage | null>(null);
