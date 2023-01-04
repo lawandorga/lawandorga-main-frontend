@@ -20,6 +20,9 @@
         id: eventUpdateTemporary?.id,
         description: eventUpdateTemporary?.description,
         name: eventUpdateTemporary?.name,
+        is_global: eventUpdateTemporary?.is_global,
+        start_time: eventUpdateTemporary?.start_time,
+        end_time: eventUpdateTemporary?.end_time,
       }"
       :fields="eventFields"
       :request="updateRequest"
