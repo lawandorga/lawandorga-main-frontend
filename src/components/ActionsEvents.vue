@@ -16,7 +16,7 @@
     title="Update Event"
   >
     <FormGenerator
-      :initial="{
+      :data="{
         id: eventUpdateTemporary?.id,
         description: eventUpdateTemporary?.description,
         name: eventUpdateTemporary?.name,
@@ -41,7 +41,7 @@
     title="Delete Event"
     verb="delete"
     :request="deleteRequest"
-    :object="eventTemporary"
+    :data="eventTemporary"
   />
 </template>
 
