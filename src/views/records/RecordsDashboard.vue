@@ -1,9 +1,7 @@
 <template>
-  <BoxLoader
-    :show="userStore.loaded && !!actionsRecordAccesses && !!actionsRecords"
-  >
+  <BoxLoader :show="userStore.loaded && !!actionsRecords">
     <div
-      v-if="userStore.loaded && !!actionsRecordAccesses && !!actionsRecords"
+      v-if="userStore.loaded && !!actionsRecords"
       class="mx-auto space-y-6 max-w-screen-2xl"
     >
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
@@ -44,7 +42,6 @@
       </TableRecords>
     </div>
   </BoxLoader>
-  <ActionsRecordAccesses ref="actionsRecordAccesses" :query="query" />
   <ActionsRecords ref="actionsRecords" :query="query" />
 </template>
 
@@ -62,7 +59,6 @@ import useGet from "@/composables/useGet";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { useUserStore } from "@/store/user";
 import RecordsCreateDeletion from "@/actions/RecordCreateDeletion.vue";
-import ActionsRecordAccesses from "@/components/ActionsRecordAccesses.vue";
 import ActionsRecords from "@/components/ActionsRecords.vue";
 import RecordsCreateAccess from "@/actions/RecordsCreateAccess.vue";
 
@@ -71,7 +67,6 @@ const page = ref<IRecordListPage | null>(null);
 const query = useGet(recordsGetPage, page);
 
 // actions
-const actionsRecordAccesses = ref<typeof ActionsRecordAccesses>();
 const actionsRecords = ref<typeof ActionsRecords>();
 
 // records
