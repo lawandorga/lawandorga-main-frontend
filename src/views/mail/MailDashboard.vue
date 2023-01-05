@@ -37,12 +37,14 @@
           <TabControls
             :tabs="[
               { name: 'Mail User Role', key: 'mailUserRole' },
+              { name: 'Webmail', key: 'webmail' },
               { name: 'Users', key: 'users' },
               { name: 'Groups', key: 'groups' },
               { name: 'Domain', key: 'domain' },
             ]"
           >
             <template #mailUserRole><MailUserRole :page="page" /></template>
+            <template #webmail><MailWebmail /></template>
             <template #users><MailUsers :page="page" /></template>
             <template #groups>
               <MailGroups :page="page" :query="query" />
@@ -81,6 +83,7 @@ import { mailGetDashboardPage } from "@/services/mail";
 import useGet from "@/composables/useGet";
 import MailUsers from "@/components/MailUsers.vue";
 import MailGroups from "@/components/MailGroups.vue";
+import MailWebmail from "@/components/MailWebmail.vue";
 
 // user store
 const userStore = useUserStore();

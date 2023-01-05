@@ -96,11 +96,6 @@ export default function useNavigationItems() {
         is: "router-link",
         attrs: {
           to: { name: "mail-dashboard" },
-          class:
-            store.user?.email.includes("law-orga.de") ||
-            store.rlc?.name == "Law&Orga Team"
-              ? ""
-              : "hidden",
         },
         permissions: [],
       },

@@ -2,7 +2,7 @@
   <template v-if="!!actionsMailUser && !!user">
     <div class="px-6 py-5 bg-white rounded shadow">
       <div
-        class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg"
+        class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg max-w-none"
       >
         <h1 class="">Mail User Role</h1>
         <p>
@@ -39,11 +39,23 @@
             <tr>
               <th>Port</th>
               <td>
-                993 with implicit TLS
+                143 with StartTLS
                 <br />
-                (or 143 with STARTTLS)
+                (Outlook 365: Select StartTLS)
+                <br />
+                (Apple Mail: Set Checkbox Use TLS/SSL)
+                <br />
+                (Thunderbird: StartTLS)
               </td>
-              <td>587 with STARTTLS</td>
+              <td>
+                587 with StartTLS
+                <br />
+                (Outlook 365: Select StartTLS)
+                <br />
+                (Apple Mail: Set Checkbox Use TLS/SSL)
+                <br />
+                (Thunderbird: StartTLS)
+              </td>
             </tr>
             <tr>
               <th>Username</th>
