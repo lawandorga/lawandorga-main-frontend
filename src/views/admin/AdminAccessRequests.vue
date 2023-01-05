@@ -24,7 +24,7 @@
           { name: 'State', key: 'state' },
           { name: '', key: 'action' },
         ]"
-        :data="deletionRequests"
+        :data="accesses"
       >
         <template #created="slotProps">
           {{ formatDate(slotProps.created) }}
@@ -45,97 +45,39 @@
           </div>
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              v-if="slotProps.state === 're'"
-              kind="action"
-              size="xs"
-              @click="
-                deletionRequest = slotProps;
-                updateModalOpen = true;
-              "
-            >
-              Accept or Decline
-            </ButtonNormal>
-          </div>
+          <RecordsGrantAccess
+            v-if="slotProps.state === 're'"
+            :id="slotProps.id"
+            :recordname="slotProps.record_detail"
+            :username="slotProps.requested_by_detail"
+            :query="query"
+          />
+          <RecordsDeclineAccess
+            v-if="slotProps.state === 're'"
+            :id="slotProps.id"
+            :username="slotProps.requested_by_detail"
+            :recordname="slotProps.record_detail"
+            :query="query"
+          />
         </template>
       </TableGenerator>
     </div>
-    <!-- update -->
-    <ModalFree
-      v-model="updateModalOpen"
-      title="Accept / Decline Permission-Request"
-    >
-      <FormGenerator
-        :fields="fields"
-        :data="deletionRequest"
-        :request="updateRequest"
-      />
-    </ModalFree>
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref } from "vue";
-import RecordsService from "@/services/records";
+<script lang="ts" setup>
+import { Ref, ref } from "vue";
+import { recordsGetAccessesPage } from "@/services/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "@lawandorga/components";
-import { ButtonNormal } from "@lawandorga/components";
-import { ModalFree } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
-import { RecordAccess } from "@/types/records";
+import { IRecordAccess } from "@/types/records";
 import { formatDate } from "@/utils/date";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import RecordsGrantAccess from "@/actions/RecordsGrantAccess.vue";
+import RecordsDeclineAccess from "@/actions/RecordsDeclineAccess.vue";
 
-const fields = [
-  {
-    label: "Accept or decline",
-    name: "state",
-    type: "select",
-    options: [
-      { name: "Accept (Allow access to record)", id: "gr" },
-      { name: "Decline (No access will be grantend)", id: "de" },
-    ],
-    required: true,
-  },
-];
-
-export default defineComponent({
-  components: {
-    CogIcon,
-    BoxLoader,
-    TableGenerator,
-    ButtonNormal,
-    BreadcrumbsBar,
-    ModalFree,
-    FormGenerator,
-  },
-  setup() {
-    const deletionRequests = ref(null) as Ref<RecordAccess[] | null>;
-    const deletionRequest = ref(null) as Ref<RecordAccess | null>;
-
-    // get
-    useGet(RecordsService.getRecordAccesses, deletionRequests);
-
-    // update
-    const { updateRequest, updateModalOpen } = useUpdate(
-      RecordsService.updateRecordAccess,
-      deletionRequests,
-    );
-
-    return {
-      deletionRequests,
-      deletionRequest,
-      // update
-      fields,
-      updateRequest,
-      updateModalOpen,
-      // data
-      formatDate,
-    };
-  },
-});
+const accesses = ref(null) as Ref<IRecordAccess[] | null>;
+const query = useGet(recordsGetAccessesPage, accesses);
 </script>

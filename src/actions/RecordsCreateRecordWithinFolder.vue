@@ -14,7 +14,9 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import RecordsService, { recordsCreateRecord } from "@/services/records";
+import RecordsService, {
+  recordsCreateRecordWithinFolder,
+} from "@/services/records";
 import useGet from "@/composables/useGet";
 import { IAvailableFolder } from "@/types/folders";
 import { foldersGetAvailableFolders } from "@/services/folders";
@@ -30,7 +32,7 @@ const { query } = toRefs(props);
 const {
   commandRequest: createWithinFolderRequest,
   commandModalOpen: createWithinFolderModalOpen,
-} = useCommand(recordsCreateRecord, query.value);
+} = useCommand(recordsCreateRecordWithinFolder, query.value);
 
 const availableFolders = ref<IAvailableFolder[]>([]);
 const availableTemplates = ref<RecordTemplate[]>([]);

@@ -7,7 +7,7 @@
       :fields="fields"
       :request="commandRequest"
       submit="Create"
-      :data="{ folder: folderUuid }"
+      @success="recordCreated($event)"
     />
   </ButtonNormal>
 </template>
@@ -17,19 +17,21 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import RecordsService, { recordsCreateRecord } from "@/services/records";
+import RecordsService, {
+  recordsCreateRecordAndFolder,
+} from "@/services/records";
 import useGet from "@/composables/useGet";
+import { useRouter } from "vue-router";
 
 // props
 const props = defineProps<{
   query: () => void;
-  folderUuid?: string;
 }>();
 const { query } = toRefs(props);
 
 // create within folder
 const { commandRequest, commandModalOpen } = useCommand(
-  recordsCreateRecord,
+  recordsCreateRecordAndFolder,
   query.value,
 );
 
@@ -55,6 +57,16 @@ const fields = computed<types.FormField[]>(() => [
     options: availableTemplates.value,
   },
 ]);
+
+// created
+const router = useRouter();
+const recordCreated = (data: { folder_uuid: string; id: number }) => {
+  console.log(data);
+  router.push({
+    name: "folders-detail",
+    params: { uuid: data.folder_uuid, record: data.id },
+  });
+};
 
 // expose
 defineExpose({
