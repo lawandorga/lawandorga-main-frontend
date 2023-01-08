@@ -17,14 +17,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       
+      - name: Set Up Node
+        uses: actions/setup-node@v3
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Install Sentry CLI
         run: curl -sL https://sentry.io/get-cli/ | bash
 
       - name: Create A Sentry Release
-        run: | 
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new
+        run: sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
+          
+      - name: Set Netlify ENV
+        run: netlify env:set SENTRY_RELEASE "$VERSION"
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+      - name: Finalize A Sentry Release
+        run: sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
+          # sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new
 
       # - name: Sentry Release
       #   uses: getsentry/action-release@v1.2.1
