@@ -16,7 +16,7 @@ export function setupDefaultAxios($axios: AxiosInstance) {
     function (response) {
       return response;
     },
-    async function (error) {
+    function (error) {
       // ignore those errors because the modals or forms handle it
       if (
         error.config &&

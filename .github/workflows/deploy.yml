@@ -30,7 +30,7 @@ jobs:
         run: sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
           
       - name: Set Netlify ENV
-        run: netlify env:set SENTRY_RELEASE "$VERSION"
+        run: netlify env:set VITE_SENTRY_RELEASE "$VERSION"
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

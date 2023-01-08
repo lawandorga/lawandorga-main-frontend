@@ -13,7 +13,10 @@ import { useUserStore } from "./store/user";
 const app = createApp(App);
 
 // sentry
-if (import.meta.env.PROD)
+if (import.meta.env.PROD) {
+  const release = import.meta.env.VITE_SENTRY_RELEASE as string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).SENTRY_RELEASE = release;
   Sentry.init({
     app,
     dsn: "https://b56d6b7f58b840e986423662e9b4586e@sentry.law-orga.de/3",
@@ -28,6 +31,7 @@ if (import.meta.env.PROD)
     // We recommend adjusting this value in production
     tracesSampleRate: 1.0,
   });
+}
 
 // store
 const pinia = createPinia();
