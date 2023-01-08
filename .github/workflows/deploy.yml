@@ -1,4 +1,4 @@
-name: Analyze
+name: Deploy
 
 on:
   push:
@@ -29,4 +29,5 @@ jobs:
           SENTRY_ORG: sentry
           SENTRY_PROJECT: lawandorga-main-frontend
         with:
-          environment: production
+          # environment: production
+          ignore_missing: true
