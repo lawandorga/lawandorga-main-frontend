@@ -24,7 +24,7 @@ jobs:
         run: | 
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION"
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new
 
       # - name: Sentry Release
       #   uses: getsentry/action-release@v1.2.1
