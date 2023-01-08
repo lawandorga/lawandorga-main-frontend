@@ -26,13 +26,7 @@ const props = defineProps<{
 const { folderUuid, query } = toRefs(props);
 
 // request
-function request(
-  data: {
-    files: File[];
-    folder: string;
-  },
-  percentage: Ref<string>,
-): Promise<void> {
+function request(data: { files: File[]; folder: string }): Promise<void> {
   const formData = new FormData();
 
   if (data.files)
@@ -40,8 +34,6 @@ function request(
       formData.append("files", i);
     });
   if (data.folder) formData.append("folder", data.folder);
-
-  percentage.value = "(0%)";
 
   const config = {
     onUploadProgress: function (progressEvent: AxiosProgressEvent) {
@@ -62,7 +54,7 @@ function request(
     })
     .finally(() => {
       setTimeout(() => {
-        percentage.value = "";
+        addon.value = "";
       }, 500);
     });
 }
@@ -79,11 +71,7 @@ const fieldsMultiple = computed<types.FormField[]>(() => {
     },
   ];
 });
-const { commandModalOpen, commandRequest } = useCommand(
-  request,
-  query.value,
-  addon,
-);
+const { commandModalOpen, commandRequest } = useCommand(request, query.value);
 
 // expose
 defineExpose({

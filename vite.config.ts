@@ -12,6 +12,9 @@ export default defineConfig({
     port: 4200,
     host: "localhost",
   },
+  build: {
+    sourcemap: true,
+  },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
