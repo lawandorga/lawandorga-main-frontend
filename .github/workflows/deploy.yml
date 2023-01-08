@@ -7,6 +7,7 @@ on:
 
 env:
   VERSION: ${{ github.sha }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   sentry:
