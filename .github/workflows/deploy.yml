@@ -20,14 +20,23 @@ jobs:
       - name: Set Up Node
         uses: actions/setup-node@v3
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
+      - name: Install Deps
+        run: npm install
+
+      # - name: Install Netlify CLI
+      #   run: npm install -g netlify-cli
 
       - name: Install Sentry CLI
         run: curl -sL https://sentry.io/get-cli/ | bash
 
+      - name: Build
+        run: npm run build
+
       - name: Create A Sentry Release
-        run: sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
+        run: |
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend set-commits "$VERSION" --auto
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend files "$VERSION" upload-sourcemaps dist
           
       - name: Set Netlify ENV
         run: netlify env:set VITE_SENTRY_RELEASE "$VERSION"
@@ -35,9 +44,13 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
-      - name: Finalize A Sentry Release
-        run: sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
-          # sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new
+      - name: Publish To Netlify
+        run: netlify deploy --dir=dist
+
+      - name: Finalize And Deploy A Sentry Release
+        run: |
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new -e production
 
       # - name: Sentry Release
       #   uses: getsentry/action-release@v1.2.1
