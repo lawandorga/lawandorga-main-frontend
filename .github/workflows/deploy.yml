@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  VERSION: ${{ github.sha }}
+
 jobs:
   sentry:
     name: Create A Sentry Release
