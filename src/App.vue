@@ -68,7 +68,11 @@ const setMenuOpen = (open: boolean) => {
 };
 
 const setUpdateStatus = () => {
-  getUpdateStatus().then((d) => (updating.value = d.updating));
+  getUpdateStatus()
+    .then((d) => (updating.value = d.updating))
+    .catch(() => {
+      /*ignore*/
+    });
   setTimeout(() => setUpdateStatus(), 60000);
 };
 setUpdateStatus();

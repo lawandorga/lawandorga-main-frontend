@@ -13,20 +13,21 @@ import { useUserStore } from "./store/user";
 const app = createApp(App);
 
 // sentry
-Sentry.init({
-  app,
-  dsn: "https://b56d6b7f58b840e986423662e9b4586e@sentry.law-orga.de/3",
-  integrations: [
-    new BrowserTracing({
-      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-      tracePropagationTargets: ["localhost", "law-orga.de", /^\//],
-    }),
-  ],
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
+if (import.meta.env.PROD)
+  Sentry.init({
+    app,
+    dsn: "https://b56d6b7f58b840e986423662e9b4586e@sentry.law-orga.de/3",
+    integrations: [
+      new BrowserTracing({
+        routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+        tracePropagationTargets: ["localhost", "law-orga.de", /^\//],
+      }),
+    ],
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
 
 // store
 const pinia = createPinia();
