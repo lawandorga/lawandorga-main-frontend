@@ -65,7 +65,10 @@
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li v-for="record in data.records" :key="record" class="block">
               <router-link
-                :to="{ name: 'records-detail', params: { id: record.id } }"
+                :to="{
+                  name: 'records-detail',
+                  params: { record: record.uuid },
+                }"
                 class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ record.identifier }}
@@ -90,7 +93,10 @@
               class="block"
             >
               <router-link
-                :to="{ name: 'records-detail', params: { id: record.id } }"
+                :to="{
+                  name: 'records-detail',
+                  params: { record: record.uuid },
+                }"
                 class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ record.identifier }}
@@ -134,18 +140,17 @@
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
               v-for="questionnaire in data.questionnaires"
-              :key="questionnaire.id"
+              :key="questionnaire.name"
               class="block"
             >
               <router-link
                 :to="{
-                  name: 'records-detail',
-                  params: { id: questionnaire.record_id },
+                  name: 'folders-detail',
+                  params: { uuid: questionnaire.folder_uuid },
                 }"
                 class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
                 {{ questionnaire.name }}
-                ({{ questionnaire.record }})
                 <div
                   class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
                 >

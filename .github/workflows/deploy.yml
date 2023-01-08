@@ -1,0 +1,26 @@
+name: Analyze
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  VERSION: {{ $github.sha }}
+  SENTRY_AUTH_TOKEN: {{ secrets.SENTRY_AUTH_TOKEN }}
+
+jobs:
+  sentry:
+    name: Lint
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Install Sentry CLI
+        run: curl -sL https://sentry.io/get-cli/ | bash
+
+      - name: Create A Sentry Release
+        run: | 
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
+          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"

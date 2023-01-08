@@ -54,14 +54,18 @@ export interface RlcUser {
 }
 
 export interface DashboardInformation {
-  records: { identifier: string; id: number; state: string }[];
+  records: { identifier: string; id: number; state: string; uuid: string }[];
   members?: { id: number; name: string; rlcuserid: number }[];
   questionnaires?: {
-    record_id: number;
     name: string;
-    record: string;
+    folder_uuid: string;
   }[];
-  changed_records: { identifier: string; id: number; updated: string }[];
+  changed_records: {
+    identifier: string;
+    id: number;
+    updated: string;
+    uuid: string;
+  }[];
 }
 
 export interface LoginResponse {
