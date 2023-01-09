@@ -1,18 +1,21 @@
 <template>
-  <ModalForm
-    v-model="createWithinFolderModalOpen"
-    title="Create Record"
-    :fields="createWithinFolderFields"
-    :request="createWithinFolderRequest"
-    submit="Create"
-    :data="{ folder: folderUuid }"
-  />
+  <ButtonNormal kind="action" @click="createWithinFolderModalOpen = true">
+    Create Record
+    <ModalForm
+      v-model="createWithinFolderModalOpen"
+      title="Create Record"
+      :fields="createWithinFolderFields"
+      :request="createWithinFolderRequest"
+      submit="Create"
+      :data="{ folder: folderUuid }"
+    />
+  </ButtonNormal>
 </template>
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
-import { ModalForm, types } from "@lawandorga/components";
+import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
 import RecordsService, {
   recordsCreateRecordWithinFolder,

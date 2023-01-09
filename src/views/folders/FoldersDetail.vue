@@ -167,7 +167,6 @@
         />
 
         <FolderQuestionnaire
-          v-if="recordId"
           :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
@@ -208,8 +207,8 @@ import { IFolderDetail } from "@/types/folders";
 import { foldersGetFolderDetail } from "@/services/folders";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
-import RecordsCreateRecord from "@/actions/RecordsCreateRecord.vue";
 import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
+import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
 
 // record
 const route = useRoute();
@@ -253,7 +252,7 @@ const groups = computed<ContentGroupItem[]>(() => {
         .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid, stats: [] })),
       actions: [],
       buttons: [
-        h(RecordsCreateRecord, {
+        h(RecordsCreateRecordWithinFolder, {
           query: query,
           folderUuid: folder.value?.folder.uuid,
         }),

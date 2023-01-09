@@ -27,7 +27,6 @@ export function foldersGrantAccess(data: {
   uuid: string;
   user_uuid: string;
 }): Promise<void> {
-  console.log(data);
   return axios.post(`folders/folders/${data.uuid}/grant_access/`, data).then();
 }
 

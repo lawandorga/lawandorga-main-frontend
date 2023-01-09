@@ -61,7 +61,6 @@ const fields = computed<types.FormField[]>(() => [
 // created
 const router = useRouter();
 const recordCreated = (data: { folder_uuid: string; id: number }) => {
-  console.log(data);
   router.push({
     name: "folders-detail",
     params: { uuid: data.folder_uuid, record: data.id },

@@ -248,6 +248,7 @@
   />
   <RecordsCreateRecordWithinFolder
     ref="recordsCreateRecordWithinFolder"
+    class="hidden"
     :folder-uuid="parent ? parent : undefined"
     :query="query"
   />
