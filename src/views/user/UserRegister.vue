@@ -59,6 +59,15 @@ import { IRegisterPage } from "@/types/user";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import useGet from "@/composables/useGet";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+if (!("cookie" in route.query)) {
+  const cookieSetLink = `${import.meta.env.VITE_AUTH_URL}/redirect/?next=${
+    window.location.origin
+  }/user/register%3Fcookie`;
+  window.location.assign(cookieSetLink);
+}
 
 const page = ref<IRegisterPage | null>(null);
 useGet(usersGetRegisterPage, page);
