@@ -15,6 +15,7 @@ const app = createApp(App);
 // sentry
 if (import.meta.env.PROD) {
   const release = import.meta.env.VITE_SENTRY_RELEASE as string;
+  console.info(`release: ${release}`);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).SENTRY_RELEASE = release;
   Sentry.init({
