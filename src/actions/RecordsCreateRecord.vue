@@ -17,11 +17,10 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import RecordsService, {
-  recordsCreateRecordAndFolder,
-} from "@/services/records";
-import useGet from "@/composables/useGet";
+import RecordsService from "@/services/records";
 import { useRouter } from "vue-router";
+import useClient from "@/api/client";
+import useQuery from "@/composables/useQuery";
 
 // props
 const props = defineProps<{
@@ -30,15 +29,20 @@ const props = defineProps<{
 const { query } = toRefs(props);
 
 // create within folder
-const { commandRequest, commandModalOpen } = useCommand(
-  recordsCreateRecordAndFolder,
-  query.value,
-);
+const client = useClient();
+const request = client.post<{
+  name: string;
+  folder: string;
+  template: number;
+}>("api/records/records/v2/");
+
+const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 
 // create within records folder
 const availableTemplates = ref<RecordTemplate[]>([]);
+const getTemplates = useQuery(RecordsService.getTemplates, availableTemplates);
 watch(commandModalOpen, () => {
-  useGet(RecordsService.getTemplates, availableTemplates);
+  getTemplates();
 });
 
 // fields

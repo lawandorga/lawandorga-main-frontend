@@ -105,7 +105,14 @@ class AdminService {
   /*
   // Permission
   */
-  getPermissions() {
+  getPermissions(): Promise<
+    {
+      id: number;
+      name: string;
+      description: string;
+      recommended_for: string;
+    }[]
+  > {
     return axios.get("permissions/").then((response) => response.data);
   }
 

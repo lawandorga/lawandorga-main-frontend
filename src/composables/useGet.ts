@@ -1,3 +1,4 @@
+import { useErrorHandling } from "@/api/errors";
 import { Ref, watch, unref, computed, isRef } from "vue";
 
 type Nullable<T> = T extends (infer U)[]
@@ -11,11 +12,18 @@ function useGet<
   /* eslint-enable */
 >(
   getFunc: Fn,
-  obj: Ref<Type>,
+  obj: Ref<Type> | Type,
   ...params: Nullable<Parameters<Fn>>
 ): () => void {
+  const { handleQueryError } = useErrorHandling();
+
   const getRequest = () => {
-    getFunc(...params.map(unref)).then((newItem) => (obj.value = newItem));
+    getFunc(...params.map(unref))
+      .then((newItem) => {
+        if (isRef(obj)) obj.value = newItem;
+        else obj = newItem;
+      })
+      .catch(handleQueryError);
   };
 
   const refParams = computed(() => {

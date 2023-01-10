@@ -18,8 +18,8 @@
 import { ButtonNormal } from "@lawandorga/components";
 import { ModalConfirm } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
-import axios from "axios";
 import { toRefs } from "vue";
+import useClient from "@/api/client";
 
 const props = defineProps<{
   query: () => void;
@@ -29,12 +29,10 @@ const props = defineProps<{
 }>();
 const { query, id } = toRefs(props);
 
-function recordsDeclineAccess(data: { id: number }) {
-  return axios.post(`records/accesses/${data.id}/decline/`).then();
-}
-
-const { commandRequest, commandModalOpen } = useCommand(
-  recordsDeclineAccess,
-  query.value,
+const client = useClient();
+const request = client.post<{ id: number }>(
+  "api/records/accesses/{id}/decline/",
 );
+
+const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 </script>

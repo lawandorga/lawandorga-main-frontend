@@ -1,3 +1,4 @@
+import { useErrorHandling } from "@/api/errors";
 import { Ref, unref } from "vue";
 
 type Nullable<T> = T extends (infer U)[]
@@ -14,10 +15,14 @@ function useQuery<
   obj: Ref<Type>,
   ...params: Nullable<Parameters<Fn>>
 ): () => Promise<void> {
+  const { handleQueryError } = useErrorHandling();
+
   const getRequest = () => {
-    return getFunc(...params.map(unref)).then((newItem) => {
-      obj.value = newItem;
-    });
+    return getFunc(...params.map(unref))
+      .then((newItem) => {
+        obj.value = newItem;
+      })
+      .catch(handleQueryError);
   };
 
   return getRequest;

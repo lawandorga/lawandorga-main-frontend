@@ -17,12 +17,11 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import RecordsService, {
-  recordsCreateRecordWithinFolder,
-} from "@/services/records";
-import useGet from "@/composables/useGet";
+import RecordsService from "@/services/records";
 import { IAvailableFolder } from "@/types/folders";
 import { foldersGetAvailableFolders } from "@/services/folders";
+import useClient from "@/api/client";
+import useQuery from "@/composables/useQuery";
 
 // props
 const props = defineProps<{
@@ -32,18 +31,28 @@ const props = defineProps<{
 const { query } = toRefs(props);
 
 // create within folder
+const client = useClient();
+const request = client.post<{
+  name: string;
+  folder: string;
+  template: number;
+}>("api/records/records/v2/within_folder/");
+
 const {
   commandRequest: createWithinFolderRequest,
   commandModalOpen: createWithinFolderModalOpen,
-} = useCommand(recordsCreateRecordWithinFolder, query.value);
+} = useCommand(request, query.value);
 
 const availableFolders = ref<IAvailableFolder[]>([]);
 const availableTemplates = ref<RecordTemplate[]>([]);
 
+const getTemplates = useQuery(RecordsService.getTemplates, availableTemplates);
+const getFolders = useQuery(foldersGetAvailableFolders, availableFolders);
+
 watch(createWithinFolderModalOpen, (newValue) => {
   if (newValue) {
-    useGet(RecordsService.getTemplates, availableTemplates);
-    useGet(foldersGetAvailableFolders, availableFolders);
+    getTemplates();
+    getFolders();
   }
 });
 

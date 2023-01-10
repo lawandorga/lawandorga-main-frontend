@@ -18,22 +18,13 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import InternalService from "@/services/internal";
 import { ImprintPage } from "@/types/internal";
+import useGet from "@/composables/useGet";
 
-export default defineComponent({
-  setup() {
-    const article = ref<ImprintPage | null>(null);
+const article = ref<ImprintPage | null>(null);
 
-    onMounted(() =>
-      InternalService.getImprintPage().then((item) => (article.value = item)),
-    );
-
-    return {
-      article,
-    };
-  },
-});
+useGet(InternalService.getImprintPage, article.value);
 </script>

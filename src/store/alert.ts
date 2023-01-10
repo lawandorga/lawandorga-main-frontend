@@ -1,5 +1,4 @@
 import { types } from "@lawandorga/components";
-import { AlertState } from "@/types/state";
 import { defineStore } from "pinia";
 
 export const useAlertStore = defineStore("alert", {
@@ -7,7 +6,7 @@ export const useAlertStore = defineStore("alert", {
     alerts: [] as types.AlertItem[],
   }),
   getters: {
-    similar: (state: AlertState) => (alert: { message: string }) =>
+    similar: (state) => (alert: { message: string }) =>
       state.alerts.find((item) => item.message === alert.message),
   },
   actions: {

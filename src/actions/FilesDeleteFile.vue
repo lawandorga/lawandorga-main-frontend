@@ -15,12 +15,11 @@
 import { ModalDelete, ButtonNormal } from "@lawandorga/components";
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
-import axios from "axios";
+import useClient from "@/api/client";
 
 // request
-function request(data: { uuid: string }): Promise<void> {
-  return axios.delete(`files/v2/${data.uuid}/`).then();
-}
+const client = useClient();
+const request = client.delete(`api/files/v2/{uuid}/`);
 
 // emits
 const emit = defineEmits(["deleted"]);

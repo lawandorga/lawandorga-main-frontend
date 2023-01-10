@@ -19,6 +19,7 @@ import { IQuestionnaireTemplate } from "@/types/questionnaire";
 import { ref, toRefs, watch } from "vue";
 import RecordsService from "@/services/records";
 import useCommand from "@/composables/useCommand";
+import useClient from "@/api/client";
 
 const props = defineProps<{ query: () => void; folderUuid?: string }>();
 const { query, folderUuid } = toRefs(props);
@@ -33,10 +34,10 @@ const fields = ref<types.FormField[]>([
   },
 ]);
 
-const { commandRequest, commandModalOpen } = useCommand(
-  RecordsService.createQuestionnaire,
-  query.value,
-);
+const client = useClient();
+const request = client.post("api/questionnaires/questionnaires/v2/publish/");
+
+const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 
 watch(commandModalOpen, (newValue) => {
   if (newValue)

@@ -216,7 +216,7 @@ export default defineComponent({
   setup() {
     const data = ref<DashboardInformation | null>(null);
 
-    UsersService.dashboard().then((dashboard) => (data.value = dashboard));
+    useGet(UsersService.dashboard, data);
 
     const userStore = useUserStore();
     const { rlc, user } = storeToRefs(userStore);

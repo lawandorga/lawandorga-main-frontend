@@ -11,8 +11,8 @@
 <script setup lang="ts">
 import { FormGenerator, types } from "@lawandorga/components";
 import { ref, toRefs } from "vue";
-import { messagesSendMessage } from "@/services/messages";
 import useCommand from "@/composables/useCommand";
+import useClient from "@/api/client";
 
 // props
 const props = defineProps<{
@@ -20,6 +20,10 @@ const props = defineProps<{
   folderUuid?: string;
 }>();
 const { query, folderUuid } = toRefs(props);
+
+// request
+const client = useClient();
+const request = client.post("api/messages/messages/");
 
 // send message
 const data = ref();
@@ -31,5 +35,5 @@ const fields: types.FormField[] = [
     required: true,
   },
 ];
-const { commandRequest } = useCommand(messagesSendMessage, query.value);
+const { commandRequest } = useCommand(request, query.value);
 </script>

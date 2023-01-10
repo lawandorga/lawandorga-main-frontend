@@ -6,12 +6,16 @@
 
 <script setup lang="ts">
 import { IQuestionnaireAnswer } from "@/types/questionnaire";
-import RecordsService from "@/services/records";
 import { ButtonNormal } from "@lawandorga/components";
+import useClient from "@/api/client";
 
 defineProps<{ answer: IQuestionnaireAnswer }>();
 
+const client = useClient();
+
 const downloadFile = (answer: IQuestionnaireAnswer) => {
-  RecordsService.downloadQuestionnaireAnswerFile(answer);
+  client.downloadFile(
+    "api/questionnaires/questionnaire_answers/{id}/download_file/",
+  )({ filename: answer.data.split("/").at(-1) || "filename", id: answer.id });
 };
 </script>

@@ -18,20 +18,13 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
 import InternalService from "@/services/internal";
 import { ImprintPage } from "@/types/internal";
+import useGet from "@/composables/useGet";
+import { ref } from "vue";
 
-export default defineComponent({
-  setup() {
-    const article = ref<ImprintPage | null>(null);
+const article = ref<ImprintPage | null>(null);
 
-    InternalService.getTomsPage().then((item) => (article.value = item));
-
-    return {
-      article,
-    };
-  },
-});
+useGet(InternalService.getTomsPage, article);
 </script>

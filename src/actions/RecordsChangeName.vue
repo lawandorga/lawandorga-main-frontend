@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
+import useClient from "@/api/client";
 import useCommand from "@/composables/useCommand";
-import { recordsChangeName } from "@/services/records";
 import { ButtonNormal, ModalUpdate, types } from "@lawandorga/components";
 import { toRefs } from "vue";
 
@@ -31,10 +31,11 @@ const fields = [
     required: true,
   },
 ] as types.FormField[];
-const { commandModalOpen, commandRequest } = useCommand(
-  recordsChangeName,
-  query.value,
-);
+
+const client = useClient();
+const request = client.post("api/records/records/v2/{id}/change_name/");
+
+const { commandModalOpen, commandRequest } = useCommand(request, query.value);
 
 // expose
 defineExpose({

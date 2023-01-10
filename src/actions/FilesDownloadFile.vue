@@ -5,26 +5,18 @@
 <script lang="ts" setup>
 import { ButtonNormal } from "@lawandorga/components";
 import { toRefs } from "vue";
-import { downloadFileRequest } from "@/utils/download";
-import axios from "axios";
+import useClient from "@/api/client";
 
-function request(data: { uuid: string; name: string }): void {
-  downloadFileRequest(
-    axios,
-    `files/v2/query/${data.uuid}/download/`,
-    data.name,
-  );
-}
+const client = useClient();
+const request = client.downloadFile("api/files/v2/query/{uuid}/download/");
 
 const props = defineProps<{
   name: string;
   fileUuid: string;
-  query: () => void;
 }>();
-const { name, fileUuid, query } = toRefs(props);
+const { name, fileUuid } = toRefs(props);
 
 const downloadFile = () => {
-  request({ name: name.value, uuid: fileUuid.value });
-  query.value();
+  request({ filename: name.value, uuid: fileUuid.value });
 };
 </script>

@@ -307,9 +307,7 @@ export default defineComponent({
             "If a group is selected only members of this group will be selectable.",
           options: [] as Group[],
         });
-        AdminService.getGroups().then(
-          (groups) => (updateFields.value[3].options = groups),
-        );
+        useGet(AdminService.getGroups, updateFields.value[3].options);
       }
 
       return fields;

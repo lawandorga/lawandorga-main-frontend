@@ -25,7 +25,7 @@
 import { toRefs } from "vue";
 import { ButtonNormal, ModalForm } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
-import axios from "axios";
+import useClient from "@/api/client";
 
 // props
 const props = defineProps<{
@@ -35,18 +35,15 @@ const props = defineProps<{
 const { query, recordId } = toRefs(props);
 
 // request
-function createDeletionRequest(data: {
-  record: number;
-  explanation: string;
-}): Promise<void> {
-  return axios.post("/records/deletions/", data).then();
-}
+const client = useClient();
+const request = client.post("/api/records/deletions/");
+
 // create
 const {
   commandRequest: createDeletionRequestRequest,
   commandModalOpen: createDeletionRequestModalOpen,
   temporary,
-} = useCommand(createDeletionRequest, query.value);
+} = useCommand(request, query.value);
 
 // expose
 defineExpose({

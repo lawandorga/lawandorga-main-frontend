@@ -16,7 +16,7 @@
 import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
-import axios from "axios";
+import useClient from "@/api/client";
 
 // props
 const props = defineProps<{
@@ -26,18 +26,8 @@ const props = defineProps<{
 const { folderUuid, query } = toRefs(props);
 
 // request
-function request(data: {
-  // name: string;
-  folder: string;
-  file: File;
-}): Promise<void> {
-  const formData = new FormData();
-  if (data.folder) formData.append("folder", data.folder);
-  if (data.file) formData.append("file", data.file);
-  // if (data.name) formData.append("name", data.name);
-
-  return axios.post(`files/v2/`, formData).then();
-}
+const client = useClient();
+const request = client.postAsFormData("api/files/v2/");
 
 // create
 const fields = [

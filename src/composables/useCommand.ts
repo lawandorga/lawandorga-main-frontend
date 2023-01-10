@@ -1,5 +1,5 @@
 import { types } from "@lawandorga/components";
-import { ref, unref } from "vue";
+import { Ref, ref, unref } from "vue";
 import { isFunction } from "lodash";
 import { Reffed } from "@/types/shared";
 
@@ -16,7 +16,13 @@ export default function useCommand<
   requestFunc: RFn,
   queries: VoidFn[] | VoidFn = [],
   ...params: Reffed<DropFirst<Parameters<RFn>>>
-) {
+): {
+  /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
+  temporary: Ref<{ [key: string]: any } | null>;
+  commandRequest: (data: types.JsonModel) => Promise<any>;
+  /* eslint-enable */
+  commandModalOpen: Ref<boolean>;
+} {
   const commandModalOpen = ref(false);
 
   const commandParams = params.filter((p) => !isFunction(p));

@@ -23,28 +23,16 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import InternalService from "@/services/internal";
 import { useRoute } from "vue-router";
 import { IArticle } from "@/types/internal";
 import { formatDate } from "@/utils/date";
+import useGet from "@/composables/useGet";
 
-export default defineComponent({
-  setup() {
-    const article = ref<IArticle | null>(null);
-    const route = useRoute();
+const article = ref<IArticle | null>(null);
+const route = useRoute();
 
-    onMounted(() =>
-      InternalService.getArticle(route.params.id as string).then(
-        (item) => (article.value = item),
-      ),
-    );
-
-    return {
-      article,
-      formatDate,
-    };
-  },
-});
+useGet(InternalService.getArticle, article, route.params.id as string);
 </script>

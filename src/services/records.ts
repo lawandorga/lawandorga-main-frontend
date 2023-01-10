@@ -33,13 +33,6 @@ export function recordsGetAccessesPage(): Promise<IRecordAccess[]> {
   return axios.get("records/query/accesses/").then((r) => r.data);
 }
 
-export function recordsChangeName(data: {
-  id: number;
-  name: string;
-}): Promise<void> {
-  return axios.post(`records/records/v2/${data.id}/change_name/`, data).then();
-}
-
 export function recordsGetDeletions(): Promise<RecordDeletion[]> {
   return axios.get("records/query/deletions/").then((r) => r.data);
 }
@@ -244,7 +237,7 @@ class RecordsService {
   }
 
   // questionnairequestion
-  getIQuestionnaireQuestions(
+  getQuestionnaireQuestions(
     questionnaire: IQuestionnaireTemplate,
   ): Promise<IQuestionnaireQuestion[]> {
     return axios
@@ -254,7 +247,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createIQuestionnaireQuestion(
+  createQuestionnaireQuestion(
     field: IQuestionnaireQuestion,
   ): Promise<IQuestionnaireQuestion> {
     return axios
@@ -265,7 +258,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  updateIQuestionnaireQuestion(
+  updateQuestionnaireQuestion(
     field: IQuestionnaireQuestion,
   ): Promise<IQuestionnaireQuestion> {
     return axios
@@ -276,7 +269,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  deleteIQuestionnaireQuestion(field: IQuestionnaireQuestion): Promise<void> {
+  deleteQuestionnaireQuestion(field: IQuestionnaireQuestion): Promise<void> {
     return axios.delete(`questionnaires/questionnaire_fields/${field.id}/`);
   }
 
@@ -310,7 +303,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  sendIQuestionnaireAnswer(
+  sendQuestionnaireAnswer(
     data: JsonModel,
     recordQuestionnaire: IQuestionnaire,
   ): Promise<IQuestionnaire> {
@@ -326,7 +319,7 @@ class RecordsService {
   }
 
   // questionnaireanswer
-  downloadIQuestionnaireAnswerFile(
+  downloadQuestionnaireAnswerFile(
     questionnaireAnswer: IQuestionnaireAnswer,
   ): void {
     downloadFileRequest(

@@ -12,22 +12,21 @@
 </template>
 
 <script setup lang="ts">
-import RecordsService from "@/services/records";
 import { ButtonNormal, ModalDelete } from "@lawandorga/components";
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
-
-const emit = defineEmits(["deleted"]);
+import useClient from "@/api/client";
 
 const props = defineProps<{
   id?: number;
   query: () => void;
 }>();
-
 const { id, query } = toRefs(props);
 
-const { commandModalOpen, commandRequest } = useCommand(
-  RecordsService.deleteQuestionnaire,
-  query.value,
-);
+const emit = defineEmits(["deleted"]);
+
+const client = useClient();
+const request = client.delete("api/questionnaires/questionnaires/{id}/");
+
+const { commandModalOpen, commandRequest } = useCommand(request, query.value);
 </script>

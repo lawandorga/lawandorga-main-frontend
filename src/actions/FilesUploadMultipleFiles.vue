@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
-import { toRefs, ref, Ref, computed } from "vue";
+import { toRefs, ref, computed } from "vue";
 import useCommand from "@/composables/useCommand";
 import axios, { AxiosProgressEvent } from "axios";
 
