@@ -30,11 +30,14 @@ const { query } = toRefs(props);
 
 // create within folder
 const client = useClient();
-const request = client.post<{
-  name: string;
-  folder: string;
-  template: number;
-}>("api/records/records/v2/");
+const request = client.post<
+  {
+    name: string;
+    folder: string;
+    template: number;
+  },
+  { folder_uuid: string; id: string }
+>("api/records/records/v2/");
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 

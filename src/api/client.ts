@@ -44,13 +44,11 @@ class Client {
       downloadFileRequest(this.caller, this.buildUrl(url, data), data.filename);
   }
 
-  post<D = any>(url: string): (data: D) => Promise<void> {
+  post<D = any, R = any>(url: string): (data: D) => Promise<R> {
     return (data: D) =>
       this.caller
         .post(this.buildUrl(url, data), data)
-        .then(() => {
-          /* ignore */
-        })
+        .then((r) => r.data)
         .catch(this.commandErrorHandler);
   }
 
