@@ -10,6 +10,7 @@ env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+  VITE_SENTRY_RELEASE: ${{ github.sha }}
 
 jobs:
   sentry:
