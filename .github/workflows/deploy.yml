@@ -28,6 +28,9 @@ jobs:
       - name: Install Deps
         run: npm install
 
+      - name: Install Sentry CLI
+        run: curl -sL https://sentry.io/get-cli/ | bash
+
       - name: Build
         run: npm run build
 
