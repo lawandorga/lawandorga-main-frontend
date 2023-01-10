@@ -199,14 +199,16 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
 }
 
 export function handleQueryError(context: IContext): Promise<void> {
-  return Promise.reject(context)
-    .catch(handleAuthenticationError)
-    .catch(handleNetworkError)
-    .catch(handleFileDownloadError)
-    .catch(handleServerError)
-    .catch(handleDetailError)
-    .catch(handleTitleError)
-    .catch(resetContext);
+  return (
+    Promise.reject(context)
+      .catch(handleAuthenticationError)
+      .catch(handleNetworkError)
+      .catch(handleFileDownloadError)
+      .catch(handleServerError)
+      // .catch(handleDetailError)
+      // .catch(handleTitleError)
+      .catch(resetContext)
+  );
 }
 
 export function handleCommandError(context: IContext): Promise<void> {

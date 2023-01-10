@@ -59,7 +59,10 @@
           </div>
         </div>
 
-        <div class="col-span-3">
+        <div
+          v-if="userStore.hasPermission('admin__manage_permissions')"
+          class="col-span-3"
+        >
           <TableGenerator
             :head="[
               { name: 'Permission', key: (obj) => obj.permission_object.name },
@@ -166,6 +169,7 @@ import useUpdate from "@/composables/useUpdate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { ModalForm, ButtonNormal } from "@lawandorga/components";
+import { useUserStore } from "@/store/user";
 
 const userFields = [
   {
@@ -260,6 +264,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
+    const userStore = useUserStore();
 
     // user
     const user = ref(null) as Ref<RlcUser | null>;
@@ -279,7 +284,15 @@ export default defineComponent({
 
     // permissions
     const permissions = ref(null) as Ref<HasPermission[] | null>;
-    useGet(AdminService.getUserPermissions, permissions, user);
+    const getPermissions = useQuery(
+      AdminService.getUserPermissions,
+      permissions,
+      user,
+    );
+    watch(user, () => {
+      if (userStore.hasPermission("admin__manage_permissions"))
+        getPermissions();
+    });
 
     // add permission
     const permissionFields = reactive([
@@ -316,6 +329,7 @@ export default defineComponent({
 
     return {
       user,
+      userStore,
       // update user
       userFields,
       updateRequest,

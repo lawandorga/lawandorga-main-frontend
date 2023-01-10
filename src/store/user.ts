@@ -15,6 +15,8 @@ export const useUserStore = defineStore("user", () => {
 
   const user = ref<RlcUser>();
 
+  const permissions = ref<string[]>();
+
   const badges = ref<BadgeInformation>();
   const adminBadges = computed(() => {
     if (badges.value === undefined) return 0;
@@ -33,6 +35,7 @@ export const useUserStore = defineStore("user", () => {
     user.value = data.user;
     badges.value = data.badges;
     settings.value = data.settings;
+    permissions.value = data.permissions;
     Sentry.setUser({
       email: data.user.email,
       name: data.user.name,
@@ -90,11 +93,16 @@ export const useUserStore = defineStore("user", () => {
     return !!user.value;
   });
 
+  const hasPermission = (permission: string): boolean => {
+    return !!permissions.value?.includes(permission);
+  };
+
   const reset = () => {
     rlc.value = undefined;
     user.value = undefined;
     badges.value = undefined;
     settings.value = undefined;
+    permissions.value = undefined;
     Sentry.setUser(null);
   };
 
@@ -113,6 +121,7 @@ export const useUserStore = defineStore("user", () => {
     settings,
     loaded,
     locked,
+    hasPermission,
     updateData,
     updateSetting,
     getSetting,
