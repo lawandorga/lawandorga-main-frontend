@@ -279,6 +279,9 @@ import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
 
+const a = 2134;
+console.log(a);
+
 // content
 const addContentModalOpen = ref(false);
 function close() {
