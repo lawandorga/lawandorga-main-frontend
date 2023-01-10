@@ -153,6 +153,7 @@ import { ref, watch } from "vue";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
 import { CircleLoader } from "@lawandorga/components";
+import { useErrorHandling } from "@/api/errors";
 
 export default defineComponent({
   components: {
@@ -179,17 +180,21 @@ export default defineComponent({
 
     const documentPermissions = ref<CollabDocumentPermission[] | null>(null);
 
+    const { handleQueryError } = useErrorHandling();
+
     watch(documentId, (newValue) => {
       document.value = null;
       documentPermissions.value = null;
       if (newValue === null) return;
-      CollabService.getLatestVersion(newValue).then((doc) => {
-        document.value = doc;
-        emit("found", doc);
-      });
-      CollabService.getDocumentPermissions(newValue).then(
-        (permissions) => (documentPermissions.value = permissions),
-      );
+      CollabService.getLatestVersion(newValue)
+        .then((doc) => {
+          document.value = doc;
+          emit("found", doc);
+        })
+        .catch(handleQueryError);
+      CollabService.getDocumentPermissions(newValue)
+        .then((permissions) => (documentPermissions.value = permissions))
+        .catch(handleQueryError);
     });
 
     // create and delete permission
