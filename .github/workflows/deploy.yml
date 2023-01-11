@@ -21,15 +21,16 @@ jobs:
     secrets:
       artifact: lawandorga-main-frontend-build
 
-  # deploy:
-  #   name: Deploy To Scaleway
-  #   uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
-  #   with:
-  #     bucket: ${{ env.BUCKET }}
-  #     artifact: ${{ env.ARTIFACT }}
-  #   secrets:
-  #     S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
-  #     S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+  deploy:
+    needs: [build]
+    name: Deploy To Scaleway
+    uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
+    with:
+    secrets:
+      artifact: ${{ env.ARTIFACT }}
+      bucket: ${{ env.BUCKET }}
+      S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
+      S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
   # sentry:
   #   name: Sentry

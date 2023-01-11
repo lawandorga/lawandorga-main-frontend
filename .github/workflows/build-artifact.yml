@@ -5,15 +5,21 @@ on:
     secrets:
       artifact:
         required: true
+  outputs:
+    artifact:
+      description: The Name Of The Artifact
+      value: ${{ jobs.build.outputs.artifact }}
 
 env:
   VERSION: ${{ github.sha }}  
   VITE_SENTRY_RELEASE: ${{ github.sha }}
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    name: Build
     runs-on: ubuntu-22.04
+    outputs:
+      artifact: ${{ steps.output.outputs.artifact }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
@@ -36,3 +42,7 @@ jobs:
           path: dist
           if-no-files-found: error
           retention-days: 5
+
+      - name: Output Artifact Name
+        id: output
+        run: echo "artifact=${{ secrets.artifact }}" >> $GITHUB_OUTPUT
