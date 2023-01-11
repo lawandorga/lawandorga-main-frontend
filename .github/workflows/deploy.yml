@@ -19,7 +19,7 @@ jobs:
     name: Build
     uses: ./.github/workflows/build-artifact.yml
     secrets:
-      artifact: ${{ env.ARTIFACT }}
+      artifact: lawandorga-main-frontend-build
 
   # deploy:
   #   name: Deploy To Scaleway
