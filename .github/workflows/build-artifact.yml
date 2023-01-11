@@ -9,7 +9,7 @@ on:
     outputs:
       artifact:
         description: The Name Of The Artifact
-        value: ${{ jobs.build.outputs.artifact }}
+        value: ${{ jobs.build.steps.output.outputs.artifact }}
 
 env:
   VERSION: ${{ github.sha }}  
@@ -19,8 +19,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-22.04
-    outputs:
-      artifact: ${{ steps.output.outputs.artifact }}
+    # outputs:
+    #   artifact: ${{ steps.output.outputs.artifact }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
