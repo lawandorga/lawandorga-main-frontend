@@ -34,7 +34,7 @@
     "@tiptap/vue-3": "^2.0.0-beta.209",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.18",
-    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.47.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
