@@ -56,7 +56,7 @@ jobs:
           EOF
 
       - name: Upload To S3
-        run: aws s3 cp dist s3://${{ github.event.repository.name }}/ --recursive
+        run: aws s3 cp dist s3://lawandorga-main-frontend/ --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
 
       # - name: Publish To Netlify
       #   run: netlify deploy --dir=dist --prod
