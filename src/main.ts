@@ -63,15 +63,3 @@ if ("serviceWorker" in navigator) {
       // registration failed
     });
 }
-
-// catch global errors
-window.addEventListener("error", (event: ErrorEvent) => {
-  console.log(event);
-  if (
-    event.error.message.includes("Failed to fetch dynamically imported module")
-  ) {
-    console.log("inhere");
-    // window.location.reload();
-    return true;
-  }
-});
