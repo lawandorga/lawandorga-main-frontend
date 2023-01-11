@@ -13,6 +13,12 @@ jobs:
       artifact: lawandorga-main-frontend-build
       version: ${{ github.sha }}
 
+  job2:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - run: echo ${{ needs.build.outputs.artifact }} ${{ needs.build.outputs.version }}
+
   deploy:
     needs: [build]
     name: Deploy To Scaleway
@@ -29,7 +35,7 @@ jobs:
     name: Create A Sentry Release
     uses: ./.github/workflows/create-a-sentry-release.yml
     with:
-      version: ${{ needs.build.outputs.artifact }}
+      version: ${{ needs.build.outputs.version }}
       artifact: ${{ needs.build.outputs.artifact }}
       project: lawandorga-main-frontend
       org: sentry
