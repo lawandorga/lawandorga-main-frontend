@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      artifact:
+        required: true
+        type: string
+
+env:
+  VERSION: ${{ github.sha }}  
+  VITE_SENTRY_RELEASE: ${{ github.sha }}
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3 
+        with:
+          fetch-depth: 0
+
+      - name: Set Up Node
+        uses: actions/setup-node@v3
+        with:
+          cache: npm
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ input.artifact }}
+          path: dist
+          if-no-files-found: error
+          retention-days: 5

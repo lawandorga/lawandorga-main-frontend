@@ -11,6 +11,8 @@ env:
   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
   VITE_SENTRY_RELEASE: ${{ github.sha }}
+  BUCKET: lawandorga-main-frontend
+  ARTIFACT: lawandorga-main-frontend-build
 
 jobs:
   deploy:
@@ -21,23 +23,20 @@ jobs:
         uses: actions/checkout@v3 
         with:
           fetch-depth: 0
-      
-      - name: Set Current Date
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> ${GITHUB_ENV}
 
-      - name: Set Up Node
-        uses: actions/setup-node@v3
+      - name: Build
+        uses: ./.github/workflows/build-artifact.yml
         with:
-          cache: npm
+          artifact: ${{ env.ARTIFACT }}
 
-      - name: Install Deps
-        run: npm install
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist
 
       - name: Install Sentry CLI
         run: curl -sL https://sentry.io/get-cli/ | bash
-
-      - name: Build
-        run: npm run build
 
       - name: Create A Sentry Release
         run: |
@@ -45,42 +44,14 @@ jobs:
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend set-commits "$VERSION" --auto
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend files "$VERSION" upload-sourcemaps dist
 
-      - name: Install AWS Cli Dependencies
-        run: pip3 install awscli awscli-plugin-endpoint
-
-      - name: Configure AWS Cli
-        run: |
-          aws configure set plugins.endpoint awscli_plugin_endpoint
-          aws configure << EOF
-          ${{ secrets.S3_ACCESS_TOKEN }}
-          ${{ secrets.S3_SECRET_KEY }}
-          fr-par
-
-          EOF
-
-      - name: Upload To S3
-        run: aws s3 cp dist s3://lawandorga-main-frontend/${{ env.DATE }}/ --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
-
-      - name: Point To The Uploaded Folder
-        run: |
-          cat << EOF > ./bucket-website.json
-          {
-          "IndexDocument" : {
-          "Suffix": "${{ env.DATE }}/index.html"
-          },
-          "ErrorDocument": {
-          "Key": "${{ env.DATE }}/index.html"
-          }
-          }
-          EOF
-
-          echo ${{ env.DATE }}
-          cat ./bucket-website.json
-
-          aws s3api put-bucket-website --bucket lawandorga-main-frontend --endpoint-url https://s3.fr-par.scw.cloud --region fr-par --website-configuration file://bucket-website.json
-
-      # - name: Publish To Netlify
-      #   run: netlify deploy --dir=dist --prod
+      - name: Deploy To Scaleway
+        uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
+        with:
+          bucket: ${{ env.BUCKET }}
+          artifact: ${{ env.ARTIFACT }}
+        secrets:
+          S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
+          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
       - name: Finalize And Deploy A Sentry Release
         run: |
