@@ -5,10 +5,10 @@ on:
     secrets:
       artifact:
         required: true
-  outputs:
-    artifact:
-      description: The Name Of The Artifact
-      value: ${{ jobs.build.outputs.artifact }}
+    outputs:
+      artifact:
+        description: The Name Of The Artifact
+        value: ${{ jobs.build.outputs.artifact }}
 
 env:
   VERSION: ${{ github.sha }}  
