@@ -39,11 +39,11 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ input.artifact }}
+          name: ${{ inputs.artifact }}
           path: dist
           if-no-files-found: error
           retention-days: 5
 
       - name: Output Artifact Name
         id: output
-        run: echo "artifact=${{ input.artifact }}" >> $GITHUB_OUTPUT
+        run: echo "artifact=${{ inputs.artifact }}" >> $GITHUB_OUTPUT
