@@ -74,6 +74,8 @@ jobs:
           }
           EOF
 
+          cat bucket-website.json
+
           aws s3api put-bucket-website --bucket lawandorga-main-frontend --endpoint-url https://s3.fr-par.scw.cloud --region fr-par --website-configuration file://bucket-website.json
 
       # - name: Publish To Netlify
