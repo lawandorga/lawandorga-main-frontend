@@ -23,7 +23,6 @@ jobs:
     needs: [build]
     name: Deploy To Scaleway
     uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
-    with:
     secrets:
       artifact: ${{ needs.build.outputs.artifact }}
       bucket: lawandorga-main-frontend
