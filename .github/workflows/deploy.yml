@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      ARTIFACT2: ${{ env.ARTIFACT }}
+      ARTIFACT2: test123
 
     steps:
       - name: Checkout
