@@ -63,7 +63,7 @@ jobs:
 
       - name: Point To The Uploaded Folder
         run: |
-          cat << EOF > bucket-website.json
+          cat << EOF > ./bucket-website.json
           {
           "IndexDocument" : {
           "Suffix": "${{ env.DATE }}/index.html"
@@ -74,8 +74,8 @@ jobs:
           }
           EOF
 
-          cat ${{ env.DATE }}
-          cat bucket-website.json
+          echo ${{ env.DATE }}
+          cat ./bucket-website.json
 
           aws s3api put-bucket-website --bucket lawandorga-main-frontend --endpoint-url https://s3.fr-par.scw.cloud --region fr-par --website-configuration file://bucket-website.json
 
