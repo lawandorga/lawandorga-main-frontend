@@ -1,4 +1,4 @@
-name: Deploy
+name: Build Artifact
 
 on:
   workflow_call:
