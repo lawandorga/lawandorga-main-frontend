@@ -15,19 +15,30 @@ env:
   ARTIFACT: lawandorga-main-frontend-build
 
 jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build-artifact.yml
+    with:
+      artifact: ${{ env.ARTIFACT }}
+
   deploy:
-    name: Deploy
+    name: Deploy To Scaleway
+    uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
+    with:
+      bucket: ${{ env.BUCKET }}
+      artifact: ${{ env.ARTIFACT }}
+    secrets:
+      S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
+      S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+
+  sentry:
+    name: Sentry
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
         with:
           fetch-depth: 0
-
-      - name: Build
-        uses: ./.github/workflows/build-artifact.yml
-        with:
-          artifact: ${{ env.ARTIFACT }}
 
       - name: Download Artifact
         uses: actions/download-artifact@v3
@@ -43,15 +54,6 @@ jobs:
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend set-commits "$VERSION" --auto
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend files "$VERSION" upload-sourcemaps dist
-
-      - name: Deploy To Scaleway
-        uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
-        with:
-          bucket: ${{ env.BUCKET }}
-          artifact: ${{ env.ARTIFACT }}
-        secrets:
-          S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
-          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
       - name: Finalize And Deploy A Sentry Release
         run: |
