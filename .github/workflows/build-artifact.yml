@@ -12,10 +12,10 @@ on:
     outputs:
       artifact:
         description: The Name Of The Artifact
-        value: ${{ jobs.build.steps.output.outputs.artifact }}
+        value: ${{ jobs.build.outputs.artifact }}
       version:
         description: The Version Of The Build Artifact
-        value: ${{ jobs.build.steps.output.outputs.version }}
+        value: ${{ jobs.build.outputs.version }}
 
 jobs:
   build:
@@ -24,6 +24,10 @@ jobs:
 
     env:
       VITE_SENTRY_RELEASE: ${{ inputs.version }}
+
+    outputs:
+      artifact: ${{ steps.output.outputs.artifact }}
+      version: ${{ steps.output.outputs.version }}
 
     steps:
       - name: Checkout
