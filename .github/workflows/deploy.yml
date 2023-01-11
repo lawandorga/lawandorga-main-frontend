@@ -11,6 +11,7 @@ env:
   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
   VITE_SENTRY_RELEASE: ${{ github.sha }}
+  DATE: date +"%Y-%m-%d"
 
 jobs:
   deploy:
@@ -56,7 +57,22 @@ jobs:
           EOF
 
       - name: Upload To S3
-        run: aws s3 cp dist s3://lawandorga-main-frontend/ --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
+        run: aws s3 cp dist s3://lawandorga-main-frontend/${{ env.DATE }}/ --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
+
+      - name: Point To The Uploaded Folder
+        run: |
+          cat << EOF > bucket-website.json
+          {
+          "IndexDocument" : {
+          "Suffix": "${{ env.DATE }}/index.html"
+          },
+          "ErrorDocument": {
+          "Key": "${{ env.DATE }}/index.html"
+          }
+          }
+          EOF
+          
+          aws s3api put-bucket-website --bucket s3://lawandorga-main-frontend/ --endpoint-url https://s3.fr-par.scw.cloud --region fr-par --website-configuration file://bucket-website.json
 
       # - name: Publish To Netlify
       #   run: netlify deploy --dir=dist --prod
