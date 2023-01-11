@@ -17,13 +17,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
-        with:
-          fetch-depth: 0
 
       - name: Set Up Node
         uses: actions/setup-node@v3
         with:
           cache: npm
+
+      - name: Install
+        run: npm run install
 
       - name: Build
         run: npm run build
