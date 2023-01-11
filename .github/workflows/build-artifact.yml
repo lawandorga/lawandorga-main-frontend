@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   workflow_call:
-    inputs:
+    secrets:
       artifact:
         required: true
         type: string
@@ -32,7 +32,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ input.artifact }}
+          name: ${{ secrets.artifact }}
           path: dist
           if-no-files-found: error
           retention-days: 5

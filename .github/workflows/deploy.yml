@@ -16,20 +16,10 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT2: test123
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3 
-        with:
-          fetch-depth: 0
-
-      - name: Build
-        uses: ./.github/workflows/build-artifact.yml
-        with:
-          artifact: ${{ env.ARTIFACT2 }}
+    name: Build
+    uses: ./.github/workflows/build-artifact.yml
+    secrets:
+      artifact: ${{ env.ARTIFACT }}
 
   # deploy:
   #   name: Deploy To Scaleway
