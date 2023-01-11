@@ -18,16 +18,18 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      ARTIFACT: ${{ env.ARTIFACT }}
+      ARTIFACT2: ${{ env.ARTIFACT }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
         with:
           fetch-depth: 0
+
       - name: Build
         uses: ./.github/workflows/build-artifact.yml
         with:
-          artifact: ${{ env.ARTIFACT }}
+          artifact: ${{ env.ARTIFACT2 }}
 
   # deploy:
   #   name: Deploy To Scaleway
