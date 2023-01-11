@@ -16,6 +16,8 @@ env:
 
 jobs:
   build:
+    env:
+      ARTIFACT: ${{ env.ARTIFACT }}
     name: Build
     uses: ./.github/workflows/build-artifact.yml
     with:
