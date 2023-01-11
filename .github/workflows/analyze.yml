@@ -15,9 +15,11 @@ jobs:
 
       - name: Set Up Node
         uses: actions/setup-node@v3
+        with:
+          cache: npm
       
       - name: Install Packages
-        run: npm install
+        run: npm ci --force
 
       - name: Run Lint
         run: npm run lint
