@@ -6,82 +6,46 @@ on:
       version:
         required: true
         type: string
-
-env:
-  VERSION: ${{ github.sha }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-  VITE_SENTRY_RELEASE: ${{ github.sha }}
+      artifact:
+        required: true
+        type: string
+      project:
+        required: true
+        type: string
+      org:
+        required: true
+        type: string
+    secrets:
+      SENTRY_AUTH_TOKEN: 
+        required: true
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-22.04
+    
+    env:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
         with:
           fetch-depth: 0
-      
-      - name: Set Current Date
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> ${GITHUB_ENV}
 
-      - name: Set Up Node
-        uses: actions/setup-node@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
         with:
-          cache: npm
-
-      - name: Install Deps
-        run: npm install
+          name: ${{ inputs.artifact }}
+          path: dist
 
       - name: Install Sentry CLI
         run: curl -sL https://sentry.io/get-cli/ | bash
 
-      - name: Build
-        run: npm run build
-
       - name: Create A Sentry Release
         run: |
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend set-commits "$VERSION" --auto
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend files "$VERSION" upload-sourcemaps dist
-
-      - name: Install AWS Cli Dependencies
-        run: pip3 install awscli awscli-plugin-endpoint
-
-      - name: Configure AWS Cli
-        run: |
-          aws configure set plugins.endpoint awscli_plugin_endpoint
-          aws configure << EOF
-          ${{ secrets.S3_ACCESS_TOKEN }}
-          ${{ secrets.S3_SECRET_KEY }}
-          fr-par
-
-          EOF
-
-      - name: Upload To S3
-        run: aws s3 cp dist s3://lawandorga-main-frontend/${{ env.DATE }}/ --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
-
-      - name: Point To The Uploaded Folder
-        run: |
-          cat << EOF > bucket-website.json
-          {
-          "IndexDocument" : {
-          "Suffix": "${{ env.DATE }}/index.html"
-          },
-          "ErrorDocument": {
-          "Key": "${{ env.DATE }}/index.html"
-          }
-          }
-          EOF
-
-          aws s3api put-bucket-website --bucket s3://lawandorga-main-frontend/ --endpoint-url https://s3.fr-par.scw.cloud --region fr-par --website-configuration file://bucket-website.json
-
-      # - name: Publish To Netlify
-      #   run: netlify deploy --dir=dist --prod
-
-      - name: Finalize And Deploy A Sentry Release
-        run: |
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
-          sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new -e production
+          sentry-cli --url https://sentry.law-orga.de releases --org ${{ inputs.org }} --project ${{ inputs.project }} new "${{ inputs.version }}"
+          sentry-cli --url https://sentry.law-orga.de releases --org ${{ inputs.org }} --project ${{ inputs.project }} set-commits "${{ inputs.version }}" --auto
+          sentry-cli --url https://sentry.law-orga.de releases --org ${{ inputs.org }} --project ${{ inputs.project }} files "${{ inputs.version }}" upload-sourcemaps dist
+          sentry-cli --url https://sentry.law-orga.de releases --org ${{ inputs.org }} --project ${{ inputs.project }} finalize "${{ inputs.version }}"
+          sentry-cli --url https://sentry.law-orga.de releases --org ${{ inputs.org }} --project ${{ inputs.project }} deploys "${{ inputs.version }}" new -e production

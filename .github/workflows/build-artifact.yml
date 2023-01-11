@@ -6,21 +6,25 @@ on:
       artifact:
         required: true
         type: string
+      version:
+        required: true
+        type: string
     outputs:
       artifact:
         description: The Name Of The Artifact
         value: ${{ jobs.build.steps.output.outputs.artifact }}
-
-env:
-  VERSION: ${{ github.sha }}  
-  VITE_SENTRY_RELEASE: ${{ github.sha }}
+      version:
+        decription: The Version Of The Build Artifact
+        value: ${{ jobs.build.steps.output.outputs.version }}
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-22.04
-    # outputs:
-    #   artifact: ${{ steps.output.outputs.artifact }}
+
+    env:
+      VITE_SENTRY_RELEASE: ${{ inputs.version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
@@ -46,4 +50,6 @@ jobs:
 
       - name: Output Artifact Name
         id: output
-        run: echo "artifact=${{ inputs.artifact }}" >> $GITHUB_OUTPUT
+        run: |
+          echo "artifact=${{ inputs.artifact }}" >> $GITHUB_OUTPUT
+          echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT

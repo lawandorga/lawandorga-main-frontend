@@ -10,7 +10,7 @@ env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-  VITE_SENTRY_RELEASE: ${{ github.sha }}
+  
 
 jobs:
   build:
@@ -23,37 +23,21 @@ jobs:
     needs: [build]
     name: Deploy To Scaleway
     uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
-    secrets:
+    with:
       artifact: ${{ needs.build.outputs.artifact }}
       bucket: lawandorga-main-frontend
+    secrets:
       S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
       S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
 
-  # sentry:
-  #   name: Sentry
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3 
-  #       with:
-  #         fetch-depth: 0
-
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: ${{ env.ARTIFACT }}
-  #         path: dist
-
-  #     - name: Install Sentry CLI
-  #       run: curl -sL https://sentry.io/get-cli/ | bash
-
-  #     - name: Create A Sentry Release
-  #       run: |
-  #         sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend new "$VERSION"
-  #         sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend set-commits "$VERSION" --auto
-  #         sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend files "$VERSION" upload-sourcemaps dist
-
-  #     - name: Finalize And Deploy A Sentry Release
-  #       run: |
-  #         sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend finalize "$VERSION"
-  #         sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend deploys "$VERSION" new -e production
+  sentry:
+    needs: [build, deploy]
+    name: Create A Sentry Release
+    uses: ./.github/workflows/create-a-sentry-release.yml
+    with:
+      version: ${{ needs.build.outputs.artifact }}
+      artifact: ${{ needs.build.outputs.artifact }}
+      project: lawandorga-main-frontend
+      org: sentry
+    secrets:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

@@ -2,15 +2,20 @@ name: Deploy To Scaleway Bucket
 
 on: 
   workflow_call:
-    secrets:
+    inputs:
       bucket:
         required: true
       artifact:
         required: true
+    secrets:
       S3_ACCESS_TOKEN:
         required: true
       S3_SECRET_KEY:
         required: true
+    outputs:
+      bucket:
+        description: The Name Of The Bucket
+        value: ${{ jobs.build.steps.output.outputs.bucket }}
 
 jobs:
   deploy:
@@ -43,3 +48,7 @@ jobs:
 
       - name: Upload To S3
         run: aws s3 cp dist s3://lawandorga-main-frontend --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
+
+      - name: Output Bucket Name
+        id: output
+        run: echo "bucket=${{ inputs.bucket }}" >> $GITHUB_OUTPUT
