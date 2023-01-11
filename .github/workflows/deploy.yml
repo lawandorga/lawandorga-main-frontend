@@ -13,8 +13,8 @@ env:
   VITE_SENTRY_RELEASE: ${{ github.sha }}
 
 jobs:
-  sentry:
-    name: Create A Sentry Release
+  deploy:
+    name: Deploy
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -24,6 +24,8 @@ jobs:
 
       - name: Set Up Node
         uses: actions/setup-node@v3
+        with:
+          cache: npm
 
       - name: Install Deps
         run: npm install
@@ -40,8 +42,24 @@ jobs:
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend set-commits "$VERSION" --auto
           sentry-cli --url https://sentry.law-orga.de releases --org sentry --project lawandorga-main-frontend files "$VERSION" upload-sourcemaps dist
 
-      - name: Publish To Netlify
-        run: netlify deploy --dir=dist --prod
+      - name: Install AWS Cli Dependencies
+        run: pip3 install awscli awscli-plugin-endpoint
+
+      - name: Configure AWS Cli
+        run: |
+          aws configure set plugins.endpoint awscli_plugin_endpoint
+          aws configure << EOF
+          ${{ secrets.S3_ACCESS_KEY }}
+          ${{ secrets.S3_SECRET_KEY }}
+          fr-par
+
+          EOF
+
+      - name: Upload To S3
+        run: aws s3 cp dist s3://${{ github.event.repository.name }}/ --recursive
+
+      # - name: Publish To Netlify
+      #   run: netlify deploy --dir=dist --prod
 
       - name: Finalize And Deploy A Sentry Release
         run: |
