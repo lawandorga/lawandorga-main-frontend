@@ -11,7 +11,6 @@ env:
   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
   VITE_SENTRY_RELEASE: ${{ github.sha }}
-  DATE: date +"%Y-%m-%d"
 
 jobs:
   deploy:
@@ -22,6 +21,9 @@ jobs:
         uses: actions/checkout@v3 
         with:
           fetch-depth: 0
+      
+      - name: Set Current Date
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> ${GITHUB_ENV}
 
       - name: Set Up Node
         uses: actions/setup-node@v3
@@ -71,7 +73,7 @@ jobs:
           }
           }
           EOF
-          
+
           aws s3api put-bucket-website --bucket s3://lawandorga-main-frontend/ --endpoint-url https://s3.fr-par.scw.cloud --region fr-par --website-configuration file://bucket-website.json
 
       # - name: Publish To Netlify
