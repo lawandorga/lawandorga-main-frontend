@@ -14,7 +14,7 @@ on:
         description: The Name Of The Artifact
         value: ${{ jobs.build.steps.output.outputs.artifact }}
       version:
-        decription: The Version Of The Build Artifact
+        description: The Version Of The Build Artifact
         value: ${{ jobs.build.steps.output.outputs.version }}
 
 jobs:
