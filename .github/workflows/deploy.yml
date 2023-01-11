@@ -5,19 +5,13 @@ on:
     branches:
       - main
 
-env:
-  VERSION: ${{ github.sha }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-  
-
 jobs:
   build:
     name: Build
     uses: ./.github/workflows/build-artifact.yml
     with:
       artifact: lawandorga-main-frontend-build
+      version: ${{ github.sha }}
 
   deploy:
     needs: [build]
