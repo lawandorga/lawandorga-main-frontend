@@ -2,9 +2,10 @@ name: Deploy
 
 on:
   workflow_call:
-    secrets:
+    input:
       artifact:
         required: true
+        type: string
     outputs:
       artifact:
         description: The Name Of The Artifact
@@ -38,11 +39,11 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ secrets.artifact }}
+          name: ${{ input.artifact }}
           path: dist
           if-no-files-found: error
           retention-days: 5
 
       - name: Output Artifact Name
         id: output
-        run: echo "artifact=${{ secrets.artifact }}" >> $GITHUB_OUTPUT
+        run: echo "artifact=${{ input.artifact }}" >> $GITHUB_OUTPUT

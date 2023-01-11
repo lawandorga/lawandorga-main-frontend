@@ -16,7 +16,7 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/build-artifact.yml
-    secrets:
+    with:
       artifact: lawandorga-main-frontend-build
 
   deploy:
