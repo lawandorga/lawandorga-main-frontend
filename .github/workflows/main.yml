@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
     with:
       artifact: ${{ needs.build.outputs.artifact }}
-      bucket: lawandorga-main-frontend
+      bucket: www.law-orga.de
     secrets:
       S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
       S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
