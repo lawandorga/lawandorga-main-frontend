@@ -7,7 +7,7 @@
       <p>
         You can also access your mails via our webmail client. Just click the
         following link to get there:
-        <a href="https://webmail.law-orga.de" target="_blank">
+        <a href="https://webmail.law-orga.de" target="_blank" rel="noopener">
           webmail.law-orga.de
         </a>
         <span>.</span>

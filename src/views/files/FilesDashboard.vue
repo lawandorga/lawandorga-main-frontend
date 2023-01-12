@@ -249,11 +249,11 @@ import {
   TableSortable,
   ButtonNormal,
   types,
+  ModalFree,
+  FormGenerator,
+  ModalDelete,
 } from "@lawandorga/components";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalFree } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
-import { ModalDelete } from "@lawandorga/components";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
 import CoreService from "@/services/core";
 import { Group } from "@/types/core";

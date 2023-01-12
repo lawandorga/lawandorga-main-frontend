@@ -9,6 +9,15 @@ import { BrowserTracing } from "@sentry/tracing";
 import { createPinia } from "pinia";
 import { useUserStore } from "./store/user";
 
+// redirect
+if (import.meta.env.PROD) {
+  if (location.protocol !== "https:") {
+    location.replace(
+      `https:${location.href.substring(location.protocol.length)}`,
+    );
+  }
+}
+
 // vue
 const app = createApp(App);
 

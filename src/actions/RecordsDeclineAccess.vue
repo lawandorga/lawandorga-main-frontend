@@ -15,8 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal } from "@lawandorga/components";
-import { ModalConfirm } from "@lawandorga/components";
+import { ButtonNormal, ModalConfirm } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import { toRefs } from "vue";
 import useClient from "@/api/client";
