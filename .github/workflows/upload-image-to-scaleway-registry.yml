@@ -34,7 +34,7 @@ jobs:
           path: dist 
 
       - name: Build The Docker Container
-        run: docker build -t ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }} .
+        run: docker build -t ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }}:latest .
 
       - name: Login to docker
         uses: docker/login-action@v2
