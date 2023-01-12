@@ -27,7 +27,7 @@ export default function useDelete<
           (item) => item && data && item.id && item.id !== data.id,
         );
       } else {
-        items.value === null;
+        items.value = null;
       }
 
       // trigger computed setter

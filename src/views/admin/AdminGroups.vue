@@ -90,11 +90,10 @@ import {
   ButtonNormal,
   ModalFree,
 } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
+import { FormGenerator, ModalDelete } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
-import { ModalDelete } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";

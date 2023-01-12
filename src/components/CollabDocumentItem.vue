@@ -144,8 +144,10 @@ import {
   ModalFree,
   TableGenerator,
   ButtonNormal,
+  FormGenerator,
+  ModalDelete,
+  CircleLoader,
 } from "@lawandorga/components";
-import { FormGenerator, ModalDelete } from "@lawandorga/components";
 import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";
@@ -153,7 +155,6 @@ import CoreService from "@/services/core";
 import { ref, watch } from "vue";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
-import { CircleLoader } from "@lawandorga/components";
 import { useErrorHandling } from "@/api/errors";
 
 export default defineComponent({

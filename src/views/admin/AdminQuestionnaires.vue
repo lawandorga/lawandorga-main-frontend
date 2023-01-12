@@ -90,9 +90,13 @@
 import { defineComponent, Ref, ref } from "vue";
 import { Questionnaire } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalFree, FormGenerator, ModalDelete } from "@lawandorga/components";
-import { TableGenerator } from "@lawandorga/components";
-import { ButtonNormal } from "@lawandorga/components";
+import {
+  ModalFree,
+  FormGenerator,
+  ModalDelete,
+  TableGenerator,
+  ButtonNormal,
+} from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
