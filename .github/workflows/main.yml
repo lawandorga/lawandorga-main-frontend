@@ -13,19 +13,27 @@ jobs:
       artifact: lawandorga-main-frontend-build
       version: ${{ github.sha }}
 
-  deploy:
+  upload:
     needs: [build]
-    name: Deploy
-    uses: ./.github/workflows/deploy-to-scaleway-bucket.yml
+    name: Upload
+    uses: ./.github/workflows/upload-image-to-scaleway-registry.yml
     with:
+      image: ${{ needs.build.outputs.artifact }}
       artifact: ${{ needs.build.outputs.artifact }}
-      bucket: www.law-orga.de
     secrets:
-      S3_ACCESS_TOKEN: ${{ secrets.S3_ACCESS_TOKEN }}
-      S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+      SCW_DOCKER_REGISTRY: ${{ secrets.SCW_DOCKER_REGISTRY }}
+      SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
+
+  deploy:
+    needs: [upload]
+    name: Deploy
+    uses: ./.github/workflows/trigger-container-redeploy-on-scaleway.yml
+    secrets:
+      SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
+      SCW_CONTAINER_ID: ${{ secrets.SCW_CONTAINER_ID }}
 
   sentry:
-    needs: [build, deploy]
+    needs: [build, upload]
     name: Sentry
     uses: ./.github/workflows/create-a-sentry-release.yml
     with:
