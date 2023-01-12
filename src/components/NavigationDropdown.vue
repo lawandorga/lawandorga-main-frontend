@@ -1,5 +1,5 @@
 <template>
-  <Menu as="div" class="relative ml-3">
+  <Menu v-slot="{ close }" as="div" class="relative ml-3">
     <div>
       <MenuButton
         class="flex text-sm bg-gray-100 rounded-full focus:outline-none ring-gray-100 ring-2 hover:ring-gray-200 focus:ring-gray-200 focus:ring-2"
@@ -27,14 +27,25 @@
           <RouterLink
             :to="{ name: 'admin-profile', params: { id: userStore.user.id } }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            @click="close()"
           >
             Profile
           </RouterLink>
         </MenuItem>
         <MenuItem v-if="userStore.user">
           <RouterLink
+            :to="{ name: 'user-optimize' }"
+            class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            @click="close()"
+          >
+            Optimize
+          </RouterLink>
+        </MenuItem>
+        <MenuItem v-if="userStore.user">
+          <RouterLink
             :to="{ name: 'user-keys' }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            @click="close()"
           >
             Keys
           </RouterLink>
