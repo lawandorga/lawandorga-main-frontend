@@ -4,4 +4,5 @@ on:
   workflow_call
 
 jobs:
-  null
+  null:
+    name: Do Nothing
