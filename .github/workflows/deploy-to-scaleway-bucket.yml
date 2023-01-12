@@ -1,4 +1,4 @@
-name: Deploy To Scaleway Bucket
+name: Scaleway - Deploy To Bucket
 
 on: 
   workflow_call:

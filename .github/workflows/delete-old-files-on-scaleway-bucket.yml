@@ -1,4 +1,4 @@
-name: Delete Old Files
+name: Scaleway - Delete Old Bucket Files
 
 on:
   workflow_call

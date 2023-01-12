@@ -1,4 +1,4 @@
-name: Upload Docker Image
+name: Scaleway - Upload Docker Image
 
 on: 
   workflow_call:

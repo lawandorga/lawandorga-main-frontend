@@ -1,4 +1,4 @@
-name: Create A Sentry Release
+name: Sentry - Create A Release
 
 on: 
   workflow_call:

@@ -1,4 +1,4 @@
-name: Analyze Code With Sonarcloud
+name: Sonarcloud - Analyze Code
 
 on: 
   workflow_call
