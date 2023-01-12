@@ -1,19 +1,34 @@
-name: Deploy
+name: General - Build Artifact
 
 on:
   workflow_call:
-    secrets:
+    inputs:
       artifact:
         required: true
-
-env:
-  VERSION: ${{ github.sha }}  
-  VITE_SENTRY_RELEASE: ${{ github.sha }}
+        type: string
+      version:
+        required: true
+        type: string
+    outputs:
+      artifact:
+        description: The Name Of The Artifact
+        value: ${{ jobs.build.outputs.artifact }}
+      version:
+        description: The Version Of The Build Artifact
+        value: ${{ jobs.build.outputs.version }}
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    name: Build Artifact
     runs-on: ubuntu-22.04
+
+    env:
+      VITE_SENTRY_RELEASE: ${{ inputs.version }}
+
+    outputs:
+      artifact: ${{ steps.output.outputs.artifact }}
+      version: ${{ steps.output.outputs.version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3 
@@ -32,7 +47,13 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ secrets.artifact }}
+          name: ${{ inputs.artifact }}
           path: dist
           if-no-files-found: error
           retention-days: 5
+
+      - name: Output Artifact Name
+        id: output
+        run: |
+          echo "artifact=${{ inputs.artifact }}" >> $GITHUB_OUTPUT
+          echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT

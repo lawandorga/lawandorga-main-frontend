@@ -59,14 +59,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { FormGenerator } from "@lawandorga/components";
+import { FormGenerator, ButtonNormal } from "@lawandorga/components";
 import { Questionnaire } from "@/types/records";
 import useGet from "@/composables/useGet";
 import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
 import { PaperClipIcon } from "@heroicons/vue/24/outline";
-import { ButtonNormal } from "@lawandorga/components";
 
 export default defineComponent({
   components: {

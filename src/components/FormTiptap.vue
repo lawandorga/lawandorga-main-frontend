@@ -164,8 +164,8 @@ export default defineComponent({
     this.setEditorContent(this.modelValue);
   },
   beforeUnmount() {
-    this.editor ? this.editor.destroy() : null;
-    this.provider ? this.provider.destroy() : null;
+    if (this.editor) this.editor.destroy();
+    if (this.provider) this.provider.destroy();
   },
   methods: {
     setEditorContent(value: string) {
