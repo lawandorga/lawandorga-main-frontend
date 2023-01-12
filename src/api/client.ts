@@ -25,6 +25,13 @@ class Client {
     this.commandErrorHandler = commandErrorHandler;
   }
 
+  /**
+   * Attention: Do not use this function on urls that an user can put in!
+   * Attention: The regex is vulnerable to super-linear runtime.
+   * @param url A url that can be formatted like in python, eg. /api/users/{id}/
+   * @param data Dictionary object that must contain the url params, eg. id=123
+   * @returns A formatted url, eg. /api/users/123/
+   */
   private buildUrl(url: string, data?: any) {
     return url.replace(/{(.*?)}/g, function (group, found) {
       return found in data ? data[found] : group;

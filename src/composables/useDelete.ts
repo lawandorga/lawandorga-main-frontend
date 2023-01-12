@@ -26,7 +26,9 @@ export default function useDelete<
         items.value = items.value.filter(
           (item) => item && data && item.id && item.id !== data.id,
         );
-      } else items.value === null;
+      } else {
+        items.value = null;
+      }
 
       // trigger computed setter
       // eslint-disable-next-line no-self-assign

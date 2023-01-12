@@ -24,10 +24,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { ModalFree } from "@lawandorga/components";
+import { ModalFree, TableGenerator } from "@lawandorga/components";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import FilesService from "@/services/files";
-import { TableGenerator } from "@lawandorga/components";
 import { HasPermission } from "@/types/core";
 
 export default defineComponent({

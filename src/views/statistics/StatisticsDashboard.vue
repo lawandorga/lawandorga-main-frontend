@@ -78,7 +78,6 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ChartBarIcon } from "@heroicons/vue/24/outline";
 import StatisticRecordStates from "@/components/StatisticRecordStates.vue";
-// import ChartMembers from "@/components/ChartMembers.vue";
 import StatisticChartWrapper from "@/components/StatisticChartWrapper.vue";
 import StatisticRecordTags from "@/components/StatisticRecordTags.vue";
 import StatisticClientSex from "@/components/StatisticClientSex.vue";
@@ -87,10 +86,4 @@ import StatisticClientNationality from "@/components/StatisticClientNationality.
 import StatisticClientState from "@/components/StatisticClientState.vue";
 import StatisticActiveUsers from "@/components/StatisticActiveUsers.vue";
 import StatisticRecordsCreatedAndClosed from "@/components/StatisticRecordsCreatedAndClosed.vue";
-// import ChartLcUsage from "@/components/ChartLcUsage.vue";
-// import ChartUserActions from "@/components/ChartUserActions.vue";
-// import ChartUserLogins from "@/components/ChartUserLogins.vue";
-// import ChartUserLoginsMonth from "@/components/ChartUserLoginsMonth.vue";
-// import RowRawNumbers from "@/components/RowRawNumbers.vue";
-// import ChartUniqueUsersMonth from "@/components/ChartUniqueUsersMonth.vue";
 </script>

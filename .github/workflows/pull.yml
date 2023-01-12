@@ -1,0 +1,24 @@
+name: Pull
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build-artifact.yml
+    with:
+      artifact: ${{ github.event.repository.name }}
+      version: ${{ github.sha }}
+
+  lint:
+    name: Lint
+    uses: ./.github/workflows/check-linting-artifact.yml
+
+  analyze:
+    name: Analyze
+    uses: ./.github/workflows/sonarcloud-analyze-code.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
