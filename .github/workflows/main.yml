@@ -25,7 +25,7 @@ jobs:
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
 
   deploy:
-    needs: [upload]
+    needs: [build, upload]
     name: Deploy
     uses: ./.github/workflows/trigger-container-redeploy-on-scaleway.yml
     with: 

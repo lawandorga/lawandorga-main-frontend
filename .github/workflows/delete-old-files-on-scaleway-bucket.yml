@@ -2,3 +2,8 @@ name: Delete Old Files
 
 on:
   workflow_call
+
+
+jobs:
+  null:
+    name: Do Nothing
