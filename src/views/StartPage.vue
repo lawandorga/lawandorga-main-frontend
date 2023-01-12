@@ -206,11 +206,15 @@
     </section>
     <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
       <div class="space-x-4 text-right">
-        <a href="https://github.com/lawandorga" target="_blank">
+        <a href="https://github.com/lawandorga" rel="noopener" target="_blank">
           Open Source Code
         </a>
         <router-link :to="{ name: 'internal-imprint' }">Imprint</router-link>
-        <a target="_blank" href="http://rlc-deutschland.de/datenschutz/">
+        <a
+          target="_blank"
+          rel="noopener"
+          href="http://rlc-deutschland.de/datenschutz/"
+        >
           Privacy
         </a>
         <router-link :to="{ name: 'internal-toms' }">TOMS</router-link>

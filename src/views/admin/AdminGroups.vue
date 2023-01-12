@@ -89,8 +89,9 @@ import {
   TableGenerator,
   ButtonNormal,
   ModalFree,
+  FormGenerator,
+  ModalDelete,
 } from "@lawandorga/components";
-import { FormGenerator, ModalDelete } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";

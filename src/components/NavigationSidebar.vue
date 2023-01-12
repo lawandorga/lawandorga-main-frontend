@@ -124,7 +124,11 @@
           >
             <figure class="mb-3">
               <figcaption class="mb-1 text-gray-500">A project of</figcaption>
-              <a href="https://rlc-deutschland.de/" target="_blank">
+              <a
+                href="https://rlc-deutschland.de/"
+                rel="noopener"
+                target="_blank"
+              >
                 <img
                   src="/rlcd.png"
                   alt="RLC Deutschland"
@@ -134,7 +138,11 @@
             </figure>
             <figure>
               <figcaption class="mb-1 text-gray-500">supported by</figcaption>
-              <a href="https://www.cms-stiftung.de/" target="_blank">
+              <a
+                href="https://www.cms-stiftung.de/"
+                rel="noopener"
+                target="_blank"
+              >
                 <img
                   src="/sponsor-cms.jpg"
                   alt="CMS Stiftung"
