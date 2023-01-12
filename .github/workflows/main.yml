@@ -33,6 +33,7 @@ jobs:
       image: ${{ needs.build.outputs.artifact }}
       version: ${{ needs.build.outputs.version }}
     secrets:
+      SCW_DOCKER_REGISTRY: ${{ secrets.SCW_DOCKER_REGISTRY }}
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
       SCW_CONTAINER_ID: ${{ secrets.SCW_CONTAINER_ID }}
 
