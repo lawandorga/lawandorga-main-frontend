@@ -10,7 +10,7 @@ jobs:
     name: Build
     uses: ./.github/workflows/build-artifact.yml
     with:
-      artifact: lawandorga-main-frontend-build
+      artifact: ${{ github.event.repository.name }}
       version: ${{ github.sha }}
 
   upload:
@@ -28,6 +28,8 @@ jobs:
     needs: [upload]
     name: Deploy
     uses: ./.github/workflows/trigger-container-redeploy-on-scaleway.yml
+    with: 
+      image: ${{ needs.build.outputs.artifact }}
     secrets:
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
       SCW_CONTAINER_ID: ${{ secrets.SCW_CONTAINER_ID }}
