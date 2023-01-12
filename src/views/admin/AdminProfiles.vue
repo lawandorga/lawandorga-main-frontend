@@ -113,8 +113,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { ref, Ref } from "vue";
+import { defineComponent, ref, Ref } from "vue";
 import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";

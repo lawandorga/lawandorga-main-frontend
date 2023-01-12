@@ -149,16 +149,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch } from "vue";
+import { defineComponent, reactive, watch, ref, Ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
 import useQuery from "@/composables/useQuery";
-import { ref, Ref } from "vue";
 import {
   FormGenerator,
   ModalDelete,
   ModalFree,
   TableGenerator,
+  ModalForm,
+  ButtonNormal,
 } from "@lawandorga/components";
 import useDelete from "@/composables/useDelete";
 import useCommand from "@/composables/useCommand";
@@ -170,7 +171,6 @@ import { useRoute } from "vue-router";
 import useUpdate from "@/composables/useUpdate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import { ModalForm, ButtonNormal } from "@lawandorga/components";
 import { useUserStore } from "@/store/user";
 
 const userFields = [

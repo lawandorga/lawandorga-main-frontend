@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -85,7 +85,6 @@ import {
 import CollabService from "@/services/collab";
 import { DocumentTextIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { ref } from "vue";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";

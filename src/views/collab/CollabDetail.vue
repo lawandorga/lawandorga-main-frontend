@@ -43,9 +43,8 @@ import { CollabDocument } from "@/types/collab";
 import CollabService from "@/services/collab";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { DocumentTextIcon } from "@heroicons/vue/24/outline";
+import { DocumentTextIcon, CheckIcon } from "@heroicons/vue/24/outline";
 import FormTiptap from "@/components/FormTiptap.vue";
-import { CheckIcon } from "@heroicons/vue/24/outline";
 import { CircleLoader } from "@lawandorga/components";
 
 export default defineComponent({
