@@ -19,7 +19,8 @@ on:
         required: true
       SCW_TOKEN:
         required: true
-
+      SCW_DOCKER_REGISTRY:
+        required: true
 
 jobs:
   deploy:
