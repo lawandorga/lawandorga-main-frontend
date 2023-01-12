@@ -112,8 +112,7 @@
 
 <script lang="ts">
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "@lawandorga/components";
-import { ButtonNormal } from "@lawandorga/components";
+import { TableGenerator, ButtonNormal } from "@lawandorga/components";
 import { defineComponent, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";

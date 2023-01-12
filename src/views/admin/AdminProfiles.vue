@@ -119,8 +119,12 @@ import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalConfirm, TableGenerator } from "@lawandorga/components";
-import { ButtonNormal, ModalDelete } from "@lawandorga/components";
+import {
+  ModalConfirm,
+  TableGenerator,
+  ButtonNormal,
+  ModalDelete,
+} from "@lawandorga/components";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
