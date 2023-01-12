@@ -49,7 +49,7 @@ jobs:
           EOF
 
       - name: Upload To S3
-        run: aws s3 cp dist s3://lawandorga-main-frontend --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
+        run: aws s3 cp dist s3://${{ inputs.bucket }} --recursive --endpoint-url https://s3.fr-par.scw.cloud --region fr-par
 
       - name: Output Bucket Name
         id: output
