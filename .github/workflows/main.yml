@@ -49,3 +49,4 @@ jobs:
       org: sentry
     secrets:
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
