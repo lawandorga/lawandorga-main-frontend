@@ -47,4 +47,4 @@ jobs:
           password: ${{ secrets.SCW_TOKEN }}
 
       - name: Push The Docker Container
-        run: docker push ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }}
+        run: docker push ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }}:${{ inputs.version }}
