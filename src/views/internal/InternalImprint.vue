@@ -26,5 +26,5 @@ import useGet from "@/composables/useGet";
 
 const article = ref<ImprintPage | null>(null);
 
-useGet(InternalService.getImprintPage, article.value);
+useGet(InternalService.getImprintPage, article);
 </script>
