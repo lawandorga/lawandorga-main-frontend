@@ -2,6 +2,10 @@ name: Deploy
 
 on: 
   workflow_call:
+    input:
+      image:
+        required: true
+        type: string
     secrets:
       SCW_CONTAINER_ID:
         required: true
@@ -20,4 +24,4 @@ jobs:
             https://api.scaleway.com/containers/v1beta1/regions/fr-par/containers/${{ secrets.SCW_CONTAINER_ID }}/ \
             -H 'X-Auth-Token: ${{ secrets.SCW_TOKEN }}' \
             -H 'Content-Type: application/json' \
-            -d '{ "redeploy": true }'
+            -d '{ "redeploy": true, "registry_image": "${{ secrets.image }}:latest" }'

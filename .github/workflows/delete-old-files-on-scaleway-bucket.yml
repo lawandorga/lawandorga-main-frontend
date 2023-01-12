@@ -1,1 +1,4 @@
 name: Delete Old Files
+
+on:
+  workflow_call

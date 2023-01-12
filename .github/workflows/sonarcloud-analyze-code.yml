@@ -1,1 +1,4 @@
 name: Analyze Code With Sonarcloud
+
+on: 
+  workflow_call
