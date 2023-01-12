@@ -20,6 +20,7 @@ jobs:
     with:
       image: ${{ needs.build.outputs.artifact }}
       artifact: ${{ needs.build.outputs.artifact }}
+      version: ${{ needs.build.outputs.version }}
     secrets:
       SCW_DOCKER_REGISTRY: ${{ secrets.SCW_DOCKER_REGISTRY }}
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
@@ -30,6 +31,7 @@ jobs:
     uses: ./.github/workflows/trigger-container-redeploy-on-scaleway.yml
     with: 
       image: ${{ needs.build.outputs.artifact }}
+      version: ${{ needs.build.outputs.version }}
     secrets:
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
       SCW_CONTAINER_ID: ${{ secrets.SCW_CONTAINER_ID }}
