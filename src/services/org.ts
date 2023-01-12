@@ -20,7 +20,6 @@ class OrgService {
     return axios.delete(`org/links/${data.id}/`).then(() => {
       const store = useUserStore();
       store.updateData();
-      return;
     });
   }
 }

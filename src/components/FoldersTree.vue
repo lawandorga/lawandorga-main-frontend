@@ -66,22 +66,12 @@
         <div class="flex items-center">
           <div :style="{ width: `${(depth + 1) * 18}px` }"></div>
           <div class="block w-5 h-5"></div>
-          <!-- <DocumentTextIcon class="w-5 h-5 text-gray-500" /> -->
           <FoldersBadge>
             {{ content.repository }}
           </FoldersBadge>
           <div class="ml-2 text-sm leading-normal">
             {{ content.name }}
           </div>
-          <!-- <div class="ml-4">
-            <ButtonNormal
-              v-if="content.actions['OPEN']"
-              kind="action"
-              :to="content.actions['OPEN']"
-            >
-              Open
-            </ButtonNormal>
-          </div> -->
         </div>
       </div>
       <FoldersTree
@@ -98,9 +88,8 @@
 
 <script setup lang="ts">
 import { IContent, IFolderItem } from "@/types/folders";
-import { FolderIcon } from "@heroicons/vue/20/solid";
+import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
-import { ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ref } from "vue";
 import FoldersBadge from "./FoldersBadge.vue";
 

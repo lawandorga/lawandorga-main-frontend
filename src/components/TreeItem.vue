@@ -3,7 +3,7 @@
     <div class="flex mb-2">
       <DisclosureButton>
         <div
-          class="flex items-center justify-center bg-gray-100 w-6 h-6 rounded border border-gray-200 hover:bg-gray-200"
+          class="flex items-center justify-center w-6 h-6 bg-gray-100 border border-gray-200 rounded hover:bg-gray-200"
         >
           <ChevronRightIcon
             class="w-5 h-5 text-gray-800"
@@ -13,11 +13,10 @@
       </DisclosureButton>
       <button
         type="button"
-        class="flex text-lg hover:underline items-baseline justify-between flex-grow-0 ml-4"
+        class="flex items-baseline justify-between flex-grow-0 ml-4 text-lg hover:underline"
         @click="$emit('clicked', item.id)"
       >
         <span>{{ item.name || "---" }}</span>
-        <!-- <span class="text-sm text-gray-500">({{ item.children.length }})</span> -->
       </button>
     </div>
     <DisclosurePanel as="ul" class="pl-8">

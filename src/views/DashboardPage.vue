@@ -193,12 +193,11 @@ import UsersService from "@/services/user";
 import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
-import { ButtonNormal, ModalForm } from "@lawandorga/components";
+import { ButtonNormal, ModalForm, ModalDelete } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
-import { ModalDelete } from "@lawandorga/components";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 

@@ -33,9 +33,6 @@ export default function useDelete<
       // trigger computed setter
       // eslint-disable-next-line no-self-assign
       items.value = items.value;
-
-      // return nothing
-      return;
     });
   }
 

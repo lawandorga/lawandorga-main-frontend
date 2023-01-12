@@ -6,7 +6,7 @@ export function createObjectURL(data: Blob): string {
   } else if (window.URL && window.URL.createObjectURL) {
     return window.URL.createObjectURL(data);
   } else {
-    throw "No object url could be created.";
+    throw Error("No object url could be created.");
   }
 }
 

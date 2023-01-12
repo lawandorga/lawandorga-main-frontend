@@ -132,7 +132,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from "vue";
+import { defineComponent, toRefs, ref, watch } from "vue";
 import {
   CollabDocument,
   CollabDocumentPermission,
@@ -152,7 +152,6 @@ import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";
 import CoreService from "@/services/core";
-import { ref, watch } from "vue";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
 import { useErrorHandling } from "@/api/errors";
