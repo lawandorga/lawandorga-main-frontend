@@ -12,9 +12,7 @@ import { useUserStore } from "./store/user";
 // redirect
 if (import.meta.env.PROD) {
   if (location.protocol !== "https:") {
-    location.replace(
-      `https:${location.href.substring(location.protocol.length)}`,
-    );
+    location.replace("https://law-orga.de");
   }
 }
 
