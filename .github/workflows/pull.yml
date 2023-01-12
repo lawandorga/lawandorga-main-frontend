@@ -7,19 +7,18 @@ on:
 
 jobs:
   build:
+    name: Build
+    uses: ./.github/workflows/build-artifact.yml
+    with:
+      artifact: ${{ github.event.repository.name }}
+      version: ${{ github.sha }}
+
+  lint:
     name: Lint
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    uses: ./.github/workflows/check-linting-artifact.yml
 
-      - name: Set Up Node
-        uses: actions/setup-node@v3
-        with:
-          cache: npm
-      
-      - name: Install Packages
-        run: npm ci --force
-
-      - name: Run Lint
-        run: npm run lint
+  analyze:
+    name: Analyze
+    uses: ./.github/workflows/sonarcloud-analyze-code.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
