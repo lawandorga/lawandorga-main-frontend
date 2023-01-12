@@ -21,7 +21,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Create Release
     runs-on: ubuntu-22.04
     
     env:

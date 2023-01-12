@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Artifact
     runs-on: ubuntu-22.04
 
     env:
