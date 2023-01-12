@@ -140,19 +140,21 @@ import {
   CollabVersion,
 } from "@/types/collab";
 import BoxAlert from "@/components/BoxAlert.vue";
-import { ModalFree } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
-import { ModalDelete } from "@lawandorga/components";
+import {
+  ModalFree,
+  TableGenerator,
+  ButtonNormal,
+  FormGenerator,
+  ModalDelete,
+  CircleLoader,
+} from "@lawandorga/components";
 import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";
-import { TableGenerator } from "@lawandorga/components";
 import CoreService from "@/services/core";
-import { ButtonNormal } from "@lawandorga/components";
 import { ref, watch } from "vue";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
-import { CircleLoader } from "@lawandorga/components";
 import { useErrorHandling } from "@/api/errors";
 
 export default defineComponent({

@@ -154,11 +154,13 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
 import useQuery from "@/composables/useQuery";
 import { ref, Ref } from "vue";
-import { ModalFree } from "@lawandorga/components";
-import { FormGenerator } from "@lawandorga/components";
+import {
+  FormGenerator,
+  ModalDelete,
+  ModalFree,
+  TableGenerator,
+} from "@lawandorga/components";
 import useDelete from "@/composables/useDelete";
-import { ModalDelete } from "@lawandorga/components";
-import { TableGenerator } from "@lawandorga/components";
 import useCommand from "@/composables/useCommand";
 import AdminService from "@/services/admin";
 import UserService from "@/services/user";

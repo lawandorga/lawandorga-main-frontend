@@ -1,7 +1,7 @@
 <template>
   <BoxLoader :show="true">
     <div
-      class="max-w-screen-2xl mx-auto space-y-6 2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0"
+      class="mx-auto space-y-6 max-w-screen-2xl 2xl:grid 2xl:gap-6 2xl:grid-cols-3 2xl:space-y-0"
     >
       <!-- breadcrumbs -->
       <BreadcrumbsBar
@@ -17,9 +17,9 @@
       </BreadcrumbsBar>
 
       <!-- documents left -->
-      <div class="bg-white shadow rounded-md p-5 2xl:row-span-2 print:hidden">
-        <div class="flex justify-between items-baseline mb-4">
-          <h2 class="version-lg font-bold">Documents</h2>
+      <div class="p-5 bg-white rounded-md shadow 2xl:row-span-2 print:hidden">
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="font-bold version-lg">Documents</h2>
           <ButtonNormal kind="action" @click="createDocumentModalOpen = true">
             Create
           </ButtonNormal>
@@ -76,20 +76,22 @@ import { defineComponent } from "vue";
 import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { ModalDelete } from "@lawandorga/components";
+import {
+  ModalDelete,
+  ButtonNormal,
+  CircleLoader,
+  ModalForm,
+} from "@lawandorga/components";
 import CollabService from "@/services/collab";
 import { DocumentTextIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { ButtonNormal } from "@lawandorga/components";
 import { ref } from "vue";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
-import { CircleLoader } from "@lawandorga/components";
 import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
 import CollabHelp from "@/components/CollabHelp.vue";
 import CollabPermissions from "@/components/CollabPermissions.vue";
-import { ModalForm } from "@lawandorga/components";
 
 export default defineComponent({
   components: {

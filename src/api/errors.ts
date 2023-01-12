@@ -167,7 +167,7 @@ type BackendAxiosError =
 
 export function cleanUpError(error: BackendAxiosError): Promise<void> {
   const newError: ICommandError = {
-    title: "Unknown",
+    title: "Unknown Error",
     paramErrors: {},
     generalErrors: [],
   };
@@ -184,15 +184,18 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
     if (data.param_errors)
       newError.paramErrors = data.param_errors as ICommandError["paramErrors"];
     if (data.title) newError.title = data.title as ICommandError["title"];
-  } else if ("detail" in data) {
+  } else if (
+    // django rest framework general error
+    "detail" in data
+  ) {
     if (data.detail) newError.title = data.detail as ICommandError["title"];
-  } else if (Object.keys(data)) {
+  } else if (
+    // django rest framework form error
+    Object.keys(data)
+  ) {
     if (data.non_field_errors) newError.generalErrors = data.non_field_errors;
     newError.paramErrors = data;
     newError.title = "Request Error";
-  } else {
-    newError.title = "Unknown Error";
-    newError.generalErrors = ["Unknown Error"];
   }
 
   return Promise.reject(newError);
