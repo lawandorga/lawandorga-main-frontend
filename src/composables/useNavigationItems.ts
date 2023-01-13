@@ -49,9 +49,10 @@ export default function useNavigationItems() {
         is: "router-link",
         attrs: {
           to: { name: "folders-dashboard" },
-          class: store.user?.email.includes("dummy@law-orga.de")
-            ? ""
-            : "hidden",
+          class:
+            store.user?.email.includes("law-orga.de") || store.rlc?.id === 94 // Bellevue di Monaco
+              ? ""
+              : "hidden",
         },
         permissions: [],
       },
