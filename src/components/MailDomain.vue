@@ -95,6 +95,22 @@
               Check Settings
             </ButtonNormal>
           </p>
+          <p class="mt-12">
+            <b>Note:</b>
+            You are strongly advised to enable
+            <a
+              href="https://en.wikipedia.org/wiki/DNSSEC"
+              rel="noopener"
+              target="_blank"
+            >
+              <span>DNSSEC</span>
+            </a>
+
+            for your domain, or else certain security features break. Note that
+            not all domain and DNS providers support DNSSEC. If this is the case
+            for your provider(s), you are again strongly advised to change to
+            better provider(s).
+          </p>
         </div>
       </div>
     </div>

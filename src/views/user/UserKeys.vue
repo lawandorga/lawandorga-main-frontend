@@ -18,6 +18,13 @@
       >
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
+      <div class="p-5 prose bg-white rounded shadow max-w-none">
+        <p>
+          <b>Note:</b>
+          Record keys are being replaced by folder keys. Therefore they are
+          shown here but will probably have no effect.
+        </p>
+      </div>
       <TableGenerator
         :head="[
           { name: 'Information', key: 'information' },
