@@ -1,6 +1,7 @@
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
 import { getNextQuery } from "@/utils/router";
+import { types } from "@lawandorga/components";
 import { AxiosError } from "axios";
 import { Router, useRouter } from "vue-router";
 
@@ -9,12 +10,6 @@ interface IContext {
   alertStore: ReturnType<typeof useAlertStore>;
   userStore: ReturnType<typeof useUserStore>;
   router: Router;
-}
-
-export interface ICommandError {
-  paramErrors?: { [key: string]: string[] };
-  generalErrors?: string[];
-  title: string;
 }
 
 export function handleAuthenticationError(context: IContext): Promise<void> {
@@ -166,7 +161,7 @@ type BackendAxiosError =
     }>;
 
 export function cleanUpError(error: BackendAxiosError): Promise<void> {
-  const newError: ICommandError = {
+  const newError: types.ICommandError = {
     title: "Unknown Error",
     paramErrors: {},
     generalErrors: [],
@@ -182,13 +177,15 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
   ) {
     if (data.general_errors) newError.generalErrors = data.general_errors;
     if (data.param_errors)
-      newError.paramErrors = data.param_errors as ICommandError["paramErrors"];
-    if (data.title) newError.title = data.title as ICommandError["title"];
+      newError.paramErrors =
+        data.param_errors as types.ICommandError["paramErrors"];
+    if (data.title) newError.title = data.title as types.ICommandError["title"];
   } else if (
     // django rest framework general error
     "detail" in data
   ) {
-    if (data.detail) newError.title = data.detail as ICommandError["title"];
+    if (data.detail)
+      newError.title = data.detail as types.ICommandError["title"];
   } else if (
     // django rest framework form error
     Object.keys(data)

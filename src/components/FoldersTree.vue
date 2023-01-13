@@ -24,10 +24,10 @@
           <span class="ml-1.5 truncate mr-3">{{ item.folder.name }}</span>
         </button>
         <div
-          v-if="item.folder.stop_inherit"
+          v-if="properties[item.folder.uuid]"
           class="px-1 py-0 text-xs font-medium leading-tight tracking-wide text-gray-800 uppercase rounded shadow whitespace-nowrap ring-1 ring-gray-700"
         >
-          {{ getFolderProperties(item) }}
+          {{ properties[item.folder.uuid] }}
         </div>
         <div class="ml-3">
           <ButtonNormal
@@ -90,16 +90,17 @@
 import { IContent, IFolderItem } from "@/types/folders";
 import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
-import { ref } from "vue";
+import { ref, computed, toRefs } from "vue";
 import FoldersBadge from "./FoldersBadge.vue";
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     folders: IFolderItem[] | null;
     depth?: number;
   }>(),
   { depth: 0 },
 );
+const { folders } = toRefs(props);
 
 const open = ref<number[]>([]);
 
@@ -113,6 +114,14 @@ const chevronClicked = (index: number) => {
   if (!open.value.includes(index)) open.value.push(index);
   else open.value = open.value.filter((i) => i !== index);
 };
+
+const properties = computed<{ [key: string]: string }>(() => {
+  const ret: { [key: string]: string } = {};
+  folders.value?.forEach((i: IFolderItem) => {
+    ret[i.folder.uuid] = getFolderProperties(i);
+  });
+  return ret;
+});
 
 const getFolderProperties = (item: IFolderItem): string => {
   const properties: string[] = [];
