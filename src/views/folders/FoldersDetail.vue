@@ -175,31 +175,26 @@
         <RecordEncryptions
           :access="folder ? folder.access : null"
           :selected-type="selectedType"
+          :folder-uuid="folder.folder.uuid"
+          :query="query"
         />
       </div>
     </div>
   </BoxLoader>
-  <ActionsEncryptions
-    ref="actionsEncryptions"
-    :folder="folder ? folder.folder : null"
-    :query="query"
-  />
 </template>
 
 <script lang="ts" setup>
 import FolderRecord from "@/components/FolderRecord.vue";
-import { computed, h, provide, ref, watch, VNode } from "vue";
+import { computed, h, ref, watch, VNode } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
-import { actionsEncryptionsKey } from "@/types/keys";
 import RecordMessages from "@/components/RecordMessages.vue";
 import FolderQuestionnaire from "@/components/FolderQuestionnaire.vue";
 import FolderFile from "@/components/FolderFile.vue";
-import ActionsEncryptions from "@/components/ActionsEncryptions.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
@@ -214,10 +209,6 @@ import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithin
 const route = useRoute();
 const folderUuid = route.params.uuid as string;
 const recordId = route.params.record as string;
-
-// encryptions
-const actionsEncryptions = ref<typeof ActionsEncryptions>();
-provide(actionsEncryptionsKey, actionsEncryptions);
 
 // folder
 const folder = ref<null | IFolderDetail>(null);

@@ -1,52 +1,42 @@
 <template>
-  <div v-if="!!actionsEncryptions">
-    <BoxHeadingStats
-      title="Access"
-      :show="selectedType === 'ACCESS'"
-      :stats="[
-        'The following persons have access to this record because they have access to its folder.',
+  <BoxHeadingStats
+    title="Access"
+    :show="selectedType === 'ACCESS'"
+    :stats="[
+      'The following persons have access to this record because they have access to its folder.',
+    ]"
+    nopadding
+  >
+    <TableGenerator
+      :head="[
+        { name: 'Person', key: 'name' },
+        { name: '', key: 'action' },
       ]"
-      nopadding
+      :data="access"
     >
-      <TableGenerator
-        :head="[
-          { name: 'Person', key: 'name' },
-          // { name: 'Since', key: 'created' },
-          { name: '', key: 'action' },
-        ]"
-        :data="access"
-      >
-        <template #created="slotProps">
-          {{ formatDate(slotProps.created) }}
-        </template>
-        <template #action="slotProps">
-          <ButtonNormal
-            kind="delete"
-            @click="
-              actionsEncryptions.temporary = slotProps;
-              actionsEncryptions.deleteModalOpen = true;
-            "
-          >
-            Revoke Access
-          </ButtonNormal>
-        </template>
-      </TableGenerator>
-    </BoxHeadingStats>
-  </div>
+      <template #action="slotProps">
+        <FoldersRevokeAccess
+          v-if="slotProps.actions.REVOKE_ACCESS"
+          :folder-uuid="folderUuid"
+          :user-uuid="slotProps.actions.REVOKE_ACCESS.user_uuid"
+          :url="slotProps.actions.REVOKE_ACCESS.url"
+          :query="query"
+        />
+      </template>
+    </TableGenerator>
+  </BoxHeadingStats>
 </template>
 
 <script lang="ts" setup>
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { TableGenerator, ButtonNormal } from "@lawandorga/components";
-import { actionsEncryptionsKey } from "@/types/keys";
-import { formatDate } from "@/utils/date";
-import { inject } from "vue";
+import { TableGenerator } from "@lawandorga/components";
 import { IAccess } from "@/types/folders";
+import FoldersRevokeAccess from "@/actions/FoldersRevokeAccess.vue";
 
 defineProps<{
   selectedType: string;
   access: IAccess[] | null;
+  folderUuid: string;
+  query: () => void;
 }>();
-
-const actionsEncryptions = inject(actionsEncryptionsKey);
 </script>
