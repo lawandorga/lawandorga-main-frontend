@@ -12,9 +12,15 @@
           </div>
         </div>
         <div
-          class="flex flex-col mt-1 text-sm text-gray-500 lg:space-x-4 lg:flex-row"
+          class="flex flex-col flex-wrap mt-1 text-sm text-gray-500 lg:flex-row"
         >
-          <p v-for="stat in stats" :key="stat">{{ stat }}</p>
+          <p
+            v-for="stat in stats"
+            :key="stat"
+            class="max-w-full truncate first:mr-4 last:mr-0 whitespace-nowrap"
+          >
+            {{ stat }}
+          </p>
         </div>
       </div>
       <div

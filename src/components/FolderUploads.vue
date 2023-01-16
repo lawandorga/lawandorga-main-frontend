@@ -1,0 +1,148 @@
+<template>
+  <div v-if="link">
+    <BoxHeadingStats
+      :title="link.name"
+      :show="selectedId === link.uuid && selectedType === 'UPLOAD'"
+      :stats="[
+        `Published: ${formatDate(link.created)}`,
+        link.disabled ? 'Link: Disabled' : `Link: ${link.link}`,
+      ]"
+    >
+      <template #buttons>
+        <ButtonNormal
+          v-if="!link.disabled"
+          kind="action"
+          @click="copyLink(link)"
+        >
+          Copy Link
+        </ButtonNormal>
+        <UploadsDisableLink
+          v-if="!link.disabled"
+          :link-uuid="link.uuid"
+          :query="linkQuery"
+        />
+      </template>
+      <div>
+        <p v-if="!link.disabled && !link.files.length">
+          No files are uploaded yet. Share the link and tell people to upload
+          the files you need. No password is required. Everybody with the link
+          can upload files until you disable the link.
+        </p>
+        <TableGenerator
+          v-if="link.files.length"
+          :data="link.files"
+          :head="[
+            { name: 'Uploaded File', key: 'name' },
+            { name: 'Uploaded', key: 'created' },
+            { name: '', key: 'action' },
+          ]"
+        >
+          <template #created="file">
+            {{ formatDate(file.created) }}
+          </template>
+          <template #action="file">
+            <ButtonNormal kind="action" @click="selectedFile = file.uuid">
+              Show
+            </ButtonNormal>
+            <UploadsDownloadFile
+              :link-uuid="(selectedId as string)"
+              :file-uuid="file.uuid"
+              :name="file.name"
+            >
+              Download
+            </UploadsDownloadFile>
+          </template>
+        </TableGenerator>
+        <div v-else-if="link.disabled">
+          The link is disabled and no files have been uploaded.
+        </div>
+        <div v-if="selectedFile" class="px-4 py-4 mt-8 bg-gray-100">
+          <CircleLoader v-if="fileLoading" />
+          <FileDisplay v-else-if="dataURL !== undefined" :data-url="dataURL" />
+        </div>
+      </div>
+    </BoxHeadingStats>
+  </div>
+  <div v-else-if="loading">
+    <CircleLoader />
+  </div>
+</template>
+
+<script setup lang="ts">
+import BoxHeadingStats from "./BoxHeadingStats.vue";
+import {
+  ButtonNormal,
+  CircleLoader,
+  TableGenerator,
+} from "@lawandorga/components";
+import { formatDate } from "@/utils/date";
+import useQuery from "@/composables/useQuery";
+import { Ref, ref, toRefs, watch } from "vue";
+import { useAlertStore } from "@/store/alert";
+import { IUploadLink } from "@/types/uploads";
+import useClient from "@/api/client";
+import UploadsDisableLink from "@/actions/UploadsDisableLink.vue";
+import FileDisplay from "./FileDisplay.vue";
+import UploadsDownloadFile from "@/actions/UploadsDownloadFile.vue";
+
+// props
+const props = defineProps<{
+  selectedId: number | string | null;
+  selectedType: string;
+  folderUuid: string;
+  query: () => void;
+}>();
+const { selectedId, selectedType } = toRefs(props);
+
+// client
+const client = useClient();
+
+// show a file
+const selectedFile = ref<string>();
+const dataURL = ref<string | null>();
+const fileDownload = client.downloadDataUrl(
+  "api/uploads/query/{}/{}/",
+  selectedId as Ref<string>,
+  selectedFile,
+);
+const fileLoading = ref(false);
+watch(selectedFile, () => {
+  if (!selectedFile.value) return;
+  fileLoading.value = true;
+  fileDownload()
+    .then((v: string) => {
+      dataURL.value = v;
+    })
+    .catch(() => {
+      dataURL.value = null;
+    })
+    .finally(() => {
+      fileLoading.value = false;
+    });
+});
+
+// query the link
+const link = ref<IUploadLink | null>(null);
+const loading = ref(false);
+const request = client.get<IUploadLink>(`api/uploads/query/{}/`, selectedId);
+const linkQuery = useQuery(request, link, selectedId as Ref<string>);
+watch(selectedId, () => {
+  dataURL.value = undefined;
+  selectedFile.value = undefined;
+  if (link.value && selectedId.value !== link.value.uuid) link.value = null;
+  if (selectedType.value === "UPLOAD" && selectedId.value) {
+    loading.value = true;
+    linkQuery().then(() => {
+      loading.value = false;
+    });
+  }
+});
+
+// copy link
+const alertStore = useAlertStore();
+const copyLink = (link: IUploadLink) => {
+  navigator.clipboard
+    .writeText(link.link)
+    .then(() => alertStore.showSuccess("Link Copied"));
+};
+</script>

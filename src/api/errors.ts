@@ -96,7 +96,7 @@ export function handleServerError(context: IContext): Promise<void> {
       message: "Server Error",
     });
 
-    return Promise.resolve();
+    return Promise.reject();
   }
   return Promise.reject(context);
 }
