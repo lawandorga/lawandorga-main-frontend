@@ -17,7 +17,7 @@
         "@sentry/vue": "^7.30.0",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/line-clamp": "^0.4.2",
-    "@tailwindcss/typography": "^0.5.0",
+    "@tailwindcss/typography": "^0.5.9",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.209",
     "@tiptap/extension-character-count": "^2.0.0-beta.209",
     "@tiptap/extension-collaboration": "^2.0.0-beta.209",
