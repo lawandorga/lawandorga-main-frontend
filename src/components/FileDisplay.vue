@@ -14,7 +14,7 @@
     v-else-if="content.includes('data:image')"
     class="flex h-full aspect-square"
   >
-    <img class="w-full max-w-full" :src="content" title="File Content" />
+    <img class="w-full max-w-full" :src="content" alt="File Content" />
   </div>
   <div v-else class="flex h-full aspect-square">
     <object class="w-full max-w-full" :data="content" frameborder="0">
