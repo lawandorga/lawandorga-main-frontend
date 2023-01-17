@@ -113,21 +113,6 @@
                       </p>
                     </div>
                   </div>
-                  <div
-                    v-if="grouping"
-                    class="sm:flex sm:space-x-5"
-                    :class="[grouping ? 'mt-0.5' : 'mt-2']"
-                  >
-                    <div
-                      v-for="stat in child.stats"
-                      :key="stat"
-                      class="flex items-center mt-2 text-sm text-gray-500 sm:mt-0"
-                    >
-                      <p>
-                        {{ stat }}
-                      </p>
-                    </div>
-                  </div>
                 </button>
               </div>
             </li>
@@ -178,6 +163,13 @@
           :folder-uuid="folder.folder.uuid"
           :query="query"
         />
+
+        <FolderUploads
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+          :folder-uuid="folder.folder.uuid"
+          :query="query"
+        />
       </div>
     </div>
   </BoxLoader>
@@ -204,6 +196,8 @@ import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
+import FolderUploads from "@/components/FolderUploads.vue";
+import UploadsCreateLink from "@/actions/UploadsCreateLink.vue";
 
 // record
 const route = useRoute();
@@ -220,7 +214,6 @@ interface ContentItem {
   created?: string;
   name: string;
   type: string;
-  stats: string[];
 }
 
 interface ContentGroupItem {
@@ -240,7 +233,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       type: "RECORD",
       children: folder.value.content
         .filter((c) => c.repository === "RECORD")
-        .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid, stats: [] })),
+        .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid })),
       actions: [],
       buttons: [
         h(RecordsCreateRecordWithinFolder, {
@@ -265,7 +258,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       type: "FILE",
       children: folder.value.content
         .filter((c) => c.repository === "FILE")
-        .map((c) => ({ name: c.name, type: "FILE", id: c.uuid, stats: [] })),
+        .map((c) => ({ name: c.name, type: "FILE", id: c.uuid })),
       actions: [],
       buttons: [
         h(FilesUploadFile, {
@@ -289,11 +282,30 @@ const groups = computed<ContentGroupItem[]>(() => {
           name: c.name,
           type: "QUESTIONNAIRE",
           id: c.uuid,
-          stats: [],
         })),
       actions: [],
       buttons: [
         h(QuestionnairesPublishQuestionnaire, {
+          query: query,
+          folderUuid: folder.value?.folder.uuid,
+        }),
+      ],
+    });
+
+  if (folder.value)
+    g.push({
+      name: "Uploads",
+      type: "UPLOAD",
+      children: folder.value.content
+        .filter((c) => c.repository === "UPLOAD")
+        .map((c) => ({
+          name: c.name,
+          type: "UPLOAD",
+          id: c.uuid,
+        })),
+      actions: [],
+      buttons: [
+        h(UploadsCreateLink, {
           query: query,
           folderUuid: folder.value?.folder.uuid,
         }),

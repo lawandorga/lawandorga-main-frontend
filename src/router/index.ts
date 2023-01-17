@@ -15,6 +15,7 @@ import DashboardPage from "@/views/DashboardPage.vue";
 import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
+import uploadsRoutes from "./uploads";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -45,6 +46,7 @@ const routes: Array<RouteRecordRaw> = [
   ...legalRoutes,
   ...eventsRoutes,
   ...mailRoutes,
+  ...uploadsRoutes,
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
