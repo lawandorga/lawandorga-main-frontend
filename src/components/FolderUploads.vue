@@ -9,13 +9,7 @@
       ]"
     >
       <template #buttons>
-        <ButtonNormal
-          v-if="!link.disabled"
-          kind="action"
-          @click="copyLink(link)"
-        >
-          Copy Link
-        </ButtonNormal>
+        <UploadsCopyLink :link="link.link" />
         <UploadsDisableLink
           v-if="!link.disabled"
           :link-uuid="link.uuid"
@@ -56,9 +50,8 @@
         <div v-else-if="link.disabled">
           The link is disabled and no files have been uploaded.
         </div>
-        <div v-if="selectedFile" class="px-4 py-4 mt-8 bg-gray-100">
-          <CircleLoader v-if="fileLoading" />
-          <FileDisplay v-else-if="dataURL !== undefined" :data-url="dataURL" />
+        <div v-show="selectedFile" class="px-4 py-4 mt-8 bg-gray-100">
+          <FileDisplay :request="fileDownload" :selected="selectedFile" />
         </div>
       </div>
     </BoxHeadingStats>
@@ -78,12 +71,12 @@ import {
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";
-import { useAlertStore } from "@/store/alert";
 import { IUploadLink } from "@/types/uploads";
 import useClient from "@/api/client";
 import UploadsDisableLink from "@/actions/UploadsDisableLink.vue";
 import FileDisplay from "./FileDisplay.vue";
 import UploadsDownloadFile from "@/actions/UploadsDownloadFile.vue";
+import UploadsCopyLink from "@/actions/UploadsCopyLink.vue";
 
 // props
 const props = defineProps<{
@@ -98,37 +91,24 @@ const { selectedId, selectedType } = toRefs(props);
 const client = useClient();
 
 // show a file
-const selectedFile = ref<string>();
-const dataURL = ref<string | null>();
-const fileDownload = client.downloadDataUrl(
-  "api/uploads/query/{}/{}/",
-  selectedId as Ref<string>,
-  selectedFile,
-);
-const fileLoading = ref(false);
-watch(selectedFile, () => {
-  if (!selectedFile.value) return;
-  fileLoading.value = true;
-  fileDownload()
-    .then((v: string) => {
-      dataURL.value = v;
-    })
-    .catch(() => {
-      dataURL.value = null;
-    })
-    .finally(() => {
-      fileLoading.value = false;
-    });
+const selectedFile = ref<string | null>(null);
+const fileDownload = (uuid: string | number) => {
+  return client.downloadDataUrl(
+    "api/uploads/query/{}/{}/",
+    selectedId as Ref<string>,
+    uuid,
+  )();
+};
+watch([selectedId, selectedType], () => {
+  selectedFile.value = null;
 });
 
 // query the link
 const link = ref<IUploadLink | null>(null);
 const loading = ref(false);
 const request = client.get<IUploadLink>(`api/uploads/query/{}/`, selectedId);
-const linkQuery = useQuery(request, link, selectedId as Ref<string>);
+const linkQuery = useQuery(request, link);
 watch(selectedId, () => {
-  dataURL.value = undefined;
-  selectedFile.value = undefined;
   if (link.value && selectedId.value !== link.value.uuid) link.value = null;
   if (selectedType.value === "UPLOAD" && selectedId.value) {
     loading.value = true;
@@ -137,12 +117,4 @@ watch(selectedId, () => {
     });
   }
 });
-
-// copy link
-const alertStore = useAlertStore();
-const copyLink = (link: IUploadLink) => {
-  navigator.clipboard
-    .writeText(link.link)
-    .then(() => alertStore.showSuccess("Link Copied"));
-};
 </script>

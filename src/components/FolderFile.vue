@@ -18,32 +18,7 @@
         />
       </template>
       <div>
-        <div v-if="iframeContent === null" class="w-full aspect-square">
-          <CircleLoader />
-        </div>
-        <div
-          v-else-if="iframeContent.includes('data:application/pdf')"
-          class="flex h-full aspect-square"
-        >
-          <iframe
-            class="w-full max-w-full"
-            :src="iframeContent"
-            title="File Content"
-          ></iframe>
-        </div>
-        <div
-          v-else
-          class="aspect-square"
-          :class="{ 'flex h-full': !iframeContent.includes('data:image') }"
-        >
-          <object
-            class="w-full max-w-full"
-            :data="iframeContent"
-            frameborder="0"
-          >
-            <span class="sr-only">File Content</span>
-          </object>
-        </div>
+        <FileDisplay :request="downloadFile" :selected="selectedId" />
       </div>
     </BoxHeadingStats>
   </div>
@@ -55,12 +30,13 @@ import BoxHeadingStats from "./BoxHeadingStats.vue";
 import FilesDownloadFile from "@/actions/FilesDownloadFile.vue";
 import { CircleLoader } from "@lawandorga/components";
 import { formatDate } from "@/utils/date";
-import { isDataUrlDisplayable } from "@/utils/download";
 import { watch, ref, toRefs, Ref } from "vue";
-import { filesDownloadFile, filesRetrieveFile } from "@/services/files_new";
+import { filesRetrieveFile } from "@/services/files_new";
 import { RecordsDocument } from "@/types/records";
 import useQuery from "@/composables/useQuery";
 import FilesDeleteFile from "@/actions/FilesDeleteFile.vue";
+import FileDisplay from "./FileDisplay.vue";
+import useClient from "@/api/client";
 
 // props
 const props = defineProps<{
@@ -70,35 +46,22 @@ const props = defineProps<{
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
-// file
+// download file request
+const client = useClient();
+const downloadFile = (id: number | string) => {
+  return client.downloadDataUrl("api/files/v2/query/{}/download/", id)();
+};
+
+// retrieve file
 const file = ref<null | RecordsDocument>(null);
-
-// data url
-const iframeContent = ref<string | null>(null);
-
-// errors
-const message = window.btoa(
-  "This file can't be displayed. If you think it should be, please contact it@law-orga.de. Maybe we can make it happen.",
-);
-const errorMessage = window.btoa("An error happened.");
-
 const loading = ref(false);
 
 const filesQuery = useQuery(filesRetrieveFile, file, selectedId as Ref<string>);
 
 // get file
 watch(selectedId, () => {
-  iframeContent.value = null;
   if (selectedType.value === "FILE" && selectedId.value) {
     loading.value = true;
-    filesDownloadFile(selectedId.value as string)
-      .then((v: string) => {
-        if (isDataUrlDisplayable(v)) iframeContent.value = v;
-        else iframeContent.value = `data:text/plain;base64,${message}`;
-      })
-      .catch(() => {
-        iframeContent.value = `data:text/plain;base64,${errorMessage}`;
-      });
     filesQuery().then(() => {
       loading.value = false;
     });
