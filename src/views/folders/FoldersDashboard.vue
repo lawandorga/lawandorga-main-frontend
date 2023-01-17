@@ -9,15 +9,7 @@
       </BreadcrumbsBar>
       <div class="bg-white divide-y-2 rounded shadow">
         <div class="px-3 py-2">
-          <ButtonNormal
-            kind="action"
-            @click="
-              parent = null;
-              foldersActions.createModalOpen = true;
-            "
-          >
-            Create Root Folder
-          </ButtonNormal>
+          <FoldersCreateRootFolder :query="query" />
         </div>
         <div
           class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x"
@@ -71,42 +63,26 @@
               </div>
 
               <div class="flex mt-2 space-x-3">
-                <ButtonNormal
-                  kind="action"
-                  @click="
-                    foldersActions.temporary = selectedItem;
-                    foldersActions.updateModalOpen = true;
-                  "
-                >
-                  Change name
-                </ButtonNormal>
-                <ButtonNormal
-                  kind="action"
-                  @click="
-                    foldersActions.temporary = selectedItem;
-                    foldersActions.toggleInheritanceModalOpen = true;
-                  "
-                >
-                  Toggle inheritance
-                </ButtonNormal>
-                <ButtonNormal
-                  kind="action"
-                  @click="
-                    foldersActions.temporary = selectedItem;
-                    foldersActions.moveFolderModalOpen = true;
-                  "
-                >
-                  Move
-                </ButtonNormal>
-                <ButtonNormal
-                  kind="delete"
-                  @click="
-                    foldersActions.temporary = selectedItem;
-                    foldersActions.deleteModalOpen = true;
-                  "
-                >
-                  Delete
-                </ButtonNormal>
+                <FoldersChangeName
+                  :folder-uuid="selectedItem.folder.uuid"
+                  :folder-name="selectedItem.folder.name"
+                  :query="query"
+                />
+                <FoldersToggleInheritance
+                  :query="query"
+                  :folder-uuid="selectedItem.folder.uuid"
+                  :folder-name="selectedItem.folder.name"
+                />
+                <FoldersMoveFolder
+                  :query="query"
+                  :folder-uuid="selectedItem.folder.uuid"
+                  :available-folders="folderList"
+                />
+                <FoldersDeleteFolder
+                  :folder-name="selectedItem.folder.name"
+                  :folder-uuid="selectedItem.folder.uuid"
+                  :query="query"
+                />
               </div>
               <p
                 v-if="selectedItem.folder.stop_inherit"
@@ -129,32 +105,21 @@
                 ]"
               >
                 <template #head-action>
-                  <ButtonNormal
-                    kind="action"
-                    @click="
-                      foldersActions.temporary = selectedItem;
-                      foldersActions.grantAccessModalOpen = true;
-                    "
-                  >
-                    Grant access
-                  </ButtonNormal>
+                  <FoldersGrantAccess
+                    :folder-uuid="selectedItem.folder.uuid"
+                    :query="query"
+                    :available-persons="page ? page.available_persons : null"
+                  />
                 </template>
                 <template #action="item">
-                  <ButtonNormal
+                  <FoldersRevokeAccessUser
                     v-if="item.actions.REVOKE_ACCESS"
-                    kind="delete"
-                    @click="
-                      foldersActions.temporary = {
-                        user_uuid: item.actions.REVOKE_ACCESS.user_uuid,
-                        uuid: selectedItem.folder.uuid,
-                        access: selectedItem.access,
-                        url: item.actions.REVOKE_ACCESS.url,
-                      };
-                      foldersActions.revokeAccessModalOpen = true;
-                    "
-                  >
-                    Revoke access
-                  </ButtonNormal>
+                    :query="query"
+                    :persons="selectedItem.access"
+                    :user-uuid="(item.actions.REVOKE_ACCESS.user_uuid as string)"
+                    :folder-uuid="selectedItem.folder.uuid"
+                    :url="(item.actions.REVOKE_ACCESS.url as string)"
+                  />
                 </template>
               </TableGenerator>
             </div>
@@ -221,13 +186,7 @@
       </div>
     </Dialog>
   </TransitionRoot>
-  <ActionsFolders
-    ref="foldersActions"
-    :parent="parent"
-    :query="query"
-    :available-persons="page ? page.available_persons : null"
-    :available-folders="folderList"
-  />
+  <FoldersCreateFolder ref="foldersActions" :parent="parent" :query="query" />
   <FilesUploadFile
     ref="filesUploadFile"
     class="hidden"
@@ -259,9 +218,9 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";
 import { FolderIcon } from "@heroicons/vue/24/outline";
-import ActionsFolders from "@/components/ActionsFolders.vue";
+import FoldersCreateFolder from "@/actions/FoldersCreateFolder.vue";
 import { computed, ref } from "vue";
-import { ButtonNormal, TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "@lawandorga/components";
 import FoldersTree from "@/components/FoldersTree.vue";
 import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
@@ -278,6 +237,13 @@ import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
+import FoldersCreateRootFolder from "@/actions/FoldersCreateRootFolder.vue";
+import FoldersGrantAccess from "@/actions/FoldersGrantAccess.vue";
+import FoldersRevokeAccessUser from "@/actions/FoldersRevokeAccessUser.vue";
+import FoldersChangeName from "@/actions/FoldersChangeName.vue";
+import FoldersToggleInheritance from "@/actions/FoldersToggleInheritance.vue";
+import FoldersDeleteFolder from "@/actions/FoldersDeleteFolder.vue";
+import FoldersMoveFolder from "@/actions/FoldersMoveFolder.vue";
 
 // content
 const addContentModalOpen = ref(false);
@@ -345,8 +311,8 @@ const pushIntoList = (l: IFolder[], item: IFolderItem) => {
   for (let i of item.children) pushIntoList(l, i);
 };
 
-const folderList = computed<IFolder[] | null>(() => {
-  if (folderItems.value === null) return null;
+const folderList = computed<IFolder[]>(() => {
+  if (folderItems.value === null) return [];
   const fl: IFolder[] = [];
   for (let i of folderItems.value) {
     pushIntoList(fl, i);
@@ -355,7 +321,7 @@ const folderList = computed<IFolder[] | null>(() => {
 });
 
 // actions
-const foldersActions = ref<typeof ActionsFolders>();
+const foldersActions = ref<typeof FoldersCreateFolder>();
 
 // parent
 const parent = ref<string | null>(null);
