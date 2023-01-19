@@ -24,6 +24,7 @@ type NavigationItem = {
     href?: string;
     target?: "_blank";
     class?: string;
+    rel?: string;
   };
   permissions?: string[];
   notifications?: number;
@@ -49,10 +50,6 @@ export default function useNavigationItems() {
         is: "router-link",
         attrs: {
           to: { name: "folders-dashboard" },
-          class:
-            store.user?.email.includes("law-orga.de") || store.rlc?.id === 94 // Bellevue di Monaco
-              ? ""
-              : "hidden",
         },
         permissions: [],
       },
@@ -132,8 +129,8 @@ export default function useNavigationItems() {
           label: l.name,
           icon: LinkIcon,
           is: "a",
-          attrs: { href: l.link, target: "_blank" },
           permissions: [],
+          attrs: { href: l.link, target: "_blank", rel: "noopener" },
         });
       });
     }

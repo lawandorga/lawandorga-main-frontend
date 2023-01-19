@@ -1,6 +1,6 @@
 <template>
-  <BoxLoader :show="true">
-    <div v-if="actionsLinks" class="max-w-2xl mx-auto space-y-6">
+  <BoxLoader show>
+    <div class="max-w-2xl mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -8,53 +8,46 @@
       >
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-
       <TableGenerator
         :head="[
           { name: 'Name', key: 'name' },
           { name: 'Link', key: 'link' },
           { name: '', key: 'action' },
         ]"
-        :data="actionsLinks?.links"
+        :data="links"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="actionsLinks.createModalOpen = true"
-            >
-              Create Link
-            </ButtonNormal>
-          </div>
+          <LinksCreateLink :query="query" />
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                actionsLinks.temporary = slotProps;
-                actionsLinks.deleteModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <LinksDeleteLink
+            :link-id="slotProps.id"
+            :name="slotProps.name"
+            :query="query"
+          />
         </template>
       </TableGenerator>
     </div>
   </BoxLoader>
-  <ActionsLinks ref="actionsLinks" />
 </template>
 
 <script setup lang="ts">
-import { TableGenerator, ButtonNormal } from "@lawandorga/components";
+import { TableGenerator } from "@lawandorga/components";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import ActionsLinks from "@/components/ActionsLinks.vue";
 import { ref } from "vue";
+import useGet from "@/composables/useGet";
+import useClient from "@/api/client";
+import { ILink } from "@/types/org";
+import LinksCreateLink from "@/actions/LinksCreateLink.vue";
+import LinksDeleteLink from "@/actions/LinksDeleteLink.vue";
 
-const actionsLinks = ref<typeof ActionsLinks>();
+const client = useClient();
+
+const request = client.get("/api/org/links/");
+
+const links = ref<ILink[]>([]);
+
+const query = useGet(request, links);
 </script>
