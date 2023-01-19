@@ -153,13 +153,14 @@ class Client {
         .catch(this.commandErrorHandler);
   }
 
-  delete(url: string): (data: any) => Promise<void> {
-    return (data: any) =>
+  delete<D extends Record<string, any>, R = any>(
+    url: string,
+    ...params: UrlParamType[]
+  ): (data: D) => Promise<R> {
+    return (data: D) =>
       this.caller
-        .delete(this.buildUrlFromObject(url, data))
-        .then(() => {
-          /* ignore */
-        })
+        .delete(this.buildUrl(url, data, ...params))
+        .then((r) => r.data)
         .catch(this.commandErrorHandler);
   }
 }

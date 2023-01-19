@@ -88,20 +88,6 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  addMember(data: JsonModel, group: Group): Promise<void> {
-    return axios
-      .post(`groups/${group.id}/add_member/`, { new_member: data.member })
-      .then();
-  }
-
-  removeMember(data: JsonModel, group: Group): Promise<void> {
-    return axios
-      .post(`groups/${group.id}/remove_member/`, {
-        member: data.id,
-      })
-      .then();
-  }
-
   /*
   // Permission
   */

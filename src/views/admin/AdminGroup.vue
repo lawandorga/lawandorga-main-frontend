@@ -1,11 +1,8 @@
 <template>
-  <BoxLoader :show="!!groupActions && !!groupActions.group">
-    <div
-      v-if="!!groupActions && !!groupActions.group"
-      class="max-w-screen-lg mx-auto space-y-6"
-    >
+  <BoxLoader :show="!!group">
+    <div v-if="!!group" class="max-w-screen-lg mx-auto space-y-6">
       <BreadcrumbsBar
-        v-if="groupActions.group"
+        v-if="group"
         :base="{ name: 'admin-dashboard' }"
         :pages="[
           {
@@ -13,8 +10,8 @@
             to: { name: 'admin-groups' },
           },
           {
-            name: groupActions.group.name,
-            to: { name: 'admin-group', params: { id: groupActions.group.id } },
+            name: group.name,
+            to: { name: 'admin-group', params: { id: String(group.id) } },
           },
         ]"
       >
@@ -22,10 +19,10 @@
       </BreadcrumbsBar>
       <div class="px-5 py-4 bg-white rounded shadow">
         <h2 class="mb-4 text-lg font-bold">
-          {{ groupActions.group.name }}
+          {{ group.name }}
         </h2>
         <div>
-          <p>{{ groupActions.group.description }}</p>
+          <p>{{ group.description }}</p>
         </div>
       </div>
 
@@ -34,32 +31,17 @@
           { name: 'Permission', key: (obj) => obj.permission_object.name },
           { name: '', key: 'action' },
         ]"
-        :data="groupActions.permissions"
+        :data="permissions"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="groupActions.addPermissionModalOpen = true"
-            >
-              Add Permission
-            </ButtonNormal>
-          </div>
+          <GroupsAddPermission :query="permissionsQuery" :group-id="group.id" />
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                groupActions.removePermissionModalOpen = true;
-                groupActions.permissionTemporary = slotProps;
-              "
-            >
-              Remove
-            </ButtonNormal>
-          </div>
+          <GroupsRemovePermission
+            :query="permissionsQuery"
+            :permission-name="slotProps.permission_object.name"
+            :permission-id="slotProps.id"
+          />
         </template>
       </TableGenerator>
 
@@ -69,7 +51,7 @@
           { name: 'E-Mail', key: 'email' },
           { name: '', key: 'action' },
         ]"
-        :data="groupActions.members"
+        :data="members"
       >
         <template #name="slotProps">
           <ButtonNormal
@@ -80,59 +62,51 @@
           </ButtonNormal>
         </template>
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="groupActions.addMemberModalOpen = true"
-            >
-              Add Member
-            </ButtonNormal>
-          </div>
+          <GroupsAddMember :group-id="group.id" :query="membersQuery" />
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                groupActions.removeMemberModalOpen = true;
-                groupActions.memberTemporary = slotProps;
-              "
-            >
-              Remove
-            </ButtonNormal>
-          </div>
+          <GroupsRemoveMember
+            :member-id="slotProps.id"
+            :group-id="group.id"
+            :query="membersQuery"
+            :member-name="slotProps.name"
+          />
         </template>
       </TableGenerator>
     </div>
   </BoxLoader>
-  <ActionsGroup :id="($route.params.id as string)" ref="groupActions" />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator, ButtonNormal } from "@lawandorga/components";
-import { defineComponent, ref } from "vue";
+import { Ref, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import ActionsGroup from "@/components/ActionsGroup.vue";
+import useGet from "@/composables/useGet";
+import { Group, GroupMember, HasPermission } from "@/types/core";
+import AdminService from "@/services/admin";
+import { useRoute } from "vue-router";
+import GroupsAddMember from "@/actions/GroupsAddMember.vue";
+import GroupsRemoveMember from "@/actions/GroupsRemoveMember.vue";
+import GroupsAddPermission from "@/actions/GroupsAddPermission.vue";
+import GroupsRemovePermission from "@/actions/GroupsRemovePermission.vue";
 
-export default defineComponent({
-  components: {
-    BreadcrumbsBar,
-    BoxLoader,
-    TableGenerator,
-    ButtonNormal,
-    CogIcon,
-    ActionsGroup,
-  },
-  setup() {
-    const groupActions = ref<typeof ActionsGroup>();
+const route = useRoute();
 
-    return {
-      groupActions,
-    };
-  },
-});
+// group
+const group = ref(null) as Ref<Group | null>;
+useGet(AdminService.getGroup, group, route.params.id as string);
+
+// members
+const members = ref(null) as Ref<GroupMember[] | null>;
+const membersQuery = useGet(AdminService.getMembers, members, group);
+
+// permissions
+const permissions = ref(null) as Ref<HasPermission[] | null>;
+const permissionsQuery = useGet(
+  AdminService.getGroupPermissions,
+  permissions,
+  group,
+);
 </script>
