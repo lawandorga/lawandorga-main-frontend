@@ -24,6 +24,7 @@ type NavigationItem = {
     href?: string;
     target?: "_blank";
     class?: string;
+    rel?: string;
   };
   permissions?: string[];
   notifications?: number;
@@ -132,8 +133,8 @@ export default function useNavigationItems() {
           label: l.name,
           icon: LinkIcon,
           is: "a",
-          attrs: { href: l.link, target: "_blank" },
           permissions: [],
+          attrs: { href: l.link, target: "_blank", rel: "noopener" },
         });
       });
     }
