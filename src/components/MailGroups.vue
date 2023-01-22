@@ -8,14 +8,11 @@
       :data="groups"
     >
       <template #head-action>
-        <div class="flex justify-end">
-          <ButtonNormal
-            kind="action"
-            @click="actionsMailGroups.createModalOpen = true"
-          >
-            Create Group
-          </ButtonNormal>
-        </div>
+        <MailCreateGroup
+          v-if="page && !page.noMailAccount"
+          :available-domains="page.available_domains"
+          :query="query"
+        />
       </template>
       <template #group="item">
         <ButtonLink :to="{ name: 'mail-group', params: { uuid: item.uuid } }">
@@ -23,18 +20,11 @@
         </ButtonLink>
       </template>
       <template #action="item">
-        <div class="flex justify-end space-x-3">
-          <ButtonNormal
-            size="xs"
-            kind="delete"
-            @click="
-              actionsMailGroups.temporary = item;
-              actionsMailGroups.deleteModalOpen = true;
-            "
-          >
-            Delete
-          </ButtonNormal>
-        </div>
+        <MailDeleteGroup
+          :query="query"
+          :group-name="item.email"
+          :group-uuid="item.uuid"
+        />
       </template>
     </TableGenerator>
   </template>
@@ -46,13 +36,15 @@
 </template>
 
 <script setup lang="ts">
+import MailCreateGroup from "@/actions/MailCreateGroup.vue";
+import MailDeleteGroup from "@/actions/MailDeleteGroup.vue";
 import {
-  IMailDomain,
+  IAvailableMailDomain,
   IMailGroup,
   MailDashboardPage,
   NoMailAccount,
 } from "@/types/mail";
-import { ButtonNormal, TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "@lawandorga/components";
 import { computed, PropType, ref, toRefs } from "vue";
 import ActionsMailGroups from "./ActionsMailGroups.vue";
 import ButtonLink from "./ButtonLink.vue";
@@ -80,7 +72,7 @@ const groups = computed<IMailGroup[] | null>(() => {
 });
 
 // available domains
-const availableDomains = computed<IMailDomain[]>(() => {
+const availableDomains = computed<IAvailableMailDomain[]>(() => {
   return page.value.noMailAccount ? [] : page.value.available_domains;
 });
 </script>

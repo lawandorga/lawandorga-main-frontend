@@ -1,17 +1,5 @@
 <template>
   <ModalCreate
-    v-model="createModalOpen"
-    :request="createRequest"
-    :fields="fields"
-    title="Create Group"
-  />
-  <ModalDelete
-    v-model="deleteModalOpen"
-    title="Delete Group"
-    :data="{ group: temporary?.uuid }"
-    :request="deleteRequest"
-  />
-  <ModalCreate
     v-model="addAddressModalOpen"
     :request="addAddress"
     :fields="addressFields"
@@ -57,15 +45,13 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import {
-  mailCreateGroup,
-  mailDeleteGroup,
   mailGroupAddAddress,
   mailGroupAddMember,
   mailGroupDeleteAddress,
   mailGroupRemoveMember,
   mailGroupSetDefaultAddress,
 } from "@/services/mail";
-import { IMailDomain, IMailUser } from "@/types/mail";
+import { IAvailableMailDomain, IMailUser } from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
@@ -87,7 +73,7 @@ const props = defineProps({
   },
   availableDomains: {
     required: true,
-    type: Object as PropType<IMailDomain[]>,
+    type: Object as PropType<IAvailableMailDomain[]>,
   },
   availableUsers: {
     required: false,
@@ -96,29 +82,6 @@ const props = defineProps({
   },
 });
 const { availableDomains, query, availableUsers } = toRefs(props);
-
-// create group
-const fields = computed<types.FormField[]>(() => {
-  return [
-    { label: "Localpart", name: "localpart", type: "string", required: true },
-    {
-      label: "Domain",
-      name: "domain",
-      type: "select",
-      required: true,
-      options: availableDomains?.value as types.FormField["options"],
-    },
-  ] as types.FormField[];
-});
-const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
-  useCommand(mailCreateGroup, query.value);
-
-// delete group
-const {
-  commandRequest: deleteRequest,
-  commandModalOpen: deleteModalOpen,
-  temporary,
-} = useCommand(mailDeleteGroup, query.value);
 
 // create address
 const addressFields = computed<types.FormField[]>(() => {
@@ -167,6 +130,7 @@ const addMemberFields = computed<types.FormField[]>(() => [
 const {
   commandRequest: removeMemberRequest,
   commandModalOpen: removeMemberModalOpen,
+  temporary,
 } = useCommand(mailGroupRemoveMember, query.value);
 
 // expose
@@ -174,10 +138,8 @@ defineExpose({
   addAddressModalOpen,
   deleteAddressModalOpen,
   setDefaultAddressModalOpen,
-  createModalOpen,
-  deleteModalOpen,
-  temporary,
   addMemberModalOpen,
+  temporary,
   removeMemberModalOpen,
 });
 </script>
