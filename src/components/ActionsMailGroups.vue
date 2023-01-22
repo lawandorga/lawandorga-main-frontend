@@ -23,40 +23,20 @@
       temporary?.domain.name
     }}?
   </ModalDelete>
-  <ModalForm
-    v-model="addMemberModalOpen"
-    :fields="addMemberFields"
-    :request="addMemberRequest"
-    :data="{ group: groupId }"
-    title="Add member"
-    submit="Add"
-  />
-  <ModalConfirm
-    v-model="removeMemberModalOpen"
-    :request="removeMemberRequest"
-    :data="{ group: groupId, member: temporary?.uuid }"
-    title="Remove member"
-    submit="Remove"
-  >
-    Are you sure you want to remove {{ temporary?.name }} from this group?
-  </ModalConfirm>
 </template>
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import {
   mailGroupAddAddress,
-  mailGroupAddMember,
   mailGroupDeleteAddress,
-  mailGroupRemoveMember,
   mailGroupSetDefaultAddress,
 } from "@/services/mail";
-import { IAvailableMailDomain, IMailUser } from "@/types/mail";
+import { IAvailableMailDomain } from "@/types/mail";
 import {
   ModalConfirm,
   ModalCreate,
   ModalDelete,
-  ModalForm,
   types,
 } from "@lawandorga/components";
 import { computed, PropType, toRefs } from "vue";
@@ -75,13 +55,8 @@ const props = defineProps({
     required: true,
     type: Object as PropType<IAvailableMailDomain[]>,
   },
-  availableUsers: {
-    required: false,
-    type: Array as PropType<IMailUser[]>,
-    default: () => [],
-  },
 });
-const { availableDomains, query, availableUsers } = toRefs(props);
+const { availableDomains, query } = toRefs(props);
 
 // create address
 const addressFields = computed<types.FormField[]>(() => {
@@ -109,37 +84,14 @@ const {
 const {
   commandRequest: setDefaultAddress,
   commandModalOpen: setDefaultAddressModalOpen,
-} = useCommand(mailGroupSetDefaultAddress, query.value);
-
-// add member
-const {
-  commandRequest: addMemberRequest,
-  commandModalOpen: addMemberModalOpen,
-} = useCommand(mailGroupAddMember, query.value);
-const addMemberFields = computed<types.FormField[]>(() => [
-  {
-    label: "Member",
-    name: "member",
-    type: "select",
-    required: true,
-    options: availableUsers.value,
-  },
-]);
-
-// remove member
-const {
-  commandRequest: removeMemberRequest,
-  commandModalOpen: removeMemberModalOpen,
   temporary,
-} = useCommand(mailGroupRemoveMember, query.value);
+} = useCommand(mailGroupSetDefaultAddress, query.value);
 
 // expose
 defineExpose({
   addAddressModalOpen,
   deleteAddressModalOpen,
   setDefaultAddressModalOpen,
-  addMemberModalOpen,
   temporary,
-  removeMemberModalOpen,
 });
 </script>

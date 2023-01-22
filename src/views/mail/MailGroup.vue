@@ -67,25 +67,20 @@
         :data="members"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              kind="action"
-              @click="actionsMailGroups.addMemberModalOpen = true"
-            >
-              Add Member
-            </ButtonNormal>
-          </div>
+          <MailGroupAddMember
+            v-if="page"
+            :query="query"
+            :group-uuid="($route.params.uuid as string)"
+            :available-users="page.available_users"
+          />
         </template>
         <template #action="item">
-          <ButtonNormal
-            kind="delete"
-            @click="
-              actionsMailGroups.temporary = item;
-              actionsMailGroups.removeMemberModalOpen = true;
-            "
-          >
-            Remove
-          </ButtonNormal>
+          <MailGroupRemoveMember
+            :query="query"
+            :group-uuid="($route.params.uuid as string)"
+            :member-name="item.name"
+            :member-uuid="item.uuid"
+          />
         </template>
       </TableGenerator>
     </div>
@@ -93,13 +88,14 @@
   <ActionsMailGroups
     ref="actionsMailGroups"
     :available-domains="availableDomains"
-    :available-users="availableUsers"
     :query="query"
     :group-id="($route.params.uuid as string)"
   />
 </template>
 
 <script lang="ts" setup>
+import MailGroupAddMember from "@/actions/MailGroupAddMember.vue";
+import MailGroupRemoveMember from "@/actions/MailGroupRemoveMember.vue";
 import ActionsMailGroups from "@/components/ActionsMailGroups.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -138,12 +134,6 @@ const availableDomains = computed<IMailDomain[]>(() => {
 const members = computed<IMailUser[] | null>(() => {
   if (!page.value) return null;
   return page.value.members;
-});
-
-// available users
-const availableUsers = computed<IMailUser[]>(() => {
-  if (!page.value) return [];
-  return page.value.available_users;
 });
 
 // addresses
