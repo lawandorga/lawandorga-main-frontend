@@ -49,7 +49,9 @@
             <template #groups>
               <MailGroups :page="page" :query="query" />
             </template>
-            <template #domain><MailDomain :page="page" /></template>
+            <template #domain>
+              <MailDomain :page="page" :query="query" />
+            </template>
           </TabControls>
         </template>
       </template>
@@ -62,7 +64,6 @@
     :user="page.noMailAccount ? undefined : page.user"
     :query-page="query"
   />
-  <ActionsMailDomain ref="actionsDomain" :query-page="query" />
 </template>
 
 <script setup lang="ts">
@@ -74,10 +75,9 @@ import { provide, ref } from "vue";
 import ActionsMailUser from "@/components/ActionsMailUser.vue";
 import { ButtonNormal } from "@lawandorga/components";
 import TabControls from "@/components/TabControls.vue";
-import { actionsDomainKey, actionsMailUserKey } from "@/types/keys";
+import { actionsMailUserKey } from "@/types/keys";
 import MailUserRole from "@/components/MailUserRole.vue";
 import MailDomain from "@/components/MailDomain.vue";
-import ActionsMailDomain from "@/components/ActionsMailDomain.vue";
 import { MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { mailGetDashboardPage } from "@/services/mail";
 import useGet from "@/composables/useGet";
@@ -95,8 +95,4 @@ const query = useGet(mailGetDashboardPage, page);
 // mail user actions
 const actionsMailUser = ref<typeof ActionsMailUser>();
 provide(actionsMailUserKey, actionsMailUser);
-
-// domain actions
-const actionsDomain = ref<typeof ActionsMailDomain>();
-provide(actionsDomainKey, actionsDomain);
 </script>

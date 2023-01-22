@@ -9,23 +9,13 @@
           Domain:
           {{ domain ? domain.name : "None yet" }}
         </p>
-        <ButtonNormal
-          v-if="domain === null"
-          kind="action"
-          @click="domainActions.commandModalOpen = true"
-        >
-          Add a domain
-        </ButtonNormal>
-        <ButtonNormal
+        <MailAddDomain v-if="domain === null" :query="query" />
+        <MailChangeDomain
           v-if="domain"
-          kind="action"
-          @click="
-            domainActions.temporary = domain;
-            domainActions.changeDomainModalOpen = true;
-          "
-        >
-          Change the domain
-        </ButtonNormal>
+          :domain-name="domain.name"
+          :domain-uuid="domain.uuid"
+          :query="query"
+        />
         <p v-if="domain === null">
           Once you have added a domain you can setup the MX-Records and get
           started adding mail addresses.
@@ -88,12 +78,7 @@
               Your domain is active.
             </span>
             <br />
-            <ButtonNormal
-              kind="action"
-              @click="domainActions.checkDomainSettings(domain)"
-            >
-              Check Settings
-            </ButtonNormal>
+            <MailCheckDomain :domain-uuid="domain.uuid" :query="query" />
           </p>
           <p class="mt-12">
             <b>Note:</b>
@@ -118,18 +103,18 @@
 </template>
 
 <script lang="ts" setup>
+import MailAddDomain from "@/actions/MailAddDomain.vue";
+import MailChangeDomain from "@/actions/MailChangeDomain.vue";
+import MailCheckDomain from "@/actions/MailCheckDomain.vue";
 import { actionsDomainKey } from "@/types/keys";
 import { IMailDomain, MailDashboardPage, NoMailAccount } from "@/types/mail";
-import { ButtonNormal } from "@lawandorga/components";
-import { computed, inject, PropType, toRefs } from "vue";
+import { computed, inject, toRefs } from "vue";
 
 // page
-const props = defineProps({
-  page: {
-    required: true,
-    type: Object as PropType<MailDashboardPage | NoMailAccount>,
-  },
-});
+const props = defineProps<{
+  page: MailDashboardPage | NoMailAccount;
+  query: () => void;
+}>();
 const { page } = toRefs(props);
 
 // domain
