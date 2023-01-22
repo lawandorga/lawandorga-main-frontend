@@ -1,21 +1,12 @@
 <template>
-  <BoxLoader :show="userStore.loaded && !!actionsLegalRequirements">
-    <div
-      v-if="userStore.loaded && !!actionsLegalRequirements"
-      class="max-w-3xl mx-auto space-y-6"
-    >
+  <BoxLoader :show="userStore.loaded">
+    <div v-if="userStore.loaded" class="max-w-3xl mx-auto space-y-6">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <ScaleIcon class="w-6 h-6" />
       </BreadcrumbsBar>
 
-      <div
-        v-if="actionsLegalRequirements.legalRequirements"
-        class="mt-10 space-y-10"
-      >
-        <div
-          v-for="lr in actionsLegalRequirements.legalRequirements"
-          :key="lr.id"
-        >
+      <div class="mt-10 space-y-10">
+        <div v-for="lr in legalRequirements" :key="lr.id">
           <div class="bg-white border rounded shadow">
             <div class="px-6 pt-5">
               <Disclosure v-slot="{ open }" :default-open="!lr.accepted">
@@ -60,7 +51,7 @@
                     <p class="text-lg font-bold text-gray-800">
                       Action required:
                     </p>
-                    <ButtonNormal @click="actionsLegalRequirements?.accept(lr)">
+                    <ButtonNormal @click="accept(lr)">
                       {{ lr.legal_requirement.button_text }}
                     </ButtonNormal>
                   </div>
@@ -72,7 +63,6 @@
       </div>
     </div>
   </BoxLoader>
-  <ActionsLegalRequirements ref="actionsLegalRequirements" />
 </template>
 
 <script setup lang="ts">
@@ -81,13 +71,27 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ScaleIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
-import ActionsLegalRequirements from "@/components/ActionsLegalRequirements.vue";
 import { ButtonNormal } from "@lawandorga/components";
 import { formatDate } from "@/utils/date";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
+import { LegalRequirement } from "@/types/legal";
+import useCommand from "@/composables/useCommand";
+import LegalService from "@/services/legal";
+import useGet from "@/composables/useGet";
+import useQuery from "@/composables/useQuery";
 
 const userStore = useUserStore();
 
-const actionsLegalRequirements = ref<typeof ActionsLegalRequirements>();
+const legalRequirements = ref<LegalRequirement[] | null>(null);
+
+useGet(LegalService.getLegalRequirements, legalRequirements);
+
+const { commandRequest: accept } = useCommand(
+  LegalService.acceptLegalRequirement,
+  [
+    useQuery(LegalService.getLegalRequirements, legalRequirements),
+    () => userStore.updateData(),
+  ],
+);
 </script>
