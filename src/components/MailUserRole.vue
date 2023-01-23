@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!!actionsMailUser && !!user">
+  <template v-if="!!user">
     <div class="px-6 py-5 bg-white rounded shadow">
       <div
         class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg max-w-none"
@@ -17,12 +17,7 @@
             Groups: {{ user.groups.map((g) => g.email).join(", ") }}
           </span>
         </p>
-        <ButtonNormal
-          kind="action"
-          @click="actionsMailUser.regeneratePasswordModalOpen = true"
-        >
-          Regenerate password
-        </ButtonNormal>
+        <MailRegeneratePassword />
         <h2 class="">IMAP & SMTP Settings</h2>
         <table>
           <thead>
@@ -142,16 +137,16 @@
 <script setup lang="ts">
 import MailAddAddress from "@/actions/MailAddAddress.vue";
 import MailDeleteAddress from "@/actions/MailDeleteAddress.vue";
+import MailRegeneratePassword from "@/actions/MailRegeneratePassword.vue";
 import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
-import { actionsMailUserKey } from "@/types/keys";
 import {
   IMailAddress,
   MailDashboardPage,
   ISelfMailUser,
   NoMailAccount,
 } from "@/types/mail";
-import { ButtonNormal, TableGenerator } from "@lawandorga/components";
-import { computed, inject, toRefs } from "vue";
+import { TableGenerator } from "@lawandorga/components";
+import { computed, toRefs } from "vue";
 
 // page
 const props = defineProps<{
@@ -172,7 +167,4 @@ const addresses = computed<IMailAddress[] | null>(() => {
   if (user.value === null || user.value === false) return null;
   return user.value.account.addresses;
 });
-
-// actions
-const actionsMailUser = inject(actionsMailUserKey);
 </script>
