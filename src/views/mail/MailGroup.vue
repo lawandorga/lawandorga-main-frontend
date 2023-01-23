@@ -1,9 +1,6 @@
 <template>
-  <BoxLoader :show="userStore.loaded && !!actionsMailGroups">
-    <div
-      v-if="userStore.loaded && !!actionsMailGroups"
-      class="max-w-3xl mx-auto space-y-8"
-    >
+  <BoxLoader :show="userStore.loaded">
+    <div v-if="userStore.loaded" class="max-w-3xl mx-auto space-y-8">
       <BreadcrumbsBar
         :base="{ name: 'mail-dashboard' }"
         :pages="[
@@ -26,14 +23,11 @@
         :data="addresses"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              kind="action"
-              @click="actionsMailGroups.addAddressModalOpen = true"
-            >
-              Add Address
-            </ButtonNormal>
-          </div>
+          <MailGroupAddAddress
+            :query="query"
+            :group-uuid="($route.params.uuid as string)"
+            :available-domains="availableDomains"
+          />
         </template>
         <template #action="item">
           <MailSetDefaultGroupAddress
@@ -43,15 +37,13 @@
             :address-uuid="item.uuid"
             :group-uuid="($route.params.uuid as string)"
           />
-          <ButtonNormal
-            kind="delete"
-            @click="
-              actionsMailGroups.temporary = item;
-              actionsMailGroups.deleteAddressModalOpen = true;
-            "
-          >
-            Delete
-          </ButtonNormal>
+          <MailGroupDeleteAddress
+            :email="`${item.localpart}@${item.domain.name}`"
+            :query="query"
+            :address-uuid="item.uuid"
+            :group-uuid="($route.params.uuid as string)"
+            :available-domains="availableDomains"
+          />
         </template>
       </TableGenerator>
       <TableGenerator
@@ -81,19 +73,14 @@
       </TableGenerator>
     </div>
   </BoxLoader>
-  <ActionsMailGroups
-    ref="actionsMailGroups"
-    :available-domains="availableDomains"
-    :query="query"
-    :group-id="($route.params.uuid as string)"
-  />
 </template>
 
 <script lang="ts" setup>
+import MailGroupAddAddress from "@/actions/MailGroupAddAddress.vue";
 import MailGroupAddMember from "@/actions/MailGroupAddMember.vue";
+import MailGroupDeleteAddress from "@/actions/MailGroupDeleteAddress.vue";
 import MailGroupRemoveMember from "@/actions/MailGroupRemoveMember.vue";
 import MailSetDefaultGroupAddress from "@/actions/MailSetDefaultGroupAddress.vue";
-import ActionsMailGroups from "@/components/ActionsMailGroups.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
@@ -106,15 +93,12 @@ import {
   IMailUser,
 } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator, ButtonNormal } from "@lawandorga/components";
+import { TableGenerator } from "@lawandorga/components";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 // store
 const userStore = useUserStore();
-
-// actions
-const actionsMailGroups = ref<typeof ActionsMailGroups>();
 
 // page
 const route = useRoute();
