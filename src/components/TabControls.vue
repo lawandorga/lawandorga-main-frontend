@@ -1,5 +1,5 @@
 <template>
-  <TabGroup>
+  <TabGroup :default-index="defaultIndex">
     <TabList class="inline-flex rounded shadow">
       <Tab
         v-for="tab in tabs"
@@ -16,6 +16,7 @@
               : 'text-gray-600 hover:bg-gray-50 bg-gray-100',
           ]"
           type="button"
+          @click="clicked(tab.key)"
         >
           {{ tab.name }}
         </button>
@@ -37,11 +38,30 @@
 
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import { toRefs } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 interface ITab {
   name: string;
   key: string;
 }
 
-defineProps<{ tabs: ITab[] }>();
+const props = defineProps<{ tabs: ITab[] }>();
+
+const { tabs } = toRefs(props);
+
+const route = useRoute();
+const router = useRouter();
+
+const clicked = (key: string) => {
+  router.push({ path: route.path, query: { selected: key } });
+};
+
+let defaultIndex = 0;
+
+if (route.query.selected) {
+  const selected = route.query.selected;
+  const index = tabs.value.findIndex((t) => t.key === selected);
+  defaultIndex = index;
+}
 </script>
