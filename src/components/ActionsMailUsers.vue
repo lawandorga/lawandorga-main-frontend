@@ -5,15 +5,7 @@
     :fields="addressFields"
     :data="{ user: userId }"
   />
-  <ModalConfirm
-    v-model="setDefaultAddressModalOpen"
-    :data="{ address: temporary?.uuid, user: userId }"
-    :request="setDefaultAddress"
-    title="Set Default Address"
-  >
-    Do you want to set {{ temporary?.localpart }}@{{ temporary?.domain.name }}
-    as default? Be aware that your IMAP and SMTP settings will change.
-  </ModalConfirm>
+
   <ModalDelete
     v-model="deleteAddressModalOpen"
     :data="{ address: temporary?.uuid, user: userId }"
@@ -27,18 +19,9 @@
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import {
-  mailAddAddress,
-  mailDeleteAddress,
-  mailSetDefaultAddress,
-} from "@/services/mail";
+import { mailAddAddress, mailDeleteAddress } from "@/services/mail";
 import { IMailDomain } from "@/types/mail";
-import {
-  ModalConfirm,
-  ModalCreate,
-  ModalDelete,
-  types,
-} from "@lawandorga/components";
+import { ModalCreate, ModalDelete, types } from "@lawandorga/components";
 import { computed, PropType, toRefs } from "vue";
 
 // props
@@ -81,17 +64,10 @@ const {
   temporary,
 } = useCommand(mailDeleteAddress, query.value);
 
-// set default address
-const {
-  commandRequest: setDefaultAddress,
-  commandModalOpen: setDefaultAddressModalOpen,
-} = useCommand(mailSetDefaultAddress, query.value);
-
 // expose
 defineExpose({
   addAddressModalOpen,
   deleteAddressModalOpen,
-  setDefaultAddressModalOpen,
   temporary,
 });
 </script>

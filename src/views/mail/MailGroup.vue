@@ -36,26 +36,22 @@
           </div>
         </template>
         <template #action="item">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              kind="action"
-              @click="
-                actionsMailGroups.temporary = item;
-                actionsMailGroups.setDefaultAddressModalOpen = true;
-              "
-            >
-              Set as default
-            </ButtonNormal>
-            <ButtonNormal
-              kind="delete"
-              @click="
-                actionsMailGroups.temporary = item;
-                actionsMailGroups.deleteAddressModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <MailSetDefaultGroupAddress
+            v-show="!item.is_default"
+            :email="`${item.localpart}@${item.domain.name}`"
+            :query="query"
+            :address-uuid="item.uuid"
+            :group-uuid="($route.params.uuid as string)"
+          />
+          <ButtonNormal
+            kind="delete"
+            @click="
+              actionsMailGroups.temporary = item;
+              actionsMailGroups.deleteAddressModalOpen = true;
+            "
+          >
+            Delete
+          </ButtonNormal>
         </template>
       </TableGenerator>
       <TableGenerator
@@ -96,6 +92,7 @@
 <script lang="ts" setup>
 import MailGroupAddMember from "@/actions/MailGroupAddMember.vue";
 import MailGroupRemoveMember from "@/actions/MailGroupRemoveMember.vue";
+import MailSetDefaultGroupAddress from "@/actions/MailSetDefaultGroupAddress.vue";
 import ActionsMailGroups from "@/components/ActionsMailGroups.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";

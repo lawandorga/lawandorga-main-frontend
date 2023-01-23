@@ -36,15 +36,13 @@
           </div>
         </template>
         <template #action="item">
-          <ButtonNormal
-            kind="action"
-            @click="
-              actionsMailUsers.temporary = item;
-              actionsMailUsers.setDefaultAddressModalOpen = true;
-            "
-          >
-            Set as default
-          </ButtonNormal>
+          <MailSetDefaultAddress
+            v-show="!item.is_default"
+            :email="`${item.localpart}@${item.domain.name}`"
+            :query="query"
+            :address-uuid="item.uuid"
+            :user-uuid="($route.params.uuid as string)"
+          />
           <ButtonNormal
             kind="delete"
             @click="
@@ -67,6 +65,7 @@
 </template>
 
 <script lang="ts" setup>
+import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
 import ActionsMailUsers from "@/components/ActionsMailUsers.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";

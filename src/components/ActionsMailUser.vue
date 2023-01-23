@@ -5,15 +5,6 @@
     :fields="fields"
     :data="{ user: user?.uuid }"
   />
-  <ModalConfirm
-    v-model="setDefaultAddressModalOpen"
-    :data="{ user: user?.uuid, address: temporary?.uuid }"
-    :request="setDefaultAddress"
-    title="Set Default Address"
-  >
-    Do you want to set {{ temporary?.localpart }}@{{ temporary?.domain.name }}
-    as default? Be aware that your IMAP and SMTP settings will change.
-  </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
     :data="{ user: user?.uuid, address: temporary?.uuid }"
@@ -49,7 +40,6 @@ import {
   mailCreateUser,
   mailAddAddress,
   mailDeleteAddress,
-  mailSetDefaultAddress,
   mailRegeneratePassword,
 } from "@/services/mail";
 import { IAvailableMailDomain, ISelfMailUser } from "@/types/mail";
@@ -107,12 +97,6 @@ const {
   temporary,
 } = useCommand(mailDeleteAddress, queryPage.value);
 
-// set default address
-const {
-  commandRequest: setDefaultAddress,
-  commandModalOpen: setDefaultAddressModalOpen,
-} = useCommand(mailSetDefaultAddress, queryPage.value);
-
 // regenerate password
 const regeneratePasswordModalOpen = ref(false);
 const password = ref("");
@@ -128,7 +112,6 @@ defineExpose({
   createMailUserRole,
   addAddressModalOpen,
   deleteAddressModalOpen,
-  setDefaultAddressModalOpen,
   regeneratePasswordModalOpen,
 });
 </script>

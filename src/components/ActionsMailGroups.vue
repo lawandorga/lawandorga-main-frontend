@@ -5,15 +5,6 @@
     :fields="addressFields"
     :data="{ group: groupId }"
   />
-  <ModalConfirm
-    v-model="setDefaultAddressModalOpen"
-    :data="{ address: temporary?.uuid, group: groupId }"
-    :request="setDefaultAddress"
-    title="Set Default Address"
-  >
-    Do you want to set {{ temporary?.localpart }}@{{ temporary?.domain.name }}
-    as default? Be aware that your IMAP and SMTP settings will change.
-  </ModalConfirm>
   <ModalDelete
     v-model="deleteAddressModalOpen"
     :data="{ address: temporary?.uuid, group: groupId }"
@@ -27,18 +18,9 @@
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import {
-  mailGroupAddAddress,
-  mailGroupDeleteAddress,
-  mailGroupSetDefaultAddress,
-} from "@/services/mail";
+import { mailGroupAddAddress, mailGroupDeleteAddress } from "@/services/mail";
 import { IAvailableMailDomain } from "@/types/mail";
-import {
-  ModalConfirm,
-  ModalCreate,
-  ModalDelete,
-  types,
-} from "@lawandorga/components";
+import { ModalCreate, ModalDelete, types } from "@lawandorga/components";
 import { computed, PropType, toRefs } from "vue";
 
 // props
@@ -78,20 +60,12 @@ const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
 const {
   commandRequest: deleteAddress,
   commandModalOpen: deleteAddressModalOpen,
-} = useCommand(mailGroupDeleteAddress, query.value);
-
-// set default address
-const {
-  commandRequest: setDefaultAddress,
-  commandModalOpen: setDefaultAddressModalOpen,
   temporary,
-} = useCommand(mailGroupSetDefaultAddress, query.value);
+} = useCommand(mailGroupDeleteAddress, query.value);
 
 // expose
 defineExpose({
   addAddressModalOpen,
   deleteAddressModalOpen,
-  setDefaultAddressModalOpen,
-  temporary,
 });
 </script>

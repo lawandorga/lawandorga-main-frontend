@@ -123,16 +123,13 @@
         </template>
         <template #action="item">
           <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="
-                actionsMailUser.temporary = item;
-                actionsMailUser.setDefaultAddressModalOpen = true;
-              "
-            >
-              Set as default
-            </ButtonNormal>
+            <MailSetDefaultAddress
+              v-show="!item.is_default"
+              :email="`${item.localpart}@${item.domain.name}`"
+              :query="query"
+              :address-uuid="item.uuid"
+              :user-uuid="user.uuid"
+            />
             <ButtonNormal
               size="xs"
               kind="delete"
@@ -151,6 +148,7 @@
 </template>
 
 <script setup lang="ts">
+import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
 import { actionsMailUserKey } from "@/types/keys";
 import {
   IMailAddress,
@@ -159,15 +157,13 @@ import {
   NoMailAccount,
 } from "@/types/mail";
 import { ButtonNormal, TableGenerator } from "@lawandorga/components";
-import { computed, inject, PropType, toRefs } from "vue";
+import { computed, inject, toRefs } from "vue";
 
 // page
-const props = defineProps({
-  page: {
-    required: true,
-    type: Object as PropType<MailDashboardPage | NoMailAccount>,
-  },
-});
+const props = defineProps<{
+  page: MailDashboardPage | NoMailAccount;
+  query: () => void;
+}>();
 const { page } = toRefs(props);
 
 // user

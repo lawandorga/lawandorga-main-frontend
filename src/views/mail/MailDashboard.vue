@@ -43,7 +43,9 @@
               { name: 'Domain', key: 'domain' },
             ]"
           >
-            <template #mailUserRole><MailUserRole :page="page" /></template>
+            <template #mailUserRole>
+              <MailUserRole :query="query" :page="page" />
+            </template>
             <template #webmail><MailWebmail /></template>
             <template #users><MailUsers :page="page" /></template>
             <template #groups>
