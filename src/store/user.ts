@@ -73,9 +73,9 @@ export const useUserStore = defineStore("user", () => {
     updateSettingRequest();
   };
 
-  const getSetting = (
+  const getSetting = <T = string | boolean | number | string[]>(
     key: string,
-    defaultValue: string | boolean | number | string[] = "",
+    defaultValue: T = "" as T,
   ) => {
     if (settings.value && key in settings.value) return settings.value[key];
     return defaultValue;
