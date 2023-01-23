@@ -111,36 +111,28 @@
         :data="addresses"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="actionsMailUser.addAddressModalOpen = true"
-            >
-              Add Address
-            </ButtonNormal>
-          </div>
+          <MailAddAddress
+            :query="query"
+            :user-uuid="user.uuid"
+            :available-domains="
+              page.noMailAccount ? [] : page.available_domains
+            "
+          />
         </template>
         <template #action="item">
-          <div class="flex justify-end space-x-3">
-            <MailSetDefaultAddress
-              v-show="!item.is_default"
-              :email="`${item.localpart}@${item.domain.name}`"
-              :query="query"
-              :address-uuid="item.uuid"
-              :user-uuid="user.uuid"
-            />
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                actionsMailUser.temporary = item;
-                actionsMailUser.deleteAddressModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <MailSetDefaultAddress
+            v-show="!item.is_default"
+            :email="`${item.localpart}@${item.domain.name}`"
+            :query="query"
+            :address-uuid="item.uuid"
+            :user-uuid="user.uuid"
+          />
+          <MailDeleteAddress
+            :email="`${item.localpart}@${item.domain.name}`"
+            :query="query"
+            :address-uuid="item.uuid"
+            :user-uuid="user.uuid"
+          />
         </template>
       </TableGenerator>
     </div>
@@ -148,6 +140,8 @@
 </template>
 
 <script setup lang="ts">
+import MailAddAddress from "@/actions/MailAddAddress.vue";
+import MailDeleteAddress from "@/actions/MailDeleteAddress.vue";
 import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
 import { actionsMailUserKey } from "@/types/keys";
 import {

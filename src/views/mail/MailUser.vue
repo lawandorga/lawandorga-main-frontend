@@ -1,9 +1,6 @@
 <template>
-  <BoxLoader :show="userStore.loaded && !!actionsMailUsers">
-    <div
-      v-if="userStore.loaded && !!actionsMailUsers"
-      class="max-w-3xl mx-auto"
-    >
+  <BoxLoader :show="userStore.loaded && !!page">
+    <div v-if="userStore.loaded && !!page" class="max-w-3xl mx-auto">
       <BreadcrumbsBar
         :base="{ name: 'mail-dashboard' }"
         :pages="[
@@ -26,14 +23,11 @@
         :data="addresses"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              kind="action"
-              @click="actionsMailUsers.addAddressModalOpen = true"
-            >
-              Add Address
-            </ButtonNormal>
-          </div>
+          <MailAddAddress
+            :query="query"
+            :user-uuid="($route.params.uuid as string)"
+            :available-domains="page.available_domains"
+          />
         </template>
         <template #action="item">
           <MailSetDefaultAddress
@@ -43,57 +37,40 @@
             :address-uuid="item.uuid"
             :user-uuid="($route.params.uuid as string)"
           />
-          <ButtonNormal
-            kind="delete"
-            @click="
-              actionsMailUsers.temporary = item;
-              actionsMailUsers.deleteAddressModalOpen = true;
-            "
-          >
-            Delete
-          </ButtonNormal>
+          <MailDeleteAddress
+            :email="`${item.localpart}@${item.domain.name}`"
+            :query="query"
+            :address-uuid="item.uuid"
+            :user-uuid="($route.params.uuid as string)"
+          />
         </template>
       </TableGenerator>
     </div>
   </BoxLoader>
-  <ActionsMailUsers
-    ref="actionsMailUsers"
-    :available-domains="availableDomains"
-    :query="query"
-    :user-id="($route.params.uuid as string)"
-  />
 </template>
 
 <script lang="ts" setup>
+import MailAddAddress from "@/actions/MailAddAddress.vue";
+import MailDeleteAddress from "@/actions/MailDeleteAddress.vue";
 import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
-import ActionsMailUsers from "@/components/ActionsMailUsers.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
 import { mailGetUserPage } from "@/services/mail";
 import { useUserStore } from "@/store/user";
-import { IMailAddress, IMailDomain, IMailUserPage } from "@/types/mail";
+import { IMailAddress, IMailUserPage } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator, ButtonNormal } from "@lawandorga/components";
+import { TableGenerator } from "@lawandorga/components";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 // store
 const userStore = useUserStore();
 
-// actions
-const actionsMailUsers = ref<typeof ActionsMailUsers>();
-
 // page
 const route = useRoute();
 const page = ref<IMailUserPage>();
 const query = useGet(mailGetUserPage, page, route.params.uuid as string);
-
-// available domains
-const availableDomains = computed<IMailDomain[]>(() => {
-  if (!page.value) return [];
-  return page.value.available_domains;
-});
 
 // addresses
 const addresses = computed<IMailAddress[] | null>(() => {
