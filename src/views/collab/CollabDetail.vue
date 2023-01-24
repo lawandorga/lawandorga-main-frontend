@@ -1,13 +1,13 @@
 <template>
   <BoxLoader :show="!!doc">
-    <div class="grid max-w-screen-xl gap-6 mx-auto">
+    <div v-if="doc" class="grid max-w-screen-xl gap-6 mx-auto">
       <BreadcrumbsBar
         v-if="doc"
         :base="{ name: 'collab-dashboard' }"
         :pages="[
           {
             name: 'Document',
-            to: { name: 'collab-detail', params: { id: doc.id } },
+            to: { name: 'collab-detail', params: { id: doc.id.toString() } },
           },
         ]"
       >
@@ -37,8 +37,8 @@
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { computed, onUnmounted, ref } from "vue";
 import { CollabDocument } from "@/types/collab";
 import CollabService from "@/services/collab";
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -46,64 +46,55 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { DocumentTextIcon, CheckIcon } from "@heroicons/vue/24/outline";
 import FormTiptap from "@/components/FormTiptap.vue";
 import { CircleLoader } from "@lawandorga/components";
+import { useErrorHandling } from "@/api/errors";
+import { useRoute } from "vue-router";
 
-export default defineComponent({
-  components: {
-    CheckIcon,
-    CircleLoader,
-    FormTiptap,
-    BoxLoader,
-    BreadcrumbsBar,
-    DocumentTextIcon,
+const doc = ref<CollabDocument | null>(null);
+const content = ref<string>();
+const currentVersionSaved = ref(true);
+const saveInterval = ref<ReturnType<typeof setInterval> | null>(null);
+
+const route = useRoute();
+
+const change = (newText: string) => {
+  if (doc.value === null) return;
+  if (doc.value.content_html !== newText) currentVersionSaved.value = false;
+};
+
+const model = computed<string>({
+  get() {
+    if (!content.value) return "";
+    return content.value;
   },
-  data: function () {
-    return {
-      doc: null as CollabDocument | null,
-      content: null as string | null,
-      currentVersionSaved: true,
-      saveInterval: null as ReturnType<typeof setInterval> | null,
-    };
-  },
-  computed: {
-    model: {
-      get(): string | null {
-        return this.content;
-      },
-      set(newValue: string) {
-        this.content = newValue;
-        this.change(newValue);
-      },
-    },
-  },
-  created() {
-    // set auto save interval
-    this.saveInterval = setInterval(this.saveIfRequired, 5000);
-    // get the latest version
-    CollabService.getLatestVersion(this.$route.params.id as string).then(
-      (doc) => {
-        this.doc = doc;
-        this.content = doc.content_html;
-      },
-    );
-  },
-  unmounted() {
-    if (this.saveInterval !== null) clearInterval(this.saveInterval);
-  },
-  methods: {
-    change(newText: string) {
-      if (this.doc === null) return;
-      if (this.doc.content_html !== newText) this.currentVersionSaved = false;
-    },
-    saveIfRequired() {
-      if (!this.currentVersionSaved) this.save();
-    },
-    save() {
-      const data = Object.assign({}, this.doc, { content: this.content });
-      this.currentVersionSaved = true;
-      CollabService.createVersion(data).then((cb) => (this.doc = cb));
-    },
+  set(newValue: string) {
+    content.value = newValue;
+    change(newValue);
   },
 });
-</script>
 
-@change="change($event)"
+const { handleCommandError } = useErrorHandling();
+
+const save = () => {
+  const data = Object.assign({}, doc.value, { content: content.value });
+  currentVersionSaved.value = true;
+
+  CollabService.createVersion(data).catch(handleCommandError);
+};
+
+const saveIfRequired = () => {
+  if (!currentVersionSaved.value) save();
+};
+
+// set auto save interval
+saveInterval.value = setInterval(saveIfRequired, 5000);
+
+// get the latest version
+CollabService.getLatestVersion(route.params.id as string).then((d) => {
+  doc.value = d;
+  content.value = d.content_html;
+});
+
+onUnmounted(() => {
+  if (saveInterval.value !== null) clearInterval(saveInterval.value);
+});
+</script>
