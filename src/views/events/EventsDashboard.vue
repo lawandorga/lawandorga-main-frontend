@@ -8,20 +8,8 @@
       >
         <CalendarDaysIcon class="w-6 h-6" />
         <template #buttons>
-          <ButtonNormal
-            size="xs"
-            kind="action"
-            @click="modalCalendarLink.modalOpen = true"
-          >
-            Get Calendar Link
-          </ButtonNormal>
-          <ButtonNormal
-            size="xs"
-            kind="action"
-            @click="actionsEvents.addEventModalOpen = true"
-          >
-            Add Event
-          </ButtonNormal>
+          <EventsGetCalendarLink />
+          <EventsCreateEvent :query="query" />
         </template>
       </BreadcrumbsBar>
       <div class="flex justify-end gap-4 align-baseline">
@@ -59,7 +47,7 @@
                 class="w-full h-1 rounded-b-sm"
                 :class="{
                   'bg-lorgablue': !event.is_global && !event.is_past_event,
-                  'bg-globalevent': event.is_global && !event.is_past_event,
+                  'bg-blue-300': event.is_global && !event.is_past_event,
                   'bg-gray-300': event.is_past_event,
                 }"
               />
@@ -77,30 +65,14 @@
                       {{ event.org.name }}
                     </h2>
                   </div>
-                  <ButtonNormal
-                    v-if="userStore.rlc && userStore.rlc.id === event.org.id"
-                    size="xs"
-                    kind="action"
-                    @click="
-                      actionsEvents.eventUpdateTemporary = event;
-                      actionsEvents.updateEventModalOpen = true;
-                    "
-                  >
-                    Edit
-                  </ButtonNormal>
-                  <ButtonNormal
-                    v-if="userStore.rlc && userStore.rlc.id === event.org.id"
-                    size="xs"
-                    kind="delete"
-                    @click="
-                      actionsEvents.eventTemporary = event;
-                      actionsEvents.deleteEventModalOpen = true;
-                    "
-                  >
-                    Delete
-                  </ButtonNormal>
+                  <EventsUpdateEvent :event="event" :query="query" />
+                  <EventsDeleteEvent
+                    :event-id="event.id"
+                    :event-org-id="event.org.id"
+                    :query="query"
+                    :event-name="event.name"
+                  />
                 </div>
-
                 <div class="text-gray-500">
                   {{ formatDate(event.start_time) }} –
                   {{ formatDate(event.end_time) }}
@@ -118,12 +90,9 @@
       </div>
     </div>
   </BoxLoader>
-  <ActionsEvents ref="actionsEvents" />
-  <ModalCalendarLink ref="modalCalendarLink" />
 </template>
 
 <script setup lang="ts">
-import ActionsEvents from "@/components/ActionsEvents.vue";
 import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
 import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -131,14 +100,15 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { Event } from "@/types/event";
 import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
-import { useUserStore } from "@/store/user";
-import ModalCalendarLink from "@/components/ModalCalendarLink.vue";
 import { useRoute, useRouter } from "vue-router";
+import EventsCreateEvent from "@/actions/EventsCreateEvent.vue";
+import useGet from "@/composables/useGet";
+import EventService from "@/services/event";
+import EventsUpdateEvent from "@/actions/EventsUpdateEvent.vue";
+import EventsDeleteEvent from "@/actions/EventsDeleteEvent.vue";
+import EventsGetCalendarLink from "@/actions/EventsGetCalendarLink.vue";
 
-const actionsEvents = ref<typeof ActionsEvents>();
 const showGlobal = ref(true);
-const modalCalendarLink = ref<typeof ModalCalendarLink>();
-const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -152,13 +122,16 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
   }, {});
 }
 
-const nextEventIndex = computed(() => {
-  const rawNextEvent = actionsEvents?.value?.events.findIndex(
+const events = ref<Event[] | null>(null);
+const query = useGet(EventService.getEvents, events);
+
+const nextEventIndex = computed<number>(() => {
+  if (!events.value) return 0;
+
+  const rawNextEvent = events.value.findIndex(
     (event: Event) => new Date(event.end_time) > new Date(Date.now()),
   );
-  return rawNextEvent === -1
-    ? actionsEvents?.value?.events?.length
-    : rawNextEvent;
+  return rawNextEvent === -1 ? events.value.length : rawNextEvent;
 });
 
 function loadPastEvents() {
@@ -173,13 +146,15 @@ const isEventsListEmpty = computed(() => {
 });
 
 const eventsWithFormattedDate = computed(() => {
-  const current_events = actionsEvents?.value?.events?.slice(
+  if (!events.value) return [];
+
+  const current_events = events.value?.slice(
     Math.max(0, nextEventIndex?.value - earlierValue?.value),
   );
   const fileredGlobal = current_events?.filter(
     (event: Event) => showGlobal.value || !event.is_global,
   );
-  const events = fileredGlobal?.map((event: Event) => {
+  const events2 = fileredGlobal?.map((event: Event) => {
     return {
       ...event,
       // Necessary to display the date in the update modal
@@ -189,7 +164,7 @@ const eventsWithFormattedDate = computed(() => {
     };
   });
   return groupBy(
-    events,
+    events2,
     (
       event: Event & {
         start_time_object: FormattedDate;
@@ -199,9 +174,3 @@ const eventsWithFormattedDate = computed(() => {
   );
 });
 </script>
-
-<style scoped>
-.bg-globalevent {
-  background-color: #89a4b7;
-}
-</style>

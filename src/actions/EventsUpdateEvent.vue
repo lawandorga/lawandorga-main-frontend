@@ -1,0 +1,96 @@
+<template>
+  <ButtonNormal
+    v-if="userStore.rlc?.id === event.org.id"
+    size="xs"
+    kind="action"
+    @click="commandModalOpen = true"
+  >
+    Edit
+    <ModalFree
+      v-model="commandModalOpen"
+      width="max-w-2xl"
+      title="Update Event"
+    >
+      <FormGenerator
+        :data="{
+          id: event.id,
+          description: event.description,
+          name: event.name,
+          is_global: event.is_global,
+          start_time: event.start_time,
+          end_time: event.end_time,
+        }"
+        :fields="eventFields"
+        :request="commandRequest"
+      >
+        <template #custom="{ data }">
+          <FormWysiwyg
+            v-model="data.description"
+            required
+            label="Description"
+          />
+        </template>
+      </FormGenerator>
+    </ModalFree>
+  </ButtonNormal>
+</template>
+
+<script setup lang="ts">
+import { ref, toRefs } from "vue";
+import EventService from "@/services/event";
+import {
+  FormGenerator,
+  ButtonNormal,
+  ModalFree,
+  types,
+} from "@lawandorga/components";
+import useCommand from "@/composables/useCommand";
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
+import { useUserStore } from "@/store/user";
+import { Event } from "@/types/event";
+
+const props = defineProps<{ query: () => void; event: Event }>();
+const { query } = toRefs(props);
+
+const userStore = useUserStore();
+
+const eventFields = ref<types.FormField[]>([
+  {
+    label: "Name",
+    name: "name",
+    type: "text",
+    required: true,
+  },
+  {
+    label: "Description",
+    name: "description",
+    type: "custom",
+    required: true,
+  },
+  {
+    label: "Global Event?",
+    name: "is_global",
+    type: "toggle",
+    required: false,
+    helptext:
+      "Global events are visible to all users in your meta-organization.",
+  },
+  {
+    label: "Start time",
+    name: "start_time",
+    type: "datetime-local",
+    required: true,
+  },
+  {
+    label: "End time",
+    name: "end_time",
+    type: "datetime-local",
+    required: true,
+  },
+] as types.FormField[]);
+
+const { commandRequest, commandModalOpen } = useCommand(
+  EventService.updateEvent,
+  query.value,
+);
+</script>
