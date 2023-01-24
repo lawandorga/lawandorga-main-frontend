@@ -17,11 +17,7 @@ export function handleAuthenticationError(context: IContext): Promise<void> {
   const router = context.router;
   const error = context.error;
 
-  if (
-    error.response &&
-    error.response.status === 401 &&
-    userStore.isAuthenticated
-  ) {
+  if (error.response && error.response.status === 401) {
     userStore.reset();
     router.push({
       name: "start",
