@@ -1,6 +1,6 @@
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Change name
+    {{ text }}
     <ModalUpdate
       v-model="commandModalOpen"
       title="Change name"
@@ -17,11 +17,15 @@ import { foldersUpdateFolder } from "@/services/folders";
 import { ButtonNormal, ModalUpdate, types } from "@lawandorga/components";
 import { toRefs } from "vue";
 
-const props = defineProps<{
-  folderName: string;
-  folderUuid: string | null;
-  query: () => void;
-}>();
+const props = withDefaults(
+  defineProps<{
+    folderName: string;
+    folderUuid: string | null;
+    query: () => void;
+    text?: string;
+  }>(),
+  { text: "Change Name" },
+);
 const { query } = toRefs(props);
 
 const fields: types.FormField[] = [

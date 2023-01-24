@@ -1,10 +1,8 @@
 <template>
   <BoxHeadingStats
     title="Access"
-    :show="selectedType === 'ACCESS'"
-    :stats="[
-      'The following persons have access to this record because they have access to its folder.',
-    ]"
+    :show="selectedType === 'FOLDER' && selectedId === 'ACCESS'"
+    :stats="['The following persons have access to this folder']"
     nopadding
   >
     <TableGenerator
@@ -36,6 +34,7 @@ import FoldersRevokeAccess from "@/actions/FoldersRevokeAccess.vue";
 defineProps<{
   selectedType: string;
   access: IAccess[] | null;
+  selectedId: string | null | number;
   folderUuid: string;
   query: () => void;
 }>();

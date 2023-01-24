@@ -1,0 +1,96 @@
+<template>
+  <div class="sticky top-0 overflow-hidden bg-white rounded shadow">
+    <ul role="list" class="">
+      <li v-if="!grouping" class="px-4 py-3 space-x-5 sm:px-6 bg-gray-50">
+        <component
+          :is="button"
+          v-for="button in groups.map((i) => i.buttons).flat()"
+          :key="button"
+        />
+      </li>
+
+      <li
+        v-for="(item, index) in groups"
+        :key="item.type"
+        class="relative w-full"
+      >
+        <button
+          v-show="grouping"
+          class="w-full"
+          @click="emit('selected', { type: item.type, id: null })"
+        >
+          <FolderNavigationGroup
+            :name="item.name"
+            :buttons="item.buttons"
+            :is-first="index === 0 && grouping"
+            :is-selected="selectedType === item.type"
+          />
+        </button>
+
+        <div
+          v-show="
+            (!grouping || selectedType === item.type) && item.children.length
+          "
+          class="border-t border-gray-200 divide-y divide-gray-200"
+        >
+          <button
+            v-for="child in item.children"
+            :key="`${child.name}/${child.id}`"
+            class="w-full"
+            @click="emit('selected', { type: item.type, id: child.id })"
+          >
+            <FolderNavigationChild
+              :type="child.type"
+              :name="child.name"
+              :show-type="!grouping"
+              :small="!grouping"
+              :is-selected="selectedId === child.id"
+            />
+          </button>
+        </div>
+      </li>
+
+      <li
+        v-if="!hideGroupingControl"
+        class="px-4 py-3 space-x-5 bg-gray-100 border-t-4 border-gray-200 sm:px-6"
+      >
+        <ButtonToggle
+          :model-value="grouping"
+          text="Grouping"
+          @update:model-value="emit('grouping', $event)"
+        />
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script setup lang="ts">
+export interface ContentItem {
+  id: number | string | null;
+  created?: string;
+  name: string;
+  type: string;
+}
+
+export interface ContentGroupItem {
+  type: string;
+  name: string;
+  children: ContentItem[];
+  buttons: VNode[];
+}
+
+import { ButtonToggle } from "@lawandorga/components";
+import { VNode } from "vue";
+import FolderNavigationChild from "./FolderNavigationChild.vue";
+import FolderNavigationGroup from "@/components/FolderNavigationGroup.vue";
+
+defineProps<{
+  grouping: boolean;
+  groups: ContentGroupItem[];
+  selectedType: string;
+  selectedId: string | number | null;
+  hideGroupingControl?: boolean;
+}>();
+
+const emit = defineEmits(["grouping", "selected"]);
+</script>
