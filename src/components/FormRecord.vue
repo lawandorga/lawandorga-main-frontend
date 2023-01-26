@@ -95,7 +95,7 @@
   </form>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {
   FormSelect,
   FormMultiple,
@@ -103,127 +103,109 @@ import {
   FormInput,
   FormFile,
   ButtonNormal,
+  types,
 } from "@lawandorga/components";
-import { defineComponent, PropType } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
 import { RecordEntry, Record, RecordField } from "@/types/records";
 import RecordsService from "@/services/records";
+import { useErrorHandling } from "@/api/errors";
 
-export default defineComponent({
-  components: {
-    FormFile,
-    FormSelect,
-    FormInput,
-    FormTextarea,
-    FormMultiple,
-    ButtonNormal,
-  },
-  props: {
-    record: {
-      type: Object as PropType<Record>,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      entries: {} as Record["entries"],
-      nonFieldErrors: [] as string[],
-      errors: {} as DjangoError,
-    };
-  },
-  computed: {
-    fields() {
-      return this.record.fields;
-    },
-  },
-  watch: {
-    record(newValue) {
-      this.entries = newValue.entries;
-    },
-  },
-  created() {
-    this.entries = this.record.entries;
-  },
-  methods: {
-    downloadFile(name: string) {
-      const entry = this.entries[name];
-      RecordsService.downloadFileFromEntry(entry);
-    },
-    getAttrs(name: string) {
-      if (name in this.entries)
-        return { "model-value": this.entries[name].value };
-      return {};
-    },
-    change(field: RecordField, value: RecordEntry["value"]) {
-      this.errors = {};
-      const entries_include = Object.keys(this.entries).includes(field.name);
-      if (entries_include && value) {
-        this.updateEntry(field, value);
-      } else if (entries_include && !value) {
-        this.deleteEntry(field);
-      } else if (!entries_include && value) {
-        this.createEntry(field, value);
-      }
-    },
-    createEntry(field: RecordField, value: RecordEntry["value"]) {
-      const data = {
-        field: field.id,
-        record: this.record.id,
-        url: field.entry_url,
-        value: value,
-        file: null as File | null,
-      };
-      if (field.type === "file") {
-        data["file"] = value as File;
-        RecordsService.createFileEntry(data)
-          .then((entry) => this.handleSuccess(field, entry))
-          .catch((e: AxiosError) => {
-            if (e.response) this.handleError(field, e.response.data);
-          });
-      } else {
-        RecordsService.createEntry(data)
-          .then((entry) => this.handleSuccess(field, entry))
-          .catch((e: AxiosError) => {
-            if (e.response) this.handleError(field, e.response.data);
-          });
-      }
-    },
-    updateEntry(field: RecordField, value: RecordEntry["value"]) {
-      const data = {
-        url: this.entries[field.name].url,
-        value: value,
-      };
-      RecordsService.updateEntry(data)
-        .then((entry) => this.handleSuccess(field, entry))
-        .catch((e: AxiosError) => {
-          if (e.response) this.handleError(field, e.response.data);
-        });
-    },
-    deleteEntry(field: RecordField) {
-      const url = this.entries[field.name].url;
-      RecordsService.deleteEntry(url)
-        .then(() => {
-          delete this.entries[field.name];
-        })
-        .catch((e: AxiosError) => {
-          if (e.response) this.handleError(field, e.response.data);
-        });
-    },
-    handleSuccess(field: RecordField, entry: RecordEntry) {
-      this.entries[field.name] = entry;
-    },
-    handleError(field: RecordField, errors: DjangoError) {
-      this.errors[field.name] =
-        errors["value"] || errors["file"] || errors["non_field_errors"];
-    },
-    getFilesFromInput(name: string): string | File {
-      const field = (this.$refs["form"] as HTMLFormElement).querySelector(
-        `input[name='${name}']`,
-      ) as HTMLInputElement;
-      if (!field.files) return "";
-      return field.files[0];
-    },
-  },
+const props = defineProps<{ record: Record }>();
+const { record } = toRefs(props);
+
+const entries = ref<Record["entries"]>({});
+const nonFieldErrors = ref<string[]>([]);
+const errors = ref<DjangoError>({});
+
+const fields = computed(() => {
+  return record.value.fields;
 });
+
+watch(record, (newValue) => {
+  entries.value = newValue.entries;
+});
+
+entries.value = record.value.entries;
+
+function downloadFile(name: string) {
+  const entry = entries.value[name];
+  RecordsService.downloadFileFromEntry(entry);
+}
+
+function getAttrs(name: string) {
+  if (name in entries.value)
+    return { "model-value": entries.value[name].value };
+  return {};
+}
+
+function change(field: RecordField, value: RecordEntry["value"]) {
+  errors.value = {};
+  const entries_include = Object.keys(entries.value).includes(field.name);
+  if (entries_include && value) {
+    updateEntry(field, value);
+  } else if (entries_include && !value) {
+    deleteEntry(field);
+  } else if (!entries_include && value) {
+    createEntry(field, value);
+  }
+}
+
+function createEntry(field: RecordField, value: RecordEntry["value"]) {
+  const data = {
+    field: field.id,
+    record: record.value.id,
+    url: field.entry_url,
+    value: value,
+    file: null as File | null,
+  };
+  if (field.type === "file") {
+    data["file"] = value as File;
+    RecordsService.createFileEntry(data)
+      .then((entry) => handleSuccess(field, entry))
+      .catch((e: AxiosError) => handleError(field, e));
+  } else {
+    RecordsService.createEntry(data)
+      .then((entry) => handleSuccess(field, entry))
+      .catch((e: AxiosError) => handleError(field, e));
+  }
+}
+
+function updateEntry(field: RecordField, value: RecordEntry["value"]) {
+  const data = {
+    url: entries.value[field.name].url,
+    value: value,
+  };
+  RecordsService.updateEntry(data)
+    .then((entry) => handleSuccess(field, entry))
+    .catch((e: AxiosError) => handleError(field, e));
+}
+
+function deleteEntry(field: RecordField) {
+  const url = entries.value[field.name].url;
+  RecordsService.deleteEntry(url)
+    .then(() => {
+      delete entries.value[field.name];
+    })
+    .catch((e: AxiosError) => handleError(field, e));
+}
+
+function handleSuccess(field: RecordField, entry: RecordEntry) {
+  entries.value[field.name] = entry;
+}
+
+const { handleCommandError } = useErrorHandling();
+
+function handleError(field: RecordField, e: AxiosError) {
+  return handleCommandError(e).catch((error: types.ICommandError) => {
+    if (error.paramErrors.value) {
+      errors.value[field.name] = error.paramErrors.value;
+    } else if (error.generalErrors)
+      errors.value[field.name] = error.generalErrors;
+    else if (error.title) errors.value[field.name] = error.title;
+    else return Promise.reject(error);
+    return Promise.resolve();
+  });
+}
 </script>
