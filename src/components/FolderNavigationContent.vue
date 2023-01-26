@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { IFolderDetail } from "@/types/folders";
-import { h, toRefs } from "vue";
+import { computed, h, toRefs } from "vue";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
@@ -33,80 +33,83 @@ const { folder, query } = toRefs(props);
 
 const emit = defineEmits(["grouping", "selected"]);
 
-const groups: ContentGroupItem[] = [];
+const groups = computed<ContentGroupItem[]>(() => {
+  const g: ContentGroupItem[] = [];
 
-groups.push({
-  name: "Records",
-  type: "RECORD",
-  children: folder.value.content
-    .filter((c) => c.repository === "RECORD")
-    .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid })),
-  buttons: [
-    h(RecordsCreateRecordWithinFolder, {
-      query: query.value,
-      folderUuid: folder.value.folder.uuid,
-    }),
-  ],
-});
+  g.push({
+    name: "Records",
+    type: "RECORD",
+    children: folder.value.content
+      .filter((c) => c.repository === "RECORD")
+      .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid })),
+    buttons: [
+      h(RecordsCreateRecordWithinFolder, {
+        query: query.value,
+        folderUuid: folder.value.folder.uuid,
+      }),
+    ],
+  });
 
-groups.push({
-  name: "Chat",
-  type: "MESSAGES",
-  children: [],
-  buttons: [],
-});
+  g.push({
+    name: "Chat",
+    type: "MESSAGES",
+    children: [],
+    buttons: [],
+  });
 
-groups.push({
-  name: "Files",
-  type: "FILE",
-  children: folder.value.content
-    .filter((c) => c.repository === "FILE")
-    .map((c) => ({ name: c.name, type: "FILE", id: c.uuid })),
-  buttons: [
-    h(FilesUploadFile, {
-      query: query.value,
-      folderUuid: folder.value.folder.uuid,
-    }),
-    h(FilesUploadMultipleFiles, {
-      query: query.value,
-      folderUuid: folder.value.folder.uuid,
-    }),
-  ],
-});
+  g.push({
+    name: "Files",
+    type: "FILE",
+    children: folder.value.content
+      .filter((c) => c.repository === "FILE")
+      .map((c) => ({ name: c.name, type: "FILE", id: c.uuid })),
+    buttons: [
+      h(FilesUploadFile, {
+        query: query.value,
+        folderUuid: folder.value.folder.uuid,
+      }),
+      h(FilesUploadMultipleFiles, {
+        query: query.value,
+        folderUuid: folder.value.folder.uuid,
+      }),
+    ],
+  });
 
-groups.push({
-  name: "Questionnaires",
-  type: "QUESTIONNAIRE",
-  children: folder.value.content
-    .filter((c) => c.repository === "QUESTIONNAIRE")
-    .map((c) => ({
-      name: c.name,
-      type: "QUESTIONNAIRE",
-      id: c.uuid,
-    })),
-  buttons: [
-    h(QuestionnairesPublishQuestionnaire, {
-      query: query.value,
-      folderUuid: folder.value.folder.uuid,
-    }),
-  ],
-});
+  g.push({
+    name: "Questionnaires",
+    type: "QUESTIONNAIRE",
+    children: folder.value.content
+      .filter((c) => c.repository === "QUESTIONNAIRE")
+      .map((c) => ({
+        name: c.name,
+        type: "QUESTIONNAIRE",
+        id: c.uuid,
+      })),
+    buttons: [
+      h(QuestionnairesPublishQuestionnaire, {
+        query: query.value,
+        folderUuid: folder.value.folder.uuid,
+      }),
+    ],
+  });
 
-groups.push({
-  name: "Public Uploads",
-  type: "UPLOAD",
-  children: folder.value.content
-    .filter((c) => c.repository === "UPLOAD")
-    .map((c) => ({
-      name: c.name,
-      type: "UPLOAD",
-      id: c.uuid,
-    })),
-  buttons: [
-    h(UploadsCreateLink, {
-      query: query.value,
-      folderUuid: folder.value.folder.uuid,
-    }),
-  ],
+  g.push({
+    name: "Public Uploads",
+    type: "UPLOAD",
+    children: folder.value.content
+      .filter((c) => c.repository === "UPLOAD")
+      .map((c) => ({
+        name: c.name,
+        type: "UPLOAD",
+        id: c.uuid,
+      })),
+    buttons: [
+      h(UploadsCreateLink, {
+        query: query.value,
+        folderUuid: folder.value.folder.uuid,
+      }),
+    ],
+  });
+  return g;
 });
 </script>
