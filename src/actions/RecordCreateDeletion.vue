@@ -10,7 +10,7 @@
         label: 'Explanation',
         name: 'explanation',
         type: 'textarea',
-        required: true,
+        required: false,
       },
     ]"
     :data="{
