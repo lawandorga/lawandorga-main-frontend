@@ -17,7 +17,7 @@
         <button
           v-show="grouping"
           class="w-full"
-          @click="emit('selected', { type: item.type, id: null })"
+          @click="selected(item.type, null)"
         >
           <FolderNavigationGroup
             :name="item.name"
@@ -37,7 +37,7 @@
             v-for="child in item.children"
             :key="`${child.name}/${child.id}`"
             class="w-full"
-            @click="emit('selected', { type: item.type, id: child.id })"
+            @click="selected(item.type, child.id)"
           >
             <FolderNavigationChild
               :type="child.type"
@@ -83,6 +83,7 @@ import { ButtonToggle } from "@lawandorga/components";
 import { VNode } from "vue";
 import FolderNavigationChild from "./FolderNavigationChild.vue";
 import FolderNavigationGroup from "@/components/FolderNavigationGroup.vue";
+import { useRoute, useRouter } from "vue-router";
 
 defineProps<{
   grouping: boolean;
@@ -93,4 +94,15 @@ defineProps<{
 }>();
 
 const emit = defineEmits(["grouping", "selected"]);
+
+const route = useRoute();
+const router = useRouter();
+
+const selected = (type: string, id: string | number | null) => {
+  emit("selected", { type, id });
+  router.push({
+    path: route.path,
+    query: { ...route.query, selectedType: type, selectedId: id },
+  });
+};
 </script>

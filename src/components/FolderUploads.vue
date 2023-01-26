@@ -108,7 +108,7 @@ const link = ref<IUploadLink | null>(null);
 const loading = ref(false);
 const request = client.get<IUploadLink>(`api/uploads/query/{}/`, selectedId);
 const linkQuery = useQuery(request, link);
-watch(selectedId, () => {
+const update = () => {
   if (link.value && selectedId.value !== link.value.uuid) link.value = null;
   if (selectedType.value === "UPLOAD" && selectedId.value) {
     loading.value = true;
@@ -116,5 +116,9 @@ watch(selectedId, () => {
       loading.value = false;
     });
   }
+};
+watch(selectedId, () => {
+  update();
 });
+update();
 </script>

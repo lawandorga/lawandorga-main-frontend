@@ -59,13 +59,17 @@ const recordsQuery = useQuery(
   record,
   selectedId as Ref<string>,
 );
-watch(selectedId, () => {
+const update = () => {
   if (record.value && selectedId.value !== record.value.uuid)
     record.value = null;
   if (selectedType.value === "RECORD" && selectedId.value) {
     recordsQuery();
   }
+};
+watch(selectedId, () => {
+  update();
 });
+update();
 
 // query
 const allQuery = () => {

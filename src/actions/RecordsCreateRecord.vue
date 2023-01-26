@@ -36,7 +36,7 @@ const request = client.post<
     folder: string;
     template: number;
   },
-  { folder_uuid: string; id: string }
+  { folder_uuid: string; id: string; uuid: string }
 >("api/records/records/v2/");
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
@@ -67,10 +67,15 @@ const fields = computed<types.FormField[]>(() => [
 
 // created
 const router = useRouter();
-const recordCreated = (data: { folder_uuid: string; id: number }) => {
+const recordCreated = (data: {
+  folder_uuid: string;
+  id: number;
+  uuid: string;
+}) => {
   router.push({
     name: "folders-detail",
     params: { uuid: data.folder_uuid, record: data.id },
+    query: { selectedType: "RECORD", selectedId: data.uuid },
   });
 };
 

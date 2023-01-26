@@ -19,6 +19,7 @@ recordsGetRecord(recordId).then((r) => {
   router.push({
     name: "folders-detail",
     params: { uuid: r.folder_uuid, record: r.id },
+    query: route.query,
   });
 });
 </script>

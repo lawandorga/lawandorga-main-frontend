@@ -126,8 +126,10 @@ const folder = ref<null | IFolderDetail>(null);
 const query = useGet(foldersGetFolderDetail, folder, folderUuid);
 
 // selected
-const selectedId = ref<number | string | null>(null);
-const selectedType = ref<string>("RECORD");
+const id: string | null = (route.query.selectedId as string) || null;
+const type: string = (route.query.selectedType as string) || "FOLDER";
+const selectedId = ref<number | string | null>(id);
+const selectedType = ref<string>(type);
 
 // user settings
 const userStore = useUserStore();

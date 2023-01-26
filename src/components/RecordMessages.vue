@@ -53,12 +53,16 @@ const loading = ref(false);
 
 const query = useQuery(messagesGetMessages, messages, folderUuid);
 
-watch(selectedType, (newValue) => {
-  if (newValue === "MESSAGES") {
+const update = () => {
+  if (selectedType.value === "MESSAGES") {
     loading.value = true;
     query().then(() => {
       loading.value = false;
     });
   }
+};
+watch(selectedType, () => {
+  update();
 });
+update();
 </script>

@@ -104,7 +104,7 @@ const questionnaireQuery = useQuery(
   selectedId as Ref<string>,
 );
 
-watch(selectedId, () => {
+const update = () => {
   if (questionnaire.value && selectedId.value !== questionnaire.value.uuid)
     questionnaire.value = null;
   if (selectedType.value === "QUESTIONNAIRE" && selectedId.value) {
@@ -113,7 +113,11 @@ watch(selectedId, () => {
       loading.value = false;
     });
   }
+};
+watch(selectedId, () => {
+  update();
 });
+update();
 
 // copy link
 const alertStore = useAlertStore();

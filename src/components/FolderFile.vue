@@ -59,12 +59,16 @@ const loading = ref(false);
 const filesQuery = useQuery(filesRetrieveFile, file, selectedId as Ref<string>);
 
 // get file
-watch(selectedId, () => {
+const update = () => {
   if (selectedType.value === "FILE" && selectedId.value) {
     loading.value = true;
     filesQuery().then(() => {
       loading.value = false;
     });
   }
+};
+watch(selectedId, () => {
+  update();
 });
+update();
 </script>

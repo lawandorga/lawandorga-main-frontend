@@ -22,12 +22,20 @@ const tried = "tried" in route.query;
 
 // login
 const login = () => {
-  const next = route.query.next ? route.query.next : "/dashboard/";
+  // where to go if authenticated
+  const next = (route.query.next as string) || "/dashboard/";
+  const nextEncoded = encodeURIComponent(next);
+
+  // for example https://www.law-orga.de/user/login
   const current = window.location.origin + route.path;
-  const query = `?next=${next}&tried`;
+
+  // redirect back to this url after authentication
+  const redirect = `${current}?next=${nextEncoded}&tried`;
+  const redirectEncoded = encodeURIComponent(redirect);
+
+  // authenticate on the backend
   const base = import.meta.env.VITE_AUTH_URL;
-  const authNext = encodeURIComponent(`${current}${query}`);
-  const url = `${base}/login/?next=${authNext}`;
+  const url = `${base}/login/?next=${redirectEncoded}`;
   window.location.href = url;
 };
 

@@ -54,6 +54,7 @@
             :to="{
               name: 'records-detail',
               params: { record: item.uuid },
+              query: { selectedType: 'RECORD', selectedId: item.uuid },
             }"
           >
             {{ getValueFromRecord(item, headItem.key, "NO-IDENTIFIER") }}
