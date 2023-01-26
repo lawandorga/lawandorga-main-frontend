@@ -59,13 +59,13 @@ import { IRegisterPage } from "@/types/user";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import useGet from "@/composables/useGet";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
-import { useRoute } from "vue-router";
+import { getCookie } from "@/utils/cookie";
 
-const route = useRoute();
-if (!("cookie" in route.query)) {
-  const cookieSetLink = `${import.meta.env.VITE_AUTH_URL}/redirect/?next=${
-    window.location.origin
-  }/user/register%3Fcookie`;
+if (!getCookie("csrftoken")) {
+  const redirect = `${window.location.origin}/user/register`;
+  const redirectEncoded = encodeURIComponent(redirect);
+  const backend = import.meta.env.VITE_AUTH_URL;
+  const cookieSetLink = `${backend}/redirect/?next=${redirectEncoded}`;
   window.location.assign(cookieSetLink);
 }
 
