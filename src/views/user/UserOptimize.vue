@@ -60,6 +60,7 @@
 </template>
 
 <script lang="ts" setup>
+import useClient from "@/api/client";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { foldersOptimize } from "@/services/folders";
 import { messagesOptimize } from "@/services/messages";
@@ -78,8 +79,11 @@ interface IApps {
   [key: string]: () => Promise<void>;
 }
 
+const client = useClient();
+
 const apps: IApps = {
   Records: recordsOptimize,
+  Files: client.post("api/files/v2/optimize/"),
   Folders: foldersOptimize,
   Messages: messagesOptimize,
   Questionnaires: questionnairesOptimize,

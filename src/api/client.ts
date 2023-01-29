@@ -108,8 +108,8 @@ class Client {
   post<D extends Record<string, any>, R = any>(
     url: string,
     ...params: UrlParamType[]
-  ): (data: D) => Promise<R> {
-    return (data: D) =>
+  ): (data?: D) => Promise<R> {
+    return (data?: D) =>
       this.caller
         .post(this.buildUrl(url, data, ...params), data)
         .then((r) => r.data)
