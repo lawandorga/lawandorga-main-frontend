@@ -270,6 +270,7 @@ import { DjangoModel } from "@/types/shared";
 import FilesPermissions from "@/components/FilesPermissions.vue";
 import FilesHelp from "@/components/FilesHelp.vue";
 import { useUserStore } from "@/store/user";
+import { useErrorHandling } from "@/api/errors";
 
 export default defineComponent({
   components: {
@@ -300,12 +301,17 @@ export default defineComponent({
     // files and folders
     useGet(FilesService.getItems, items, folder);
 
+    const { handleQueryError } = useErrorHandling();
+
     const getFolder = (route: RouteLocation) => {
       if (route.params.id)
-        FilesService.getFolder(route.params.id as string).then(
-          (f) => (folder.value = f),
-        );
-      else FilesService.getFirstFolder().then((f) => (folder.value = f));
+        FilesService.getFolder(route.params.id as string)
+          .then((f) => (folder.value = f))
+          .catch(handleQueryError);
+      else
+        FilesService.getFirstFolder()
+          .then((f) => (folder.value = f))
+          .catch(handleQueryError);
     };
 
     onBeforeRouteUpdate((to) => {

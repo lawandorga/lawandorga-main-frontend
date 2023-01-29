@@ -91,8 +91,6 @@ export function handleServerError(context: IContext): Promise<void> {
       heading: "Error 500",
       message: "Server Error",
     });
-
-    return Promise.reject();
   }
   return Promise.reject(context);
 }
@@ -195,23 +193,34 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
 }
 
 export function handleQueryError(context: IContext): Promise<void> {
-  return (
-    Promise.reject(context)
-      .catch(handleAuthenticationError)
-      .catch(handleNetworkError)
-      .catch(handleFileDownloadError)
-      .catch(handleServerError)
-      // .catch(handleDetailError)
-      // .catch(handleTitleError)
-      .catch(resetContext)
-  );
+  return Promise.reject(context)
+    .catch(handleAuthenticationError)
+    .catch(handleNetworkError)
+    .catch(handleFileDownloadError)
+    .catch(handleServerError)
+    .catch(resetContext);
 }
 
 export function handleCommandError(context: IContext): Promise<void> {
   return Promise.reject(context)
-    .catch(handleAuthenticationError)
-    .catch(handleNetworkError)
-    .catch(handleServerError)
+    .catch((context: IContext) => {
+      handleAuthenticationError(context).catch(() => {
+        // ignore as command error should always be unhandled for the modal or form
+      });
+      return Promise.reject(context);
+    })
+    .catch((context: IContext) => {
+      handleNetworkError(context).catch(() => {
+        // ignore as command error should always be unhandled for the modal or form
+      });
+      return Promise.reject(context);
+    })
+    .catch((context: IContext) => {
+      handleServerError(context).catch(() => {
+        // ignore as command error should always be unhandled for the modal or form
+      });
+      return Promise.reject(context);
+    })
     .catch(resetContext)
     .catch(cleanUpError);
 }

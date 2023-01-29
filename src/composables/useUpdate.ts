@@ -1,3 +1,4 @@
+import { useErrorHandling } from "@/api/errors";
 import { Reffed } from "@/types/shared";
 import { ref, Ref, unref } from "vue";
 
@@ -13,41 +14,45 @@ export default function useUpdate<
 ) {
   const updateModalOpen = ref(false);
 
-  function updateRequest(data: Type): Promise<Type> {
-    return updateFunc(data, ...params.map(unref)).then((newItem) => {
-      // close modal
-      updateModalOpen.value = false;
+  const { handleCommandError } = useErrorHandling();
 
-      if (items === null) return newItem;
+  function updateRequest(data: Type): Promise<Type | void> {
+    return updateFunc(data, ...params.map(unref))
+      .then((newItem) => {
+        // close modal
+        updateModalOpen.value = false;
 
-      // update items
-      if (Array.isArray(items.value)) {
-        let index = -1;
+        if (items === null) return newItem;
 
-        if ("url" in newItem)
-          index = items.value.findIndex((item) =>
-            "url" in item ? item.url === newItem.url : false,
-          );
-        else if ("type" in newItem)
-          index = items.value.findIndex(
-            (item) => item.id === data.id && item.type === data.type,
-          );
-        else index = items.value.findIndex((item) => item.id === newItem.id);
+        // update items
+        if (Array.isArray(items.value)) {
+          let index = -1;
 
-        if (index !== -1) items.value.splice(index, 1, newItem);
-      } else if (!items.value) {
-        items.value = [newItem];
-      } else {
-        items.value = newItem;
-      }
+          if ("url" in newItem)
+            index = items.value.findIndex((item) =>
+              "url" in item ? item.url === newItem.url : false,
+            );
+          else if ("type" in newItem)
+            index = items.value.findIndex(
+              (item) => item.id === data.id && item.type === data.type,
+            );
+          else index = items.value.findIndex((item) => item.id === newItem.id);
 
-      // trigger computed setter
-      // eslint-disable-next-line no-self-assign
-      items.value = items.value;
+          if (index !== -1) items.value.splice(index, 1, newItem);
+        } else if (!items.value) {
+          items.value = [newItem];
+        } else {
+          items.value = newItem;
+        }
 
-      // return the new item
-      return newItem;
-    });
+        // trigger computed setter
+        // eslint-disable-next-line no-self-assign
+        items.value = items.value;
+
+        // return the new item
+        return newItem;
+      })
+      .catch(handleCommandError);
   }
 
   const temporary = ref<Type | null>(null);

@@ -1,4 +1,5 @@
-import { JsonModel, RequestFunction } from "@/types/shared";
+import { useErrorHandling } from "@/api/errors";
+import { JsonModel } from "@/types/shared";
 import { ref, Ref, unref } from "vue";
 
 type Nullable<T> = T extends (infer U)[]
@@ -17,13 +18,17 @@ export default function useCreate<
 ) {
   const createModalOpen = ref(false);
 
-  const createRequest: RequestFunction = (data: JsonModel) => {
-    return createFunc(data, ...params.map(unref)).then((newItem) => {
-      if (items.value === null) items.value = [];
-      items.value.push(newItem);
-      createModalOpen.value = false;
-      return newItem;
-    });
+  const { handleCommandError } = useErrorHandling();
+
+  const createRequest = (data: JsonModel): Promise<Type | Type[] | void> => {
+    return createFunc(data, ...params.map(unref))
+      .then((newItem) => {
+        if (items.value === null) items.value = [];
+        items.value.push(newItem);
+        createModalOpen.value = false;
+        return newItem;
+      })
+      .catch(handleCommandError);
   };
 
   const temporary = ref<Type | null>(null);

@@ -30,7 +30,7 @@ const { query } = toRefs(props);
 
 // create within folder
 const client = useClient();
-const request = client.post<
+const request = client.postAndReturn<
   {
     name: string;
     folder: string;

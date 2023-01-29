@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, no-unused-vars */
 
 import { blobToDataURL, downloadFileRequest } from "@/utils/download";
-import axios, { AxiosError, AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { inject, InjectionKey, provide, Ref, unref } from "vue";
-import { useErrorHandling } from "./errors";
 
 const clientKey = Symbol() as InjectionKey<Client>;
 
-type ErrorHandler = (error: AxiosError) => Promise<void>;
+// type ErrorHandler = (error: AxiosError) => Promise<void>;
 type CallerInstance = AxiosInstance;
 type UrlParamType =
   | string
@@ -19,17 +18,9 @@ type UrlParamType =
 
 class Client {
   caller: CallerInstance;
-  queryErrorHandler: ErrorHandler;
-  commandErrorHandler: ErrorHandler;
 
-  constructor(
-    caller: CallerInstance,
-    queryErrorHandler: ErrorHandler,
-    commandErrorHandler: ErrorHandler,
-  ) {
+  constructor(caller: CallerInstance) {
     this.caller = caller;
-    this.queryErrorHandler = queryErrorHandler;
-    this.commandErrorHandler = commandErrorHandler;
   }
 
   /**
@@ -105,15 +96,24 @@ class Client {
         .then((r) => blobToDataURL(r.data));
   }
 
-  post<D extends Record<string, any>, R = any>(
+  post<D extends Record<string, any>>(
+    url: string,
+    ...params: UrlParamType[]
+  ): (data?: D) => Promise<void> {
+    return (data?: D) =>
+      this.caller.post(this.buildUrl(url, data, ...params), data).then(() => {
+        // ignore
+      });
+  }
+
+  postAndReturn<D extends Record<string, any>, R = any>(
     url: string,
     ...params: UrlParamType[]
   ): (data?: D) => Promise<R> {
     return (data?: D) =>
       this.caller
         .post(this.buildUrl(url, data, ...params), data)
-        .then((r) => r.data)
-        .catch(this.commandErrorHandler);
+        .then((r) => r.data);
   }
 
   postAsFormData(
@@ -127,30 +127,23 @@ class Client {
       return this.caller
         .post(this.buildUrl(url, data, ...params), formData)
         .then(() => {
-          /* ignore */
-        })
-        .catch(this.commandErrorHandler);
+          // ignore
+        });
     };
   }
 
   patch(url: string): (data: any) => Promise<void> {
     return (data: any) =>
-      this.caller
-        .patch(this.buildUrlFromObject(url, data), data)
-        .then(() => {
-          /* ignore */
-        })
-        .catch(this.commandErrorHandler);
+      this.caller.patch(this.buildUrlFromObject(url, data), data).then(() => {
+        /* ignore */
+      });
   }
 
   put(url: string): (data: any) => Promise<void> {
     return (data: any) =>
-      this.caller
-        .put(this.buildUrlFromObject(url, data), data)
-        .then(() => {
-          /* ignore */
-        })
-        .catch(this.commandErrorHandler);
+      this.caller.put(this.buildUrlFromObject(url, data), data).then(() => {
+        /* ignore */
+      });
   }
 
   delete<D extends Record<string, any>, R = any>(
@@ -160,8 +153,7 @@ class Client {
     return (data: D) =>
       this.caller
         .delete(this.buildUrl(url, data, ...params))
-        .then((r) => r.data)
-        .catch(this.commandErrorHandler);
+        .then((r) => r.data);
   }
 }
 
@@ -175,8 +167,7 @@ export default function useClient() {
     $axios.defaults.xsrfHeaderName = "x-csrftoken";
     $axios.defaults.xsrfCookieName = "csrftoken";
 
-    const { handleQueryError, handleCommandError } = useErrorHandling();
-    client = new Client($axios, handleQueryError, handleCommandError);
+    client = new Client($axios);
 
     provide(clientKey, client);
   }

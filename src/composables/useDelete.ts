@@ -1,3 +1,4 @@
+import { useErrorHandling } from "@/api/errors";
 import { Reffed } from "@/types/shared";
 import { ref, Ref, unref } from "vue";
 
@@ -13,27 +14,31 @@ export default function useDelete<
 ) {
   const deleteModalOpen = ref(false);
 
+  const { handleCommandError } = useErrorHandling();
+
   function deleteRequest(data: Type): Promise<void> {
-    return deleteFunc(data, ...params.map(unref)).then(() => {
-      // close modal
-      deleteModalOpen.value = false;
+    return deleteFunc(data, ...params.map(unref))
+      .then(() => {
+        // close modal
+        deleteModalOpen.value = false;
 
-      // safety
-      if (items === null) return;
+        // safety
+        if (items === null) return;
 
-      // update items
-      if (Array.isArray(items.value)) {
-        items.value = items.value.filter(
-          (item) => item && data && item.id && item.id !== data.id,
-        );
-      } else {
-        items.value = null;
-      }
+        // update items
+        if (Array.isArray(items.value)) {
+          items.value = items.value.filter(
+            (item) => item && data && item.id && item.id !== data.id,
+          );
+        } else {
+          items.value = null;
+        }
 
-      // trigger computed setter
-      // eslint-disable-next-line no-self-assign
-      items.value = items.value;
-    });
+        // trigger computed setter
+        // eslint-disable-next-line no-self-assign
+        items.value = items.value;
+      })
+      .catch(handleCommandError);
   }
 
   const temporary = ref<Type | null>(null);
