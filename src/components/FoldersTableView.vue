@@ -62,7 +62,7 @@
         {{ item.folder ? "Folder" : item.repository }}
       </template>
       <template #name="{ item }">
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-3">
           <ButtonLink
             v-if="item.folder"
             :to="{
@@ -76,6 +76,16 @@
             v-if="item.folder"
             :property="properties[item.folder.uuid]"
           />
+          <ButtonNormal
+            v-if="item.folder && item.folder.actions.OPEN"
+            kind="action"
+            :to="{
+              name: 'folders-detail',
+              params: { uuid: item.folder.actions.OPEN.uuid },
+            }"
+          >
+            Open
+          </ButtonNormal>
           <span v-if="!item.folder">{{ item.name }}</span>
         </div>
       </template>
@@ -127,7 +137,7 @@ import { useFolderProperties } from "@/composables/useFolderProperties";
 import { IAccess, IContent, IFolder, IFolderItem } from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
-import { TableSortable } from "@lawandorga/components";
+import { ButtonNormal, TableSortable } from "@lawandorga/components";
 import { computed, toRefs } from "vue";
 import { useRoute } from "vue-router";
 import ButtonLink from "./ButtonLink.vue";
