@@ -30,8 +30,7 @@ import BoxHeadingStats from "./BoxHeadingStats.vue";
 import FilesDownloadFile from "@/actions/FilesDownloadFile.vue";
 import { CircleLoader } from "@lawandorga/components";
 import { formatDate } from "@/utils/date";
-import { watch, ref, toRefs, Ref } from "vue";
-import { filesRetrieveFile } from "@/services/files_new";
+import { watch, ref, toRefs } from "vue";
 import { RecordsDocument } from "@/types/records";
 import useQuery from "@/composables/useQuery";
 import FilesDeleteFile from "@/actions/FilesDeleteFile.vue";
@@ -56,7 +55,8 @@ const downloadFile = (id: number | string) => {
 const file = ref<null | RecordsDocument>(null);
 const loading = ref(false);
 
-const filesQuery = useQuery(filesRetrieveFile, file, selectedId as Ref<string>);
+const request = client.get("/api/files/v2/query/{}/", selectedId);
+const filesQuery = useQuery(request, file);
 
 // get file
 const update = () => {
