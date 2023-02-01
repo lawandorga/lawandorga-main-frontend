@@ -146,7 +146,7 @@ import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, TableSortable } from "@lawandorga/components";
 import { computed, toRefs } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import ButtonLink from "./ButtonLink.vue";
 import FolderProperty from "./FolderProperty.vue";
 import FoldersBadge from "./FoldersBadge.vue";
@@ -162,7 +162,6 @@ const { folderItems } = toRefs(props);
 
 const userStore = useUserStore();
 const route = useRoute();
-const router = useRouter();
 
 const findFolderPath = (
   id: string,
@@ -179,19 +178,14 @@ const findFolderPath = (
 const selectedFolderInTableView = userStore.getSetting(
   "selectedFolderInTableView",
   undefined,
-);
-
-router.push({
-  path: route.path,
-  query: {
-    ...route.query,
-    folder: selectedFolderInTableView as string | undefined,
-  },
-});
+) as string | undefined;
 
 const path = computed<IFolderItem[] | null>(() => {
   const folder = route.query.folder as string;
+  if (!folder && selectedFolderInTableView)
+    return findFolderPath(selectedFolderInTableView, folderItems.value);
   if (!folder) return null;
+
   return findFolderPath(folder, folderItems.value);
 });
 

@@ -56,7 +56,7 @@ const route = useRoute();
 const router = useRouter();
 
 const clicked = (key: string) => {
-  router.push({ path: route.path, query: { selected: key } });
+  router.push({ path: route.path, query: { ...route.query, selected: key } });
   emit("clicked", key);
 };
 
