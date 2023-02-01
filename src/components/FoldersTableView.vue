@@ -1,31 +1,23 @@
 <template>
   <div class="space-y-5">
     <div class="flex items-center px-5 py-2 bg-white rounded shadow">
-      <router-link
+      <button
         class="flex items-center h-6 transition hover:underline group"
-        :to="{
-          path: $route.path,
-          query: { ...$route.query, folder: undefined },
-        }"
         @click="folderSelected(undefined)"
       >
         <FolderIcon class="w-5 h-5 text-gray-600 group-hover:text-gray-800" />
-      </router-link>
+      </button>
       <template v-if="path">
         <template v-for="item in path" :key="item.folder.uuid">
           <div class="mx-2">
             <ChevronRightIcon class="w-5 h-5 text-gray-400" />
           </div>
-          <router-link
+          <button
             class="text-gray-700 transition hover:underline"
-            :to="{
-              path: $route.path,
-              query: { ...$route.query, folder: item.folder.uuid },
-            }"
             @click="folderSelected(item.folder.uuid)"
           >
             {{ item.folder.name }}
-          </router-link>
+          </button>
           <FolderProperty
             class="ml-3"
             :property="properties[item.folder.uuid]"
@@ -68,16 +60,13 @@
       </template>
       <template #name="{ item }">
         <div class="flex items-center space-x-3">
-          <ButtonLink
+          <button
             v-if="item.folder"
-            :to="{
-              path: $route.path,
-              query: { ...$route.query, folder: item.folder.uuid },
-            }"
+            class="underline text-lorgablue hover:text-opacity-75"
             @click="folderSelected(item.folder.uuid)"
           >
             {{ item.folder.name }}
-          </ButtonLink>
+          </button>
           <FolderProperty
             v-if="item.folder"
             :property="properties[item.folder.uuid]"
@@ -145,9 +134,7 @@ import { IAccess, IContent, IFolder, IFolderItem } from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, TableSortable } from "@lawandorga/components";
-import { computed, toRefs } from "vue";
-import { useRoute } from "vue-router";
-import ButtonLink from "./ButtonLink.vue";
+import { computed, ref, toRefs } from "vue";
 import FolderProperty from "./FolderProperty.vue";
 import FoldersBadge from "./FoldersBadge.vue";
 import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
@@ -161,7 +148,6 @@ const props = defineProps<{
 const { folderItems } = toRefs(props);
 
 const userStore = useUserStore();
-const route = useRoute();
 
 const findFolderPath = (
   id: string,
@@ -180,13 +166,13 @@ const selectedFolderInTableView = userStore.getSetting(
   undefined,
 ) as string | undefined;
 
-const path = computed<IFolderItem[] | null>(() => {
-  const folder = route.query.folder as string;
-  if (!folder && selectedFolderInTableView)
-    return findFolderPath(selectedFolderInTableView, folderItems.value);
-  if (!folder) return null;
+const selectedFolder = ref<string | undefined>(selectedFolderInTableView);
 
-  return findFolderPath(folder, folderItems.value);
+const path = computed<IFolderItem[] | null>(() => {
+  if (selectedFolder.value)
+    return findFolderPath(selectedFolder.value, folderItems.value);
+
+  return null;
 });
 
 const selected = computed<IFolderItem | null>(() => {
@@ -213,6 +199,7 @@ const tableFoldersAndPathFolders = computed<(IFolderItem | IContent)[]>(() => {
 const { properties } = useFolderProperties(tableFoldersAndPathFolders);
 
 const folderSelected = (uuid: string | undefined) => {
+  selectedFolder.value = uuid;
   userStore.updateSetting("selectedFolderInTableView", uuid || "");
 };
 </script>
