@@ -46,21 +46,24 @@ interface ITab {
   key: string;
 }
 
-const props = defineProps<{ tabs: ITab[] }>();
+const props = defineProps<{ tabs: ITab[]; defaultTab?: string }>();
 
-const { tabs } = toRefs(props);
+const emit = defineEmits(["clicked"]);
+
+const { tabs, defaultTab } = toRefs(props);
 
 const route = useRoute();
 const router = useRouter();
 
 const clicked = (key: string) => {
   router.push({ path: route.path, query: { selected: key } });
+  emit("clicked", key);
 };
 
 let defaultIndex = 0;
 
-if (route.query.selected) {
-  const selected = route.query.selected;
+if (route.query.selected || defaultTab?.value) {
+  const selected = route.query.selected || defaultTab?.value;
   const index = tabs.value.findIndex((t) => t.key === selected);
   defaultIndex = index;
 }

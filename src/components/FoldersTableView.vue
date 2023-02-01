@@ -7,6 +7,7 @@
           path: $route.path,
           query: { ...$route.query, folder: undefined },
         }"
+        @click="folderSelected(undefined)"
       >
         <FolderIcon class="w-5 h-5 text-gray-600 group-hover:text-gray-800" />
       </router-link>
@@ -21,6 +22,7 @@
               path: $route.path,
               query: { ...$route.query, folder: item.folder.uuid },
             }"
+            @click="folderSelected(item.folder.uuid)"
           >
             {{ item.folder.name }}
           </router-link>
@@ -59,7 +61,10 @@
         <FoldersCreateRootFolder v-if="!selected" :query="query" />
       </template>
       <template #type="{ item }">
-        {{ item.folder ? "Folder" : item.repository }}
+        <span v-if="item.folder">Folder</span>
+        <div v-else class="flex">
+          <FoldersBadge :text="item.repository" />
+        </div>
       </template>
       <template #name="{ item }">
         <div class="flex items-center space-x-3">
@@ -69,6 +74,7 @@
               path: $route.path,
               query: { ...$route.query, folder: item.folder.uuid },
             }"
+            @click="folderSelected(item.folder.uuid)"
           >
             {{ item.folder.name }}
           </ButtonLink>
@@ -134,14 +140,16 @@ import FoldersDeleteFolder from "@/actions/FoldersDeleteFolder.vue";
 import FoldersMoveFolder from "@/actions/FoldersMoveFolder.vue";
 import FoldersToggleInheritance from "@/actions/FoldersToggleInheritance.vue";
 import { useFolderProperties } from "@/composables/useFolderProperties";
+import { useUserStore } from "@/store/user";
 import { IAccess, IContent, IFolder, IFolderItem } from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, TableSortable } from "@lawandorga/components";
 import { computed, toRefs } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import ButtonLink from "./ButtonLink.vue";
 import FolderProperty from "./FolderProperty.vue";
+import FoldersBadge from "./FoldersBadge.vue";
 import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
 
 const props = defineProps<{
@@ -152,7 +160,9 @@ const props = defineProps<{
 }>();
 const { folderItems } = toRefs(props);
 
+const userStore = useUserStore();
 const route = useRoute();
+const router = useRouter();
 
 const findFolderPath = (
   id: string,
@@ -165,6 +175,19 @@ const findFolderPath = (
   }
   return null;
 };
+
+const selectedFolderInTableView = userStore.getSetting(
+  "selectedFolderInTableView",
+  undefined,
+);
+
+router.push({
+  path: route.path,
+  query: {
+    ...route.query,
+    folder: selectedFolderInTableView as string | undefined,
+  },
+});
 
 const path = computed<IFolderItem[] | null>(() => {
   const folder = route.query.folder as string;
@@ -194,4 +217,8 @@ const tableFoldersAndPathFolders = computed<(IFolderItem | IContent)[]>(() => {
 });
 
 const { properties } = useFolderProperties(tableFoldersAndPathFolders);
+
+const folderSelected = (uuid: string | undefined) => {
+  userStore.updateSetting("selectedFolderInTableView", uuid || "");
+};
 </script>

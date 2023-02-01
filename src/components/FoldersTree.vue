@@ -70,9 +70,7 @@
         <div class="flex items-center">
           <div :style="{ width: `${(depth + 1) * 18}px` }"></div>
           <div class="block w-5 h-5"></div>
-          <FoldersBadge>
-            {{ content.repository }}
-          </FoldersBadge>
+          <FoldersBadge :text="content.repository" />
           <div class="ml-2 text-sm leading-normal">
             {{ content.name }}
           </div>
