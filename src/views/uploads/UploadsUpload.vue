@@ -12,6 +12,7 @@
         :fields="fields"
         :request="request"
         @success="success = true"
+        @change="formChanged($event)"
       />
       <p v-else>
         File successfully uploaded.
@@ -67,4 +68,9 @@ const request = client.postAsFormData(
   "api/uploads/links/{}/upload/",
   route.params.uuid as string,
 );
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const formChanged = (data: Record<string, any>) => {
+  if ("file" in data && !("name" in data)) data["name"] = data.file.name;
+};
 </script>
