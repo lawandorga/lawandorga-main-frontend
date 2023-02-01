@@ -10,7 +10,7 @@
         v-if="!success"
         button="Save"
         :fields="fields"
-        :request="request"
+        :request="commandRequest"
         @success="success = true"
         @change="formChanged($event)"
       />
@@ -40,6 +40,7 @@ import useClient from "@/api/client";
 import { ref } from "vue";
 import { IUploadLink } from "@/types/uploads";
 import useGet from "@/composables/useGet";
+import useCommand from "@/composables/useCommand";
 
 const route = useRoute();
 if (!("cookie" in route.query)) {
@@ -64,9 +65,11 @@ useGet(
   link,
 );
 
-const request = client.postAsFormData(
-  "api/uploads/links/{}/upload/",
-  route.params.uuid as string,
+const { commandRequest } = useCommand(
+  client.postAsFormData(
+    "api/uploads/links/{}/upload/",
+    route.params.uuid as string,
+  ),
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
