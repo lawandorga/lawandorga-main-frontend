@@ -1,17 +1,20 @@
 <template>
-  <ModalCreate
-    v-model="createModalOpen"
-    title="Create Folder"
-    :fields="fields"
-    :request="createRequest"
-    :data="{ parent: parent }"
-  />
+  <ButtonNormal kind="action" @click="createModalOpen = true">
+    Add Child
+    <ModalCreate
+      v-model="createModalOpen"
+      title="Create Folder"
+      :fields="fields"
+      :request="createRequest"
+      :data="{ parent: parent }"
+    />
+  </ButtonNormal>
 </template>
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { foldersCreateFolder } from "@/services/folders";
-import { ModalCreate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
 import { toRefs } from "vue";
 
 const props = defineProps<{

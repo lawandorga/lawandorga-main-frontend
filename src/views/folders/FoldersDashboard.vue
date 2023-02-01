@@ -1,215 +1,139 @@
 <template>
-  <BoxLoader :show="userStore.loaded && !!foldersActions">
+  <BoxLoader :show="userStore.loaded && !!contentActions && !!foldersActions">
     <div
-      v-if="userStore.loaded && !!foldersActions"
+      v-if="userStore.loaded && !!contentActions && !!foldersActions"
       class="mx-auto space-y-6 max-w-screen-2xl"
     >
       <BreadcrumbsBar :base="{ name: 'folders-dashboard' }">
         <FolderIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div class="bg-white divide-y-2 rounded shadow">
-        <div class="px-3 py-2">
-          <FoldersCreateRootFolder :query="query" />
-        </div>
-        <div
-          class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x"
-        >
-          <div class="w-full px-6 py-4">
-            <FoldersTree
-              :folders="folderItems"
-              @add-child-clicked="
-                parent = $event;
-                foldersActions.createModalOpen = true;
-              "
-              @add-content-clicked="
-                parent = $event;
-                addContentModalOpen = true;
-              "
-              @folder-clicked="selected = $event"
-            />
-            <div
-              class="inline-block px-3 py-2 mt-10 border shadow-sm bg-gray-50"
-            >
-              <h2 class="font-medium text-gray-600">Folder properties:</h2>
-              <ul class="text-sm text-gray-600">
-                <li>
-                  <span class="font-mono text-sm">(IS)</span>
-                  stands for inheritance stop.
-                </li>
-                <li>
-                  <span class="font-mono">(R)&nbsp;</span>
-                  means the folder contains a record.
-                </li>
-                <li>
-                  <span class="font-mono">(N)&nbsp;</span>
-                  means you can not see the content of the folder,
-                  <br />
-                  <span class="font-mono">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                  because you have no access to this folder.
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            v-if="selectedItem"
-            class="w-full px-6 py-4 xl:max-w-xl bg-gray-50"
-          >
-            <div class="sticky top-0">
-              <div class="flex justify-between">
-                <h2 class="text-lg font-medium text-gray-800 truncate">
-                  {{ selectedItem.folder.name }}
-                </h2>
-                <ButtonClose @click="selected = null" />
-              </div>
 
-              <div class="flex mt-2 space-x-3">
-                <FoldersChangeName
-                  :folder-uuid="selectedItem.folder.uuid"
-                  :folder-name="selectedItem.folder.name"
-                  :query="query"
-                />
-                <FoldersToggleInheritance
-                  :query="query"
-                  :folder-uuid="selectedItem.folder.uuid"
-                  :folder-name="selectedItem.folder.name"
-                />
-                <FoldersMoveFolder
-                  :query="query"
-                  :folder-uuid="selectedItem.folder.uuid"
-                  :available-folders="folderList"
-                />
-                <FoldersDeleteFolder
-                  :folder-name="selectedItem.folder.name"
-                  :folder-uuid="selectedItem.folder.uuid"
-                  :query="query"
+      <TabControls
+        :tabs="[
+          { name: 'Tree View', key: 'treeview' },
+          { name: 'Table View', key: 'tableview' },
+        ]"
+      >
+        <template #treeview>
+          <div class="bg-white divide-y-2 rounded shadow">
+            <div class="px-3 py-2">
+              <FoldersCreateRootFolder :query="query" />
+            </div>
+            <div
+              class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x"
+            >
+              <div class="w-full px-6 py-4">
+                <FoldersTree
+                  :folders="folderItems"
+                  @add-child-clicked="
+                    parent = $event;
+                    foldersActions.createModalOpen = true;
+                  "
+                  @add-content-clicked="
+                    parent = $event;
+                    contentActions.addContentModalOpen = true;
+                  "
+                  @folder-clicked="selected = $event"
                 />
               </div>
-              <p
-                v-if="selectedItem.folder.stop_inherit"
-                class="mt-4 text-sm text-green-700"
-              >
-                Info: This folder has an inheritance stop. That means that
-                persons who have access to its parent will
-                <b>not</b>
-                have access to this folder.
-              </p>
-              <h3 class="mt-4 mb-2 font-medium text-gray-800">
-                Persons with access:
-              </h3>
-              <TableGenerator
-                :data="selectedItem.access"
-                :head="[
-                  { name: 'Name', key: 'name' },
-                  { name: 'Source', key: 'source' },
-                  { name: '', key: 'action' },
-                ]"
-              >
-                <template #head-action>
-                  <FoldersGrantAccess
-                    :folder-uuid="selectedItem.folder.uuid"
-                    :query="query"
-                    :available-persons="page ? page.available_persons : null"
-                  />
-                </template>
-                <template #action="item">
-                  <FoldersRevokeAccessUser
-                    v-if="item.actions.REVOKE_ACCESS"
-                    :query="query"
-                    :persons="selectedItem.access"
-                    :user-uuid="(item.actions.REVOKE_ACCESS.user_uuid as string)"
-                    :folder-uuid="selectedItem.folder.uuid"
-                    :url="(item.actions.REVOKE_ACCESS.url as string)"
-                  />
-                </template>
-              </TableGenerator>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </BoxLoader>
-  <TransitionRoot appear :show="addContentModalOpen" as="template">
-    <Dialog
-      title="Add content"
-      as="div"
-      class="fixed inset-0 z-30"
-      @close="addContentModalOpen = false"
-    >
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-gray-800 bg-opacity-40" />
-      </TransitionChild>
-      <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-full">
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <DialogPanel class="w-72">
               <div
-                class="w-full bg-white divide-y divide-gray-100 rounded-md shadow-lg focus:outline-none"
+                v-if="selectedItem"
+                class="w-full px-6 py-4 xl:max-w-xl bg-gray-50"
               >
-                <div
-                  v-for="item in addContentOptions"
-                  :key="item.text"
-                  class="px-1 py-1"
-                >
-                  <div>
-                    <button
-                      :class="[
-                        'focus:bg-lorgablue focus:text-white focus:outline-none',
-                        'text-gray-900',
-                        'group flex w-full items-center rounded-md px-4 py-2 text-sm',
-                      ]"
-                      @click="item.onClick"
-                    >
-                      {{ item.text }}
-                    </button>
+                <div class="sticky top-0">
+                  <div class="flex justify-between">
+                    <h2 class="text-lg font-medium text-gray-800 truncate">
+                      {{ selectedItem.folder.name }}
+                    </h2>
+                    <ButtonClose @click="selected = null" />
                   </div>
+
+                  <div class="flex mt-2 space-x-3">
+                    <FoldersChangeName
+                      :folder-uuid="selectedItem.folder.uuid"
+                      :folder-name="selectedItem.folder.name"
+                      :query="query"
+                    />
+                    <FoldersToggleInheritance
+                      :query="query"
+                      :folder-uuid="selectedItem.folder.uuid"
+                      :folder-name="selectedItem.folder.name"
+                    />
+                    <FoldersMoveFolder
+                      :query="query"
+                      :folder-uuid="selectedItem.folder.uuid"
+                      :available-folders="folderList"
+                    />
+                    <FoldersDeleteFolder
+                      :folder-name="selectedItem.folder.name"
+                      :folder-uuid="selectedItem.folder.uuid"
+                      :query="query"
+                    />
+                  </div>
+                  <p
+                    v-if="selectedItem.folder.stop_inherit"
+                    class="mt-4 text-sm text-green-700"
+                  >
+                    Info: This folder has an inheritance stop. That means that
+                    persons who have access to its parent will
+                    <b>not</b>
+                    have access to this folder.
+                  </p>
+                  <h3 class="mt-4 mb-2 font-medium text-gray-800">
+                    Persons with access:
+                  </h3>
+                  <TableFolderPersonsWithAccess
+                    :query="query"
+                    :available-persons="page?.available_persons"
+                    :item="selectedItem"
+                  />
                 </div>
               </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
-  <FoldersCreateFolder ref="foldersActions" :parent="parent" :query="query" />
-  <FilesUploadFile
-    ref="filesUploadFile"
+            </div>
+          </div>
+        </template>
+        <template #tableview>
+          <FoldersTableView
+            :query="query"
+            :available-persons="page?.available_persons"
+            :folder-items="folderItems"
+            :folder-list="folderList"
+          />
+        </template>
+      </TabControls>
+    </div>
+    <div class="inline-block px-3 py-2 mt-10 border shadow-sm bg-gray-50">
+      <h2 class="font-medium text-gray-600">Folder properties:</h2>
+      <ul class="text-sm text-gray-600">
+        <li>
+          <span class="font-mono text-sm">(IS)</span>
+          stands for inheritance stop.
+        </li>
+        <li>
+          <span class="font-mono">(R)&nbsp;</span>
+          means the folder contains a record.
+        </li>
+        <li>
+          <span class="font-mono">(N)&nbsp;</span>
+          means you can not see the content of the folder,
+          <br />
+          <span class="font-mono">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          because you have no access to this folder.
+        </li>
+      </ul>
+    </div>
+  </BoxLoader>
+  <FoldersCreateFolder
+    ref="foldersActions"
     class="hidden"
     :query="query"
-    :folder-uuid="parent ? parent : undefined"
+    :parent="parent"
   />
-  <FilesUploadMultipleFiles
-    ref="filesUploadMultipleFiles"
+  <FoldersAddContent
+    ref="contentActions"
     class="hidden"
     :query="query"
     :folder-uuid="parent ? parent : undefined"
-  />
-  <QuestionnairesPublishQuestionnaire
-    ref="questionnairesPublishQuestionnaire"
-    class="hidden"
-    :folder-uuid="parent ? parent : undefined"
-    :query="query"
-  />
-  <RecordsCreateRecordWithinFolder
-    ref="recordsCreateRecordWithinFolder"
-    class="hidden"
-    :folder-uuid="parent ? parent : undefined"
-    :query="query"
   />
 </template>
 
@@ -220,42 +144,21 @@ import { useUserStore } from "@/store/user";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import FoldersCreateFolder from "@/actions/FoldersCreateFolder.vue";
 import { computed, ref } from "vue";
-import { TableGenerator } from "@lawandorga/components";
 import FoldersTree from "@/components/FoldersTree.vue";
 import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
 import useGet from "@/composables/useGet";
 import { foldersGetFolderPage } from "@/services/folders";
 import useQuery from "@/composables/useQuery";
-import {
-  Dialog,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import FilesUploadFile from "@/actions/FilesUploadFile.vue";
-import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
-import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
-import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
 import FoldersCreateRootFolder from "@/actions/FoldersCreateRootFolder.vue";
-import FoldersGrantAccess from "@/actions/FoldersGrantAccess.vue";
-import FoldersRevokeAccessUser from "@/actions/FoldersRevokeAccessUser.vue";
 import FoldersChangeName from "@/actions/FoldersChangeName.vue";
 import FoldersToggleInheritance from "@/actions/FoldersToggleInheritance.vue";
 import FoldersDeleteFolder from "@/actions/FoldersDeleteFolder.vue";
 import FoldersMoveFolder from "@/actions/FoldersMoveFolder.vue";
-
-// content
-const addContentModalOpen = ref(false);
-function close() {
-  addContentModalOpen.value = false;
-}
-
-// records
-const recordsCreateRecordWithinFolder = ref();
-const filesUploadFile = ref();
-const filesUploadMultipleFiles = ref();
-const questionnairesPublishQuestionnaire = ref();
+import TabControls from "@/components/TabControls.vue";
+import FoldersTableView from "@/components/FoldersTableView.vue";
+import FoldersAddContent from "@/actions/FoldersAddContent.vue";
+import TableFolderPersonsWithAccess from "@/components/TableFolderPersonsWithAccess.vue";
 
 // store
 const userStore = useUserStore();
@@ -267,41 +170,9 @@ useGet(foldersGetFolderPage, page);
 // query
 const query = useQuery(foldersGetFolderPage, page);
 
-// add content options
-const addContentOptions = computed(() => [
-  {
-    text: "Record",
-    onClick: () => {
-      close();
-      recordsCreateRecordWithinFolder.value.createWithinFolderModalOpen = true;
-    },
-  },
-  {
-    text: "File",
-    onClick: () => {
-      close();
-      filesUploadFile.value.commandModalOpen = true;
-    },
-  },
-  {
-    text: "Multiple Files",
-    onClick: () => {
-      close();
-      filesUploadMultipleFiles.value.commandModalOpen = true;
-    },
-  },
-  {
-    text: "Questionnaire",
-    onClick: () => {
-      close();
-      questionnairesPublishQuestionnaire.value.commandModalOpen = true;
-    },
-  },
-]);
-
 // folder items
-const folderItems = computed<IFolderItem[] | null>(() => {
-  if (page.value === null) return null;
+const folderItems = computed<IFolderItem[]>(() => {
+  if (page.value === null) return [];
   return page.value.tree;
 });
 
@@ -321,6 +192,7 @@ const folderList = computed<IFolder[]>(() => {
 });
 
 // actions
+const contentActions = ref<typeof FoldersCreateFolder>();
 const foldersActions = ref<typeof FoldersCreateFolder>();
 
 // parent

@@ -92,11 +92,12 @@
 </template>
 
 <script setup lang="ts">
+import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
-import { IContent, IFolderItem } from "@/types/folders";
+import { IFolderItem } from "@/types/folders";
 import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
-import { ref, computed, toRefs } from "vue";
+import { ref, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import FoldersBadge from "./FoldersBadge.vue";
 
@@ -130,7 +131,7 @@ const openedFolders: string[] = queryOpen.includes(",")
 const open = ref<string[]>(
   openedFolders
     .concat(openFolders.value)
-    .concat(userStore.getSetting<string[]>("openFolders", [])),
+    .concat(userStore.getSetting<string[]>("openFolders", []) as string[]),
 );
 
 const openOrCloseFolder = (uuid: string) => {
@@ -156,23 +157,5 @@ const closeFolder = (uuid: string) => {
   userStore.updateSetting("openFolders", open.value);
 };
 
-const properties = computed<{ [key: string]: string }>(() => {
-  const ret: { [key: string]: string } = {};
-  folders.value?.forEach((i: IFolderItem) => {
-    ret[i.folder.uuid] = getFolderProperties(i);
-  });
-  return ret;
-});
-
-const getFolderProperties = (item: IFolderItem): string => {
-  const properties: string[] = [];
-  if (!item.folder.has_access) {
-    properties.push("N");
-    return properties.join(", ");
-  }
-  if (item.folder.stop_inherit) properties.push("IS");
-  if (item.content.some((i: IContent) => i.repository === "RECORD"))
-    properties.push("R");
-  return properties.join(", ");
-};
+const { properties } = useFolderProperties(folders);
 </script>

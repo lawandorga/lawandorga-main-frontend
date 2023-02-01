@@ -22,7 +22,7 @@ import { computed, toRefs } from "vue";
 const props = defineProps<{
   folderUuid: string;
   query: () => void;
-  availablePersons: IAccess[] | null;
+  availablePersons?: IAccess[] | undefined;
 }>();
 
 const { query, availablePersons } = toRefs(props);
@@ -34,7 +34,7 @@ const grantAccessFields = computed<types.FormField[]>(() => {
       name: "user_uuid",
       type: "select",
       required: true,
-      options: availablePersons.value ? availablePersons.value : [],
+      options: availablePersons?.value ? availablePersons.value : [],
     },
   ] as types.FormField[];
 });
