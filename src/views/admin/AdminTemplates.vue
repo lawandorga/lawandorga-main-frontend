@@ -16,15 +16,7 @@
         :data="templates"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="createModalOpen = true"
-            >
-              Create Template
-            </ButtonNormal>
-          </div>
+          <RecordsCreateTemplate :query="query" />
         </template>
         <template #name="slotProps">
           <ButtonLink
@@ -38,148 +30,42 @@
           </ButtonLink>
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="
-                template = slotProps;
-                updateModalOpen = true;
-              "
-            >
-              Change
-            </ButtonNormal>
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                template = slotProps;
-                deleteModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <RecordsUpdateTemplate
+            :query="query"
+            :template-id="slotProps.id"
+            :template-name="slotProps.name"
+            :template-show="slotProps.show"
+          />
+          <RecordsDeleteTemplate
+            :query="query"
+            :template-id="slotProps.id"
+            :template-name="slotProps.name"
+          />
         </template>
       </TableGenerator>
     </div>
-    <!-- create -->
-    <ModalFree v-model="createModalOpen" title="Create Template">
-      <FormGenerator :fields="createFields" :request="createRequest" />
-    </ModalFree>
-    <!-- update -->
-    <ModalFree v-model="updateModalOpen" title="Update Template">
-      <FormGenerator
-        :fields="updateFields"
-        :data="template"
-        :request="updateRequest"
-      />
-    </ModalFree>
-    <!-- delete -->
-    <ModalDelete
-      v-model="deleteModalOpen"
-      :request="deleteRequest"
-      :data="template"
-    />
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref } from "vue";
+<script lang="ts" setup>
+import { Ref, ref } from "vue";
 import { RecordTemplate } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import {
-  ModalFree,
-  FormGenerator,
-  ModalDelete,
-  TableGenerator,
-  ButtonNormal,
-} from "@lawandorga/components";
-import RecordsService from "@/services/records";
+import { TableGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
-import useDelete from "@/composables/useDelete";
-import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
+import useClient from "@/api/client";
+import RecordsCreateTemplate from "@/actions/RecordsCreateTemplate.vue";
+import RecordsUpdateTemplate from "@/actions/RecordsUpdateTemplate.vue";
+import RecordsDeleteTemplate from "@/actions/RecordsDeleteTemplate.vue";
 
-const updateFields = [
-  {
-    label: "Name",
-    name: "name",
-    type: "text",
-    required: true,
-  },
-  {
-    label: "Fields in Table",
-    name: "show",
-    type: "list",
-    required: true,
-  },
-];
+const client = useClient();
 
-const createFields = [
-  {
-    label: "Name",
-    name: "name",
-    type: "text",
-    required: true,
-  },
-];
+const list = client.get("api/records/query/templates/");
 
-export default defineComponent({
-  components: {
-    ModalDelete,
-    ButtonLink,
-    ModalFree,
-    FormGenerator,
-    BoxLoader,
-    CogIcon,
-    BreadcrumbsBar,
-    TableGenerator,
-    ButtonNormal,
-  },
-  setup() {
-    const templates = ref(null) as Ref<RecordTemplate[] | null>;
-    const template = ref({}) as Ref<RecordTemplate>;
+const templates = ref(null) as Ref<RecordTemplate[] | null>;
 
-    // get
-    useGet(RecordsService.getTemplates, templates);
-
-    // create
-    const { createRequest, createModalOpen } = useCreate(
-      RecordsService.createTemplate,
-      templates,
-    );
-
-    // update
-    const { updateRequest, updateModalOpen } = useUpdate(
-      RecordsService.updateTemplate,
-      templates,
-    );
-
-    // delete
-    const { deleteRequest, deleteModalOpen } = useDelete(
-      RecordsService.deleteTemplate,
-      templates,
-    );
-
-    return {
-      templates,
-      template,
-      // create
-      createFields,
-      createRequest,
-      createModalOpen,
-      // update
-      updateFields,
-      updateRequest,
-      updateModalOpen,
-      // delete
-      deleteRequest,
-      deleteModalOpen,
-    };
-  },
-});
+const query = useGet(list, templates);
 </script>
