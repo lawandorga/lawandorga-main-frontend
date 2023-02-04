@@ -83,7 +83,7 @@
     <ModalFree v-model="updateModalOpen" title="Update Field">
       <FormGenerator
         :fields="updateFields"
-        :data="field"
+        :data="{ ...field, group: field?.group_id }"
         :request="updateRequest"
       />
     </ModalFree>
@@ -164,7 +164,6 @@ import { useRoute } from "vue-router";
 import { FormField } from "@/types/form";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { Group } from "@/types/core";
-import AdminService from "@/services/admin";
 import useClient from "@/api/client";
 
 const updateFieldsSource = [
@@ -224,9 +223,9 @@ const createFields = [
 
 // other
 const route = useRoute();
+const client = useClient();
 
 // template
-const client = useClient();
 const retrieve = client.get(
   "api/records/query/templates/{}/",
   route.params.id as string,
@@ -313,7 +312,9 @@ watch(updateModalOpen, () => {
         "If a group is selected only members of this group will be selectable.",
       options: [] as Group[],
     });
-    useGet(AdminService.getGroups, updateFields.value[3].options);
+    client
+      .get("api/query/groups/")()
+      .then((g) => (updateFields.value[3].options = g));
   }
 
   return fields;

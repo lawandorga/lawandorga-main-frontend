@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="true">
+  <BoxLoader show>
     <div class="max-w-2xl mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
@@ -22,15 +22,7 @@
         :data="groups"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="createModalOpen = true"
-            >
-              Create Group
-            </ButtonNormal>
-          </div>
+          <GroupsCreateGroup :query="query" />
         </template>
         <template #name="slotProps">
           <ButtonLink
@@ -40,131 +32,41 @@
           </ButtonLink>
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="
-                group = slotProps;
-                updateModalOpen = true;
-              "
-            >
-              Change
-            </ButtonNormal>
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                group = slotProps;
-                deleteModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <GroupsUpdateGroup
+            :query="query"
+            :group-id="slotProps.id"
+            :group-name="slotProps.name"
+            :group-description="slotProps.description"
+          />
+          <GroupsDeleteGroup
+            :query="query"
+            :group-id="slotProps.id"
+            :group-name="slotProps.name"
+          />
         </template>
       </TableGenerator>
     </div>
-    <ModalFree v-model="createModalOpen" title="Create Group">
-      <FormGenerator :fields="fields" :request="createRequest" />
-    </ModalFree>
-    <ModalFree v-model="updateModalOpen" title="Update Group">
-      <FormGenerator :fields="fields" :data="group" :request="updateRequest" />
-    </ModalFree>
-    <ModalDelete
-      v-model="deleteModalOpen"
-      :request="deleteRequest"
-      :data="group"
-    />
   </BoxLoader>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Group } from "@/types/core";
-import { defineComponent, Ref, ref } from "vue";
-import useCreate from "@/composables/useCreate";
-import AdminService from "@/services/admin";
+import { Ref, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import {
-  TableGenerator,
-  ButtonNormal,
-  ModalFree,
-  FormGenerator,
-  ModalDelete,
-} from "@lawandorga/components";
+import { TableGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
-import useDelete from "@/composables/useDelete";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
+import useClient from "@/api/client";
+import GroupsCreateGroup from "@/actions/GroupsCreateGroup.vue";
+import GroupsUpdateGroup from "@/actions/GroupsUpdateGroup.vue";
+import GroupsDeleteGroup from "@/actions/GroupsDeleteGroup.vue";
 
-const fields = [
-  {
-    label: "Name",
-    type: "text",
-    name: "name",
-    required: true,
-  },
-  {
-    label: "Description",
-    type: "textarea",
-    name: "description",
-    required: false,
-  },
-];
+const groups = ref(null) as Ref<Group[] | null>;
 
-export default defineComponent({
-  components: {
-    ButtonLink,
-    BoxLoader,
-    TableGenerator,
-    ButtonNormal,
-    CogIcon,
-    ModalFree,
-    FormGenerator,
-    ModalDelete,
-    BreadcrumbsBar,
-  },
-  setup() {
-    const groups = ref(null) as Ref<Group[] | null>;
-    const group = ref({}) as Ref<Group>;
+const client = useClient();
+const request = client.get("api/query/groups/");
 
-    // get
-    useGet(AdminService.getGroups, groups);
-
-    // create
-    const { createRequest, createModalOpen } = useCreate(
-      AdminService.createGroup,
-      groups,
-    );
-
-    // update
-    const { updateRequest, updateModalOpen } = useUpdate(
-      AdminService.updateGroup,
-      groups,
-    );
-
-    // delete
-    const { deleteRequest, deleteModalOpen } = useDelete(
-      AdminService.deleteGroup,
-      groups,
-    );
-
-    return {
-      groups,
-      group,
-      fields,
-      // create
-      createRequest,
-      createModalOpen,
-      // update
-      updateRequest,
-      updateModalOpen,
-      // delete
-      deleteRequest,
-      deleteModalOpen,
-    };
-  },
-});
+const query = useGet(request, groups);
 </script>

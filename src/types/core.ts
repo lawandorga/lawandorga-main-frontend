@@ -1,4 +1,4 @@
-import { Link } from "./org";
+import { ILink } from "./org";
 
 export interface Group {
   id: number;
@@ -10,6 +10,18 @@ export interface Group {
   note: string;
 }
 
+export interface IGroupPermission {
+  id: number;
+  name: string;
+}
+
+export interface IGroupDetail {
+  id: number;
+  name: string;
+  description: string;
+  members: GroupMember[];
+  permissions: IGroupPermission[];
+}
 export interface GroupMember {
   id: number;
   name: string;
@@ -20,7 +32,7 @@ export interface Rlc {
   id: number;
   name: string;
   use_record_pool: boolean;
-  links: Link[];
+  links: ILink[];
 }
 
 export interface Permission {
@@ -38,16 +50,4 @@ export interface HasPermission {
   group_object: { name: string; id: number };
   permission_object: { name: string; id: number };
   user_object: { name: string; id: number };
-}
-
-export interface Notification {
-  description_text: string;
-  id: number;
-  last_activity: Date;
-  created: Date;
-  type: string;
-  read: boolean;
-  ref_id: string;
-  ref_text: string;
-  notifications: Notification[];
 }
