@@ -27,30 +27,24 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
-import UserService from "@/services/user";
+<script lang="ts" setup>
+import useClient from "@/api/client";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { CircleLoader } from "@lawandorga/components";
 
-export default defineComponent({
-  components: { CircleLoader },
-  setup() {
-    const success = ref(false);
-    const loading = ref(true);
-    const route = useRoute();
+const success = ref(false);
+const loading = ref(true);
+const route = useRoute();
+const client = useClient();
 
-    onMounted(() => {
-      UserService.confirmEmail({
-        user: route.params.user as string,
-        token: route.params.token as string,
-      })
-        .then(() => (success.value = true))
-        .catch(() => (success.value = false))
-        .finally(() => (loading.value = false));
-    });
+const request = client.post(
+  "api/rlc_users/{}/confirm_email/{}/",
+  route.params.user as string,
+  route.params.token as string,
+);
 
-    return { loading, success };
-  },
-});
+request()
+  .then(() => (success.value = true))
+  .catch(() => (success.value = false))
+  .finally(() => (loading.value = false));
 </script>

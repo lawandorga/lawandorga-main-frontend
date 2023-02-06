@@ -200,6 +200,7 @@ import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
+import useClient from "@/api/client";
 
 export default defineComponent({
   components: {
@@ -212,9 +213,15 @@ export default defineComponent({
     ModalDelete,
   },
   setup() {
+    const client = useClient();
+
     const data = ref<DashboardInformation | null>(null);
 
-    useGet(UsersService.dashboard, data);
+    const request = client.get<DashboardInformation>(
+      "api/auth/query/page/dashboard/",
+    );
+
+    useGet(request, data);
 
     const userStore = useUserStore();
     const { rlc, user } = storeToRefs(userStore);
