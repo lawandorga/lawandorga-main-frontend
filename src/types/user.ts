@@ -68,16 +68,6 @@ export interface DashboardInformation {
   }[];
 }
 
-export interface LoginResponse {
-  access: string;
-  refresh: string;
-}
-
-export interface RefreshResponse {
-  access: string;
-  refresh: string;
-}
-
 export interface DashboardNote {
   id: number;
   title: string;

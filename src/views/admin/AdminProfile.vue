@@ -19,12 +19,7 @@
           <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             <div class="flex items-center space-x-4">
-              <ButtonNormal
-                kind="action"
-                @click="changePasswordModalOpen = true"
-              >
-                Change Password
-              </ButtonNormal>
+              <UsersChangePassword :query="query" />
               <ButtonNormal kind="action" @click="updateModalOpen = true">
                 Edit
               </ButtonNormal>
@@ -124,12 +119,6 @@
         :request="updateRequest"
       />
     </ModalFree>
-    <ModalForm
-      v-model="changePasswordModalOpen"
-      title="Change Password"
-      :request="changePasswordRequest"
-      :fields="passwordFields"
-    />
     <!-- permission -->
     <ModalFree v-model="addPermissionModalOpen" title="Add Permission">
       <FormGenerator
@@ -148,8 +137,8 @@
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, watch, ref, Ref } from "vue";
+<script lang="ts" setup>
+import { reactive, watch, ref, Ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
 import useQuery from "@/composables/useQuery";
@@ -158,7 +147,6 @@ import {
   ModalDelete,
   ModalFree,
   TableGenerator,
-  ModalForm,
   ButtonNormal,
 } from "@lawandorga/components";
 import useDelete from "@/composables/useDelete";
@@ -172,6 +160,7 @@ import useUpdate from "@/composables/useUpdate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
+import UsersChangePassword from "@/actions/UsersChangePassword.vue";
 
 const userFields = [
   {
@@ -231,124 +220,58 @@ const userFields = [
   },
 ];
 
-const passwordFields = [
-  {
-    label: "Current Password",
-    type: "password",
-    name: "current_password",
-    required: true,
-  },
-  {
-    label: "New Password",
-    type: "password",
-    name: "new_password",
-    required: true,
-  },
-  {
-    label: "New Password Confirm",
-    type: "password",
-    name: "new_password_confirm",
-    required: true,
-  },
-];
+const route = useRoute();
+const userStore = useUserStore();
 
-export default defineComponent({
-  components: {
-    BoxLoader,
-    ButtonNormal,
-    ModalFree,
-    TableGenerator,
-    FormGenerator,
-    ModalDelete,
-    BreadcrumbsBar,
-    ModalForm,
-    CogIcon,
-  },
-  setup() {
-    const route = useRoute();
-    const userStore = useUserStore();
+const user = ref(null) as Ref<RlcUser | null>;
 
-    // user
-    const user = ref(null) as Ref<RlcUser | null>;
-    useGet(AdminService.getUser, user, route.params.id as string);
+const query = useGet(AdminService.getUser, user, route.params.id as string);
 
-    // change password
-    const {
-      updateModalOpen: changePasswordModalOpen,
-      updateRequest: changePasswordRequest,
-    } = useUpdate(AdminService.changePassword, user);
+const { updateRequest, updateModalOpen } = useUpdate(
+  AdminService.updateUser,
+  user,
+);
 
-    // update user
-    const { updateRequest, updateModalOpen } = useUpdate(
-      AdminService.updateUser,
-      user,
-    );
+const permissions = ref(null) as Ref<HasPermission[] | null>;
 
-    // permissions
-    const permissions = ref(null) as Ref<HasPermission[] | null>;
-    const getPermissions = useQuery(
-      AdminService.getUserPermissions,
-      permissions,
-      user,
-    );
-    watch(user, () => {
-      if (userStore.hasPermission("admin__manage_permissions"))
-        getPermissions();
-    });
+const getPermissions = useQuery(
+  AdminService.getUserPermissions,
+  permissions,
+  user,
+);
 
-    // add permission
-    const permissionFields = reactive([
-      {
-        label: "Permission",
-        name: "permission",
-        type: "select",
-        required: true,
-        options: [] as Permission[],
-      },
-    ]);
-    const {
-      commandRequest: addPermissionRequest,
-      commandModalOpen: addPermissionModalOpen,
-    } = useCommand(
-      UserService.grantPermission,
-      useQuery(AdminService.getUserPermissions, permissions, user),
-      user,
-    );
-
-    watch(addPermissionModalOpen, () =>
-      AdminService.getPermissions().then(
-        (users) => (permissionFields[0].options = users),
-      ),
-    );
-
-    // remove permission
-    const permission = ref(null) as Ref<User | null>;
-
-    const {
-      deleteRequest: removePermissionRequest,
-      deleteModalOpen: removePermissionModalOpen,
-    } = useDelete(AdminService.deleteHasPermission, permissions);
-
-    return {
-      user,
-      userStore,
-      // update user
-      userFields,
-      updateRequest,
-      updateModalOpen,
-      // change password
-      passwordFields,
-      changePasswordRequest,
-      changePasswordModalOpen,
-      // permissions
-      permissions,
-      addPermissionRequest,
-      addPermissionModalOpen,
-      permissionFields,
-      permission,
-      removePermissionRequest,
-      removePermissionModalOpen,
-    };
-  },
+watch(user, () => {
+  if (userStore.hasPermission("admin__manage_permissions")) getPermissions();
 });
+
+const permissionFields = reactive([
+  {
+    label: "Permission",
+    name: "permission",
+    type: "select",
+    required: true,
+    options: [] as Permission[],
+  },
+]);
+const {
+  commandRequest: addPermissionRequest,
+  commandModalOpen: addPermissionModalOpen,
+} = useCommand(
+  UserService.grantPermission,
+  useQuery(AdminService.getUserPermissions, permissions, user),
+  user,
+);
+
+watch(addPermissionModalOpen, () =>
+  AdminService.getPermissions().then(
+    (users) => (permissionFields[0].options = users),
+  ),
+);
+
+const permission = ref(null) as Ref<User | null>;
+
+const {
+  deleteRequest: removePermissionRequest,
+  deleteModalOpen: removePermissionModalOpen,
+} = useDelete(AdminService.deleteHasPermission, permissions);
 </script>
