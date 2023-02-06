@@ -23,16 +23,6 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  changePassword(data: {
-    current_password: string;
-    new_password: string;
-    new_password_confirm: string;
-  }): Promise<RlcUser> {
-    return axios
-      .post<Promise<RlcUser>>("profiles/change_password/", data)
-      .then((response) => response.data);
-  }
-
   /*
   // Permission
   */

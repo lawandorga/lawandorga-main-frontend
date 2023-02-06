@@ -28,31 +28,29 @@
           </ButtonLink>
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <UsersAcceptUser
-              :query="query"
-              :user-name="slotProps.name"
-              :user-id="slotProps.id"
-              :user-accepted="slotProps.accepted"
-            />
-            <UsersUnlockUser
-              :query="query"
-              :user-name="slotProps.name"
-              :user-id="slotProps.id"
-              :user-locked="slotProps.locked"
-            />
-            <UsersActivateDeactivateUser
-              :query="query"
-              :user-name="slotProps.name"
-              :user-id="slotProps.id"
-              :user-active="slotProps.is_active"
-            />
-            <UsersDeleteUser
-              :query="query"
-              :user-name="slotProps.name"
-              :user-id="slotProps.id"
-            />
-          </div>
+          <UsersAcceptUser
+            :query="query"
+            :user-name="slotProps.name"
+            :user-id="slotProps.id"
+            :user-accepted="slotProps.accepted"
+          />
+          <UsersUnlockUser
+            :query="query"
+            :user-name="slotProps.name"
+            :user-id="slotProps.id"
+            :user-locked="slotProps.locked"
+          />
+          <UsersActivateDeactivateUser
+            :query="query"
+            :user-name="slotProps.name"
+            :user-id="slotProps.id"
+            :user-active="slotProps.is_active"
+          />
+          <UsersDeleteUser
+            :query="query"
+            :user-name="slotProps.name"
+            :user-id="slotProps.id"
+          />
         </template>
       </TableGenerator>
     </div>
@@ -69,10 +67,10 @@ import { TableGenerator } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import UsersDeleteUser from "@/actions/UsersDeleteUser.vue";
-import UsersActivateDeactivateUser from "@/actions/UsersActivateDeactivateUser.vue";
-import UsersAcceptUser from "@/actions/UsersAcceptUser.vue";
-import UsersUnlockUser from "@/actions/UsersUnlockUser.vue";
+import UsersDeleteUser from "@/actions/OrgUsersDeleteUser.vue";
+import UsersActivateDeactivateUser from "@/actions/OrgUsersActivateDeactivateUser.vue";
+import UsersAcceptUser from "@/actions/OrgUsersAcceptUser.vue";
+import UsersUnlockUser from "@/actions/OrgUsersUnlockUser.vue";
 
 const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
 const query = useGet(AdminService.getUsers, profiles);
