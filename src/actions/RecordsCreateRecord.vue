@@ -17,7 +17,6 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import RecordsService from "@/services/records";
 import { useRouter } from "vue-router";
 import useClient from "@/api/client";
 import useQuery from "@/composables/useQuery";
@@ -43,7 +42,8 @@ const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 
 // create within records folder
 const availableTemplates = ref<RecordTemplate[]>([]);
-const getTemplates = useQuery(RecordsService.getTemplates, availableTemplates);
+const templateRequest = client.get("api/records/query/templates/");
+const getTemplates = useQuery(templateRequest, availableTemplates);
 watch(commandModalOpen, () => {
   getTemplates();
 });

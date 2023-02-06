@@ -17,7 +17,6 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import RecordsService from "@/services/records";
 import { IAvailableFolder } from "@/types/folders";
 import { foldersGetAvailableFolders } from "@/services/folders";
 import useClient from "@/api/client";
@@ -46,7 +45,8 @@ const {
 const availableFolders = ref<IAvailableFolder[]>([]);
 const availableTemplates = ref<RecordTemplate[]>([]);
 
-const getTemplates = useQuery(RecordsService.getTemplates, availableTemplates);
+const templateRequest = client.get("api/records/query/templates/");
+const getTemplates = useQuery(templateRequest, availableTemplates);
 const getFolders = useQuery(foldersGetAvailableFolders, availableFolders);
 
 watch(createWithinFolderModalOpen, (newValue) => {
