@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="true">
+  <BoxLoader show>
     <div class="max-w-screen-lg mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
@@ -29,164 +29,51 @@
         </template>
         <template #action="slotProps">
           <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              v-if="!slotProps.accepted"
-              size="xs"
-              kind="action"
-              @click="
-                profile = slotProps;
-                acceptUserModalOpen = true;
-              "
-            >
-              Accept
-            </ButtonNormal>
-            <ButtonNormal
-              v-if="slotProps.locked"
-              size="xs"
-              kind="action"
-              @click="
-                profile = slotProps;
-                unlockUserModalOpen = true;
-              "
-            >
-              Unlock
-            </ButtonNormal>
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                profile = slotProps;
-                activateUserModalOpen = true;
-              "
-            >
-              {{ slotProps.is_active ? "Deactivate" : "Activate" }}
-            </ButtonNormal>
-            <ButtonNormal
-              size="xs"
-              kind="delete"
-              @click="
-                profile = slotProps;
-                deleteModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
+            <UsersAcceptUser
+              :query="query"
+              :user-name="slotProps.name"
+              :user-id="slotProps.id"
+              :user-accepted="slotProps.accepted"
+            />
+            <UsersUnlockUser
+              :query="query"
+              :user-name="slotProps.name"
+              :user-id="slotProps.id"
+              :user-locked="slotProps.locked"
+            />
+            <UsersActivateDeactivateUser
+              :query="query"
+              :user-name="slotProps.name"
+              :user-id="slotProps.id"
+              :user-active="slotProps.is_active"
+            />
+            <UsersDeleteUser
+              :query="query"
+              :user-name="slotProps.name"
+              :user-id="slotProps.id"
+            />
           </div>
         </template>
       </TableGenerator>
     </div>
-    <!-- delete -->
-    <ModalDelete
-      v-model="deleteModalOpen"
-      :request="deleteRequest"
-      :data="profile"
-    />
-    <!-- accept -->
-    <ModalConfirm
-      v-model="acceptUserModalOpen"
-      title="Accept User"
-      :request="acceptUserRequest"
-      :data="{ user: profile?.id }"
-    >
-      Are your sure you want to accept '{{ profile?.name }}'?
-    </ModalConfirm>
-    <!-- unlock -->
-    <ModalDelete
-      v-model="unlockUserModalOpen"
-      title="Unlock User"
-      :request="unlockUserRequest"
-      :data="profile"
-      verb="unlock"
-    />
-    <ModalDelete
-      v-model="activateUserModalOpen"
-      :title="
-        profile && profile.is_active ? 'Deactivate user' : 'Activate user'
-      "
-      :request="activateUserRequest"
-      :data="
-        Object.assign({}, profile, { is_active: profile && !profile.is_active })
-      "
-      :verb="profile && profile.is_active ? 'deactivate' : 'activate'"
-    />
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, Ref } from "vue";
+<script lang="ts" setup>
+import { ref, Ref } from "vue";
 import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
-import {
-  ModalConfirm,
-  TableGenerator,
-  ButtonNormal,
-  ModalDelete,
-} from "@lawandorga/components";
-import useUpdate from "@/composables/useUpdate";
-import useDelete from "@/composables/useDelete";
+import { TableGenerator } from "@lawandorga/components";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import useCommand from "@/composables/useCommand";
+import UsersDeleteUser from "@/actions/UsersDeleteUser.vue";
+import UsersActivateDeactivateUser from "@/actions/UsersActivateDeactivateUser.vue";
+import UsersAcceptUser from "@/actions/UsersAcceptUser.vue";
+import UsersUnlockUser from "@/actions/UsersUnlockUser.vue";
 
-export default defineComponent({
-  components: {
-    ButtonLink,
-    BreadcrumbsBar,
-    CogIcon,
-    BoxLoader,
-    TableGenerator,
-    ButtonNormal,
-    ModalDelete,
-    ModalConfirm,
-  },
-  setup() {
-    const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
-    const query = useGet(AdminService.getUsers, profiles);
-
-    // accept
-    const {
-      commandRequest: acceptUserRequest,
-      commandModalOpen: acceptUserModalOpen,
-    } = useCommand(AdminService.acceptUser, query);
-
-    // delete
-    const profile = ref(null) as Ref<RlcUserSmall | null>;
-    const { deleteRequest, deleteModalOpen } = useDelete(
-      AdminService.deleteUser,
-      profiles,
-    );
-
-    // unlock
-    const {
-      commandRequest: unlockUserRequest,
-      commandModalOpen: unlockUserModalOpen,
-    } = useCommand(AdminService.unlockUser, query);
-
-    // activate
-    const {
-      updateRequest: activateUserRequest,
-      updateModalOpen: activateUserModalOpen,
-    } = useUpdate(AdminService.activateUser, profiles);
-
-    return {
-      profiles,
-      profile,
-      // delete
-      deleteRequest,
-      deleteModalOpen,
-      // accept
-      acceptUserRequest,
-      acceptUserModalOpen,
-      // unlock
-      unlockUserRequest,
-      unlockUserModalOpen,
-      // activate
-      activateUserRequest,
-      activateUserModalOpen,
-    };
-  },
-});
+const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
+const query = useGet(AdminService.getUsers, profiles);
 </script>

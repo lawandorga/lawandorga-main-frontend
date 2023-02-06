@@ -150,14 +150,14 @@ class Client {
       });
   }
 
-  delete<D extends Record<string, any>, R = any>(
+  delete<D extends Record<string, any>>(
     url: string,
     ...params: UrlParamType[]
-  ): (data: D) => Promise<R> {
-    return (data: D) =>
-      this.caller
-        .delete(this.buildUrl(url, data, ...params))
-        .then((r) => r.data);
+  ): (data?: D) => Promise<void> {
+    return (data?: D) =>
+      this.caller.delete(this.buildUrl(url, data, ...params)).then(() => {
+        // ignore
+      });
   }
 }
 
