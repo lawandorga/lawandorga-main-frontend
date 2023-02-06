@@ -13,7 +13,6 @@ import {
 import {
   IQuestionnaireTemplate,
   IQuestionnaire,
-  IQuestionnaireAnswer,
   IQuestionnaireQuestion,
   IQuestionnaireTemplateFile,
 } from "@/types/questionnaire";
@@ -37,22 +36,6 @@ export function recordsGetDeletions(): Promise<RecordDeletion[]> {
   return axios.get("records/query/deletions/").then((r) => r.data);
 }
 
-export function recordsCreateRecordAndFolder(data: {
-  name: string;
-  folder: string;
-  template: number;
-}): Promise<{ folder_uuid: string; id: number }> {
-  return axios.post(`records/records/v2/`, data).then((r) => r.data);
-}
-
-export function recordsCreateRecordWithinFolder(data: {
-  name: string;
-  folder: string;
-  template: number;
-}) {
-  return axios.post(`records/records/v2/within_folder/`, data).then();
-}
-
 export function recordsGetRecord(uuid: string): Promise<Record> {
   return axios.get(`records/query/${uuid}/`).then((r) => r.data);
 }
@@ -62,39 +45,6 @@ class RecordsService {
   getTemplates(): Promise<RecordTemplate[]> {
     return axios
       .get<RecordTemplate[]>("records/recordtemplates/")
-      .then((response) => response.data);
-  }
-
-  createTemplate(data: JsonModel): Promise<RecordTemplate> {
-    return axios
-      .post<RecordTemplate>(`records/recordtemplates/`, data)
-      .then((response) => response.data);
-  }
-
-  getTemplate(id: string | number): Promise<RecordTemplate> {
-    return axios
-      .get<RecordTemplate>(`records/recordtemplates/${id}/`)
-      .then((response) => response.data);
-  }
-
-  getTemplateFields(template: RecordTemplate): Promise<RecordField[]> {
-    return axios
-      .get<RecordField[]>(`records/recordtemplates/${template.id}/fields/`)
-      .then((response) => response.data);
-  }
-
-  updateTemplate(template: RecordTemplate): Promise<RecordTemplate> {
-    return axios
-      .patch<RecordTemplate>(
-        `records/recordtemplates/${template.id}/`,
-        template,
-      )
-      .then((response) => response.data);
-  }
-
-  deleteTemplate(template: RecordTemplate): Promise<void> {
-    return axios
-      .delete(`records/recordtemplates/${template.id}/`)
       .then((response) => response.data);
   }
 
@@ -121,12 +71,6 @@ class RecordsService {
   getRecords(): Promise<Record[]> {
     return axios
       .get<Record[]>("records/records/")
-      .then((response) => response.data);
-  }
-
-  createRecord(data: JsonModel): Promise<Record> {
-    return axios
-      .post<Record>("records/records/v2/", data)
       .then((response) => response.data);
   }
 
@@ -318,17 +262,6 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  // questionnaireanswer
-  downloadQuestionnaireAnswerFile(
-    questionnaireAnswer: IQuestionnaireAnswer,
-  ): void {
-    downloadFileRequest(
-      axios,
-      `questionnaires/questionnaire_answers/${questionnaireAnswer.id}/download_file/`,
-      questionnaireAnswer.data.split("/").at(-1) || "filename",
-    );
-  }
-
   // questionnairefile
   getQuestionnaireFiles(
     questionnaire: IQuestionnaireTemplate,
@@ -381,25 +314,6 @@ class RecordsService {
   createMessage(data: JsonModel): Promise<Message> {
     return axios
       .post<Message>(`records/messages/`, data)
-      .then((response) => response.data);
-  }
-
-  // access
-  getRecordAccesses(): Promise<IRecordAccess[]> {
-    return axios
-      .get<IRecordAccess[]>("records/accesses/")
-      .then((response) => response.data);
-  }
-
-  updateRecordAccess(data: IRecordAccess): Promise<IRecordAccess> {
-    return axios
-      .patch<IRecordAccess>(`records/accesses/${data.id}/`, data)
-      .then((response) => response.data);
-  }
-
-  createRecordAccess(data: JsonModel): Promise<void> {
-    return axios
-      .post(`records/accesses/`, data)
       .then((response) => response.data);
   }
 

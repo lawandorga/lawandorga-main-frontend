@@ -83,7 +83,7 @@
     <ModalFree v-model="updateModalOpen" title="Update Field">
       <FormGenerator
         :fields="updateFields"
-        :data="field"
+        :data="{ ...field, group: field?.group_id }"
         :request="updateRequest"
       />
     </ModalFree>
@@ -142,8 +142,8 @@
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref, watch } from "vue";
+<script lang="ts" setup>
+import { computed, Ref, ref, watch } from "vue";
 import { RecordTemplate, RecordField } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import {
@@ -164,7 +164,7 @@ import { useRoute } from "vue-router";
 import { FormField } from "@/types/form";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { Group } from "@/types/core";
-import AdminService from "@/services/admin";
+import useClient from "@/api/client";
 
 const updateFieldsSource = [
   {
@@ -221,129 +221,111 @@ const createFields = [
   },
 ];
 
-export default defineComponent({
-  components: {
-    ModalDelete,
-    ModalFree,
-    FormGenerator,
-    BoxLoader,
-    CogIcon,
-    BreadcrumbsBar,
-    TableGenerator,
-    ButtonNormal,
-    ButtonBreadcrumbs,
+// other
+const route = useRoute();
+const client = useClient();
+
+// template
+const retrieve = client.get(
+  "api/records/query/templates/{}/",
+  route.params.id as string,
+);
+
+const template = ref(null) as Ref<RecordTemplate | null>;
+useGet(retrieve, template);
+
+// fields
+// const fields = ref(null) as Ref<RecordField[] | null>;
+const fields = computed({
+  get: () => {
+    if (!template.value) return null;
+    return template.value.fields;
   },
-  setup() {
-    // other
-    const route = useRoute();
-
-    // template
-    const template = ref(null) as Ref<RecordTemplate | null>;
-    useGet(RecordsService.getTemplate, template, route.params.id as string);
-
-    // fields
-    const fields = ref(null) as Ref<RecordField[] | null>;
-    const field = ref(null) as Ref<RecordField | null>;
-    useGet(RecordsService.getTemplateFields, fields, template);
-
-    // create
-    const { createRequest, createModalOpen } = useCreate(
-      RecordsService.createField,
-      fields,
-    );
-
-    // update
-    const { updateRequest, updateModalOpen } = useUpdate(
-      RecordsService.updateField,
-      fields,
-    );
-
-    const updateFields = ref(updateFieldsSource);
-
-    watch(updateModalOpen, () => {
-      if (field.value === null || updateModalOpen.value === false) return;
-
-      updateFields.value = [...updateFieldsSource];
-
-      if (field.value.url.includes("standardfield"))
-        updateFields.value.push({
-          label: "Type",
-          name: "field_type",
-          type: "select",
-          options: [
-            { name: "Single Line", value: "TEXT" },
-            { name: "Multi Line", value: "TEXTAREA" },
-            { name: "Date", value: "DATE" },
-            { name: "Date and Time", value: "DATETIME-LOCAL" },
-          ],
-          required: true,
-        });
-
-      if (
-        field.value.url.includes("state") ||
-        field.value.url.includes("select") ||
-        field.value.url.includes("multiple")
-      )
-        updateFields.value.push({
-          label: "Options",
-          name: "options",
-          type: "list",
-          required: true,
-        });
-
-      if (field.value.url.includes("users")) {
-        updateFields.value.push({
-          label: "Share Keys",
-          name: "share_keys",
-          type: "toggle",
-          required: false,
-          helptext:
-            "If this option is selected every user selected will get access to the record.",
-        });
-        updateFields.value.push({
-          label: "Group",
-          name: "group",
-          type: "select",
-          required: false,
-          helptext:
-            "If a group is selected only members of this group will be selectable.",
-          options: [] as Group[],
-        });
-        useGet(AdminService.getGroups, updateFields.value[3].options);
-      }
-
-      return fields;
-    });
-
-    // delete
-    const { deleteRequest, deleteModalOpen } = useDelete(
-      RecordsService.deleteField,
-      fields,
-    );
-
-    // help
-    const helpModalOpen = ref(false);
-
-    return {
-      template,
-      // field
-      field,
-      fields,
-      // form
-      updateFields,
-      // create
-      createFields,
-      createRequest,
-      createModalOpen,
-      // update
-      updateRequest,
-      updateModalOpen,
-      // delete
-      deleteRequest,
-      deleteModalOpen,
-      // help
-      helpModalOpen,
-    };
+  set: (newValue) => {
+    if (!template.value) return;
+    template.value.fields = newValue;
   },
 });
+const field = ref(null) as Ref<RecordField | null>;
+// useGet(RecordsService.getTemplateFields, fields, template);
+
+// create
+const { createRequest, createModalOpen } = useCreate(
+  RecordsService.createField,
+  fields,
+);
+
+// update
+const { updateRequest, updateModalOpen } = useUpdate(
+  RecordsService.updateField,
+  fields,
+);
+
+const updateFields = ref(updateFieldsSource);
+
+watch(updateModalOpen, () => {
+  if (field.value === null || updateModalOpen.value === false) return;
+
+  updateFields.value = [...updateFieldsSource];
+
+  if (field.value.url.includes("standardfield"))
+    updateFields.value.push({
+      label: "Type",
+      name: "field_type",
+      type: "select",
+      options: [
+        { name: "Single Line", value: "TEXT" },
+        { name: "Multi Line", value: "TEXTAREA" },
+        { name: "Date", value: "DATE" },
+        { name: "Date and Time", value: "DATETIME-LOCAL" },
+      ],
+      required: true,
+    });
+
+  if (
+    field.value.url.includes("state") ||
+    field.value.url.includes("select") ||
+    field.value.url.includes("multiple")
+  )
+    updateFields.value.push({
+      label: "Options",
+      name: "options",
+      type: "list",
+      required: true,
+    });
+
+  if (field.value.url.includes("users")) {
+    updateFields.value.push({
+      label: "Share Keys",
+      name: "share_keys",
+      type: "toggle",
+      required: false,
+      helptext:
+        "If this option is selected every user selected will get access to the record.",
+    });
+    updateFields.value.push({
+      label: "Group",
+      name: "group",
+      type: "select",
+      required: false,
+      helptext:
+        "If a group is selected only members of this group will be selectable.",
+      options: [] as Group[],
+    });
+    client
+      .get("api/query/groups/")()
+      .then((g) => (updateFields.value[3].options = g));
+  }
+
+  return fields;
+});
+
+// delete
+const { deleteRequest, deleteModalOpen } = useDelete(
+  RecordsService.deleteField,
+  fields,
+);
+
+// help
+const helpModalOpen = ref(false);
 </script>

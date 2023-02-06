@@ -28,18 +28,18 @@
 
       <TableGenerator
         :head="[
-          { name: 'Permission', key: (obj) => obj.permission_object.name },
+          { name: 'Permission', key: 'permission_name' },
           { name: '', key: 'action' },
         ]"
         :data="permissions"
       >
         <template #head-action>
-          <GroupsAddPermission :query="permissionsQuery" :group-id="group.id" />
+          <GroupsAddPermission :query="query" :group-id="group.id" />
         </template>
         <template #action="slotProps">
           <GroupsRemovePermission
-            :query="permissionsQuery"
-            :permission-name="slotProps.permission_object.name"
+            :query="query"
+            :permission-name="slotProps.permission_name"
             :permission-id="slotProps.id"
           />
         </template>
@@ -62,13 +62,13 @@
           </ButtonNormal>
         </template>
         <template #head-action>
-          <GroupsAddMember :group-id="group.id" :query="membersQuery" />
+          <GroupsAddMember :group-id="group.id" :query="query" />
         </template>
         <template #action="slotProps">
           <GroupsRemoveMember
             :member-id="slotProps.id"
             :group-id="group.id"
-            :query="membersQuery"
+            :query="query"
             :member-name="slotProps.name"
           />
         </template>
@@ -80,33 +80,34 @@
 <script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator, ButtonNormal } from "@lawandorga/components";
-import { Ref, ref } from "vue";
+import { computed, Ref, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useGet from "@/composables/useGet";
-import { Group, GroupMember, HasPermission } from "@/types/core";
-import AdminService from "@/services/admin";
+import { GroupMember, IGroupDetail, IGroupPermission } from "@/types/core";
 import { useRoute } from "vue-router";
 import GroupsAddMember from "@/actions/GroupsAddMember.vue";
 import GroupsRemoveMember from "@/actions/GroupsRemoveMember.vue";
 import GroupsAddPermission from "@/actions/GroupsAddPermission.vue";
 import GroupsRemovePermission from "@/actions/GroupsRemovePermission.vue";
+import useClient from "@/api/client";
 
 const route = useRoute();
 
-// group
-const group = ref(null) as Ref<Group | null>;
-useGet(AdminService.getGroup, group, route.params.id as string);
+const client = useClient();
 
-// members
-const members = ref(null) as Ref<GroupMember[] | null>;
-const membersQuery = useGet(AdminService.getMembers, members, group);
+const request = client.get("api/query/group/{}/", route.params.id as string);
 
-// permissions
-const permissions = ref(null) as Ref<HasPermission[] | null>;
-const permissionsQuery = useGet(
-  AdminService.getGroupPermissions,
-  permissions,
-  group,
-);
+const group = ref(null) as Ref<IGroupDetail | null>;
+const query = useGet(request, group);
+
+const members = computed<GroupMember[] | null>(() => {
+  if (!group.value) return null;
+  return group.value.members;
+});
+
+const permissions = computed<IGroupPermission[] | null>(() => {
+  if (!group.value) return null;
+  return group.value.permissions;
+});
 </script>

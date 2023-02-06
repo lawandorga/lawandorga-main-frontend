@@ -11,6 +11,7 @@ type CallerInstance = AxiosInstance;
 type UrlParamType =
   | string
   | number
+  | undefined
   | Ref<string>
   | Ref<number>
   | Ref<null>
@@ -139,9 +140,12 @@ class Client {
       });
   }
 
-  put(url: string): (data: any) => Promise<void> {
-    return (data: any) =>
-      this.caller.put(this.buildUrlFromObject(url, data), data).then(() => {
+  put<D extends Record<string, any>>(
+    url: string,
+    ...params: UrlParamType[]
+  ): (data?: D) => Promise<void> {
+    return (data?: D) =>
+      this.caller.put(this.buildUrl(url, data, ...params), data).then(() => {
         /* ignore */
       });
   }
