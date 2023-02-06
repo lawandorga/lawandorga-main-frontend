@@ -1,6 +1,6 @@
 import { HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
-import { RlcUser, RlcUserSmall, User } from "@/types/user";
+import { RlcUser, RlcUserSmall } from "@/types/user";
 import axios from "axios";
 
 class AdminService {
@@ -17,30 +17,10 @@ class AdminService {
       .then((response) => response.data);
   }
 
-  activateUser(user: JsonModel): Promise<RlcUser> {
-    return axios
-      .put<RlcUser>(`/rlc_users/${user.id}/activate/`, user)
-      .then((response) => response.data);
-  }
-
   getUser(id: number | string): Promise<RlcUser> {
     return axios
       .get<RlcUser>(`rlc_users/${id}/`)
       .then((response) => response.data);
-  }
-
-  deleteUser(user: User): Promise<void> {
-    return axios.delete(`profiles/${user.id}/`).then();
-  }
-
-  acceptUser(data: { user: number }): Promise<void> {
-    return axios.post(`org/accept_member/`, data).then((r) => r.data);
-  }
-
-  unlockUser(user: User): Promise<void> {
-    return axios
-      .post<Promise<void>>(`rlc_users/${user.id}/unlock_user/`)
-      .then();
   }
 
   changePassword(data: {
