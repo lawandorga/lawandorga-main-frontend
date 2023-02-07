@@ -7,6 +7,7 @@
       :fields="moveFolderFields"
       :request="commandRequest"
       :data="{ folder: folderUuid }"
+      submit="Move"
     />
   </ButtonNormal>
 </template>

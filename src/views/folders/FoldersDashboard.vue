@@ -62,7 +62,6 @@ import { computed, ref } from "vue";
 import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import useGet from "@/composables/useGet";
 import { foldersGetFolderPage } from "@/services/folders";
-import useQuery from "@/composables/useQuery";
 import TabControls from "@/components/TabControls.vue";
 import FoldersTableView from "@/components/FoldersTableView.vue";
 import FoldersTreeView from "@/components/FoldersTreeView.vue";
@@ -72,10 +71,7 @@ const userStore = useUserStore();
 
 // folders
 const page = ref<IFolderPage>();
-useGet(foldersGetFolderPage, page);
-
-// query
-const query = useQuery(foldersGetFolderPage, page);
+const query = useGet(foldersGetFolderPage, page);
 
 // folder items
 const folderItems = computed<IFolderItem[]>(() => {
