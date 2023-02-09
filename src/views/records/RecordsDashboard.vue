@@ -5,12 +5,6 @@
         <RectangleStackIcon class="w-6 h-6" />
         <template #buttons>
           <RecordsPermissions />
-          <ButtonBreadcrumbs
-            v-if="userStore.rlc?.use_record_pool"
-            :to="{ name: 'records-pool' }"
-          >
-            Go to the Record Pool
-          </ButtonBreadcrumbs>
         </template>
       </BreadcrumbsBar>
       <TableRecords :records="records" :columns="page?.columns">
@@ -44,7 +38,6 @@ import { recordsGetPage } from "@/services/records";
 import { IListRecord, IRecordListPage } from "@/types/records";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import useGet from "@/composables/useGet";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { useUserStore } from "@/store/user";
