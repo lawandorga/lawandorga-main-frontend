@@ -6,6 +6,7 @@
       :request="addAddress"
       :fields="addressFields"
       :data="{ group: groupUuid }"
+      @change="changed($event)"
     />
   </ButtonNormal>
 </template>
@@ -35,8 +36,25 @@ const addressFields = computed<types.FormField[]>(() => {
       required: true,
       options: availableDomains?.value as types.FormField["options"],
     },
+    {
+      label: "Result",
+      name: "ignore",
+      type: "text",
+      disabled: true,
+      required: true,
+    },
   ] as types.FormField[];
 });
+
+const changed = (data: types.JsonModel) => {
+  let domainName = "";
+  const domain = availableDomains?.value.find((i) => (i.uuid = data.domain));
+  if (domain) domainName = domain.name;
+  let localpart = "";
+  if (data.localpart) localpart = data.localpart;
+  if (!domainName && !localpart) data.ignore = "";
+  else data.ignore = `${localpart}@${domainName}`;
+};
 
 const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
   useCommand(mailGroupAddAddress, query.value);
