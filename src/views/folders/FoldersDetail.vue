@@ -38,10 +38,7 @@
           :grouping="grouping"
           :selected-id="selectedId"
           :selected-type="selectedType"
-          @selected="
-            selectedId = $event.id;
-            selectedType = $event.type;
-          "
+          @selected="select($event.id, $event.type)"
           @grouping="updateGrouping($event)"
         />
       </div>
@@ -130,7 +127,17 @@ const id: string | null = (route.query.selectedId as string) || null;
 const type: string = (route.query.selectedType as string) || "FOLDER";
 const selectedId = ref<number | string | null>(id);
 const selectedType = ref<string>(type);
-
+const select = (id: number | string | null, type: string) => {
+  selectedType.value = type;
+  selectedId.value = id;
+  if (id === null && type === "RECORD") {
+    //special case select first record
+    const first = folder.value?.content.filter(
+      (i) => i.repository === "RECORD",
+    )[0];
+    if (first) selectedId.value = first.uuid;
+  }
+};
 // user settings
 const userStore = useUserStore();
 const { loaded } = storeToRefs(userStore);

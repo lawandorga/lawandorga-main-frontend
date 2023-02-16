@@ -68,6 +68,7 @@ const update = () => {
   }
 };
 watch(selectedId, () => {
+  file.value = null;
   update();
 });
 update();
