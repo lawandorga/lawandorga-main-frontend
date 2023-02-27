@@ -34,15 +34,12 @@
                 {{ note.note }}
               </p>
               <div class="flex justify-end mt-2 space-x-3">
-                <ButtonNormal
-                  kind="action"
-                  @click="
-                    noteTemporary = note;
-                    updateNoteModalOpen = true;
-                  "
-                >
-                  Edit
-                </ButtonNormal>
+                <DashboardUpdateNote
+                  :query="notesQuery"
+                  :note-id="note.id"
+                  :note-title="note.title"
+                  :note-note="note.note"
+                />
                 <DashboardDeleteNote
                   :query="notesQuery"
                   :note-id="note.id"
@@ -156,104 +153,41 @@
         </div>
       </div>
     </div>
-    <!-- note -->
-
-    <ModalForm
-      v-model="updateNoteModalOpen"
-      title="UpdateNote"
-      :fields="noteFields"
-      :request="updateNoteRequest"
-      :data="noteTemporary"
-    />
   </BoxLoader>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import UsersService from "@/services/user";
 import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
-import { ButtonNormal, ModalForm, ModalDelete } from "@lawandorga/components";
+import { ModalForm } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useUpdate from "@/composables/useUpdate";
-import useDelete from "@/composables/useDelete";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import useClient from "@/api/client";
 import DashboardCreateNote from "@/actions/DashboardCreateNote.vue";
 import DashboardDeleteNote from "@/actions/DashboardDeleteNote.vue";
+import DashboardUpdateNote from "@/actions/DashboardUpdateNote.vue";
 
-export default defineComponent({
-  components: {
-    ChevronRightIcon,
-    Squares2X2Icon,
-    BreadcrumbsBar,
-    BoxLoader,
-    ButtonNormal,
-    ModalForm,
-    ModalDelete,
-    DashboardCreateNote,
-    DashboardDeleteNote,
-  },
-  setup() {
-    const client = useClient();
+const client = useClient();
 
-    const data = ref<DashboardInformation | null>(null);
+const data = ref<DashboardInformation | null>(null);
 
-    const request = client.get<DashboardInformation>(
-      "api/auth/query/page/dashboard/",
-    );
+const request = client.get<DashboardInformation>(
+  "api/auth/query/page/dashboard/",
+);
 
-    const query = useGet(request, data);
+const query = useGet(request, data);
 
-    const userStore = useUserStore();
-    const { rlc, user } = storeToRefs(userStore);
+const userStore = useUserStore();
+const { rlc, user } = storeToRefs(userStore);
 
-    return {
-      rlc,
-      query,
-      user,
-      data,
-      formatDate,
-      ...getCreateUpdateDeleteNotes(),
-    };
-  },
-});
+const notes = ref<DashboardNote[] | null>(null);
 
-function getCreateUpdateDeleteNotes() {
-  const notes = ref<DashboardNote[] | null>(null);
-
-  // get
-  const notesQuery = useGet(UsersService.getNotes, notes);
-
-  // create and update
-  const noteFields = [
-    { label: "Title", name: "title", required: true, type: "text" },
-    { label: "Note", name: "note", required: true, type: "textarea" },
-  ];
-
-  // update and delete
-  const noteTemporary = ref<DashboardNote | null>(null);
-
-  // update
-  const {
-    updateModalOpen: updateNoteModalOpen,
-    updateRequest: updateNoteRequest,
-  } = useUpdate(UsersService.updateNote, notes);
-
-  return {
-    notes,
-    notesQuery,
-    // create and update
-    noteFields,
-    // update and delete
-    noteTemporary,
-    // update
-    updateNoteModalOpen,
-    updateNoteRequest,
-  };
-}
+// get
+const notesQuery = useGet(UsersService.getNotes, notes);
 </script>
