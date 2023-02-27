@@ -17,9 +17,7 @@
             >
               Notes from your LC
             </h2>
-            <ButtonNormal kind="action" @click="createNoteModalOpen = true">
-              Create Note
-            </ButtonNormal>
+            <DashboardCreateNote :query="notesQuery" />
           </div>
           <div
             class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
@@ -163,13 +161,7 @@
       </div>
     </div>
     <!-- note -->
-    <ModalForm
-      v-model="createNoteModalOpen"
-      title="Create Note"
-      :fields="noteFields"
-      submit="Create"
-      :request="createNoteRequest"
-    />
+
     <ModalForm
       v-model="updateNoteModalOpen"
       title="UpdateNote"
@@ -195,12 +187,12 @@ import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
 import { ButtonNormal, ModalForm, ModalDelete } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import useCreate from "@/composables/useCreate";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import useClient from "@/api/client";
+import DashboardCreateNote from "@/actions/DashboardCreateNote.vue";
 
 export default defineComponent({
   components: {
@@ -211,6 +203,7 @@ export default defineComponent({
     ButtonNormal,
     ModalForm,
     ModalDelete,
+    DashboardCreateNote,
   },
   setup() {
     const client = useClient();
@@ -221,13 +214,14 @@ export default defineComponent({
       "api/auth/query/page/dashboard/",
     );
 
-    useGet(request, data);
+    const query = useGet(request, data);
 
     const userStore = useUserStore();
     const { rlc, user } = storeToRefs(userStore);
 
     return {
       rlc,
+      query,
       user,
       data,
       formatDate,
@@ -240,19 +234,13 @@ function getCreateUpdateDeleteNotes() {
   const notes = ref<DashboardNote[] | null>(null);
 
   // get
-  useGet(UsersService.getNotes, notes);
+  const notesQuery = useGet(UsersService.getNotes, notes);
 
   // create and update
   const noteFields = [
     { label: "Title", name: "title", required: true, type: "text" },
     { label: "Note", name: "note", required: true, type: "textarea" },
   ];
-
-  // create
-  const {
-    createModalOpen: createNoteModalOpen,
-    createRequest: createNoteRequest,
-  } = useCreate(UsersService.createNote, notes);
 
   // update and delete
   const noteTemporary = ref<DashboardNote | null>(null);
@@ -271,11 +259,9 @@ function getCreateUpdateDeleteNotes() {
 
   return {
     notes,
+    notesQuery,
     // create and update
     noteFields,
-    // create
-    createNoteModalOpen,
-    createNoteRequest,
     // update and delete
     noteTemporary,
     // update

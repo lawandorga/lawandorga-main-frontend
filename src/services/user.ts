@@ -56,7 +56,7 @@ class UserService {
 
   // notes
   getNotes(): Promise<DashboardNote[]> {
-    return axios.get("notes/").then((response) => response.data);
+    return axios.get("query/notes/").then((response) => response.data);
   }
 
   createNote(note: DashboardNote): Promise<DashboardNote> {
