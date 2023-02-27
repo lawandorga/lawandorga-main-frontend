@@ -16,6 +16,7 @@ import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
 import uploadsRoutes from "./uploads";
+import chatRoutes from "./chat";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -47,6 +48,7 @@ const routes: Array<RouteRecordRaw> = [
   ...eventsRoutes,
   ...mailRoutes,
   ...uploadsRoutes,
+  ...chatRoutes,
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,

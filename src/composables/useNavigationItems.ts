@@ -12,6 +12,7 @@ import {
   CalendarDaysIcon,
   FolderIcon,
   EnvelopeIcon,
+  ChatBubbleBottomCenterIcon,
 } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
@@ -118,6 +119,13 @@ export default function useNavigationItems() {
         notifications: store.badges?.legal,
         is: "router-link",
         attrs: { to: { name: "legal-dashboard" } },
+        permissions: [],
+      },
+      {
+        label: "Chat (Beta)",
+        icon: ChatBubbleBottomCenterIcon,
+        is: "router-link",
+        attrs: { to: { name: "chat-dashboard" } },
         permissions: [],
       },
     ];
