@@ -43,15 +43,11 @@
                 >
                   Edit
                 </ButtonNormal>
-                <ButtonNormal
-                  kind="delete"
-                  @click="
-                    noteTemporary = note;
-                    deleteNoteModalOpen = true;
-                  "
-                >
-                  Delete
-                </ButtonNormal>
+                <DashboardDeleteNote
+                  :query="notesQuery"
+                  :note-id="note.id"
+                  :note-title="note.title"
+                />
               </div>
             </article>
           </div>
@@ -169,11 +165,6 @@
       :request="updateNoteRequest"
       :data="noteTemporary"
     />
-    <ModalDelete
-      v-model="deleteNoteModalOpen"
-      :request="deleteNoteRequest"
-      :data="noteTemporary"
-    />
   </BoxLoader>
 </template>
 
@@ -193,6 +184,7 @@ import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import useClient from "@/api/client";
 import DashboardCreateNote from "@/actions/DashboardCreateNote.vue";
+import DashboardDeleteNote from "@/actions/DashboardDeleteNote.vue";
 
 export default defineComponent({
   components: {
@@ -204,6 +196,7 @@ export default defineComponent({
     ModalForm,
     ModalDelete,
     DashboardCreateNote,
+    DashboardDeleteNote,
   },
   setup() {
     const client = useClient();
@@ -251,12 +244,6 @@ function getCreateUpdateDeleteNotes() {
     updateRequest: updateNoteRequest,
   } = useUpdate(UsersService.updateNote, notes);
 
-  // delete
-  const {
-    deleteModalOpen: deleteNoteModalOpen,
-    deleteRequest: deleteNoteRequest,
-  } = useDelete(UsersService.deleteNote, notes);
-
   return {
     notes,
     notesQuery,
@@ -267,9 +254,6 @@ function getCreateUpdateDeleteNotes() {
     // update
     updateNoteModalOpen,
     updateNoteRequest,
-    // delete
-    deleteNoteModalOpen,
-    deleteNoteRequest,
   };
 }
 </script>
