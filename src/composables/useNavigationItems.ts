@@ -12,7 +12,7 @@ import {
   CalendarDaysIcon,
   FolderIcon,
   EnvelopeIcon,
-  ChatBubbleBottomCenterIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
@@ -123,7 +123,7 @@ export default function useNavigationItems() {
       },
       {
         label: "Chat (Beta)",
-        icon: ChatBubbleBottomCenterIcon,
+        icon: ChatBubbleBottomCenterTextIcon,
         is: "router-link",
         attrs: { to: { name: "chat-dashboard" } },
         permissions: [],
