@@ -198,7 +198,8 @@ export function handleQueryError(context: IContext): Promise<void> {
     .catch(handleNetworkError)
     .catch(handleFileDownloadError)
     .catch(handleServerError)
-    .catch(resetContext);
+    .catch(resetContext)
+    .catch(cleanUpError);
 }
 
 export function handleCommandError(context: IContext): Promise<void> {

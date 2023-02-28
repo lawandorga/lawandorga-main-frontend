@@ -12,6 +12,7 @@ import legalRoutes from "./legal";
 import eventsRoutes from "./events";
 import mailRoutes from "./mail";
 import DashboardPage from "@/views/DashboardPage.vue";
+import ErrorPage from "@/views/ErrorPage.vue";
 import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
@@ -49,6 +50,11 @@ const routes: Array<RouteRecordRaw> = [
   ...mailRoutes,
   ...uploadsRoutes,
   ...chatRoutes,
+  {
+    path: "/error",
+    name: "error",
+    component: ErrorPage,
+  },
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
