@@ -48,7 +48,7 @@ const addressFields = computed<types.FormField[]>(() => {
 
 const changed = (data: types.JsonModel) => {
   let domainName = "";
-  const domain = availableDomains?.value.find((i) => (i.uuid = data.domain));
+  const domain = availableDomains?.value.find((i) => i.uuid === data.domain);
   if (domain) domainName = domain.name;
   let localpart = "";
   if (data.localpart) localpart = data.localpart;
