@@ -1,4 +1,4 @@
 export interface HelpPage {
   id: number;
-  manual: string;
+  manual_url: string | null;
 }

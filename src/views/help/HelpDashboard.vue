@@ -8,19 +8,19 @@
       <LifebuoyIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <div
-      class="rounded-lg divide-y shadow bg-gray-200 divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
+      class="bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
     >
       <div
         v-for="item in items"
         :key="item.title"
-        class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500"
+        class="relative p-6 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500"
         :class="[item.class]"
       >
         <div v-if="item.title">
           <span
-            class="rounded-lg inline-flex p-3 bg-gray-50 text-gray-700 ring-4 ring-white"
+            class="inline-flex p-3 text-gray-700 rounded-lg bg-gray-50 ring-4 ring-white"
           >
-            <component :is="item.icon" class="h-6 w-6 text-gray-600" />
+            <component :is="item.icon" class="w-6 h-6 text-gray-600" />
           </span>
         </div>
         <div v-if="item.title" class="mt-8">
@@ -41,11 +41,11 @@
         </div>
         <span
           v-if="item.title"
-          class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+          class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
           aria-hidden="true"
         >
           <svg
-            class="h-6 w-6"
+            class="w-6 h-6"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 24 24"
@@ -105,7 +105,11 @@ export default defineComponent({
       {
         title: "User Guide",
         description: "The user guide that explains how to use Law&Orga.",
-        attrs: { href: page.value ? page.value.manual : "#", target: "_blank" },
+        attrs: {
+          href:
+            page.value && page.value.manual_url ? page.value.manual_url : "#",
+          target: "_blank",
+        },
         icon: DocumentTextIcon,
         class: "sm:rounded-bl-lg",
         is: "a",

@@ -11,7 +11,7 @@ class HelpService {
   }
 
   getHelpPage(): Promise<HelpPage> {
-    return axios.get("pages/help/").then((response) => response.data);
+    return axios.get("internal/pages/help/").then((response) => response.data);
   }
 }
 
