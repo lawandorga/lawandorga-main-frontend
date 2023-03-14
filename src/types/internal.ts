@@ -4,7 +4,7 @@ export interface IArticle {
   description: string;
   date: string;
   content?: string;
-  author?: string;
+  author_name?: string;
 }
 
 export interface IArticleList {

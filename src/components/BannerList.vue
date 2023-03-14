@@ -22,9 +22,9 @@
 import { useUserStore } from "@/store/user";
 import { computed, ref, watch } from "vue";
 import BannerWhite from "./BannerWhite.vue";
-import InternalService from "@/services/internal";
 import { IArticle } from "@/types/internal";
 import { RouteLocationRaw } from "vue-router";
+import useClient from "@/api/client";
 
 interface IBanner {
   text: string;
@@ -62,10 +62,13 @@ const optimizationBanner = {
 */
 const articles = ref<IArticle[]>([]);
 
-InternalService.getArticles().then((result) => {
-  articles.value = result;
-  loading.value = false;
-});
+const client = useClient();
+client
+  .get("api/internal/articles/")()
+  .then((result) => {
+    articles.value = result;
+    loading.value = false;
+  });
 
 const latestArticles = computed(() =>
   articles.value.filter((a) => {

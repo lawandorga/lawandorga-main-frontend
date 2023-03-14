@@ -4,7 +4,7 @@ import axios from "axios";
 class InternalService {
   getArticle(id: number | string): Promise<IArticle> {
     return axios
-      .get<IArticle>(`articles/${id}/`)
+      .get<IArticle>(`internal/pages/article/${id}/`)
       .then((response) => response.data);
   }
 

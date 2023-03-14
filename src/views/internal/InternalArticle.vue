@@ -16,8 +16,8 @@
       <p class="lead">{{ article.description }}</p>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="article.content"></div>
-      <small v-if="article.author" class="block pt-6 text-right">
-        Author: {{ article.author }}
+      <small v-if="article.author_name" class="block pt-6 text-right">
+        Author: {{ article.author_name }}
       </small>
     </article>
   </section>
