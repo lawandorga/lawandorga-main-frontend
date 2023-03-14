@@ -15,8 +15,8 @@ export interface IRoadmapItem {
 }
 
 export interface ILoginPage {
-  id: number;
   content: string;
+  roadmap_items: IRoadmapItem[];
 }
 
 export interface ImprintPage {

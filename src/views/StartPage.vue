@@ -230,7 +230,7 @@ import { IArticle, ILoginPage, IRoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import useGet from "@/composables/useGet";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const sponsors = [
   {
@@ -282,11 +282,13 @@ const userStore = useUserStore();
 const articles = ref<IArticle[]>([]);
 useGet(InternalService.getArticles, articles);
 
-const roadmapItems = ref<IRoadmapItem[]>([]);
-useGet(InternalService.getRoadmapItems, roadmapItems);
-
 const page = ref<ILoginPage | null>(null);
 useGet(InternalService.getLoginPage, page);
+
+const roadmapItems = computed<IRoadmapItem[]>(() => {
+  if (!page.value) return [];
+  return page.value.roadmap_items;
+});
 
 const passwordForgottenLink = `${
   import.meta.env.VITE_AUTH_URL

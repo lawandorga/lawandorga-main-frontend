@@ -1,19 +1,7 @@
-import {
-  IArticle,
-  ImprintPage,
-  ILoginPage,
-  IRoadmapItem,
-  TomsPage,
-} from "@/types/internal";
+import { IArticle, ImprintPage, ILoginPage, TomsPage } from "@/types/internal";
 import axios from "axios";
 
 class InternalService {
-  getRoadmapItems(): Promise<IRoadmapItem[]> {
-    return axios
-      .get<IRoadmapItem[]>("roadmap-items/")
-      .then((response) => response.data);
-  }
-
   getArticles(): Promise<IArticle[]> {
     return axios.get<IArticle[]>("articles/").then((response) => response.data);
   }
@@ -26,19 +14,19 @@ class InternalService {
 
   getLoginPage(): Promise<ILoginPage> {
     return axios
-      .get<ILoginPage>("pages/index/")
+      .get<ILoginPage>("internal/pages/index/")
       .then((response) => response.data);
   }
 
   getImprintPage(): Promise<ImprintPage> {
     return axios
-      .get<ImprintPage>("pages/imprint/")
+      .get<ImprintPage>("internal/pages/imprint/")
       .then((response) => response.data);
   }
 
   getTomsPage(): Promise<TomsPage> {
     return axios
-      .get<ImprintPage>("pages/toms/")
+      .get<ImprintPage>("internal/pages/toms/")
       .then((response) => response.data);
   }
 }
