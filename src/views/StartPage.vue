@@ -279,15 +279,17 @@ const sponsorGroups = [
 
 const userStore = useUserStore();
 
-const articles = ref<IArticle[]>([]);
-useGet(InternalService.getArticles, articles);
-
 const page = ref<ILoginPage | null>(null);
 useGet(InternalService.getLoginPage, page);
 
 const roadmapItems = computed<IRoadmapItem[]>(() => {
   if (!page.value) return [];
   return page.value.roadmap_items;
+});
+
+const articles = computed<IArticle[]>(() => {
+  if (!page.value) return [];
+  return page.value.articles;
 });
 
 const passwordForgottenLink = `${

@@ -7,6 +7,13 @@ export interface IArticle {
   author?: string;
 }
 
+export interface IArticleList {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+}
+
 export interface IRoadmapItem {
   id: number;
   title: string;
@@ -17,6 +24,7 @@ export interface IRoadmapItem {
 export interface ILoginPage {
   content: string;
   roadmap_items: IRoadmapItem[];
+  articles: IArticleList[];
 }
 
 export interface ImprintPage {

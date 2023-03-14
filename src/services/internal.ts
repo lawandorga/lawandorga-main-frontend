@@ -2,10 +2,6 @@ import { IArticle, ImprintPage, ILoginPage, TomsPage } from "@/types/internal";
 import axios from "axios";
 
 class InternalService {
-  getArticles(): Promise<IArticle[]> {
-    return axios.get<IArticle[]>("articles/").then((response) => response.data);
-  }
-
   getArticle(id: number | string): Promise<IArticle> {
     return axios
       .get<IArticle>(`articles/${id}/`)
