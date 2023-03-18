@@ -1,6 +1,6 @@
-name: Sentry - Create A Release
+name: Deployment Stage - Create A Release For Sentry
 
-on: 
+on:
   workflow_call:
     inputs:
       version:
@@ -16,20 +16,20 @@ on:
         required: true
         type: string
     secrets:
-      SENTRY_AUTH_TOKEN: 
+      SENTRY_AUTH_TOKEN:
         required: true
 
 jobs:
   deploy:
     name: Create Release
     runs-on: ubuntu-22.04
-    
+
     env:
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
