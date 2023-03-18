@@ -26,6 +26,7 @@
           following records:
         </p>
         <table>
+          <caption>Required DNS-Record Settings</caption>
           <thead>
             <tr>
               <th>Type</th>
@@ -65,7 +66,6 @@
               <td>-</td>
             </tr>
           </tbody>
-          <caption>Required DNS-Record Settings</caption>
         </table>
         <p>
           <span
