@@ -1,29 +1,32 @@
 {
-    "eslint.validate": ["vue", "javascript", "typescript"],
-    "eslint.packageManager": "npm",
-    "editor.codeActionsOnSave": {
-      "source.fixAll": true
-    },
-    "editor.quickSuggestions": {
-      "other": true,
-      "comments": false,
-      "strings": true
-    },
-    "tailwindCSS.emmetCompletions": true,
-    "emmet.includeLanguages": {
-      "edge": "html",
-      "vue-html": "html",
-      "vue": "html"
-    },
-    
-    "editor.formatOnSave": true,
-    "[tf]": {
+  "eslint.validate": [
+    "vue",
+    "javascript",
+    "typescript"
+  ],
+  "eslint.packageManager": "npm",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "emmet.includeLanguages": {
+    "edge": "html",
+    "vue-html": "html",
+    "vue": "html"
+  },
+  "editor.formatOnSave": true,
+  "[tf]": {
     "editor.defaultFormatter": "hashicorp.terraform",
-    },
-    "[yaml]": {
-      "editor.defaultFormatter": "redhat.vscode-yaml"
-    },
-    "[json]": {
-      "editor.defaultFormatter": "vscode.json-language-features"
-    },
-  }
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+}

@@ -13,7 +13,9 @@ jobs:
     steps:
       - name: Query Quality Gate Status
         run: |
-          curl -u ${{ secrets.SONAR_TOKEN }}: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=lawandorga_lawandorga-main-frontend&branch=main"
+          if (curl -u ${{ secrets.SONAR_TOKEN }}: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=lawandorga_lawandorga-main-frontend&branch=main" | grep "ERROR"); then
+          exit 1
+          fi
 
   deploy:
     name: Deploy
