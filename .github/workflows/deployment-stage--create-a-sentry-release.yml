@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/action-download-artifact@v2
         with:
           name: ${{ inputs.artifact }}
           path: dist

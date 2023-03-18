@@ -15,4 +15,9 @@
       "vue-html": "html",
       "vue": "html"
     },
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true,
+    "[yaml]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
   }
