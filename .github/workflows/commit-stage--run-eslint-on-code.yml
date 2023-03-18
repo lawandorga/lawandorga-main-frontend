@@ -1,7 +1,6 @@
-name: ESLint - Check Code
+name: Commit Stage - Check Code With ESLint
 
-on:
-  workflow_call
+on: workflow_call
 
 jobs:
   lint:
@@ -15,7 +14,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: npm
-      
+
       - name: Install Packages
         run: npm ci --force
 

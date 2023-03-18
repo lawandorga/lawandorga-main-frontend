@@ -6,3 +6,6 @@ jobs:
   none:
     name: Do Nothing
     runs-on: ubuntu-22.04
+    steps:
+      - name: Do Nothing
+        run: echo null
