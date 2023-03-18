@@ -204,7 +204,7 @@
       <FormGenerator
         :fields="createFileFields"
         :request="createFileRequest"
-        :data="{ folder: folder.id }"
+        :data="{ folder: folder?.id }"
       />
     </ModalFree>
     <ModalFree v-model="updateFileModalOpen" title="Update File">
@@ -224,7 +224,7 @@
       <FormGenerator
         :fields="permissionFields"
         :request="createPermissionRequest"
-        :data="{ folder: folder.id }"
+        :data="{ folder: folder?.id }"
       />
     </ModalFree>
     <ModalDelete
