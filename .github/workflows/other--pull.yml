@@ -1,4 +1,4 @@
-name: Pull
+name: Other - Pull
 
 on:
   pull_request:

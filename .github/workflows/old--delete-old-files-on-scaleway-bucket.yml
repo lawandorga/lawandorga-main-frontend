@@ -1,9 +1,0 @@
-name: Scaleway - Delete Old Bucket Files
-
-on:
-  workflow_call
-
-
-jobs:
-  null:
-    name: Do Nothing

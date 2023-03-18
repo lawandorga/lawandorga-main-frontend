@@ -1,0 +1,8 @@
+name: Other - Delete Old Bucket Files
+
+on: workflow_call
+
+jobs:
+  none:
+    name: Do Nothing
+    runs-on: ubuntu-22.04

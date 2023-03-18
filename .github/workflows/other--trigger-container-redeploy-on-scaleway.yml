@@ -1,6 +1,6 @@
-name: Scaleway - Redeploy Container
+name: Other - Redeploy Container On Scaleway
 
-on: 
+on:
   workflow_call:
     inputs:
       image:

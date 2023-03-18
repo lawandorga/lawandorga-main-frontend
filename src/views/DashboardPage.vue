@@ -164,7 +164,6 @@ import UsersService from "@/services/user";
 import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
-import { ModalForm } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
@@ -181,10 +180,10 @@ const request = client.get<DashboardInformation>(
   "api/auth/query/page/dashboard/",
 );
 
-const query = useGet(request, data);
+useGet(request, data);
 
 const userStore = useUserStore();
-const { rlc, user } = storeToRefs(userStore);
+const { user } = storeToRefs(userStore);
 
 const notes = ref<DashboardNote[] | null>(null);
 
