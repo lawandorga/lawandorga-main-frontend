@@ -1,6 +1,6 @@
-name: Scaleway - Upload Docker Image
+name: Commit Stage - Upload Docker Image
 
-on: 
+on:
   workflow_call:
     inputs:
       image:
@@ -28,13 +28,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
 
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.artifact }}
-          path: dist 
+          path: dist
 
       - name: Build The Docker Container
         run: docker build -t ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }}:${{ inputs.version }} .

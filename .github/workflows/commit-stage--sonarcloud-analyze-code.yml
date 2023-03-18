@@ -1,6 +1,6 @@
-name: SonarCloud - Analyze Code
+name: Commit Stage - Analyze Code
 
-on: 
+on:
   workflow_call:
     secrets:
       SONAR_TOKEN:

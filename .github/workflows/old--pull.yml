@@ -3,7 +3,7 @@ name: Pull
 on:
   pull_request:
     branches:
-      - main
+      - never
 
 jobs:
   lint:

@@ -1,0 +1,28 @@
+name: Deployment Stage
+
+on:
+  workflow_run:
+    workflows: ["Commit Stage"]
+    types: [completed]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy
+    uses: ./.github/workflows/deploy-s3.yml
+    secrets:
+      scw_access_key: ${{ secrets.SCW_ACCESS_KEY }}
+      scw_project_id: ${{ secrets.SCW_PROJECT_ID }}
+      scw_secret_key: ${{ secrets.SCW_SECRET_KEY }}
+
+  sentry:
+    needs: [upload]
+    name: Sentry
+    uses: ./.github/workflows/deployment-stage--create-a-sentry-release.yml
+    with:
+      version: ${{ needs.build.outputs.version }}
+      artifact: ${{ needs.build.outputs.artifact }}
+      project: lawandorga-main-frontend
+      org: sentry
+    secrets:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
