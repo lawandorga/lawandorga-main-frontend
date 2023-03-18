@@ -28,7 +28,7 @@ resource "kubernetes_deployment_v1" "lawandorga_frontend" {
         }
 
         container {
-          image = "${data.terraform_remote_state.cluster.outputs.registry_endpoint}/lawandorga-main-frontend:5a6b784659251ac02c7e7dac032356a4a303163e"
+          image = "${data.terraform_remote_state.cluster.outputs.registry_endpoint}/lawandorga-main-frontend:${var.image_version}"
           name  = "lawandorga-frontend-container"
 
 
