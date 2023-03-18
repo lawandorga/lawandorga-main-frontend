@@ -15,4 +15,4 @@ COPY --chown=nginx:nginx dist/ /app/static
 
 USER nginx
 
-EXPOSE 80
+EXPOSE 8080
