@@ -15,9 +15,15 @@
       "vue-html": "html",
       "vue": "html"
     },
-    "editor.defaultFormatter": "hashicorp.terraform",
+    
     "editor.formatOnSave": true,
+    "[tf]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    },
     "[yaml]": {
       "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
     },
   }

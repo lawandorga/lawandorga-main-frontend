@@ -6,9 +6,18 @@ on:
     types: [completed]
 
 jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Query Quality Gate Status
+        run: |
+          curl -u ${{ secrets.SONAR_TOKEN }}: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=lawandorga_lawandorga-main-frontend&branch=main"
+
   deploy:
     name: Deploy
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: [check]
     uses: ./.github/workflows/deployment-stage--terraform-apply.yml
     secrets:
       scw_access_key: ${{ secrets.SCW_ACCESS_KEY }}
@@ -17,6 +26,7 @@ jobs:
 
   sentry:
     name: Sentry
+    needs: [check]
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: ./.github/workflows/deployment-stage--create-a-sentry-release.yml
     with:
