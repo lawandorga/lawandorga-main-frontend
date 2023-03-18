@@ -5,7 +5,7 @@
       <div v-if="!success" class="">
         <FormGenerator
           :fields="fields"
-          :request="usersRegisterUser"
+          :request="commandRequest"
           submit="Register"
           @success="success = true"
         />
@@ -54,12 +54,14 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { FormGenerator, types } from "@lawandorga/components";
-import { usersGetRegisterPage, usersRegisterUser } from "@/services/user";
+import { usersGetRegisterPage } from "@/services/user";
 import { IRegisterPage } from "@/types/user";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import useGet from "@/composables/useGet";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { getCookie } from "@/utils/cookie";
+import useClient from "@/api/client";
+import useCommand from "@/composables/useCommand";
 
 if (!getCookie("csrftoken")) {
   const redirect = `${window.location.origin}/user/register`;
@@ -68,6 +70,10 @@ if (!getCookie("csrftoken")) {
   const cookieSetLink = `${backend}/redirect/?next=${redirectEncoded}`;
   window.location.assign(cookieSetLink);
 }
+
+const client = useClient();
+const request = client.post("api/rlc_users/");
+const { commandRequest } = useCommand(request);
 
 const page = ref<IRegisterPage | null>(null);
 useGet(usersGetRegisterPage, page);

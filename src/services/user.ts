@@ -14,16 +14,6 @@ export function usersGetRegisterPage(): Promise<IRegisterPage> {
   return axios.get("auth/query/page/register/").then((r) => r.data);
 }
 
-export function usersRegisterUser(data: {
-  email: string;
-  name: string;
-  org: number;
-  password: string;
-  password_confirm: string;
-}): Promise<void> {
-  return axios.post("rlc_users/", data).then();
-}
-
 class UserService {
   getRlcs(): Promise<Rlc[]> {
     return axios.get<Rlc[]>("rlcs/").then((response) => response.data);
