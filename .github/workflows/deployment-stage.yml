@@ -9,7 +9,7 @@ jobs:
   check:
     name: Check
     uses: ./.github/workflows/commit-stage--query-quality-gate-status.yml
-    with:
+    secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy:
