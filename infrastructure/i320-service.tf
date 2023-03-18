@@ -9,7 +9,7 @@ resource "kubernetes_service_v1" "lawandorga_frontend_service" {
     port {
       name        = "http"
       port        = 80
-      target_port = 8080
+      target_port = 80
     }
   }
 }

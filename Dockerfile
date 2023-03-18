@@ -1,6 +1,5 @@
 FROM nginx:alpine
 
-COPY dist/ /app/static
 COPY nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /app
@@ -12,7 +11,8 @@ RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
 RUN touch /var/run/nginx.pid && \
         chown -R nginx:nginx /var/run/nginx.pid
 
+COPY --chown=nginx:nginx dist/ /app/static
+
 USER nginx
 
 EXPOSE 80
-

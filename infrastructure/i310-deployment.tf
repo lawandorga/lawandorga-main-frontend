@@ -33,7 +33,7 @@ resource "kubernetes_deployment_v1" "lawandorga_frontend" {
 
 
           port {
-            container_port = 8080
+            container_port = 80
           }
         }
       }
