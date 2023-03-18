@@ -18,8 +18,8 @@
           </span>
         </p>
         <MailRegeneratePassword />
-        <h2 class="">IMAP & SMTP Settings</h2>
-        <table>
+        <h2 id="table-describe" class="">IMAP & SMTP Settings</h2>
+        <table aria-describedby="table-describe">
           <thead>
             <th></th>
             <th>IMAP</th>
@@ -65,7 +65,9 @@
           </tbody>
         </table>
         <div v-if="user.groups.length">
-          <h2 class="">IMAP & SMTP Settings For Groups</h2>
+          <h2 id="table-describe-groups" class="">
+            IMAP & SMTP Settings For Groups
+          </h2>
           <p>
             In order to setup the group account you need to add it as an extra
             account in your favorite mail program.
@@ -80,7 +82,11 @@
             access to the group account you can add them on the group page to
             the group and they can use their own password.
           </p>
-          <table v-for="(group, index) in user.groups" :key="index">
+          <table
+            v-for="(group, index) in user.groups"
+            :key="index"
+            aria-describedby="table-describe-groups"
+          >
             <thead>
               <th>Group</th>
               <th>Username</th>

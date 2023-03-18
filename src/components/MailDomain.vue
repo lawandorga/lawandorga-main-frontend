@@ -65,6 +65,7 @@
               <td>-</td>
             </tr>
           </tbody>
+          <caption>Required DNS-Record Settings</caption>
         </table>
         <p>
           <span
