@@ -8,14 +8,9 @@ on:
 jobs:
   check:
     name: Check
-    runs-on: ubuntu-22.04
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Query Quality Gate Status
-        run: |
-          if (curl -u ${{ secrets.SONAR_TOKEN }}: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=lawandorga_lawandorga-main-frontend&branch=main" | grep "ERROR"); then
-          exit 1
-          fi
+    uses: ./.github/workflows/commit-stage--query-quality-gate-status.yml
+    with:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy:
     name: Deploy

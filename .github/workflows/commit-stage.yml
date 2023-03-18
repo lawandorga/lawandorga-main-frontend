@@ -35,9 +35,9 @@ jobs:
       SCW_DOCKER_REGISTRY: ${{ secrets.SCW_DOCKER_REGISTRY }}
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
 
-  # next_stage:
-  #   name: Build
-  #   uses: ./.github/workflows/commit-stage--build-artifact.yml
-  #   with:
-  #     artifact: ${{ github.event.repository.name }}
-  #     version: ${{ github.sha }}
+  check:
+    needs: [analyze]
+    name: Check
+    uses: ./.github/workflows/commit-stage--query-quality-gate-status.yml
+    with:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
