@@ -48,7 +48,8 @@
           <div class="flex flex-col justify-center">
             <div class="p-6 bg-white rounded-sm shadow-sm">
               <h2 class="mb-8 text-2xl font-bold">Login</h2>
-              <div v-if="!userStore.isAuthenticated">
+              <p v-if="true">We're running updates. We'll be back shortly!</p>
+              <div v-else-if="!userStore.isAuthenticated">
                 <ButtonNormal :to="{ name: 'user-login' }">
                   To the login page
                 </ButtonNormal>
