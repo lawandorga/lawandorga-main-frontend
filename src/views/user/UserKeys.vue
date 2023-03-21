@@ -97,13 +97,7 @@
           </ol>
           <p>Once all your keys are correct you can unlock yourself.</p>
         </div>
-        <ButtonNormal
-          class="mt-4"
-          kind="action"
-          @click="unlockModalOpen = true"
-        >
-          Unlock myself
-        </ButtonNormal>
+        <ActionsUserUnlockSelf />
       </div>
     </div>
     <!-- delete -->
@@ -119,15 +113,6 @@
       :request="testKeysRequest"
     >
       Are you sure you want to test all keys? This might take up to a minute.
-    </ModalConfirm>
-    <!-- unlock -->
-    <ModalConfirm
-      v-model="unlockModalOpen"
-      title="Unlock"
-      :request="unlockRequest"
-    >
-      If the unlock request completes successfully this modal will close and you
-      will be able to do everything again.
     </ModalConfirm>
   </BoxLoader>
 </template>
@@ -149,6 +134,7 @@ import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { Key } from "@/types/key";
 import { useUserStore } from "@/store/user";
+import ActionsUserUnlockSelf from "@/actions/ActionsUserUnlockSelf.vue";
 
 const userStore = useUserStore();
 
@@ -169,13 +155,4 @@ const { deleteRequest, deleteModalOpen, temporary } = useDelete(
   UserService.deleteKey,
   keys,
 );
-
-// unlock
-const unlockModalOpen = ref(false);
-const unlockRequest = () => {
-  return UserService.unlockSelf().then(() => {
-    userStore.updateData();
-    unlockModalOpen.value = false;
-  });
-};
 </script>

@@ -33,10 +33,6 @@ class UserService {
     return axios.put("rlc_users/settings_self/", data).then();
   }
 
-  unlockSelf(): Promise<RlcUser> {
-    return axios.post("rlc_users/unlock_self/", {}).then((r) => r.data);
-  }
-
   // grant
   grantPermission(data: JsonModel, user: RlcUser): Promise<void> {
     return axios
