@@ -45,7 +45,7 @@ import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";
 import { useRoute } from "vue-router";
-import { getUpdateStatus } from "./services/other";
+// import { getUpdateStatus } from "./services/other";
 import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import BannerList from "./components/BannerList.vue";
@@ -67,13 +67,13 @@ const setMenuOpen = (open: boolean) => {
   menuOpen.value = open;
 };
 
-const setUpdateStatus = () => {
-  getUpdateStatus()
-    .then((d) => (updating.value = d.updating))
-    .catch(() => {
-      /*ignore*/
-    });
-  setTimeout(() => setUpdateStatus(), 60000);
-};
-setUpdateStatus();
+// const setUpdateStatus = () => {
+//   getUpdateStatus()
+//     .then((d) => (updating.value = d.updating))
+//     .catch(() => {
+//       /*ignore*/
+//     });
+//   setTimeout(() => setUpdateStatus(), 60000);
+// };
+// setUpdateStatus();
 </script>
