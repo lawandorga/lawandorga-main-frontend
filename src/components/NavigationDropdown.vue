@@ -42,6 +42,15 @@
           </RouterLink>
         </MenuItem>
         <MenuItem v-if="userStore.user">
+          <a
+            :href="mfaSetupUrl"
+            class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            rel="noopener"
+          >
+            Multi-factor Authentication
+          </a>
+        </MenuItem>
+        <MenuItem v-if="userStore.user">
           <RouterLink
             :to="{ name: 'user-keys' }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
@@ -51,13 +60,19 @@
           </RouterLink>
         </MenuItem>
         <MenuItem>
-          <button
-            type="button"
-            class="block w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer hover:bg-gray-100"
-            @click="logout()"
-          >
-            Logout
-          </button>
+          <form method="post" :action="backendLogoutUrl">
+            <input
+              type="hidden"
+              name="csrfmiddlewaretoken"
+              :value="csrfCookie"
+            />
+            <button
+              type="submit"
+              class="block w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          </form>
         </MenuItem>
       </MenuItems>
     </transition>
@@ -68,14 +83,11 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useUserStore } from "@/store/user";
 import { UserIcon } from "@heroicons/vue/20/solid";
-import { useRouter } from "vue-router";
+import { getCookie } from "@/utils/cookie";
 
 const userStore = useUserStore();
 
-const router = useRouter();
-
-const logout = () => {
-  userStore.logout();
-  router.push({ name: "start" });
-};
+const backendLogoutUrl = `${import.meta.env.VITE_AUTH_URL}/logout/`;
+const mfaSetupUrl = `${import.meta.env.VITE_AUTH_URL}/auth/mfa/status/`;
+const csrfCookie = getCookie("csrftoken");
 </script>
