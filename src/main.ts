@@ -9,13 +9,6 @@ import { BrowserTracing } from "@sentry/tracing";
 import { createPinia } from "pinia";
 import { useUserStore } from "./store/user";
 
-// redirect
-if (import.meta.env.PROD) {
-  if (location.protocol !== "https:") {
-    location.replace("https://law-orga.de");
-  }
-}
-
 // vue
 const app = createApp(App);
 
