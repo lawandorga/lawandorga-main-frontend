@@ -3,7 +3,7 @@ import collabRoutes from "./collab";
 import userRoutes from "./user";
 import adminRoutes from "./admin";
 import filesRoutes from "./files";
-import recordsRoutes from "./data_sheets";
+import dataSheetsRoutes from "./data_sheets";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import foldersRoutes from "./folders";
@@ -18,6 +18,7 @@ import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
 import uploadsRoutes from "./uploads";
 import chatRoutes from "./chat";
+import recordsRoutes from "./records";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -38,6 +39,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   ...foldersRoutes,
   ...userRoutes,
+  ...dataSheetsRoutes,
   ...recordsRoutes,
   ...filesRoutes,
   ...collabRoutes,

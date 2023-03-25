@@ -74,7 +74,7 @@ const recordCreated = (data: {
 }) => {
   router.push({
     name: "folders-detail",
-    params: { uuid: data.folder_uuid, record: data.id },
+    params: { uuid: data.folder_uuid },
     query: { selectedType: "RECORD", selectedId: data.uuid },
   });
 };

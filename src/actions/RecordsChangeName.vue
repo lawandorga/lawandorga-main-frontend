@@ -33,7 +33,7 @@ const fields = [
 ] as types.FormField[];
 
 const client = useClient();
-const request = client.post("api/data_sheets/Records/v2/{id}/change_name/");
+const request = client.post("api/records/Records/v2/{id}/change_name/");
 
 const { commandModalOpen, commandRequest } = useCommand(request, query.value);
 
