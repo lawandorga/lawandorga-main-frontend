@@ -3,7 +3,7 @@ import collabRoutes from "./collab";
 import userRoutes from "./user";
 import adminRoutes from "./admin";
 import filesRoutes from "./files";
-import recordsRoutes from "./records";
+import recordsRoutes from "./data_sheets";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import foldersRoutes from "./folders";

@@ -36,7 +36,7 @@ const request = client.postAndReturn<
     template: number;
   },
   { folder_uuid: string; id: string; uuid: string }
->("api/records/records/v2/");
+>("api/data_sheets/Records/v2/");
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 

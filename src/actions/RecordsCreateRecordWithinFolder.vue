@@ -35,7 +35,7 @@ const request = client.post<{
   name: string;
   folder: string;
   template: number;
-}>("api/records/records/v2/within_folder/");
+}>("api/data_sheets/Records/v2/within_folder/");
 
 const {
   commandRequest: createWithinFolderRequest,
