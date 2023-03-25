@@ -21,6 +21,19 @@ export interface IListRecord {
   has_access: boolean;
 }
 
+export interface IRecordListPageV2 {
+  records: IListRecordV2[];
+  columns: string[];
+}
+
+export interface IListRecordV2 {
+  token: string;
+  attributes: { [key: string]: string | string[] };
+  delete_requested: boolean;
+  has_access: boolean;
+  folder_uuid: string;
+}
+
 export interface Record {
   uuid: string;
   id: number;

@@ -7,11 +7,11 @@
           <RecordsPermissions />
         </template>
       </BreadcrumbsBar>
-      <TableRecords :records="records" :columns="page?.columns">
+      <TableRecordsV2 :records="records" :columns="page?.columns">
         <template #head-action>
-          <RecordsCreateRecord :query="query" />
+          <RecordsCreateRecordV2 :query="query" />
         </template>
-        <template #action="slotProps">
+        <!-- <template #action="slotProps">
           <div class="flex items-center justify-end space-x-3">
             <RecordsCreateAccess
               v-if="!slotProps.record.has_access"
@@ -24,37 +24,35 @@
               :query="query"
             />
           </div>
-        </template>
-      </TableRecords>
+        </template> -->
+      </TableRecordsV2>
     </div>
   </BoxLoader>
   <button type="button" @click="requery">requery</button>
 </template>
 
 <script lang="ts" setup>
-import TableRecords from "@/components/TableRecords.vue";
+import TableRecordsV2 from "@/components/TableRecordsV2.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
-import { IListRecord, IRecordListPage } from "@/types/records";
+import { IListRecordV2, IRecordListPageV2 } from "@/types/records";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import useGet from "@/composables/useGet";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { useUserStore } from "@/store/user";
-import RecordsCreateDeletion from "@/actions/RecordCreateDeletion.vue";
-import RecordsCreateAccess from "@/actions/RecordsCreateAccess.vue";
-import RecordsCreateRecord from "@/actions/RecordsCreateRecord.vue";
+import RecordsCreateRecordV2 from "@/actions/RecordsCreateRecordV2.vue";
 import useClient from "@/api/client";
 
 const client = useClient();
 const request = client.get("/api/records/v2/query/dashboard/");
 
-const page = ref<IRecordListPage | null>(null);
+const page = ref<IRecordListPageV2 | null>(null);
 const query = useGet(request, page);
 
 const requery = () => query();
 
-const records = computed<IListRecord[] | null>(() => {
+const records = computed<IListRecordV2[] | null>(() => {
   if (page.value === null) return null;
   return page.value.records;
 });

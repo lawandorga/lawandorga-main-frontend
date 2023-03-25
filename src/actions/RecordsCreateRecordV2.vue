@@ -31,12 +31,11 @@ const { query } = toRefs(props);
 const client = useClient();
 const request = client.postAndReturn<
   {
-    name: string;
-    folder: string;
+    token: string;
     template: number;
   },
-  { folder_uuid: string; id: string; uuid: string }
->("api/records/records/v2/");
+  { folder_uuid: string }
+>("api/records/v2/records/");
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 
@@ -51,9 +50,9 @@ watch(commandModalOpen, () => {
 // fields
 const fields = computed<types.FormField[]>(() => [
   {
-    label: "Name",
+    label: "Token",
     type: "text",
-    name: "name",
+    name: "token",
     required: true,
   },
   {
