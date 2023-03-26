@@ -1,0 +1,47 @@
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Update View
+  </ButtonNormal>
+  <ModalUpdate
+    v-model="commandModalOpen"
+    :fields="fields"
+    title="Update View"
+    :request="commandRequest"
+    :data="{ name: viewName, columns: viewColumns }"
+  />
+</template>
+
+<script setup lang="ts">
+import useClient from "@/api/client";
+import useCommand from "@/composables/useCommand";
+import { ButtonNormal, ModalUpdate, types } from "@lawandorga/components";
+import { toRefs } from "vue";
+
+const props = defineProps<{
+  query: () => void;
+  viewUuid: string;
+  viewName: string;
+  viewColumns: string[];
+}>();
+const { query, viewUuid } = toRefs(props);
+
+const client = useClient();
+const request = client.put("api/records/v2/settings/{}/", viewUuid);
+
+const fields: types.FormField[] = [
+  {
+    label: "Name",
+    type: "text",
+    name: "name",
+    required: true,
+  },
+  {
+    label: "Columns",
+    type: "list",
+    name: "columns",
+    required: true,
+  },
+];
+
+const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+</script>

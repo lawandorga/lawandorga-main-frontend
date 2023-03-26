@@ -18,7 +18,7 @@ import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
 import uploadsRoutes from "./uploads";
 import chatRoutes from "./chat";
-import recordsRoutes from "./records";
+import recordsRoutes from "@/features/records/router";
 
 const routes: Array<RouteRecordRaw> = [
   {

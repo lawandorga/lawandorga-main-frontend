@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-start space-y-3 xl:items-stretch xl:flex-row xl:space-y-0"
+    class="flex flex-col items-start mb-5 space-y-3 xl:items-stretch xl:flex-row xl:space-y-0"
   >
     <div
       class="flex items-center px-6 py-1 space-x-5 bg-white border border-gray-300 rounded-md shadow-sm xl:py-0"
@@ -109,10 +109,10 @@ import {
   ButtonNormal,
   types,
 } from "@lawandorga/components";
-import { IListRecordV2 } from "@/types/records";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useSearch from "@/composables/useSearch";
 import { useUserStore } from "@/store/user";
+import { IListRecordV2 } from "../types/listRecordV2";
 
 // get values
 const getValueFromEntry = (entry: string[] | string): string => {

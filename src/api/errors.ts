@@ -165,30 +165,39 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
 
   const data = error.response?.data || {};
 
-  if (
-    // api layer error
-    "param_errors" in data &&
-    "general_errors" in data &&
-    "title" in data
-  ) {
-    if (data.general_errors) newError.generalErrors = data.general_errors;
-    if (data.param_errors)
-      newError.paramErrors =
-        data.param_errors as types.ICommandError["paramErrors"];
-    if (data.title) newError.title = data.title as types.ICommandError["title"];
-  } else if (
-    // django rest framework general error
-    "detail" in data
-  ) {
-    if (data.detail)
-      newError.title = data.detail as types.ICommandError["title"];
-  } else if (
-    // django rest framework form error
-    Object.keys(data)
-  ) {
-    if (data.non_field_errors) newError.generalErrors = data.non_field_errors;
-    newError.paramErrors = data;
-    newError.title = "Request Error";
+  try {
+    if (
+      // api layer error
+      "param_errors" in data &&
+      "general_errors" in data &&
+      "title" in data
+    ) {
+      if (data.general_errors) newError.generalErrors = data.general_errors;
+      if (data.param_errors)
+        newError.paramErrors =
+          data.param_errors as types.ICommandError["paramErrors"];
+      if (data.title)
+        newError.title = data.title as types.ICommandError["title"];
+    } else if (
+      // django rest framework general error
+      "detail" in data
+    ) {
+      if (data.detail)
+        newError.title = data.detail as types.ICommandError["title"];
+    } else if (
+      // django rest framework form error
+      Object.keys(data)
+    ) {
+      if (data.non_field_errors) newError.generalErrors = data.non_field_errors;
+      newError.paramErrors = data;
+      newError.title = "Request Error";
+    }
+  } catch (_) {
+    newError.title = "Unknown Error";
+    if (error.response?.status)
+      newError.title = `Unknown Error (${error.response.status})`;
+    newError.paramErrors = {};
+    newError.generalErrors = [];
   }
 
   return Promise.reject(newError);
