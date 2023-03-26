@@ -9,7 +9,7 @@
         :base="{ name: 'folders-dashboard' }"
         :pages="[
           {
-            name: `Folder: ${folder.folder.name}`,
+            name: `${record ? 'Record' : 'Folder'}: ${folder.folder.name}`,
             to: {
               name: 'folders-detail',
               params: { uuid: folder.folder.uuid },
@@ -95,7 +95,7 @@
 
 <script lang="ts" setup>
 import FolderRecord from "@/components/FolderRecord.vue";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -107,7 +107,7 @@ import FolderFile from "@/components/FolderFile.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import { IFolderDetail } from "@/types/folders";
+import { IContent, IFolderDetail } from "@/types/folders";
 import { foldersGetFolderDetail } from "@/services/folders";
 import FolderUploads from "@/components/FolderUploads.vue";
 import FolderNavigationContent from "@/components/FolderNavigationContent.vue";
@@ -151,4 +151,13 @@ const updateGrouping = (value: boolean) => {
   grouping.value = value;
   userStore.updateSetting("recordGrouping", value);
 };
+
+const record = computed<IContent | null>(() => {
+  if (!folder.value) return null;
+  const item = folder.value.content.find((item: IContent) => {
+    return item.repository === "RECORDS_RECORD";
+  });
+  if (!item) return null;
+  return item;
+});
 </script>

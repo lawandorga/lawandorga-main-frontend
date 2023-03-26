@@ -31,7 +31,7 @@ export interface IAccess {
 export interface IContent {
   uuid: string;
   name: string;
-  repository: "RECORD" | "FILE" | "QUESTIONNAIRE" | "UPLOAD";
+  repository: "RECORD" | "FILE" | "QUESTIONNAIRE" | "UPLOAD" | "RECORDS_RECORD";
 }
 
 export interface IFolderItem {

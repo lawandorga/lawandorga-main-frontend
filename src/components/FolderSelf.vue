@@ -3,10 +3,17 @@
     class="max-w-2xl"
     :title="folder.folder.name"
     :show="selectedType === 'FOLDER' && selectedId === null"
-    :stats="[`Folder`]"
+    :stats="[record ? 'Record' : 'Folder']"
   >
     <template #buttons>
+      <ChangeToken
+        v-if="record"
+        :query="query"
+        :record-token="folder.folder.name"
+        :record-uuid="record.uuid"
+      />
       <FoldersChangeName
+        v-else
         :folder-name="folder.folder.name"
         :folder-uuid="folder.folder.uuid"
         :query="query"
@@ -54,13 +61,25 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { IFolderDetail } from "@/types/folders";
+import { IContent, IFolderDetail } from "@/types/folders";
 import FoldersChangeName from "@/actions/FoldersChangeName.vue";
+import { computed, toRefs } from "vue";
+import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 
-defineProps<{
+const props = defineProps<{
   selectedId: string | number | null;
   selectedType: string;
   folder: IFolderDetail;
   query: () => void;
 }>();
+
+const { folder } = toRefs(props);
+
+const record = computed<IContent | null>(() => {
+  const item = folder.value.content.find((item: IContent) => {
+    return item.repository === "RECORDS_RECORD";
+  });
+  if (!item) return null;
+  return item;
+});
 </script>
