@@ -3,31 +3,24 @@
     <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
-        <template #buttons>
-          <RecordsPermissions />
-        </template>
       </BreadcrumbsBar>
       <TabControls
         :tabs="[
-          { name: 'Default', key: 'default' },
           ...views.map((view) => ({ name: view.name, key: view.name })),
+          { spacer: true },
           { name: 'Views', key: 'settings' },
           { name: 'Deletion-Requests', key: 'deletions' },
           { name: 'Access-Requests', key: 'accessRequests' },
+          { name: 'Record-Permissions', key: 'recordPermissions' },
         ]"
       >
-        <template #default>
-          <TableRecordsV2 :records="records" :columns="page?.columns">
+        <template v-for="view in views" :key="view.uuid" #[view.name]>
+          <TableRecordsV2 :records="records" :columns="view.columns">
             <template #head-action>
               <RecordsCreateRecordV2 :query="query" />
             </template>
             <template #action="{ record }">
               <div class="flex items-center justify-end space-x-3">
-                <!-- <RecordsCreateAccess
-              v-if="!slotProps.record.has_access"
-              :query="query"
-              :record-id="slotProps.record.id"
-            /> -->
                 <CreateAccessRequest
                   :record-uuid="record.uuid"
                   :query="query"
@@ -35,27 +28,6 @@
                 <CreateDeletion :record-uuid="record.uuid" :query="query" />
               </div>
             </template>
-          </TableRecordsV2>
-        </template>
-        <template v-for="view in views" :key="view.uuid" #[view.name]>
-          <TableRecordsV2 :records="records" :columns="view.columns">
-            <template #head-action>
-              <RecordsCreateRecordV2 :query="query" />
-            </template>
-            <!-- <template #action="slotProps">
-          <div class="flex items-center justify-end space-x-3">
-            <RecordsCreateAccess
-              v-if="!slotProps.record.has_access"
-              :query="query"
-              :record-id="slotProps.record.id"
-            />
-            <RecordsCreateDeletion
-              v-if="!slotProps.record.delete_requested"
-              :record-id="slotProps.record.id"
-              :query="query"
-            />
-          </div>
-        </template> -->
           </TableRecordsV2>
         </template>
         <template #settings>
@@ -70,6 +42,9 @@
         <template #accessRequests>
           <AccessRequests :query="query" :access-requests="accessRequests" />
         </template>
+        <template #recordPermissions>
+          <RecordsPermissions />
+        </template>
       </TabControls>
     </div>
   </BoxLoader>
@@ -82,7 +57,7 @@ import { computed, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import useGet from "@/composables/useGet";
-import RecordsPermissions from "@/components/RecordsPermissions.vue";
+import RecordsPermissions from "@/features/records/components/RecordsPermissions.vue";
 import { useUserStore } from "@/store/user";
 import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
 import useClient from "@/api/client";

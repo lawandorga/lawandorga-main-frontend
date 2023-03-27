@@ -36,6 +36,13 @@ const fields: types.FormField[] = [
     type: "list",
     name: "columns",
     required: true,
+    helptext:
+      "The name of the columns must match with names of the fields in the data sheet templates. The matching is case sensitive.",
+  },
+  {
+    label: "Shared",
+    name: "shared",
+    type: "toggle",
   },
 ];
 

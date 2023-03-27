@@ -40,6 +40,15 @@ const fields: types.FormField[] = [
     type: "list",
     name: "columns",
     required: true,
+    helptext:
+      "The name of the columns must match with names of the fields in the data sheet templates. The matching is case sensitive.",
+  },
+  {
+    label: "Ordering",
+    name: "ordering",
+    type: "number",
+    required: true,
+    helptext: "Views with lower numbers will be shown first, like 1 -> 2 -> 3.",
   },
 ];
 
