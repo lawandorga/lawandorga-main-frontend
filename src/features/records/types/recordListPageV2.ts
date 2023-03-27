@@ -1,3 +1,4 @@
+import { IAccessRequest } from "./accessRequest";
 import { IDeletion } from "./deletion";
 import { IListRecordV2 } from "./listRecordV2";
 import { IView } from "./view";
@@ -7,4 +8,5 @@ export interface IRecordListPageV2 {
   columns: string[];
   views: IView[];
   deletions: IDeletion[];
+  access_requests: IAccessRequest[];
 }

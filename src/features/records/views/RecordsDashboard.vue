@@ -11,8 +11,9 @@
         :tabs="[
           { name: 'Default', key: 'default' },
           ...views.map((view) => ({ name: view.name, key: view.name })),
-          { name: 'Settings', key: 'settings' },
+          { name: 'Views', key: 'settings' },
           { name: 'Deletion-Requests', key: 'deletions' },
+          { name: 'Access-Requests', key: 'accessRequests' },
         ]"
       >
         <template #default>
@@ -27,6 +28,10 @@
               :query="query"
               :record-id="slotProps.record.id"
             /> -->
+                <CreateAccessRequest
+                  :record-uuid="record.uuid"
+                  :query="query"
+                />
                 <CreateDeletion :record-uuid="record.uuid" :query="query" />
               </div>
             </template>
@@ -62,6 +67,9 @@
             :deletion-requests="deletionRequests"
           />
         </template>
+        <template #accessRequests>
+          <AccessRequests :query="query" :access-requests="accessRequests" />
+        </template>
       </TabControls>
     </div>
   </BoxLoader>
@@ -86,6 +94,9 @@ import { IView } from "../types/view";
 import CreateDeletion from "../actions/CreateDeletion.vue";
 import DeletionRequests from "../components/DeletionRequests.vue";
 import { IDeletion } from "../types/deletion";
+import AccessRequests from "../components/AccessRequests.vue";
+import { IAccessRequest } from "../types/accessRequest";
+import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
 
 const client = useClient();
 const request = client.get("/api/records/v2/query/dashboard/");
@@ -106,6 +117,11 @@ const views = computed<IView[]>(() => {
 const deletionRequests = computed<IDeletion[]>(() => {
   if (page.value === null) return [];
   return page.value.deletions;
+});
+
+const accessRequests = computed<IAccessRequest[]>(() => {
+  if (page.value === null) return [];
+  return page.value.access_requests;
 });
 
 const userStore = useUserStore();
