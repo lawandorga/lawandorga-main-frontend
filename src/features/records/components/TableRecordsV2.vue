@@ -155,6 +155,7 @@ const head = computed<{ name: string; key: string; sortable: boolean }[]>(
     const head1 = columns.value;
     const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
     head2.push({ name: "", key: "action", sortable: false });
+    head2.unshift({ name: "Token", key: "token", sortable: true });
     return head2;
   },
 );
