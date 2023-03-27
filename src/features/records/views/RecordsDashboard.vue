@@ -12,6 +12,7 @@
           { name: 'Default', key: 'default' },
           ...views.map((view) => ({ name: view.name, key: view.name })),
           { name: 'Settings', key: 'settings' },
+          { name: 'Deletion-Requests', key: 'deletions' },
         ]"
       >
         <template #default>
@@ -19,20 +20,16 @@
             <template #head-action>
               <RecordsCreateRecordV2 :query="query" />
             </template>
-            <!-- <template #action="slotProps">
-          <div class="flex items-center justify-end space-x-3">
-            <RecordsCreateAccess
+            <template #action="{ record }">
+              <div class="flex items-center justify-end space-x-3">
+                <!-- <RecordsCreateAccess
               v-if="!slotProps.record.has_access"
               :query="query"
               :record-id="slotProps.record.id"
-            />
-            <RecordsCreateDeletion
-              v-if="!slotProps.record.delete_requested"
-              :record-id="slotProps.record.id"
-              :query="query"
-            />
-          </div>
-        </template> -->
+            /> -->
+                <CreateDeletion :record-uuid="record.uuid" :query="query" />
+              </div>
+            </template>
           </TableRecordsV2>
         </template>
         <template v-for="view in views" :key="view.uuid" #[view.name]>
@@ -59,6 +56,12 @@
         <template #settings>
           <SettingsViews :query="query" :views="views" />
         </template>
+        <template #deletions>
+          <DeletionRequests
+            :query="query"
+            :deletion-requests="deletionRequests"
+          />
+        </template>
       </TabControls>
     </div>
   </BoxLoader>
@@ -80,6 +83,9 @@ import { IRecordListPageV2 } from "../types/recordListPageV2";
 import { IListRecordV2 } from "../types/listRecordV2";
 import SettingsViews from "../components/SettingsViews.vue";
 import { IView } from "../types/view";
+import CreateDeletion from "../actions/CreateDeletion.vue";
+import DeletionRequests from "../components/DeletionRequests.vue";
+import { IDeletion } from "../types/deletion";
 
 const client = useClient();
 const request = client.get("/api/records/v2/query/dashboard/");
@@ -95,6 +101,11 @@ const records = computed<IListRecordV2[] | null>(() => {
 const views = computed<IView[]>(() => {
   if (page.value === null) return [];
   return page.value.views;
+});
+
+const deletionRequests = computed<IDeletion[]>(() => {
+  if (page.value === null) return [];
+  return page.value.deletions;
 });
 
 const userStore = useUserStore();
