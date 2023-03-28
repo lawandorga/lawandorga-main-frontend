@@ -1,7 +1,7 @@
 <template>
-  <TabGroup :default-index="defaultIndex">
+  <TabGroup :selected-index="selectedTab" @change="changeTab">
     <TabList class="inline-flex w-full rounded">
-      <template v-for="(tab, index) in tabs" :key="tab.key">
+      <template v-for="(tab, index) in internalTabs" :key="tab.key">
         <div v-if="tab.spacer" class="mx-auto"></div>
         <Tab v-else v-slot="{ selected }" as="template">
           <button
@@ -11,14 +11,13 @@
               selected
                 ? 'bg-white text-gray-800'
                 : 'text-gray-600 hover:bg-gray-50 bg-gray-100',
-              tabs[index - 1]?.spacer
+              internalTabs[index - 1]?.spacer
                 ? 'rounded-l'
-                : tabs[index + 1]?.spacer
+                : internalTabs[index + 1]?.spacer
                 ? 'rounded-r'
                 : '',
             ]"
             type="button"
-            @click="clicked(tab.key)"
           >
             {{ tab.name }}
           </button>
@@ -26,7 +25,7 @@
       </template>
     </TabList>
     <TabPanels class="mt-4">
-      <template v-for="tab in tabs" :key="tab.key">
+      <template v-for="tab in internalTabs" :key="tab.key">
         <TabPanel
           v-if="!tab.spacer"
           :class="[
@@ -42,7 +41,7 @@
 
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import { toRefs } from "vue";
+import { ref, toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 type ITab =
@@ -53,7 +52,7 @@ type ITab =
     }
   | { spacer: true };
 
-const props = defineProps<{ tabs: ITab[]; defaultTab?: string }>();
+const props = defineProps<{ tabs: ITab[]; defaultTab?: number | string }>();
 
 const emit = defineEmits(["clicked"]);
 
@@ -62,16 +61,27 @@ const { tabs, defaultTab } = toRefs(props);
 const route = useRoute();
 const router = useRouter();
 
-const clicked = (key: string) => {
-  router.push({ path: route.path, query: { ...route.query, selected: key } });
-  emit("clicked", key);
+// needed as copy because the headless ui tab component has a different tab order than the input
+const internalTabs = ref<ITab[]>(tabs.value);
+
+const selectedTab = ref(0);
+
+const changeTab = (index: number) => {
+  router.push({ path: route.path, query: { ...route.query, selected: index } });
+  selectedTab.value = index;
+  emit("clicked", index);
 };
 
-let defaultIndex = 0;
+const updateTab = () => {
+  internalTabs.value = [];
+  const routeValue = parseInt(route.query.selected as string);
+  const defaultValue = parseInt(defaultTab?.value as string);
+  const selected: number = routeValue || defaultValue || 0;
+  internalTabs.value = tabs.value;
+  changeTab(selected);
+};
 
-if (route.query.selected || defaultTab?.value) {
-  const selected = route.query.selected || defaultTab?.value;
-  const index = tabs.value.findIndex((t) => t.key === selected);
-  defaultIndex = index;
-}
+updateTab();
+
+watch([defaultTab, tabs], updateTab);
 </script>
