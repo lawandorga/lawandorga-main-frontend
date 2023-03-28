@@ -79,6 +79,7 @@ export interface BadgeInformation {
   record_deletion_requests: number;
   record_permit_requests: number;
   legal: number;
+  record?: number;
 }
 
 export type Settings = Record<string, string | boolean>;

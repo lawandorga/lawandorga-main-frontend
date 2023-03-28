@@ -32,6 +32,11 @@ export const useUserStore = defineStore("user", () => {
     );
   });
 
+  const recordBadges = computed(() => {
+    if (badges.value === undefined) return 0;
+    return badges.value["record"] || 0;
+  });
+
   const settings = ref<Settings>();
 
   const setData = (data: DataResponse) => {
@@ -127,6 +132,7 @@ export const useUserStore = defineStore("user", () => {
     user,
     badges,
     adminBadges,
+    recordBadges,
     isAuthenticated,
     settings,
     loaded,

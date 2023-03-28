@@ -9,4 +9,5 @@ export interface IRecordListPageV2 {
   views: IView[];
   deletions: IDeletion[];
   access_requests: IAccessRequest[];
+  badges: { access_requests: number; deletion_requests: number };
 }

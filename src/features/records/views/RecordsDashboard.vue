@@ -9,8 +9,16 @@
           ...views.map((view) => ({ name: view.name, key: view.name })),
           { spacer: true },
           { name: 'Views', key: 'settings' },
-          { name: 'Deletion-Requests', key: 'deletions' },
-          { name: 'Access-Requests', key: 'accessRequests' },
+          {
+            name: 'Access-Requests',
+            key: 'accessRequests',
+            badge: accessRequestsBadge,
+          },
+          {
+            name: 'Deletion-Requests',
+            key: 'deletions',
+            badge: deletionsBadge,
+          },
           { name: 'Record-Permissions', key: 'recordPermissions' },
         ]"
       >
@@ -22,6 +30,7 @@
             <template #action="{ record }">
               <div class="flex items-center justify-end space-x-3">
                 <CreateAccessRequest
+                  v-if="!record.has_access"
                   :record-uuid="record.uuid"
                   :query="query"
                 />
@@ -97,6 +106,16 @@ const deletionRequests = computed<IDeletion[]>(() => {
 const accessRequests = computed<IAccessRequest[]>(() => {
   if (page.value === null) return [];
   return page.value.access_requests;
+});
+
+const accessRequestsBadge = computed<number>(() => {
+  if (page.value === null) return 0;
+  return page.value.badges.access_requests;
+});
+
+const deletionsBadge = computed<number>(() => {
+  if (page.value === null) return 0;
+  return page.value.badges.deletion_requests;
 });
 
 const userStore = useUserStore();

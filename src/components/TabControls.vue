@@ -20,6 +20,12 @@
             type="button"
           >
             {{ tab.name }}
+            <span
+              v-if="tab.badge"
+              className="inline-flex items-center justify-center rounded-full w-5 h-5 bg-gray-300 ml-1.5 text-xs font-medium text-gray-800"
+            >
+              {{ tab.badge }}
+            </span>
           </button>
         </Tab>
       </template>
@@ -48,6 +54,7 @@ type ITab =
   | {
       name: string;
       key: string;
+      badge?: number | string;
       spacer?: boolean;
     }
   | { spacer: true };
