@@ -37,7 +37,7 @@ const groups = computed<ContentGroupItem[]>(() => {
   const g: ContentGroupItem[] = [];
 
   g.push({
-    name: "Records",
+    name: "Data Sheets",
     type: "RECORD",
     children: folder.value.content
       .filter((c) => c.repository === "RECORD")

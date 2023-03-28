@@ -1,9 +1,9 @@
 <template>
   <ButtonNormal kind="action" @click="createWithinFolderModalOpen = true">
-    Create Record
+    Create Data Sheet
     <ModalForm
       v-model="createWithinFolderModalOpen"
-      title="Create Record"
+      title="Create Data Sheet"
       :fields="createWithinFolderFields"
       :request="createWithinFolderRequest"
       submit="Create"
@@ -17,8 +17,6 @@ import useCommand from "@/composables/useCommand";
 import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "@lawandorga/components";
 import { computed, ref, toRefs, watch } from "vue";
-import { IAvailableFolder } from "@/types/folders";
-import { foldersGetAvailableFolders } from "@/services/folders";
 import useClient from "@/api/client";
 import useQuery from "@/composables/useQuery";
 
@@ -42,27 +40,23 @@ const {
   commandModalOpen: createWithinFolderModalOpen,
 } = useCommand(request, query.value);
 
-const availableFolders = ref<IAvailableFolder[]>([]);
 const availableTemplates = ref<RecordTemplate[]>([]);
 
 const templateRequest = client.get("api/records/query/templates/");
 const getTemplates = useQuery(templateRequest, availableTemplates);
-const getFolders = useQuery(foldersGetAvailableFolders, availableFolders);
 
 watch(createWithinFolderModalOpen, (newValue) => {
   if (newValue) {
     getTemplates();
-    getFolders();
   }
 });
 
 const createWithinFolderFields = computed<types.FormField[]>(() => [
   {
     label: "Folder",
-    type: "select",
+    type: "hidden",
     name: "folder",
     required: true,
-    options: availableFolders.value,
   },
   {
     label: "Name",
