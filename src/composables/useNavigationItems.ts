@@ -139,6 +139,16 @@ export default function useNavigationItems() {
         attrs: { to: { name: "chat-dashboard" } },
         permissions: [],
       },
+      {
+        label: "Data Sheets (Migrate)",
+        icon: RectangleStackIcon,
+        is: "router-link",
+        attrs: {
+          to: { name: "data-sheets-migrate" },
+          class: store.user?.email.includes("law-orga.de") ? "" : "hidden",
+        },
+        permissions: [],
+      },
     ];
 
     if (store.rlc?.links.length) {
