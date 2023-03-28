@@ -59,7 +59,7 @@ const fields = computed<types.FormField[]>(() => [
     label: "Template",
     type: "select",
     name: "template",
-    required: true,
+    required: false,
     options: availableTemplates.value,
   },
 ]);
