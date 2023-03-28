@@ -96,7 +96,7 @@ import { IFolderItem } from "@/types/folders";
 import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "@lawandorga/components";
 import { ref, toRefs } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import FoldersBadge from "./FoldersBadge.vue";
 
 const props = withDefaults(
@@ -115,7 +115,6 @@ const emit = defineEmits([
   "folderClicked",
 ]);
 
-const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 
@@ -139,19 +138,11 @@ const openOrCloseFolder = (uuid: string) => {
 
 const openFolder = (uuid: string) => {
   open.value.push(uuid);
-  router.push({
-    path: route.path,
-    query: { open: open.value.join(",") },
-  });
   userStore.updateSetting("openFolders", open.value);
 };
 
 const closeFolder = (uuid: string) => {
   open.value = open.value.filter((i) => i !== uuid);
-  router.push({
-    path: route.path,
-    query: { open: open.value.join(",") },
-  });
   userStore.updateSetting("openFolders", open.value);
 };
 
