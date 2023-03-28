@@ -15,7 +15,7 @@
         :key="field.name"
         :class="{
           hidden: field.type === 'hidden',
-          'border-green-500 border px-2 pb-2 pt-2 rounded bg-gradient-to-t from-green-100 to-transparent':
+          'border-green-500 border px-2 pb-2 pt-2 rounded bg-gradient-to-t from-green-100 to-transparent print:hidden':
             field.kind === 'Statistic',
         }"
       >
@@ -86,7 +86,7 @@
           {{ errors[field.name][0] }}
         </p>
       </div>
-      <div class="text-sm text-green-800">
+      <div class="text-sm text-green-800 print:hidden">
         Green fields are statistic fields that are used by Law&Orga internally
         to help us and you. It is in no way required to fill out these fields.
         But it would help us a lot.

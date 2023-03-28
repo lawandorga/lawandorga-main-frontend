@@ -1,5 +1,8 @@
 <template>
   <BoxLoader :show="userStore.loaded && !!folder">
+    <h1 class="hidden text-3xl font-bold print:block">
+      {{ folder?.folder.name }}
+    </h1>
     <div
       v-if="userStore.loaded && !!folder"
       class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl"
@@ -19,7 +22,7 @@
       >
         <FolderIcon class="w-6 h-6" />
       </BreadcrumbsBar>
-      <div class="col-span-12 space-y-6 lg:col-span-4">
+      <div class="col-span-12 space-y-6 lg:col-span-4 print:hidden">
         <FolderNavigationSelf
           :folder="folder"
           :query="query"

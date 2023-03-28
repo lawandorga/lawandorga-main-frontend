@@ -77,3 +77,15 @@ const setMenuOpen = (open: boolean) => {
 // };
 // setUpdateStatus();
 </script>
+
+<style>
+@media print {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html,
+  body {
+    font-size: 95%;
+  }
+}
+</style>
