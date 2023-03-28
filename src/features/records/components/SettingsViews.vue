@@ -3,6 +3,8 @@
     :head="[
       { name: 'Name', key: 'name' },
       { name: 'Columns', key: 'columns' },
+      { name: 'Shared', key: 'shared' },
+      { name: 'Order', key: 'ordering' },
       { name: '', key: 'actions' },
     ]"
     :data="views"

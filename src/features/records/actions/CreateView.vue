@@ -43,6 +43,8 @@ const fields: types.FormField[] = [
     label: "Shared",
     name: "shared",
     type: "toggle",
+    helptext:
+      "If the view is shared, it will be available for all users of the organization.",
   },
 ];
 
