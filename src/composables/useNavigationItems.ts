@@ -55,7 +55,7 @@ export default function useNavigationItems() {
         permissions: [],
       },
       {
-        label: "Records (Old)",
+        label: "Records",
         icon: RectangleStackIcon,
         is: "router-link",
         attrs: { to: { name: "records-dashboard" } },
