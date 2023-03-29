@@ -13,6 +13,7 @@
           { name: 'Name', key: 'name' },
           { name: 'E-Mail', key: 'email' },
           { name: 'Phone', key: 'phone_number' },
+          { name: 'Last Login', key: 'last_login_month' },
           { name: '', key: 'action' },
         ]"
         :data="profiles"
