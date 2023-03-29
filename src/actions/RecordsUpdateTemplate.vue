@@ -37,6 +37,8 @@ const updateFields: types.FormField[] = [
     name: "show",
     type: "list",
     required: true,
+    helptext:
+      "This field is not used anymore and it will have no effect. You can now define custom personal views or shared views directly under records.",
   },
 ];
 

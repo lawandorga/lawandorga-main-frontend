@@ -9,7 +9,11 @@
     >
       <BreadcrumbsBar
         class="col-span-12"
-        :base="{ name: 'folders-dashboard' }"
+        :base="
+          record
+            ? { name: 'records-dashboard-v2' }
+            : { name: 'folders-dashboard' }
+        "
         :pages="[
           {
             name: `${record ? 'Record' : 'Folder'}: ${folder.folder.name}`,

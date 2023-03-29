@@ -69,10 +69,8 @@
 
 <script lang="ts" setup>
 import {
-  LockOpenIcon,
   QuestionMarkCircleIcon,
   RectangleGroupIcon,
-  TrashIcon,
   UsersIcon,
   UserIcon,
   CogIcon,
@@ -125,24 +123,24 @@ const items = computed<AdminItem[]>(() => [
     notifications: 0,
     class: "",
   },
-  {
-    title: "Record-Access-Requests",
-    description:
-      "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
-    link: { name: "admin-recordpermitrequests" },
-    icon: LockOpenIcon,
-    notifications: store.badges?.record_permit_requests,
-    class: "",
-  },
-  {
-    title: "Record-Deletion-Requests",
-    description:
-      "If somebody requested to delete a record you can take a look and allow that request here.",
-    link: { name: "admin-recorddeletionrequests" },
-    icon: TrashIcon,
-    notifications: store.badges?.record_deletion_requests,
-    class: "",
-  },
+  // {
+  //   title: "Record-Access-Requests",
+  //   description:
+  //     "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
+  //   link: { name: "admin-recordpermitrequests" },
+  //   icon: LockOpenIcon,
+  //   notifications: store.badges?.record_permit_requests,
+  //   class: "",
+  // },
+  // {
+  //   title: "Record-Deletion-Requests",
+  //   description:
+  //     "If somebody requested to delete a record you can take a look and allow that request here.",
+  //   link: { name: "admin-recorddeletionrequests" },
+  //   icon: TrashIcon,
+  //   notifications: store.badges?.record_deletion_requests,
+  //   class: "",
+  // },
   {
     title: "Record Questionnaires",
     description:
