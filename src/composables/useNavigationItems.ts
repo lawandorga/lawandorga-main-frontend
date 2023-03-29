@@ -55,7 +55,7 @@ export default function useNavigationItems() {
         permissions: [],
       },
       {
-        label: "Records (Old)",
+        label: "Records",
         icon: RectangleStackIcon,
         is: "router-link",
         attrs: { to: { name: "records-dashboard" } },
@@ -137,6 +137,16 @@ export default function useNavigationItems() {
         icon: ChatBubbleBottomCenterTextIcon,
         is: "router-link",
         attrs: { to: { name: "chat-dashboard" } },
+        permissions: [],
+      },
+      {
+        label: "Data Sheets (Migrate)",
+        icon: RectangleStackIcon,
+        is: "router-link",
+        attrs: {
+          to: { name: "data-sheets-migrate" },
+          class: store.user?.email.includes("law-orga.de") ? "" : "hidden",
+        },
         permissions: [],
       },
     ];

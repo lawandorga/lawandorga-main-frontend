@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { isAuthenticated } from "./utils";
+import { isAuthenticated } from "@/router/utils";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -29,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/records/upload/:code/",
     name: "records-questionnaire",
     component: () => import("@/views/data_sheets/RecordsQuestionnaire.vue"),
+  },
+  {
+    path: "/data-sheets/migrate/",
+    name: "data-sheets-migrate",
+    component: () => import("@/features/data_sheets/views/MigrateView.vue"),
   },
 ];
 
