@@ -39,7 +39,7 @@
         </li>
         <li>
           <span class="font-mono">(R)&nbsp;</span>
-          means the folder contains a record.
+          means the folder is a record.
         </li>
         <li>
           <span class="font-mono">(N)&nbsp;</span>

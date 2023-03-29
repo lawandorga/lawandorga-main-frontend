@@ -11,7 +11,7 @@ export function useFolderProperties(
       return properties.join(", ");
     }
     if (item.folder.stop_inherit) properties.push("IS");
-    if (item.content.some((i: IContent) => i.repository === "RECORD"))
+    if (item.content.some((i: IContent) => i.repository === "RECORDS_RECORD"))
       properties.push("R");
     return properties.join(", ");
   };
