@@ -12,11 +12,16 @@
         />
 
         <div
-          v-if="updating"
-          class="px-5 py-2 font-bold leading-none text-center text-orange-900 bg-orange-300"
+          v-if="true"
+          class="px-5 py-2 font-bold text-center text-orange-900 bg-orange-300"
         >
-          Updates in progress. Errors can happen. We will be back to normal
-          functionality in a moment.
+          Law&Orga will be updated today 16:00 - 19:00 (Berlin Time). During
+          this time, you will not be able to login and you will be logged out
+          automatically at 16:00.
+          <br />
+          <!-- <br class="h-6" /> -->
+          Please let us know if you need to access Law&Orga during this time at
+          it@law-orga.de to reschedule.
         </div>
 
         <NavigationDefault v-if="!userStore.isAuthenticated" />
@@ -45,7 +50,6 @@ import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";
 import { useRoute } from "vue-router";
-// import { getUpdateStatus } from "./services/other";
 import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import BannerList from "./components/BannerList.vue";
@@ -54,7 +58,6 @@ const alertStore = useAlertStore();
 
 const route = useRoute();
 
-const updating = ref(false);
 const menuOpen = ref(false);
 
 const userStore = useUserStore();
@@ -66,16 +69,6 @@ const inside = computed<boolean>(() => {
 const setMenuOpen = (open: boolean) => {
   menuOpen.value = open;
 };
-
-// const setUpdateStatus = () => {
-//   getUpdateStatus()
-//     .then((d) => (updating.value = d.updating))
-//     .catch(() => {
-//       /*ignore*/
-//     });
-//   setTimeout(() => setUpdateStatus(), 60000);
-// };
-// setUpdateStatus();
 </script>
 
 <style>
