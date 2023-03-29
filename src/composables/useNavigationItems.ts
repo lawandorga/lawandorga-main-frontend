@@ -54,20 +54,19 @@ export default function useNavigationItems() {
         },
         permissions: [],
       },
-      {
-        label: "Records",
-        icon: RectangleStackIcon,
-        is: "router-link",
-        attrs: { to: { name: "records-dashboard" } },
-        permissions: [],
-      },
+      // {
+      //   label: "Records",
+      //   icon: RectangleStackIcon,
+      //   is: "router-link",
+      //   attrs: { to: { name: "records-dashboard" } },
+      //   permissions: [],
+      // },
       {
         label: "Records",
         icon: RectangleStackIcon,
         is: "router-link",
         attrs: {
           to: { name: "records-dashboard-v2" },
-          class: store.user?.email.includes("law-orga.de") ? "" : "hidden",
         },
         permissions: [],
         notifications: store.recordBadges,

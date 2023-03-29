@@ -12,7 +12,7 @@
         />
 
         <div
-          v-if="true"
+          v-if="false"
           class="px-5 py-2 font-bold text-center text-orange-900 bg-orange-300"
         >
           Law&Orga will be updated today 16:00 - 19:00 (Berlin Time). During
