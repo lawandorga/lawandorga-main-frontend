@@ -14,6 +14,7 @@ const { text } = toRefs(props);
 
 const formatted = computed(() => {
   if (text.value === "UPLOAD") return "UPLOAD LINK";
+  if (text.value === "RECORD") return "DATA SHEET";
   return text.value;
 });
 </script>

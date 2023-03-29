@@ -63,7 +63,9 @@
     </div>
     <template v-if="open.includes(item.folder.uuid)">
       <div
-        v-for="content in item.content"
+        v-for="content in item.content.filter(
+          (item) => item.repository !== 'RECORDS_RECORD',
+        )"
         :key="content.name"
         class="even:bg-gray-100 odd:bg-white"
       >
