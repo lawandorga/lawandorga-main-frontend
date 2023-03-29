@@ -22,7 +22,7 @@
             {{ tab.name }}
             <span
               v-if="tab.badge"
-              className="inline-flex items-center justify-center rounded-full w-5 h-5 bg-gray-300 ml-1.5 text-xs font-medium text-gray-800"
+              className="inline-flex items-center justify-center rounded-full w-5 h-5 bg-red-200 ml-1.5 text-xs font-medium text-red-800"
             >
               {{ tab.badge }}
             </span>
