@@ -35,6 +35,16 @@ resource "kubernetes_deployment_v1" "lawandorga_frontend" {
           port {
             container_port = 8080
           }
+
+          readiness_probe {
+            http_get {
+              port = 80
+              http_header {
+                name  = "Host"
+                value = "www.law-orga.de"
+              }
+            }
+          }
         }
       }
     }
