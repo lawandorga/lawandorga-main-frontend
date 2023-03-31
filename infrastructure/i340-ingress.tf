@@ -1,6 +1,11 @@
 resource "kubernetes_ingress_v1" "lawandorga_frontend_ingress" {
   metadata {
     name = "lawandorga-frontend"
+    annotations = {
+      "nginx.ingress.kubernetes.io/enable-cors"        = "true"
+      "nginx.ingress.kubernetes.io/cors-allow-methods" = "GET, OPTIONS"
+      "nginx.ingress.kubernetes.io/cors-allow-origin"  = "https://chat.law-orga.de"
+    }
   }
 
   spec {
