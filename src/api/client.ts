@@ -36,7 +36,7 @@ class Client {
     data?: D,
   ) {
     return url.replace(/{(.*?)}/g, (group: string, found: string) => {
-      if (data && data[found]) return data[found];
+      if (data && found in data) return data[found];
       return group;
     });
   }

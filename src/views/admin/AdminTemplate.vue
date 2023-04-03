@@ -56,17 +56,11 @@
             >
               Change
             </ButtonNormal>
-            <ButtonNormal
-              v-if="slotProps.url"
-              size="xs"
-              kind="delete"
-              @click="
-                field = slotProps;
-                deleteModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
+            <DeleteField
+              :query="query"
+              :field-uuid="slotProps.uuid"
+              :field-name="slotProps.name"
+            />
           </div>
         </template>
       </TableGenerator>
@@ -87,12 +81,6 @@
         :request="updateRequest"
       />
     </ModalFree>
-    <!-- delete -->
-    <ModalDelete
-      v-model="deleteModalOpen"
-      :request="deleteRequest"
-      :data="field"
-    />
     <!-- help -->
     <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
       <article class="prose">
@@ -146,17 +134,16 @@
 import { computed, Ref, ref, watch } from "vue";
 import { RecordTemplate, RecordField } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
+import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
 import {
   ModalFree,
   FormGenerator,
-  ModalDelete,
   TableGenerator,
   ButtonNormal,
 } from "@lawandorga/components";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
-import useDelete from "@/composables/useDelete";
 import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -232,7 +219,7 @@ const retrieve = client.get(
 );
 
 const template = ref(null) as Ref<RecordTemplate | null>;
-useGet(retrieve, template);
+const query = useGet(retrieve, template);
 
 // fields
 // const fields = ref(null) as Ref<RecordField[] | null>;
@@ -319,12 +306,6 @@ watch(updateModalOpen, () => {
 
   return fields;
 });
-
-// delete
-const { deleteRequest, deleteModalOpen } = useDelete(
-  RecordsService.deleteField,
-  fields,
-);
 
 // help
 const helpModalOpen = ref(false);
