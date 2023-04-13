@@ -53,6 +53,15 @@ import { useRoute } from "vue-router";
 import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import BannerList from "./components/BannerList.vue";
+import { getCookie } from "./utils/cookie";
+
+if (!getCookie("csrftoken")) {
+  const redirect = `${window.location.origin}/user/register`;
+  const redirectEncoded = encodeURIComponent(redirect);
+  const backend = import.meta.env.VITE_AUTH_URL;
+  const cookieSetLink = `${backend}/redirect/?next=${redirectEncoded}`;
+  window.location.assign(cookieSetLink);
+}
 
 const alertStore = useAlertStore();
 
