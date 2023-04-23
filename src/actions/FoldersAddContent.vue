@@ -117,7 +117,7 @@ const questionnairesPublishQuestionnaire = ref();
 // add content options
 const addContentOptions = computed(() => [
   {
-    text: "Record",
+    text: "Data Sheet",
     onClick: () => {
       close();
       recordsCreateRecordWithinFolder.value.createWithinFolderModalOpen = true;

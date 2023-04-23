@@ -1,6 +1,6 @@
 <template>
   <ButtonNormal kind="action" @click="createModalOpen = true">
-    Add Child
+    Add Subfolder
     <ModalCreate
       v-model="createModalOpen"
       title="Create Folder"

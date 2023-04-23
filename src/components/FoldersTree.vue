@@ -57,7 +57,7 @@
           kind="action"
           @click="emit('addChildClicked', item.folder.uuid)"
         >
-          Add Child
+          Add Subfolder
         </ButtonNormal>
       </div>
     </div>

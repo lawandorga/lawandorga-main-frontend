@@ -17,7 +17,6 @@
   "emmet.includeLanguages": {
     "edge": "html",
     "vue-html": "html",
-    "vue": "html"
   },
   "[tf]": {
     "editor.defaultFormatter": "hashicorp.terraform",
