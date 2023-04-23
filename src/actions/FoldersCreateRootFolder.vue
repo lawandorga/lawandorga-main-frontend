@@ -1,9 +1,9 @@
 <template>
   <ButtonNormal kind="action" @click="createModalOpen = true">
-    Create Root Folder
+    Create Folder
     <ModalCreate
       v-model="createModalOpen"
-      title="Create Root Folder"
+      title="Create Folder"
       :fields="fields"
       :request="createRequest"
       :data="{ parent: null }"

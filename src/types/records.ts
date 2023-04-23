@@ -28,7 +28,7 @@ export interface Record {
   created: string;
   updated: string;
   folder_uuid: string;
-  // delete: boolean;
+  template_name: string;
   entries: { [key: string]: RecordEntry };
   fields: RecordField[];
   show: string[];

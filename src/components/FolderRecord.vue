@@ -3,7 +3,10 @@
     <BoxHeadingStats
       :show="selectedType === 'RECORD'"
       :title="record.name"
-      :stats="[`Created: ${formatDate(record.created)}`]"
+      :stats="[
+        `Created: ${formatDate(record.created)}`,
+        `Template: ${record.template_name}`,
+      ]"
     >
       <FormRecord :record="record"></FormRecord>
       <template #buttons>
