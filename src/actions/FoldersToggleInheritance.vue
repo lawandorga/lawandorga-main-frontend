@@ -1,14 +1,24 @@
 <template>
   <ButtonNormal kind="action" @click="toggleInheritanceModalOpen = true">
-    Toggle inheritance
+    <template v-if="folderInheritanceStopped">Allow Access From Above</template>
+    <template v-else>Cut Access From Above</template>
     <ModalConfirm
       v-model="toggleInheritanceModalOpen"
-      title="Toggle Inheritance"
+      :title="
+        folderInheritanceStopped
+          ? 'Allow Access From Above'
+          : 'Cut Access From Above'
+      "
       :request="toggleInheritanceRequest"
       :data="{ folder: folderUuid }"
-      submit="Toggle"
+      :submit="folderInheritanceStopped ? 'Allow' : 'Cut'"
     >
-      Are you sure you want to toggle the inheritance of '{{ folderName }}'?
+      <template v-if="folderInheritanceStopped">
+        Are you sure you want to allow access from above to '{{ folderName }}'?
+      </template>
+      <template v-else>
+        Are you sure you want to cut access from above to '{{ folderName }}'?
+      </template>
     </ModalConfirm>
   </ButtonNormal>
 </template>
@@ -24,6 +34,7 @@ const props = defineProps<{
   query: () => void;
   folderUuid: string;
   folderName: string;
+  folderInheritanceStopped: boolean;
 }>();
 
 const { query } = toRefs(props);

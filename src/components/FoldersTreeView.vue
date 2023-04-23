@@ -40,6 +40,7 @@
               :query="query"
               :folder-uuid="selectedItem.folder.uuid"
               :folder-name="selectedItem.folder.name"
+              :folder-inheritance-stopped="selectedItem.folder.stop_inherit"
             />
             <FoldersMoveFolder
               :query="query"
@@ -56,8 +57,8 @@
             v-if="selectedItem.folder.stop_inherit"
             class="mt-4 text-sm text-green-700"
           >
-            Info: This folder has an inheritance stop. That means that persons
-            who have access to its parent will
+            Info: This folder has the access cut to above. That means that
+            persons who have access to its parent will
             <b>not</b>
             have access to this folder.
           </p>

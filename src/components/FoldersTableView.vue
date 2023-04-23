@@ -49,6 +49,7 @@
           :query="query"
           :folder-uuid="selected.folder.uuid"
           :folder-name="selected.folder.name"
+          :folder-inheritance-stopped="selected.folder.stop_inherit"
         />
         <FoldersCreateRootFolder v-if="!selected" :query="query" />
       </template>
@@ -96,6 +97,7 @@
           :query="query"
           :folder-uuid="item.folder.uuid"
           :folder-name="item.folder.name"
+          :folder-inheritance-stopped="item.folder.stop_inherit"
         />
         <FoldersMoveFolder
           v-if="item.folder"

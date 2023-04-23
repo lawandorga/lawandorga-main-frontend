@@ -34,8 +34,8 @@
       <h2 class="font-medium text-gray-600">Folder properties:</h2>
       <ul class="text-sm text-gray-600">
         <li>
-          <span class="font-mono text-sm">(IS)</span>
-          stands for inheritance stop.
+          <span class="font-mono text-sm">(C)&nbsp;</span>
+          stands for access cut to above.
         </li>
         <li>
           <span class="font-mono">(R)&nbsp;</span>
