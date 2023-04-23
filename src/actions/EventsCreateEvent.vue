@@ -49,12 +49,17 @@ const eventFields = ref<types.FormField[]>([
     required: true,
   },
   {
-    label: "Global Event?",
-    name: "is_global",
-    type: "toggle",
-    required: false,
+    label: "Who Should See This Event?",
+    name: "level",
+    type: "select",
+    required: true,
+    options: [
+      { name: "Organization", value: "ORG" },
+      { name: "Meta", value: "META" },
+      { name: "Global", value: "GLOBAL" },
+    ],
     helptext:
-      "Global events are visible to all users in your meta-organization.",
+      "Organization events are only visible to all users of your organisation. Meta events are visible to all organisations of your meta org, like for example all Law Clinics. Global events are visible to all users of Law&Orga.",
   },
   {
     label: "Start time",

@@ -28,7 +28,7 @@
         <div
           v-for="day in eventsWithFormattedDate"
           :key="day[0].start_time_object.groupDate"
-          class="flex flex-row gap-8 p-6 pt-0 bg-white rounded-lg shadow flex-nowrap"
+          class="relative flex flex-row gap-8 p-6 pt-0 bg-white rounded-lg shadow flex-nowrap"
         >
           <div class="flex flex-col items-center flex-none pt-6 font-light">
             <h3 class="text-base">
@@ -41,41 +41,56 @@
               {{ day[0].start_time_object.year }}
             </h3>
           </div>
-          <div class="flex flex-col w-full gap-6">
+          <div class="flex flex-col w-full gap-6 overflow-hidden">
             <div v-for="(event, index) in day" :key="index">
               <div
-                class="w-full h-1 rounded-b-sm"
+                class="w-full h-1"
                 :class="{
-                  'bg-lorgablue': !event.is_global && !event.is_past_event,
-                  'bg-blue-300': event.is_global && !event.is_past_event,
+                  'bg-lorgablue': event.level === 'ORG' && !event.is_past_event,
+                  'bg-blue-500': event.level === 'META' && !event.is_past_event,
+                  'bg-blue-300':
+                    event.level === 'GLOBAL' && !event.is_past_event,
                   'bg-gray-300': event.is_past_event,
                 }"
               />
               <div class="flex flex-col gap-2 pt-5 grow">
-                <div class="flex flex-row items-baseline gap-6">
+                <div class="flex flex-row items-center gap-6">
                   <h2 class="flex-grow text-xl font-medium">
                     {{ event.name }}
                   </h2>
-                  <div
-                    v-if="event.is_global"
-                    class="flex flex-row items-baseline gap-1 text-gray-500"
-                  >
-                    <GlobeAltIcon class="w-3 h-3" />
-                    <h2 class="text-base">
-                      {{ event.org.name }}
-                    </h2>
-                  </div>
-                  <EventsUpdateEvent :event="event" :query="query" />
+                  <EventsUpdateEvent
+                    v-if="event.org.id === userStore.rlc?.id"
+                    :event="event"
+                    :query="query"
+                  />
                   <EventsDeleteEvent
+                    v-if="event.org.id === userStore.rlc?.id"
                     :event-id="event.id"
                     :event-org-id="event.org.id"
                     :query="query"
                     :event-name="event.name"
                   />
                 </div>
-                <div class="text-gray-500">
-                  {{ formatDate(event.start_time) }} –
-                  {{ formatDate(event.end_time) }}
+                <div class="flex items-center gap-6">
+                  <div class="flex items-center gap-2">
+                    <CalendarIcon class="w-5 h-5 text-gray-600" />
+                    <div class="text-gray-600">
+                      {{ formatDate(event.start_time) }} –
+                      {{ formatDate(event.end_time) }}
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <EyeIcon class="w-5 h-5 text-gray-500" />
+                    <div class="text-gray-600">
+                      {{ event.level }}
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <HomeIcon class="w-5 h-5 text-gray-500" />
+                    <div class="text-gray-600">
+                      {{ event.org.name }}
+                    </div>
+                  </div>
                 </div>
                 <!-- eslint-disable vue/no-v-html -->
                 <div
@@ -94,7 +109,8 @@
 
 <script setup lang="ts">
 import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
-import { CalendarDaysIcon, GlobeAltIcon } from "@heroicons/vue/24/outline";
+import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
+import { EyeIcon, CalendarIcon, HomeIcon } from "@heroicons/vue/20/solid";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
@@ -107,10 +123,12 @@ import EventService from "@/services/event";
 import EventsUpdateEvent from "@/actions/EventsUpdateEvent.vue";
 import EventsDeleteEvent from "@/actions/EventsDeleteEvent.vue";
 import EventsGetCalendarLink from "@/actions/EventsGetCalendarLink.vue";
+import { useUserStore } from "@/store/user";
 
 const showGlobal = ref(true);
 const router = useRouter();
 const route = useRoute();
+const userStore = useUserStore();
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(xs: T[], getKey: (element: T) => string) {
@@ -152,7 +170,7 @@ const eventsWithFormattedDate = computed(() => {
     Math.max(0, nextEventIndex?.value - earlierValue?.value),
   );
   const fileredGlobal = current_events?.filter(
-    (event: Event) => showGlobal.value || !event.is_global,
+    (event: Event) => showGlobal.value || event.level === "ORG",
   );
   const events2 = fileredGlobal?.map((event: Event) => {
     return {

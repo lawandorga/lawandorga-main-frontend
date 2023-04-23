@@ -2,7 +2,7 @@ import { Rlc } from "@/types/core";
 
 export interface Event {
   id: number;
-  is_global: boolean;
+  level: string;
   name: string;
   description: string;
   start_time: string;
