@@ -75,7 +75,7 @@ const eventFields = ref<types.FormField[]>([
     options: [
       { name: "Organization", value: "ORG" },
       { name: "Meta", value: "META" },
-      { name: "Global", value: "GLOBAL" },
+      // { name: "Global", value: "GLOBAL" },
     ],
     helptext:
       "Organization events are only visible to all users of your organisation. Meta events are visible to all organisations of your meta org, like for example all Law Clinics. Global events are visible to all users of Law&Orga.",
