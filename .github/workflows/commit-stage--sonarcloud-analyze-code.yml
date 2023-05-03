@@ -17,6 +17,8 @@ jobs:
           fetch-depth: 0
 
       - name: SonarCloud Scan
+        # version is fixed because of this problem:
+        # https://community.sonarsource.com/t/sonarsource-sonarcloud-github-action-failing-with-node-js-12-error/89664/2
         uses: SonarSource/sonarcloud-github-action@1.8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
