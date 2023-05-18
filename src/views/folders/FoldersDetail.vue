@@ -95,6 +95,12 @@
           :folder-uuid="folder.folder.uuid"
           :query="query"
         />
+
+        <FolderTimeline
+          :selected-type="selectedType"
+          :folder-uuid="folder.folder.uuid"
+          :query="query"
+        />
       </div>
     </div>
   </BoxLoader>
@@ -120,6 +126,7 @@ import FolderUploads from "@/components/FolderUploads.vue";
 import FolderNavigationContent from "@/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/components/FolderSelf.vue";
+import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
 
 // record
 const route = useRoute();
