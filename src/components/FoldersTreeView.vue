@@ -19,6 +19,7 @@
             contentActions.addContentModalOpen = true;
           "
           @folder-clicked="selected = $event"
+          @show-meta-clicked="selected = $event"
         />
       </div>
       <div v-if="selectedItem" class="w-full px-6 py-4 xl:max-w-xl bg-gray-50">
