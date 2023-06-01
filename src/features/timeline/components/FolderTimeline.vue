@@ -6,6 +6,8 @@ import { CircleLoader } from "@lawandorga/components";
 import { ref, toRefs, watch } from "vue";
 import TimelineEventCreate from "../actions/TimelineEventCreate.vue";
 import TimelineEventDelete from "../actions/TimelineEventDelete.vue";
+import { formatDate } from "@/utils/date";
+import TimelineEventUpdate from "../actions/TimelineEventUpdate.vue";
 
 const props = defineProps<{
   query: () => void;
@@ -16,6 +18,7 @@ const { folderUuid, selectedType } = toRefs(props);
 
 interface ITimelineEvent {
   uuid: string;
+  time: string;
   text: string;
 }
 
@@ -62,14 +65,29 @@ update();
         </div>
         <div class="pt-5">
           <ul class="list-disc list-inside">
-            <li v-for="event in timeline" :key="event.uuid">
-              <span class="inline-block pr-4">{{ event.text }}</span>
-              <TimelineEventDelete
-                :folder-uuid="folderUuid"
-                :name="event.text.slice(0, 20) + '...'"
-                :timeline-event-uuid="event.uuid"
-                :query="timelineQuery"
-              />
+            <li v-for="event in timeline" :key="event.uuid" class="">
+              <div class="inline-block">
+                <div class="flex items-center">
+                  <div class="inline-block pr-4">
+                    {{ formatDate(event.time) }}: {{ event.text }}
+                  </div>
+                  <div class="flex items-center space-x-4">
+                    <TimelineEventUpdate
+                      :folder-uuid="folderUuid"
+                      :event-uuid="event.uuid"
+                      :event-time="event.time"
+                      :event-text="event.text"
+                      :query="timelineQuery"
+                    />
+                    <TimelineEventDelete
+                      :folder-uuid="folderUuid"
+                      :name="event.text.slice(0, 20) + '...'"
+                      :timeline-event-uuid="event.uuid"
+                      :query="timelineQuery"
+                    />
+                  </div>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
