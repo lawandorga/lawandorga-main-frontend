@@ -24,7 +24,7 @@ const { query, folderUuid } = toRefs(props);
 const fields: types.FormField[] = [
   {
     label: "Title",
-    name: "text",
+    name: "title",
     type: "text",
     required: true,
   },
