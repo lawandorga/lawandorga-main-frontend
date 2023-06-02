@@ -12,6 +12,7 @@
       uuid: eventUuid,
       time: eventTime,
       text: eventText,
+      title: eventTitle,
     }"
     submit="Update"
   />
@@ -29,10 +30,17 @@ const props = defineProps<{
   eventUuid: string;
   eventTime: string;
   eventText: string;
+  eventTitle: string;
 }>();
 const { query, folderUuid } = toRefs(props);
 
 const fields: types.FormField[] = [
+  {
+    label: "Title",
+    name: "title",
+    type: "text",
+    required: true,
+  },
   {
     label: "Time",
     name: "time",

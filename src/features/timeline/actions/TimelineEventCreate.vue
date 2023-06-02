@@ -23,6 +23,12 @@ const { query, folderUuid } = toRefs(props);
 
 const fields: types.FormField[] = [
   {
+    label: "Title",
+    name: "text",
+    type: "text",
+    required: true,
+  },
+  {
     label: "Time",
     name: "time",
     type: "datetime-local",

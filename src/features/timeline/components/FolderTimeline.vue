@@ -20,6 +20,7 @@ interface ITimelineEvent {
   uuid: string;
   time: string;
   text: string;
+  title: string;
 }
 
 // retrieve timeline
@@ -64,27 +65,33 @@ update();
           </p>
         </div>
         <div class="pt-5">
-          <ul class="list-disc list-inside">
+          <ul class="space-y-2 list-disc list-inside">
             <li v-for="event in timeline" :key="event.uuid" class="">
               <div class="inline-block">
-                <div class="flex items-center">
-                  <div class="inline-block pr-4">
-                    {{ formatDate(event.time) }}: {{ event.text }}
+                <div class="flex flex-col">
+                  <div class="flex items-center">
+                    <div class="inline-block pr-4">
+                      {{ formatDate(event.time) }}: {{ event.title }}
+                    </div>
+                    <div class="flex items-center space-x-4">
+                      <TimelineEventUpdate
+                        :folder-uuid="folderUuid"
+                        :event-uuid="event.uuid"
+                        :event-time="event.time"
+                        :event-text="event.text"
+                        :event-title="event.title"
+                        :query="timelineQuery"
+                      />
+                      <TimelineEventDelete
+                        :folder-uuid="folderUuid"
+                        :name="event.text.slice(0, 20) + '...'"
+                        :timeline-event-uuid="event.uuid"
+                        :query="timelineQuery"
+                      />
+                    </div>
                   </div>
-                  <div class="flex items-center space-x-4">
-                    <TimelineEventUpdate
-                      :folder-uuid="folderUuid"
-                      :event-uuid="event.uuid"
-                      :event-time="event.time"
-                      :event-text="event.text"
-                      :query="timelineQuery"
-                    />
-                    <TimelineEventDelete
-                      :folder-uuid="folderUuid"
-                      :name="event.text.slice(0, 20) + '...'"
-                      :timeline-event-uuid="event.uuid"
-                      :query="timelineQuery"
-                    />
+                  <div class="inline-block">
+                    <p class="prose-sm">{{ event.text }}</p>
                   </div>
                 </div>
               </div>
