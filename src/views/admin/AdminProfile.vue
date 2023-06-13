@@ -138,7 +138,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch, ref, Ref } from "vue";
+import { reactive, watch, ref, Ref, computed } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
 import useQuery from "@/composables/useQuery";
@@ -161,6 +161,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import UsersChangePassword from "@/actions/UsersChangePassword.vue";
+import useClient from "@/api/client";
 
 const userFields = [
   {
@@ -244,15 +245,18 @@ watch(user, () => {
   if (userStore.hasPermission("admin__manage_permissions")) getPermissions();
 });
 
-const permissionFields = reactive([
-  {
-    label: "Permission",
-    name: "permission",
-    type: "select",
-    required: true,
-    options: [] as Permission[],
-  },
-]);
+const rawPermissions = ref<Permission[]>([]);
+const permissionFields = computed(() => {
+  return [
+    {
+      label: "Permission",
+      name: "permission",
+      type: "select",
+      required: true,
+      options: rawPermissions.value,
+    },
+  ];
+});
 const {
   commandRequest: addPermissionRequest,
   commandModalOpen: addPermissionModalOpen,
@@ -262,11 +266,13 @@ const {
   user,
 );
 
-watch(addPermissionModalOpen, () =>
-  AdminService.getPermissions().then(
-    (users) => (permissionFields[0].options = users),
-  ),
-);
+const client = useClient();
+const request = client.get("api/permissions/query/permissions/");
+const permissionQuery = useQuery(request, rawPermissions);
+
+watch(addPermissionModalOpen, () => {
+  permissionQuery();
+});
 
 const permission = ref(null) as Ref<User | null>;
 

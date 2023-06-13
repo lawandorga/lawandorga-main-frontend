@@ -13,7 +13,7 @@
         { name: 'Explanation', key: 'description' },
         { name: 'Useful Group', key: 'recommended_for' },
       ]"
-      :data="newPermissions"
+      :data="permissions"
     >
       <template #description="slotProps">
         <div class="max-w-lg break-words whitespace-pre-line">
@@ -30,8 +30,10 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { LifebuoyIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "@lawandorga/components";
 import useGet from "@/composables/useGet";
-import HelpService from "@/services/help";
+import useClient from "@/api/client";
 
-const newPermissions = ref(null);
-useGet(HelpService.getPermissions, newPermissions);
+const client = useClient();
+const request = client.get("/api/permissions/query/permissions/");
+const permissions = ref();
+useGet(request, permissions);
 </script>
