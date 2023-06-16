@@ -71,13 +71,7 @@
           >
             <template #head-action>
               <div class="flex justify-end">
-                <ButtonNormal
-                  size="xs"
-                  kind="action"
-                  @click="addPermissionModalOpen = true"
-                >
-                  Add Permission
-                </ButtonNormal>
+                <UserAddPermission :query="query" :user-id="user.id" />
               </div>
             </template>
             <template #source="slotProps">
@@ -120,13 +114,6 @@
       />
     </ModalFree>
     <!-- permission -->
-    <ModalFree v-model="addPermissionModalOpen" title="Add Permission">
-      <FormGenerator
-        :fields="permissionFields"
-        :data="{ user_has_permission: user?.user_id }"
-        :request="addPermissionRequest"
-      />
-    </ModalFree>
     <ModalDelete
       v-model="removePermissionModalOpen"
       title="Remove Permission"
@@ -138,7 +125,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch, ref, Ref, computed } from "vue";
+import { watch, ref, Ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
 import useQuery from "@/composables/useQuery";
@@ -150,10 +137,8 @@ import {
   ButtonNormal,
 } from "@lawandorga/components";
 import useDelete from "@/composables/useDelete";
-import useCommand from "@/composables/useCommand";
 import AdminService from "@/services/admin";
-import UserService from "@/services/user";
-import { HasPermission, Permission } from "@/types/core";
+import { HasPermission } from "@/types/core";
 import { RlcUser, User } from "@/types/user";
 import { useRoute } from "vue-router";
 import useUpdate from "@/composables/useUpdate";
@@ -161,7 +146,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import UsersChangePassword from "@/actions/UsersChangePassword.vue";
-import useClient from "@/api/client";
+import UserAddPermission from "@/features/permissions/actions/UserAddPermission.vue";
 
 const userFields = [
   {
@@ -243,35 +228,6 @@ const getPermissions = useQuery(
 
 watch(user, () => {
   if (userStore.hasPermission("admin__manage_permissions")) getPermissions();
-});
-
-const rawPermissions = ref<Permission[]>([]);
-const permissionFields = computed(() => {
-  return [
-    {
-      label: "Permission",
-      name: "permission",
-      type: "select",
-      required: true,
-      options: rawPermissions.value,
-    },
-  ];
-});
-const {
-  commandRequest: addPermissionRequest,
-  commandModalOpen: addPermissionModalOpen,
-} = useCommand(
-  UserService.grantPermission,
-  useQuery(AdminService.getUserPermissions, permissions, user),
-  user,
-);
-
-const client = useClient();
-const request = client.get("api/permissions/query/permissions/");
-const permissionQuery = useQuery(request, rawPermissions);
-
-watch(addPermissionModalOpen, () => {
-  permissionQuery();
 });
 
 const permission = ref(null) as Ref<User | null>;
