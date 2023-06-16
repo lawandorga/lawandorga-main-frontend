@@ -12,43 +12,20 @@
       Records section. Those permissions can be managed within the admin
       section.
     </p>
-    <TableGenerator
-      :head="[
-        { name: 'User', key: (obj) => obj.user_object?.name },
-        { name: 'Group', key: (obj) => obj.group_object?.name },
-        { name: 'Permission', key: (obj) => obj.permission_object.name },
-      ]"
-      :data="permissions"
-    ></TableGenerator>
+    <RecordsPermissionsTable v-if="show" />
   </ModalFree>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { ModalFree, TableGenerator } from "@lawandorga/components";
+<script lang="ts" setup>
+import { ref, watch } from "vue";
+import { ModalFree } from "@lawandorga/components";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import RecordsService from "@/services/records";
-import { HasPermission } from "@/types/core";
+import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
 
-export default defineComponent({
-  components: {
-    ButtonBreadcrumbs,
-    ModalFree,
-    TableGenerator,
-  },
-  data() {
-    return {
-      generalPermissionsModalOpen: false,
-      permissions: null as HasPermission[] | null,
-    };
-  },
-  watch: {
-    generalPermissionsModalOpen(newValue) {
-      if (newValue === true && this.permissions === null)
-        RecordsService.getGeneralPermissions().then(
-          (permissions) => (this.permissions = permissions),
-        );
-    },
-  },
+const generalPermissionsModalOpen = ref(false);
+const show = ref(false);
+
+watch(generalPermissionsModalOpen, (newValue) => {
+  if (newValue === true) show.value = true;
 });
 </script>

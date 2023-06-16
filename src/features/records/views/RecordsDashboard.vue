@@ -3,6 +3,9 @@
     <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
+        <template #buttons>
+          <RecordsPermissions />
+        </template>
       </BreadcrumbsBar>
       <TabControls
         :tabs="[
@@ -52,7 +55,7 @@
           <AccessRequests :query="query" :access-requests="accessRequests" />
         </template>
         <template #recordPermissions>
-          <RecordsPermissions />
+          <RecordsPermissionsTable />
         </template>
       </TabControls>
     </div>
@@ -66,7 +69,7 @@ import { computed, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import useGet from "@/composables/useGet";
-import RecordsPermissions from "@/features/records/components/RecordsPermissions.vue";
+import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
 import { useUserStore } from "@/store/user";
 import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
 import useClient from "@/api/client";
@@ -81,6 +84,7 @@ import { IDeletion } from "../types/deletion";
 import AccessRequests from "../components/AccessRequests.vue";
 import { IAccessRequest } from "../types/accessRequest";
 import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
+import RecordsPermissions from "@/components/RecordsPermissions.vue";
 
 const client = useClient();
 const request = client.get("/api/records/v2/query/dashboard/");

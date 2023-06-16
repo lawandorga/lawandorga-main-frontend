@@ -1,4 +1,3 @@
-import { HasPermission } from "@/types/core";
 import {
   Message,
   Record,
@@ -124,13 +123,6 @@ class RecordsService {
   downloadFileFromEntry(entry: RecordEntry): void {
     const url = `${entry.url}download/`.replace("api/", "");
     downloadFileRequest(axios, url, entry.value as string);
-  }
-
-  // permissions
-  getGeneralPermissions(): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>("has_permissions/records/")
-      .then((response) => response.data);
   }
 
   // questionnairetemplate
