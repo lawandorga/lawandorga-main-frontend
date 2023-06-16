@@ -37,7 +37,7 @@
           <GroupAddPermission :query="query" :group-id="group.id" />
         </template>
         <template #action="slotProps">
-          <GroupRemovePermission
+          <RemovePermission
             :query="query"
             :permission-name="slotProps.permission_name"
             :permission-id="slotProps.id"
@@ -90,7 +90,7 @@ import GroupsAddMember from "@/actions/GroupsAddMember.vue";
 import GroupsRemoveMember from "@/actions/GroupsRemoveMember.vue";
 import useClient from "@/api/client";
 import GroupAddPermission from "@/features/permissions/actions/GroupAddPermission.vue";
-import GroupRemovePermission from "@/features/permissions/actions/GroupRemovePermission.vue";
+import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
 
 const route = useRoute();
 

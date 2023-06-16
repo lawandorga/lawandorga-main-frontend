@@ -90,16 +90,12 @@
               </template>
             </template>
             <template #action="slotProps">
-              <ButtonNormal
+              <RemovePermission
                 v-if="slotProps.source === 'USER'"
-                kind="delete"
-                @click="
-                  removePermissionModalOpen = true;
-                  permission = slotProps;
-                "
-              >
-                Remove
-              </ButtonNormal>
+                :query="query"
+                :permission-id="slotProps.id"
+                :permission-name="slotProps.permission_object.name"
+              />
             </template>
           </TableGenerator>
         </div>
@@ -113,14 +109,6 @@
         :request="updateRequest"
       />
     </ModalFree>
-    <!-- permission -->
-    <ModalDelete
-      v-model="removePermissionModalOpen"
-      title="Remove Permission"
-      verb="remove"
-      :request="removePermissionRequest"
-      :data="permission"
-    />
   </BoxLoader>
 </template>
 
@@ -131,15 +119,13 @@ import useGet from "@/composables/useGet";
 import useQuery from "@/composables/useQuery";
 import {
   FormGenerator,
-  ModalDelete,
   ModalFree,
   TableGenerator,
   ButtonNormal,
 } from "@lawandorga/components";
-import useDelete from "@/composables/useDelete";
 import AdminService from "@/services/admin";
 import { HasPermission } from "@/types/core";
-import { RlcUser, User } from "@/types/user";
+import { RlcUser } from "@/types/user";
 import { useRoute } from "vue-router";
 import useUpdate from "@/composables/useUpdate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -147,6 +133,7 @@ import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import UsersChangePassword from "@/actions/UsersChangePassword.vue";
 import UserAddPermission from "@/features/permissions/actions/UserAddPermission.vue";
+import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
 
 const userFields = [
   {
@@ -229,11 +216,4 @@ const getPermissions = useQuery(
 watch(user, () => {
   if (userStore.hasPermission("admin__manage_permissions")) getPermissions();
 });
-
-const permission = ref(null) as Ref<User | null>;
-
-const {
-  deleteRequest: removePermissionRequest,
-  deleteModalOpen: removePermissionModalOpen,
-} = useDelete(AdminService.deleteHasPermission, permissions);
 </script>
