@@ -26,7 +26,10 @@ const props = defineProps<{
 const { query, permissionId } = toRefs(props);
 
 const client = useClient();
-const request = client.delete("api/has_permissions/{}/", permissionId);
+const request = client.delete(
+  "api/permissions/has_permissions/{}/",
+  permissionId,
+);
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 </script>

@@ -5,8 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/records/",
     name: "records-dashboard",
-    component: () => import("@/views/data_sheets/RecordsDashboard.vue"),
-    beforeEnter: isAuthenticated,
+    redirect: { name: "records-dashboard-v2" },
   },
   {
     path: "/records/:record/",

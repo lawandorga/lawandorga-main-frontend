@@ -18,10 +18,8 @@ export default function useCommand<
   queries: VoidFn[] | VoidFn = [],
   ...params: Reffed<DropFirst<Parameters<RFn>>>
 ): {
-  /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-  temporary: Ref<{ [key: string]: any } | null>;
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
   commandRequest: (data: types.JsonModel) => Promise<any>;
-  /* eslint-enable */
   commandModalOpen: Ref<boolean>;
 } {
   const commandModalOpen = ref(false);
@@ -41,11 +39,7 @@ export default function useCommand<
       .catch(handleCommandError);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const temporary = ref<{ [key: string]: any } | null>(null);
-
   return {
-    temporary,
     commandRequest,
     commandModalOpen,
   };

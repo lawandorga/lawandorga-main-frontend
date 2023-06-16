@@ -4,7 +4,6 @@ import {
   CollabPermission,
   CollabVersion,
 } from "@/types/collab";
-import { HasPermission } from "@/types/core";
 import { JsonModel } from "@/types/shared";
 import axios from "axios";
 
@@ -48,12 +47,6 @@ class CollabService {
       .then((response) =>
         response.data.sort((item1, item2) => item2.id - item1.id),
       );
-  }
-
-  getGeneralPermissions(): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>("has_permissions/collab/")
-      .then((response) => response.data);
   }
 
   getCollabPermissions(): Promise<CollabPermission[]> {

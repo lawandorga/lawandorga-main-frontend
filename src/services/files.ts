@@ -1,4 +1,3 @@
-import { HasPermission } from "@/types/core";
 import {
   FilesFolder,
   FilesPermission,
@@ -11,12 +10,6 @@ import axios from "axios";
 
 class FilesService {
   // permissions
-  getGeneralPermissions(): Promise<HasPermission[]> {
-    return axios
-      .get<HasPermission[]>("has_permissions/files/")
-      .then((response) => response.data);
-  }
-
   getPermissions(folder: FilesFolder): Promise<FilesPermission[]> {
     return axios
       .get<FilesPermission[]>(`files/folder/${folder.id}/permissions/`)
