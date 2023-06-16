@@ -18,7 +18,7 @@ import useClient from "@/api/client";
 
 const props = defineProps<{
   query: () => void;
-  sheetUuid: number;
+  sheetUuid: string;
   sheetName: string;
 }>();
 const { query, sheetUuid } = toRefs(props);
