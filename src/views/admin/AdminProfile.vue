@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="!!user">
+  <BoxLoader :show="!!data">
     <div v-if="user" class="max-w-screen-lg mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
@@ -20,9 +20,17 @@
             <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             <div class="flex items-center space-x-4">
               <UsersChangePassword :query="query" />
-              <ButtonNormal kind="action" @click="updateModalOpen = true">
-                Edit
-              </ButtonNormal>
+              <UserUpdateInformation
+                :query="query"
+                :user-id="user.id"
+                :user-name="user.name"
+                :user-phone-number="user.phone_number"
+                :user-street="user.street"
+                :user-city="user.city"
+                :user-postal-code="user.postal_code"
+                :user-speciality-of-study="user.speciality_of_study"
+                :user-note="user.note"
+              />
             </div>
           </div>
           <div class="mt-4">
@@ -60,7 +68,7 @@
         >
           <TableGenerator
             :head="[
-              { name: 'Permission', key: (obj) => obj.permission_object.name },
+              { name: 'Permission', key: (obj) => obj.permission_name },
               {
                 name: 'Source',
                 key: 'source',
@@ -70,9 +78,7 @@
             :data="permissions"
           >
             <template #head-action>
-              <div class="flex justify-end">
-                <UserAddPermission :query="query" :user-id="user.id" />
-              </div>
+              <UserAddPermission :query="query" :user-id="user.id" />
             </template>
             <template #source="slotProps">
               <ButtonNormal
@@ -80,13 +86,13 @@
                 kind="link"
                 :to="{
                   name: 'admin-group',
-                  params: { id: slotProps.group_object.id },
+                  params: { id: slotProps.group_id },
                 }"
               >
-                {{ slotProps.group_object.name }}
+                {{ slotProps.group_name }}
               </ButtonNormal>
               <template v-else>
-                {{ slotProps.user_object.name }}
+                {{ slotProps.user_name }}
               </template>
             </template>
             <template #action="slotProps">
@@ -94,126 +100,62 @@
                 v-if="slotProps.source === 'USER'"
                 :query="query"
                 :permission-id="slotProps.id"
-                :permission-name="slotProps.permission_object.name"
+                :permission-name="slotProps.permission_name"
               />
             </template>
           </TableGenerator>
         </div>
       </div>
     </div>
-    <!-- user update -->
-    <ModalFree v-model="updateModalOpen" title="Update User">
-      <FormGenerator
-        :fields="userFields"
-        :data="user"
-        :request="updateRequest"
-      />
-    </ModalFree>
   </BoxLoader>
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, Ref } from "vue";
+import { ref, computed } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
-import useQuery from "@/composables/useQuery";
-import {
-  FormGenerator,
-  ModalFree,
-  TableGenerator,
-  ButtonNormal,
-} from "@lawandorga/components";
-import AdminService from "@/services/admin";
-import { HasPermission } from "@/types/core";
+import { TableGenerator, ButtonNormal } from "@lawandorga/components";
 import { RlcUser } from "@/types/user";
 import { useRoute } from "vue-router";
-import useUpdate from "@/composables/useUpdate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import UsersChangePassword from "@/actions/UsersChangePassword.vue";
 import UserAddPermission from "@/features/permissions/actions/UserAddPermission.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
+import useClient from "@/api/client";
+import UserUpdateInformation from "@/features/users/actions/UserUpdateInformation.vue";
 
-const userFields = [
-  {
-    label: "Name",
-    type: "text",
-    name: "name",
-    required: true,
-  },
-  {
-    label: "Phone",
-    type: "tel",
-    name: "phone_number",
-    required: false,
-  },
-  {
-    label: "Street",
-    type: "text",
-    name: "street",
-    required: false,
-  },
-  {
-    label: "City",
-    type: "text",
-    name: "city",
-    required: false,
-  },
-  {
-    label: "Postal Code",
-    type: "text",
-    name: "postal_code",
-    required: false,
-  },
-  {
-    label: "Speciality of Study",
-    type: "select",
-    name: "speciality_of_study",
-    options: [
-      { value: "", name: "------" },
-      { value: "LAW", name: "Law Sciences" },
-      { value: "PSYCH", name: "Psychology" },
-      { value: "POL", name: "Political Science" },
-      { value: "SOC", name: "Social Sciences" },
-      { value: "ECO", name: "Economics" },
-      { value: "MED", name: "Medicine / Medical Psychology" },
-      { value: "PHA", name: "Pharmacy" },
-      { value: "CUL", name: "Cultural Studies" },
-      { value: "OTHER", name: "Other" },
-      { value: "NONE", name: "None" },
-    ],
-    required: true,
-  },
-  {
-    label: "Note",
-    type: "textarea",
-    name: "note",
-    required: false,
-  },
-];
+interface HasPermission {
+  id: number;
+  permission_name: string;
+  source: string;
+  group_name: string;
+  user_name: string;
+  group_id: number;
+}
+
+interface IData {
+  user: RlcUser;
+  permissions: HasPermission[] | null;
+}
 
 const route = useRoute();
 const userStore = useUserStore();
 
-const user = ref(null) as Ref<RlcUser | null>;
+const data = ref<IData | null>(null);
 
-const query = useGet(AdminService.getUser, user, route.params.id as string);
-
-const { updateRequest, updateModalOpen } = useUpdate(
-  AdminService.updateUser,
-  user,
-);
-
-const permissions = ref(null) as Ref<HasPermission[] | null>;
-
-const getPermissions = useQuery(
-  AdminService.getUserPermissions,
-  permissions,
-  user,
-);
-
-watch(user, () => {
-  if (userStore.hasPermission("admin__manage_permissions")) getPermissions();
+const user = computed<RlcUser | null>(() => {
+  if (!data.value) return null;
+  return data.value.user;
 });
+
+const permissions = computed<HasPermission[] | null>(() => {
+  if (!data.value) return null;
+  return data.value.permissions;
+});
+
+const client = useClient();
+const request = client.get("/api/rlc_users/{}/", route.params.id as string);
+const query = useGet(request, data);
 </script>
