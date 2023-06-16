@@ -42,12 +42,5 @@ const request = client.post("/api/records/deletions/");
 const {
   commandRequest: createDeletionRequestRequest,
   commandModalOpen: createDeletionRequestModalOpen,
-  temporary,
 } = useCommand(request, query.value);
-
-// expose
-defineExpose({
-  temporary,
-  createDeletionRequestModalOpen,
-});
 </script>
