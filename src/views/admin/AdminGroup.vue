@@ -34,10 +34,10 @@
         :data="permissions"
       >
         <template #head-action>
-          <GroupsAddPermission :query="query" :group-id="group.id" />
+          <GroupAddPermission :query="query" :group-id="group.id" />
         </template>
         <template #action="slotProps">
-          <GroupsRemovePermission
+          <GroupRemovePermission
             :query="query"
             :permission-name="slotProps.permission_name"
             :permission-id="slotProps.id"
@@ -88,9 +88,9 @@ import { GroupMember, IGroupDetail, IGroupPermission } from "@/types/core";
 import { useRoute } from "vue-router";
 import GroupsAddMember from "@/actions/GroupsAddMember.vue";
 import GroupsRemoveMember from "@/actions/GroupsRemoveMember.vue";
-import GroupsAddPermission from "@/actions/GroupsAddPermission.vue";
-import GroupsRemovePermission from "@/actions/GroupsRemovePermission.vue";
 import useClient from "@/api/client";
+import GroupAddPermission from "@/features/permissions/actions/GroupAddPermission.vue";
+import GroupRemovePermission from "@/features/permissions/actions/GroupRemovePermission.vue";
 
 const route = useRoute();
 
