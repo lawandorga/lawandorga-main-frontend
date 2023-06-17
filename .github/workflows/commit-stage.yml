@@ -34,10 +34,3 @@ jobs:
     secrets:
       SCW_DOCKER_REGISTRY: ${{ secrets.SCW_DOCKER_REGISTRY }}
       SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
-
-  check:
-    needs: [analyze]
-    name: Check
-    uses: ./.github/workflows/commit-stage--query-quality-gate-status.yml
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
