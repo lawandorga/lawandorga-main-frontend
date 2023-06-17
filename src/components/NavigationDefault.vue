@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const registerLink = `${import.meta.env.VITE_AUTH_URL}/auth/user/register/`;
+</script>
+
 <template>
   <div class="bg-lorgablue print:hidden">
     <div
@@ -25,12 +29,12 @@
         >
           Records Upload
         </router-link>
-        <router-link
+        <a
           class="text-lg font-medium text-white hover:underline"
-          :to="{ name: 'user-register' }"
+          :href="registerLink"
         >
           Register
-        </router-link>
+        </a>
       </div>
     </div>
   </div>
