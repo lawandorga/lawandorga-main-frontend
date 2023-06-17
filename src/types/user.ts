@@ -10,15 +10,6 @@ export interface IRegisterPage {
   }[];
 }
 
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  rlc: number;
-  rlc_user?: number;
-  rlcuserid: number;
-}
-
 export interface RlcUserSmall {
   id: number;
   user_id: number;

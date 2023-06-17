@@ -116,12 +116,6 @@ export const useUserStore = defineStore("user", () => {
     Sentry.setUser(null);
   };
 
-  const logout = () => {
-    UserService.logout().then(() => {
-      reset();
-    });
-  };
-
   return {
     rlc,
     user,
@@ -137,6 +131,5 @@ export const useUserStore = defineStore("user", () => {
     updateSetting,
     getSetting,
     reset,
-    logout,
   };
 });

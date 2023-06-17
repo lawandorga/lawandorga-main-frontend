@@ -1,13 +1,6 @@
 import { Rlc } from "@/types/core";
 import { Key } from "@/types/key";
-import {
-  DashboardNote,
-  DataResponse,
-  IRegisterPage,
-  RlcUser,
-  Settings,
-} from "@/types/user";
-import { JsonModel } from "@lawandorga/components/dist/types/types";
+import { DashboardNote, IRegisterPage, Settings } from "@/types/user";
 import axios from "axios";
 
 export function usersGetRegisterPage(): Promise<IRegisterPage> {
@@ -19,46 +12,13 @@ class UserService {
     return axios.get<Rlc[]>("rlcs/").then((response) => response.data);
   }
 
-  logout(): Promise<void> {
-    return axios.post("logout/").then();
-  }
-
-  data(): Promise<DataResponse> {
-    return axios
-      .get<DataResponse>(`rlc_users/data_self/`)
-      .then((response) => response.data);
-  }
-
   updateSettings(data: Settings): Promise<void> {
     return axios.put("rlc_users/settings_self/", data).then();
-  }
-
-  // grant
-  grantPermission(data: JsonModel, user: RlcUser): Promise<void> {
-    return axios
-      .post(`rlc_users/${user.id}/grant_permission/`, data)
-      .then((r) => r.data);
   }
 
   // notes
   getNotes(): Promise<DashboardNote[]> {
     return axios.get("query/notes/").then((response) => response.data);
-  }
-
-  createNote(note: DashboardNote): Promise<DashboardNote> {
-    return axios
-      .post<DashboardNote>("notes/", note)
-      .then((response) => response.data);
-  }
-
-  updateNote(note: DashboardNote): Promise<DashboardNote> {
-    return axios
-      .patch<DashboardNote>(`notes/${note.id}/`, note)
-      .then((response) => response.data);
-  }
-
-  deleteNote(note: DashboardNote): Promise<void> {
-    return axios.delete(`notes/${note.id}/`);
   }
 
   // keys
