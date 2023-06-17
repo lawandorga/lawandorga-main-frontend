@@ -8,12 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "user-login",
     component: UserLogin,
   },
-  {
-    path: "/user/register/",
-    name: "user-register",
-    component: () => import("@/views/user/UserRegister.vue"),
-    beforeEnter: notAuthenticated,
-  },
+  // {
+  //   path: "/user/register/",
+  //   name: "user-register",
+  //   component: () => import("@/views/user/UserRegister.vue"),
+  //   beforeEnter: notAuthenticated,
+  // },
   {
     path: "/user/keys/",
     name: "user-keys",

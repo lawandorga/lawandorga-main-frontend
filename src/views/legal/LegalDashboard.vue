@@ -6,16 +6,19 @@
       </BreadcrumbsBar>
 
       <div class="mt-10 space-y-10">
-        <div v-for="lr in legalRequirements" :key="lr.id">
+        <div v-for="lr in legalRequirements" :key="lr.title">
           <div class="bg-white border rounded shadow">
             <div class="px-6 pt-5">
-              <Disclosure v-slot="{ open }" :default-open="!lr.accepted">
+              <Disclosure
+                v-slot="{ open }"
+                :default-open="!lr.accepted_of_user"
+              >
                 <DisclosureButton
                   class="flex items-center justify-between w-full"
                 >
                   <div class="prose-sm prose max-w-none">
                     <h1 class="">
-                      {{ lr.legal_requirement.title }}
+                      {{ lr.title }}
                     </h1>
                   </div>
                   <ChevronUpIcon
@@ -25,34 +28,37 @@
                 </DisclosureButton>
                 <DisclosurePanel class="prose-sm prose max-w-none">
                   <!-- eslint-disable-next-line vue/no-v-html -->
-                  <div v-html="lr.legal_requirement.content"></div>
+                  <div v-html="lr.content"></div>
                 </DisclosurePanel>
               </Disclosure>
             </div>
-            <div v-if="lr.events_list.length || !lr.accepted" class="mt-5">
+            <div
+              v-if="lr.events_of_user.length || !lr.accepted_of_user"
+              class="mt-5"
+            >
               <div class="border-t"></div>
               <div class="divide-y">
-                <div v-for="event in lr.events_list" :key="event.created">
+                <div v-for="event in lr.events_of_user" :key="event.created">
                   <div class="px-6 py-2">
                     <p>
                       <span>{{ formatDate(event.created) }} -{{ " " }}</span>
                       <span v-if="event.actor">
-                        {{ event.actor.name }} -{{ " " }}
+                        {{ event.actor }} -{{ " " }}
                       </span>
                       <span v-if="event.accepted">
-                        {{ lr.legal_requirement.accept_text }}
+                        {{ lr.accept_text }}
                       </span>
                       <span v-if="event.text">{{ event.text }}</span>
                     </p>
                   </div>
                 </div>
-                <div v-if="!lr.accepted">
+                <div v-if="!lr.accepted_of_user">
                   <div class="flex items-center justify-between px-6 py-2">
                     <p class="text-lg font-bold text-gray-800">
                       Action required:
                     </p>
                     <ButtonNormal @click="accept(lr)">
-                      {{ lr.legal_requirement.button_text }}
+                      {{ lr.button_text }}
                     </ButtonNormal>
                   </div>
                 </div>
@@ -79,19 +85,15 @@ import { LegalRequirement } from "@/types/legal";
 import useCommand from "@/composables/useCommand";
 import LegalService from "@/services/legal";
 import useGet from "@/composables/useGet";
-import useQuery from "@/composables/useQuery";
 
 const userStore = useUserStore();
 
 const legalRequirements = ref<LegalRequirement[] | null>(null);
 
-useGet(LegalService.getLegalRequirements, legalRequirements);
+const query = useGet(LegalService.getLegalRequirements, legalRequirements);
 
 const { commandRequest: accept } = useCommand(
   LegalService.acceptLegalRequirement,
-  [
-    useQuery(LegalService.getLegalRequirements, legalRequirements),
-    () => userStore.updateData(),
-  ],
+  [query, () => userStore.updateData()],
 );
 </script>
