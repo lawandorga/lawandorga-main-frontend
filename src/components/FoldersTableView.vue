@@ -53,12 +53,6 @@
         />
         <FoldersCreateRootFolder v-if="!selected" :query="query" />
       </template>
-      <template #type="{ item }">
-        <span v-if="item.folder">Folder</span>
-        <div v-else class="flex">
-          <FoldersBadge :text="item.repository" />
-        </div>
-      </template>
       <template #name="{ item }">
         <div class="flex items-center space-x-3">
           <button
@@ -82,7 +76,30 @@
           >
             Open
           </ButtonNormal>
-          <span v-if="!item.folder">{{ item.name }}</span>
+          <div v-if="!item.folder" class="flex items-center">
+            <span class="block">{{ item.name }}</span>
+            <div class="ml-3">
+              <ButtonNormal
+                kind="action"
+                :to="{
+                  name: 'folders-detail',
+                  params: { uuid: selected?.folder.uuid },
+                  query: {
+                    selectedType: item.repository,
+                    selectedId: item.uuid,
+                  },
+                }"
+              >
+                Open
+              </ButtonNormal>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #type="{ item }">
+        <span v-if="item.folder">Folder</span>
+        <div v-else class="flex">
+          <FoldersBadge :text="item.repository" />
         </div>
       </template>
       <template #action="{ item }">
@@ -186,7 +203,10 @@ const tableFolders = computed<(IFolderItem | IContent)[]>(() => {
   if (selected.value) {
     let items: (IFolderItem | IContent)[] = [];
     items = items.concat(selected.value.children);
-    items = items.concat(selected.value.content);
+    const content = selected.value.content.filter(
+      (c) => c.repository !== "RECORDS_RECORD",
+    );
+    items = items.concat(content);
     return items;
   }
   return folderItems.value;
