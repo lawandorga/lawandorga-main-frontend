@@ -15,18 +15,10 @@
           { name: 'Name', key: 'name' },
           { name: '', key: 'action' },
         ]"
-        :data="questionnaires"
+        :data="templates"
       >
         <template #head-action>
-          <div class="flex justify-end">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="createModalOpen = true"
-            >
-              Create Questionnaire
-            </ButtonNormal>
-          </div>
+          <QuestionnaireCreate :query="query" />
         </template>
         <template #name="slotProps">
           <ButtonLink
@@ -45,7 +37,7 @@
               size="xs"
               kind="action"
               @click="
-                questionnaire = slotProps;
+                template = slotProps;
                 updateModalOpen = true;
               "
             >
@@ -55,7 +47,7 @@
               size="xs"
               kind="delete"
               @click="
-                questionnaire = slotProps;
+                template = slotProps;
                 deleteModalOpen = true;
               "
             >
@@ -65,15 +57,11 @@
         </template>
       </TableGenerator>
     </div>
-    <!-- create -->
-    <ModalFree v-model="createModalOpen" title="Create Questionnaire">
-      <FormGenerator :fields="fields" :request="createRequest" />
-    </ModalFree>
     <!-- update -->
     <ModalFree v-model="updateModalOpen" title="Update Questionnaire">
       <FormGenerator
         :fields="fields"
-        :data="questionnaire"
+        :data="template"
         :request="updateRequest"
       />
     </ModalFree>
@@ -81,14 +69,13 @@
     <ModalDelete
       v-model="deleteModalOpen"
       :request="deleteRequest"
-      :data="questionnaire"
+      :data="template"
     />
   </BoxLoader>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref } from "vue";
-import { Questionnaire } from "@/types/records";
+<script lang="ts" setup>
+import { Ref, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import {
   ModalFree,
@@ -101,10 +88,10 @@ import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
-import useCreate from "@/composables/useCreate";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
+import QuestionnaireCreate from "@/features/questionnaires/actions/QuestionnaireCreate.vue";
 
 const fields = [
   {
@@ -121,57 +108,27 @@ const fields = [
   },
 ];
 
-export default defineComponent({
-  components: {
-    ModalDelete,
-    ButtonLink,
-    ModalFree,
-    FormGenerator,
-    BoxLoader,
-    CogIcon,
-    BreadcrumbsBar,
-    TableGenerator,
-    ButtonNormal,
-  },
-  setup() {
-    const questionnaires = ref(null) as Ref<Questionnaire[] | null>;
-    const questionnaire = ref({}) as Ref<Questionnaire>;
+interface IQuestionnaireTemplate {
+  id: string;
+  name: string;
+  notes: string;
+}
 
-    // get
-    useGet(RecordsService.getQuestionnaireTemplates, questionnaires);
+const templates = ref(null) as Ref<IQuestionnaireTemplate[] | null>;
+const template = ref({}) as Ref<IQuestionnaireTemplate>;
 
-    // create
-    const { createRequest, createModalOpen } = useCreate(
-      RecordsService.createQuestionnaireTemplate,
-      questionnaires,
-    );
+// get
+const query = useGet(RecordsService.getQuestionnaireTemplates, templates);
 
-    // update
-    const { updateRequest, updateModalOpen } = useUpdate(
-      RecordsService.updateQuestionnaireTemplate,
-      questionnaires,
-    );
+// update
+const { updateRequest, updateModalOpen } = useUpdate(
+  RecordsService.updateQuestionnaireTemplate,
+  templates,
+);
 
-    // delete
-    const { deleteRequest, deleteModalOpen } = useDelete(
-      RecordsService.deleteQuestionnaireTemplate,
-      questionnaires,
-    );
-
-    return {
-      questionnaires,
-      questionnaire,
-      fields,
-      // create
-      createRequest,
-      createModalOpen,
-      // update
-      updateRequest,
-      updateModalOpen,
-      // delete
-      deleteRequest,
-      deleteModalOpen,
-    };
-  },
-});
+// delete
+const { deleteRequest, deleteModalOpen } = useDelete(
+  RecordsService.deleteQuestionnaireTemplate,
+  templates,
+);
 </script>
