@@ -82,6 +82,22 @@
           <div class="ml-2 text-sm leading-normal">
             {{ content.name }}
           </div>
+          <div class="ml-3">
+            <ButtonNormal
+              v-if="item.folder.actions.OPEN"
+              kind="action"
+              :to="{
+                name: 'folders-detail',
+                params: { uuid: item.folder.actions.OPEN.uuid },
+                query: {
+                  selectedId: content.uuid,
+                  selectedType: content.repository,
+                },
+              }"
+            >
+              Open
+            </ButtonNormal>
+          </div>
         </div>
       </div>
       <FoldersTree
