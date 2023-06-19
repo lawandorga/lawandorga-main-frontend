@@ -142,36 +142,6 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  createQuestionnaireTemplate(
-    questionnaire: IQuestionnaireTemplate,
-  ): Promise<IQuestionnaireTemplate> {
-    return axios
-      .post<IQuestionnaireTemplate>(
-        "questionnaires/questionnairetemplates/",
-        questionnaire,
-      )
-      .then((response) => response.data);
-  }
-
-  updateQuestionnaireTemplate(
-    questionnaire: IQuestionnaireTemplate,
-  ): Promise<IQuestionnaireTemplate> {
-    return axios
-      .patch<IQuestionnaireTemplate>(
-        `questionnaires/questionnairetemplates/${questionnaire.id}/`,
-        questionnaire,
-      )
-      .then((response) => response.data);
-  }
-
-  deleteQuestionnaireTemplate(
-    questionnaire: IQuestionnaireTemplate,
-  ): Promise<void> {
-    return axios.delete(
-      `questionnaires/questionnairetemplates/${questionnaire.id}/`,
-    );
-  }
-
   // questionnairequestion
   getQuestionnaireQuestions(
     questionnaire: IQuestionnaireTemplate,
