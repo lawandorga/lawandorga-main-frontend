@@ -33,6 +33,7 @@
   <TableSortable
     :head="head"
     :data="filteredRecords"
+    :get-display-value-func="getDisplayValueFromRecord"
     :get-value-func="getValueFromRecord"
     :sort-key="(userStore.getSetting('recordsSortKey') as string)"
     :sort-order="(userStore.getSetting('recordsSortOrder') as string)"
@@ -87,7 +88,7 @@
             class="max-w-xs text-left whitespace-normal cursor-pointer line-clamp-3 hover:underline"
             @click="search = getValueFromRecord(item, headItem.key)"
           >
-            {{ getValueFromRecord(item, headItem.key) }}
+            {{ getDisplayValueFromRecord(item, headItem.key) }}
           </button>
         </template>
 
@@ -109,9 +110,31 @@ import useSearch from "@/composables/useSearch";
 import { useUserStore } from "@/store/user";
 import { IListRecordV2 } from "../types/listRecordV2";
 
+// get display values
+const getDisplayValueFromRecord = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  r: Record<string, any>,
+  key: string,
+): string => {
+  const entry = r.attributes[key];
+  if (entry !== undefined) {
+    if (Array.isArray(entry)) return entry.join(", ");
+    return entry;
+  }
+  return "";
+};
+
 // get values
+const datetimeRegex = /^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}$/;
 const getValueFromEntry = (entry: string[] | string): string => {
   if (Array.isArray(entry)) return entry.join(", ");
+  if (datetimeRegex.test(entry)) {
+    const dateParts = entry.split(" ");
+    const date =
+      dateParts[0].split(".").reverse().join("-") + "T" + dateParts[1];
+    const dateObject = new Date(date);
+    return dateObject.toISOString();
+  }
   return entry;
 };
 
