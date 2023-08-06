@@ -1,16 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Update View
-  </ButtonNormal>
-  <ModalUpdate
-    v-model="commandModalOpen"
-    :fields="fields"
-    title="Update View"
-    :request="commandRequest"
-    :data="{ name: viewName, columns: viewColumns }"
-  />
-</template>
-
 <script setup lang="ts">
 import useClient from "@/api/client";
 import useCommand from "@/composables/useCommand";
@@ -21,6 +8,7 @@ const props = defineProps<{
   query: () => void;
   viewUuid: string;
   viewName: string;
+  viewOrdering: number;
   viewColumns: string[];
 }>();
 const { query, viewUuid } = toRefs(props);
@@ -54,3 +42,16 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Update View
+  </ButtonNormal>
+  <ModalUpdate
+    v-model="commandModalOpen"
+    :fields="fields"
+    title="Update View"
+    :request="commandRequest"
+    :data="{ name: viewName, columns: viewColumns, ordering: viewOrdering }"
+  />
+</template>

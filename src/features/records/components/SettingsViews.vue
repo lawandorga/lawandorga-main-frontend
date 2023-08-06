@@ -24,6 +24,7 @@
           :view-uuid="item.uuid"
           :view-columns="item.columns"
           :view-name="item.name"
+          :view-ordering="item.ordering"
         />
         <DeleteView
           :query="query"
