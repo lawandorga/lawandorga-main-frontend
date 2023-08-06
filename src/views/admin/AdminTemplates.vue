@@ -51,7 +51,7 @@
 import { Ref, ref } from "vue";
 import { RecordTemplate } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";

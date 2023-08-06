@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { FormInput, ButtonNormal } from "@lawandorga/components";
+import { FormInput, ButtonNormal } from "lorga-ui";
 import { useRouter } from "vue-router";
 
 export default defineComponent({

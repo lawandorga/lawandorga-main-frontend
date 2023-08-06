@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
-import { ButtonNormal, ModalUpdate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import useClient from "@/api/client";
 
 const props = defineProps<{

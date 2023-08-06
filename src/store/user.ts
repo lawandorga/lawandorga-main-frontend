@@ -11,7 +11,7 @@ import UserService from "@/services/user";
 import * as Sentry from "@sentry/vue";
 import useClient from "@/api/client";
 import { useErrorHandling } from "@/api/errors";
-import { types } from "@lawandorga/components";
+import { types } from "lorga-ui";
 import { useRouter } from "vue-router";
 
 export const useUserStore = defineStore("user", () => {

@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import CreateView from "../actions/CreateView.vue";
 import DeleteView from "../actions/DeleteView.vue";
 import UpdateView from "../actions/UpdateView.vue";

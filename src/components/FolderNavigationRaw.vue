@@ -79,7 +79,7 @@ export interface ContentGroupItem {
   buttons: VNode[];
 }
 
-import { ButtonToggle } from "@lawandorga/components";
+import { ButtonToggle } from "lorga-ui";
 import { VNode } from "vue";
 import FolderNavigationChild from "./FolderNavigationChild.vue";
 import FolderNavigationGroup from "@/components/FolderNavigationGroup.vue";

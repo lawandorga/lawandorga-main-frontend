@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ButtonNormal, ModalFree } from "@lawandorga/components";
+import { ButtonNormal, ModalFree } from "lorga-ui";
 import { Ref, ref } from "vue";
 import { CalendarIcsInfo } from "@/types/event";
 import useGet from "@/composables/useGet";

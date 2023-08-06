@@ -8,7 +8,7 @@
   >
     <div class="px-4 py-4 sm:px-6">
       <div class="flex flex-wrap items-center justify-between">
-        <p class="text-base font-medium text-lorgablue">
+        <p class="text-base font-medium text-formcolor">
           {{ name }}
         </p>
         <div v-show="isSelected" class="flex flex-shrink-0 ml-2 space-x-3">

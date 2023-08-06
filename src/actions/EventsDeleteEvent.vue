@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import EventService from "@/services/event";
-import { ModalDelete, ButtonNormal } from "@lawandorga/components";
+import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
 import { useUserStore } from "@/store/user";

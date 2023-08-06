@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { useAlertStore } from "@/store/alert";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 
 defineProps<{ link: string }>();
 

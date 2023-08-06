@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { mailGroupRemoveMember } from "@/services/mail";
-import { ModalConfirm, ButtonNormal } from "@lawandorga/components";
+import { ModalConfirm, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{

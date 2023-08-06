@@ -79,7 +79,7 @@
 
 <script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator, ButtonNormal } from "@lawandorga/components";
+import { TableGenerator, ButtonNormal } from "lorga-ui";
 import { computed, Ref, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";

@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { IAccess } from "@/types/folders";
 import FoldersRevokeAccess from "@/actions/FoldersRevokeAccess.vue";
 

@@ -15,7 +15,7 @@
 import useCommand from "@/composables/useCommand";
 import { mailGroupDeleteAddress } from "@/services/mail";
 import { IAvailableMailDomain } from "@/types/mail";
-import { ButtonNormal, ModalDelete } from "@lawandorga/components";
+import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{

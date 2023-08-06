@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import { ModalFree } from "@lawandorga/components";
+import { ModalFree } from "lorga-ui";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
 

@@ -15,7 +15,7 @@
 import useCommand from "@/composables/useCommand";
 import { mailGroupAddAddress } from "@/services/mail";
 import { IAvailableMailDomain } from "@/types/mail";
-import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
@@ -46,7 +46,7 @@ const addressFields = computed<types.FormField[]>(() => {
   ] as types.FormField[];
 });
 
-const changed = (data: types.JsonModel) => {
+const changed = (data: Record<string, any>) => {
   let domainName = "";
   const domain = availableDomains?.value.find((i) => i.uuid === data.domain);
   if (domain) domainName = domain.name;

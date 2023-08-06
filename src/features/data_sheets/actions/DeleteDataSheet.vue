@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ModalDelete, ButtonNormal } from "@lawandorga/components";
+import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";

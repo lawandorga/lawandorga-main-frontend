@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { foldersCreateFolder } from "@/services/folders";
-import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{

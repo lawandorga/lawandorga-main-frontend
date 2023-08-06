@@ -1,7 +1,7 @@
 <template>
   <div class="hidden md:flex md:flex-shrink-0 print:hidden">
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
-      <div class="flex flex-col flex-grow overflow-y-auto bg-lorgablue">
+      <div class="flex flex-col flex-grow overflow-y-auto bg-formcolor">
         <div
           class="flex items-center flex-shrink-0 h-16 border-b border-white border-opacity-20"
           :class="{ 'border-r': !expanded }"
@@ -163,7 +163,7 @@ import useNavigationItems from "@/composables/useNavigationItems";
 import { useUserStore } from "@/store/user";
 import { ref, watch } from "vue";
 import LogoWhite from "./LogoWhite.vue";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { storeToRefs } from "pinia";
 
 const { navigationItems } = useNavigationItems();

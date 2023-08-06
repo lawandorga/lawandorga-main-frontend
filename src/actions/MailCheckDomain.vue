@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { mailCheckDomain } from "@/services/mail";
 import { IMailCheckDomain } from "@/types/mail";
-import { ButtonNormal, ModalFree } from "@lawandorga/components";
+import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
 
 const props = defineProps<{

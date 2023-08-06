@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { defineComponent } from "vue";
 
 export default defineComponent({

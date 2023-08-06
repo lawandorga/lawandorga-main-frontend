@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { mailGroupSetDefaultAddress } from "@/services/mail";
-import { ButtonNormal, ModalConfirm } from "@lawandorga/components";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{

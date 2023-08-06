@@ -43,7 +43,7 @@ import useClient from "@/api/client";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
 import { useUserStore } from "@/store/user";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { ref } from "vue";
 
 interface ChatPage {

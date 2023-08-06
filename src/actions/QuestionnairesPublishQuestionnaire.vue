@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { IQuestionnaireTemplate } from "@/types/questionnaire";
 import { ref, toRefs, watch } from "vue";
 import RecordsService from "@/services/records";

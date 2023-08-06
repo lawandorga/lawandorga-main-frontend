@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { isDataUrlDisplayable } from "@/utils/download";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { computed, toRefs, ref, watch } from "vue";
 
 const props = defineProps<{

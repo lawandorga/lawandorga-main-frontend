@@ -151,7 +151,7 @@ import {
   ISelfMailUser,
   NoMailAccount,
 } from "@/types/mail";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 // page

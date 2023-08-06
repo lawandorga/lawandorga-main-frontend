@@ -53,7 +53,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { FormGenerator, types } from "@lawandorga/components";
+import { FormGenerator, types } from "lorga-ui";
 import { usersGetRegisterPage } from "@/services/user";
 import { IRegisterPage } from "@/types/user";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";

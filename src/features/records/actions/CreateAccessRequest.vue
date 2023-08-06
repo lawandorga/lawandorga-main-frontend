@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import { ButtonNormal, ModalForm } from "@lawandorga/components";
+import { ButtonNormal, ModalForm } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";
 

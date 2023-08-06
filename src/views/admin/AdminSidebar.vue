@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";

@@ -64,7 +64,7 @@ import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
 import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";

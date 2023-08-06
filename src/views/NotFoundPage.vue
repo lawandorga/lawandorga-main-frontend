@@ -4,11 +4,11 @@
   >
     <div class="mx-auto max-w-max">
       <main class="sm:flex">
-        <p class="text-4xl font-extrabold text-lorgablue sm:text-5xl">404</p>
+        <p class="text-4xl font-extrabold text-formcolor sm:text-5xl">404</p>
         <div class="sm:ml-6">
           <div class="sm:border-l sm:border-gray-200 sm:pl-6">
             <h1
-              class="text-4xl font-extrabold tracking-tight text-lorgablue sm:text-5xl"
+              class="text-4xl font-extrabold tracking-tight text-formcolor sm:text-5xl"
             >
               Page not found
             </h1>
@@ -31,5 +31,5 @@
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 </script>

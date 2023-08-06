@@ -28,7 +28,7 @@
 import { ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { LifebuoyIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
 

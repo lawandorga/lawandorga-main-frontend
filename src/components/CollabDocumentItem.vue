@@ -147,7 +147,7 @@ import {
   FormGenerator,
   ModalDelete,
   CircleLoader,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";

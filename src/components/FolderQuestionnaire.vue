@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import { ButtonNormal, CircleLoader } from "@lawandorga/components";
+import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";

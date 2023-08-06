@@ -14,7 +14,7 @@
 import useCommand from "@/composables/useCommand";
 import { mailCreateGroup } from "@/services/mail";
 import { IAvailableMailDomain } from "@/types/mail";
-import { ModalCreate, types, ButtonNormal } from "@lawandorga/components";
+import { ModalCreate, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{

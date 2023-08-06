@@ -1,4 +1,4 @@
-import { types } from "@lawandorga/components";
+import { types } from "lorga-ui";
 import { defineStore } from "pinia";
 
 export const useAlertStore = defineStore("alert", {

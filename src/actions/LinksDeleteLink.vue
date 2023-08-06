@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ButtonNormal, ModalDelete } from "@lawandorga/components";
+import { ButtonNormal, ModalDelete } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";
 import { useUserStore } from "@/store/user";

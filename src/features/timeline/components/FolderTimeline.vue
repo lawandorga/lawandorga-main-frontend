@@ -2,7 +2,7 @@
 import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery from "@/composables/useQuery";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
 import TimelineEventCreate from "../actions/TimelineEventCreate.vue";
 import TimelineEventDelete from "../actions/TimelineEventDelete.vue";

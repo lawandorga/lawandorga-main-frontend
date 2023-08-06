@@ -1,6 +1,6 @@
 <template>
   <main class="divide-y divide-gray-100">
-    <section class="px-8 py-8 mx-auto bg-lorgablue max-w-7xl">
+    <section class="px-8 py-8 mx-auto bg-formcolor max-w-7xl">
       <div class="max-w-7xl">
         <div class="grid gap-6 lg:grid-cols-2">
           <div class="">
@@ -117,7 +117,7 @@
             <div class="mt-3">
               <router-link
                 :to="{ name: 'internal-article', params: { id: article.id } }"
-                class="text-base font-semibold text-lorgablue"
+                class="text-base font-semibold text-formcolor"
               >
                 Read full article
               </router-link>
@@ -222,7 +222,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 import InternalService from "@/services/internal";
 import { IArticle, ILoginPage, IRoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";

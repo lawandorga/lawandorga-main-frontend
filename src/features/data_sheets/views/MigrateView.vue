@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import useGet from "@/composables/useGet";
-import { ButtonNormal, TableGenerator } from "@lawandorga/components";
+import { ButtonNormal, TableGenerator } from "lorga-ui";
 import { ref } from "vue";
 import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
 

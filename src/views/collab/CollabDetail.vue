@@ -45,7 +45,7 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { DocumentTextIcon, CheckIcon } from "@heroicons/vue/24/outline";
 import FormTiptap from "@/components/FormTiptap.vue";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { useErrorHandling } from "@/api/errors";
 import { useRoute } from "vue-router";
 

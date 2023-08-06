@@ -72,7 +72,7 @@ import {
   ExclamationTriangleIcon,
   PauseIcon,
 } from "@heroicons/vue/20/solid";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { ref, computed } from "vue";
 
 interface IApps {

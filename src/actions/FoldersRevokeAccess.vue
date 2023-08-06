@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import { ButtonNormal, ModalDelete } from "@lawandorga/components";
+import { ButtonNormal, ModalDelete } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import { foldersRevokeAccess } from "@/services/folders";
 

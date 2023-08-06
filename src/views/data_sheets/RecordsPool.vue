@@ -51,7 +51,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { FormGenerator, ButtonNormal } from "@lawandorga/components";
+import { FormGenerator, ButtonNormal } from "lorga-ui";
 import RecordsService from "@/services/records";
 import { Pool } from "@/types/records";
 import { JsonModel } from "@/types/shared";

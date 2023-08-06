@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { mailDeleteAddress } from "@/services/mail";
-import { ModalDelete, ButtonNormal } from "@lawandorga/components";
+import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{

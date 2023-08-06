@@ -45,7 +45,7 @@ import FormRecord from "./FormRecord.vue";
 import { Record } from "@/types/records";
 import { recordsGetRecord } from "@/services/records";
 import useQuery from "@/composables/useQuery";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 
 // props
 const props = defineProps<{

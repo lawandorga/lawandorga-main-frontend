@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative z-10 flex flex-shrink-0 h-16 border-b border-white shadow bg-lorgablue border-opacity-20 print:hidden"
+    class="relative z-10 flex flex-shrink-0 h-16 border-b border-white shadow bg-formcolor border-opacity-20 print:hidden"
   >
     <div
       type="button"

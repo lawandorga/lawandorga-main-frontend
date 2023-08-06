@@ -21,7 +21,7 @@
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <h2
           v-if="isEventsListEmpty"
-          class="text-xl font-medium text-center text-lorgablue"
+          class="text-xl font-medium text-center text-formcolor"
         >
           No event matches the filter criteria.
         </h2>
@@ -46,7 +46,7 @@
               <div
                 class="w-full h-1"
                 :class="{
-                  'bg-lorgablue': event.level === 'ORG' && !event.is_past_event,
+                  'bg-formcolor': event.level === 'ORG' && !event.is_past_event,
                   'bg-blue-500': event.level === 'META' && !event.is_past_event,
                   'bg-blue-300':
                     event.level === 'GLOBAL' && !event.is_past_event,
@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ButtonNormal, ButtonToggle } from "@lawandorga/components";
+import { ButtonNormal, ButtonToggle } from "lorga-ui";
 import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import { EyeIcon, CalendarIcon, HomeIcon } from "@heroicons/vue/20/solid";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";

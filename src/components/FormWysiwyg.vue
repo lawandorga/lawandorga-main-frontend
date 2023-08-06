@@ -17,7 +17,7 @@ import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { StarterKit } from "@tiptap/starter-kit";
 import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
 import { Link } from "@tiptap/extension-link";
-import { FormHelptext, FormLabel } from "@lawandorga/components";
+import { FormHelptext, FormLabel } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
@@ -63,7 +63,7 @@ const editor = useEditor({
     StarterKit,
     Link.configure({
       autolink: true,
-      HTMLAttributes: { class: "underline text-lorgablue" },
+      HTMLAttributes: { class: "underline text-formcolor" },
     }),
   ],
   onUpdate: () => {

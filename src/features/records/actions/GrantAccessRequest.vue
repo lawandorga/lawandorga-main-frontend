@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal, ModalConfirm } from "@lawandorga/components";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import { toRefs } from "vue";
 import useClient from "@/api/client";

@@ -128,7 +128,7 @@ import {
   ModalDelete,
   ModalConfirm,
   ButtonNormal,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";

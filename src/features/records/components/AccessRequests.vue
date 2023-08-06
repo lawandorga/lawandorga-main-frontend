@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import { IAccessRequest } from "../types/accessRequest";
 import DeclineAccessRequest from "../actions/DeclineAccessRequest.vue";

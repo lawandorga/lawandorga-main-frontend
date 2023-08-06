@@ -20,7 +20,7 @@
 import useCommand from "@/composables/useCommand";
 import { foldersRevokeAccess } from "@/services/folders";
 import { IAccess } from "@/types/folders";
-import { ButtonNormal, ModalUpdate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{

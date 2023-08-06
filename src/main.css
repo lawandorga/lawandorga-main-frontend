@@ -1,4 +1,4 @@
-@import "@lawandorga/components/style.css";
+@import "lorga-ui/style.css";
 
 @tailwind base;
 @tailwind components;

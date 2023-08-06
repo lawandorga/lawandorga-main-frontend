@@ -57,7 +57,7 @@
         <div class="flex items-center space-x-3">
           <button
             v-if="item.folder"
-            class="underline text-lorgablue hover:text-opacity-75"
+            class="underline text-formcolor hover:text-opacity-75"
             @click="folderSelected(item.folder.uuid)"
           >
             {{ item.folder.name }}
@@ -152,7 +152,7 @@ import { useUserStore } from "@/store/user";
 import { IAccess, IContent, IFolder, IFolderItem } from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
-import { ButtonNormal, TableSortable } from "@lawandorga/components";
+import { ButtonNormal, TableSortable } from "lorga-ui";
 import { computed, ref, toRefs } from "vue";
 import FolderProperty from "./FolderProperty.vue";
 import FoldersBadge from "./FoldersBadge.vue";

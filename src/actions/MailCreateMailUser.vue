@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { mailCreateUser } from "@/services/mail";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{

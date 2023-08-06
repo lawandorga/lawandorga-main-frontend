@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { watch, ref } from "vue";
-import { ModalFree, TableGenerator } from "@lawandorga/components";
+import { ModalFree, TableGenerator } from "lorga-ui";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import { HasPermission } from "@/types/core";
 import useClient from "@/api/client";

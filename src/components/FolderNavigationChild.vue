@@ -12,7 +12,7 @@
     ></div>
 
     <div class="flex items-center justify-between">
-      <p class="text-sm font-medium truncate text-lorgablue">
+      <p class="text-sm font-medium truncate text-formcolor">
         {{ name }}
       </p>
       <div v-if="showType" class="flex flex-shrink-0 ml-2">

@@ -59,7 +59,7 @@
 import { Ref, ref } from "vue";
 import { recordsGetDeletions } from "@/services/records";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
 import { RecordDeletion } from "@/types/records";
 import { formatDate } from "@/utils/date";

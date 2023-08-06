@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import BoxHeadingStats from "./BoxHeadingStats.vue";
 import FilesDownloadFile from "@/actions/FilesDownloadFile.vue";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import { watch, ref, toRefs } from "vue";
 import { RecordsDocument } from "@/types/records";

@@ -1,4 +1,4 @@
-import { types } from "@lawandorga/components";
+import { types } from "lorga-ui";
 import { Ref, ref, unref } from "vue";
 import { isFunction } from "lodash";
 import { Reffed } from "@/types/shared";
@@ -19,7 +19,7 @@ export default function useCommand<
   ...params: Reffed<DropFirst<Parameters<RFn>>>
 ): {
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
-  commandRequest: (data: types.JsonModel) => Promise<any>;
+  commandRequest: (data: Record<string, any>) => Promise<any>;
   commandModalOpen: Ref<boolean>;
 } {
   const commandModalOpen = ref(false);
@@ -29,7 +29,7 @@ export default function useCommand<
 
   const { handleCommandError } = useErrorHandling();
 
-  const commandRequest = (data: types.JsonModel) => {
+  const commandRequest = (data: Record<string, any>) => {
     return requestFunc(data, ...commandParams.map(unref))
       .then((d) => {
         queryFunctions.forEach((qf) => qf());

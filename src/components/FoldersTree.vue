@@ -119,7 +119,7 @@ import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
 import { IFolderItem } from "@/types/folders";
 import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import { useRoute } from "vue-router";
 import FoldersBadge from "./FoldersBadge.vue";

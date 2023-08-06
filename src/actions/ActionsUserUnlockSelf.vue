@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ButtonNormal, ModalConfirm, types } from "@lawandorga/components";
+import { ButtonNormal, ModalConfirm, types } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";
 import { useUserStore } from "@/store/user";
@@ -25,7 +25,7 @@ const request = client.post("api/rlc_users/unlock_self/");
 
 const { commandRequest, commandModalOpen } = useCommand(request);
 
-const unlockRequest = (data: types.JsonModel) =>
+const unlockRequest = (data: Record<string, any>) =>
   commandRequest(data).then(() => {
     userStore.updateData();
   });

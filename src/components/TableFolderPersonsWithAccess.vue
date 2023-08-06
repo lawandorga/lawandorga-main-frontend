@@ -31,7 +31,7 @@
 import FoldersGrantAccess from "@/actions/FoldersGrantAccess.vue";
 import FoldersRevokeAccessUser from "@/actions/FoldersRevokeAccessUser.vue";
 import { IAccess, IFolderItem } from "@/types/folders";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 
 defineProps<{
   query: () => void;

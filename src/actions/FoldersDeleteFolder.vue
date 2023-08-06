@@ -16,9 +16,9 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { foldersDeleteFolder } from "@/services/folders";
-import { ModalDelete } from "@lawandorga/components";
+import { ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 
 const props = defineProps<{
   folderUuid: string;

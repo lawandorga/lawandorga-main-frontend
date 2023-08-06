@@ -77,7 +77,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ScaleIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";

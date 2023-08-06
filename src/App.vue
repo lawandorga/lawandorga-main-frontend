@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import NavigationDefault from "@/components/NavigationDefault.vue";
 import { ref, computed } from "vue";
-import { AlertList } from "@lawandorga/components";
+import { AlertList } from "lorga-ui";
 import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";

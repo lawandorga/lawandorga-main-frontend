@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { IQuestionnaireAnswer } from "@/types/questionnaire";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 import useClient from "@/api/client";
 
 defineProps<{ answer: IQuestionnaireAnswer }>();

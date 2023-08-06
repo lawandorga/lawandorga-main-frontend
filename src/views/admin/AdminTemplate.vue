@@ -140,7 +140,7 @@ import {
   FormGenerator,
   TableGenerator,
   ButtonNormal,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import RecordsService from "@/services/records";
 import useGet from "@/composables/useGet";
 import useUpdate from "@/composables/useUpdate";

@@ -38,7 +38,7 @@ import { messagesGetMessages } from "@/services/messages";
 import { IMessage } from "@/types/messages";
 import MessagesSendMessage from "@/actions/MessagesSendMessage.vue";
 import useQuery from "@/composables/useQuery";
-import { CircleLoader } from "@lawandorga/components";
+import { CircleLoader } from "lorga-ui";
 
 const props = defineProps<{
   selectedType: string;

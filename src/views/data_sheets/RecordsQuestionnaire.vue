@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { FormGenerator, ButtonNormal } from "@lawandorga/components";
+import { FormGenerator, ButtonNormal } from "lorga-ui";
 import { Questionnaire } from "@/types/records";
 import useGet from "@/composables/useGet";
 import RecordsService from "@/services/records";

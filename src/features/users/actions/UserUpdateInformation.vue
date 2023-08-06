@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import useCommand from "@/composables/useCommand";
-import { ButtonNormal, ModalUpdate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
 const userFields: types.FormField[] = [

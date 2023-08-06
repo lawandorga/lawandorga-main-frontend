@@ -67,7 +67,7 @@ import {
   ButtonNormal,
   CircleLoader,
   TableGenerator,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";

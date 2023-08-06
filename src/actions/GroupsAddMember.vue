@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import useCommand from "@/composables/useCommand";
-import { ModalCreate, ButtonNormal, types } from "@lawandorga/components";
+import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
 import AdminService from "@/services/admin";
 import { RlcUserSmall } from "@/types/user";

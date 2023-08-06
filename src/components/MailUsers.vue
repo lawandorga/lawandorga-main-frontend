@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { IMailUser, MailDashboardPage, NoMailAccount } from "@/types/mail";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "./ButtonLink.vue";
 

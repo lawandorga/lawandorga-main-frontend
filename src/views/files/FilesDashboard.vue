@@ -252,7 +252,7 @@ import {
   ModalFree,
   FormGenerator,
   ModalDelete,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
 import CoreService from "@/services/core";
@@ -393,7 +393,7 @@ function createUpdateDeleteFolder(
   const { createRequest, createModalOpen: foldersCreateFolderModalOpen } =
     useCreate(FilesService.foldersCreateFolder, items);
 
-  const foldersCreateFolderRequest = (data: types.JsonModel) =>
+  const foldersCreateFolderRequest = (data: Record<string, any>) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // update
@@ -401,7 +401,7 @@ function createUpdateDeleteFolder(
     FilesService.updateFolder,
     items,
   );
-  const updateFolderRequest = (data: types.JsonModel) =>
+  const updateFolderRequest = (data: Record<string, any>) =>
     updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
   // create and update

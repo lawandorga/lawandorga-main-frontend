@@ -3,7 +3,7 @@
     class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
   >
     <router-link
-      class="text-lg font-medium text-lorgablue"
+      class="text-lg font-medium text-formcolor"
       :to="{ name: 'start' }"
     >
       &#x21b5; Back

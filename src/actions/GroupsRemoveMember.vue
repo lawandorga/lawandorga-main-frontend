@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import useCommand from "@/composables/useCommand";
-import { ButtonNormal, ModalDelete } from "@lawandorga/components";
+import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 import useClient from "@/api/client";
 

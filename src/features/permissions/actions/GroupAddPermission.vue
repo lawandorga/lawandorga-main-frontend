@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ModalCreate, ButtonNormal, types } from "@lawandorga/components";
+import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";

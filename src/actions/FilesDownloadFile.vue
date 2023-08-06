@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 import useClient from "@/api/client";
 

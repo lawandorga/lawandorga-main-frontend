@@ -34,7 +34,7 @@ import {
   CircleLoader,
   FormGenerator,
   types,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import { useRoute } from "vue-router";
 import useClient from "@/api/client";
 import { ref } from "vue";

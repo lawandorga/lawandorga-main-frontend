@@ -1,7 +1,7 @@
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
 import { getNextQuery } from "@/utils/router";
-import { types } from "@lawandorga/components";
+import { types } from "lorga-ui";
 import { AxiosError } from "axios";
 import { Router, useRouter } from "vue-router";
 

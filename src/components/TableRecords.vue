@@ -100,12 +100,7 @@
 
 <script lang="ts" setup>
 import { PropType, toRefs, computed } from "vue";
-import {
-  FormInput,
-  TableSortable,
-  ButtonNormal,
-  types,
-} from "@lawandorga/components";
+import { FormInput, TableSortable, ButtonNormal, types } from "lorga-ui";
 import { IListRecord } from "@/types/records";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useSearch from "@/composables/useSearch";
@@ -118,7 +113,7 @@ const getValueFromEntry = (entry: string[] | string): string => {
 };
 
 const getValueFromRecord = (
-  r: types.JsonModel,
+  r: Record<string, any>,
   key: string,
   defaultValue = "",
 ): string => {

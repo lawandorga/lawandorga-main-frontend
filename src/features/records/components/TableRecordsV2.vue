@@ -103,12 +103,7 @@
 
 <script lang="ts" setup>
 import { PropType, toRefs, computed } from "vue";
-import {
-  FormInput,
-  TableSortable,
-  ButtonNormal,
-  types,
-} from "@lawandorga/components";
+import { FormInput, TableSortable, ButtonNormal } from "lorga-ui";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useSearch from "@/composables/useSearch";
 import { useUserStore } from "@/store/user";
@@ -121,7 +116,8 @@ const getValueFromEntry = (entry: string[] | string): string => {
 };
 
 const getValueFromRecord = (
-  r: types.JsonModel,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  r: Record<string, any>,
   key: string,
   defaultValue = "",
 ): string => {

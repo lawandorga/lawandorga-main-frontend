@@ -42,7 +42,7 @@
                     <div>
                       <button
                         :class="[
-                          'focus:bg-lorgablue focus:text-white focus:outline-none',
+                          'focus:bg-formcolor focus:text-white focus:outline-none',
                           'text-gray-900',
                           'group flex w-full items-center rounded-md px-4 py-2 text-sm',
                         ]"
@@ -98,7 +98,7 @@ import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 
 defineProps<{ query: () => void; folderUuid?: string }>();
 

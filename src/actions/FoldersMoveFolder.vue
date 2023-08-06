@@ -16,9 +16,9 @@
 import useCommand from "@/composables/useCommand";
 import { foldersMoveFolder } from "@/services/folders";
 import { IFolder } from "@/types/folders";
-import { ModalUpdate, types } from "@lawandorga/components";
+import { ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 
 const props = defineProps<{
   query: () => void;

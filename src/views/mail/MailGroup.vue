@@ -93,7 +93,7 @@ import {
   IMailUser,
 } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 

@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormGenerator, types } from "@lawandorga/components";
+import { FormGenerator, types } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";

@@ -1,5 +1,5 @@
 <template>
-  <router-link class="underline text-lorgablue hover:text-opacity-75" :to="to">
+  <router-link class="underline text-formcolor hover:text-opacity-75" :to="to">
     <slot />
   </router-link>
 </template>

@@ -5,7 +5,7 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import { downloadFileRequest } from "@/utils/download";
-import { types } from "@lawandorga/components";
+import { types } from "lorga-ui";
 import axios from "axios";
 
 class FilesService {
@@ -80,7 +80,7 @@ class FilesService {
   }
 
   // files
-  createFile(data: types.JsonModel): Promise<FilesFile> {
+  createFile(data: Record<string, any>): Promise<FilesFile> {
     const formData = new FormData();
     if (data.folder) formData.append("folder", data.folder);
     if (data.file) formData.append("file", data.file);

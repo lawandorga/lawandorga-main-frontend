@@ -104,7 +104,7 @@ import {
   FormFile,
   ButtonNormal,
   types,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";

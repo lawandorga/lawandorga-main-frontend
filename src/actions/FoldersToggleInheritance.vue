@@ -26,9 +26,9 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { foldersToggleInheritance } from "@/services/folders";
-import { ModalConfirm } from "@lawandorga/components";
+import { ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
-import { ButtonNormal } from "@lawandorga/components";
+import { ButtonNormal } from "lorga-ui";
 
 const props = defineProps<{
   query: () => void;

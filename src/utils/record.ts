@@ -1,8 +1,8 @@
 import { formatDate } from "./date";
-import { types } from "@lawandorga/components";
+import { types } from "lorga-ui";
 
 export const getValueFromEntry = (
-  entry: types.JsonModel,
+  entry: Record<string, any>,
   defaultValue = "",
 ): string => {
   if (entry.type === "date" || entry.type === "datetime-local")

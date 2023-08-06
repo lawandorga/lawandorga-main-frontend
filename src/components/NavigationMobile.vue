@@ -48,7 +48,7 @@
               </button>
             </div>
           </TransitionChild>
-          <div class="flex items-center flex-shrink-0 h-16 px-4 bg-lorgablue">
+          <div class="flex items-center flex-shrink-0 h-16 px-4 bg-formcolor">
             <router-link to="/" class="flex items-center space-x-2">
               <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
               <h1 class="text-2xl font-bold text-white">Law&Orga</h1>

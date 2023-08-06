@@ -6,7 +6,7 @@ import {
   ModalCreate,
   ModalUpdate,
   types,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import { toRef, toRefs } from "vue";
 
 const props = defineProps<{

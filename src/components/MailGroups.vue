@@ -32,7 +32,7 @@
 import MailCreateGroup from "@/actions/MailCreateGroup.vue";
 import MailDeleteGroup from "@/actions/MailDeleteGroup.vue";
 import { IMailGroup, MailDashboardPage, NoMailAccount } from "@/types/mail";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "./ButtonLink.vue";
 

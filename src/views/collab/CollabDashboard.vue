@@ -81,7 +81,7 @@ import {
   ButtonNormal,
   CircleLoader,
   ModalForm,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import CollabService from "@/services/collab";
 import { DocumentTextIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";

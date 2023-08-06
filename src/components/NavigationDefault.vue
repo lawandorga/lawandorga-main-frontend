@@ -3,7 +3,7 @@ const registerLink = `${import.meta.env.VITE_AUTH_URL}/auth/user/register/`;
 </script>
 
 <template>
-  <div class="bg-lorgablue print:hidden">
+  <div class="bg-formcolor print:hidden">
     <div
       class="flex items-center justify-between flex-shrink-0 h-16 px-4 border-b border-white border-opacity-20"
     >

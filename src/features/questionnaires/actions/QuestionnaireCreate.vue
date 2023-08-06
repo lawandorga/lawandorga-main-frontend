@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import useCommand from "@/composables/useCommand";
-import { ButtonNormal, ModalCreate, types } from "@lawandorga/components";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 
 const props = defineProps<{
   query: () => void;

@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { TableGenerator } from "@lawandorga/components";
+import { TableGenerator } from "lorga-ui";
 import { HasPermission } from "@/types/core";
 import useClient from "@/api/client";
 import useGet from "@/composables/useGet";

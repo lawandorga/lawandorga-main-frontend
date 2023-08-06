@@ -114,7 +114,7 @@
 import { ref, computed } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";
-import { TableGenerator, ButtonNormal } from "@lawandorga/components";
+import { TableGenerator, ButtonNormal } from "lorga-ui";
 import { RlcUser } from "@/types/user";
 import { useRoute } from "vue-router";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";

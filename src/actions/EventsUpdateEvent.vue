@@ -43,7 +43,7 @@ import {
   ButtonNormal,
   ModalFree,
   types,
-} from "@lawandorga/components";
+} from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import { useUserStore } from "@/store/user";
