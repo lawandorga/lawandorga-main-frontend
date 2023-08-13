@@ -56,7 +56,7 @@ import BannerList from "./components/BannerList.vue";
 import { getCookie } from "./utils/cookie";
 
 if (!getCookie("csrftoken")) {
-  const redirect = `${window.location.origin}/user/register`;
+  const redirect = `${window.location.href}`;
   const redirectEncoded = encodeURIComponent(redirect);
   const backend = import.meta.env.VITE_AUTH_URL;
   const cookieSetLink = `${backend}/redirect/?next=${redirectEncoded}`;
