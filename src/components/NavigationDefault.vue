@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const registerLink = `${import.meta.env.VITE_AUTH_URL}/auth/user/register/`;
+import { getRegisterUrl } from "@/utils/login";
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const registerLink = `${import.meta.env.VITE_AUTH_URL}/auth/user/register/`;
         </router-link>
         <a
           class="text-lg font-medium text-white hover:underline"
-          :href="registerLink"
+          :href="getRegisterUrl()"
         >
           Register
         </a>

@@ -3,7 +3,7 @@ import collabRoutes from "./collab";
 import userRoutes from "./user";
 import adminRoutes from "./admin";
 import filesRoutes from "./files";
-import dataSheetsRoutes from "@/features/data_sheets/router";
+import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import foldersRoutes from "./folders";
@@ -13,12 +13,11 @@ import eventsRoutes from "./events";
 import mailRoutes from "./mail";
 import DashboardPage from "@/views/DashboardPage.vue";
 import ErrorPage from "@/views/ErrorPage.vue";
-import { isAuthenticated } from "./utils";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
 import uploadsRoutes from "./uploads";
 import chatRoutes from "./chat";
-import recordsRoutes from "@/features/records/router";
+import recordsRoutes from "@/features/records/routes";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -35,7 +34,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/dashboard/",
     name: "dashboard",
     component: DashboardPage,
-    beforeEnter: isAuthenticated,
   },
   ...foldersRoutes,
   ...userRoutes,

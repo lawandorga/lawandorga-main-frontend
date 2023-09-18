@@ -10,9 +10,6 @@ import { ref, computed } from "vue";
 import UserService from "@/services/user";
 import * as Sentry from "@sentry/vue";
 import useClient from "@/api/client";
-import { useErrorHandling } from "@/api/errors";
-import { types } from "lorga-ui";
-import { useRouter } from "vue-router";
 
 export const useUserStore = defineStore("user", () => {
   const rlc = ref<Rlc>();
@@ -49,15 +46,12 @@ export const useUserStore = defineStore("user", () => {
 
   const client = useClient();
   const request = client.get("api/rlc_users/data_self/");
-  const { handleQueryError } = useErrorHandling();
-  const router = useRouter();
 
   const updateData = () => {
     return request()
       .then((r) => setData(r))
-      .catch(handleQueryError)
-      .catch((error: types.ICommandError) => {
-        router.push({ name: "error", query: { error: error.title } });
+      .catch(() => {
+        /* ignore */
       });
   };
 

@@ -1,9 +1,9 @@
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
-import { getNextQuery } from "@/utils/router";
 import { types } from "lorga-ui";
 import { AxiosError } from "axios";
 import { Router, useRouter } from "vue-router";
+import { getLoginUrl } from "@/utils/login";
 
 interface IContext {
   error: AxiosError;
@@ -14,17 +14,12 @@ interface IContext {
 
 export function handleAuthenticationError(context: IContext): Promise<void> {
   const userStore = context.userStore;
-  const router = context.router;
   const error = context.error;
 
   if (error.response && error.response.status === 401) {
-    const wasAuthenticated = userStore.isAuthenticated;
     userStore.reset();
-    if (wasAuthenticated)
-      router.push({
-        name: "start",
-        query: getNextQuery(window.location.pathname),
-      });
+
+    window.location.href = getLoginUrl();
 
     return Promise.resolve();
   }

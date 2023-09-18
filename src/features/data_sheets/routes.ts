@@ -1,5 +1,4 @@
 import { RouteRecordRaw } from "vue-router";
-import { isAuthenticated } from "@/router/utils";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,13 +10,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/records/:record/",
     name: "records-detail",
     component: () => import("@/views/data_sheets/RecordsDetail.vue"),
-    beforeEnter: isAuthenticated,
   },
   {
     path: "/records/pool/",
     name: "records-pool",
     component: () => import("@/views/data_sheets/RecordsPool.vue"),
-    beforeEnter: isAuthenticated,
   },
   {
     path: "/records/upload/",

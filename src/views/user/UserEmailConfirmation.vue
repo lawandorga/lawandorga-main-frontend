@@ -9,9 +9,7 @@
       E-Mail confirmation successful. You can login now.
       <br />
       <br />
-      <router-link :to="{ name: 'user-login' }" class="underline">
-        > Login
-      </router-link>
+      <a :href="getRawLoginUrl()" class="underline">> Login</a>
     </div>
     <div v-else class="text-lg">
       Something went wrong. Maybe your email is already confirmed. Please try to
@@ -20,15 +18,14 @@
       <span>.</span>
       <br />
       <br />
-      <router-link :to="{ name: 'user-login' }" class="underline">
-        > Login
-      </router-link>
+      <a :href="getRawLoginUrl()" class="underline">> Login</a>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import useClient from "@/api/client";
+import { getRawLoginUrl } from "@/utils/login";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 

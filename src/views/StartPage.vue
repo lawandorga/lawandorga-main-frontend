@@ -50,11 +50,14 @@
               <h2 class="mb-8 text-2xl font-bold">Login</h2>
               <p v-if="false">We're running updates. We'll be back shortly!</p>
               <div v-else-if="!userStore.isAuthenticated">
-                <ButtonNormal :to="{ name: 'user-login' }">
+                <ButtonNormal :href="getRawLoginUrl()">
                   To the login page
                 </ButtonNormal>
                 <div class="pt-6 space-x-4 text-right">
-                  <a :href="registerLink" class="inline-block hover:underline">
+                  <a
+                    :href="getRegisterUrl()"
+                    class="inline-block hover:underline"
+                  >
                     Register
                   </a>
                   <a
@@ -229,6 +232,7 @@ import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import useGet from "@/composables/useGet";
 import { computed, ref } from "vue";
+import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
 
 const sponsors = [
   {
@@ -292,7 +296,5 @@ const articles = computed<IArticle[]>(() => {
 
 const passwordForgottenLink = `${
   import.meta.env.VITE_AUTH_URL
-}/auth/password_reset/`;
-
-const registerLink = `${import.meta.env.VITE_AUTH_URL}/auth/user/register/`;
+}/auth/user/password_reset/`;
 </script>
