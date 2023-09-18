@@ -118,6 +118,17 @@ const groups = computed<ContentGroupItem[]>(() => {
     buttons: [],
   });
 
+  g.push({
+    name: "Subfolders",
+    type: "SUBFOLDER",
+    children: folder.value.subfolders.map((c) => ({
+      name: c.name,
+      type: "FOLDER",
+      id: c.uuid,
+    })),
+    buttons: [],
+  });
+
   return g;
 });
 </script>

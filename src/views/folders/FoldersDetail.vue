@@ -101,6 +101,12 @@
           :folder-uuid="folder.folder.uuid"
           :query="query"
         />
+
+        <FolderSubfolder
+          :folder="folder"
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+        />
       </div>
     </div>
   </BoxLoader>
@@ -127,10 +133,11 @@ import FolderNavigationContent from "@/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/components/FolderSelf.vue";
 import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
+import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
 
 // record
 const route = useRoute();
-const folderUuid = route.params.uuid as string;
+const folderUuid = computed(() => route.params.uuid as string);
 
 // folder
 const folder = ref<null | IFolderDetail>(null);

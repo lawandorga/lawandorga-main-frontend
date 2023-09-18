@@ -31,7 +31,13 @@ export interface IAccess {
 export interface IContent {
   uuid: string;
   name: string;
-  repository: "RECORD" | "FILE" | "QUESTIONNAIRE" | "UPLOAD" | "RECORDS_RECORD";
+  repository:
+    | "RECORD"
+    | "FILE"
+    | "QUESTIONNAIRE"
+    | "UPLOAD"
+    | "RECORDS_RECORD"
+    | "FOLDER";
 }
 
 export interface IFolderItem {
@@ -46,10 +52,16 @@ export interface IFolderPage {
   available_persons: IAccess[];
 }
 
+export interface ISubfolder {
+  name: string;
+  uuid: string;
+}
+
 export interface IFolderDetail {
   folder: IFolder;
   access: IAccess[];
   content: IContent[];
+  subfolders: ISubfolder[];
 }
 
 export interface IAvailableFolder {
