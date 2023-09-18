@@ -12,11 +12,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/data_sheets/RecordsDetail.vue"),
   },
   {
-    path: "/records/pool/",
-    name: "records-pool",
-    component: () => import("@/views/data_sheets/RecordsPool.vue"),
-  },
-  {
     path: "/records/upload/",
     name: "records-upload",
     component: () => import("@/views/data_sheets/RecordsUpload.vue"),
