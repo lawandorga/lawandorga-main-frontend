@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import useCommand from "@/composables/useCommand";
-import {
-  ButtonNormal,
-  ModalCreate,
-  ModalUpdate,
-  types,
-} from "lorga-ui";
-import { toRef, toRefs } from "vue";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
+import { toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;

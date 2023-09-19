@@ -29,12 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ButtonNormal,
-  CircleLoader,
-  FormGenerator,
-  types,
-} from "lorga-ui";
+import { ButtonNormal, CircleLoader, FormGenerator, types } from "lorga-ui";
 import { useRoute } from "vue-router";
 import useClient from "@/api/client";
 import { ref } from "vue";

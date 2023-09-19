@@ -38,12 +38,7 @@
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
 import EventService from "@/services/event";
-import {
-  FormGenerator,
-  ButtonNormal,
-  ModalFree,
-  types,
-} from "lorga-ui";
+import { FormGenerator, ButtonNormal, ModalFree, types } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import { useUserStore } from "@/store/user";

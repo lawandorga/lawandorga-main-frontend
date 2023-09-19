@@ -46,6 +46,7 @@ const addressFields = computed<types.FormField[]>(() => {
   ] as types.FormField[];
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const changed = (data: Record<string, any>) => {
   let domainName = "";
   const domain = availableDomains?.value.find((i) => i.uuid === data.domain);

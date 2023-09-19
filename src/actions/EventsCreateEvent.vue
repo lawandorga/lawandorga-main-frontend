@@ -20,12 +20,7 @@ import { Ref, ref, toRefs } from "vue";
 import useGet from "@/composables/useGet";
 import EventService from "@/services/event";
 import { Event } from "@/types/event";
-import {
-  FormGenerator,
-  ModalFree,
-  types,
-  ButtonNormal,
-} from "lorga-ui";
+import { FormGenerator, ModalFree, types, ButtonNormal } from "lorga-ui";
 import useCommand from "@/composables/useCommand";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 

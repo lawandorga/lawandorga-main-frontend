@@ -63,11 +63,7 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "./BoxHeadingStats.vue";
-import {
-  ButtonNormal,
-  CircleLoader,
-  TableGenerator,
-} from "lorga-ui";
+import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";

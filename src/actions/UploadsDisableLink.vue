@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal, ModalConfirm, types } from "lorga-ui";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
 import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";
@@ -30,6 +30,7 @@ const { folderUuid, query, linkUuid } = toRefs(props);
 
 // request
 const client = useClient();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const request = (data: Record<string, any>, uuid: string) =>
   client.post(`api/uploads/links/${uuid}/disable/`)(data);
 

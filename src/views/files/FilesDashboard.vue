@@ -248,7 +248,6 @@ import {
   TableGenerator,
   TableSortable,
   ButtonNormal,
-  types,
   ModalFree,
   FormGenerator,
   ModalDelete,
@@ -393,6 +392,7 @@ function createUpdateDeleteFolder(
   const { createRequest, createModalOpen: foldersCreateFolderModalOpen } =
     useCreate(FilesService.foldersCreateFolder, items);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const foldersCreateFolderRequest = (data: Record<string, any>) =>
     createRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
@@ -401,6 +401,7 @@ function createUpdateDeleteFolder(
     FilesService.updateFolder,
     items,
   );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateFolderRequest = (data: Record<string, any>) =>
     updateRequest(data).then(removeFolderFromItemsIfParentMismatches);
 
