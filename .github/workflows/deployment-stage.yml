@@ -1,14 +1,20 @@
 name: Deployment Stage
 
 on:
-  workflow_run:
-    workflows: ["Commit Stage"]
-    types: [completed]
+  workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: true
+      SCW_ACCESS_KEY:
+        required: true
+      SCW_PROJECT_ID:
+        required: true
+      SCW_SECRET_KEY:
+        required: true
 
 jobs:
   check:
     name: Check
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: ./.github/workflows/commit-stage--query-quality-gate-status.yml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -21,16 +27,3 @@ jobs:
       scw_access_key: ${{ secrets.SCW_ACCESS_KEY }}
       scw_project_id: ${{ secrets.SCW_PROJECT_ID }}
       scw_secret_key: ${{ secrets.SCW_SECRET_KEY }}
-
-  sentry:
-    name: Sentry
-    needs: [check]
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: ./.github/workflows/deployment-stage--create-a-sentry-release.yml
-    with:
-      artifact: ${{ github.event.repository.name }}
-      version: ${{ github.sha }}
-      project: lawandorga-main-frontend
-      org: sentry
-    secrets:
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

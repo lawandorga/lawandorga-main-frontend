@@ -8,7 +8,6 @@ import {
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import UserService from "@/services/user";
-import * as Sentry from "@sentry/vue";
 import useClient from "@/api/client";
 
 export const useUserStore = defineStore("user", () => {
@@ -37,11 +36,6 @@ export const useUserStore = defineStore("user", () => {
     badges.value = data.badges;
     settings.value = data.settings;
     permissions.value = data.permissions;
-    Sentry.setUser({
-      email: data.user.email,
-      name: data.user.name,
-      id: `${data.user.user_id}`,
-    });
   };
 
   const client = useClient();
@@ -107,7 +101,6 @@ export const useUserStore = defineStore("user", () => {
     badges.value = undefined;
     settings.value = undefined;
     permissions.value = undefined;
-    Sentry.setUser(null);
   };
 
   return {

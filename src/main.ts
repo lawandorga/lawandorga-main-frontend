@@ -4,35 +4,16 @@ import App from "./App.vue";
 import "./main.css";
 import router from "./router";
 import axios from "axios";
-import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
 import { createPinia } from "pinia";
 import { useUserStore } from "./store/user";
 
 // vue
 const app = createApp(App);
 
-// sentry
+// release
 if (import.meta.env.PROD) {
-  const release = import.meta.env.VITE_SENTRY_RELEASE as string;
+  const release = import.meta.env.RELEASE as string;
   console.info(`release: ${release}`);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).SENTRY_RELEASE = release;
-  Sentry.init({
-    app,
-    dsn: "https://b56d6b7f58b840e986423662e9b4586e@sentry.law-orga.de/3",
-    integrations: [
-      new BrowserTracing({
-        routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-        tracePropagationTargets: ["localhost", "law-orga.de", /^\//],
-      }),
-    ],
-    environment: "production",
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-  });
 }
 
 // store

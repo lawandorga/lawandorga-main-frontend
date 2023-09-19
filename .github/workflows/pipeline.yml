@@ -1,0 +1,24 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  commit:
+    name: Commit Stage
+    uses: ./.github/workflows/commit-stage.yml
+    secrets:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SCW_DOCKER_REGISTRY: ${{ secrets.SCW_DOCKER_REGISTRY }}
+        SCW_TOKEN: ${{ secrets.SCW_TOKEN }}
+
+  deployment:
+    needs: [commit]
+    name: Deployment Stage
+    uses: ./.github/workflows/deployment-stage.yml
+    secrets:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+        SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+        SCW_PROJECT_ID: ${{ secrets.SCW_PROJECT_ID }}

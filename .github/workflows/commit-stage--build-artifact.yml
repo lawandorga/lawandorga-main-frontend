@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     env:
-      VITE_SENTRY_RELEASE: ${{ inputs.version }}
+      VITE_RELEASE: ${{ inputs.version }}
 
     outputs:
       artifact: ${{ steps.output.outputs.artifact }}
