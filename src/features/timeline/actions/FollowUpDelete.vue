@@ -4,14 +4,13 @@
   </ButtonNormal>
   <ModalDelete
     v-model="commandModalOpen"
-    title="Delete Timeline Event"
+    title="Delete Follow Up"
     :request="commandRequest"
-    :data="{
-      uuid: timelineEventUuid,
-      action: 'timeline/delete_event',
-    }"
+    :data="{ uuid: followUpUuid, action: 'timeline/delete_follow_up' }"
     submit="Delete"
-  />
+  >
+    Are you sure you want to delete '{{ name }}'?
+  </ModalDelete>
 </template>
 
 <script lang="ts" setup>
@@ -21,10 +20,10 @@ import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
-  timelineEventUuid: string;
+  followUpUuid: string;
   name: string;
 }>();
-const { query } = toRefs(props);
 
+const { query } = toRefs(props);
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

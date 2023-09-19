@@ -1,13 +1,13 @@
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Create Timeline Event
+    Create Follow Up
   </ButtonNormal>
   <ModalCreate
     v-model="commandModalOpen"
     :fields="fields"
-    title="Create Timeline Event"
+    title="Create Follow Up"
     :request="commandRequest"
-    :data="{ folder_uuid: folderUuid, action: 'timeline/create_event' }"
+    :data="{ folder_uuid: folderUuid, action: 'timeline/create_follow_up' }"
     submit="Create"
   />
 </template>

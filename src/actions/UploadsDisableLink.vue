@@ -35,6 +35,7 @@ const request = (data: Record<string, any>, uuid: string) =>
   client.post(`api/uploads/links/${uuid}/disable/`)(data);
 
 // disable
+// useCommand MIGRATE
 const { commandModalOpen, commandRequest } = useCommand(
   request,
   query.value,

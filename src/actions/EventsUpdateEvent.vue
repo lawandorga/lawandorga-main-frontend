@@ -17,8 +17,8 @@
           description: event.description,
           name: event.name,
           level: event.level,
-          start_time: event.start_time,
-          end_time: event.end_time,
+          start_time: event.start_time.slice(0, 16),
+          end_time: event.end_time.slice(0, 16),
         }"
         :fields="eventFields"
         :request="commandRequest"

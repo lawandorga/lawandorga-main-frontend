@@ -1,24 +1,38 @@
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Create Timeline Event
+    Update
   </ButtonNormal>
-  <ModalCreate
+  <ModalUpdate
     v-model="commandModalOpen"
     :fields="fields"
-    title="Create Timeline Event"
+    title="Update Folow Up"
     :request="commandRequest"
-    :data="{ folder_uuid: folderUuid, action: 'timeline/create_event' }"
-    submit="Create"
+    :data="{
+      action: 'timeline/update_follow_up',
+      uuid: followUpUuid,
+      time: followUpTime.slice(0, 16),
+      text: followUpText,
+      title: followUpTitle,
+      is_done: followUpIsDone,
+    }"
+    submit="Update"
   />
 </template>
 
 <script lang="ts" setup>
-import { ButtonNormal, ModalCreate, types } from "lorga-ui";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
 
-const props = defineProps<{ query: () => void; folderUuid: string }>();
-const { query, folderUuid } = toRefs(props);
+const props = defineProps<{
+  query: () => void;
+  followUpUuid: string;
+  followUpTime: string;
+  followUpText: string;
+  followUpTitle: string;
+  followUpIsDone: boolean | null;
+}>();
+const { query } = toRefs(props);
 
 const fields: types.FormField[] = [
   {
@@ -37,6 +51,12 @@ const fields: types.FormField[] = [
     label: "Text",
     name: "text",
     type: "textarea",
+    required: true,
+  },
+  {
+    label: "Is Done",
+    name: "is_done",
+    type: "toggle",
     required: true,
   },
 ];

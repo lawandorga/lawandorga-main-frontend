@@ -60,6 +60,7 @@ useGet(
   link,
 );
 
+// useCommand MIGRATE
 const { commandRequest } = useCommand(
   client.postAsFormData(
     "api/uploads/links/{}/upload/",

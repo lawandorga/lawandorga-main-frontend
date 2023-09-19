@@ -30,7 +30,13 @@ const selectedFolder = computed(() => {
       </router-link>
     </BoxHeadingStats>
   </div>
-  <div v-else-if="selectedId && selectedId !== folder?.folder.uuid">
+  <div
+    v-else-if="
+      selectedType === 'SUBFOLDER' &&
+      selectedId &&
+      selectedId !== folder?.folder.uuid
+    "
+  >
     <CircleLoader />
   </div>
 </template>

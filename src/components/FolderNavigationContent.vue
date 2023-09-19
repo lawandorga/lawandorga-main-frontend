@@ -112,7 +112,7 @@ const groups = computed<ContentGroupItem[]>(() => {
   });
 
   g.push({
-    name: "Timeline (Beta)",
+    name: "Timeline",
     type: "TIMELINE",
     children: [],
     buttons: [],

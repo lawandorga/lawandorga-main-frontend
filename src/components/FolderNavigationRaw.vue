@@ -1,7 +1,10 @@
 <template>
   <div class="sticky top-0 overflow-hidden bg-white rounded shadow">
     <ul role="list" class="">
-      <li v-if="!grouping" class="px-4 py-3 space-x-5 sm:px-6 bg-gray-50">
+      <li
+        v-if="!grouping"
+        class="flex flex-wrap px-4 py-3 gap-x-5 gap-y-1 sm:px-6 bg-gray-50"
+      >
         <component
           :is="button"
           v-for="button in groups.map((i) => i.buttons).flat()"

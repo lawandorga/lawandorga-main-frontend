@@ -8,11 +8,11 @@
     title="Update Timeline Event"
     :request="commandRequest"
     :data="{
-      folder_uuid: folderUuid,
       uuid: eventUuid,
-      time: eventTime,
+      time: eventTime.slice(0, 16),
       text: eventText,
       title: eventTitle,
+      action: 'timeline/update_event',
     }"
     submit="Update"
   />
@@ -20,19 +20,17 @@
 
 <script lang="ts" setup>
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
 import { toRefs } from "vue";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
-  folderUuid: string;
   eventUuid: string;
   eventTime: string;
   eventText: string;
   eventTitle: string;
 }>();
-const { query, folderUuid } = toRefs(props);
+const { query } = toRefs(props);
 
 const fields: types.FormField[] = [
   {
@@ -55,7 +53,5 @@ const fields: types.FormField[] = [
   },
 ];
 
-const client = useClient();
-const request = client.post("api/timeline/timeline/update/");
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
