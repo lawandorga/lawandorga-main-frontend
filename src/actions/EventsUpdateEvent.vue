@@ -57,10 +57,8 @@ const eventFields = ref<types.FormField[]>([
     required: true,
   },
   {
-    label: "Description",
-    name: "description",
-    type: "custom",
-    required: true,
+    name: "custom",
+    type: "slot",
   },
   {
     label: "Who Should See This Event?",

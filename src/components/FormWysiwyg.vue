@@ -18,7 +18,7 @@ import { StarterKit } from "@tiptap/starter-kit";
 import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
 import { Link } from "@tiptap/extension-link";
 import { FormHelptext, FormLabel } from "lorga-ui";
-import { computed, ref, toRefs, watch } from "vue";
+import { computed, onMounted, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
   label: {
@@ -72,15 +72,18 @@ const editor = useEditor({
 });
 
 const setEditorContent = (value: string) => {
+  if (!value && value !== "") return;
   if (!editor.value) return;
   editor.value.commands.setContent(value, false, {
     preserveWhitespace: true,
   });
+  isSet.value = true;
 };
+
+onMounted(() => setEditorContent(modelValue.value));
 
 const isSet = ref(false);
 watch(modelValue, (newValue) => {
   if (!isSet.value) setEditorContent(newValue);
-  isSet.value = true;
 });
 </script>

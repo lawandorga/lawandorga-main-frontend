@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^9.10.0",
     "lodash": "^4.17.21",
-    "lorga-ui": "^1.3.20",
+    "lorga-ui": "^1.3.26",
     "pinia": "^2.0.33",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
