@@ -5,7 +5,7 @@
       v-model="addAddressModalOpen"
       :request="addAddress"
       :fields="addressFields"
-      :data="{ group: groupUuid }"
+      :data="{ user: userUuid }"
       @change="changed($event)"
     />
   </ButtonNormal>
@@ -13,14 +13,14 @@
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import { mailGroupAddAddress } from "@/services/mail";
+import { mailAddAddress } from "@/services/mail";
 import { IAvailableMailDomain } from "@/types/mail";
-import { ButtonNormal, ModalCreate, types } from "lorga-ui";
+import { ModalCreate, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;
-  groupUuid: string | null;
+  userUuid: string | null;
   availableDomains: IAvailableMailDomain[];
 }>();
 
@@ -34,7 +34,7 @@ const addressFields = computed<types.FormField[]>(() => {
       name: "domain",
       type: "select",
       required: true,
-      options: availableDomains?.value as types.FormField["options"],
+      options: availableDomains?.value,
     },
     {
       label: "Result",
@@ -58,5 +58,5 @@ const changed = (data: Record<string, any>) => {
 };
 
 const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
-  useCommand(mailGroupAddAddress, query.value);
+  useCommand(mailAddAddress, query.value);
 </script>

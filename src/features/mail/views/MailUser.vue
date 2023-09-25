@@ -16,7 +16,7 @@
       <TableGenerator
         :head="[
           { name: 'Address', key: 'localpart' },
-          { name: 'Domain', key: (o) => o.domain.name },
+          { name: 'Domain', key: (o: IMailAddress) => o.domain.name },
           { name: 'default', key: 'is_default' },
           { name: '', key: 'action' },
         ]"
@@ -50,9 +50,9 @@
 </template>
 
 <script lang="ts" setup>
-import MailAddAddress from "@/actions/MailAddAddress.vue";
-import MailDeleteAddress from "@/actions/MailDeleteAddress.vue";
-import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
+import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
+import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
+import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";

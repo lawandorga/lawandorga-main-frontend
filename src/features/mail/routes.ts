@@ -1,21 +1,20 @@
 import { RouteRecordRaw } from "vue-router";
 
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/mail/",
     name: "mail-dashboard",
-    component: () => import("@/views/mail/MailDashboard.vue"),
+    component: () => import("@/features/mail/views/MailDashboard.vue"),
   },
   {
     path: "/mail/user/:uuid/",
     name: "mail-user",
-    component: () => import("@/views/mail/MailUser.vue"),
+    component: () => import("@/features/mail/views/MailUser.vue"),
   },
   {
     path: "/mail/group/:uuid/",
     name: "mail-group",
-    component: () => import("@/views/mail/MailGroup.vue"),
+    component: () => import("@/features/mail/views/MailGroup.vue"),
   },
 ];
 

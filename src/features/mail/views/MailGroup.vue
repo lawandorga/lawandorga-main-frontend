@@ -16,7 +16,7 @@
       <TableGenerator
         :head="[
           { name: 'Address', key: 'localpart' },
-          { name: 'Domain', key: (o) => o.domain.name },
+          { name: 'Domain', key: (o: IMailAddress) => o.domain.name },
           { name: 'default', key: 'is_default' },
           { name: '', key: 'action' },
         ]"
@@ -76,11 +76,11 @@
 </template>
 
 <script lang="ts" setup>
-import MailGroupAddAddress from "@/actions/MailGroupAddAddress.vue";
-import MailGroupAddMember from "@/actions/MailGroupAddMember.vue";
-import MailGroupDeleteAddress from "@/actions/MailGroupDeleteAddress.vue";
-import MailGroupRemoveMember from "@/actions/MailGroupRemoveMember.vue";
-import MailSetDefaultGroupAddress from "@/actions/MailSetDefaultGroupAddress.vue";
+import MailGroupAddAddress from "@/features/mail/actions/MailGroupAddAddress.vue";
+import MailGroupAddMember from "@/features/mail/actions/MailGroupAddMember.vue";
+import MailGroupDeleteAddress from "@/features/mail/actions/MailGroupDeleteAddress.vue";
+import MailGroupRemoveMember from "@/features/mail/actions/MailGroupRemoveMember.vue";
+import MailSetDefaultGroupAddress from "@/features/mail/actions/MailSetDefaultGroupAddress.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";

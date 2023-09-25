@@ -31,7 +31,7 @@ const fields = computed<types.FormField[]>(() => {
       name: "domain",
       type: "select",
       required: true,
-      options: availableDomains.value as types.FormField["options"],
+      options: availableDomains.value,
     },
   ] as types.FormField[];
 });

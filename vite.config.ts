@@ -10,7 +10,7 @@ dns.setDefaultResultOrder("verbatim");
 export default defineConfig({
   plugins: [vue()],
   server: {
-    port: 4200,
+    port: 4204,
     host: "localhost",
   },
   build: {

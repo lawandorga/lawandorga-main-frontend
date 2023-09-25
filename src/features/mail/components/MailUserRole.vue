@@ -141,10 +141,10 @@
 </template>
 
 <script setup lang="ts">
-import MailAddAddress from "@/actions/MailAddAddress.vue";
-import MailDeleteAddress from "@/actions/MailDeleteAddress.vue";
-import MailRegeneratePassword from "@/actions/MailRegeneratePassword.vue";
-import MailSetDefaultAddress from "@/actions/MailSetDefaultAddress.vue";
+import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
+import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
+import MailRegeneratePassword from "@/features/mail/actions/MailRegeneratePassword.vue";
+import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
 import {
   IMailAddress,
   MailDashboardPage,

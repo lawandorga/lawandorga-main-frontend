@@ -29,12 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import MailCreateGroup from "@/actions/MailCreateGroup.vue";
-import MailDeleteGroup from "@/actions/MailDeleteGroup.vue";
+import MailCreateGroup from "@/features/mail/actions/MailCreateGroup.vue";
+import MailDeleteGroup from "@/features/mail/actions/MailDeleteGroup.vue";
 import { IMailGroup, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
-import ButtonLink from "./ButtonLink.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 // props
 const props = defineProps({

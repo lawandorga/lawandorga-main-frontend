@@ -10,7 +10,7 @@ import foldersRoutes from "./folders";
 import internalRoutes from "./internal";
 import legalRoutes from "./legal";
 import eventsRoutes from "./events";
-import mailRoutes from "./mail";
+import mailRoutes from "@/features/mail/routes";
 import DashboardPage from "@/views/DashboardPage.vue";
 import ErrorPage from "@/views/ErrorPage.vue";
 import NotFoundPage from "@/views/NotFoundPage.vue";

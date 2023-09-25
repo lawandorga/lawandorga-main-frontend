@@ -62,15 +62,15 @@ import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
 import TabControls from "@/components/TabControls.vue";
-import MailUserRole from "@/components/MailUserRole.vue";
-import MailDomain from "@/components/MailDomain.vue";
+import MailUserRole from "@/features/mail/components/MailUserRole.vue";
+import MailDomain from "@/features/mail/components/MailDomain.vue";
 import { MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { mailGetDashboardPage } from "@/services/mail";
 import useGet from "@/composables/useGet";
-import MailUsers from "@/components/MailUsers.vue";
-import MailGroups from "@/components/MailGroups.vue";
-import MailWebmail from "@/components/MailWebmail.vue";
-import MailCreateMailUser from "@/actions/MailCreateMailUser.vue";
+import MailUsers from "@/features/mail/components/MailUsers.vue";
+import MailGroups from "@/features/mail/components/MailGroups.vue";
+import MailWebmail from "@/features/mail/components/MailWebmail.vue";
+import MailCreateMailUser from "@/features/mail/actions/MailCreateMailUser.vue";
 
 // user store
 const userStore = useUserStore();

@@ -18,7 +18,7 @@
 import { IMailUser, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
-import ButtonLink from "./ButtonLink.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 // page
 const props = defineProps({
