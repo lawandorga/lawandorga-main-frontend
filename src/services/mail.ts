@@ -18,6 +18,7 @@ export function mailGetDashboardPage(): Promise<
     })
     .catch((error) => {
       if (error.response.status === 444) return { noMailAccount: true };
+      throw error;
     });
 }
 
