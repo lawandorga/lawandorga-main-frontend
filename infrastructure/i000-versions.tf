@@ -18,7 +18,9 @@ terraform {
     key    = "lawandorga-main-frontend.tfstate"
     region = "fr-par"
     endpoints = {
-      s3 = "https://s3.fr-par.scw.cloud"
+      iam = "https://s3.fr-par.scw.cloud"
+      s3  = "https://s3.fr-par.scw.cloud"
+      s3  = "https://s3.fr-par.scw.cloud"
     }
     skip_region_validation      = true
     skip_credentials_validation = true
