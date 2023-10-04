@@ -12,6 +12,7 @@ import FollowUpCreate from "../actions/FollowUpCreate.vue";
 import FollowUpUpdate from "../actions/FollowUpUpdate.vue";
 import FollowUpDelete from "../actions/FollowUpDelete.vue";
 import FollowUpSetDone from "../actions/FollowUpSetDone.vue";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/vue/20/solid";
 
 const props = defineProps<{
   query: () => void;
@@ -50,6 +51,19 @@ watch(selectedType, () => {
   if (selectedType.value === "TIMELINE") update();
 });
 update();
+
+const getItemTypeText = (type: string) => {
+  switch (type) {
+    case "event":
+      return "Event";
+    case "follow_up":
+      return "Follow Up";
+    case "old":
+      return "Old";
+    default:
+      return "Unknown";
+  }
+};
 </script>
 
 <template>
@@ -74,55 +88,92 @@ update();
           </p>
         </div>
         <div class="pt-5">
-          <ul class="space-y-2 list-disc list-inside">
-            <li v-for="item in timeline" :key="item.uuid" class="">
-              <div class="inline-block">
-                <div class="flex flex-col">
-                  <div class="flex items-center">
-                    <div class="inline-block pr-4">
-                      {{ item.type }} - {{ formatDate(item.time) }}:
-                      {{ item.title }}
-                    </div>
-                    <div class="flex items-center space-x-4">
-                      <TimelineEventUpdate
-                        v-if="item.type === 'event'"
-                        :event-uuid="item.uuid"
-                        :event-time="item.time"
-                        :event-text="item.text"
-                        :event-title="item.title"
-                        :query="timelineQuery"
-                      />
-                      <TimelineEventDelete
-                        v-if="item.type === 'event'"
-                        :name="item.title"
-                        :timeline-event-uuid="item.uuid"
-                        :query="timelineQuery"
-                      />
-                      <FollowUpUpdate
-                        v-if="item.type === 'follow_up'"
-                        :follow-up-uuid="item.uuid"
-                        :follow-up-time="item.time"
-                        :follow-up-text="item.text"
-                        :follow-up-title="item.title"
-                        :follow-up-is-done="item.is_done"
-                        :query="timelineQuery"
-                      />
-                      <FollowUpSetDone
-                        v-if="item.type === 'follow_up' && !item.is_done"
-                        :name="item.title"
-                        :follow-up-uuid="item.uuid"
-                        :query="timelineQuery"
-                      />
-                      <FollowUpDelete
-                        v-if="item.type === 'follow_up'"
-                        :name="item.title"
-                        :follow-up-uuid="item.uuid"
-                        :query="timelineQuery"
-                      />
-                    </div>
+          <ul class="">
+            <li v-for="(item, itemIdx) in timeline" :key="item.uuid">
+              <div class="relative pb-8">
+                <span
+                  v-if="itemIdx !== timeline.length - 1"
+                  class="absolute left-1.5 top-4 -ml-px h-full w-0.5 bg-gray-200"
+                  aria-hidden="true"
+                />
+                <div class="relative flex space-x-3">
+                  <div>
+                    <span
+                      class="flex items-center justify-center w-3 h-3 bg-gray-300 rounded-full ring-8 ring-white"
+                    ></span>
                   </div>
-                  <div class="inline-block">
-                    <p class="prose-sm">{{ item.text }}</p>
+                  <div
+                    class="flex justify-between flex-1 min-w-0 -mt-1 space-x-4"
+                  >
+                    <div>
+                      <div class="flex items-center space-x-2">
+                        <span
+                          class="inline-block bg-gray-500 rounded text-gray-50 px-2 py-0.5 text-xs"
+                        >
+                          {{ getItemTypeText(item.type) }}
+                        </span>
+                        <p class="text-base text-gray-800">
+                          {{ item.title }}
+                        </p>
+                        <CheckCircleIcon
+                          v-if="item.type === 'follow_up' && item.is_done"
+                          class="inline-block w-5 h-5 text-green-600"
+                        />
+                        <XCircleIcon
+                          v-else-if="item.type === 'follow_up'"
+                          class="inline-block w-5 h-5 text-red-600"
+                        />
+                      </div>
+                      <div class="flex justify-between w-full">
+                        <p class="block max-w-xl text-sm text-gray-700">
+                          {{ item.text }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="text-sm text-right text-gray-500 whitespace-nowrap"
+                    >
+                      <time :datetime="item.time">
+                        {{ formatDate(item.time) }}
+                      </time>
+                      <div class="flex justify-end space-x-3">
+                        <TimelineEventUpdate
+                          v-if="item.type === 'event'"
+                          :event-uuid="item.uuid"
+                          :event-time="item.time"
+                          :event-text="item.text"
+                          :event-title="item.title"
+                          :query="timelineQuery"
+                        />
+                        <TimelineEventDelete
+                          v-if="item.type === 'event'"
+                          :name="item.title"
+                          :timeline-event-uuid="item.uuid"
+                          :query="timelineQuery"
+                        />
+                        <FollowUpUpdate
+                          v-if="item.type === 'follow_up'"
+                          :follow-up-uuid="item.uuid"
+                          :follow-up-time="item.time"
+                          :follow-up-text="item.text"
+                          :follow-up-title="item.title"
+                          :follow-up-is-done="item.is_done"
+                          :query="timelineQuery"
+                        />
+                        <FollowUpSetDone
+                          v-if="item.type === 'follow_up' && !item.is_done"
+                          :name="item.title"
+                          :follow-up-uuid="item.uuid"
+                          :query="timelineQuery"
+                        />
+                        <FollowUpDelete
+                          v-if="item.type === 'follow_up'"
+                          :name="item.title"
+                          :follow-up-uuid="item.uuid"
+                          :query="timelineQuery"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
