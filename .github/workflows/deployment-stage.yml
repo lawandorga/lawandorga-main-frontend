@@ -13,15 +13,8 @@ on:
         required: true
 
 jobs:
-  check:
-    name: Check
-    uses: ./.github/workflows/commit-stage--query-quality-gate-status.yml
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
   deploy:
     name: Deploy
-    needs: [check]
     uses: ./.github/workflows/deployment-stage--terraform-apply.yml
     secrets:
       scw_access_key: ${{ secrets.SCW_ACCESS_KEY }}
