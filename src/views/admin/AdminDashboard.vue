@@ -145,7 +145,7 @@ const items = computed<AdminItem[]>(() => [
     title: "Record Questionnaires",
     description:
       "Here you can create questionnaire templates that can be send out from the record detail page.",
-    link: { name: "admin-questionnaires" },
+    link: { name: "questionnaires-admin-list" },
     icon: QuestionMarkCircleIcon,
     notifications: 0,
     class: "",

@@ -18,6 +18,7 @@ import StartPage from "@/views/StartPage.vue";
 import uploadsRoutes from "./uploads";
 import chatRoutes from "./chat";
 import recordsRoutes from "@/features/records/routes";
+import questionaireRoutes from "@/features/questionnaires/routes";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -50,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
   ...mailRoutes,
   ...uploadsRoutes,
   ...chatRoutes,
+  ...questionaireRoutes,
   {
     path: "/error",
     name: "error",

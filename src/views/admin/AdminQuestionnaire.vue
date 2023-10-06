@@ -6,7 +6,7 @@
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[
-          { name: 'Questionnaires', to: { name: 'admin-questionnaires' } },
+          { name: 'Questionnaires', to: { name: 'questionnaires-admin-list' } },
           {
             name: questionnaire.name,
             to: {

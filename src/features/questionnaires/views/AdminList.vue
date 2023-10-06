@@ -5,7 +5,7 @@
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[
-          { name: 'Questionnaires', to: { name: 'admin-questionnaires' } },
+          { name: 'Questionnaires', to: { name: 'questionnaires-admin-list' } },
         ]"
       >
         <CogIcon class="w-6 h-6" />
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
@@ -68,8 +68,8 @@ interface IQuestionnaireTemplate {
   notes: string;
 }
 
-const templates = ref(null) as Ref<IQuestionnaireTemplate[] | null>;
+const templates = ref<IQuestionnaireTemplate>();
 
-const request = useClient().get("api/questionnaires/questionnairetemplates/");
+const request = useClient().get("api/questionnaires/query/");
 const query = useGet(request, templates);
 </script>
