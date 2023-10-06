@@ -37,11 +37,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminDeletionRequests.vue"),
   },
   {
-    path: "/admin/questionnaires/:id/",
-    name: "admin-questionnaire",
-    component: () => import("@/views/admin/AdminQuestionnaire.vue"),
-  },
-  {
     path: "/admin/templates/",
     name: "admin-templates",
     component: () => import("@/views/admin/AdminTemplates.vue"),

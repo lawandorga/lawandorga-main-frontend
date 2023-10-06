@@ -235,7 +235,7 @@ class RecordsService {
       .then((response) => response.data);
   }
 
-  downloadQuestionnaireFile(file: IQuestionnaireTemplateFile): void {
+  downloadQuestionnaireFile(file: { id: number; name: string }): void {
     downloadFileRequest(
       axios,
       `questionnaires/questionnaire_files/${file.id}/`,

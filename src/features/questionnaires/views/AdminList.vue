@@ -24,7 +24,7 @@
           <ButtonLink
             class="underline"
             :to="{
-              name: 'admin-questionnaire',
+              name: 'questionnaires-admin-detail',
               params: { id: slotProps.id },
             }"
           >
@@ -70,6 +70,6 @@ interface IQuestionnaireTemplate {
 
 const templates = ref<IQuestionnaireTemplate>();
 
-const request = useClient().get("api/questionnaires/query/");
+const request = useClient().get("api/questionnaires/query/templates/");
 const query = useGet(request, templates);
 </script>
