@@ -20,6 +20,6 @@ const { commandRequest, commandModalOpen } = useCmd(props.query);
     title="Add File"
     :fields="formFileFields"
     :request="commandRequest"
-    :data="{ questionnaire: templateId }"
+    :data="{ template_id: templateId, action: 'questionnaires/add_file' }"
   />
 </template>

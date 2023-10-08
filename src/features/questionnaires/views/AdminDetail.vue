@@ -56,20 +56,15 @@
           <TemplateFileCreate :query="query" :template-id="template.id" />
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              size="xs"
-              kind="action"
-              @click="downloadFile(slotProps)"
-            >
-              Download
-            </ButtonNormal>
-            <TemplateFileDelete
-              :query="query"
-              :template-file-id="slotProps.id"
-              :template-file-name="slotProps.name"
-            />
-          </div>
+          <TemplateFileDownload
+            :template-file-id="slotProps.id"
+            :file-name="slotProps.name"
+          />
+          <TemplateFileDelete
+            :query="query"
+            :template-file-id="slotProps.id"
+            :template-file-name="slotProps.name"
+          />
         </template>
       </TableGenerator>
     </div>
@@ -79,8 +74,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator, ButtonNormal } from "lorga-ui";
-import RecordsService from "@/services/records";
+import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
@@ -90,6 +84,7 @@ import TemplateFileCreate from "../actions/TemplateFileCreate.vue";
 import TemplateFieldUpdate from "../actions/TemplateFieldUpdate.vue";
 import TemplateFieldDelete from "../actions/TemplateFieldDelete.vue";
 import TemplateFieldCreate from "../actions/TemplateFieldCreate.vue";
+import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
 
 interface ITextField {
   id: number;
@@ -123,7 +118,4 @@ const query = useGet2(
 const fields = computed<ITextField[] | undefined>(() => template.value?.fields);
 
 const files = computed<IFileField[] | undefined>(() => template.value?.files);
-
-const downloadFile = (file: IFileField) =>
-  RecordsService.downloadQuestionnaireFile(file);
 </script>

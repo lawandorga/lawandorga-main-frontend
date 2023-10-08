@@ -1,7 +1,7 @@
 export const formFieldFields = [
   {
     label: "Type",
-    name: "type",
+    name: "field_type",
     type: "select",
     options: [
       { name: "Text", id: "TEXTAREA" },

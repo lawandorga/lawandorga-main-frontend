@@ -101,10 +101,20 @@ class Client {
     url: string,
     ...params: UrlParamType[]
   ): (data?: D) => Promise<void> {
-    return (data?: D) =>
-      this.caller.post(this.buildUrl(url, data, ...params), data).then(() => {
-        // ignore
-      });
+    return (data?: D) => {
+      if (data && "file" in data) {
+        const newData = new FormData();
+        for (const key in data) {
+          newData.append(key, data[key]);
+        }
+        data = newData as unknown as D;
+      }
+      return this.caller
+        .post(this.buildUrl(url, data, ...params), data)
+        .then(() => {
+          // ignore
+        });
+    };
   }
 
   postAndReturn<D extends Record<string, any>, R = any>(

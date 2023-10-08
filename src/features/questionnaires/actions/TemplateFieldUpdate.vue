@@ -24,11 +24,11 @@ const { commandRequest, commandModalOpen } = useCmd(props.query);
     title="Update Field"
     :fields="formFieldFields"
     :data="{
-      id: templateFieldId,
-      name: templateFieldName,
       order: templateFieldOrder,
+      question_id: templateFieldId,
       question: templateFieldQuestion,
-      type: templateFieldType,
+      field_type: templateFieldType,
+      action: 'questionnaires/update_question',
     }"
     :request="commandRequest"
   />

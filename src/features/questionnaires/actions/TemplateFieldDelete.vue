@@ -19,8 +19,8 @@ const { commandRequest, commandModalOpen } = useCmd(props.query);
     v-model="commandModalOpen"
     :request="commandRequest"
     :data="{
-      id: templateFieldId,
-      name: templateFieldName,
+      question_id: templateFieldId,
+      action: 'questionnaires/delete_question',
     }"
   />
 </template>

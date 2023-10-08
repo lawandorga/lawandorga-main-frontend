@@ -1,17 +1,3 @@
-export interface IQuestionnaireQuestion {
-  id: number;
-  question: string;
-  type: "FILE";
-}
-
-export interface IQuestionnaireTemplateFile {
-  id: number;
-  questionnaire: number;
-  name: string;
-  created: string;
-  updated: string;
-}
-
 export interface IQuestionnaireTemplate {
   id: number;
   rlc: number;

@@ -20,6 +20,9 @@ const { commandRequest, commandModalOpen } = useCmd(props.query);
     title="Create Field"
     :fields="formFieldFields"
     :request="commandRequest"
-    :data="{ questionnaire: templateId }"
+    :data="{
+      template_id: templateId,
+      action: 'questionnaires/create_question',
+    }"
   />
 </template>
