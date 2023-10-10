@@ -30,13 +30,10 @@
                 </span>
               </div>
               <div class="flex-shrink-0 ml-4">
-                <ButtonNormal
-                  kind="action"
-                  size="xs"
-                  @click="downloadQuestionnaireFile(file)"
-                >
-                  Download
-                </ButtonNormal>
+                <TemplateFileDownload
+                  :template-file-id="file.id"
+                  :file-name="file.name"
+                />
               </div>
             </div>
           </div>
@@ -57,62 +54,68 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { FormGenerator, ButtonNormal } from "lorga-ui";
-import { Questionnaire } from "@/types/records";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
+import { FormGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
 import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
 import { PaperClipIcon } from "@heroicons/vue/24/outline";
+import useClient from "@/api/client";
+import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
 
-export default defineComponent({
-  components: {
-    ButtonNormal,
-    PaperClipIcon,
-    FormGenerator,
-  },
-  setup() {
-    const recordQuestionnaire = ref<Questionnaire | null>(null);
-    const route = useRoute();
+interface IQuestionnaire {
+  id: number;
+  template: {
+    id: number;
+    name: string;
+    notes: string;
+    files: {
+      id: number;
+      name: string;
+    }[];
+  };
+  fields: {
+    id: number;
+    name: string;
+    question: string;
+    type: string;
+    required: boolean;
+  }[];
+}
 
-    useGet(
-      RecordsService.getQuestionnaire,
-      recordQuestionnaire,
-      route.params.code as string,
-    );
+const recordQuestionnaire = ref<IQuestionnaire>();
+const route = useRoute();
 
-    const sendAnswer = computed(
-      () => (data: JsonModel) =>
-        recordQuestionnaire.value
-          ? RecordsService.sendQuestionnaireAnswer(
-              data,
-              recordQuestionnaire.value,
-            ).then(
-              (newRecordQuestionnaire) =>
-                (recordQuestionnaire.value = newRecordQuestionnaire),
-            )
-          : alert("Error"),
-    );
+const client = useClient();
+const request = client.get(
+  "api/questionnaires/query/fill_out_questionnaire/{}/",
+  route.params.code as string,
+);
+useGet(request, recordQuestionnaire);
 
-    const fields = computed(() => {
-      if (recordQuestionnaire.value && recordQuestionnaire.value.fields)
-        return recordQuestionnaire.value.fields.map((field) => ({
-          label: field.question,
-          name: field.name,
-          type: field.type.toLowerCase(),
-          required: false,
-        }));
-      return [];
-    });
+const sendAnswer = computed(
+  () => (data: JsonModel) =>
+    recordQuestionnaire.value
+      ? RecordsService.sendQuestionnaireAnswer(
+          data,
+          recordQuestionnaire.value,
+        ).then(
+          (newRecordQuestionnaire) =>
+            (recordQuestionnaire.value = newRecordQuestionnaire),
+        )
+      : alert("Error"),
+);
 
-    return {
-      fields,
-      recordQuestionnaire,
-      sendAnswer,
-      downloadQuestionnaireFile: RecordsService.downloadQuestionnaireFile,
-    };
-  },
+const fields = computed(() => {
+  if (recordQuestionnaire.value && recordQuestionnaire.value.fields)
+    return recordQuestionnaire.value.fields.map((field) => ({
+      label: field.question,
+      name: field.name,
+      type: field.type.toLowerCase(),
+      required: false,
+    }));
+  return [];
 });
 </script>

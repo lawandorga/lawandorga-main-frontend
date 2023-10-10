@@ -11,6 +11,18 @@ const routes: Array<RouteRecordRaw> = [
     name: "questionnaires-admin-detail",
     component: () => import("@/features/questionnaires/views/AdminDetail.vue"),
   },
+  {
+    path: "/records/upload/",
+    name: "records-upload",
+    component: () =>
+      import("@/features/questionnaires/views/RecordsUpload.vue"),
+  },
+  {
+    path: "/records/upload/:code/",
+    name: "records-questionnaire",
+    component: () =>
+      import("@/features/questionnaires/views/RecordsQuestionnaire.vue"),
+  },
 ];
 
 export default routes;

@@ -18,7 +18,7 @@
         :data="templates"
       >
         <template #head-action>
-          <QuestionnaireCreate :query="query" />
+          <TemplateCreate :query="query" />
         </template>
         <template #name="slotProps">
           <ButtonLink
@@ -32,13 +32,13 @@
           </ButtonLink>
         </template>
         <template #action="slotProps">
-          <QuestionnaireUpdate
+          <TemplateUpdate
             :query="query"
             :template-id="slotProps.id"
             :template-name="slotProps.name"
             :template-notes="slotProps.notes"
           />
-          <QuestionnaireDelete
+          <TemplateDelete
             :query="query"
             :template-id="slotProps.id"
             :template-name="slotProps.name"
@@ -57,9 +57,9 @@ import useGet from "@/composables/useGet";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import QuestionnaireCreate from "@/features/questionnaires/actions/QuestionnaireCreate.vue";
-import QuestionnaireUpdate from "@/features/questionnaires/actions/QuestionnaireUpdate.vue";
-import QuestionnaireDelete from "@/features/questionnaires/actions/QuestionnaireDelete.vue";
+import TemplateCreate from "@/features/questionnaires/actions/TemplateCreate.vue";
+import TemplateUpdate from "@/features/questionnaires/actions/TemplateUpdate.vue";
+import TemplateDelete from "@/features/questionnaires/actions/TemplateDelete.vue";
 import useClient from "@/api/client";
 
 interface IQuestionnaireTemplate {

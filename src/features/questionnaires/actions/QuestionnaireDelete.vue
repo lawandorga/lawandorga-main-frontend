@@ -1,22 +1,16 @@
-<script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+<script lang="ts" setup>
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
-import { toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;
-  templateId: number;
-  templateName: string;
+  questionnaireId: number;
+  questionnaireName: string;
 }>();
-const { templateId } = toRefs(props);
 
-const request = useClient().delete(
-  "api/questionnaires/templates/{}/",
-  templateId,
-);
+const emit = defineEmits(["deleted"]);
 
-const { commandModalOpen, commandRequest } = useCommand(request, props.query);
+const { commandRequest, commandModalOpen } = useCmd(props.query);
 </script>
 
 <template>
@@ -25,11 +19,11 @@ const { commandModalOpen, commandRequest } = useCommand(request, props.query);
   </ButtonNormal>
   <ModalDelete
     v-model="commandModalOpen"
-    title="Delete Questionnaire Template"
     :request="commandRequest"
     :data="{
-      name: templateName,
-      id: templateId,
+      questionnaire_id: questionnaireId,
+      action: 'questionnaires/delete_questionnaire',
     }"
+    @deleted="emit('deleted')"
   />
 </template>

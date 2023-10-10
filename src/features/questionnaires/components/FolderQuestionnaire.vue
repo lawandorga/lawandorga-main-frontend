@@ -14,8 +14,9 @@
         <ButtonNormal kind="action" @click="copyLink(questionnaire)">
           Copy Link
         </ButtonNormal>
-        <QuestionnairesDeleteQuestionnaire
-          :id="questionnaire.id"
+        <QuestionnaireDelete
+          :questionnaire-id="questionnaire.id"
+          :questionnaire-name="questionnaire.code"
           :query="query"
           @deleted="questionnaire = null"
         />
@@ -52,7 +53,10 @@
                   </span>
                 </div>
                 <div class="flex-shrink-0 ml-4">
-                  <QuestionnairesDownloadAnswerFile :answer="answer" />
+                  <QuestionnaireFileDownload
+                    :questionnaire-file-id="answer.id"
+                    :file-name="answer.data"
+                  />
                 </div>
               </div>
             </div>
@@ -73,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import BoxHeadingStats from "./BoxHeadingStats.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { formatDate } from "@/utils/date";
@@ -82,9 +86,8 @@ import { questionnairesGetQuestionnaire } from "@/services/questionnaires";
 import { IQuestionnaire } from "@/types/questionnaire";
 import { Ref, ref, toRefs, watch } from "vue";
 import { useAlertStore } from "@/store/alert";
-
-import QuestionnairesDeleteQuestionnaire from "@/actions/QuestionnairesDeleteQuestionnaire.vue";
-import QuestionnairesDownloadAnswerFile from "@/actions/QuestionnairesDownloadAnswerFile.vue";
+import QuestionnaireFileDownload from "../actions/QuestionnaireFileDownload.vue";
+import QuestionnaireDelete from "../actions/QuestionnaireDelete.vue";
 
 const props = defineProps<{
   selectedId: number | string | null;

@@ -121,7 +121,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
 import RecordMessages from "@/components/RecordMessages.vue";
-import FolderQuestionnaire from "@/components/FolderQuestionnaire.vue";
+import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
 import FolderFile from "@/components/FolderFile.vue";
 import RecordEncryptions from "../../components/RecordEncryptions.vue";
 import { useUserStore } from "@/store/user";
