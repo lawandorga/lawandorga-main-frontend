@@ -96,7 +96,7 @@ import {
 } from "@headlessui/vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
-import QuestionnairesPublishQuestionnaire from "@/actions/QuestionnairesPublishQuestionnaire.vue";
+import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
 import { ButtonNormal } from "lorga-ui";
 

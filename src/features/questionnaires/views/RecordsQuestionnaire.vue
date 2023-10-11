@@ -58,12 +58,12 @@
 import { computed, ref } from "vue";
 import { FormGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
-import RecordsService from "@/services/records";
 import { useRoute } from "vue-router";
 import { JsonModel } from "@/types/shared";
 import { PaperClipIcon } from "@heroicons/vue/24/outline";
 import useClient from "@/api/client";
 import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
+import useCmd from "@/composables/useCmd";
 
 interface IQuestionnaire {
   id: number;
@@ -93,20 +93,18 @@ const request = client.get(
   "api/questionnaires/query/fill_out_questionnaire/{}/",
   route.params.code as string,
 );
-useGet(request, recordQuestionnaire);
+const query = useGet(request, recordQuestionnaire);
 
-const sendAnswer = computed(
-  () => (data: JsonModel) =>
-    recordQuestionnaire.value
-      ? RecordsService.sendQuestionnaireAnswer(
-          data,
-          recordQuestionnaire.value,
-        ).then(
-          (newRecordQuestionnaire) =>
-            (recordQuestionnaire.value = newRecordQuestionnaire),
-        )
-      : alert("Error"),
-);
+const { commandRequest } = useCmd(query);
+
+const sendAnswer = computed(() => (data: JsonModel) => {
+  const formData = new FormData();
+  formData.append("action", "questionnaires/submit_answers");
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  formData.append("questionnaire_id", recordQuestionnaire.value!.id.toString());
+  Object.keys(data).forEach((key) => formData.append(key, data[key]));
+  return commandRequest(formData);
+});
 
 const fields = computed(() => {
   if (recordQuestionnaire.value && recordQuestionnaire.value.fields)

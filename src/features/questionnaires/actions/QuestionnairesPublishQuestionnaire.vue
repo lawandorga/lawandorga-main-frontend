@@ -2,17 +2,16 @@
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { IQuestionnaireTemplate } from "@/types/questionnaire";
 import { computed, ref, toRefs, watch } from "vue";
-import useCommand from "@/composables/useCommand";
 import useClient from "@/api/client";
 import useQuery from "@/composables/useQuery";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void; folderUuid?: string }>();
 const { query, folderUuid } = toRefs(props);
 
 const client = useClient();
-const request = client.post("api/questionnaires/questionnaires/v2/publish/");
 
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const getRequest = client.get("api/questionnaires/query/templates/");
 
@@ -22,7 +21,7 @@ const getQuery = useQuery(getRequest, templates);
 const fields = computed<types.FormField[]>(() => [
   {
     label: "Template",
-    name: "template",
+    name: "template_id",
     type: "select",
     required: true,
     options: templates.value
@@ -46,13 +45,16 @@ defineExpose({
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Publish Questionnaire
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Publish Questionnaire"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        folder_uuid: folderUuid,
+        action: 'questionnaires/publish_questionnaire',
+      }"
+      submit="Publish"
+    />
   </ButtonNormal>
-  <ModalCreate
-    v-model="commandModalOpen"
-    title="Publish Questionnaire"
-    :fields="fields"
-    :request="commandRequest"
-    :data="{ folder: folderUuid }"
-    submit="Publish"
-  />
 </template>

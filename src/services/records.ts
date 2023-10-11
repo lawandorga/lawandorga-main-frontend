@@ -92,13 +92,6 @@ class RecordsService {
     downloadFileRequest(axios, url, entry.value as string);
   }
 
-  // questionnaire
-  getQuestionnaire(code: string): Promise<IQuestionnaire> {
-    return axios
-      .get(`questionnaires/questionnaires/${code}/`)
-      .then((response) => response.data);
-  }
-
   sendQuestionnaireAnswer(
     data: JsonModel,
     recordQuestionnaire: IQuestionnaire,
@@ -112,15 +105,6 @@ class RecordsService {
         formData,
       )
       .then((response) => response.data);
-  }
-
-  // questionnairefile
-  downloadQuestionnaireFile(file: { id: number; name: string }): void {
-    downloadFileRequest(
-      axios,
-      `questionnaires/questionnaire_files/${file.id}/`,
-      file.name,
-    );
   }
 }
 
