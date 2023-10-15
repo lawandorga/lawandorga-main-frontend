@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -11,12 +10,7 @@ const props = defineProps<{
 }>();
 const { templateId } = toRefs(props);
 
-const request = useClient().delete(
-  "api/questionnaires/templates/{}/",
-  templateId,
-);
-
-const { commandModalOpen, commandRequest } = useCommand(request, props.query);
+const { commandModalOpen, commandRequest } = useCmd(props.query);
 </script>
 
 <template>
@@ -28,8 +22,8 @@ const { commandModalOpen, commandRequest } = useCommand(request, props.query);
     title="Delete Questionnaire Template"
     :request="commandRequest"
     :data="{
-      name: templateName,
-      id: templateId,
+      template_id: templateId,
+      action: 'questionnaires/delete_template',
     }"
   />
 </template>

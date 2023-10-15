@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 
 const props = defineProps<{
@@ -22,9 +21,7 @@ const fields: types.FormField[] = [
   },
 ];
 
-const request = useClient().post("api/questionnaires/templates/");
-
-const { commandModalOpen, commandRequest } = useCommand(request, props.query);
+const { commandModalOpen, commandRequest } = useCmd(props.query);
 </script>
 
 <template>
@@ -36,5 +33,8 @@ const { commandModalOpen, commandRequest } = useCommand(request, props.query);
     title="Create Questionnaire Template"
     :request="commandRequest"
     :fields="fields"
+    :data="{
+      action: 'questionnaires/create_template',
+    }"
   />
 </template>

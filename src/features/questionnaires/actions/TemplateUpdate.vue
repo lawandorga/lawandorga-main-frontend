@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -27,12 +26,7 @@ const fields: types.FormField[] = [
   },
 ];
 
-const request = useClient().post(
-  "api/questionnaires/templates/{}/",
-  templateId,
-);
-
-const { commandModalOpen, commandRequest } = useCommand(request, props.query);
+const { commandModalOpen, commandRequest } = useCmd(props.query);
 </script>
 
 <template>
@@ -46,8 +40,9 @@ const { commandModalOpen, commandRequest } = useCommand(request, props.query);
     :fields="fields"
     :data="{
       name: templateName,
-      id: templateId,
+      template_id: templateId,
       notes: templateNotes,
+      action: 'questionnaires/update_template',
     }"
   />
 </template>
