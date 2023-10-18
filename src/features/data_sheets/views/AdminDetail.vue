@@ -106,7 +106,6 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { RecordTemplate } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
 import { ModalFree, TableGenerator } from "lorga-ui";

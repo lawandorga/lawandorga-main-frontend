@@ -2,18 +2,11 @@ import {
   Record,
   RecordDeletion,
   RecordEntry,
-  RecordField,
-  IRecordListPage,
   IRecordAccess,
 } from "@/types/records";
-import { IQuestionnaire } from "@/types/questionnaire";
 import { JsonModel } from "@/types/shared";
 import { downloadFileRequest } from "@/utils/download";
 import axios from "axios";
-
-export function recordsGetPage(): Promise<IRecordListPage> {
-  return axios.get("records/query/").then((r) => r.data);
-}
 
 export function recordsOptimize(): Promise<void> {
   return axios.post("records/records/v2/optimize/").then();
@@ -32,25 +25,6 @@ export function recordsGetRecord(uuid: string): Promise<Record> {
 }
 
 class RecordsService {
-  // fields
-  createField(data: JsonModel): Promise<RecordField> {
-    return axios
-      .post(data.url as string, data)
-      .then((response) => response.data);
-  }
-
-  updateField(field: RecordField): Promise<RecordField> {
-    return axios
-      .patch(field.url, field, { baseURL: import.meta.env.VITE_BACKEND_URL })
-      .then((response) => response.data);
-  }
-
-  deleteField(field: RecordField): Promise<void> {
-    return axios
-      .delete(field.url, { baseURL: import.meta.env.VITE_BACKEND_URL })
-      .then();
-  }
-
   // entries
   createEntry(data: JsonModel): Promise<RecordEntry> {
     return axios
@@ -90,21 +64,6 @@ class RecordsService {
   downloadFileFromEntry(entry: RecordEntry): void {
     const url = `${entry.url}download/`.replace("api/", "");
     downloadFileRequest(axios, url, entry.value as string);
-  }
-
-  sendQuestionnaireAnswer(
-    data: JsonModel,
-    recordQuestionnaire: IQuestionnaire,
-  ): Promise<IQuestionnaire> {
-    const formData = new FormData();
-    Object.keys(data).forEach((key) => formData.append(key, data[key]));
-
-    return axios
-      .patch<IQuestionnaire>(
-        `questionnaires/questionnaires/${recordQuestionnaire.id}/`,
-        formData,
-      )
-      .then((response) => response.data);
   }
 }
 
