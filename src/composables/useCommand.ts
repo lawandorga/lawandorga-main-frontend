@@ -14,7 +14,7 @@ export default function useCommand<
   /* eslint-enable */
 >(
   requestFunc: RFn,
-  queries: VoidFn[] | VoidFn = [],
+  queries: (VoidFn | Ref<VoidFn>)[] | VoidFn = [],
   ...params: Reffed<DropFirst<Parameters<RFn>>>
 ): {
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
@@ -28,10 +28,11 @@ export default function useCommand<
 
   const { handleCommandError } = useErrorHandling();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const commandRequest = (data: Record<string, any>) => {
     return requestFunc(data, ...commandParams.map(unref))
       .then((d) => {
-        queryFunctions.forEach((qf) => qf());
+        queryFunctions.forEach((qf) => unref(qf)());
         commandModalOpen.value = false;
         return d;
       })

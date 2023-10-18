@@ -4,7 +4,11 @@
     <ModalUpdate
       v-model="commandModalOpen"
       :fields="updateFields"
-      :data="{ id: templateId, name: templateName, show: templateShow }"
+      :data="{
+        template_id: templateId,
+        template_name: templateName,
+        action: 'data_sheets/update_template',
+      }"
       :request="commandRequest"
       title="Update Template"
     />
@@ -12,8 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -21,30 +24,17 @@ const props = defineProps<{
   query: () => void;
   templateId?: number;
   templateName: string;
-  templateShow: string[];
 }>();
 const { query, templateId } = toRefs(props);
 
 const updateFields: types.FormField[] = [
   {
     label: "Name",
-    name: "name",
+    name: "template_name",
     type: "text",
     required: true,
   },
-  {
-    label: "Fields in Table",
-    name: "show",
-    type: "list",
-    required: true,
-    helptext:
-      "This field is not used anymore and it will have no effect. You can now define custom personal views or shared views directly under records.",
-  },
 ];
 
-const client = useClient();
-
-const update = client.put("api/records/templates/{}/", templateId);
-
-const { commandRequest, commandModalOpen } = useCommand(update, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

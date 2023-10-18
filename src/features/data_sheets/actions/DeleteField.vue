@@ -6,7 +6,11 @@
       :fields="fields"
       title="Delete Field"
       :request="commandRequest"
-      :data="{ uuid: fieldUuid, name: fieldName, force_delete: false }"
+      :data="{
+        action: 'data_sheets/delete_field',
+        field_uuid: fieldUuid,
+        force_delete: false,
+      }"
       submit="Delete"
     >
       Are you sure you want to delete the field '{{ fieldName }}'?
@@ -17,8 +21,7 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -37,11 +40,5 @@ const fields: types.FormField[] = [
   },
 ];
 
-const client = useClient();
-const request = client.delete(
-  "api/records/fields/{}/?force_delete={force_delete}",
-  fieldUuid,
-);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

@@ -115,9 +115,9 @@ const items = computed<AdminItem[]>(() => [
     class: "sm:rounded-tr-lg",
   },
   {
-    title: "Record Templates",
+    title: "Data Sheet Templates",
     description:
-      "Add and edit your record templates. You can add, change and remove fields.",
+      "Add and edit your data sheet templates. You can add, change and remove fields.",
     link: { name: "admin-templates" },
     icon: RectangleGroupIcon,
     notifications: 0,
@@ -142,7 +142,7 @@ const items = computed<AdminItem[]>(() => [
   //   class: "",
   // },
   {
-    title: "Record Questionnaires",
+    title: "Questionnaire Templates",
     description:
       "Here you can create questionnaire templates that can be send out from the record detail page.",
     link: { name: "questionnaires-admin-list" },

@@ -6,13 +6,15 @@
       title="Create Template"
       :fields="createFields"
       :request="commandRequest"
+      :data="{
+        action: 'data_sheets/create_template',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -28,9 +30,5 @@ const createFields: types.FormField[] = [
   },
 ];
 
-const client = useClient();
-
-const create = client.post("api/records/templates/");
-
-const { commandRequest, commandModalOpen } = useCommand(create, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

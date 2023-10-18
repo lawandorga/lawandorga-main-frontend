@@ -5,14 +5,16 @@
       v-model="commandModalOpen"
       title="Delete Template"
       :request="commandRequest"
-      :data="{ id: templateId, name: templateName }"
+      :data="{
+        template_id: templateId,
+        action: 'data_sheets/delete_template',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -23,9 +25,5 @@ const props = defineProps<{
 }>();
 const { query, templateId } = toRefs(props);
 
-const client = useClient();
-
-const create = client.delete("api/records/templates/{}/", templateId);
-
-const { commandRequest, commandModalOpen } = useCommand(create, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

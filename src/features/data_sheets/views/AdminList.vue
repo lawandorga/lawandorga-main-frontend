@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import { RecordTemplate } from "@/types/records";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
@@ -57,15 +57,15 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useClient from "@/api/client";
-import RecordsCreateTemplate from "@/actions/RecordsCreateTemplate.vue";
-import RecordsUpdateTemplate from "@/actions/RecordsUpdateTemplate.vue";
-import RecordsDeleteTemplate from "@/actions/RecordsDeleteTemplate.vue";
+import RecordsCreateTemplate from "@/features/data_sheets/actions/CreateTemplate.vue";
+import RecordsUpdateTemplate from "@/features/data_sheets/actions/UpdateTemplate.vue";
+import RecordsDeleteTemplate from "@/features/data_sheets/actions/DeleteTemplate.vue";
 
 const client = useClient();
 
 const list = client.get("api/records/query/templates/");
 
-const templates = ref(null) as Ref<RecordTemplate[] | null>;
+const templates = ref<RecordTemplate[]>();
 
 const query = useGet(list, templates);
 </script>

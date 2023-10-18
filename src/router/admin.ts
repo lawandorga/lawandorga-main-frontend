@@ -37,16 +37,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminDeletionRequests.vue"),
   },
   {
-    path: "/admin/templates/",
-    name: "admin-templates",
-    component: () => import("@/views/admin/AdminTemplates.vue"),
-  },
-  {
-    path: "/admin/templates/:id/",
-    name: "admin-template",
-    component: () => import("@/views/admin/AdminTemplate.vue"),
-  },
-  {
     path: "/admin/sidebar/",
     name: "admin-sidebar",
     component: () => import("@/views/admin/AdminSidebar.vue"),
