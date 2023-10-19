@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts" setup>
-import FolderRecord from "@/components/FolderRecord.vue";
+import FolderRecord from "@/features/data_sheets/components/FolderRecord.vue";
 import { computed, ref, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";

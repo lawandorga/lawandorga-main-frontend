@@ -56,8 +56,7 @@ export type RecordEntry = JsonModel & {
 
 export type RecordField = JsonModel & {
   id: number;
-  url: string;
-  entry_url: string;
+  uuid: string;
   order: number;
   type: string;
   name: string;

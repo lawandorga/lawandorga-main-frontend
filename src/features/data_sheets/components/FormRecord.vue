@@ -109,11 +109,12 @@ import { computed, ref, toRefs, watch } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
 import { RecordEntry, Record, RecordField } from "@/types/records";
-import RecordsService from "@/services/records";
 import { useErrorHandling } from "@/api/errors";
+import useCmd from "@/composables/useCmd";
+import useClient from "@/api/client";
 
-const props = defineProps<{ record: Record }>();
-const { record } = toRefs(props);
+const props = defineProps<{ record: Record; query: () => void }>();
+const { record, query } = toRefs(props);
 
 const entries = ref<Record["entries"]>({});
 const nonFieldErrors = ref<string[]>([]);
@@ -129,9 +130,13 @@ watch(record, (newValue) => {
 
 entries.value = record.value.entries;
 
+const client = useClient();
 function downloadFile(name: string) {
   const entry = entries.value[name];
-  RecordsService.downloadFileFromEntry(entry);
+  const downloadRequest = client.downloadFile(
+    `api/records/query/file_entry_download/${entry.id}/`,
+  );
+  downloadRequest({ filename: entry.value as string });
 }
 
 function getAttrs(name: string) {
@@ -152,47 +157,48 @@ function change(field: RecordField, value: RecordEntry["value"]) {
   }
 }
 
+const { commandRequest } = useCmd(query);
+
+function createFileEntry(field: RecordField, value: RecordEntry["value"]) {
+  const formData = new FormData();
+  formData.append("field_id", field.uuid);
+  formData.append("record_id", record.value.id.toString());
+  formData.append("file", value as File);
+  formData.append("action", "data_sheets/create_file_entry");
+  commandRequest(formData).catch((e) => handleError(field, e));
+}
+
 function createEntry(field: RecordField, value: RecordEntry["value"]) {
-  const data = {
-    field: field.id,
-    record: record.value.id,
-    url: field.entry_url,
-    value: value,
-    file: null as File | null,
-  };
   if (field.type === "file") {
-    data["file"] = value as File;
-    RecordsService.createFileEntry(data)
-      .then((entry) => handleSuccess(field, entry))
-      .catch((e: AxiosError) => handleError(field, e));
-  } else {
-    RecordsService.createEntry(data)
-      .then((entry) => handleSuccess(field, entry))
-      .catch((e: AxiosError) => handleError(field, e));
+    createFileEntry(field, value);
+    return;
   }
+  const data = {
+    field_id: field.uuid,
+    record_id: record.value.id,
+    value: value,
+    action: "data_sheets/create_entry",
+  };
+  commandRequest(data).catch((e) => handleError(field, e));
 }
 
 function updateEntry(field: RecordField, value: RecordEntry["value"]) {
   const data = {
-    url: entries.value[field.name].url,
+    field_id: field.uuid,
+    record_id: record.value.id,
     value: value,
+    action: "data_sheets/update_entry",
   };
-  RecordsService.updateEntry(data)
-    .then((entry) => handleSuccess(field, entry))
-    .catch((e: AxiosError) => handleError(field, e));
+  commandRequest(data).catch((e) => handleError(field, e));
 }
 
 function deleteEntry(field: RecordField) {
-  const url = entries.value[field.name].url;
-  RecordsService.deleteEntry(url)
-    .then(() => {
-      delete entries.value[field.name];
-    })
-    .catch((e: AxiosError) => handleError(field, e));
-}
-
-function handleSuccess(field: RecordField, entry: RecordEntry) {
-  entries.value[field.name] = entry;
+  const data = {
+    field_id: field.uuid,
+    record_id: record.value.id,
+    action: "data_sheets/delete_entry",
+  };
+  commandRequest(data).catch((e) => handleError(field, e));
 }
 
 const { handleCommandError } = useErrorHandling();

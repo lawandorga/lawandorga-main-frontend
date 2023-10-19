@@ -8,7 +8,7 @@
         `Template: ${record.template_name}`,
       ]"
     >
-      <FormRecord :record="record"></FormRecord>
+      <FormRecord :record="record" :query="recordsQuery"></FormRecord>
       <template #buttons>
         <RecordsChangeName
           :id="record.id"
@@ -39,13 +39,13 @@
 <script lang="ts" setup>
 import RecordsChangeName from "@/actions/RecordsChangeName.vue";
 import { formatDate } from "@/utils/date";
-import { Ref, ref, toRefs, watch } from "vue";
-import BoxHeadingStats from "./BoxHeadingStats.vue";
+import { ref, toRefs, watch } from "vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FormRecord from "./FormRecord.vue";
 import { Record } from "@/types/records";
-import { recordsGetRecord } from "@/services/records";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
+import useClient from "@/api/client";
 
 // props
 const props = defineProps<{
@@ -56,12 +56,11 @@ const props = defineProps<{
 const { selectedId, selectedType, query } = toRefs(props);
 
 // record
+const client = useClient();
+const request = client.get("api/records/query/{}/", selectedId);
 const record = ref<Record | null>(null);
-const recordsQuery = useQuery(
-  recordsGetRecord,
-  record,
-  selectedId as Ref<string>,
-);
+const recordsQuery = useQuery(request, record);
+
 const update = () => {
   if (record.value && selectedId.value !== record.value.uuid)
     record.value = null;
