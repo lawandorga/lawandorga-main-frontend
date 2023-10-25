@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from "vue";
-import { ButtonNormal, ModalUpdate } from "lorga-ui";
-import { FormField } from "@/types/form";
-import { Group } from "@/types/core";
+import { computed, ref, toRefs, watch } from "vue";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
+import useQuery from "@/composables/useQuery";
 
 const props = defineProps<{
   query: () => void;
@@ -22,6 +21,9 @@ const { query, fieldKind } = toRefs(props);
 const { commandRequest, commandModalOpen } = useCmd(query);
 
 const client = useClient();
+const request = client.get("api/query/groups/");
+const groups = ref([]);
+const groupsQuery = useQuery(request, groups);
 
 const updateFieldsSource = [
   {
@@ -36,17 +38,16 @@ const updateFieldsSource = [
     type: "number",
     required: true,
   },
-] as FormField[];
+] as types.FormField[];
 
-const updateFields = ref(updateFieldsSource);
+const updateFields = computed<types.FormField[]>(() => {
+  const fields = [...updateFieldsSource];
 
-watch(commandModalOpen, () => {
-  if (fieldKind.value === null || commandModalOpen.value === false) return;
-
-  updateFields.value = [...updateFieldsSource];
+  if (fieldKind.value === null || commandModalOpen.value === false)
+    return fields;
 
   if (fieldKind.value.includes("Standard"))
-    updateFields.value.push({
+    fields.push({
       label: "Type",
       name: "field_type",
       type: "select",
@@ -63,16 +64,17 @@ watch(commandModalOpen, () => {
     fieldKind.value.includes("State") ||
     fieldKind.value.includes("Select") ||
     fieldKind.value.includes("Multiple")
-  )
-    updateFields.value.push({
+  ) {
+    fields.push({
       label: "Options",
       name: "options",
       type: "list",
       required: true,
     });
+  }
 
   if (fieldKind.value.includes("Users")) {
-    updateFields.value.push({
+    fields.push({
       label: "Share Keys",
       name: "share_keys",
       type: "toggle",
@@ -80,23 +82,27 @@ watch(commandModalOpen, () => {
       helptext:
         "If this option is selected every user selected will get access to the record.",
     });
-    updateFields.value.push({
+    fields.push({
       label: "Group",
       name: "group_id",
       type: "select",
       required: false,
       helptext:
         "If a group is selected only members of this group will be selectable.",
-      options: [] as Group[],
+      options: groups.value,
     });
-    client
-      .get("api/query/groups/")()
-      .then((g) => (updateFields.value[3].options = g));
   }
+
+  return fields;
+});
+
+watch(commandModalOpen, (v) => {
+  if (v && fieldKind.value.includes("Users")) groupsQuery();
 });
 </script>
 
 <template>
+  {{ fieldKind }}
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     <ModalUpdate
       v-model="commandModalOpen"
