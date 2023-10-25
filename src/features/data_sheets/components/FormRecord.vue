@@ -157,7 +157,7 @@ function change(field: RecordField, value: RecordEntry["value"]) {
   }
 }
 
-const { commandRequest } = useCmd(query);
+const { commandRequest } = useCmd();
 
 function createFileEntry(field: RecordField, value: RecordEntry["value"]) {
   const formData = new FormData();
@@ -180,6 +180,7 @@ function createEntry(field: RecordField, value: RecordEntry["value"]) {
     action: "data_sheets/create_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
+  record.value.entries[field.name] = { value };
 }
 
 function updateEntry(field: RecordField, value: RecordEntry["value"]) {
@@ -190,6 +191,7 @@ function updateEntry(field: RecordField, value: RecordEntry["value"]) {
     action: "data_sheets/update_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
+  record.value.entries[field.name] = { value };
 }
 
 function deleteEntry(field: RecordField) {
@@ -199,6 +201,7 @@ function deleteEntry(field: RecordField) {
     action: "data_sheets/delete_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
+  delete record.value.entries[field.name];
 }
 
 const { handleCommandError } = useErrorHandling();
