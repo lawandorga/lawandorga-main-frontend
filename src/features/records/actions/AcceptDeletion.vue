@@ -24,10 +24,7 @@ const props = defineProps<{ query: () => void; deletionUuid: string }>();
 const { query, deletionUuid } = toRefs(props);
 
 const client = useClient();
-const request = client.post(
-  "api/records/deletions/{}/accept/",
-  deletionUuid,
-);
+const request = client.post("api/records/deletions/{}/accept/", deletionUuid);
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 </script>

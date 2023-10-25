@@ -34,10 +34,7 @@ const fields: types.FormField[] = [
 
 const client = useClient();
 
-const request = client.put(
-  "api/records/records/{}/change_token/",
-  recordUuid,
-);
+const request = client.put("api/records/records/{}/change_token/", recordUuid);
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 </script>
