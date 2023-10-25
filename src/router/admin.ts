@@ -27,16 +27,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminGroup.vue"),
   },
   {
-    path: "/admin/record-permit-requests/",
-    name: "admin-recordpermitrequests",
-    component: () => import("@/views/admin/AdminAccessRequests.vue"),
-  },
-  {
-    path: "/admin/record-deletion-requests/",
-    name: "admin-recorddeletionrequests",
-    component: () => import("@/views/admin/AdminDeletionRequests.vue"),
-  },
-  {
     path: "/admin/sidebar/",
     name: "admin-sidebar",
     component: () => import("@/views/admin/AdminSidebar.vue"),
