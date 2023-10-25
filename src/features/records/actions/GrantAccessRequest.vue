@@ -30,7 +30,7 @@ const { query, accessRequestUuid } = toRefs(props);
 
 const client = useClient();
 const request = client.post<{ id: number }>(
-  "api/records/v2/access_requests/{}/grant/",
+  "api/records/access_requests/{}/grant/",
   accessRequestUuid,
 );
 

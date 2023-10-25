@@ -35,13 +35,13 @@ const request = client.postAndReturn<
     template: number;
   },
   { folder_uuid: string; record_uuid: string }
->("api/records/v2/records/");
+>("api/records/records/");
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 
 // create within records folder
 const availableTemplates = ref<RecordTemplate[]>([]);
-const templateRequest = client.get("api/records/query/templates/");
+const templateRequest = client.get("api/data_sheets/query/templates/");
 const getTemplates = useQuery(templateRequest, availableTemplates);
 watch(commandModalOpen, () => {
   getTemplates();

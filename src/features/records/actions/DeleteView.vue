@@ -24,7 +24,7 @@ const props = defineProps<{
 const { query, viewUuid } = toRefs(props);
 
 const client = useClient();
-const request = client.delete("api/records/v2/settings/{}/", viewUuid);
+const request = client.delete("api/records/settings/{}/", viewUuid);
 
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 </script>

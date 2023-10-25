@@ -5,7 +5,10 @@
       v-model="commandModalOpen"
       title="Delete Data Sheet"
       :request="commandRequest"
-      :data="{ id: sheetUuid, name: sheetName }"
+      :data="{
+        sheet_uuid: sheetUuid,
+        action: 'data_sheets/delete_data_sheet',
+      }"
     />
   </ButtonNormal>
 </template>
@@ -13,8 +16,7 @@
 <script setup lang="ts">
 import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -23,8 +25,5 @@ const props = defineProps<{
 }>();
 const { query, sheetUuid } = toRefs(props);
 
-const client = useClient();
-const request = client.delete("api/records/records/v2/{}/", sheetUuid);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

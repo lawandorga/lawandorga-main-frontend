@@ -134,7 +134,7 @@ const client = useClient();
 function downloadFile(name: string) {
   const entry = entries.value[name];
   const downloadRequest = client.downloadFile(
-    `api/records/query/file_entry_download/${entry.id}/`,
+    `api/data_sheets/query/file_entry_download/${entry.id}/`,
   );
   downloadRequest({ filename: entry.value as string });
 }
@@ -206,7 +206,7 @@ const { handleCommandError } = useErrorHandling();
 function handleError(field: RecordField, e: AxiosError) {
   return handleCommandError(e).catch((error: types.ICommandError) => {
     if (error.paramErrors.value) {
-      errors.value[field.name] = error.paramErrors.value;
+      errors.value[field.name] = error.paramErrors.value as string[];
     } else if (error.generalErrors)
       errors.value[field.name] = error.generalErrors;
     else if (error.title) errors.value[field.name] = error.title;

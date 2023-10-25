@@ -33,7 +33,7 @@ const request = client.post<{
   name: string;
   folder: string;
   template: number;
-}>("api/records/records/v2/within_folder/");
+}>("api/data_sheets/data_sheets/within_folder/");
 
 const {
   commandRequest: createWithinFolderRequest,
@@ -42,7 +42,7 @@ const {
 
 const availableTemplates = ref<RecordTemplate[]>([]);
 
-const templateRequest = client.get("api/records/query/templates/");
+const templateRequest = client.get("api/data_sheets/query/templates/");
 const getTemplates = useQuery(templateRequest, availableTemplates);
 
 watch(createWithinFolderModalOpen, (newValue) => {

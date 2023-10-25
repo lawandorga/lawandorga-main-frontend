@@ -57,7 +57,7 @@ const { selectedId, selectedType, query } = toRefs(props);
 
 // record
 const client = useClient();
-const request = client.get("api/records/query/{}/", selectedId);
+const request = client.get("api/data_sheets/query/{}/", selectedId);
 const record = ref<Record | null>(null);
 const recordsQuery = useQuery(request, record);
 

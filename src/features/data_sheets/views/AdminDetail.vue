@@ -141,7 +141,7 @@ const client = useClient();
 
 // template
 const retrieve = client.get(
-  "api/records/query/templates/{}/",
+  "api/data_sheets/query/templates/{}/",
   route.params.id as string,
 );
 

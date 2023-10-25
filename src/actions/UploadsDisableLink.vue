@@ -30,17 +30,10 @@ const { folderUuid, query, linkUuid } = toRefs(props);
 
 // request
 const client = useClient();
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const request = (data: Record<string, any>, uuid: string) =>
-  client.post(`api/uploads/links/${uuid}/disable/`)(data);
+const request = client.post(`api/uploads/links/${linkUuid.value}/disable/`);
 
 // disable
-// useCommand MIGRATE
-const { commandModalOpen, commandRequest } = useCommand(
-  request,
-  query.value,
-  linkUuid,
-);
+const { commandModalOpen, commandRequest } = useCommand(request, query.value);
 
 // expose
 defineExpose({

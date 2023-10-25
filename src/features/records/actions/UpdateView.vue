@@ -14,7 +14,7 @@ const props = defineProps<{
 const { query, viewUuid } = toRefs(props);
 
 const client = useClient();
-const request = client.put("api/records/v2/settings/{}/", viewUuid);
+const request = client.put("api/records/settings/{}/", viewUuid);
 
 const fields: types.FormField[] = [
   {

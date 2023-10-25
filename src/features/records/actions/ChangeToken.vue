@@ -35,7 +35,7 @@ const fields: types.FormField[] = [
 const client = useClient();
 
 const request = client.put(
-  "api/records/v2/records/{}/change_token/",
+  "api/records/records/{}/change_token/",
   recordUuid,
 );
 

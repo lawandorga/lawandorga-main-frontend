@@ -2,7 +2,7 @@ import { Record, RecordDeletion, IRecordAccess } from "@/types/records";
 import axios from "axios";
 
 export function recordsOptimize(): Promise<void> {
-  return axios.post("records/records/v2/optimize/").then();
+  return axios.post("data_sheets/data_sheets/optimize/").then();
 }
 
 export function recordsGetAccessesPage(): Promise<IRecordAccess[]> {

@@ -7,22 +7,23 @@
       submit="Save"
       :fields="fields"
       :request="commandRequest"
-      :data="{ name, id }"
+      :data="{
+        action: 'data_sheets/change_data_sheet_name',
+        record_id: id,
+        name,
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
-// props
 const props = defineProps<{ name: string; id: number; query: () => void }>();
 const { query } = toRefs(props);
 
-// change name
 const fields = [
   {
     label: "Name",
@@ -32,12 +33,8 @@ const fields = [
   },
 ] as types.FormField[];
 
-const client = useClient();
-const request = client.post("api/records/records/v2/{id}/change_name/");
+const { commandModalOpen, commandRequest } = useCmd(query.value);
 
-const { commandModalOpen, commandRequest } = useCommand(request, query.value);
-
-// expose
 defineExpose({
   commandModalOpen,
 });

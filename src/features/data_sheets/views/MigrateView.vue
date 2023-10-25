@@ -71,7 +71,7 @@ import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
 const sheets = ref(null);
 
 const client = useClient();
-const request = client.get("/api/records/query/non_migrated/");
+const request = client.get("/api/data_sheets/query/non_migrated/");
 
 const query = useGet(request, sheets);
 </script>

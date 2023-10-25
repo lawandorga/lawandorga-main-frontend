@@ -25,7 +25,7 @@ const { query, deletionUuid } = toRefs(props);
 
 const client = useClient();
 const request = client.post(
-  "api/records/v2/deletions/{}/accept/",
+  "api/records/deletions/{}/accept/",
   deletionUuid,
 );
 

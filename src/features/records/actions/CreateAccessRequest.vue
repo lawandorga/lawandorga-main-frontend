@@ -36,7 +36,7 @@ const { query, recordUuid } = toRefs(props);
 
 // request
 const client = useClient();
-const request = client.post("/api/records/v2/access_requests/");
+const request = client.post("/api/records/access_requests/");
 
 // create
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);

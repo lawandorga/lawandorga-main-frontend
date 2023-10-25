@@ -63,7 +63,7 @@ import RecordsDeleteTemplate from "@/features/data_sheets/actions/DeleteTemplate
 
 const client = useClient();
 
-const list = client.get("api/records/query/templates/");
+const list = client.get("api/data_sheets/query/templates/");
 
 const templates = ref<RecordTemplate[]>();
 

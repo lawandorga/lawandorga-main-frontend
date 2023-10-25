@@ -22,7 +22,7 @@ const props = defineProps<{
 const { query } = toRefs(props);
 
 const client = useClient();
-const request = client.post("api/records/v2/settings/");
+const request = client.post("api/records/settings/");
 
 const fields: types.FormField[] = [
   {

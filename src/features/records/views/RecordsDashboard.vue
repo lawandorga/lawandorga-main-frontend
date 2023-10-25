@@ -87,7 +87,7 @@ import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 
 const client = useClient();
-const request = client.get("/api/records/v2/query/dashboard/");
+const request = client.get("/api/records/query/dashboard/");
 
 const page = ref<IRecordListPageV2 | null>(null);
 const query = useGet(request, page);
