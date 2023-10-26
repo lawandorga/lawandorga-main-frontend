@@ -1,16 +1,8 @@
-import { Record, RecordDeletion, IRecordAccess } from "@/types/records";
+import { Record } from "@/types/records";
 import axios from "axios";
 
 export function recordsOptimize(): Promise<void> {
   return axios.post("data_sheets/data_sheets/optimize/").then();
-}
-
-export function recordsGetAccessesPage(): Promise<IRecordAccess[]> {
-  return axios.get("records/query/accesses/").then((r) => r.data);
-}
-
-export function recordsGetDeletions(): Promise<RecordDeletion[]> {
-  return axios.get("records/query/deletions/").then((r) => r.data);
 }
 
 export function recordsGetRecord(uuid: string): Promise<Record> {

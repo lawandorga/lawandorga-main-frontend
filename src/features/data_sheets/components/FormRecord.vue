@@ -21,7 +21,7 @@
       >
         <FormTextarea
           v-if="field.type === 'textarea'"
-          v-bind="getAttrs(field.name)"
+          v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
           required
@@ -29,7 +29,7 @@
         />
         <FormSelect
           v-else-if="field.type === 'select'"
-          v-bind="getAttrs(field.name)"
+          v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
           required
@@ -38,7 +38,7 @@
         />
         <FormMultiple
           v-else-if="field.type === 'multiple'"
-          v-bind="getAttrs(field.name)"
+          v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
           required
@@ -47,17 +47,17 @@
         />
         <FormFile
           v-else-if="field.type === 'file'"
-          v-bind="getAttrs(field.name)"
+          v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
           required
           @update:model-value="change(field, $event)"
         >
           <ButtonNormal
-            v-if="field.name in entries"
+            v-if="field.uuid in entries"
             kind="action"
             class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
-            @click="downloadFile(field.name)"
+            @click="downloadFile(field.uuid)"
           >
             Download
           </ButtonNormal>
@@ -73,7 +73,7 @@
         <FormInput
           v-else
           :name="field.name"
-          v-bind="getAttrs(field.name)"
+          v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :type="field.type"
           required
@@ -108,13 +108,13 @@ import {
 import { computed, ref, toRefs, watch } from "vue";
 import { DjangoError } from "@/types/shared";
 import { AxiosError } from "axios";
-import { RecordEntry, Record, RecordField } from "@/types/records";
+import { Record, RecordField, RecordValue } from "@/types/records";
 import { useErrorHandling } from "@/api/errors";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
 
 const props = defineProps<{ record: Record; query: () => void }>();
-const { record, query } = toRefs(props);
+const { record } = toRefs(props);
 
 const entries = ref<Record["entries"]>({});
 const nonFieldErrors = ref<string[]>([]);
@@ -131,24 +131,26 @@ watch(record, (newValue) => {
 entries.value = record.value.entries;
 
 const client = useClient();
-function downloadFile(name: string) {
-  const entry = entries.value[name];
+function downloadFile(uuid: string) {
+  const value = entries.value[uuid];
   const downloadRequest = client.downloadFile(
-    `api/data_sheets/query/file_entry_download/${entry.id}/`,
+    `api/data_sheets/query/file_entry_download/${record.value.id}/${uuid}/`,
   );
-  downloadRequest({ filename: entry.value as string });
+  console.log(value);
+  downloadRequest({ filename: value as string });
 }
 
-function getAttrs(name: string) {
-  if (name in entries.value)
-    return { "model-value": entries.value[name].value };
+function getAttrs(uuid: string) {
+  if (uuid in entries.value) return { "model-value": entries.value[uuid] };
   return {};
 }
 
-function change(field: RecordField, value: RecordEntry["value"]) {
+function change(field: RecordField, value: RecordValue) {
   errors.value = {};
-  const entries_include = Object.keys(entries.value).includes(field.name);
-  if (entries_include && value) {
+  const entries_include = Object.keys(entries.value).includes(field.uuid);
+  if (field.type === "file") {
+    createFileEntry(field, value);
+  } else if (entries_include && value) {
     updateEntry(field, value);
   } else if (entries_include && !value) {
     deleteEntry(field);
@@ -159,20 +161,17 @@ function change(field: RecordField, value: RecordEntry["value"]) {
 
 const { commandRequest } = useCmd();
 
-function createFileEntry(field: RecordField, value: RecordEntry["value"]) {
+function createFileEntry(field: RecordField, value: RecordValue) {
   const formData = new FormData();
   formData.append("field_id", field.uuid);
   formData.append("record_id", record.value.id.toString());
   formData.append("file", value as File);
   formData.append("action", "data_sheets/create_file_entry");
   commandRequest(formData).catch((e) => handleError(field, e));
+  record.value.entries[field.uuid] = (value as File).name;
 }
 
-function createEntry(field: RecordField, value: RecordEntry["value"]) {
-  if (field.type === "file") {
-    createFileEntry(field, value);
-    return;
-  }
+function createEntry(field: RecordField, value: RecordValue) {
   const data = {
     field_id: field.uuid,
     record_id: record.value.id,
@@ -180,10 +179,10 @@ function createEntry(field: RecordField, value: RecordEntry["value"]) {
     action: "data_sheets/create_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
-  record.value.entries[field.name] = { value };
+  record.value.entries[field.uuid] = value;
 }
 
-function updateEntry(field: RecordField, value: RecordEntry["value"]) {
+function updateEntry(field: RecordField, value: RecordValue) {
   const data = {
     field_id: field.uuid,
     record_id: record.value.id,
@@ -191,7 +190,7 @@ function updateEntry(field: RecordField, value: RecordEntry["value"]) {
     action: "data_sheets/update_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
-  record.value.entries[field.name] = { value };
+  record.value.entries[field.uuid] = value;
 }
 
 function deleteEntry(field: RecordField) {
@@ -201,7 +200,7 @@ function deleteEntry(field: RecordField) {
     action: "data_sheets/delete_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
-  delete record.value.entries[field.name];
+  delete record.value.entries[field.uuid];
 }
 
 const { handleCommandError } = useErrorHandling();
