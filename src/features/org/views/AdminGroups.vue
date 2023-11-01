@@ -59,9 +59,9 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useClient from "@/api/client";
-import GroupsCreateGroup from "@/actions/GroupsCreateGroup.vue";
-import GroupsUpdateGroup from "@/actions/GroupsUpdateGroup.vue";
-import GroupsDeleteGroup from "@/actions/GroupsDeleteGroup.vue";
+import GroupsCreateGroup from "@/features/org/actions/GroupsCreateGroup.vue";
+import GroupsUpdateGroup from "@/features/org/actions/GroupsUpdateGroup.vue";
+import GroupsDeleteGroup from "@/features/org/actions/GroupsDeleteGroup.vue";
 
 const groups = ref(null) as Ref<Group[] | null>;
 

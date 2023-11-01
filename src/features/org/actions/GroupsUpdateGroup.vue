@@ -5,16 +5,20 @@
       v-model="commandModalOpen"
       :fields="fields"
       :request="commandRequest"
-      :data="{ id: groupId, name: groupName, description: groupDescription }"
+      :data="{
+        group_id: groupId,
+        name: groupName,
+        description: groupDescription,
+        action: 'org/update_group',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -39,8 +43,5 @@ const fields: types.FormField[] = [
   },
 ];
 
-const client = useClient();
-const request = client.put("api/groups/{}/", groupId);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

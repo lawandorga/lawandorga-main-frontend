@@ -3,7 +3,7 @@
     Delete
     <ModalDelete
       v-model="commandModalOpen"
-      :data="{ id: groupId, name: groupName }"
+      :data="{ group_id: groupId, action: 'org/delete_group' }"
       :request="commandRequest"
     />
   </ButtonNormal>
@@ -11,9 +11,8 @@
 
 <script lang="ts" setup>
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -22,8 +21,5 @@ const props = defineProps<{
 }>();
 const { query, groupId } = toRefs(props);
 
-const client = useClient();
-const request = client.delete("api/groups/{}/", groupId);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

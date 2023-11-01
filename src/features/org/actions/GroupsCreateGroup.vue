@@ -5,15 +5,17 @@
       v-model="commandModalOpen"
       :fields="fields"
       :request="commandRequest"
+      :data="{
+        action: 'org/create_group',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
-import useClient from "@/api/client";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
@@ -33,8 +35,5 @@ const fields: types.FormField[] = [
   },
 ];
 
-const client = useClient();
-const request = client.post("api/groups/");
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

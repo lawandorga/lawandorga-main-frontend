@@ -19,6 +19,7 @@ import uploadsRoutes from "./uploads";
 import chatRoutes from "./chat";
 import recordsRoutes from "@/features/records/routes";
 import questionnaireRoutes from "@/features/questionnaires/routes";
+import orgRoutes from "@/features/org/routes";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -52,6 +53,7 @@ const routes: Array<RouteRecordRaw> = [
   ...uploadsRoutes,
   ...chatRoutes,
   ...questionnaireRoutes,
+  ...orgRoutes,
   {
     path: "/error",
     name: "error",

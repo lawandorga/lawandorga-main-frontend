@@ -1,21 +1,26 @@
 <template>
   <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Remove
-    <ModalDelete
+    <ModalConfirm
       v-model="commandModalOpen"
-      verb="remove"
       title="Remove Member"
       :request="commandRequest"
-      :data="{ member: memberId, name: memberName }"
-    />
+      :data="{
+        member_id: memberId,
+        group_id: groupId,
+        action: 'org/remove_member_from_group',
+      }"
+      :object-name="memberName"
+    >
+      Are you sure you want to remove '{{ memberName }}' from this group?
+    </ModalConfirm>
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
-import useCommand from "@/composables/useCommand";
-import { ButtonNormal, ModalDelete } from "lorga-ui";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -26,12 +31,5 @@ const props = defineProps<{
 
 const { query, groupId, memberName, memberId } = toRefs(props);
 
-const client = useClient();
-
-const request = client.post<{ member: number }>(
-  "api/groups/{}/remove_member/",
-  groupId,
-);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

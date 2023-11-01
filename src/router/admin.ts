@@ -17,16 +17,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/admin/AdminProfile.vue"),
   },
   {
-    path: "/admin/groups/",
-    name: "admin-groups",
-    component: () => import("@/views/admin/AdminGroups.vue"),
-  },
-  {
-    path: "/admin/groups/:id/",
-    name: "admin-group",
-    component: () => import("@/views/admin/AdminGroup.vue"),
-  },
-  {
     path: "/admin/sidebar/",
     name: "admin-sidebar",
     component: () => import("@/views/admin/AdminSidebar.vue"),
