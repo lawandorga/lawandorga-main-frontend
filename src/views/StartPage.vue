@@ -50,7 +50,7 @@
               <h2 class="mb-8 text-2xl font-bold">Login</h2>
               <p v-if="false">We're running updates. We'll be back shortly!</p>
               <div v-else-if="!userStore.isAuthenticated">
-                <ButtonNormal :href="getRawLoginUrl()">
+                <ButtonNormal :href="getLoginUrl()">
                   To the login page
                 </ButtonNormal>
                 <div class="pt-6 space-x-4 text-right">
@@ -233,6 +233,13 @@ import { useUserStore } from "@/store/user";
 import useGet from "@/composables/useGet";
 import { computed, ref } from "vue";
 import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
+
+const getLoginUrl = () => {
+  const loginUrl = getRawLoginUrl();
+  const origin = window.location.origin;
+  const next = "/dashboard/";
+  return `${loginUrl}?next=${origin}${next}`;
+};
 
 const sponsors = [
   {
