@@ -28,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import FoldersGrantAccess from "@/actions/FoldersGrantAccess.vue";
-import FoldersRevokeAccessUser from "@/actions/FoldersRevokeAccessUser.vue";
+import FoldersGrantAccess from "@/features/folders/actions/FoldersGrantAccess.vue";
+import FoldersRevokeAccessUser from "@/features/folders/actions/FoldersRevokeAccessUser.vue";
 import { IAccess, IFolderItem } from "@/types/folders";
 import { TableGenerator } from "lorga-ui";
 

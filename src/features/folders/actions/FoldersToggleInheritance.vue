@@ -1,16 +1,19 @@
 <template>
-  <ButtonNormal kind="action" @click="toggleInheritanceModalOpen = true">
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
     <template v-if="folderInheritanceStopped">Allow Access From Above</template>
     <template v-else>Cut Access From Above</template>
     <ModalConfirm
-      v-model="toggleInheritanceModalOpen"
+      v-model="commandModalOpen"
       :title="
         folderInheritanceStopped
           ? 'Allow Access From Above'
           : 'Cut Access From Above'
       "
-      :request="toggleInheritanceRequest"
-      :data="{ folder: folderUuid }"
+      :request="commandRequest"
+      :data="{
+        folder_uuid: folderUuid,
+        action: 'folders/toggle_inheritance_folder',
+      }"
       :submit="folderInheritanceStopped ? 'Allow' : 'Cut'"
     >
       <template v-if="folderInheritanceStopped">
@@ -24,11 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { foldersToggleInheritance } from "@/services/folders";
 import { ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
 import { ButtonNormal } from "lorga-ui";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -39,8 +41,5 @@ const props = defineProps<{
 
 const { query } = toRefs(props);
 
-const {
-  commandRequest: toggleInheritanceRequest,
-  commandModalOpen: toggleInheritanceModalOpen,
-} = useCommand(foldersToggleInheritance, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

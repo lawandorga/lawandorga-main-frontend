@@ -29,7 +29,7 @@
 import BoxHeadingStats from "./BoxHeadingStats.vue";
 import { TableGenerator } from "lorga-ui";
 import { IAccess } from "@/types/folders";
-import FoldersRevokeAccess from "@/actions/FoldersRevokeAccess.vue";
+import FoldersRevokeAccess from "@/features/folders/actions/FoldersRevokeAccess.vue";
 
 defineProps<{
   selectedType: string;

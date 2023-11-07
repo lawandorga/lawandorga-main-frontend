@@ -1,11 +1,15 @@
 <template>
-  <ButtonNormal kind="delete" @click="deleteModalOpen = true">
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Delete
     <ModalDelete
-      v-model="deleteModalOpen"
-      title="Delete folder"
-      :request="deleteRequest"
-      :data="{ uuid: folderUuid, name: folderName }"
+      v-model="commandModalOpen"
+      title="Delete Folder"
+      :request="commandRequest"
+      :object-name="folderName"
+      :data="{
+        folder_uuid: folderUuid,
+        action: 'folders/delete_folder',
+      }"
     >
       Are you sure you want to delete '{{ folderName }}'? This will delete all
       subfolders and the content.
@@ -14,11 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { foldersDeleteFolder } from "@/services/folders";
 import { ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 import { ButtonNormal } from "lorga-ui";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   folderUuid: string;
@@ -27,6 +30,5 @@ const props = defineProps<{
 }>();
 const { query } = toRefs(props);
 
-const { commandRequest: deleteRequest, commandModalOpen: deleteModalOpen } =
-  useCommand(foldersDeleteFolder, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

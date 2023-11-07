@@ -3,22 +3,21 @@
     Move
     <ModalUpdate
       v-model="commandModalOpen"
-      title="Move folder"
+      title="Move Folder"
       :fields="moveFolderFields"
       :request="commandRequest"
-      :data="{ folder: folderUuid }"
+      :data="{ folder_uuid: folderUuid, action: 'folders/move_folder' }"
       submit="Move"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { foldersMoveFolder } from "@/services/folders";
 import { IFolder } from "@/types/folders";
 import { ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import { ButtonNormal } from "lorga-ui";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -32,7 +31,7 @@ const moveFolderFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Target folder",
-      name: "target",
+      name: "target_uuid",
       type: "select",
       required: true,
       options: availableFolders.value,
@@ -40,8 +39,5 @@ const moveFolderFields = computed<types.FormField[]>(() => {
   ] as types.FormField[];
 });
 
-const { commandRequest, commandModalOpen } = useCommand(
-  foldersMoveFolder,
-  query.value,
-);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

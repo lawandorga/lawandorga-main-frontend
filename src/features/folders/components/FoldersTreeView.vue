@@ -90,18 +90,18 @@
 </template>
 
 <script setup lang="ts">
-import FoldersCreateFolder from "@/actions/FoldersCreateFolder.vue";
+import FoldersCreateFolder from "@/features/folders/actions/FoldersCreateFolder.vue";
 import { computed, ref, toRefs } from "vue";
-import FoldersTree from "@/components/FoldersTree.vue";
+import FoldersTree from "@/features/folders/components/FoldersTree.vue";
 import { IAccess, IFolder, IFolderItem } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
-import FoldersCreateRootFolder from "@/actions/FoldersCreateRootFolder.vue";
-import FoldersChangeName from "@/actions/FoldersChangeName.vue";
-import FoldersToggleInheritance from "@/actions/FoldersToggleInheritance.vue";
-import FoldersDeleteFolder from "@/actions/FoldersDeleteFolder.vue";
-import FoldersMoveFolder from "@/actions/FoldersMoveFolder.vue";
-import TableFolderPersonsWithAccess from "@/components/TableFolderPersonsWithAccess.vue";
-import FoldersAddContent from "@/actions/FoldersAddContent.vue";
+import FoldersCreateRootFolder from "@/features/folders/actions/FoldersCreateRootFolder.vue";
+import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
+import FoldersToggleInheritance from "@/features/folders/actions/FoldersToggleInheritance.vue";
+import FoldersDeleteFolder from "@/features/folders/actions/FoldersDeleteFolder.vue";
+import FoldersMoveFolder from "@/features/folders/actions/FoldersMoveFolder.vue";
+import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
+import FoldersAddContent from "@/features/folders/actions/FoldersAddContent.vue";
 
 const props = defineProps<{
   availablePersons?: IAccess[];

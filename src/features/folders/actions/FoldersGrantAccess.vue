@@ -6,15 +6,17 @@
       title="Grant Access"
       :fields="grantAccessFields"
       :request="commandRequest"
-      :data="{ uuid: folderUuid }"
+      :data="{
+        folder_uuid: folderUuid,
+        action: 'folders/grant_access_to_user',
+      }"
       submit="Grant Access"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { foldersGrantAccess } from "@/services/folders";
+import useCmd from "@/composables/useCmd";
 import { IAccess } from "@/types/folders";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
@@ -31,7 +33,7 @@ const grantAccessFields = computed<types.FormField[]>(() => {
   return [
     {
       label: "Person",
-      name: "user_uuid",
+      name: "to_uuid",
       type: "select",
       required: true,
       options: availablePersons?.value ? availablePersons.value : [],
@@ -39,8 +41,5 @@ const grantAccessFields = computed<types.FormField[]>(() => {
   ] as types.FormField[];
 });
 
-const { commandRequest, commandModalOpen } = useCommand(
-  foldersGrantAccess,
-  query.value,
-);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

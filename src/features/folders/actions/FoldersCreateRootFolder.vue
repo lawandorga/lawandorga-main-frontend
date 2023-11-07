@@ -1,19 +1,18 @@
 <template>
-  <ButtonNormal kind="action" @click="createModalOpen = true">
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
     Create Folder
     <ModalCreate
-      v-model="createModalOpen"
+      v-model="commandModalOpen"
       title="Create Folder"
       :fields="fields"
-      :request="createRequest"
-      :data="{ parent: null }"
+      :request="commandRequest"
+      :data="{ parent: null, action: 'folders/create_folder' }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { foldersCreateFolder } from "@/services/folders";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -26,6 +25,5 @@ const fields: types.FormField[] = [
   { label: "Name", name: "name", type: "text", required: true },
 ];
 
-const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
-  useCommand(foldersCreateFolder, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

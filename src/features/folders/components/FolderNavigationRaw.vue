@@ -84,8 +84,8 @@ export interface ContentGroupItem {
 
 import { ButtonToggle } from "lorga-ui";
 import { VNode } from "vue";
-import FolderNavigationChild from "./FolderNavigationChild.vue";
-import FolderNavigationGroup from "@/components/FolderNavigationGroup.vue";
+import FolderNavigationChild from "@/features/folders/components/FolderNavigationChild.vue";
+import FolderNavigationGroup from "@/features/folders/components/FolderNavigationGroup.vue";
 import { useRoute, useRouter } from "vue-router";
 
 defineProps<{

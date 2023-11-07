@@ -4,12 +4,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/folders/",
     name: "folders-dashboard",
-    component: () => import("@/views/folders/FoldersDashboard.vue"),
+    component: () => import("@/features/folders/views/FoldersDashboard.vue"),
   },
   {
     path: "/folders/:uuid/:record?/",
     name: "folders-detail",
-    component: () => import("@/views/folders/FoldersDetail.vue"),
+    component: () => import("@/features/folders/views/FoldersDetail.vue"),
   },
 ];
 

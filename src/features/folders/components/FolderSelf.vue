@@ -60,9 +60,9 @@
 </template>
 
 <script setup lang="ts">
-import BoxHeadingStats from "./BoxHeadingStats.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { IContent, IFolderDetail } from "@/types/folders";
-import FoldersChangeName from "@/actions/FoldersChangeName.vue";
+import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
 import { computed, toRefs } from "vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 

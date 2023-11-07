@@ -6,14 +6,17 @@
       title="Change name"
       :fields="fields"
       :request="commandRequest"
-      :data="{ uuid: folderUuid, name: folderName }"
+      :data="{
+        folder_uuid: folderUuid,
+        name: folderName,
+        action: 'folders/rename_folder',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { foldersUpdateFolder } from "@/services/folders";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -32,8 +35,5 @@ const fields: types.FormField[] = [
   { label: "Name", name: "name", type: "text", required: true },
 ];
 
-const { commandRequest, commandModalOpen } = useCommand(
-  foldersUpdateFolder,
-  query.value,
-);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

@@ -19,39 +19,6 @@ export function foldersCreateFolder(data: { name: string }): Promise<void> {
   return axios.post("folders/folders/", data).then();
 }
 
-export function foldersDeleteFolder(data: { uuid: string }): Promise<void> {
-  return axios.delete(`folders/folders/${data.uuid}/`).then();
-}
-
-export function foldersGrantAccess(data: {
-  uuid: string;
-  user_uuid: string;
-}): Promise<void> {
-  return axios.post(`folders/folders/${data.uuid}/grant_access/`, data).then();
-}
-
-export function foldersToggleInheritance(data: {
-  folder: string;
-}): Promise<void> {
-  return axios
-    .post(`folders/folders/${data.folder}/toggle_inheritance/`)
-    .then();
-}
-
-export function foldersMoveFolder(data: {
-  folder: string;
-  target: string;
-}): Promise<void> {
-  return axios.post(`folders/folders/${data.folder}/move/`, data).then();
-}
-
-export function foldersRevokeAccess(data: {
-  user_uuid: string;
-  url: string;
-}): Promise<void> {
-  return axios.post(data.url, data).then();
-}
-
 export function foldersUpdateFolder(data: {
   name: string;
   uuid: string;

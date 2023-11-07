@@ -6,7 +6,6 @@ import filesRoutes from "./files";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
-import foldersRoutes from "./folders";
 import internalRoutes from "./internal";
 import legalRoutes from "./legal";
 import eventsRoutes from "./events";
@@ -20,6 +19,7 @@ import chatRoutes from "./chat";
 import recordsRoutes from "@/features/records/routes";
 import questionnaireRoutes from "@/features/questionnaires/routes";
 import orgRoutes from "@/features/org/routes";
+import folderRoutes from "@/features/folders/routes";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "dashboard",
     component: DashboardPage,
   },
-  ...foldersRoutes,
+  ...folderRoutes,
   ...userRoutes,
   ...dataSheetsRoutes,
   ...recordsRoutes,

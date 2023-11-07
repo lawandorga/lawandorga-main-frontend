@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { IContent, IFolderDetail } from "@/types/folders";
 import { h, toRefs, computed } from "vue";
-import FoldersChangeName from "@/actions/FoldersChangeName.vue";
+import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,

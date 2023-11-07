@@ -63,8 +63,8 @@ import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import useGet from "@/composables/useGet";
 import { foldersGetFolderPage } from "@/services/folders";
 import TabControls from "@/components/TabControls.vue";
-import FoldersTableView from "@/components/FoldersTableView.vue";
-import FoldersTreeView from "@/components/FoldersTreeView.vue";
+import FoldersTableView from "@/features/folders/components/FoldersTableView.vue";
+import FoldersTreeView from "@/features/folders/components/FoldersTreeView.vue";
 
 // store
 const userStore = useUserStore();

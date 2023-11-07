@@ -19,7 +19,7 @@ import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithin
 import UploadsCreateLink from "@/actions/UploadsCreateLink.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,
-} from "./FolderNavigationRaw.vue";
+} from "@/features/folders/components/FolderNavigationRaw.vue";
 
 const props = defineProps<{
   folder: IFolderDetail;
