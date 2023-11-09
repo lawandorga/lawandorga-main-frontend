@@ -71,6 +71,14 @@
             :available-persons="availablePersons"
             :item="selectedItem"
           />
+          <h3 class="mt-4 mb-2 font-medium text-gray-800">
+            Groups with access:
+          </h3>
+          <TableFolderGroupsWithAccess
+            :query="query"
+            :available-groups="availableGroups"
+            :item="selectedItem"
+          />
         </div>
       </div>
     </div>
@@ -93,7 +101,12 @@
 import FoldersCreateFolder from "@/features/folders/actions/FoldersCreateFolder.vue";
 import { computed, ref, toRefs } from "vue";
 import FoldersTree from "@/features/folders/components/FoldersTree.vue";
-import { IAccess, IFolder, IFolderItem } from "@/types/folders";
+import {
+  IFolder,
+  IFolderGroup,
+  IFolderItem,
+  IFolderPerson,
+} from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
 import FoldersCreateRootFolder from "@/features/folders/actions/FoldersCreateRootFolder.vue";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
@@ -102,9 +115,11 @@ import FoldersDeleteFolder from "@/features/folders/actions/FoldersDeleteFolder.
 import FoldersMoveFolder from "@/features/folders/actions/FoldersMoveFolder.vue";
 import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
 import FoldersAddContent from "@/features/folders/actions/FoldersAddContent.vue";
+import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
 
 const props = defineProps<{
-  availablePersons?: IAccess[];
+  availablePersons: IFolderPerson[];
+  availableGroups: IFolderGroup[];
   folderItems: IFolderItem[];
   query: () => void;
 }>();

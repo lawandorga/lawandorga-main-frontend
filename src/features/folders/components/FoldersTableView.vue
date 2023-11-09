@@ -67,11 +67,11 @@
             :property="properties[item.folder.uuid]"
           />
           <ButtonNormal
-            v-if="item.folder && item.folder.actions.OPEN"
+            v-if="item.folder && item.folder.actions.includes('OPEN')"
             kind="action"
             :to="{
               name: 'folders-detail',
-              params: { uuid: item.folder.actions.OPEN.uuid },
+              params: { uuid: item.folder.uuid },
             }"
           >
             Open
@@ -136,6 +136,12 @@
       :available-persons="availablePersons"
       :item="selected"
     />
+    <TableFolderGroupsWithAccess
+      v-if="selected"
+      :query="query"
+      :available-groups="availableGroups"
+      :item="selected"
+    />
   </div>
 </template>
 
@@ -149,7 +155,13 @@ import FoldersMoveFolder from "@/features/folders/actions/FoldersMoveFolder.vue"
 import FoldersToggleInheritance from "@/features/folders/actions/FoldersToggleInheritance.vue";
 import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
-import { IAccess, IContent, IFolder, IFolderItem } from "@/types/folders";
+import {
+  IContent,
+  IFolder,
+  IFolderGroup,
+  IFolderItem,
+  IFolderPerson,
+} from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, TableSortable } from "lorga-ui";
@@ -157,12 +169,14 @@ import { computed, ref, toRefs } from "vue";
 import FolderProperty from "./FolderProperty.vue";
 import FoldersBadge from "./FoldersBadge.vue";
 import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
+import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
 
 const props = defineProps<{
   query: () => void;
   folderList: IFolder[];
   folderItems: IFolderItem[];
-  availablePersons?: IAccess[];
+  availablePersons: IFolderPerson[];
+  availableGroups: IFolderGroup[];
 }>();
 const { folderItems } = toRefs(props);
 

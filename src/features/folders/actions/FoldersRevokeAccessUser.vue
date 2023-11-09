@@ -27,7 +27,6 @@ const props = defineProps<{
   persons: IAccess[];
   userUuid: string;
   folderUuid: string;
-  url: string;
 }>();
 const { query, persons } = toRefs(props);
 

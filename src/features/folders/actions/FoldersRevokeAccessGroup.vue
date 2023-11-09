@@ -1,42 +1,43 @@
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Grant access
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
+    Revoke access
     <ModalUpdate
       v-model="commandModalOpen"
-      title="Grant Access"
-      :fields="grantAccessFields"
+      title="Revoke Access"
+      :fields="revokeAccessFields"
       :request="commandRequest"
       :data="{
+        action: 'folders/revoke_access_from_group',
         folder_uuid: folderUuid,
-        action: 'folders/grant_access_to_user',
+        group_uuid: groupUuid,
       }"
-      submit="Grant Access"
+      submit="Revoke Access"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { IFolderPerson } from "@/types/folders";
+import { IAccess } from "@/types/folders";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
-  folderUuid: string;
   query: () => void;
-  availablePersons: IFolderPerson[];
+  groups: IAccess[];
+  groupUuid: string;
+  folderUuid: string;
 }>();
+const { query, groups } = toRefs(props);
 
-const { query, availablePersons } = toRefs(props);
-
-const grantAccessFields = computed<types.FormField[]>(() => {
+const revokeAccessFields = computed<types.FormField[]>(() => {
   return [
     {
-      label: "Person",
-      name: "to_uuid",
+      label: "Group",
+      name: "group_uuid",
       type: "select",
       required: true,
-      options: availablePersons?.value ? availablePersons.value : [],
+      options: groups.value,
     },
   ] as types.FormField[];
 });

@@ -9,23 +9,24 @@ export interface ITreeFolder {
   uuid: string;
   stop_inherit: boolean;
   has_access: boolean;
-  actions: {
-    OPEN?: {
-      uuid: string;
-    };
-  };
+  actions: string[];
 }
 
 export interface IAccess {
   name: string;
   uuid: string | null;
   source: string;
-  actions: {
-    REVOKE_ACCESS?: {
-      url: string;
-      user_uuid: string;
-    };
-  };
+  actions: string[];
+}
+
+export interface IFolderGroup {
+  name: string;
+  uuid: string;
+}
+
+export interface IFolderPerson {
+  name: string;
+  uuid: string;
 }
 
 export interface IContent {
@@ -44,12 +45,14 @@ export interface IFolderItem {
   folder: ITreeFolder;
   children: IFolderItem[];
   access: IAccess[];
+  group_access: IAccess[];
   content: IContent[];
 }
 
 export interface IFolderPage {
   tree: IFolderItem[];
-  available_persons: IAccess[];
+  available_persons: IFolderPerson[];
+  available_groups: IFolderGroup[];
 }
 
 export interface ISubfolder {

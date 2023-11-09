@@ -1,6 +1,6 @@
 <template>
   <TableGenerator
-    :data="item.access"
+    :data="item.group_access"
     :head="[
       { name: 'Person with access', key: 'name' },
       { name: 'Source', key: 'source' },
@@ -8,18 +8,18 @@
     ]"
   >
     <template #head-action>
-      <FoldersGrantAccess
+      <FoldersGrantAccessGroup
         :folder-uuid="item.folder.uuid"
         :query="query"
-        :available-persons="availablePersons"
+        :available-groups="availableGroups"
       />
     </template>
     <template #action="access">
-      <FoldersRevokeAccessUser
+      <FoldersRevokeAccessGroup
         v-if="access.actions.includes('REVOKE_ACCESS')"
         :query="query"
-        :persons="item.access"
-        :user-uuid="access.uuid"
+        :groups="item.group_access"
+        :group-uuid="access.uuid"
         :folder-uuid="item.folder.uuid"
       />
     </template>
@@ -27,14 +27,14 @@
 </template>
 
 <script setup lang="ts">
-import FoldersGrantAccess from "@/features/folders/actions/FoldersGrantAccess.vue";
-import FoldersRevokeAccessUser from "@/features/folders/actions/FoldersRevokeAccessUser.vue";
-import { IFolderItem, IFolderPerson } from "@/types/folders";
+import { IFolderGroup, IFolderItem } from "@/types/folders";
 import { TableGenerator } from "lorga-ui";
+import FoldersGrantAccessGroup from "../actions/FoldersGrantAccessGroup.vue";
+import FoldersRevokeAccessGroup from "../actions/FoldersRevokeAccessGroup.vue";
 
 defineProps<{
   query: () => void;
   item: IFolderItem;
-  availablePersons: IFolderPerson[];
+  availableGroups: IFolderGroup[];
 }>();
 </script>

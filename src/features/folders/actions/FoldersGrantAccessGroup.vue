@@ -3,12 +3,12 @@
     Grant access
     <ModalUpdate
       v-model="commandModalOpen"
-      title="Grant Access"
+      title="Grant Access To Group"
       :fields="grantAccessFields"
       :request="commandRequest"
       :data="{
         folder_uuid: folderUuid,
-        action: 'folders/grant_access_to_user',
+        action: 'folders/grant_access_to_group',
       }"
       submit="Grant Access"
     />
@@ -17,26 +17,26 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { IFolderPerson } from "@/types/folders";
+import { IFolderGroup } from "@/types/folders";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   folderUuid: string;
   query: () => void;
-  availablePersons: IFolderPerson[];
+  availableGroups: IFolderGroup[];
 }>();
 
-const { query, availablePersons } = toRefs(props);
+const { query, availableGroups } = toRefs(props);
 
 const grantAccessFields = computed<types.FormField[]>(() => {
   return [
     {
-      label: "Person",
-      name: "to_uuid",
+      label: "Group",
+      name: "group_uuid",
       type: "select",
       required: true,
-      options: availablePersons?.value ? availablePersons.value : [],
+      options: availableGroups?.value ? availableGroups.value : [],
     },
   ] as types.FormField[];
 });

@@ -35,11 +35,11 @@
         </div>
         <div class="ml-3">
           <ButtonNormal
-            v-if="item.folder.actions.OPEN"
+            v-if="item.folder.actions.includes('OPEN')"
             kind="action"
             :to="{
               name: 'folders-detail',
-              params: { uuid: item.folder.actions.OPEN.uuid },
+              params: { uuid: item.folder.uuid },
             }"
           >
             Open
@@ -84,11 +84,11 @@
           </div>
           <div class="ml-3">
             <ButtonNormal
-              v-if="item.folder.actions.OPEN"
+              v-if="item.folder.actions.includes('OPEN')"
               kind="action"
               :to="{
                 name: 'folders-detail',
-                params: { uuid: item.folder.actions.OPEN.uuid },
+                params: { uuid: item.folder.uuid },
                 query: {
                   selectedId: content.uuid,
                   selectedType: content.repository,

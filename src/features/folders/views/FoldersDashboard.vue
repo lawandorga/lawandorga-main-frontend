@@ -16,14 +16,16 @@
         <template #treeview>
           <FoldersTreeView
             :query="query"
-            :available-persons="page?.available_persons"
+            :available-persons="availablePersons"
+            :available-groups="availableGroups"
             :folder-items="folderItems"
           />
         </template>
         <template #tableview>
           <FoldersTableView
             :query="query"
-            :available-persons="page?.available_persons"
+            :available-persons="availablePersons"
+            :available-groups="availableGroups"
             :folder-items="folderItems"
             :folder-list="folderList"
           />
@@ -72,6 +74,16 @@ const userStore = useUserStore();
 // folders
 const page = ref<IFolderPage>();
 const query = useGet(foldersGetFolderPage, page);
+
+const availableGroups = computed(() => {
+  if (!page.value) return [];
+  return page.value.available_groups;
+});
+
+const availablePersons = computed(() => {
+  if (!page.value) return [];
+  return page.value.available_persons;
+});
 
 // folder items
 const folderItems = computed<IFolderItem[]>(() => {
