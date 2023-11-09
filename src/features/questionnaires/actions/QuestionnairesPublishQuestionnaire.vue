@@ -15,7 +15,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const getRequest = client.get("api/questionnaires/query/templates/");
 
-const templates = ref<IQuestionnaireTemplate[]>();
+const templates = ref<IQuestionnaireTemplate[]>([]);
 const getQuery = useQuery(getRequest, templates);
 
 const fields = computed<types.FormField[]>(() => [
@@ -24,12 +24,7 @@ const fields = computed<types.FormField[]>(() => [
     name: "template_id",
     type: "select",
     required: true,
-    options: templates.value
-      ? templates.value.map((template) => ({
-          label: template.name,
-          value: template.id,
-        }))
-      : [],
+    options: templates.value,
   },
 ]);
 
