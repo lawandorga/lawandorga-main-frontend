@@ -81,9 +81,10 @@
           :selected-type="selectedType"
         />
 
-        <RecordEncryptions
+        <FolderAccess
           :selected-id="selectedId"
-          :access="folder ? folder.access : null"
+          :access="userAccess"
+          :group-access="groupAccess"
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"
           :query="query"
@@ -123,25 +124,36 @@ import useGet from "@/composables/useGet";
 import RecordMessages from "@/components/RecordMessages.vue";
 import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
 import FolderFile from "@/components/FolderFile.vue";
-import RecordEncryptions from "@/components/RecordEncryptions.vue";
+import FolderAccess from "@/features/folders/components/FolderAccess.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { IContent, IFolderDetail } from "@/types/folders";
-import { foldersGetFolderDetail } from "@/services/folders";
 import FolderUploads from "@/components/FolderUploads.vue";
 import FolderNavigationContent from "@/features/folders/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/features/folders/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/features/folders/components/FolderSelf.vue";
 import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
 import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
+import useClient from "@/api/client";
 
 // record
 const route = useRoute();
 const folderUuid = computed(() => route.params.uuid as string);
 
 // folder
-const folder = ref<null | IFolderDetail>(null);
-const query = useGet(foldersGetFolderDetail, folder, folderUuid);
+const client = useClient();
+const request = client.get(`/api/folders/query/${route.params.uuid}/`);
+const folder = ref<IFolderDetail>();
+const query = useGet(request, folder, folderUuid);
+
+const userAccess = computed(() => {
+  if (!folder.value) return [];
+  return folder.value.access;
+});
+const groupAccess = computed(() => {
+  if (!folder.value) return [];
+  return folder.value.group_access;
+});
 
 // selected
 const id: string | null = (route.query.selectedId as string) || null;

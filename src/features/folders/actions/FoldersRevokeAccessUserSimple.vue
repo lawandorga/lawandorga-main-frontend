@@ -2,7 +2,7 @@
   <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Revoke Access
   </ButtonNormal>
-  <ModalDelete
+  <ModalConfirm
     v-model="commandModalOpen"
     :data="{
       folder_uuid: folderUuid,
@@ -11,20 +11,20 @@
     }"
     :request="commandRequest"
     title="Revoke access"
+    submit="Revoke access"
   >
     Are you sure you want to revoke this access?
-  </ModalDelete>
+  </ModalConfirm>
 </template>
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import { ButtonNormal, ModalDelete } from "lorga-ui";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   folderUuid: string;
   userUuid: string;
-  url: string;
   query: () => void;
 }>();
 

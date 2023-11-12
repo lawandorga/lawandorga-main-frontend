@@ -63,6 +63,7 @@ export interface ISubfolder {
 export interface IFolderDetail {
   folder: IFolder;
   access: IAccess[];
+  group_access: IAccess[];
   content: IContent[];
   subfolders: ISubfolder[];
 }
