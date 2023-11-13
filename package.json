@@ -37,7 +37,7 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.1",
     "autoprefixer": "^10.3.0",
-    "axios": "^1.2.2",
+    "axios": "^1.6.1",
     "chart.js": "^3.9.1",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
