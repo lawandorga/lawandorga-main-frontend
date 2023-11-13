@@ -30,7 +30,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.209",
     "@tiptap/vue-3": "^2.0.0-beta.209",
     "@types/lodash": "^4.14.191",
-    "@types/node": "^18.11.18",
+    "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.60.0",
     "@vitejs/plugin-vue": "^4.4.0",
