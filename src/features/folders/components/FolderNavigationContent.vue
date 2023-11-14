@@ -20,6 +20,7 @@ import UploadsCreateLink from "@/actions/UploadsCreateLink.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,
 } from "@/features/folders/components/FolderNavigationRaw.vue";
+import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
 
 const props = defineProps<{
   folder: IFolderDetail;
@@ -116,6 +117,20 @@ const groups = computed<ContentGroupItem[]>(() => {
     type: "TIMELINE",
     children: [],
     buttons: [],
+  });
+
+  g.push({
+    name: "Collabs (Coming Soon)",
+    type: "COLLAB",
+    children: folder.value.content
+      .filter((c) => c.repository === "COLLAB")
+      .map((c) => ({ name: c.name, type: "COLLAB", id: c.uuid })),
+    buttons: [
+      h(CollabCreate, {
+        query: query.value,
+        folderUuid: folder.value.folder.uuid,
+      }),
+    ],
   });
 
   g.push({

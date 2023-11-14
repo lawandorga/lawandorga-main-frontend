@@ -103,6 +103,13 @@
           :query="query"
         />
 
+        <FolderCollab
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+          :folder-uuid="folder.folder.uuid"
+          :query="query"
+        />
+
         <FolderSubfolder
           :folder="folder"
           :selected-id="selectedId"
@@ -135,6 +142,7 @@ import FolderSelf from "@/features/folders/components/FolderSelf.vue";
 import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
 import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
 import useClient from "@/api/client";
+import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 
 // record
 const route = useRoute();

@@ -38,7 +38,8 @@ export interface IContent {
     | "QUESTIONNAIRE"
     | "UPLOAD"
     | "RECORDS_RECORD"
-    | "FOLDER";
+    | "FOLDER"
+    | "COLLAB";
 }
 
 export interface IFolderItem {

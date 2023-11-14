@@ -2,7 +2,11 @@
   <div v-if="editor" class="break-words border-2 border-gray-800 rounded-xl">
     <slot></slot>
     <MenuBar
-      class="sticky top-[-26px] bg-white z-10 flex items-center p-2 border-y-2 border-gray-800 print:hidden"
+      class="sticky top-[-26px] bg-white z-10 flex items-center p-2 border-gray-800 print:hidden"
+      :class="{
+        'border-y-2': $slots.default,
+        'border-b-2 rounded-t-xl': !$slots.default,
+      }"
       :editor="editor"
     />
 

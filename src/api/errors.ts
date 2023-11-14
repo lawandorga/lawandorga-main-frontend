@@ -204,6 +204,8 @@ export function handleQueryError(context: IContext): Promise<void> {
     .catch(handleNetworkError)
     .catch(handleFileDownloadError)
     .catch(handleServerError)
+    .catch(handleDetailError)
+    .catch(handleTitleError)
     .catch(resetContext)
     .catch(cleanUpError);
 }
