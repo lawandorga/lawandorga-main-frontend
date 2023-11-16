@@ -1,23 +1,46 @@
 <script setup lang="ts">
-import FormTiptap from "@/components/FormTiptap.vue";
+import FormTipTapTwo from "@/components/FormTipTapTwo.vue";
 import { ref, toRefs, watch } from "vue";
+import { debounce } from "lodash";
+import useCmd from "@/composables/useCmd";
 
-const props = defineProps<{ text: string }>();
-const { text } = toRefs(props);
+const props = defineProps<{
+  text: string;
+  collabUuid: string;
+  password: string;
+}>();
 
-const model = ref<string>();
-watch(
-  text,
-  () => {
-    model.value = text.value;
-  },
-  { immediate: true },
-);
+const { text, collabUuid } = toRefs(props);
+
+const model = ref<string>(text.value);
+
+const { commandRequest } = useCmd();
+
+const status = ref<string>("Synced");
+
+const save = debounce(() => {
+  commandRequest({
+    action: "collab/sync_collab",
+    collab_uuid: collabUuid.value,
+    text: model.value,
+  });
+  status.value = "Synced";
+}, 5000);
+
+watch(model, (newValue) => {
+  if (newValue !== text.value) {
+    status.value = "Saving...";
+    save();
+  }
+});
 </script>
 
 <template>
-  <div>{{ model }}</div>
   <div>
-    <FormTiptap v-model="model" room="1" />
+    <FormTipTapTwo v-model="model" :room="collabUuid" :password="password">
+      <div class="px-2 py-1.5 text-xs font-medium text-gray-700 uppercase">
+        {{ status }}
+      </div>
+    </FormTipTapTwo>
   </div>
 </template>

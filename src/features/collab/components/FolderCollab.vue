@@ -5,7 +5,11 @@
       :title="collab.name"
       :stats="[`Created: ${formatDate(collab.created_at)}`]"
     >
-      <!-- <CollabForm :text="collab.text" /> -->
+      <CollabForm
+        :text="collab.text"
+        :collab-uuid="collab.uuid"
+        :password="collab.password"
+      />
       <template #buttons>
         <CollabChangeName
           :uuid="collab.uuid"
@@ -26,13 +30,14 @@ import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import useClient from "@/api/client";
 import CollabChangeName from "../actions/CollabChangeName.vue";
-// import CollabForm from "./CollabForm.vue";
+import CollabForm from "./CollabForm.vue";
 
 interface Collab {
   uuid: string;
   name: string;
   text: string;
   created_at: string;
+  password: string;
 }
 
 const props = defineProps<{
