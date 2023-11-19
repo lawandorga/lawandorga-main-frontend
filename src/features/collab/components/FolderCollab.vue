@@ -11,6 +11,7 @@
         :password="collab.password"
       />
       <template #buttons>
+        <CollabShowHistory :history="collab.history" />
         <CollabChangeName
           :uuid="collab.uuid"
           :query="allQuery"
@@ -31,6 +32,13 @@ import { CircleLoader } from "lorga-ui";
 import useClient from "@/api/client";
 import CollabChangeName from "../actions/CollabChangeName.vue";
 import CollabForm from "./CollabForm.vue";
+import CollabShowHistory from "../actions/CollabShowHistory.vue";
+
+export interface IHistory {
+  user: string;
+  time: string;
+  text: string;
+}
 
 interface Collab {
   uuid: string;
@@ -38,6 +46,7 @@ interface Collab {
   text: string;
   created_at: string;
   password: string;
+  history: IHistory[];
 }
 
 const props = defineProps<{
