@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import collabRoutes from "./collab";
 import userRoutes from "./user";
 import adminRoutes from "./admin";
 import filesRoutes from "./files";
@@ -20,6 +19,7 @@ import recordsRoutes from "@/features/records/routes";
 import questionnaireRoutes from "@/features/questionnaires/routes";
 import orgRoutes from "@/features/org/routes";
 import folderRoutes from "@/features/folders/routes";
+import collabRoutes from "@/features/collab/routes";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -39,10 +39,10 @@ const routes: Array<RouteRecordRaw> = [
   },
   ...folderRoutes,
   ...userRoutes,
+  ...collabRoutes,
   ...dataSheetsRoutes,
   ...recordsRoutes,
   ...filesRoutes,
-  ...collabRoutes,
   ...statisticsRoutes,
   ...adminRoutes,
   ...helpRoutes,

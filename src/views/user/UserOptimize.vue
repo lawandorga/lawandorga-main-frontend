@@ -43,8 +43,7 @@
           <div v-if="status[key] == 'error'">
             <ExclamationTriangleIcon class="w-5 h-5 text-gray-600" />
             <span class="text-lg font-medium text-gray-800">
-              {{ key }} optimization encountered an error. We will look into
-              this.
+              {{ key }} optimization encountered an error.
             </span>
           </div>
           <div v-if="status[key] == 'success'">
@@ -61,6 +60,7 @@
 
 <script lang="ts" setup>
 import useClient from "@/api/client";
+import { useErrorHandling } from "@/api/errors";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { foldersOptimize } from "@/services/folders";
 import { messagesOptimize } from "@/services/messages";
@@ -81,9 +81,18 @@ interface IApps {
 
 const client = useClient();
 
+const { handleError } = useErrorHandling();
+
 const apps: IApps = {
   Records: recordsOptimize,
   Files: client.post("api/files/v2/optimize/"),
+  Collab: () =>
+    client
+      .post("api/command/")({ action: "collab/optimize" })
+      .catch((e) => {
+        handleError(e);
+        return Promise.reject(e);
+      }),
   Folders: foldersOptimize,
   Messages: messagesOptimize,
   Questionnaires: questionnairesOptimize,
