@@ -25,6 +25,14 @@
         <b>all</b>
         groups that have access to at least one collab document.
       </p>
+      <p>
+        While collab is not migrated yet you can still access all the collab
+        document in the old structure here:
+        <router-link :to="{ name: 'collab-dashboard' }">
+          To the collab documents
+        </router-link>
+        <span>.</span>
+      </p>
     </div>
   </div>
 </template>

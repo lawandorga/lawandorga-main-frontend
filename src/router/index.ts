@@ -20,6 +20,7 @@ import questionnaireRoutes from "@/features/questionnaires/routes";
 import orgRoutes from "@/features/org/routes";
 import folderRoutes from "@/features/folders/routes";
 import collabRoutes from "@/features/collab/routes";
+import oldCollabRoutes from "./collab";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -40,6 +41,7 @@ const routes: Array<RouteRecordRaw> = [
   ...folderRoutes,
   ...userRoutes,
   ...collabRoutes,
+  ...oldCollabRoutes,
   ...dataSheetsRoutes,
   ...recordsRoutes,
   ...filesRoutes,

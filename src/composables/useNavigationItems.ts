@@ -82,7 +82,7 @@ export default function useNavigationItems() {
         label: "Collab",
         icon: DocumentTextIcon,
         is: "router-link",
-        attrs: { to: { name: "collab-dashboard" } },
+        attrs: { to: { name: "collab-migrate" } },
         permissions: [],
       },
       {
