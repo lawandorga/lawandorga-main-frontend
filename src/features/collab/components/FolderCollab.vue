@@ -11,6 +11,7 @@
         :password="collab.password"
       />
       <template #buttons>
+        <CollabPrint />
         <CollabShowHistory :history="collab.history" />
         <CollabChangeName
           :uuid="collab.uuid"
@@ -33,6 +34,7 @@ import useClient from "@/api/client";
 import CollabChangeName from "../actions/CollabChangeName.vue";
 import CollabForm from "./CollabForm.vue";
 import CollabShowHistory from "../actions/CollabShowHistory.vue";
+import CollabPrint from "../actions/CollabPrint.vue";
 
 export interface IHistory {
   user: string;

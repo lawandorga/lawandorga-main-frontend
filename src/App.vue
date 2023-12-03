@@ -5,7 +5,7 @@
 
       <NavigationSidebar v-if="userStore.isAuthenticated && inside" />
 
-      <div class="flex flex-col flex-1 w-0 overflow-hidden">
+      <div class="flex flex-col flex-1 w-0 overflow-hidden print:block">
         <NavigationTop
           v-if="userStore.isAuthenticated"
           :set-open="setMenuOpen"
@@ -19,7 +19,6 @@
           this time, you will not be able to login and you will be logged out
           automatically at 16:00.
           <br />
-          <!-- <br class="h-6" /> -->
           Please let us know if you need to access Law&Orga during this time at
           it@law-orga.de to reschedule.
         </div>
@@ -28,7 +27,7 @@
 
         <!-- Main Panel -->
         <main
-          class="relative flex-1 px-6 py-6 overflow-y-auto focus:outline-none"
+          class="relative flex-1 px-6 py-6 overflow-y-auto focus:outline-none print:p-0"
         >
           <router-view></router-view>
         </main>

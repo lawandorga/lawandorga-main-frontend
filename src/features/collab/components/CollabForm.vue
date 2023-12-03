@@ -38,7 +38,9 @@ watch(model, (newValue) => {
 <template>
   <div>
     <FormTipTapTwo v-model="model" :room="collabUuid" :password="password">
-      <div class="px-2 py-1.5 text-xs font-medium text-gray-700 uppercase">
+      <div
+        class="px-2 py-1.5 text-xs font-medium text-gray-700 uppercase print:hidden"
+      >
         {{ status }}
       </div>
     </FormTipTapTwo>

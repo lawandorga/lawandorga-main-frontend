@@ -1,11 +1,11 @@
 <template>
   <BoxLoader :show="userStore.loaded && !!folder">
-    <h1 class="hidden text-3xl font-bold print:block">
+    <h1 class="hidden text-3xl font-bold print:hidden">
       {{ folder?.folder.name }}
     </h1>
     <div
       v-if="userStore.loaded && !!folder"
-      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl"
+      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl print:block print:max-w-none"
     >
       <BreadcrumbsBar
         class="col-span-12"

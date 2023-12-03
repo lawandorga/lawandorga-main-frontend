@@ -1,5 +1,7 @@
 <template>
-  <div class="sticky top-0 overflow-hidden bg-white rounded shadow">
+  <div
+    class="sticky top-0 overflow-hidden bg-white rounded shadow print:hidden"
+  >
     <ul role="list" class="">
       <li
         v-if="!grouping"
