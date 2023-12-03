@@ -20,9 +20,6 @@
       <div class="p-5 bg-white rounded-md shadow 2xl:row-span-2 print:hidden">
         <div class="flex items-baseline justify-between mb-4">
           <h2 class="font-bold version-lg">Documents</h2>
-          <ButtonNormal kind="action" @click="createDocumentModalOpen = true">
-            Create
-          </ButtonNormal>
         </div>
         <CircleLoader v-if="!documents" />
         <ul v-else>
