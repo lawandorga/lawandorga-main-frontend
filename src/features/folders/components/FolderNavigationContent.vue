@@ -120,7 +120,7 @@ const groups = computed<ContentGroupItem[]>(() => {
   });
 
   g.push({
-    name: "Collabs (Coming Soon)",
+    name: "Collabs",
     type: "COLLAB",
     children: folder.value.content
       .filter((c) => c.repository === "COLLAB")
