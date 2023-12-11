@@ -14,8 +14,8 @@
               internalTabs[index - 1]?.spacer
                 ? 'rounded-l'
                 : internalTabs[index + 1]?.spacer
-                ? 'rounded-r'
-                : '',
+                  ? 'rounded-r'
+                  : '',
             ]"
             type="button"
           >

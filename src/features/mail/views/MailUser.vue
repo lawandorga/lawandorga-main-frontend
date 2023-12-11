@@ -25,7 +25,7 @@
         <template #head-action>
           <MailAddAddress
             :query="query"
-            :user-uuid="($route.params.uuid as string)"
+            :user-uuid="$route.params.uuid as string"
             :available-domains="page.available_domains"
           />
         </template>
@@ -35,13 +35,13 @@
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :user-uuid="($route.params.uuid as string)"
+            :user-uuid="$route.params.uuid as string"
           />
           <MailDeleteAddress
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :user-uuid="($route.params.uuid as string)"
+            :user-uuid="$route.params.uuid as string"
           />
         </template>
       </TableGenerator>

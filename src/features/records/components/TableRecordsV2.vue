@@ -35,8 +35,8 @@
     :data="filteredRecords"
     :get-display-value-func="getDisplayValueFromRecord"
     :get-value-func="getValueFromRecord"
-    :sort-key="(userStore.getSetting('recordsSortKey') as string)"
-    :sort-order="(userStore.getSetting('recordsSortOrder') as string)"
+    :sort-key="userStore.getSetting('recordsSortKey') as string"
+    :sort-order="userStore.getSetting('recordsSortOrder') as string"
     @update:sort-key="userStore.updateSetting('recordsSortKey', $event)"
     @update:sort-order="userStore.updateSetting('recordsSortOrder', $event)"
   >

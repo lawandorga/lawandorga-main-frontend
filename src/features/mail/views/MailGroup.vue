@@ -25,7 +25,7 @@
         <template #head-action>
           <MailGroupAddAddress
             :query="query"
-            :group-uuid="($route.params.uuid as string)"
+            :group-uuid="$route.params.uuid as string"
             :available-domains="availableDomains"
           />
         </template>
@@ -35,13 +35,13 @@
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :group-uuid="($route.params.uuid as string)"
+            :group-uuid="$route.params.uuid as string"
           />
           <MailGroupDeleteAddress
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :group-uuid="($route.params.uuid as string)"
+            :group-uuid="$route.params.uuid as string"
             :available-domains="availableDomains"
           />
         </template>
@@ -58,14 +58,14 @@
           <MailGroupAddMember
             v-if="page"
             :query="query"
-            :group-uuid="($route.params.uuid as string)"
+            :group-uuid="$route.params.uuid as string"
             :available-users="page.available_users"
           />
         </template>
         <template #action="item">
           <MailGroupRemoveMember
             :query="query"
-            :group-uuid="($route.params.uuid as string)"
+            :group-uuid="$route.params.uuid as string"
             :member-name="item.name"
             :member-uuid="item.uuid"
           />

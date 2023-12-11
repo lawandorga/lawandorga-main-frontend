@@ -39,7 +39,7 @@
               Show
             </ButtonNormal>
             <UploadsDownloadFile
-              :link-uuid="(selectedId as string)"
+              :link-uuid="selectedId as string"
               :file-uuid="file.uuid"
               :name="file.name"
             >
