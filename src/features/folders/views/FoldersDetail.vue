@@ -150,7 +150,7 @@ const folderUuid = computed(() => route.params.uuid as string);
 
 // folder
 const client = useClient();
-const request = client.get(`/api/folders/query/${route.params.uuid}/`);
+const request = client.get(`/api/folders/query/{}/`, folderUuid);
 const folder = ref<IFolderDetail>();
 const query = useGet(request, folder, folderUuid);
 
