@@ -27,11 +27,12 @@
         {{ editor.storage.characterCount.characters() }} characters
       </div>
     </div>
+    {{ props.modelValue }}
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Editor, EditorContent } from "@tiptap/vue-3";
+import { EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
@@ -42,78 +43,78 @@ import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import * as Y from "yjs";
-import { WebrtcProvider } from "y-webrtc";
 import MenuBar from "./FormMenuBar.vue";
-import { onMounted, onUnmounted, ref, toRefs } from "vue";
+import { onMounted, onUnmounted, toRefs } from "vue";
 import { useUserStore } from "@/store/user";
+import { TiptapCollabProvider } from "@hocuspocus/provider";
 
 const props = defineProps<{
   room: string;
   modelValue: string;
   password: string; // this password should change daily
 }>();
-const { room, modelValue, password } = toRefs(props);
+const { room, modelValue } = toRefs(props);
 
 const userStore = useUserStore();
 
 const emit = defineEmits(["update:modelValue"]);
 
-const provider = ref<WebrtcProvider>();
-const editor = ref<Editor>();
+let provider: TiptapCollabProvider | undefined;
+
+const doc = new Y.Doc();
 
 onMounted(() => {
-  const ydoc = new Y.Doc();
-
-  provider.value = new WebrtcProvider(room.value, ydoc, {
-    password: password.value,
+  provider = new TiptapCollabProvider({
+    name: room.value, // any identifier - all connections sharing the same identifier will be synced
+    appId: "7j9y6m10", // replace with YOUR_APP_ID
+    token: "notoken", // replace with your JWT
+    document: doc,
   });
+});
 
-  editor.value = new Editor({
-    editorProps: {
-      attributes: {
-        class: "prose p-5 w-full focus:outline-none sm:max-w-none",
-      },
+onUnmounted(() => provider?.destroy());
+
+const editor = useEditor({
+  content: modelValue.value,
+  editorProps: {
+    attributes: {
+      class: "prose p-5 w-full focus:outline-none sm:max-w-none",
     },
-    extensions: [
-      StarterKit.configure({
-        history: false,
-      }),
-      Highlight.configure({ multicolor: true }),
-      Collaboration.configure({
-        document: ydoc,
-      }),
-      CollaborationCursor.configure({
-        provider: provider.value,
-        user: {
-          name: userStore.user?.name,
-          color: getRandomColor(),
-        },
-      }),
-      CharacterCount.configure({
-        limit: 10000,
-      }),
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
-    ],
+  },
+  extensions: [
+    StarterKit.configure({
+      history: false,
+    }),
+    Highlight.configure({ multicolor: true }),
+    Collaboration.configure({
+      document: doc,
+    }),
+    CollaborationCursor.configure({
+      provider: provider,
+      user: {
+        name: userStore.user?.name,
+        color: getRandomColor(),
+      },
+    }),
+    CharacterCount.configure({
+      limit: 10000,
+    }),
+    Table.configure({
+      resizable: true,
+    }),
+    TableRow,
+    TableHeader,
+    TableCell,
+  ],
+});
+
+setTimeout(() => {
+  if (editor.value?.storage.collaborationCursor.users.length === 1)
+    setEditorContent(modelValue.value);
+  editor.value?.on("update", ({ editor: e }) => {
+    editorUpdated(e.getHTML());
   });
-
-  setTimeout(() => {
-    if (editor.value?.storage.collaborationCursor.users.length === 1)
-      setEditorContent(modelValue.value);
-    editor.value?.on("update", ({ editor: e }) => {
-      editorUpdated(e.getHTML());
-    });
-  }, 500);
-});
-
-onUnmounted(() => {
-  editor.value?.destroy();
-  provider.value?.destroy();
-});
+}, 500);
 
 function editorUpdated(value: string) {
   emit("update:modelValue", value);
