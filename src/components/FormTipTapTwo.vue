@@ -14,65 +14,34 @@
     <div
       class="flex items-center justify-between px-2 py-1 text-gray-800 border-t-2 border-gray-800 print:hidden"
     >
-      <div class="space-x-4">
-        <span
-          v-for="item in editor.storage.collaborationCursor.users"
-          :key="item.clientId"
-          class="text-sm"
-        >
-          {{ item.name }}
-        </span>
-      </div>
+      <div class="space-x-4"></div>
       <div class="text-sm">
         {{ editor.storage.characterCount.characters() }} characters
       </div>
     </div>
-    {{ props.modelValue }}
   </div>
 </template>
 
 <script lang="ts" setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
-import Collaboration from "@tiptap/extension-collaboration";
-import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Highlight from "@tiptap/extension-highlight";
 import CharacterCount from "@tiptap/extension-character-count";
 import Table from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
-import * as Y from "yjs";
 import MenuBar from "./FormMenuBar.vue";
-import { onMounted, onUnmounted, toRefs } from "vue";
-import { useUserStore } from "@/store/user";
-import { TiptapCollabProvider } from "@hocuspocus/provider";
+import { toRefs } from "vue";
 
 const props = defineProps<{
   room: string;
   modelValue: string;
   password: string; // this password should change daily
 }>();
-const { room, modelValue } = toRefs(props);
-
-const userStore = useUserStore();
+const { modelValue } = toRefs(props);
 
 const emit = defineEmits(["update:modelValue"]);
-
-let provider: TiptapCollabProvider | undefined;
-
-const doc = new Y.Doc();
-
-onMounted(() => {
-  provider = new TiptapCollabProvider({
-    name: room.value, // any identifier - all connections sharing the same identifier will be synced
-    appId: "7j9y6m10", // replace with YOUR_APP_ID
-    token: "notoken", // replace with your JWT
-    document: doc,
-  });
-});
-
-onUnmounted(() => provider?.destroy());
 
 const editor = useEditor({
   content: modelValue.value,
@@ -86,16 +55,6 @@ const editor = useEditor({
       history: false,
     }),
     Highlight.configure({ multicolor: true }),
-    Collaboration.configure({
-      document: doc,
-    }),
-    CollaborationCursor.configure({
-      provider: provider,
-      user: {
-        name: userStore.user?.name,
-        color: getRandomColor(),
-      },
-    }),
     CharacterCount.configure({
       limit: 10000,
     }),
@@ -109,8 +68,6 @@ const editor = useEditor({
 });
 
 setTimeout(() => {
-  if (editor.value?.storage.collaborationCursor.users.length === 1)
-    setEditorContent(modelValue.value);
   editor.value?.on("update", ({ editor: e }) => {
     editorUpdated(e.getHTML());
   });
@@ -118,25 +75,6 @@ setTimeout(() => {
 
 function editorUpdated(value: string) {
   emit("update:modelValue", value);
-}
-
-function setEditorContent(value: string) {
-  editor.value?.commands.setContent(value, false, {
-    preserveWhitespace: true,
-  });
-}
-
-function getRandomColor() {
-  const colors = [
-    "#958DF1",
-    "#F98181",
-    "#FBBC88",
-    "#FAF594",
-    "#70CFF8",
-    "#94FADB",
-    "#B9F18D",
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
 }
 </script>
 
