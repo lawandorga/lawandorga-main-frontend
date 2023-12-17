@@ -64,7 +64,6 @@ import { useErrorHandling } from "@/api/errors";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { foldersOptimize } from "@/services/folders";
 import { messagesOptimize } from "@/services/messages";
-import { questionnairesOptimize } from "@/services/questionnaires";
 import { recordsOptimize } from "@/services/records";
 import { useUserStore } from "@/store/user";
 import {
@@ -95,7 +94,13 @@ const apps: IApps = {
       }),
   Folders: foldersOptimize,
   Messages: messagesOptimize,
-  Questionnaires: questionnairesOptimize,
+  Questionnaires: () =>
+    client
+      .post("api/command/")({ action: "questionnaires/optimize" })
+      .catch((e) => {
+        handleError(e);
+        return Promise.reject(e);
+      }),
 };
 
 const status = ref<{

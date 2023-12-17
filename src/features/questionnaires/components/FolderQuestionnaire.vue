@@ -82,12 +82,12 @@ import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
-import { questionnairesGetQuestionnaire } from "@/services/questionnaires";
 import { IQuestionnaire } from "@/types/questionnaire";
 import { Ref, ref, toRefs, watch } from "vue";
 import { useAlertStore } from "@/store/alert";
 import QuestionnaireFileDownload from "../actions/QuestionnaireFileDownload.vue";
 import QuestionnaireDelete from "../actions/QuestionnaireDelete.vue";
+import useClient from "@/api/client";
 
 const props = defineProps<{
   selectedId: number | string | null;
@@ -101,8 +101,11 @@ const questionnaire = ref<IQuestionnaire | null>(null);
 
 const loading = ref(false);
 
+const client = useClient();
+const request = client.get(`/api/questionnaires/query/{}/`, selectedId);
+
 const questionnaireQuery = useQuery(
-  questionnairesGetQuestionnaire,
+  request,
   questionnaire,
   selectedId as Ref<string>,
 );
