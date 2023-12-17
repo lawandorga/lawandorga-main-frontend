@@ -80,11 +80,9 @@ const getItemTypeText = (type: string) => {
       <div>
         <div>
           <p class="prose-sm">
-            The timeline feature is now ready to use. Follow Ups will be shown
-            on the dashboard as soon as the selected date arrives. Once it is
-            marked as done it will not be shown anymore. The old events will be
-            removed end of this year, please make sure to create new timeline
-            events if you need them.
+            Hint: Follow Ups will be shown on the dashboard as soon as the
+            selected date arrives. Once it is marked as done it will not be
+            shown anymore.
           </p>
         </div>
         <div class="pt-5">
