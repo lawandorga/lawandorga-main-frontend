@@ -19,19 +19,19 @@
 
     <!-- records -->
     <StatisticChartWrapper
-      title="Records Created And Closed"
+      title="Data Sheets Created And Closed"
       class="col-span-12"
     >
       <StatisticRecordsCreatedAndClosed />
     </StatisticChartWrapper>
     <StatisticChartWrapper
-      title="Different Record States"
+      title="Different Data Sheet States"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticRecordStates />
     </StatisticChartWrapper>
     <StatisticChartWrapper
-      title="Record Tags"
+      title="Data Sheet Tags"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticRecordTags />
@@ -39,25 +39,25 @@
 
     <!-- record client -->
     <StatisticChartWrapper
-      title="Record Client Sex"
+      title="Data Sheet Client Sex"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticClientSex />
     </StatisticChartWrapper>
     <StatisticChartWrapper
-      title="Record Client Age"
+      title="Data Sheet Client Age"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticClientAge />
     </StatisticChartWrapper>
     <StatisticChartWrapper
-      title="Record Client Nationality"
+      title="Data Sheet Client Nationality"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticClientNationality />
     </StatisticChartWrapper>
     <StatisticChartWrapper
-      title="Record Client State"
+      title="Data Sheet Client State"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticClientState />
