@@ -10,34 +10,25 @@
     >
       <FormRecord :record="record" :query="recordsQuery"></FormRecord>
       <template #buttons>
-        <RecordsChangeName
+        <DataSheetChangeName
           :id="record.id"
           :query="allQuery"
           :name="record.name"
         />
+        <DeleteDataSheet
+          :sheet-uuid="record.uuid"
+          :query="query"
+          :sheet-name="record.name"
+          :on-delete="onDelete"
+        />
       </template>
-    </BoxHeadingStats>
-
-    <BoxHeadingStats
-      class="mt-5"
-      title="Client"
-      :show="selectedType === 'RECORD' && !!record.client"
-      :stats="[' ']"
-    >
-      <p class="mb-5 text-sm text-gray-600">
-        The following data could not be copied over into the new format, due to
-        the way the encryption was built.
-      </p>
-      <p>Client name: {{ record.client?.name }}</p>
-      <p>Client phone: {{ record.client?.phone }}</p>
-      <p>Client note: {{ record.client?.note }}</p>
     </BoxHeadingStats>
   </template>
   <CircleLoader v-else-if="selectedType === 'RECORD' && selectedId !== null" />
 </template>
 
 <script lang="ts" setup>
-import RecordsChangeName from "@/actions/RecordsChangeName.vue";
+import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
 import { formatDate } from "@/utils/date";
 import { ref, toRefs, watch } from "vue";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
@@ -46,12 +37,14 @@ import { Record } from "@/types/records";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import useClient from "@/api/client";
+import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
 
 // props
 const props = defineProps<{
   selectedId: string | number | null;
   selectedType: string;
   query: () => void;
+  onDelete?: () => void;
 }>();
 const { selectedId, selectedType, query } = toRefs(props);
 

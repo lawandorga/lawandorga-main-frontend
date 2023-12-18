@@ -22,8 +22,12 @@ const props = defineProps<{
   query: () => void;
   sheetUuid: string;
   sheetName: string;
+  onDelete?: () => void;
 }>();
-const { query, sheetUuid } = toRefs(props);
+const { query, sheetUuid, onDelete } = toRefs(props);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(
+  query,
+  onDelete.value ? onDelete.value : () => {},
+);
 </script>

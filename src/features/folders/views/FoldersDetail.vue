@@ -51,10 +51,11 @@
       </div>
 
       <div class="col-span-12 lg:col-span-8">
-        <FolderRecord
+        <FolderDataSheet
           :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
+          :on-delete="() => select(null, 'RECORD')"
         />
 
         <RecordMessages
@@ -121,7 +122,7 @@
 </template>
 
 <script lang="ts" setup>
-import FolderRecord from "@/features/data_sheets/components/FolderRecord.vue";
+import FolderDataSheet from "@/features/data_sheets/components/FolderDataSheet.vue";
 import { computed, ref, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
@@ -176,7 +177,10 @@ const select = (id: number | string | null, type: string) => {
     const first = folder.value?.content.filter(
       (i) => i.repository === "RECORD",
     )[0];
-    if (first) selectedId.value = first.uuid;
+    if (first) {
+      selectedId.value = first.uuid;
+      route.query.selectedId = selectedId.value;
+    }
   }
 };
 // user settings
