@@ -6,7 +6,7 @@ import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import internalRoutes from "./internal";
-import legalRoutes from "./legal";
+import legalRoutes from "@/features/legal/routes";
 import eventsRoutes from "./events";
 import mailRoutes from "@/features/mail/routes";
 import DashboardPage from "@/views/DashboardPage.vue";
