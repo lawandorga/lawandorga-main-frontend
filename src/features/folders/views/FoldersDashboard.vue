@@ -63,17 +63,19 @@ import { FolderIcon } from "@heroicons/vue/24/outline";
 import { computed, ref } from "vue";
 import { IFolder, IFolderItem, IFolderPage } from "@/types/folders";
 import useGet from "@/composables/useGet";
-import { foldersGetFolderPage } from "@/services/folders";
 import TabControls from "@/components/TabControls.vue";
 import FoldersTableView from "@/features/folders/components/FoldersTableView.vue";
 import FoldersTreeView from "@/features/folders/components/FoldersTreeView.vue";
+import useClient from "@/api/client";
 
 // store
 const userStore = useUserStore();
 
 // folders
+const client = useClient();
+const request = client.get<IFolderPage>("api/folders/query/");
 const page = ref<IFolderPage>();
-const query = useGet(foldersGetFolderPage, page);
+const query = useGet(request, page);
 
 const availableGroups = computed(() => {
   if (!page.value) return [];
