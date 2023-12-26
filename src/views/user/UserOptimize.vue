@@ -64,7 +64,6 @@ import { useErrorHandling } from "@/api/errors";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { foldersOptimize } from "@/services/folders";
 import { messagesOptimize } from "@/services/messages";
-import { recordsOptimize } from "@/services/records";
 import { useUserStore } from "@/store/user";
 import {
   CheckIcon,
@@ -83,7 +82,13 @@ const client = useClient();
 const { handleError } = useErrorHandling();
 
 const apps: IApps = {
-  Records: recordsOptimize,
+  Records: () =>
+    client
+      .post("api/command/")({ action: "data_sheets/optimize" })
+      .catch((e) => {
+        handleError(e);
+        return Promise.reject(e);
+      }),
   Collab: () =>
     client
       .post("api/command/")({ action: "collab/optimize" })
