@@ -84,7 +84,6 @@ const { handleError } = useErrorHandling();
 
 const apps: IApps = {
   Records: recordsOptimize,
-  Files: client.post("api/files/v2/optimize/"),
   Collab: () =>
     client
       .post("api/command/")({ action: "collab/optimize" })
