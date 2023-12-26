@@ -82,18 +82,24 @@ import { formatDate } from "@/utils/date";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { LegalRequirement } from "@/types/legal";
-import useCommand from "@/composables/useCommand";
-import LegalService from "@/services/legal";
 import useGet from "@/composables/useGet";
+import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const userStore = useUserStore();
 
 const legalRequirements = ref<LegalRequirement[] | null>(null);
 
-const query = useGet(LegalService.getLegalRequirements, legalRequirements);
+const client = useClient();
+const request = client.get("api/legal/legal_requirements/");
+const query = useGet(request, legalRequirements);
 
-const { commandRequest: accept } = useCommand(
-  LegalService.acceptLegalRequirement,
-  [query, () => userStore.updateData()],
-);
+const { commandRequest } = useCmd(query, () => userStore.updateData());
+
+const accept = (lr: LegalRequirement) => {
+  commandRequest({
+    action: "legal/accept_legal_requirement",
+    legal_requirement_id: lr.id,
+  });
+};
 </script>

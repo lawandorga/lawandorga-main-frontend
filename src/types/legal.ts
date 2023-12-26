@@ -6,6 +6,7 @@ interface LegalRequirementEvent {
 }
 
 export interface LegalRequirement {
+  id: number;
   title: string;
   content: string;
   button_text: string;
