@@ -1,29 +1,35 @@
 <template>
-  <ButtonNormal kind="action" @click="changePasswordModalOpen = true">
+  <ButtonNormal v-if="show" kind="action" @click="commandModalOpen = true">
     Change Password
     <ModalForm
-      v-model="changePasswordModalOpen"
+      v-model="commandModalOpen"
       title="Change Password"
-      :request="changePasswordRequest"
+      :request="commandRequest"
       :fields="passwordFields"
+      :data="{
+        action: 'auth/change_password',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
+import { useUserStore } from "@/store/user";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
-import { toRefs } from "vue";
+import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;
+  userId: number;
 }>();
 const { query } = toRefs(props);
 
-const client = useClient();
+const store = useUserStore();
 
-const request = client.post("api/users/change_password/");
+const show = computed(() => {
+  return props.userId == store.user?.id;
+});
 
 const passwordFields: types.FormField[] = [
   {
@@ -46,8 +52,5 @@ const passwordFields: types.FormField[] = [
   },
 ];
 
-const {
-  commandModalOpen: changePasswordModalOpen,
-  commandRequest: changePasswordRequest,
-} = useCommand(request, query.value);
+const { commandModalOpen, commandRequest } = useCmd(query.value);
 </script>

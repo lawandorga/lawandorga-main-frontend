@@ -19,7 +19,7 @@
           <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             <div class="flex items-center space-x-4">
-              <UsersChangePassword :query="query" />
+              <UsersChangePassword :query="query" :user-id="user.id" />
               <UserUpdateInformation
                 :query="query"
                 :user-id="user.id"

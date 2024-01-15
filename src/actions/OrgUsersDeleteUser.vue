@@ -4,14 +4,14 @@
     <ModalDelete
       v-model="commandModalOpen"
       :request="commandRequest"
-      :data="{ id: userId, name: userName }"
+      :data="{ other_user_id: userId, action: 'auth/delete_user' }"
+      :obj-name="userName"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -22,9 +22,5 @@ const props = defineProps<{
 }>();
 const { userId, query } = toRefs(props);
 
-const client = useClient();
-
-const request = client.delete("api/rlc_users/{}/", userId);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

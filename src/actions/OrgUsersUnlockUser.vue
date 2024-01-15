@@ -2,24 +2,24 @@
   <ButtonNormal
     v-if="userLocked"
     kind="action"
-    @click="unlockUserModalOpen = true"
+    @click="commandModalOpen = true"
   >
     Unlock
-    <ModalDelete
-      v-model="unlockUserModalOpen"
+    <ModalConfirm
+      v-model="commandModalOpen"
       title="Unlock User"
-      :request="unlockUserRequest"
-      :data="{ id: userId }"
-      verb="unlock"
-    />
+      :request="commandRequest"
+      :data="{ another_rlc_user_id: userId, action: 'auth/unlock_user' }"
+    >
+      Are you sure you want to unlock '{{ userName }}'?
+    </ModalConfirm>
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
 import { toRefs } from "vue";
-import { ButtonNormal, ModalDelete } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   userId: number;
@@ -29,12 +29,5 @@ const props = defineProps<{
 }>();
 const { userId, query } = toRefs(props);
 
-const client = useClient();
-
-const request = client.post("api/rlc_users/{}/unlock_user/", userId);
-
-const {
-  commandRequest: unlockUserRequest,
-  commandModalOpen: unlockUserModalOpen,
-} = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
