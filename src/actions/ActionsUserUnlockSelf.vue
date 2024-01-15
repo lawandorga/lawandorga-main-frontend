@@ -6,6 +6,7 @@
     v-model="commandModalOpen"
     title="Unlock"
     :request="unlockRequest"
+    :data="{ action: 'auth/unlock_myself' }"
   >
     If the unlock request completes successfully this modal will close and you
     will be able to do everything again.
@@ -14,16 +15,12 @@
 
 <script setup lang="ts">
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
 import { useUserStore } from "@/store/user";
+import useCmd from "@/composables/useCmd";
 
 const userStore = useUserStore();
 
-const client = useClient();
-const request = client.post("api/rlc_users/unlock_self/");
-
-const { commandRequest, commandModalOpen } = useCommand(request);
+const { commandRequest, commandModalOpen } = useCmd();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const unlockRequest = (data: Record<string, any>) =>
