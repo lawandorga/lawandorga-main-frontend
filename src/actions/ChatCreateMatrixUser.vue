@@ -5,6 +5,9 @@
       v-model="commandModalOpen"
       title="Create Chat User"
       :request="commandRequest"
+      :data="{
+        action: 'auth/create_matrix_user',
+      }"
     >
       Are you sure you want to create a chat user?
     </ModalConfirm>
@@ -12,16 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{ query: () => void }>();
 
 const { query } = toRefs(props);
-const client = useClient();
-
-const request = client.post("api/matrix_users/");
-const { commandModalOpen, commandRequest } = useCommand(request, query.value);
+const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
