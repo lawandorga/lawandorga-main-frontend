@@ -136,7 +136,6 @@ function downloadFile(uuid: string) {
   const downloadRequest = client.downloadFile(
     `api/data_sheets/query/file_entry_download/${record.value.id}/${uuid}/`,
   );
-  console.log(value);
   downloadRequest({ filename: value as string });
 }
 

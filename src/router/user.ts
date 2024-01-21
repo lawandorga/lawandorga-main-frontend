@@ -9,11 +9,6 @@ const routes: Array<RouteRecordRaw> = [
     component: UserLogin,
   },
   {
-    path: "/user/keys/",
-    name: "user-keys",
-    component: () => import("@/views/user/UserKeys.vue"),
-  },
-  {
     path: "/user/optimize/",
     name: "user-optimize",
     component: () => import("@/views/user/UserOptimize.vue"),

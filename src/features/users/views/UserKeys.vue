@@ -77,84 +77,40 @@
           </ButtonLink>
         </template>
         <template #head-action>
-          <ButtonNormal
-            size="xs"
-            kind="action"
-            @click="confirmModalOpen = true"
-          >
-            Test all keys
-          </ButtonNormal>
+          <TestKeys :query="query" />
         </template>
         <template #action="slotProps">
-          <div class="flex justify-end space-x-3">
-            <ButtonNormal
-              v-if="slotProps.source === 'RECORD'"
-              size="xs"
-              kind="delete"
-              @click="
-                temporary = slotProps;
-                deleteModalOpen = true;
-              "
-            >
-              Delete
-            </ButtonNormal>
-          </div>
+          <DeleteKey
+            v-if="slotProps.source === 'RECORD'"
+            :key-id="slotProps.id"
+            :query="query"
+          />
         </template>
       </TableGenerator>
     </div>
-    <!-- delete -->
-    <ModalDelete
-      v-model="deleteModalOpen"
-      :request="deleteRequest"
-      :data="temporary"
-    />
-    <!-- test -->
-    <ModalConfirm
-      v-model="confirmModalOpen"
-      title="Test Keys"
-      :request="testKeysRequest"
-    >
-      Are you sure you want to test all keys? This might take up to a minute.
-    </ModalConfirm>
   </BoxLoader>
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import useGet from "@/composables/useGet";
-import UserService from "@/services/user";
 import BoxLoader from "@/components/BoxLoader.vue";
-import useDelete from "@/composables/useDelete";
-import {
-  TableGenerator,
-  ModalDelete,
-  ModalConfirm,
-  ButtonNormal,
-} from "lorga-ui";
+import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { Key } from "@/types/key";
 import { useUserStore } from "@/store/user";
 import ActionsUserUnlockSelf from "@/actions/ActionsUserUnlockSelf.vue";
+import DeleteKey from "../actions/DeleteKey.vue";
+import useClient from "@/api/client";
+import TestKeys from "../actions/TestKeys.vue";
 
 const userStore = useUserStore();
 
-const keys = ref(null) as Ref<Key[] | null>;
-useGet(UserService.getKeys, keys);
+const keys = ref<Key[]>();
 
-// test
-const confirmModalOpen = ref(false);
-const testKeysRequest = () => {
-  return UserService.testKeys().then((newKeys) => {
-    keys.value = newKeys;
-    confirmModalOpen.value = false;
-  });
-};
-
-// delete
-const { deleteRequest, deleteModalOpen, temporary } = useDelete(
-  UserService.deleteKey,
-  keys,
-);
+const client = useClient();
+const request = client.get("api/keys/");
+const query = useGet(request, keys);
 </script>

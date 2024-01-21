@@ -211,7 +211,6 @@ export function handleQueryError(context: IContext): Promise<void> {
 }
 
 export function handleCommandError(context: IContext): Promise<void> {
-  console.log(context);
   return Promise.reject(context)
     .catch((context: IContext) => {
       handleAuthenticationError(context).catch(() => {
