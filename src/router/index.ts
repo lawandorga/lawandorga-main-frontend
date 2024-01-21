@@ -21,6 +21,7 @@ import orgRoutes from "@/features/org/routes";
 import folderRoutes from "@/features/folders/routes";
 import collabRoutes from "@/features/collab/routes";
 import oldCollabRoutes from "./collab";
+import { useUserStore } from "@/store/user";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -75,6 +76,15 @@ const router = createRouter({
 router.onError((error, to) => {
   if (error.message.includes("Failed to fetch dynamically imported module")) {
     window.location.assign(to.fullPath);
+  }
+});
+
+router.beforeEach((to, _, next) => {
+  const store = useUserStore();
+  if (store.isAuthenticated && store.locked && to.name !== "user-keys") {
+    next({ name: "user-keys" });
+  } else {
+    next();
   }
 });
 

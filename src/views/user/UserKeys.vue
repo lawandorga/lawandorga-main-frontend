@@ -18,6 +18,38 @@
       >
         <CogIcon class="w-6 h-6" />
       </BreadcrumbsBar>
+
+      <div
+        v-if="userStore.user?.locked"
+        class="max-w-lg px-6 py-5 bg-white rounded shadow"
+      >
+        <div class="prose">
+          <h2 class="mb-2 text-xl font-bold text-gray-800">
+            Your account is locked
+          </h2>
+          <p>
+            The reason that your account is locked is because you have keys that
+            are not correct. This means you have keys that are unable to decrypt
+            records, files or collab documents.
+          </p>
+          <p>There are two solutions to only have correct keys:</p>
+          <ol>
+            <li>
+              Other users in your LC can go to Admin > Profiles and press the
+              unlock button next to your account. This will try to correct as
+              many of your keys as possible. After this, you need to test all
+              keys.
+            </li>
+            <li>
+              You can delete keys that do not work and request access again for
+              your lost records.
+            </li>
+          </ol>
+          <p>Once all your keys are correct you can unlock yourself.</p>
+        </div>
+        <ActionsUserUnlockSelf />
+      </div>
+
       <div class="p-5 prose bg-white rounded shadow max-w-none">
         <p>
           <b>Note:</b>
@@ -69,36 +101,6 @@
           </div>
         </template>
       </TableGenerator>
-      <div
-        v-if="userStore.user?.locked"
-        class="max-w-lg px-6 py-5 bg-white rounded shadow"
-      >
-        <div class="prose">
-          <h2 class="mb-2 text-xl font-bold text-gray-800">
-            Your account is locked
-          </h2>
-          <p>
-            The reason that your account is locked is because you have keys that
-            are not correct. This means you have keys that are unable to decrypt
-            records, files or collab documents.
-          </p>
-          <p>There are two solutions to only have correct keys:</p>
-          <ol>
-            <li>
-              Other users in your LC can go to Admin > Profiles and press the
-              unlock button next to your account. This will try to correct as
-              many of your keys as possible. After this, you need to test all
-              keys.
-            </li>
-            <li>
-              You can delete keys that do not work and request access again for
-              your lost records.
-            </li>
-          </ol>
-          <p>Once all your keys are correct you can unlock yourself.</p>
-        </div>
-        <ActionsUserUnlockSelf />
-      </div>
     </div>
     <!-- delete -->
     <ModalDelete
