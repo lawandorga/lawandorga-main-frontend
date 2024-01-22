@@ -119,11 +119,11 @@ import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useRoute, useRouter } from "vue-router";
 import EventsCreateEvent from "@/actions/EventsCreateEvent.vue";
 import useGet from "@/composables/useGet";
-import EventService from "@/services/event";
 import EventsUpdateEvent from "@/actions/EventsUpdateEvent.vue";
 import EventsDeleteEvent from "@/actions/EventsDeleteEvent.vue";
 import EventsGetCalendarLink from "@/actions/EventsGetCalendarLink.vue";
 import { useUserStore } from "@/store/user";
+import useClient from "@/api/client";
 
 const showGlobal = ref(true);
 const router = useRouter();
@@ -140,8 +140,11 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
   }, {});
 }
 
+const client = useClient();
+const request = client.get("api/events/");
+
 const events = ref<Event[] | null>(null);
-const query = useGet(EventService.getEvents, events);
+const query = useGet(request, events);
 
 const nextEventIndex = computed<number>(() => {
   if (!events.value) return 0;

@@ -22,21 +22,20 @@ import { ButtonNormal, ModalFree } from "lorga-ui";
 import { Ref, ref } from "vue";
 import { CalendarIcsInfo } from "@/types/event";
 import useGet from "@/composables/useGet";
-import EventService from "@/services/event";
-import useCommand from "@/composables/useCommand";
-import useQuery from "@/composables/useQuery";
+import useCmd from "@/composables/useCmd";
+import useClient from "@/api/client";
 
 const modalOpen = ref(false);
 
 const calendarIcsInfo = ref(null) as Ref<CalendarIcsInfo | null>;
 const copyButtonState = ref(false);
 
-useGet(EventService.getCalendarIcsInfo, calendarIcsInfo);
+const client = useClient();
+const request = client.get("api/events/ics_url/");
 
-const { commandRequest: resetRequest } = useCommand(
-  EventService.resetCalendarIcsInfo,
-  useQuery(EventService.getCalendarIcsInfo, calendarIcsInfo),
-);
+const query = useGet(request, calendarIcsInfo);
+
+const { commandRequest: resetRequest } = useCmd(query);
 
 function copyLink() {
   if (calendarIcsInfo.value) {
@@ -46,7 +45,7 @@ function copyLink() {
 }
 
 async function resetLink() {
-  await resetRequest({});
+  await resetRequest({ action: "events/reset_calendar_url" });
   copyButtonState.value = false;
 }
 </script>

@@ -7,8 +7,8 @@ import {
 } from "@/types/user";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import UserService from "@/services/user";
 import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 export const useUserStore = defineStore("user", () => {
   const rlc = ref<Rlc>();
@@ -51,12 +51,15 @@ export const useUserStore = defineStore("user", () => {
 
   const updatePossible = ref(true);
 
+  const { commandRequest } = useCmd();
+
   const updateSettingRequest = () => {
     if (updatePossible.value) {
       updatePossible.value = false;
-      UserService.updateSettings(settings.value || {}).then(
-        () => (updatePossible.value = true),
-      );
+      commandRequest({
+        action: "auth/update_frontend_settings",
+        data: settings.value || {},
+      }).then(() => (updatePossible.value = true));
     } else {
       setTimeout(() => updateSettingRequest(), 500);
     }

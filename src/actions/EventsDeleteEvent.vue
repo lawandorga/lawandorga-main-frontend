@@ -11,17 +11,17 @@
       title="Delete Event"
       verb="delete"
       :request="commandRequest"
-      :data="{ id: eventId, name: eventName }"
+      :obj-name="eventName"
+      :data="{ event_id: eventId, action: 'events/delete_event' }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import EventService from "@/services/event";
 import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
 import { useUserStore } from "@/store/user";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -33,8 +33,5 @@ const { query, eventId } = toRefs(props);
 
 const userStore = useUserStore();
 
-const { commandRequest, commandModalOpen } = useCommand(
-  EventService.deleteEvent,
-  query.value,
-);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

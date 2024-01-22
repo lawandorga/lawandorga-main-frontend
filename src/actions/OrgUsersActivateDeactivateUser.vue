@@ -1,11 +1,14 @@
 <template>
-  <ButtonNormal size="xs" kind="delete" @click="activateUserModalOpen = true">
+  <ButtonNormal size="xs" kind="delete" @click="commandModalOpen = true">
     {{ userActive ? "Deactivate" : "Activate" }}
     <ModalConfirm
-      v-model="activateUserModalOpen"
+      v-model="commandModalOpen"
       :title="userActive ? 'Deactivate User' : 'Activate User'"
-      :request="activateUserRequest"
-      :data="{ is_active: !userActive }"
+      :request="commandRequest"
+      :data="{
+        other_user_id: userId,
+        action: 'auth/activate_user',
+      }"
     >
       Are you sure you want to {{ userActive ? "deactivate" : "activate" }} user
       '{{ userName }}'?
@@ -14,8 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -27,12 +29,5 @@ const props = defineProps<{
 }>();
 const { userId, query } = toRefs(props);
 
-const client = useClient();
-
-const request = client.put("api/rlc_users/{}/activate/", userId);
-
-const {
-  commandRequest: activateUserRequest,
-  commandModalOpen: activateUserModalOpen,
-} = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

@@ -1,8 +1,12 @@
 <template>
-  <ButtonNormal kind="action" @click="addEventModalOpen = true">
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
     Add Event
-    <ModalFree v-model="addEventModalOpen" width="max-w-2xl" title="Add Event">
-      <FormGenerator :fields="eventFields" :request="addEventRequest">
+    <ModalFree v-model="commandModalOpen" width="max-w-2xl" title="Add Event">
+      <FormGenerator
+        :fields="eventFields"
+        :request="commandRequest"
+        :data="{ action: 'events/create_event' }"
+      >
         <template #custom="{ data }">
           <FormWysiwyg
             v-model="data.description"
@@ -16,19 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, toRefs } from "vue";
-import useGet from "@/composables/useGet";
-import EventService from "@/services/event";
-import { Event } from "@/types/event";
+import { ref, toRefs } from "vue";
 import { FormGenerator, ModalFree, types, ButtonNormal } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
-
-const events = ref(null) as Ref<Event[] | null>;
-useGet(EventService.getEvents, events);
 
 const eventFields = ref<types.FormField[]>([
   {
@@ -68,6 +66,5 @@ const eventFields = ref<types.FormField[]>([
   },
 ] as types.FormField[]);
 
-const { commandRequest: addEventRequest, commandModalOpen: addEventModalOpen } =
-  useCommand(EventService.createEvent, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

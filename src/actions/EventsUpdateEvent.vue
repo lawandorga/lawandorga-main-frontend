@@ -13,12 +13,12 @@
     >
       <FormGenerator
         :data="{
-          id: event.id,
+          event_id: event.id,
           description: event.description,
           name: event.name,
-          level: event.level,
           start_time: event.start_time.slice(0, 16),
           end_time: event.end_time.slice(0, 16),
+          action: 'events/update_event',
         }"
         :fields="eventFields"
         :request="commandRequest"
@@ -37,12 +37,11 @@
 
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
-import EventService from "@/services/event";
 import { FormGenerator, ButtonNormal, ModalFree, types } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import { useUserStore } from "@/store/user";
 import { Event } from "@/types/event";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void; event: Event }>();
 const { query } = toRefs(props);
@@ -61,19 +60,6 @@ const eventFields = ref<types.FormField[]>([
     type: "slot",
   },
   {
-    label: "Who Should See This Event?",
-    name: "level",
-    type: "select",
-    required: true,
-    options: [
-      { name: "Organization", value: "ORG" },
-      { name: "Meta", value: "META" },
-      // { name: "Global", value: "GLOBAL" },
-    ],
-    helptext:
-      "Organization events are only visible to all users of your organisation. Meta events are visible to all organisations of your meta org, like for example all Law Clinics. Global events are visible to all users of Law&Orga.",
-  },
-  {
     label: "Start time",
     name: "start_time",
     type: "datetime-local",
@@ -87,8 +73,5 @@ const eventFields = ref<types.FormField[]>([
   },
 ] as types.FormField[]);
 
-const { commandRequest, commandModalOpen } = useCommand(
-  EventService.updateEvent,
-  query.value,
-);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

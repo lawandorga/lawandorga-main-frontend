@@ -34,8 +34,8 @@
             </div>
           </div>
           <div class="mt-4">
-            <p>E-Mail: {{ user.email }}</p>
-            <p>Phone: {{ user.phone_number }}</p>
+            <p v-if="user.email">E-Mail: {{ user.email }}</p>
+            <p v-if="user.phone_number">Phone: {{ user.phone_number }}</p>
             <div
               v-if="
                 ['street', 'city', 'postal_code', 'note'].every((item) =>
@@ -49,13 +49,13 @@
                   {{ user.street }}, {{ user.postal_code }} {{ user.city }}
                 </span>
               </p>
-              <p>
+              <p v-if="user.note">
                 Note:
                 <br />
                 {{ user.note }}
               </p>
             </div>
-            <p>
+            <p v-if="user.speciality_of_study_display">
               Speciality of Study:
               {{ user.speciality_of_study_display }}
             </p>
