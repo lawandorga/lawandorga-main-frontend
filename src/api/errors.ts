@@ -29,6 +29,8 @@ export function handleAuthenticationError(context: IContext): Promise<void> {
 export function handleFileTooBigError(context: IContext): Promise<void> {
   const error = context.error;
 
+  console.log(error);
+
   if (error.response && error.response.status === 413) {
     const newError: types.ICommandError = {
       title: "Error: The file is too big",
