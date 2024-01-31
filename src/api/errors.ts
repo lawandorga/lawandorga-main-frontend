@@ -26,6 +26,21 @@ export function handleAuthenticationError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
+export function handleFileTooBigError(context: IContext): Promise<void> {
+  const error = context.error;
+
+  if (error.response && error.response.status === 413) {
+    const newError: types.ICommandError = {
+      title: "Error: The file is too big",
+      paramErrors: {},
+      generalErrors: [],
+    };
+
+    return Promise.reject(newError);
+  }
+  return Promise.reject(context);
+}
+
 export function handleNetworkError(context: IContext): Promise<void> {
   const alertStore = context.alertStore;
   const error = context.error;
@@ -183,7 +198,9 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
       // django rest framework form error
       Object.keys(data)
     ) {
-      if (data.non_field_errors) newError.generalErrors = data.non_field_errors;
+      if (data.non_field_errors) {
+        newError.generalErrors = data.non_field_errors;
+      }
       newError.paramErrors = data;
       newError.title = "Request Error";
     }
@@ -214,6 +231,12 @@ export function handleCommandError(context: IContext): Promise<void> {
   return Promise.reject(context)
     .catch((context: IContext) => {
       handleAuthenticationError(context).catch(() => {
+        // ignore as command error should always be unhandled for the modal or form
+      });
+      return Promise.reject(context);
+    })
+    .catch((context: IContext) => {
+      handleFileTooBigError(context).catch(() => {
         // ignore as command error should always be unhandled for the modal or form
       });
       return Promise.reject(context);
