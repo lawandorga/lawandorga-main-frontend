@@ -12,7 +12,7 @@ const app = createApp(App);
 
 // release
 if (import.meta.env.PROD) {
-  const release = import.meta.env.RELEASE as string;
+  const release = import.meta.env.VITE_RELEASE as string;
   console.info(`release: ${release}`);
 }
 
