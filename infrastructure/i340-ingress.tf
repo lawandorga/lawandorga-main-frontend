@@ -5,7 +5,6 @@ resource "kubernetes_ingress_v1" "lawandorga_frontend_ingress" {
       "nginx.ingress.kubernetes.io/enable-cors"          = "true"
       "nginx.ingress.kubernetes.io/cors-allow-methods"   = "GET, OPTIONS"
       "nginx.ingress.kubernetes.io/cors-allow-origin"    = "https://chat.law-orga.de"
-      "nginx.ingress.kubernetes.io/from-to-www-redirect" = "true"
     }
   }
 
