@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, toRefs, computed } from "vue";
+import { toRefs, computed } from "vue";
 import { FormInput, TableSortable, ButtonNormal } from "lorga-ui";
 import { IListRecord } from "@/types/records";
 import ButtonLink from "@/components/ButtonLink.vue";
@@ -125,18 +125,10 @@ const getValueFromRecord = (
 };
 
 // props
-const props = defineProps({
-  records: {
-    type: Array as PropType<IListRecord[] | null>,
-    required: false,
-    default: null,
-  },
-  columns: {
-    type: Array as PropType<string[] | null>,
-    required: false,
-    default: null,
-  },
-});
+const props = defineProps<{
+  records?: IListRecord[];
+  columns?: string[];
+}>();
 
 // records
 const { records, columns } = toRefs(props);
@@ -144,7 +136,7 @@ const { records, columns } = toRefs(props);
 // head
 const head = computed<{ name: string; key: string; sortable: boolean }[]>(
   () => {
-    if (records.value === null || columns.value === null) return [];
+    if (!records.value || !columns.value) return [];
     const head1 = columns.value;
     const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
     head2.push({ name: "", key: "action", sortable: false });

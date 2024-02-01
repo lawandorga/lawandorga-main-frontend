@@ -1,7 +1,7 @@
 import { ref, computed, Ref } from "vue";
 
 export default function useSearch<T, K>(
-  items: Ref<T[] | null>,
+  items: Ref<T[] | null | undefined>,
   keys: Ref<K[]>,
   // eslint-disable-next-line no-unused-vars
   getValue: (item: T, key: K) => string,
@@ -36,7 +36,7 @@ export default function useSearch<T, K>(
   });
 
   const filteredItems = computed<T[] | null>(() => {
-    if (items.value === null) return null;
+    if (!items.value) return null;
     return items.value.filter(filterFunc.value);
   });
 

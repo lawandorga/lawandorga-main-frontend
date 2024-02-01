@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import { nextTick, ref, toRefs, watch } from "vue";
+import { ref, toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 type ITab =
@@ -85,10 +85,8 @@ const updateTab = () => {
   const routeValue = parseInt(route.query.selected as string);
   const defaultValue = parseInt(defaultTab?.value as string);
   const selected: number = routeValue || defaultValue || 0;
-  nextTick(() => {
-    internalTabs.value = tabs.value;
-    changeTab(selected);
-  });
+  internalTabs.value = tabs.value;
+  changeTab(selected);
 };
 
 updateTab();

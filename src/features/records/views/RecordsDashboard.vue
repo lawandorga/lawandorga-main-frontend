@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="userStore.loaded">
+  <BoxLoader :show="!!userStore.loaded && !!views.length">
     <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
