@@ -25,10 +25,10 @@
         </template>
       </template>
     </div>
-    <TableSortable
+    <TableGenerator
       :head="[
-        { name: 'Name', key: 'name', sortable: true },
-        { name: 'Type', key: 'type', sortable: true },
+        { name: 'Name', key: 'name' },
+        { name: 'Type', key: 'type' },
         { name: '', key: 'action' },
       ]"
       :data="tableFolders"
@@ -53,31 +53,31 @@
         />
         <FoldersCreateRootFolder v-if="!selected" :query="query" />
       </template>
-      <template #name="{ item }">
+      <template #name="{ i }">
         <div class="flex items-center space-x-3">
           <button
-            v-if="item.folder"
+            v-if="i.folder"
             class="underline text-formcolor hover:text-opacity-75"
-            @click="folderSelected(item.folder.uuid)"
+            @click="folderSelected(i.folder.uuid)"
           >
-            {{ item.folder.name }}
+            {{ i.folder.name }}
           </button>
           <FolderProperty
-            v-if="item.folder"
-            :property="properties[item.folder.uuid]"
+            v-if="i.folder"
+            :property="properties[i.folder.uuid]"
           />
           <ButtonNormal
-            v-if="item.folder && item.folder.actions.includes('OPEN')"
+            v-if="i.folder && i.folder.actions.includes('OPEN')"
             kind="action"
             :to="{
               name: 'folders-detail',
-              params: { uuid: item.folder.uuid },
+              params: { uuid: i.folder.uuid },
             }"
           >
             Open
           </ButtonNormal>
-          <div v-if="!item.folder" class="flex items-center">
-            <span class="block">{{ item.name }}</span>
+          <div v-if="!i.folder" class="flex items-center">
+            <span class="block">{{ i.name }}</span>
             <div class="ml-3">
               <ButtonNormal
                 kind="action"
@@ -85,8 +85,8 @@
                   name: 'folders-detail',
                   params: { uuid: selected?.folder.uuid },
                   query: {
-                    selectedType: item.repository,
-                    selectedId: item.uuid,
+                    selectedType: i.repository,
+                    selectedId: i.uuid,
                   },
                 }"
               >
@@ -96,40 +96,40 @@
           </div>
         </div>
       </template>
-      <template #type="{ item }">
-        <span v-if="item.folder">Folder</span>
+      <template #type="{ i }">
+        <span v-if="i.folder">Folder</span>
         <div v-else class="flex">
-          <FoldersBadge :text="item.repository" />
+          <FoldersBadge :text="i.repository" />
         </div>
       </template>
-      <template #action="{ item }">
+      <template #action="{ i }">
         <FoldersChangeName
-          v-if="item.folder"
-          :folder-uuid="item.folder.uuid"
-          :folder-name="item.folder.name"
+          v-if="i.folder"
+          :folder-uuid="i.folder.uuid"
+          :folder-name="i.folder.name"
           :query="query"
         />
         <FoldersToggleInheritance
-          v-if="item.folder"
+          v-if="i.folder"
           :query="query"
-          :folder-uuid="item.folder.uuid"
-          :folder-name="item.folder.name"
-          :folder-inheritance-stopped="item.folder.stop_inherit"
+          :folder-uuid="i.folder.uuid"
+          :folder-name="i.folder.name"
+          :folder-inheritance-stopped="i.folder.stop_inherit"
         />
         <FoldersMoveFolder
-          v-if="item.folder"
+          v-if="i.folder"
           :query="query"
-          :folder-uuid="item.folder.uuid"
+          :folder-uuid="i.folder.uuid"
           :available-folders="folderList"
         />
         <FoldersDeleteFolder
-          v-if="item.folder"
-          :folder-name="item.folder.name"
-          :folder-uuid="item.folder.uuid"
+          v-if="i.folder"
+          :folder-name="i.folder.name"
+          :folder-uuid="i.folder.uuid"
           :query="query"
         />
       </template>
-    </TableSortable>
+    </TableGenerator>
     <TableFolderPersonsWithAccess
       v-if="selected"
       :query="query"
@@ -164,7 +164,7 @@ import {
 } from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
-import { ButtonNormal, TableSortable } from "lorga-ui";
+import { ButtonNormal, TableGenerator } from "lorga-ui";
 import { computed, ref, toRefs } from "vue";
 import FolderProperty from "./FolderProperty.vue";
 import FoldersBadge from "./FoldersBadge.vue";
