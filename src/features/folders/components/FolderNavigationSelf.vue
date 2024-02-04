@@ -42,8 +42,9 @@ const record = computed<IContent | null>(() => {
 const groups = computed<ContentGroupItem[]>(() => {
   return [
     {
-      name: `${record.value ? "Record" : "Folder"}: ${folder.value?.folder
-        .name}`,
+      name: `${record.value ? "Record" : "Folder"}: ${
+        folder.value?.folder.name
+      }`,
       type: "FOLDER",
       children: [{ name: "Users With Access", type: "ACCESS", id: "ACCESS" }],
       buttons: [
