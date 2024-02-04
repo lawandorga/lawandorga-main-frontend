@@ -6,7 +6,7 @@
       title="Upload Multiple Files"
       :fields="fieldsMultiple"
       :request="commandRequest"
-      :data="{ folder: folderUuid }"
+      :data="{ folder_uuid: folderUuid }"
       submit="Upload"
     />
   </ButtonNormal>
@@ -26,14 +26,15 @@ const props = defineProps<{
 const { folderUuid, query } = toRefs(props);
 
 // request
-function request(data: { files: File[]; folder: string }): Promise<void> {
+function request(data: { files: File[]; folder_uuid: string }): Promise<void> {
   const formData = new FormData();
+  formData.append("action", "files/upload_multiple_files");
 
   if (data.files)
     data.files.forEach((i: File) => {
       formData.append("files", i);
     });
-  if (data.folder) formData.append("folder", data.folder);
+  if (data.folder_uuid) formData.append("folder_uuid", data.folder_uuid);
 
   const config = {
     onUploadProgress: function (progressEvent: AxiosProgressEvent) {
@@ -48,7 +49,7 @@ function request(data: { files: File[]; folder: string }): Promise<void> {
   };
 
   return axios
-    .post("files/v2/multiple/", formData, config)
+    .post("/command/", formData, config)
     .then(() => {
       /* */
     })

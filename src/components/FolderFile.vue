@@ -13,6 +13,7 @@
         />
         <FilesDeleteFile
           :file-uuid="file.uuid"
+          :file-name="file.name"
           :query="query"
           @deleted="file = null"
         />
