@@ -6,16 +6,18 @@
       title="Create Link"
       :request="commandRequest"
       :fields="fields"
+      :data="{
+        action: 'org/create_link',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
 import { useUserStore } from "@/store/user";
 import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
@@ -42,18 +44,11 @@ const fields: types.FormField[] = [
   },
 ];
 
-const client = useClient();
 const store = useUserStore();
 
 const updateStore = () => {
   store.updateData();
 };
 
-const request = client.post<{ link: string; order: number; name: string }>(
-  "/api/org/links/",
-);
-const { commandRequest, commandModalOpen } = useCommand(request, [
-  updateStore,
-  query.value,
-]);
+const { commandRequest, commandModalOpen } = useCmd(updateStore, query.value);
 </script>

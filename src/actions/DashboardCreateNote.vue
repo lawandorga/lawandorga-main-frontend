@@ -1,19 +1,21 @@
 <template>
-  <ButtonNormal kind="action" @click="createNoteModalOpen = true">
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
     Create Note
     <ModalCreate
-      v-model="createNoteModalOpen"
+      v-model="commandModalOpen"
       title="Create Note"
       :fields="noteFields"
       submit="Create"
-      :request="createNoteRequest"
+      :request="commandRequest"
+      :data="{
+        action: 'org/create_note',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -25,11 +27,5 @@ const noteFields: types.FormField[] = [
   { label: "Note", name: "note", required: true, type: "textarea" },
 ];
 
-const client = useClient();
-const request = client.post("api/notes/");
-
-const {
-  commandModalOpen: createNoteModalOpen,
-  commandRequest: createNoteRequest,
-} = useCommand(request, query.value);
+const { commandModalOpen, commandRequest } = useCmd(query);
 </script>

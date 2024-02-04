@@ -2,14 +2,14 @@
   <ButtonNormal
     v-if="!userAccepted"
     kind="action"
-    @click="acceptUserModalOpen = true"
+    @click="commandModalOpen = true"
   >
     Accept
     <ModalConfirm
-      v-model="acceptUserModalOpen"
+      v-model="commandModalOpen"
       title="Accept User"
-      :request="acceptUserRequest"
-      :data="{ user: userId }"
+      :request="commandRequest"
+      :data="{ user_id: userId, action: 'org/accept_member_to_org' }"
     >
       Are your sure you want to accept '{{ userName }}'?
     </ModalConfirm>
@@ -19,8 +19,7 @@
 <script lang="ts" setup>
 import { toRefs } from "vue";
 import { ModalConfirm, ButtonNormal } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   userId: number;
@@ -30,12 +29,5 @@ const props = defineProps<{
 }>();
 const { userId, query } = toRefs(props);
 
-const client = useClient();
-
-const request = client.post("api/org/accept_member/");
-
-const {
-  commandRequest: acceptUserRequest,
-  commandModalOpen: acceptUserModalOpen,
-} = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

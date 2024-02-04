@@ -1,17 +1,18 @@
 <template>
-  <ButtonNormal kind="delete" @click="deleteNoteModalOpen = true">
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Delete
     <ModalDelete
-      v-model="deleteNoteModalOpen"
-      :request="deleteNoteRequest"
-      :data="{ id: noteId, name: noteTitle }"
+      v-model="commandModalOpen"
+      :request="commandRequest"
+      title="Delete Note"
+      :data="{ note_id: noteId, action: 'org/delete_note' }"
+      :obj-name="noteTitle"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -22,11 +23,5 @@ const props = defineProps<{
 }>();
 const { query, noteId } = toRefs(props);
 
-const client = useClient();
-const request = client.delete("/api/notes/{}/", noteId);
-
-const {
-  commandModalOpen: deleteNoteModalOpen,
-  commandRequest: deleteNoteRequest,
-} = useCommand(request, query.value);
+const { commandModalOpen, commandRequest } = useCmd(query);
 </script>

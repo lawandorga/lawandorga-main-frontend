@@ -45,7 +45,7 @@ import LinksDeleteLink from "@/actions/LinksDeleteLink.vue";
 
 const client = useClient();
 
-const request = client.get("/api/org/links/");
+const request = client.get("/api/query/links/");
 
 const links = ref<ILink[]>([]);
 

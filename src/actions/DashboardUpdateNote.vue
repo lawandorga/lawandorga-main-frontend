@@ -4,15 +4,20 @@
     <ModalUpdate
       v-model="commandModalOpen"
       :request="commandRequest"
+      title="Update Note"
       :fields="noteFields"
-      :data="{ id: noteId, title: noteTitle, note: noteNote }"
+      :data="{
+        note_id: noteId,
+        title: noteTitle,
+        note: noteNote,
+        action: 'org/update_note',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -29,8 +34,5 @@ const noteFields: types.FormField[] = [
   { label: "Note", name: "note", required: true, type: "textarea" },
 ];
 
-const client = useClient();
-const request = client.put("/api/notes/{}/", noteId);
-
-const { commandModalOpen, commandRequest } = useCommand(request, query.value);
+const { commandModalOpen, commandRequest } = useCmd(query);
 </script>

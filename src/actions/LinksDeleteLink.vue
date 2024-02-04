@@ -4,18 +4,18 @@
     <ModalDelete
       v-model="commandModalOpen"
       :request="commandRequest"
-      :data="{ id: linkId, name }"
+      :data="{ id: linkId, action: 'org/delete_link' }"
       title="Delete Link"
+      :obj-name="name"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
 import { ButtonNormal, ModalDelete } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
 import { useUserStore } from "@/store/user";
 import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -24,18 +24,11 @@ const props = defineProps<{
 }>();
 const { query } = toRefs(props);
 
-const client = useClient();
-
 const store = useUserStore();
 
 const updateStore = () => {
   store.updateData();
 };
 
-const request = client.delete("/api/org/links/{id}/");
-
-const { commandRequest, commandModalOpen } = useCommand(request, [
-  updateStore,
-  query.value,
-]);
+const { commandRequest, commandModalOpen } = useCmd(updateStore, query);
 </script>
