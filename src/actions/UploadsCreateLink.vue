@@ -6,7 +6,7 @@
       title="Create Link"
       :fields="fields"
       :request="commandRequest"
-      :data="{ folder: folderUuid }"
+      :data="{ folder_uuid: folderUuid, action: 'upload/create_link' }"
       submit="Create"
     />
   </ButtonNormal>
@@ -15,8 +15,7 @@
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 // props
 const props = defineProps<{
@@ -24,10 +23,6 @@ const props = defineProps<{
   query: () => void;
 }>();
 const { folderUuid, query } = toRefs(props);
-
-// request
-const client = useClient();
-const request = client.post("api/uploads/links/");
 
 // create
 const fields = [
@@ -38,7 +33,7 @@ const fields = [
     required: true,
   },
 ] as types.FormField[];
-const { commandModalOpen, commandRequest } = useCommand(request, query.value);
+const { commandModalOpen, commandRequest } = useCmd(query);
 
 // expose
 defineExpose({

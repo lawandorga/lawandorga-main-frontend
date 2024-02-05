@@ -11,6 +11,7 @@
         button="Save"
         :fields="fields"
         :request="commandRequest"
+        :data="{ link_uuid: link.uuid, action: 'upload/upload_data' }"
         @success="success = true"
         @change="formChanged($event)"
       />
@@ -61,12 +62,7 @@ useGet(
 );
 
 // useCommand MIGRATE
-const { commandRequest } = useCommand(
-  client.postAsFormData(
-    "api/uploads/links/{}/upload/",
-    route.params.uuid as string,
-  ),
-);
+const { commandRequest } = useCommand(client.postAsFormData("api/command/"));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formChanged = (data: Record<string, any>) => {
