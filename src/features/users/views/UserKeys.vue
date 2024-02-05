@@ -61,7 +61,7 @@
         :head="[
           { name: 'Information', key: 'information' },
           { name: 'Type', key: 'source' },
-          { name: 'Correct', key: 'correct' },
+          { name: 'Correct', fn: (x) => x.correct, key: 'correct' },
           { name: '', key: 'action' },
         ]"
         :data="keys"
@@ -78,6 +78,12 @@
         </template>
         <template #head-action>
           <TestKeys :query="query" />
+        </template>
+        <template #correct="{ v }">
+          <div
+            :class="{ 'bg-green-500': v, 'bg-red-500': !v }"
+            class="w-5 h-5 rounded-full"
+          ></div>
         </template>
         <template #action="slotProps">
           <DeleteKey
