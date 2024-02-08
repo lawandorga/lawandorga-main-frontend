@@ -4,7 +4,11 @@
     <ModalConfirm
       v-model="removeMemberModalOpen"
       :request="removeMemberRequest"
-      :data="{ group: groupUuid, member: memberUuid }"
+      :data="{
+        group_uuid: groupUuid,
+        member_uuid: memberUuid,
+        action: 'mail/remove_member_from_group',
+      }"
       title="Remove member"
       submit="Remove"
     >
@@ -14,8 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailGroupRemoveMember } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ModalConfirm, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -30,5 +33,5 @@ const { query } = toRefs(props);
 const {
   commandRequest: removeMemberRequest,
   commandModalOpen: removeMemberModalOpen,
-} = useCommand(mailGroupRemoveMember, query.value);
+} = useCmd(query.value);
 </script>

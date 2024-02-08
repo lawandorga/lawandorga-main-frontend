@@ -15,13 +15,13 @@
     </template>
     <template #group="item">
       <ButtonLink :to="{ name: 'mail-group', params: { uuid: item.uuid } }">
-        {{ item.email }}
+        {{ item.email || "not-set" }}
       </ButtonLink>
     </template>
     <template #action="item">
       <MailDeleteGroup
         :query="query"
-        :group-name="item.email"
+        :group-name="item.email || 'not-set'"
         :group-uuid="item.uuid"
       />
     </template>

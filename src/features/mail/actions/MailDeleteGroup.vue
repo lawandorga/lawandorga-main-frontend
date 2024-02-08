@@ -4,15 +4,14 @@
     <ModalDelete
       v-model="deleteModalOpen"
       title="Delete Group"
-      :data="{ group: groupUuid, name: groupName }"
+      :data="{ group_uuid: groupUuid, action: 'mail/delete_group' }"
       :request="deleteRequest"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailDeleteGroup } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -24,5 +23,5 @@ const props = defineProps<{
 const { query } = toRefs(props);
 
 const { commandRequest: deleteRequest, commandModalOpen: deleteModalOpen } =
-  useCommand(mailDeleteGroup, query.value);
+  useCmd(query.value);
 </script>
