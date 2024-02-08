@@ -7,13 +7,15 @@
       submit="Add"
       :fields="fields"
       :request="commandRequest"
+      :data="{
+        action: 'mail/add_domain',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailAddDomain } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -26,15 +28,12 @@ const { query } = toRefs(props);
 const fields: types.FormField[] = [
   {
     label: "Domain",
-    name: "name",
+    name: "domain",
     type: "text",
     required: true,
     helptext: "For example: example.law-orga.de",
   },
 ];
 
-const { commandModalOpen, commandRequest } = useCommand(
-  mailAddDomain,
-  query.value,
-);
+const { commandModalOpen, commandRequest } = useCmd(query.value);
 </script>

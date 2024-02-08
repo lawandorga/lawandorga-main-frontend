@@ -7,14 +7,17 @@
       submit="Save"
       :fields="fields"
       :request="changeDomainRequest"
-      :data="{ name: domainName, uuid: domainUuid }"
+      :data="{
+        name: domainName,
+        domain_uuid: domainUuid,
+        action: 'mail/change_domain',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailChangeDomain } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -39,5 +42,5 @@ const fields: types.FormField[] = [
 const {
   commandModalOpen: changeDomainModalOpen,
   commandRequest: changeDomainRequest,
-} = useCommand(mailChangeDomain, query.value);
+} = useCmd(query.value);
 </script>
