@@ -3,7 +3,10 @@
     Set as default
     <ModalConfirm
       v-model="setDefaultAddressModalOpen"
-      :data="{ address: addressUuid, user: userUuid, group: groupUuid }"
+      :data="{
+        address_uuid: addressUuid,
+        action: 'mail/set_address_as_default',
+      }"
       :request="setDefaultAddress"
       title="Set Default Address"
     >
@@ -14,8 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailSetDefaultAddress } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -31,5 +33,5 @@ const { query } = toRefs(props);
 const {
   commandRequest: setDefaultAddress,
   commandModalOpen: setDefaultAddressModalOpen,
-} = useCommand(mailSetDefaultAddress, query.value);
+} = useCmd(query.value);
 </script>

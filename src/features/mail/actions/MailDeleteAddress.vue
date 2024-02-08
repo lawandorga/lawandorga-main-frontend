@@ -3,7 +3,7 @@
     Delete
     <ModalDelete
       v-model="deleteAddressModalOpen"
-      :data="{ address: addressUuid, user: userUuid }"
+      :data="{ address_uuid: addressUuid, action: 'mail/delete_address' }"
       :request="deleteAddress"
     >
       Are you sure you want to delete {{ email }}?
@@ -12,15 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailDeleteAddress } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{
   email: string;
   query: () => void;
-  userUuid: string | null;
   addressUuid: string;
 }>();
 const { query } = toRefs(props);
@@ -28,5 +26,5 @@ const { query } = toRefs(props);
 const {
   commandRequest: deleteAddress,
   commandModalOpen: deleteAddressModalOpen,
-} = useCommand(mailDeleteAddress, query.value);
+} = useCmd(query.value);
 </script>

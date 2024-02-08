@@ -1,12 +1,14 @@
 <template>
-  <ButtonNormal kind="action" @click="createMailUserRole({})">
+  <ButtonNormal
+    kind="action"
+    @click="createMailUserRole({ action: 'mail/create_user' })"
+  >
     Create my mail user role
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailCreateUser } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -15,8 +17,5 @@ const props = defineProps<{
 }>();
 const { query } = toRefs(props);
 
-const { commandRequest: createMailUserRole } = useCommand(
-  mailCreateUser,
-  query.value,
-);
+const { commandRequest: createMailUserRole } = useCmd(query.value);
 </script>

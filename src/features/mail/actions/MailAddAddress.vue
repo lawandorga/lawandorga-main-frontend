@@ -3,17 +3,16 @@
     Add Address
     <ModalCreate
       v-model="addAddressModalOpen"
-      :request="addAddress"
+      :request="request"
       :fields="addressFields"
-      :data="{ user: userUuid }"
+      :data="{ user_uuid: userUuid, action: 'mail/create_address' }"
       @change="changed($event)"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
-import { mailAddAddress } from "@/services/mail";
+import useCmd from "@/composables/useCmd";
 import { IAvailableMailDomain } from "@/types/mail";
 import { ModalCreate, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
@@ -31,7 +30,7 @@ const addressFields = computed<types.FormField[]>(() => {
     { label: "Localpart", name: "localpart", type: "string", required: true },
     {
       label: "Domain",
-      name: "domain",
+      name: "domain_uuid",
       type: "select",
       required: true,
       options: availableDomains?.value,
@@ -49,7 +48,9 @@ const addressFields = computed<types.FormField[]>(() => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const changed = (data: Record<string, any>) => {
   let domainName = "";
-  const domain = availableDomains?.value.find((i) => i.uuid === data.domain);
+  const domain = availableDomains?.value.find(
+    (i) => i.uuid === data.domain_uuid,
+  );
   if (domain) domainName = domain.name;
   let localpart = "";
   if (data.localpart) localpart = data.localpart;
@@ -58,5 +59,12 @@ const changed = (data: Record<string, any>) => {
 };
 
 const { commandRequest: addAddress, commandModalOpen: addAddressModalOpen } =
-  useCommand(mailAddAddress, query.value);
+  useCmd(query.value);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const request = (data: Record<string, any>) => {
+  const newData = { ...data };
+  delete newData.ignore;
+  return addAddress(newData);
+};
 </script>
