@@ -6,16 +6,19 @@
       title="Remove Permission"
       verb="remove"
       :request="commandRequest"
-      :data="{ name: permissionName }"
+      :data="{
+        action: 'permissions/delete_has_permission',
+        has_permission_id: permissionId,
+      }"
+      :obj-name="permissionName"
     />
   </ButtonNormal>
 </template>
 
 <script lang="ts" setup>
 import { ModalDelete, ButtonNormal } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
 import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -23,13 +26,7 @@ const props = defineProps<{
   permissionName: string;
 }>();
 
-const { query, permissionId } = toRefs(props);
+const { query } = toRefs(props);
 
-const client = useClient();
-const request = client.delete(
-  "api/permissions/has_permissions/{}/",
-  permissionId,
-);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>

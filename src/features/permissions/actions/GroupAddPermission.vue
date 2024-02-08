@@ -5,7 +5,11 @@
       v-model="commandModalOpen"
       title="Add Permission"
       :fields="permissionFields"
-      :data="{ group_id: groupId }"
+      :data="{
+        group_id: groupId,
+        action: 'permissions/create_has_permission',
+        user_id: null,
+      }"
       :request="commandRequest"
     />
   </ButtonNormal>
@@ -14,9 +18,8 @@
 <script lang="ts" setup>
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
 import { usePermissions } from "@/composables/usePermissions";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void; groupId: number }>();
 const { query, groupId } = toRefs(props);
@@ -29,12 +32,9 @@ const permissionFields = computed<types.FormField[]>(() => [
     name: "permission_id",
     type: "select",
     required: true,
-    options: permissions.value,
+    options: permissions.value || [],
   },
 ]);
 
-const client = useClient();
-const request = client.post("api/permissions/has_permissions/");
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
