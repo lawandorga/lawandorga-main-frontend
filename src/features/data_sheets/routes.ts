@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/records/:record/",
     name: "records-detail",
-    component: () => import("@/views/data_sheets/RecordsDetail.vue"),
+    component: () => import("@/features/data_sheets/views/RecordsDetail.vue"),
   },
   {
     path: "/data-sheets/migrate/",
