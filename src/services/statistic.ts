@@ -29,17 +29,17 @@ class StatisticService {
 
   getRecordClientNationality() {
     return axios
-      .get<RecordClientValueCount[]>(
-        "statistics/individual/record_client_nationality/",
-      )
+      .get<
+        RecordClientValueCount[]
+      >("statistics/individual/record_client_nationality/")
       .then((response) => response.data);
   }
 
   getRecordClientState() {
     return axios
-      .get<RecordClientValueCount[]>(
-        "statistics/individual/record_client_state/",
-      )
+      .get<
+        RecordClientValueCount[]
+      >("statistics/individual/record_client_state/")
       .then((response) => response.data);
   }
 

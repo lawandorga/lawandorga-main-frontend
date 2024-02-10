@@ -131,7 +131,7 @@ import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
 import FolderMessages from "@/features/messages/components/FolderMessages.vue";
 import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
-import FolderFile from "@/components/FolderFile.vue";
+import FolderFile from "@/features/files/components/FolderFile.vue";
 import FolderAccess from "@/features/folders/components/FolderAccess.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";

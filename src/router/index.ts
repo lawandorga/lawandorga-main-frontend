@@ -5,7 +5,7 @@ import filesRoutes from "./files";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "./statistics";
 import helpRoutes from "@/features/help/routes";
-import internalRoutes from "./internal";
+import internalRoutes from "@/features/internal/internal";
 import legalRoutes from "@/features/legal/routes";
 import eventsRoutes from "@/features/events/routes";
 import mailRoutes from "@/features/mail/routes";

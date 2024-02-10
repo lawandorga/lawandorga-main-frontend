@@ -41,12 +41,12 @@
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { formatDate } from "@/utils/date";
 import { ref, toRefs, watch } from "vue";
-import { messagesGetMessages } from "@/services/messages";
 import { IMessage } from "@/types/messages";
 import MessagesSendMessage from "@/features/messages/actions/MessagesSendMessage.vue";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import DeleteMessage from "../actions/DeleteMessage.vue";
+import useClient from "@/api/client";
 
 const props = defineProps<{
   selectedType: string;
@@ -59,7 +59,10 @@ const messages = ref<IMessage[] | null>(null);
 
 const loading = ref(false);
 
-const query = useQuery(messagesGetMessages, messages, folderUuid);
+const client = useClient();
+const request = client.get(`api/messages/query/${folderUuid.value}/`);
+
+const query = useQuery(request, messages);
 
 const update = () => {
   if (selectedType.value === "MESSAGES") {

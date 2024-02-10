@@ -188,7 +188,6 @@
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ref } from "vue";
-import UsersService from "@/services/user";
 import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
@@ -215,6 +214,5 @@ const { user } = storeToRefs(userStore);
 
 const notes = ref<DashboardNote[] | null>(null);
 
-// get
-const notesQuery = useGet(UsersService.getNotes, notes);
+const notesQuery = useGet(client.get("api/query/notes/"), notes);
 </script>

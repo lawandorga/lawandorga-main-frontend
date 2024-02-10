@@ -5,7 +5,6 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import { downloadFileRequest } from "@/utils/download";
-import { types } from "lorga-ui";
 import axios from "axios";
 
 class FilesService {
@@ -80,6 +79,7 @@ class FilesService {
   }
 
   // files
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createFile(data: Record<string, any>): Promise<FilesFile> {
     const formData = new FormData();
     if (data.folder) formData.append("folder", data.folder);

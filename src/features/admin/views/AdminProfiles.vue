@@ -62,7 +62,6 @@
 import { ref, Ref } from "vue";
 import { RlcUserSmall } from "@/types/user";
 import useGet from "@/composables/useGet";
-import AdminService from "@/services/admin";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -72,7 +71,11 @@ import UsersDeleteUser from "@/features/admin/actions/OrgUsersDeleteUser.vue";
 import UsersActivateDeactivateUser from "@/features/admin/actions/OrgUsersActivateDeactivateUser.vue";
 import UsersAcceptUser from "@/features/admin/actions/OrgUsersAcceptUser.vue";
 import UsersUnlockUser from "@/features/admin/actions/OrgUsersUnlockUser.vue";
+import useClient from "@/api/client";
 
 const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
-const query = useGet(AdminService.getUsers, profiles);
+
+const client = useClient();
+const request = client.get("api/rlc_users/");
+const query = useGet(request, profiles);
 </script>

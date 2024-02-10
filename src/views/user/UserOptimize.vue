@@ -62,7 +62,6 @@
 import useClient from "@/api/client";
 import { useErrorHandling } from "@/api/errors";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { messagesOptimize } from "@/services/messages";
 import { useUserStore } from "@/store/user";
 import {
   CheckIcon,
@@ -102,7 +101,13 @@ const apps: IApps = {
         handleError(e);
         return Promise.reject(e);
       }),
-  Messages: messagesOptimize,
+  Messages: () =>
+    client
+      .post("api/command/")({ action: "messages/optimize" })
+      .catch((e) => {
+        handleError(e);
+        return Promise.reject(e);
+      }),
   Questionnaires: () =>
     client
       .post("api/command/")({ action: "questionnaires/optimize" })

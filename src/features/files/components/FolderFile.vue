@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import BoxHeadingStats from "./BoxHeadingStats.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FilesDownloadFile from "@/features/files/actions/FilesDownloadFile.vue";
 import { CircleLoader } from "lorga-ui";
 import { formatDate } from "@/utils/date";
@@ -35,7 +35,7 @@ import { watch, ref, toRefs } from "vue";
 import { RecordsDocument } from "@/types/records";
 import useQuery from "@/composables/useQuery";
 import FilesDeleteFile from "@/features/files/actions/FilesDeleteFile.vue";
-import FileDisplay from "./FileDisplay.vue";
+import FileDisplay from "@/components/FileDisplay.vue";
 import useClient from "@/api/client";
 
 // props

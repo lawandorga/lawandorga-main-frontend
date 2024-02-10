@@ -94,8 +94,8 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import FilesUploadFile from "@/actions/FilesUploadFile.vue";
-import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
+import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
+import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/features/records/actions/RecordsCreateRecordWithinFolder.vue";
 import { ButtonNormal } from "lorga-ui";

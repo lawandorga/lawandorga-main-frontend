@@ -69,9 +69,9 @@ import {
 } from "@heroicons/vue/24/outline";
 import { defineComponent, ref, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import HelpService from "@/services/help";
 import useGet from "@/composables/useGet";
 import { HelpPage } from "@/types/page";
+import useClient from "@/api/client";
 
 export default defineComponent({
   components: {
@@ -81,7 +81,10 @@ export default defineComponent({
   },
   setup() {
     const page = ref<HelpPage | null>(null);
-    useGet(HelpService.getHelpPage, page);
+
+    const client = useClient();
+    const request = client.get("api/internal/pages/help/");
+    useGet(request, page);
 
     const items = computed(() => [
       {
