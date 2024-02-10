@@ -12,8 +12,8 @@
 <script setup lang="ts">
 import { IFolderDetail } from "@/types/folders";
 import { computed, h, toRefs } from "vue";
-import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
-import FilesUploadFile from "@/actions/FilesUploadFile.vue";
+import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
+import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/features/records/actions/RecordsCreateRecordWithinFolder.vue";
 import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
