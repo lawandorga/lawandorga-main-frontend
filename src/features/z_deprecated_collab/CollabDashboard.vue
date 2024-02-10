@@ -80,9 +80,9 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
-import CollabDocumentItem from "@/components/CollabDocumentItem.vue";
-import CollabHelp from "@/components/CollabHelp.vue";
-import CollabPermissions from "@/components/CollabPermissions.vue";
+import CollabDocumentItem from "@/features/z_deprecated_collab/CollabDocumentItem.vue";
+import CollabHelp from "@/features/z_deprecated_collab/CollabHelp.vue";
+import CollabPermissions from "@/features/z_deprecated_collab/CollabPermissions.vue";
 
 export default defineComponent({
   components: {

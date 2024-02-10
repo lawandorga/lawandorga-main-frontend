@@ -1,13 +1,7 @@
 import { RouteRecordRaw } from "vue-router";
 import { notAuthenticated } from "./utils";
-import UserLogin from "@/views/user/UserLogin.vue";
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/user/login",
-    name: "user-login",
-    component: UserLogin,
-  },
   {
     path: "/user/optimize/",
     name: "user-optimize",

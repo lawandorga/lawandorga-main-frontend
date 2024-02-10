@@ -21,7 +21,7 @@ import orgRoutes from "@/features/org/routes";
 import folderRoutes from "@/features/folders/routes";
 import collabRoutes from "@/features/collab/routes";
 import usersRoutes from "@/features/users/routes";
-import oldCollabRoutes from "./collab";
+import oldCollabRoutes from "@/features/z_deprecated_collab/collab";
 import { useUserStore } from "@/store/user";
 
 const routes: Array<RouteRecordRaw> = [
