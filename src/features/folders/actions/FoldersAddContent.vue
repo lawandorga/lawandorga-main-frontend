@@ -97,7 +97,7 @@ import {
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
-import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
+import RecordsCreateRecordWithinFolder from "@/features/records/actions/RecordsCreateRecordWithinFolder.vue";
 import { ButtonNormal } from "lorga-ui";
 
 defineProps<{ query: () => void; folderUuid?: string }>();
