@@ -243,7 +243,7 @@ import {
   FilesPossiblePermission,
 } from "@/types/files";
 import { defineComponent, Ref, ref, watch } from "vue";
-import FilesService from "@/services/files";
+import FilesService from "./files_service";
 import {
   TableGenerator,
   TableSortable,
@@ -254,7 +254,7 @@ import {
 } from "lorga-ui";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
-import CoreService from "@/services/core";
+import CoreService from "@/features/z_deprecated_files/core";
 import { Group } from "@/types/core";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { FolderOpenIcon } from "@heroicons/vue/24/outline";
@@ -266,8 +266,8 @@ import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
 import { DjangoModel } from "@/types/shared";
-import FilesPermissions from "@/components/FilesPermissions.vue";
-import FilesHelp from "@/components/FilesHelp.vue";
+import FilesPermissions from "@/features/z_deprecated_files/FilesPermissions.vue";
+import FilesHelp from "@/features/z_deprecated_files/FilesHelp.vue";
 import { useUserStore } from "@/store/user";
 import { useErrorHandling } from "@/api/errors";
 
@@ -582,3 +582,5 @@ function createUpdateDeleteFile(
   };
 }
 </script>
+@/features/z_deprecated_files/files @/services/files_service
+@/features/z_deprecated_files/files_service @/features/z_deprecated_files/core

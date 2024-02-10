@@ -4,7 +4,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/files/:id?/",
     name: "files-dashboard",
-    component: () => import("@/views/files/FilesDashboard.vue"),
+    component: () => import("@/features/z_deprecated_files/FilesDashboard.vue"),
   },
 ];
 

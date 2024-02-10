@@ -151,7 +151,7 @@ import {
 import CollabService from "@/services/collab";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";
-import CoreService from "@/services/core";
+import CoreService from "@/features/z_deprecated_files/core";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
 import { useErrorHandling } from "@/api/errors";
@@ -269,3 +269,4 @@ export default defineComponent({
   },
 });
 </script>
+@/features/z_deprecated_files/core
