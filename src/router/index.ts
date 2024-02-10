@@ -14,7 +14,7 @@ import ErrorPage from "@/views/ErrorPage.vue";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
 import uploadsRoutes from "@/features/uploads/routes";
-import chatRoutes from "./chat";
+import chatRoutes from "@/features/matrix_chat/routes";
 import recordsRoutes from "@/features/records/routes";
 import questionnaireRoutes from "@/features/questionnaires/routes";
 import orgRoutes from "@/features/org/routes";
