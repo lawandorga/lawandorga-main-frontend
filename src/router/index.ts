@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import userRoutes from "./user";
-import adminRoutes from "./admin";
+import adminRoutes from "@/features/admin/routes";
 import filesRoutes from "./files";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "./statistics";

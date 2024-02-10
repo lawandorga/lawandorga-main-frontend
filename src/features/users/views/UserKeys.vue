@@ -107,10 +107,10 @@ import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { Key } from "@/types/key";
 import { useUserStore } from "@/store/user";
-import ActionsUserUnlockSelf from "@/actions/ActionsUserUnlockSelf.vue";
-import DeleteKey from "../actions/DeleteKey.vue";
+import ActionsUserUnlockSelf from "@/features/users/actions/ActionsUserUnlockSelf.vue";
+import DeleteKey from "@/features/users/actions/DeleteKey.vue";
 import useClient from "@/api/client";
-import TestKeys from "../actions/TestKeys.vue";
+import TestKeys from "@/features/users/actions/TestKeys.vue";
 
 const userStore = useUserStore();
 
