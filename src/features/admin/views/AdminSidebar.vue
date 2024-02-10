@@ -40,8 +40,8 @@ import { ref } from "vue";
 import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
 import { ILink } from "@/types/org";
-import LinksCreateLink from "@/actions/LinksCreateLink.vue";
-import LinksDeleteLink from "@/actions/LinksDeleteLink.vue";
+import LinksCreateLink from "@/features/admin/actions/LinksCreateLink.vue";
+import LinksDeleteLink from "@/features/admin/actions/LinksDeleteLink.vue";
 
 const client = useClient();
 
