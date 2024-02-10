@@ -120,7 +120,7 @@ import { useRoute } from "vue-router";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-import UsersChangePassword from "@/actions/UsersChangePassword.vue";
+import UsersChangePassword from "@/features/admin/actions/UsersChangePassword.vue";
 import UserAddPermission from "@/features/permissions/actions/UserAddPermission.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
 import useClient from "@/api/client";
