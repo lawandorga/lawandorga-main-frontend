@@ -7,7 +7,7 @@ import statisticsRoutes from "./statistics";
 import helpRoutes from "./help";
 import internalRoutes from "./internal";
 import legalRoutes from "@/features/legal/routes";
-import eventsRoutes from "./events";
+import eventsRoutes from "@/features/events/routes";
 import mailRoutes from "@/features/mail/routes";
 import DashboardPage from "@/views/DashboardPage.vue";
 import ErrorPage from "@/views/ErrorPage.vue";

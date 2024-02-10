@@ -117,11 +117,11 @@ import { computed, ref } from "vue";
 import { Event } from "@/types/event";
 import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useRoute, useRouter } from "vue-router";
-import EventsCreateEvent from "@/actions/EventsCreateEvent.vue";
+import EventsCreateEvent from "@/features/events/actions/EventsCreateEvent.vue";
 import useGet from "@/composables/useGet";
-import EventsUpdateEvent from "@/actions/EventsUpdateEvent.vue";
-import EventsDeleteEvent from "@/actions/EventsDeleteEvent.vue";
-import EventsGetCalendarLink from "@/actions/EventsGetCalendarLink.vue";
+import EventsUpdateEvent from "@/features/events/actions/EventsUpdateEvent.vue";
+import EventsDeleteEvent from "@/features/events/actions/EventsDeleteEvent.vue";
+import EventsGetCalendarLink from "@/features/events/actions/EventsGetCalendarLink.vue";
 import { useUserStore } from "@/store/user";
 import useClient from "@/api/client";
 
