@@ -16,7 +16,7 @@ import FilesUploadMultipleFiles from "@/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/actions/FilesUploadFile.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/actions/RecordsCreateRecordWithinFolder.vue";
-import UploadsCreateLink from "@/actions/UploadsCreateLink.vue";
+import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,
 } from "@/features/folders/components/FolderNavigationRaw.vue";

@@ -62,17 +62,17 @@
 </template>
 
 <script setup lang="ts">
-import BoxHeadingStats from "./BoxHeadingStats.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";
 import { IUploadLink } from "@/types/uploads";
 import useClient from "@/api/client";
-import UploadsDisableLink from "@/actions/UploadsDisableLink.vue";
-import FileDisplay from "./FileDisplay.vue";
-import UploadsDownloadFile from "@/actions/UploadsDownloadFile.vue";
-import UploadsCopyLink from "@/actions/UploadsCopyLink.vue";
+import UploadsDisableLink from "@/features/uploads/actions/UploadsDisableLink.vue";
+import FileDisplay from "@/components/FileDisplay.vue";
+import UploadsDownloadFile from "@/features/uploads/actions/UploadsDownloadFile.vue";
+import UploadsCopyLink from "@/features/uploads/actions/UploadsCopyLink.vue";
 
 // props
 const props = defineProps<{

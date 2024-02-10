@@ -136,7 +136,7 @@ import FolderAccess from "@/features/folders/components/FolderAccess.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { IContent, IFolderDetail } from "@/types/folders";
-import FolderUploads from "@/components/FolderUploads.vue";
+import FolderUploads from "@/features/uploads/components/FolderUploads.vue";
 import FolderNavigationContent from "@/features/folders/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/features/folders/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/features/folders/components/FolderSelf.vue";
