@@ -15,6 +15,7 @@
     ]"
     :data="{
       record_uuid: recordUuid,
+      action: 'records/create_access_request',
     }"
     :request="commandRequest"
     submit="Request Access"
@@ -24,20 +25,13 @@
 <script setup lang="ts">
 import { toRefs } from "vue";
 import { ButtonNormal, ModalForm } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
-// props
 const props = defineProps<{
   query: () => void;
   recordUuid: string;
 }>();
 const { query, recordUuid } = toRefs(props);
 
-// request
-const client = useClient();
-const request = client.post("/api/records/access_requests/");
-
-// create
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

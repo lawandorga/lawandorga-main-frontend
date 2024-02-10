@@ -6,14 +6,17 @@
       title="Change Token"
       :fields="fields"
       :request="commandRequest"
-      :data="{ uuid: recordUuid, token: recordToken }"
+      :data="{
+        uuid: recordUuid,
+        token: recordToken,
+        action: 'records/change_token',
+      }"
     />
   </ButtonNormal>
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -32,9 +35,5 @@ const fields: types.FormField[] = [
   { label: "Token", name: "token", type: "text", required: true },
 ];
 
-const client = useClient();
-
-const request = client.put("api/records/records/{}/change_token/", recordUuid);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

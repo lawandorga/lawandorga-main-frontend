@@ -6,7 +6,10 @@
     v-model="commandModalOpen"
     title="Grant Access"
     :request="commandRequest"
-    :data="{ uuid: accessRequestUuid }"
+    :data="{
+      access_uuid: accessRequestUuid,
+      action: 'records/grant_access_request',
+    }"
     submit="Grant Access"
   >
     Are you sure you want to grant the access request?
@@ -16,9 +19,8 @@
 
 <script lang="ts" setup>
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import useCommand from "@/composables/useCommand";
 import { toRefs } from "vue";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
@@ -28,11 +30,5 @@ const props = defineProps<{
 }>();
 const { query, accessRequestUuid } = toRefs(props);
 
-const client = useClient();
-const request = client.post<{ id: number }>(
-  "api/records/access_requests/{}/grant/",
-  accessRequestUuid,
-);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

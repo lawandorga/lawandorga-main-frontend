@@ -7,12 +7,12 @@
     title="Create View"
     :fields="fields"
     :request="commandRequest"
+    :data="{ action: 'records/create_view' }"
   />
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -20,9 +20,6 @@ const props = defineProps<{
   query: () => void;
 }>();
 const { query } = toRefs(props);
-
-const client = useClient();
-const request = client.post("api/records/settings/");
 
 const fields: types.FormField[] = [
   {
@@ -48,5 +45,5 @@ const fields: types.FormField[] = [
   },
 ];
 
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>

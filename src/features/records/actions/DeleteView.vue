@@ -6,25 +6,22 @@
     v-model="commandModalOpen"
     title="Delete View"
     :request="commandRequest"
-    :data="{ name: viewName }"
+    :data="{ uuid: viewUuid, action: 'records/delete_view' }"
+    :obj-name="viewName"
   />
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
-import { toRefs } from "vue";
 
-const props = defineProps<{
+defineProps<{
   query: () => void;
   viewUuid: string;
   viewName: string;
 }>();
-const { query, viewUuid } = toRefs(props);
 
-const client = useClient();
-const request = client.delete("api/records/settings/{}/", viewUuid);
-
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(() =>
+  window.location.reload(),
+);
 </script>

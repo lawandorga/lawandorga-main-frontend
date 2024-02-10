@@ -1,6 +1,24 @@
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Update View
+  </ButtonNormal>
+  <ModalUpdate
+    v-model="commandModalOpen"
+    :fields="fields"
+    title="Update View"
+    :request="commandRequest"
+    :data="{
+      uuid: viewUuid,
+      name: viewName,
+      columns: viewColumns,
+      ordering: viewOrdering,
+      action: 'records/update_view',
+    }"
+  />
+</template>
+
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -12,9 +30,6 @@ const props = defineProps<{
   viewColumns: string[];
 }>();
 const { query, viewUuid } = toRefs(props);
-
-const client = useClient();
-const request = client.put("api/records/settings/{}/", viewUuid);
 
 const fields: types.FormField[] = [
   {
@@ -40,18 +55,5 @@ const fields: types.FormField[] = [
   },
 ];
 
-const { commandRequest, commandModalOpen } = useCommand(request, query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 </script>
-
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Update View
-  </ButtonNormal>
-  <ModalUpdate
-    v-model="commandModalOpen"
-    :fields="fields"
-    title="Update View"
-    :request="commandRequest"
-    :data="{ name: viewName, columns: viewColumns, ordering: viewOrdering }"
-  />
-</template>
