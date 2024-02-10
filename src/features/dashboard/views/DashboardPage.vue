@@ -196,9 +196,9 @@ import useGet from "@/composables/useGet";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import useClient from "@/api/client";
-import DashboardCreateNote from "@/actions/DashboardCreateNote.vue";
-import DashboardDeleteNote from "@/actions/DashboardDeleteNote.vue";
-import DashboardUpdateNote from "@/actions/DashboardUpdateNote.vue";
+import DashboardCreateNote from "@/features/dashboard/actions/DashboardCreateNote.vue";
+import DashboardDeleteNote from "@/features/dashboard/actions/DashboardDeleteNote.vue";
+import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNote.vue";
 
 const client = useClient();
 

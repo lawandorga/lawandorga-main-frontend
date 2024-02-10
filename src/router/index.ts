@@ -9,7 +9,7 @@ import internalRoutes from "./internal";
 import legalRoutes from "@/features/legal/routes";
 import eventsRoutes from "@/features/events/routes";
 import mailRoutes from "@/features/mail/routes";
-import DashboardPage from "@/views/DashboardPage.vue";
+import DashboardPage from "@/features/dashboard/views/DashboardPage.vue";
 import ErrorPage from "@/views/ErrorPage.vue";
 import NotFoundPage from "@/views/NotFoundPage.vue";
 import StartPage from "@/views/StartPage.vue";
