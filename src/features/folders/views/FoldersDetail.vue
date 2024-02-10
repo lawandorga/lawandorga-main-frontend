@@ -58,7 +58,7 @@
           :on-delete="() => select(null, 'RECORD')"
         />
 
-        <RecordMessages
+        <FolderMessages
           :folder-uuid="folder.folder.uuid"
           :selected-type="selectedType"
         />
@@ -129,7 +129,7 @@ import { FolderIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useRoute } from "vue-router";
 import useGet from "@/composables/useGet";
-import RecordMessages from "@/components/RecordMessages.vue";
+import FolderMessages from "@/features/messages/components/FolderMessages.vue";
 import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
 import FolderFile from "@/components/FolderFile.vue";
 import FolderAccess from "@/features/folders/components/FolderAccess.vue";

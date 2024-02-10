@@ -1,7 +1,7 @@
 <template>
   <FormGenerator
     :fields="fields"
-    :data="{ folder: folderUuid }"
+    :data="{ folder_uuid: folderUuid, action: 'messages/create_message' }"
     :request="commandRequest"
     @success="data['message'] = ''"
     @change="data = $event"
@@ -11,22 +11,17 @@
 <script setup lang="ts">
 import { FormGenerator, types } from "lorga-ui";
 import { ref, toRefs } from "vue";
-import useCommand from "@/composables/useCommand";
-import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 
-// props
 const props = defineProps<{
   query: () => void;
   folderUuid?: string;
 }>();
+
 const { query, folderUuid } = toRefs(props);
 
-// request
-const client = useClient();
-const request = client.post("api/messages/messages/");
-
-// send message
 const data = ref();
+
 const fields: types.FormField[] = [
   {
     label: "Message",
@@ -35,5 +30,5 @@ const fields: types.FormField[] = [
     required: true,
   },
 ];
-const { commandRequest } = useCommand(request, query.value);
+const { commandRequest } = useCmd(query);
 </script>

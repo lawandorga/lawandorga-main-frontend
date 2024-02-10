@@ -16,9 +16,16 @@
                 {{ formatDate(message.created) }}
               </i>
             </div>
-            <p class="" style="margin-top: 2px; margin-bottom: 0">
-              {{ message.message }}
-            </p>
+            <div class="flex justify-between">
+              <p class="" style="margin-top: 2px; margin-bottom: 0">
+                {{ message.message }}
+              </p>
+              <DeleteMessage
+                :message-id="message.id"
+                :delete-name="`${message.sender_name}: ${message.message}`"
+                :query="query"
+              />
+            </div>
           </div>
         </li>
         <div style="height: auto; padding-top: 16px">
@@ -31,14 +38,15 @@
 </template>
 
 <script setup lang="ts">
-import BoxHeadingStats from "./BoxHeadingStats.vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { formatDate } from "@/utils/date";
 import { ref, toRefs, watch } from "vue";
 import { messagesGetMessages } from "@/services/messages";
 import { IMessage } from "@/types/messages";
-import MessagesSendMessage from "@/actions/MessagesSendMessage.vue";
+import MessagesSendMessage from "@/features/messages/actions/MessagesSendMessage.vue";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
+import DeleteMessage from "../actions/DeleteMessage.vue";
 
 const props = defineProps<{
   selectedType: string;
