@@ -4,7 +4,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/uploads/:uuid",
     name: "uploads-upload",
-    component: () => import("@/views/uploads/UploadsUpload.vue"),
+    component: () => import("@/features/uploads/views/UploadsUpload.vue"),
   },
 ];
 
