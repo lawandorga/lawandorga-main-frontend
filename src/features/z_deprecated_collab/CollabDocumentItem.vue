@@ -148,7 +148,7 @@ import {
   ModalDelete,
   CircleLoader,
 } from "lorga-ui";
-import CollabService from "@/services/collab";
+import CollabService from "./collab_service";
 import { formatDate } from "@/utils/date";
 import { Group } from "@/types/core";
 import CoreService from "@/features/z_deprecated_files/core";
@@ -269,4 +269,4 @@ export default defineComponent({
   },
 });
 </script>
-@/features/z_deprecated_files/core
+@/features/z_deprecated_files/core @/services/collab_service

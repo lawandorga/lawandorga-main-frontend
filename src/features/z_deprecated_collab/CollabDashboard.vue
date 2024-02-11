@@ -74,7 +74,7 @@ import { CollabDocument } from "@/types/collab";
 import TreeItem from "@/components/TreeItem.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { ModalDelete, CircleLoader, ModalForm } from "lorga-ui";
-import CollabService from "@/services/collab";
+import CollabService from "./collab_service";
 import { DocumentTextIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
@@ -152,3 +152,4 @@ export default defineComponent({
   },
 });
 </script>
+@/services/collab_service

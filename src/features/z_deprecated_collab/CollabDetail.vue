@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 import { computed, onUnmounted, ref } from "vue";
 import { CollabDocument } from "@/types/collab";
-import CollabService from "@/services/collab";
+import CollabService from "./collab_service";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { DocumentTextIcon, CheckIcon } from "@heroicons/vue/24/outline";
@@ -98,3 +98,4 @@ onUnmounted(() => {
   if (saveInterval.value !== null) clearInterval(saveInterval.value);
 });
 </script>
+@/services/collab_service
