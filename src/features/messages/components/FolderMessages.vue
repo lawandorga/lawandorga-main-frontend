@@ -41,12 +41,18 @@
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { formatDate } from "@/utils/date";
 import { ref, toRefs, watch } from "vue";
-import { IMessage } from "@/types/messages";
 import MessagesSendMessage from "@/features/messages/actions/MessagesSendMessage.vue";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import DeleteMessage from "../actions/DeleteMessage.vue";
 import useClient from "@/api/client";
+
+interface IMessage {
+  id: number;
+  message: string;
+  sender_name: string;
+  created: string;
+}
 
 const props = defineProps<{
   selectedType: string;

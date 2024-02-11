@@ -1,15 +1,5 @@
 import { Rlc } from "./core";
 
-export interface IRegisterPage {
-  orgs: { name: string; id: number }[];
-  legal_requirements: {
-    title: string;
-    id: number;
-    content: string;
-    accept_required: boolean;
-  }[];
-}
-
 export interface RlcUserSmall {
   id: number;
   user_id: number;

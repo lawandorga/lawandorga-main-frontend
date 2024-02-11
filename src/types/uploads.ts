@@ -6,7 +6,3 @@ export interface IUploadLink {
   disabled: boolean;
   files: { uuid: string; name: string }[];
 }
-
-export interface IUploadFile {
-  name: string;
-}

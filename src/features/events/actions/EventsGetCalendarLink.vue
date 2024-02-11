@@ -20,10 +20,15 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { Ref, ref } from "vue";
-import { CalendarIcsInfo } from "@/types/event";
 import useGet from "@/composables/useGet";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
+
+interface CalendarIcsInfo {
+  id: number;
+  calendar_uuid: string;
+  calendar_url: string;
+}
 
 const modalOpen = ref(false);
 

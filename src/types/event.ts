@@ -9,9 +9,3 @@ export interface Event {
   end_time: string;
   org: Rlc;
 }
-
-export interface CalendarIcsInfo {
-  id: number;
-  calendar_uuid: string;
-  calendar_url: string;
-}

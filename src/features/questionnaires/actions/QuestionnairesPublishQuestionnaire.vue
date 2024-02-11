@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
-import { IQuestionnaireTemplate } from "@/types/questionnaire";
 import { computed, ref, toRefs, watch } from "vue";
 import useClient from "@/api/client";
 import useQuery from "@/composables/useQuery";
 import useCmd from "@/composables/useCmd";
+
+export interface IQuestionnaireTemplate {
+  id: number;
+  rlc: number;
+  name: string;
+  notes: string;
+  updated: string;
+  created: string;
+}
 
 const props = defineProps<{ query: () => void; folderUuid?: string }>();
 const { query, folderUuid } = toRefs(props);

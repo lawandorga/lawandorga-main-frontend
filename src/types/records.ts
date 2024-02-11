@@ -7,13 +7,6 @@ export interface RecordTemplate {
   show: string[];
 }
 
-export interface IListRecord {
-  id: number;
-  entries: { [key: string]: RecordValue };
-  delete_requested: boolean;
-  has_access: boolean;
-}
-
 export interface Record {
   uuid: string;
   id: number;

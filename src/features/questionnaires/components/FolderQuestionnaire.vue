@@ -82,12 +82,44 @@ import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
-import { IQuestionnaire } from "@/types/questionnaire";
 import { Ref, ref, toRefs, watch } from "vue";
 import { useAlertStore } from "@/store/alert";
 import QuestionnaireFileDownload from "../actions/QuestionnaireFileDownload.vue";
 import QuestionnaireDelete from "../actions/QuestionnaireDelete.vue";
 import useClient from "@/api/client";
+
+interface IQuestionnaireField {
+  id: number;
+  type: string;
+  name: string;
+  question: string;
+}
+
+export interface IQuestionnaireAnswer {
+  id: number;
+  data: string;
+  field: IQuestionnaireField;
+}
+
+export interface IQuestionnaireTemplate {
+  id: number;
+  rlc: number;
+  name: string;
+  notes: string;
+  updated: string;
+  created: string;
+}
+
+export interface IQuestionnaire {
+  id: number;
+  uuid: string;
+  code: string;
+  record: number;
+  template: IQuestionnaireTemplate;
+  answers: IQuestionnaireAnswer[];
+  created: string;
+  updated: string;
+}
 
 const props = defineProps<{
   selectedId: number | string | null;

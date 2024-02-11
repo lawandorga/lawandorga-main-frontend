@@ -70,8 +70,12 @@ import {
 import { defineComponent, ref, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
-import { HelpPage } from "@/types/page";
 import useClient from "@/api/client";
+
+interface HelpPage {
+  id: number;
+  manual_url: string | null;
+}
 
 export default defineComponent({
   components: {

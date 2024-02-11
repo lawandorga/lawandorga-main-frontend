@@ -105,12 +105,18 @@ import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { Key } from "@/types/key";
 import { useUserStore } from "@/store/user";
 import ActionsUserUnlockSelf from "@/features/users/actions/ActionsUserUnlockSelf.vue";
 import DeleteKey from "@/features/users/actions/DeleteKey.vue";
 import useClient from "@/api/client";
 import TestKeys from "@/features/users/actions/TestKeys.vue";
+
+interface Key {
+  id: number;
+  correct: boolean;
+  source: "RECORD" | "RLC";
+  information: string;
+}
 
 const userStore = useUserStore();
 
