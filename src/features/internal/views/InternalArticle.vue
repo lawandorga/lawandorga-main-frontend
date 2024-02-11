@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import InternalService from "@/services/internal";
+import InternalService from "@/features/internal/internal_service";
 import { useRoute } from "vue-router";
 import { IArticle } from "@/types/internal";
 import { formatDate } from "@/utils/date";

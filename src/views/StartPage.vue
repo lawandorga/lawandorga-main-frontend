@@ -226,7 +226,7 @@
 
 <script lang="ts" setup>
 import { ButtonNormal } from "lorga-ui";
-import InternalService from "@/services/internal";
+import InternalService from "@/features/internal/internal_service";
 import { IArticle, ILoginPage, IRoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";

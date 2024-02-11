@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import InternalService from "@/services/internal";
+import InternalService from "@/features/internal/internal_service";
 import { ImprintPage } from "@/types/internal";
 import useGet from "@/composables/useGet";
 import { ref } from "vue";
