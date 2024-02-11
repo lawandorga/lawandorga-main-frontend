@@ -3,7 +3,7 @@ import userRoutes from "./user";
 import adminRoutes from "@/features/admin/routes";
 import filesRoutes from "@/features/z_deprecated_files/files";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
-import statisticsRoutes from "./statistics";
+import statisticsRoutes from "@/features/statistics/routes";
 import helpRoutes from "@/features/help/routes";
 import internalRoutes from "@/features/internal/internal";
 import legalRoutes from "@/features/legal/routes";

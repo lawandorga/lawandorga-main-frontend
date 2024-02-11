@@ -4,7 +4,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/statistics/",
     name: "statistics-dashboard",
-    component: () => import("@/views/statistics/StatisticsDashboard.vue"),
+    component: () =>
+      import("@/features/statistics/views/StatisticsDashboard.vue"),
   },
 ];
 

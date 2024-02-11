@@ -7,7 +7,7 @@ import { defineComponent, ref, computed } from "vue";
 import { PieChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 import getColors from "@/utils/getColors";
-import StatisticService from "@/services/statistic";
+import StatisticService from "@/features/statistics/statistic";
 import { TagCount } from "@/types/statistic";
 
 Chart.register(...registerables);
@@ -34,3 +34,4 @@ export default defineComponent({
   },
 });
 </script>
+@/features/statistics/statistic
