@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { mailCheckDomain } from "@/services/mail";
+import { mailCheckDomain } from "@/features/mail/mail";
 import { IMailCheckDomain } from "@/types/mail";
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
@@ -37,3 +37,4 @@ const checkDomainSettings = () => {
   });
 };
 </script>
+@/features/mail/mail

@@ -65,7 +65,7 @@ import TabControls from "@/components/TabControls.vue";
 import MailUserRole from "@/features/mail/components/MailUserRole.vue";
 import MailDomain from "@/features/mail/components/MailDomain.vue";
 import { MailDashboardPage, NoMailAccount } from "@/types/mail";
-import { mailGetDashboardPage } from "@/services/mail";
+import { mailGetDashboardPage } from "@/features/mail/mail";
 import useGet from "@/composables/useGet";
 import MailUsers from "@/features/mail/components/MailUsers.vue";
 import MailGroups from "@/features/mail/components/MailGroups.vue";
@@ -79,3 +79,4 @@ const userStore = useUserStore();
 const page = ref<MailDashboardPage | NoMailAccount>();
 const query = useGet(mailGetDashboardPage, page);
 </script>
+@/features/mail/mail

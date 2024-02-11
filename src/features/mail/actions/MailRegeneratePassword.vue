@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { mailRegeneratePassword } from "@/services/mail";
+import { mailRegeneratePassword } from "@/features/mail/mail";
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { ref, watch } from "vue";
 
@@ -35,3 +35,4 @@ watch(regeneratePasswordModalOpen, (newValue) => {
   if (!newValue) password.value = "";
 });
 </script>
+@/features/mail/mail

@@ -84,7 +84,7 @@ import MailSetDefaultGroupAddress from "@/features/mail/actions/MailSetDefaultGr
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
-import { mailGetGroupPage } from "@/services/mail";
+import { mailGetGroupPage } from "@/features/mail/mail";
 import { useUserStore } from "@/store/user";
 import {
   IMailAddress,
@@ -123,3 +123,4 @@ const addresses = computed<IMailAddress[] | null>(() => {
   return page.value.addresses;
 });
 </script>
+@/features/mail/mail

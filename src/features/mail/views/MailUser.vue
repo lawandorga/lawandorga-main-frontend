@@ -56,7 +56,7 @@ import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
-import { mailGetUserPage } from "@/services/mail";
+import { mailGetUserPage } from "@/features/mail/mail";
 import { useUserStore } from "@/store/user";
 import { IMailAddress, IMailUserPage } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
@@ -78,3 +78,4 @@ const addresses = computed<IMailAddress[] | null>(() => {
   return page.value.addresses;
 });
 </script>
+@/features/mail/mail
