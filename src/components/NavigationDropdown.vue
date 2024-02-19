@@ -1,10 +1,11 @@
 <template>
-  <Menu v-slot="{ close }" as="div" class="relative ml-3">
+  <Menu ref="menu" v-slot="{ close }" as="div" class="relative ml-3">
+    <NavigationDropdownCloser :close="close" />
     <div>
       <MenuButton
         class="flex text-sm bg-gray-100 rounded-full focus:outline-none ring-gray-100 ring-2 hover:ring-gray-200 focus:ring-gray-200 focus:ring-2"
       >
-        <span class="sr-only">Oepn user menu</span>
+        <span class="sr-only">Open user menu</span>
         <div class="relative overflow-hidden rounded-full h-7 w-7">
           <UserIcon
             class="transform scale-110 w-full h-full text-blue-700 absolute -bottom-0.5 left-0 right-0"
@@ -27,7 +28,6 @@
           <RouterLink
             :to="{ name: 'admin-profile', params: { id: userStore.user.id } }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-            @click="close()"
           >
             Profile
           </RouterLink>
@@ -36,7 +36,6 @@
           <RouterLink
             :to="{ name: 'user-optimize' }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-            @click="close()"
           >
             Optimize
           </RouterLink>
@@ -54,7 +53,6 @@
           <RouterLink
             :to="{ name: 'user-keys' }"
             class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-            @click="close()"
           >
             Keys
           </RouterLink>
@@ -84,6 +82,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useUserStore } from "@/store/user";
 import { UserIcon } from "@heroicons/vue/20/solid";
 import { getCookie } from "@/utils/cookie";
+import NavigationDropdownCloser from "./NavigationDropdownCloser.vue";
 
 const userStore = useUserStore();
 

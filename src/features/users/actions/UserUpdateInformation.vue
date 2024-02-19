@@ -71,10 +71,10 @@ const props = defineProps<{
   query: () => void;
   userId: number;
   userName: string;
-  userPhoneNumber: string;
-  userStreet: string;
-  userCity: string;
-  userPostalCode: string;
+  userPhoneNumber: string | null;
+  userStreet: string | null;
+  userCity: string | null;
+  userPostalCode: string | null;
   userSpecialityOfStudy: string | null;
   userNote: string;
 }>();
