@@ -3,6 +3,7 @@
     Create Group
     <ModalCreate
       v-model="commandModalOpen"
+      title="Create Group"
       :fields="fields"
       :request="commandRequest"
       :data="{
