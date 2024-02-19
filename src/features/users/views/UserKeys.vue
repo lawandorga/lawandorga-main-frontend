@@ -49,14 +49,6 @@
         </div>
         <ActionsUserUnlockSelf />
       </div>
-
-      <div class="p-5 prose bg-white rounded shadow max-w-none">
-        <p>
-          <b>Note:</b>
-          Record keys are being replaced by folder keys. Therefore they are
-          shown here but will probably have no effect.
-        </p>
-      </div>
       <TableGenerator
         :head="[
           { name: 'Information', key: 'information' },
@@ -91,6 +83,18 @@
             :key-id="slotProps.id"
             :query="query"
           />
+          <GroupsRemoveMember
+            v-if="slotProps.source === 'GROUP' && userStore.user"
+            title="Delete Key"
+            button="Delete"
+            :member-name="userStore.user.name"
+            :member-id="userStore.user.id"
+            :group-id="slotProps.group_id"
+            :key-id="slotProps.id"
+            :query="query"
+          >
+            Are you sure you want to delete this group key?
+          </GroupsRemoveMember>
         </template>
       </TableGenerator>
     </div>
@@ -110,12 +114,14 @@ import ActionsUserUnlockSelf from "@/features/users/actions/ActionsUserUnlockSel
 import DeleteKey from "@/features/users/actions/DeleteKey.vue";
 import useClient from "@/api/client";
 import TestKeys from "@/features/users/actions/TestKeys.vue";
+import GroupsRemoveMember from "@/features/org/actions/GroupsRemoveMember.vue";
 
 interface Key {
   id: number;
   correct: boolean;
   source: "RECORD" | "RLC";
   information: string;
+  group_id: number | null;
 }
 
 const userStore = useUserStore();

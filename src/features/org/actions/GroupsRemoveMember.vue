@@ -1,18 +1,19 @@
 <template>
   <ButtonNormal kind="delete" @click="commandModalOpen = true">
-    Remove
+    {{ button || "Remove" }}
     <ModalConfirm
       v-model="commandModalOpen"
-      title="Remove Member"
+      :title="title || 'Remove Member'"
       :request="commandRequest"
       :data="{
         member_id: memberId,
         group_id: groupId,
         action: 'org/remove_member_from_group',
       }"
-      :object-name="memberName"
     >
-      Are you sure you want to remove '{{ memberName }}' from this group?
+      <slot>
+        Are you sure you want to remove '{{ memberName }}' from this group?
+      </slot>
     </ModalConfirm>
   </ButtonNormal>
 </template>
@@ -24,6 +25,8 @@ import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
+  title?: string;
+  button?: string;
   groupId: number;
   memberName: string;
   memberId: number;
