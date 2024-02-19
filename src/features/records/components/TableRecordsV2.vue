@@ -33,8 +33,6 @@
   <TableSortable
     :head="head"
     :data="filteredRecords"
-    :get-display-value-func="getDisplayValueFromRecord"
-    :get-value-func="getValueFromRecord"
     :sort-key="userStore.getSetting('recordsSortKey') as string"
     :sort-order="userStore.getSetting('recordsSortOrder') as string"
     @update:sort-key="userStore.updateSetting('recordsSortKey', $event)"
@@ -111,6 +109,7 @@ import { useUserStore } from "@/store/user";
 import { IListRecordV2 } from "../types/listRecordV2";
 
 // get display values
+const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 const getDisplayValueFromRecord = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   r: Record<string, any>,
@@ -119,6 +118,10 @@ const getDisplayValueFromRecord = (
   const entry = r.attributes[key];
   if (entry !== undefined) {
     if (Array.isArray(entry)) return entry.join(", ");
+    if (dtRegex.test(entry)) {
+      const date = new Date(entry);
+      return date.toLocaleString("de-DE").replace(",", "");
+    }
     return entry;
   }
   return "";

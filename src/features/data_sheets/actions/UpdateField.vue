@@ -102,7 +102,6 @@ watch(commandModalOpen, (v) => {
 </script>
 
 <template>
-  {{ fieldKind }}
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     <ModalUpdate
       v-model="commandModalOpen"
