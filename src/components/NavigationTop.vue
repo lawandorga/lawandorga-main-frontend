@@ -50,36 +50,19 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed } from "vue";
 import { BellIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
 
-export default {
-  components: {
-    BellIcon,
-    Bars3BottomLeftIcon,
-    NavigationDropdown,
-  },
-  props: {
-    setOpen: {
-      type: Function,
-      required: true,
-    },
-  },
-  setup() {
-    const notifications = computed(() => 0);
+// eslint-disable-next-line no-unused-vars
+defineProps<{ setOpen: (open: boolean) => void }>();
 
-    const route = useRoute();
-    const inside = computed(() => {
-      return route.name !== "start";
-    });
+const notifications = computed(() => 0);
 
-    return {
-      notifications,
-      inside,
-    };
-  },
-};
+const route = useRoute();
+const inside = computed(() => {
+  return route.name !== "start";
+});
 </script>
