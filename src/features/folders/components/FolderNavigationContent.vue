@@ -112,6 +112,17 @@ const groups = computed<ContentGroupItem[]>(() => {
     ],
   });
 
+  const dev = true;
+
+  if (dev) {
+    g.push({
+      name: "Mail-Imports",
+      type: "MAIL_IMPORTS",
+      children: [],
+      buttons: [],
+    });
+  }
+
   g.push({
     name: "Timeline",
     type: "TIMELINE",
