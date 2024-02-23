@@ -98,6 +98,8 @@
           :query="query"
         />
 
+        <FolderMailImports :selected-type="selectedType" />
+
         <FolderTimeline
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"
@@ -144,6 +146,7 @@ import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
 import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
 import useClient from "@/api/client";
 import FolderCollab from "@/features/collab/components/FolderCollab.vue";
+import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
 
 // record
 const route = useRoute();
