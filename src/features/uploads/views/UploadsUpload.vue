@@ -36,7 +36,7 @@ import useClient from "@/api/client";
 import { ref } from "vue";
 import { IUploadLink } from "@/types/uploads";
 import useGet from "@/composables/useGet";
-import useCommand from "@/composables/useCommand";
+import useCmd from "@/composables/useCmd";
 
 const route = useRoute();
 if (!("cookie" in route.query)) {
@@ -61,8 +61,7 @@ useGet(
   link,
 );
 
-// useCommand MIGRATE
-const { commandRequest } = useCommand(client.postAsFormData("api/command/"));
+const { commandRequest } = useCmd();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formChanged = (data: Record<string, any>) => {

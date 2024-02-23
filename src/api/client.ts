@@ -97,20 +97,21 @@ class Client {
         .then((r) => blobToDataURL(r.data));
   }
 
+  _data<D extends Record<string, any>>(data?: D): FormData {
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    return formData;
+  }
+
   post<D extends Record<string, any>>(
     url: string,
     ...params: UrlParamType[]
   ): (data?: D) => Promise<void> {
     return (data?: D) => {
-      if (data && "file" in data) {
-        const newData = new FormData();
-        for (const key in data) {
-          newData.append(key, data[key]);
-        }
-        data = newData as unknown as D;
-      }
       return this.caller
-        .post(this.buildUrl(url, data, ...params), data)
+        .post(this.buildUrl(url, data, ...params), this._data(data))
         .then(() => {
           // ignore
         });
@@ -123,51 +124,8 @@ class Client {
   ): (data?: D) => Promise<R> {
     return (data?: D) =>
       this.caller
-        .post(this.buildUrl(url, data, ...params), data)
+        .post(this.buildUrl(url, data, ...params), this._data(data))
         .then((r) => r.data);
-  }
-
-  postAsFormData(
-    url: string,
-    ...params: UrlParamType[]
-  ): (data: { [key: string]: any }) => Promise<void> {
-    return (data: { [key: string]: any }) => {
-      const formData = new FormData();
-      for (const key in data) formData.append(key, data[key]);
-
-      return this.caller
-        .post(this.buildUrl(url, data, ...params), formData)
-        .then(() => {
-          // ignore
-        });
-    };
-  }
-
-  patch(url: string): (data: any) => Promise<void> {
-    return (data: any) =>
-      this.caller.patch(this.buildUrlFromObject(url, data), data).then(() => {
-        /* ignore */
-      });
-  }
-
-  put<D extends Record<string, any>>(
-    url: string,
-    ...params: UrlParamType[]
-  ): (data?: D) => Promise<void> {
-    return (data?: D) =>
-      this.caller.put(this.buildUrl(url, data, ...params), data).then(() => {
-        /* ignore */
-      });
-  }
-
-  delete<D extends Record<string, any>>(
-    url: string,
-    ...params: UrlParamType[]
-  ): (data?: D) => Promise<void> {
-    return (data?: D) =>
-      this.caller.delete(this.buildUrl(url, data, ...params)).then(() => {
-        // ignore
-      });
   }
 }
 
