@@ -1,6 +1,8 @@
 <!-- similar to FolderDataSheet.vue for example  -->
 <!-- will be used in features/folders/views/FoldersDetail.vue -->
 <!-- TODO: aaaaaaaaall the tooltips -->
+
+<!-- tip: https://heroicons.com/ -->
 <template>
   <div v-if="mails">
     <BoxHeadingStats
@@ -127,7 +129,7 @@ const request = client.get("api/mail_imports/");
 const route = useRoute();
 const folderUuid = computed(() => route.params.uuid as string);
 const mails2 = useGet(request, {}, folderUuid);
-// console.log(mails())
+console.log(mails2);
 
 const mails = [
   {
@@ -166,8 +168,9 @@ const mails = [
 ].sort((mail) => (mail.pinned ? -1 : 1)); // TODO: add sorting by time
 
 const settingsOpen = ref<boolean>(false);
-const sorting = ref<"asc" | "desc">("desc");
+// const sorting = ref<"asc" | "desc">("desc");
 type possibleFields = "subject" | "sender" | "date";
+// eslint-disable-next-line no-unused-vars
 const fieldsShown = ref<{ [F in possibleFields]: boolean }>({
   subject: true,
   sender: false,
@@ -178,7 +181,8 @@ const checkedEmails = ref<string[]>([]);
 const toggleCheckedEmail = (uuid: string) => {
   if (checkedEmails.value.includes(uuid)) {
     checkedEmails.value.splice(checkedEmails.value.indexOf(uuid), 1);
-    (document.getElementById("toggleAllEmails") as HTMLInputElement).checked = false;
+    (document.getElementById("toggleAllEmails") as HTMLInputElement).checked =
+      false;
   } else {
     checkedEmails.value.push(uuid);
   }

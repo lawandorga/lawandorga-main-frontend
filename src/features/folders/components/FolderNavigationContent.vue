@@ -21,6 +21,7 @@ import FolderNavigationRaw, {
   ContentGroupItem,
 } from "@/features/folders/components/FolderNavigationRaw.vue";
 import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
+import { useUserStore } from "@/store/user";
 
 const props = defineProps<{
   folder: IFolderDetail;
@@ -33,6 +34,8 @@ const props = defineProps<{
 const { folder, query } = toRefs(props);
 
 const emit = defineEmits(["grouping", "selected"]);
+
+const userStore = useUserStore();
 
 const groups = computed<ContentGroupItem[]>(() => {
   const g: ContentGroupItem[] = [];
@@ -112,9 +115,7 @@ const groups = computed<ContentGroupItem[]>(() => {
     ],
   });
 
-  const dev = true;
-
-  if (dev) {
+  if (userStore.user?.email === "dummy@law-orga.de") {
     g.push({
       name: "Mail-Imports",
       type: "MAIL_IMPORTS",
