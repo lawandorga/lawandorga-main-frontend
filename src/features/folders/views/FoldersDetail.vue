@@ -130,7 +130,6 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useRoute } from "vue-router";
-import useGet from "@/composables/useGet";
 import FolderMessages from "@/features/messages/components/FolderMessages.vue";
 import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
 import FolderFile from "@/features/files/components/FolderFile.vue";
@@ -147,6 +146,7 @@ import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
 import useClient from "@/api/client";
 import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
+import useQuery from "@/composables/useQuery";
 
 // record
 const route = useRoute();
@@ -156,7 +156,7 @@ const folderUuid = computed(() => route.params.uuid as string);
 const client = useClient();
 const request = client.get(`/api/folders/query/{}/`, folderUuid);
 const folder = ref<IFolderDetail>();
-const query = useGet(request, folder, folderUuid);
+const query = useQuery(request, folder, folderUuid);
 
 const userAccess = computed(() => {
   if (!folder.value) return [];
