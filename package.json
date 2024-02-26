@@ -20,7 +20,7 @@
     "@tiptap/extension-character-count": "^2.1.12",
     "@tiptap/extension-collaboration": "^2.1.12",
     "@tiptap/extension-collaboration-cursor": "^2.1.12",
-    "@tiptap/extension-highlight": "^2.1.12",
+    "@tiptap/extension-highlight": "^2.2.4",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/extension-list-item": "^2.1.12",
     "@tiptap/extension-ordered-list": "^2.0.0-beta.209",
