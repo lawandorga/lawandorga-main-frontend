@@ -113,7 +113,7 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useGet from "@/composables/useGet";
+import useQuery from "@/composables/useQuery";
 import { ModalFree } from "lorga-ui";
 import { computed, ref, toRefs } from "vue";
 import { useRoute } from "vue-router";
@@ -125,10 +125,10 @@ const props = defineProps<{
 const { selectedType } = toRefs(props);
 
 const client = useClient();
-const request = client.get("api/mail_imports/");
+const request = client.get("api/mail_imports/{}/");
 const route = useRoute();
 const folderUuid = computed(() => route.params.uuid as string);
-const mails2 = useGet(request, {}, folderUuid);
+const mails2 = useQuery(request, folderUuid);
 console.log(mails2);
 
 const mails = [

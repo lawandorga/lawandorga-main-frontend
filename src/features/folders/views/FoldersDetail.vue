@@ -146,7 +146,7 @@ import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
 import useClient from "@/api/client";
 import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
-import useQuery from "@/composables/useQuery";
+import useGet from "@/composables/useGet";
 
 // record
 const route = useRoute();
@@ -156,7 +156,7 @@ const folderUuid = computed(() => route.params.uuid as string);
 const client = useClient();
 const request = client.get(`/api/folders/query/{}/`, folderUuid);
 const folder = ref<IFolderDetail>();
-const query = useQuery(request, folder, folderUuid);
+const query = useGet(request, folder, folderUuid);
 
 const userAccess = computed(() => {
   if (!folder.value) return [];

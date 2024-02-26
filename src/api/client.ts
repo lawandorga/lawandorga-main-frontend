@@ -98,9 +98,16 @@ class Client {
   }
 
   _data<D extends Record<string, any>>(data?: D): FormData {
+    console.log(data);
     const formData = new FormData();
     for (const key in data) {
-      formData.append(key, data[key]);
+      let v: any = data[key];
+      if (Array.isArray(v) && v.length == 0) {
+        v = "||EMPTYARRAY||";
+      } else if (Array.isArray(v)) {
+        v = "||ARRAY||".concat(v.join("||ARRAYSEPERATOR||"));
+      }
+      formData.append(key, v);
     }
     return formData;
   }

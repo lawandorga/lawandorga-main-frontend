@@ -149,12 +149,10 @@ function change(field: RecordField, value: RecordValue) {
   const entries_include = Object.keys(entries.value).includes(field.uuid);
   if (field.type === "file") {
     createFileEntry(field, value);
-  } else if (entries_include && value) {
-    updateEntry(field, value);
   } else if (entries_include && !value) {
     deleteEntry(field);
-  } else if (!entries_include && value) {
-    createEntry(field, value);
+  } else {
+    createOrUpdateEntry(field, value);
   }
 }
 
@@ -170,23 +168,12 @@ function createFileEntry(field: RecordField, value: RecordValue) {
   record.value.entries[field.uuid] = (value as File).name;
 }
 
-function createEntry(field: RecordField, value: RecordValue) {
+function createOrUpdateEntry(field: RecordField, value: RecordValue) {
   const data = {
     field_id: field.uuid,
     record_id: record.value.id,
     value: value,
-    action: "data_sheets/create_entry",
-  };
-  commandRequest(data).catch((e) => handleError(field, e));
-  record.value.entries[field.uuid] = value;
-}
-
-function updateEntry(field: RecordField, value: RecordValue) {
-  const data = {
-    field_id: field.uuid,
-    record_id: record.value.id,
-    value: value,
-    action: "data_sheets/update_entry",
+    action: "data_sheets/create_or_update_entry",
   };
   commandRequest(data).catch((e) => handleError(field, e));
   record.value.entries[field.uuid] = value;
