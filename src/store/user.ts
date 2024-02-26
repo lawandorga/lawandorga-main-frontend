@@ -58,7 +58,7 @@ export const useUserStore = defineStore("user", () => {
       updatePossible.value = false;
       commandRequest({
         action: "auth/update_frontend_settings",
-        data: settings.value || {},
+        data: "||JSON||".concat(JSON.stringify(settings.value || {})),
       }).then(() => (updatePossible.value = true));
     } else {
       setTimeout(() => updateSettingRequest(), 500);

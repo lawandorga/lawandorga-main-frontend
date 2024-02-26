@@ -1,4 +1,5 @@
 <template>
+  {{ userStore.settings }}
   <transition
     enter-active-class="transition duration-200 opacity-0"
     enter-class="opacity-0"
@@ -48,7 +49,7 @@ const isOptimizationDue =
   // optimization never ran for this user
   lastOptimization == 0 ||
   // optimization was more than 7 days ago
-  new Date(lastOptimization + 0 * 1000 * 60 * 60 * 24 * 7) < new Date();
+  new Date(lastOptimization + 1000 * 60 * 60 * 24 * 7) < new Date();
 
 const optimizationBanner = {
   text: "Law&Orga would like to run some optimizations in order to fix key errors and more.",

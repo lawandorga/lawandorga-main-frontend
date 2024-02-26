@@ -98,7 +98,6 @@ class Client {
   }
 
   _data<D extends Record<string, any>>(data?: D): FormData {
-    console.log(data);
     const formData = new FormData();
     for (const key in data) {
       let v: any = data[key];
