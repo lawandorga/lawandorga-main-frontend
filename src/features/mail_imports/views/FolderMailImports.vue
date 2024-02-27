@@ -23,14 +23,14 @@
           @input="toggleAllCheckedEmails"
         />
         <button class="col-start-2" @click="markAsRead">
-          <img src="../icons/LetterOpen.svg" />
+          <EnvelopeOpenIcon />
         </button>
         <span v-if="fieldsShown.subject" class="col-start-3">Betreff</span>
         <span v-if="fieldsShown.sender" class="col-start-4">
           Absender:in(nen)
         </span>
         <button class="col-start-6" @click="settingsOpen = true">
-          <img src="../icons/Settings.svg" />
+          <AdjustmentsHorizontalIcon />
         </button>
         <template v-for="mail in data" :key="mail.uuid">
           <input
@@ -41,16 +41,8 @@
           />
           <!-- TODO: make the pin a button -->
           <!-- TODO: add pinning function including sending pin info to BE -->
-          <img
-            v-if="mail.is_pinned"
-            src="../icons/PinFilled.svg"
-            class="col-start-2"
-          />
-          <img
-            v-if="!mail.is_pinned"
-            class="col-start-2"
-            src="../icons/PinEmpty.svg"
-          />
+          <StarSolidIcon v-if="mail.is_pinned" class="col-start-2" />
+          <StarOutlineIcons v-if="!mail.is_pinned" class="col-start-2" />
           <!-- TODO: sender semi-bold for unread emails -->
           <button
             :class="`contents ${mail.is_read ? '' : 'font-bold'}`"
@@ -72,15 +64,13 @@
                 {{ mail[field] }}
               </span>
             </template>
-            <img
+            <ChevronDownIcon
               v-if="!expandedEmails.includes(mail.uuid)"
               class="col-start-6 ml-auto"
-              src="../icons/Caret.svg"
             />
-            <img
+            <ChevronDownIcon
               v-if="expandedEmails.includes(mail.uuid)"
               class="col-start-6 ml-auto rotate-180"
-              src="../icons/Caret.svg"
             />
           </button>
           <!-- TODO: Add extras for the email content (sender etc) -->
@@ -122,6 +112,13 @@ import useGet from "@/composables/useGet";
 import { ImportedMail } from "@/types/mailImports";
 import { ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
+import {
+  AdjustmentsHorizontalIcon,
+  ChevronDownIcon,
+  EnvelopeOpenIcon,
+  StarIcon as StarOutlineIcons,
+} from "@heroicons/vue/24/outline";
+import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
 
 // props
 const props = defineProps<{
