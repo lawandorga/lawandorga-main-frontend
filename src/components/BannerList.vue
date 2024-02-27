@@ -1,5 +1,4 @@
 <template>
-  {{ userStore.settings }}
   <transition
     enter-active-class="transition duration-200 opacity-0"
     enter-class="opacity-0"
