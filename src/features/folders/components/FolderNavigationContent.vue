@@ -112,7 +112,7 @@ const groups = computed<ContentGroupItem[]>(() => {
     ],
   });
 
-  const dev = true;
+  const dev = false;
 
   if (dev) {
     g.push({

@@ -49,6 +49,7 @@
             class="col-start-2"
             src="../icons/PinEmpty.svg"
           />
+          <!-- TODO: sender semi-bold for unread -->
           <button
             :class="`contents ${mail.read ? '' : 'font-bold'}`"
             @click="() => toggleEmail(mail.uuid)"
@@ -118,14 +119,15 @@ import { useRoute } from "vue-router";
 
 // props
 const props = defineProps<{
+  folderUuid: string;
   selectedType: string;
 }>();
-const { selectedType } = toRefs(props);
+const { folderUuid, selectedType } = toRefs(props);
 
 const client = useClient();
-const request = client.get("api/mail_imports/");
+const request = client.get(`api/mail_imports/query/folder_mails/${folderUuid.value}`); // add uuid
 const route = useRoute();
-const folderUuid = computed(() => route.params.uuid as string);
+// const folderUuid = computed(() => route.params.uuid as string);
 const mails2 = useGet(request, {}, folderUuid);
 // console.log(mails())
 
