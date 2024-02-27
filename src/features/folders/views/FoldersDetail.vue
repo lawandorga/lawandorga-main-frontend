@@ -98,7 +98,10 @@
           :query="query"
         />
 
-        <FolderMailImports :selected-type="selectedType" />
+        <FolderMailImports
+          :selected-type="selectedType"
+          :folder-uuid="folder.folder.uuid"
+        />
 
         <FolderTimeline
           :selected-type="selectedType"

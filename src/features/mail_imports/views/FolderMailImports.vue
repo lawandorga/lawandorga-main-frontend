@@ -4,7 +4,7 @@
 
 <!-- tip: https://heroicons.com/ -->
 <template>
-  <div v-if="mails">
+  <div v-if="data">
     <BoxHeadingStats
       title="Mail-Imports"
       :show="selectedType === 'MAIL_IMPORTS'"
@@ -32,7 +32,7 @@
         <button class="col-start-6" @click="settingsOpen = true">
           <img src="../icons/Settings.svg" />
         </button>
-        <template v-for="mail in mails" :key="mail.uuid">
+        <template v-for="mail in data" :key="mail.uuid">
           <input
             :checked="checkedEmails.includes(mail.uuid)"
             class="col-start-1"
@@ -42,17 +42,18 @@
           <!-- TODO: make the pin a button -->
           <!-- TODO: add pinning function including sending pin info to BE -->
           <img
-            v-if="mail.pinned"
+            v-if="mail.is_pinned"
             src="../icons/PinFilled.svg"
             class="col-start-2"
           />
           <img
-            v-if="!mail.pinned"
+            v-if="!mail.is_pinned"
             class="col-start-2"
             src="../icons/PinEmpty.svg"
           />
+          <!-- TODO: sender semi-bold for unread emails -->
           <button
-            :class="`contents ${mail.read ? '' : 'font-bold'}`"
+            :class="`contents ${mail.is_read ? '' : 'font-bold'}`"
             @click="() => toggleEmail(mail.uuid)"
           >
             <!-- TODO: figure out styling when subject and date are selected -->
@@ -65,7 +66,7 @@
               <!-- TODO: ellipsis for long subjects -->
               <span
                 :class="`col-span-1 ${
-                  field === 'date' ? 'text-right' : 'text-left'
+                  field === 'sending_datetime' ? 'text-right' : 'text-left'
                 }`"
               >
                 {{ mail[field] }}
@@ -102,7 +103,11 @@
         <label for="subject">Betreff</label>
         <input id="sender" v-model="fieldsShown.sender" type="checkbox" />
         <label for="sender">Absender:in(nen)</label>
-        <input id="date" v-model="fieldsShown.date" type="checkbox" />
+        <input
+          id="date"
+          v-model="fieldsShown.sending_datetime"
+          type="checkbox"
+        />
         <label for="date">Datum</label>
       </ModalFree>
     </BoxHeadingStats>
@@ -113,68 +118,36 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import useGet from "@/composables/useGet";
+import { ImportedMail } from "@/types/mailImports";
 import { ModalFree } from "lorga-ui";
-import { computed, ref, toRefs } from "vue";
-import { useRoute } from "vue-router";
+import { ref, toRefs } from "vue";
 
 // props
 const props = defineProps<{
+  folderUuid: string;
   selectedType: string;
 }>();
-const { selectedType } = toRefs(props);
+const { folderUuid, selectedType } = toRefs(props);
 
+const data = ref<ImportedMail[]>();
 const client = useClient();
-const request = client.get("api/mail_imports/{}/");
-const route = useRoute();
-const folderUuid = computed(() => route.params.uuid as string);
-const mails2 = useQuery(request, folderUuid);
-console.log(mails2);
+const request = client.get(
+  "api/mail_imports/query/folder_mails/{}/",
+  folderUuid,
+);
+useGet(request, data);
 
-const mails = [
-  {
-    subject: "First email",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    date: new Date().toLocaleDateString("de-DE"),
-    pinned: false,
-    sender: "hello@gmail.com",
-    recipients: ["test@this.de"],
-    uuid: "123",
-    read: false,
-  },
-  {
-    subject: "Second email",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    date: new Date().toLocaleDateString("de-DE"),
-    pinned: true,
-    sender: "hello@gmail.com",
-    recipients: ["test@this.de"],
-    uuid: "234",
-    read: true,
-  },
-  {
-    subject: "Third email",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    date: new Date().toLocaleDateString("de-DE"),
-    pinned: false,
-    sender: "hello@gmail.com",
-    recipients: ["test@this.de"],
-    uuid: "345",
-    read: true,
-  },
-].sort((mail) => (mail.pinned ? -1 : 1)); // TODO: add sorting by time
+data.value?.sort((mail) => (mail.is_pinned ? -1 : 1)); // TODO: add sorting by time
 
 const settingsOpen = ref<boolean>(false);
 // const sorting = ref<"asc" | "desc">("desc");
-type possibleFields = "subject" | "sender" | "date";
+type possibleFields = "subject" | "sender" | "sending_datetime";
 // eslint-disable-next-line no-unused-vars
 const fieldsShown = ref<{ [F in possibleFields]: boolean }>({
   subject: true,
   sender: false,
-  date: false,
+  sending_datetime: false,
 });
 
 const checkedEmails = ref<string[]>([]);
@@ -189,7 +162,7 @@ const toggleCheckedEmail = (uuid: string) => {
 };
 const toggleAllCheckedEmails = (e: Event) => {
   if ((e.target as HTMLInputElement).checked) {
-    checkedEmails.value = mails.map((mail) => mail.uuid);
+    checkedEmails.value = data.value?.map((mail) => mail.uuid) ?? [];
   } else {
     checkedEmails.value = [];
   }
