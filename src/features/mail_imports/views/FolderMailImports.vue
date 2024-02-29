@@ -17,20 +17,20 @@
           type="checkbox"
           @input="toggleAllCheckedEmails"
         />
-        <Tooltip text="ge&ouml;ffnet" class="col-start-2">
+        <ToolTip text="ge&ouml;ffnet" class="col-start-2">
           <button @click="markAsRead">
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
-        </Tooltip>
+        </ToolTip>
         <span v-if="fieldsShown.subject" class="col-start-3">Betreff</span>
         <span v-if="fieldsShown.sender" class="col-start-4">
           Absender:in(nen)
         </span>
-        <Tooltip class="col-start-6" text="Ansicht &auml;ndern">
+        <ToolTip class="col-start-6" text="Ansicht &auml;ndern">
           <button @click="settingsOpen = true">
             <AdjustmentsHorizontalIcon class="w-5 h-5" />
           </button>
-        </Tooltip>
+        </ToolTip>
         <template v-for="mail in data" :key="mail.uuid">
           <input
             :checked="checkedEmails.includes(mail.uuid)"
@@ -41,13 +41,13 @@
           <!-- TODO: make the pin a button -->
           <!-- TODO: add pinning function including sending pin info to BE -->
           <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
-          <Tooltip
+          <ToolTip
             v-if="!mail.is_pinned"
             text="E-Mail anpinnen"
             class="col-start-2"
           >
             <StarOutlineIcons class="w-5 h-5" />
-          </Tooltip>
+          </ToolTip>
           <!-- TODO: sender semi-bold for unread emails -->
           <button
             :class="`contents ${mail.is_read ? '' : 'font-bold'}`"
@@ -128,7 +128,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
 import SettingsOverlay from "../components/SettingsOverlay.vue";
-import Tooltip from "@/components/Tooltip.vue";
+import ToolTip from "@/components/ToolTip.vue";
 
 // props
 const props = defineProps<{

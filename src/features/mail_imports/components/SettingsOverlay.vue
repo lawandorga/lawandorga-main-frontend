@@ -1,9 +1,9 @@
 <template>
   <div class="flex">
     <h3>Angezeigte Informationen</h3>
-    <Tooltip text="mind. eine Information muss ausgewählt sein">
+    <ToolTip text="mind. eine Information muss ausgewählt sein">
       <InformationCircleIcon class="w-5 h-5" />
-    </Tooltip>
+    </ToolTip>
   </div>
   <div class="flex flex-col">
     <span>
@@ -25,9 +25,9 @@
   </div>
   <div class="flex">
     <h3>Sortierung</h3>
-    <Tooltip text="Angepinnte Mails erscheinen immer ganz oben">
+    <ToolTip text="Angepinnte Mails erscheinen immer ganz oben">
       <InformationCircleIcon class="w-5 h-5" />
-    </Tooltip>
+    </ToolTip>
   </div>
   <div class="flex flex-col">
     <span>
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import Tooltip from "@/components/Tooltip.vue";
+import ToolTip from "@/components/ToolTip.vue";
 import { DisplayedFieldsObject, Sorting } from "@/types/mailImports";
 import { ButtonNormal } from "lorga-ui";
 import { ref, toRefs } from "vue";
