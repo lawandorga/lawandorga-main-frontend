@@ -1,8 +1,3 @@
-<!-- similar to FolderDataSheet.vue for example  -->
-<!-- will be used in features/folders/views/FoldersDetail.vue -->
-<!-- TODO: aaaaaaaaall the tooltips -->
-
-<!-- tip: https://heroicons.com/ -->
 <template>
   <div v-if="data">
     <BoxHeadingStats
@@ -22,16 +17,20 @@
           type="checkbox"
           @input="toggleAllCheckedEmails"
         />
-        <button class="col-start-2" @click="markAsRead">
-          <EnvelopeOpenIcon />
-        </button>
+        <Tooltip text="ge&ouml;ffnet" class="col-start-2">
+          <button @click="markAsRead">
+            <EnvelopeOpenIcon class="w-5 h-5" />
+          </button>
+        </Tooltip>
         <span v-if="fieldsShown.subject" class="col-start-3">Betreff</span>
         <span v-if="fieldsShown.sender" class="col-start-4">
           Absender:in(nen)
         </span>
-        <button class="col-start-6" @click="settingsOpen = true">
-          <AdjustmentsHorizontalIcon />
-        </button>
+        <Tooltip class="col-start-6" text="Ansicht &auml;ndern">
+          <button @click="settingsOpen = true">
+            <AdjustmentsHorizontalIcon class="w-5 h-5" />
+          </button>
+        </Tooltip>
         <template v-for="mail in data" :key="mail.uuid">
           <input
             :checked="checkedEmails.includes(mail.uuid)"
@@ -41,8 +40,14 @@
           />
           <!-- TODO: make the pin a button -->
           <!-- TODO: add pinning function including sending pin info to BE -->
-          <StarSolidIcon v-if="mail.is_pinned" class="col-start-2" />
-          <StarOutlineIcons v-if="!mail.is_pinned" class="col-start-2" />
+          <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
+          <Tooltip
+            v-if="!mail.is_pinned"
+            text="E-Mail anpinnen"
+            class="col-start-2"
+          >
+            <StarOutlineIcons class="w-5 h-5" />
+          </Tooltip>
           <!-- TODO: sender semi-bold for unread emails -->
           <button
             :class="`contents ${mail.is_read ? '' : 'font-bold'}`"
@@ -51,7 +56,7 @@
             <!-- TODO: figure out styling when subject and date are selected -->
             <template
               v-for="field in (
-                Object.keys(fieldsShown) as possibleFields[]
+                Object.keys(fieldsShown) as PossibleDisplayedFields[]
               ).filter((key) => fieldsShown[key])"
               :key="field"
             >
@@ -88,17 +93,15 @@
         title="Ansicht der Mail-Imports einstellen"
         width="max-w-xl"
       >
-        <h3>Angezeigte Informationen</h3>
-        <input id="subject" v-model="fieldsShown.subject" type="checkbox" />
-        <label for="subject">Betreff</label>
-        <input id="sender" v-model="fieldsShown.sender" type="checkbox" />
-        <label for="sender">Absender:in(nen)</label>
-        <input
-          id="date"
-          v-model="fieldsShown.sending_datetime"
-          type="checkbox"
+        <SettingsOverlay
+          :close-overlay="() => (settingsOpen = false)"
+          :set-shown-fields="
+            (newFields: DisplayedFieldsObject) => (fieldsShown = newFields)
+          "
+          :set-sorting="(newSorting: Sorting) => (sorting = newSorting)"
+          :currently-shown-fields="fieldsShown"
+          :current-sorting="sorting"
         />
-        <label for="date">Datum</label>
       </ModalFree>
     </BoxHeadingStats>
   </div>
@@ -109,7 +112,12 @@
 import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useGet from "@/composables/useGet";
-import { ImportedMail } from "@/types/mailImports";
+import {
+  DisplayedFieldsObject,
+  ImportedMail,
+  PossibleDisplayedFields,
+  Sorting,
+} from "@/types/mailImports";
 import { ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import {
@@ -119,6 +127,8 @@ import {
   StarIcon as StarOutlineIcons,
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
+import SettingsOverlay from "../components/SettingsOverlay.vue";
+import Tooltip from "@/components/Tooltip.vue";
 
 // props
 const props = defineProps<{
@@ -138,10 +148,8 @@ useGet(request, data);
 data.value?.sort((mail) => (mail.is_pinned ? -1 : 1)); // TODO: add sorting by time
 
 const settingsOpen = ref<boolean>(false);
-// const sorting = ref<"asc" | "desc">("desc");
-type possibleFields = "subject" | "sender" | "sending_datetime";
-// eslint-disable-next-line no-unused-vars
-const fieldsShown = ref<{ [F in possibleFields]: boolean }>({
+const sorting = ref<Sorting>("desc");
+const fieldsShown = ref<DisplayedFieldsObject>({
   subject: true,
   sender: false,
   sending_datetime: false,
