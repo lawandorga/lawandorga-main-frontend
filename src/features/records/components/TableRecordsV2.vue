@@ -1,3 +1,98 @@
+<script lang="ts" setup>
+import { PropType, toRefs, computed } from "vue";
+import { FormInput, TableSortable, ButtonNormal } from "lorga-ui";
+import ButtonLink from "@/components/ButtonLink.vue";
+import useSearch from "@/composables/useSearch";
+import { useUserStore } from "@/store/user";
+import { IListRecordV2 } from "../types/listRecordV2";
+
+// get display values
+const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+const getDisplayValueFromRecord = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  r: Record<string, any>,
+  key: string,
+): string => {
+  const entry = r.attributes[key];
+  if (entry !== undefined) {
+    if (Array.isArray(entry)) return entry.join(", ");
+    if (dtRegex.test(entry)) {
+      const date = new Date(entry);
+      return date.toLocaleString("de-DE").replace(",", "");
+    }
+    return entry;
+  }
+  return "";
+};
+
+// get values
+const datetimeRegex = /^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}$/;
+const getValueFromEntry = (entry: string[] | string): string => {
+  if (Array.isArray(entry)) return entry.join(", ");
+  if (datetimeRegex.test(entry)) {
+    const dateParts = entry.split(" ");
+    const date =
+      dateParts[0].split(".").reverse().join("-") + "T" + dateParts[1];
+    const dateObject = new Date(date);
+    return dateObject.toISOString();
+  }
+  return entry;
+};
+
+const getValueFromRecord = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  r: Record<string, any>,
+  key: string,
+  defaultValue = "",
+): string => {
+  let entry = r.attributes[key];
+  if (!entry) entry = r[key];
+
+  if (entry !== undefined) return getValueFromEntry(entry);
+  return defaultValue;
+};
+
+// props
+const props = defineProps({
+  records: {
+    type: Array as PropType<IListRecordV2[] | null>,
+    required: false,
+    default: null,
+  },
+  columns: {
+    type: Array as PropType<string[] | null>,
+    required: false,
+    default: null,
+  },
+});
+
+// records
+const { records, columns } = toRefs(props);
+
+// head
+const head = computed<{ name: string; key: string; sortable: boolean }[]>(
+  () => {
+    if (records.value === null || columns.value === null) return [];
+    const head1 = columns.value;
+    const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
+    head2.push({ name: "", key: "action", sortable: false });
+    head2.unshift({ name: "Token", key: "token", sortable: true });
+    return head2;
+  },
+);
+
+// filter
+const filterKeys = computed(() => head.value.map((h) => h.name));
+const { filteredItems: filteredRecords, search } = useSearch(
+  records,
+  filterKeys,
+  getValueFromRecord,
+);
+
+// set default sort
+const userStore = useUserStore();
+</script>
+
 <template>
   <div
     class="flex flex-col items-start mb-5 space-y-3 xl:items-stretch xl:flex-row xl:space-y-0"
@@ -35,6 +130,8 @@
     :data="filteredRecords"
     :sort-key="userStore.getSetting('recordsSortKey') as string"
     :sort-order="userStore.getSetting('recordsSortOrder') as string"
+    :get-display-value-func="getDisplayValueFromRecord"
+    :get-value-func="getValueFromRecord"
     @update:sort-key="userStore.updateSetting('recordsSortKey', $event)"
     @update:sort-order="userStore.updateSetting('recordsSortOrder', $event)"
   >
@@ -99,97 +196,3 @@
     </template>
   </TableSortable>
 </template>
-
-<script lang="ts" setup>
-import { PropType, toRefs, computed } from "vue";
-import { FormInput, TableSortable, ButtonNormal } from "lorga-ui";
-import ButtonLink from "@/components/ButtonLink.vue";
-import useSearch from "@/composables/useSearch";
-import { useUserStore } from "@/store/user";
-import { IListRecordV2 } from "../types/listRecordV2";
-
-// get display values
-const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-const getDisplayValueFromRecord = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  r: Record<string, any>,
-  key: string,
-): string => {
-  const entry = r.attributes[key];
-  if (entry !== undefined) {
-    if (Array.isArray(entry)) return entry.join(", ");
-    if (dtRegex.test(entry)) {
-      const date = new Date(entry);
-      return date.toLocaleString("de-DE").replace(",", "");
-    }
-    return entry;
-  }
-  return "";
-};
-
-// get values
-const datetimeRegex = /^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}$/;
-const getValueFromEntry = (entry: string[] | string): string => {
-  if (Array.isArray(entry)) return entry.join(", ");
-  if (datetimeRegex.test(entry)) {
-    const dateParts = entry.split(" ");
-    const date =
-      dateParts[0].split(".").reverse().join("-") + "T" + dateParts[1];
-    const dateObject = new Date(date);
-    return dateObject.toISOString();
-  }
-  return entry;
-};
-
-const getValueFromRecord = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  r: Record<string, any>,
-  key: string,
-  defaultValue = "",
-): string => {
-  const entry = r.attributes[key];
-
-  if (entry !== undefined) return getValueFromEntry(entry);
-  return defaultValue;
-};
-
-// props
-const props = defineProps({
-  records: {
-    type: Array as PropType<IListRecordV2[] | null>,
-    required: false,
-    default: null,
-  },
-  columns: {
-    type: Array as PropType<string[] | null>,
-    required: false,
-    default: null,
-  },
-});
-
-// records
-const { records, columns } = toRefs(props);
-
-// head
-const head = computed<{ name: string; key: string; sortable: boolean }[]>(
-  () => {
-    if (records.value === null || columns.value === null) return [];
-    const head1 = columns.value;
-    const head2 = head1.map((n) => ({ name: n, key: n, sortable: true }));
-    head2.push({ name: "", key: "action", sortable: false });
-    head2.unshift({ name: "Token", key: "token", sortable: true });
-    return head2;
-  },
-);
-
-// filter
-const filterKeys = computed(() => head.value.map((h) => h.name));
-const { filteredItems: filteredRecords, search } = useSearch(
-  records,
-  filterKeys,
-  getValueFromRecord,
-);
-
-// set default sort
-const userStore = useUserStore();
-</script>
