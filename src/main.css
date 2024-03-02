@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.has-tooltip:hover .tooltip {
+.has-tooltip:hover .tooltip,
+.has-tooltip:focus .tooltip {
   @apply visible;
 }
