@@ -86,7 +86,7 @@ import NavigationDropdownCloser from "./NavigationDropdownCloser.vue";
 
 const userStore = useUserStore();
 
-const backendLogoutUrl = `${import.meta.env.VITE_AUTH_URL}/logout/`;
+const backendLogoutUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/logout/`;
 const mfaSetupUrl = `${import.meta.env.VITE_AUTH_URL}/auth/mfa/status/`;
 const csrfCookie = getCookie("csrftoken");
 </script>
