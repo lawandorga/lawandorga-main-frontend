@@ -10,3 +10,7 @@ first. Take note of the URL where the development server can be accessed. If nec
 
 Remember to run `npm run build` to get a new `/dist`, then run `docker build . -t lorga` to build the Docker image,
 and finally `docker run lorga` to actually start the container.
+
+## Code-formatting on VS Code
+
+If you use VS Code, you can copy the rules from `.vscode/settings.json` into your editor's Workspace Settings.
