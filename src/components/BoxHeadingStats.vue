@@ -7,7 +7,7 @@
             {{ title }}
           </h3>
 
-          <div class="flex space-x-3 flex-nowrap print:hidden">
+          <div class="relative flex space-x-3 flex-nowrap print:hidden">
             <slot name="buttons" />
           </div>
         </div>

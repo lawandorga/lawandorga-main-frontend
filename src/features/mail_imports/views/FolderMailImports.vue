@@ -3,27 +3,37 @@
     <BoxHeadingStats
       title="Mail-Imports"
       :show="selectedType === 'MAIL_IMPORTS'"
-      :stats="[]"
+      :stats="[`${data.length} Mails insgesamt`]"
     >
-      <!-- TODO: add the search bar in the header -->
-      <!-- TODO: add the email count -->
-      <!-- TODO: add the button to copy an email address with -->
+      <template #buttons>
+        <!-- TODO: Add button to copy email address -->
+        <input
+          v-model="query"
+          type="search"
+          placeholder="In Mails suchen"
+          class="p-3 rounded-full bg-neutral-100"
+          @input="search"
+        />
+        <MagnifyingGlassIcon
+          class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
+        />
+      </template>
       <div
-        class="grid grid-cols-[24px_24px_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_24px] gap-2"
+        class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
       >
         <input
           id="toggleAllEmails"
-          class="col-start-1"
+          class="self-center w-4 h-4 col-start-1 justify-self-center"
           type="checkbox"
           @input="toggleAllCheckedEmails"
         />
         <ToolTip text="ge&ouml;ffnet" class="col-start-2">
-          <button @click="markAsRead">
+          <button @click="() => markAsRead(checkedEmails)">
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
         </ToolTip>
-        <span v-if="fieldsShown.subject" class="col-start-3">Betreff</span>
-        <span v-if="fieldsShown.sender" class="col-start-4">
+        <span v-if="fieldsShown.subject" class="col-span-1">Betreff</span>
+        <span v-if="fieldsShown.sender" class="col-span-1">
           Absender:in(nen)
         </span>
         <ToolTip class="col-start-6" text="Ansicht &auml;ndern">
@@ -31,44 +41,68 @@
             <AdjustmentsHorizontalIcon class="w-5 h-5" />
           </button>
         </ToolTip>
-        <template v-for="mail in data" :key="mail.uuid">
+        <template
+          v-for="mail in (query.length > 0 ? searchResults : data)!
+            .sort((mail, previousMail) => {
+              if (sorting === 'asc') {
+                return mail.sending_datetime < previousMail.sending_datetime
+                  ? 1
+                  : -1;
+              } else {
+                return mail.sending_datetime < previousMail.sending_datetime
+                  ? -1
+                  : 1;
+              }
+            })
+            .sort((mail) => (mail.is_pinned ? -1 : 1))"
+          :key="mail.uuid"
+        >
+          <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
           <input
             :checked="checkedEmails.includes(mail.uuid)"
-            class="col-start-1"
+            class="self-center w-4 h-4 col-start-1 justify-self-center"
             type="checkbox"
             @input="() => toggleCheckedEmail(mail.uuid)"
           />
-          <!-- TODO: make the pin a button -->
-          <!-- TODO: add pinning function including sending pin info to BE -->
-          <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
-          <ToolTip
-            v-if="!mail.is_pinned"
-            text="E-Mail anpinnen"
-            class="col-start-2"
-          >
-            <StarOutlineIcons class="w-5 h-5" />
-          </ToolTip>
-          <!-- TODO: sender semi-bold for unread emails -->
-          <button
-            :class="`contents ${mail.is_read ? '' : 'font-bold'}`"
-            @click="() => toggleEmail(mail.uuid)"
-          >
-            <!-- TODO: figure out styling when subject and date are selected -->
-            <template
-              v-for="field in (
-                Object.keys(fieldsShown) as PossibleDisplayedFields[]
-              ).filter((key) => fieldsShown[key])"
-              :key="field"
+          <button class="col-start-2" @click="() => toggleEmailPin(mail.uuid)">
+            <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
+            <ToolTip v-if="!mail.is_pinned" text="E-Mail anpinnen">
+              <StarOutlineIcons class="w-5 h-5" />
+            </ToolTip>
+          </button>
+          <button class="contents" @click="() => toggleEmail(mail.uuid)">
+            <span
+              v-if="fieldsShown.subject"
+              :class="`col-span-1 overflow-hidden text-left whitespace-nowrap text-ellipsis ${
+                mail.is_read ? '' : 'font-bold'
+              }`"
             >
-              <!-- TODO: ellipsis for long subjects -->
-              <span
-                :class="`col-span-1 ${
-                  field === 'sending_datetime' ? 'text-right' : 'text-left'
-                }`"
-              >
-                {{ mail[field] }}
-              </span>
-            </template>
+              {{ mail.subject }}
+            </span>
+            <span
+              v-if="fieldsShown.sender"
+              :class="`col-span-1 text-left ${
+                mail.is_read ? '' : 'font-semibold'
+              }`"
+            >
+              {{ mail.sender }}
+            </span>
+            <span
+              v-if="fieldsShown.sending_datetime"
+              :class="`col-start-5 text-right  ${
+                mail.is_read ? '' : 'font-semibold'
+              }`"
+            >
+              {{
+                new Date(mail.sending_datetime).toLocaleDateString(
+                  "de-DE",
+                  new Date(mail.sending_datetime).getFullYear() !==
+                    new Date().getFullYear()
+                    ? dateFormatWithYear
+                    : dateFormatWithoutYear,
+                )
+              }}
+            </span>
             <ChevronDownIcon
               v-if="!expandedEmails.includes(mail.uuid)"
               class="col-start-6 ml-auto"
@@ -78,16 +112,22 @@
               class="col-start-6 ml-auto rotate-180"
             />
           </button>
-          <!-- TODO: Add extras for the email content (sender etc) -->
           <div
             v-if="expandedEmails.includes(mail.uuid)"
-            class="col-span-6 col-start-1"
+            class="flex flex-col col-span-5 col-start-2 gap-2 mb-4 text-sm"
           >
-            {{ mail.content }}
+            <div class="text-neutral-500">von {{ mail.sender }}</div>
+            <div class="text-neutral-500">an {{ mail.bcc }}</div>
+            <div class="mt-3">{{ mail.content }}</div>
           </div>
         </template>
+        <div
+          v-if="query.length > 0 && searchResults?.length === 0"
+          class="col-span-5"
+        >
+          Keine Ergebnisse f&uuml;r diese Suchanfrage
+        </div>
       </div>
-      <!-- TODO: width? -->
       <ModalFree
         v-model="settingsOpen"
         title="Ansicht der Mail-Imports einstellen"
@@ -105,7 +145,6 @@
       </ModalFree>
     </BoxHeadingStats>
   </div>
-  <!-- TODO: is there an else? -->
 </template>
 
 <script setup lang="ts">
@@ -115,7 +154,6 @@ import useGet from "@/composables/useGet";
 import {
   DisplayedFieldsObject,
   ImportedMail,
-  PossibleDisplayedFields,
   Sorting,
 } from "@/types/mailImports";
 import { ModalFree } from "lorga-ui";
@@ -124,6 +162,7 @@ import {
   AdjustmentsHorizontalIcon,
   ChevronDownIcon,
   EnvelopeOpenIcon,
+  MagnifyingGlassIcon,
   StarIcon as StarOutlineIcons,
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
@@ -145,7 +184,17 @@ const request = client.get(
 );
 useGet(request, data);
 
-data.value?.sort((mail) => (mail.is_pinned ? -1 : 1)); // TODO: add sorting by time
+const query = ref<string>("");
+const searchResults = ref<ImportedMail[]>();
+const search = () => {
+  searchResults.value = data.value?.filter(
+    (mail) =>
+      mail.subject.toLowerCase().includes(query.value) ||
+      mail.content.toLowerCase().includes(query.value) ||
+      mail.sender.toLowerCase().includes(query.value) ||
+      mail.bcc.toLowerCase().includes(query.value),
+  );
+};
 
 const settingsOpen = ref<boolean>(false);
 const sorting = ref<Sorting>("desc");
@@ -179,11 +228,40 @@ const toggleEmail = (uuid: string) => {
     expandedEmails.value.splice(expandedEmails.value.indexOf(uuid), 1);
   } else {
     expandedEmails.value.push(uuid);
-    // TODO: send info that the email is read to BE, possibly update local state
+
+    // The UUID comes from the list of emails, so it is in the list
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    const currentEmail = data.value?.find((email) => email.uuid === uuid)!;
+    currentEmail.is_read = true;
+    // TODO: send info that the email is read to BE
   }
 };
 
-const markAsRead = () => {
-  // TODO: mark checkedEmails as read
+const markAsRead = (uuids: string[]) => {
+  uuids.forEach((uuid) => {
+    // The UUID comes from the list of emails, so it is in the list
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    const currentEmail = data.value?.find((email) => email.uuid === uuid)!;
+    currentEmail.is_read = true;
+  });
+  // TODO: mark checkedEmails as read in the BE
+};
+
+const toggleEmailPin = (uuid: string) => {
+  // The UUID comes from the list of emails, so it is in the list
+  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+  const selectedEmail = data.value?.find((email) => email.uuid === uuid)!;
+  selectedEmail.is_pinned = !selectedEmail?.is_pinned;
+  // TODO: send info to backend that email is pinned
+};
+
+const dateFormatWithYear: Intl.DateTimeFormatOptions = {
+  day: "2-digit",
+  month: "long",
+  year: "2-digit",
+};
+const dateFormatWithoutYear: Intl.DateTimeFormatOptions = {
+  day: "2-digit",
+  month: "long",
 };
 </script>
