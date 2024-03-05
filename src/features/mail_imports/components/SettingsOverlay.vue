@@ -43,12 +43,11 @@
     </span>
   </div>
   <div class="flex justify-end gap-3">
-    <!-- TODO: Why isn't this a secondary button? -->
-    <ButtonNormal type="secondary" @click="closeOverlay">
+    <ButtonNormal kind="secondary" @click="closeOverlay">
       <XMarkIcon class="w-6 h-6 mr-2" />
       <span class="pr-1">Schlie&szlig;en</span>
     </ButtonNormal>
-    <ButtonNormal type="primary" @click="saveSettings">
+    <ButtonNormal kind="primary" @click="saveSettings">
       <CheckCircleIcon class="w-6 h-6 mr-2" />
       <span class="pr-1">Speichern</span>
     </ButtonNormal>
