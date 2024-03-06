@@ -1,22 +1,26 @@
 <template>
-  <div v-if="data">
+  <div v-if="mails">
     <BoxHeadingStats
       title="Mail-Imports"
       :show="selectedType === 'MAIL_IMPORTS'"
-      :stats="[`${data.length} Mails insgesamt`]"
+      :stats="[`${mails.length} Mails insgesamt`]"
     >
       <template #buttons>
-        <!-- TODO: Add button to copy email address -->
-        <input
-          v-model="query"
-          type="search"
-          placeholder="In Mails suchen"
-          class="p-3 rounded-full bg-neutral-100"
-          @input="search"
-        />
-        <MagnifyingGlassIcon
-          class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
-        />
+        <div class="flex items-center gap-4">
+          <ButtonNormal kind="action" @click="copyMailAddress">
+            Mail-Adresse kopieren
+          </ButtonNormal>
+          <input
+            v-model="query"
+            type="search"
+            placeholder="In Mails suchen"
+            class="p-3 rounded-full bg-neutral-100"
+            @input="search"
+          />
+          <MagnifyingGlassIcon
+            class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
+          />
+        </div>
       </template>
       <div
         class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
@@ -42,7 +46,7 @@
           </button>
         </ToolTip>
         <template
-          v-for="mail in (query.length > 0 ? searchResults : data)!
+          v-for="mail in (query.length > 0 ? searchResults : mails)!
             .sort((mail, previousMail) => {
               if (sorting === 'asc') {
                 return mail.sending_datetime < previousMail.sending_datetime
@@ -156,7 +160,7 @@ import {
   ImportedMail,
   Sorting,
 } from "@/types/mailImports";
-import { ModalFree } from "lorga-ui";
+import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import {
   AdjustmentsHorizontalIcon,
@@ -176,24 +180,28 @@ const props = defineProps<{
 }>();
 const { folderUuid, selectedType } = toRefs(props);
 
-const data = ref<ImportedMail[]>();
+const mails = ref<ImportedMail[]>();
 const client = useClient();
 const request = client.get(
   "api/mail_imports/query/folder_mails/{}/",
   folderUuid,
 );
-useGet(request, data);
-
+useGet(request, mails);
 const query = ref<string>("");
 const searchResults = ref<ImportedMail[]>();
 const search = () => {
-  searchResults.value = data.value?.filter(
+  searchResults.value = mails.value?.filter(
     (mail) =>
       mail.subject.toLowerCase().includes(query.value) ||
       mail.content.toLowerCase().includes(query.value) ||
       mail.sender.toLowerCase().includes(query.value) ||
       mail.bcc.toLowerCase().includes(query.value),
   );
+};
+
+const mailAddressToBeCopied = "toBeDone@web.de"; // TODO: get the real one
+const copyMailAddress = () => {
+  navigator.clipboard.writeText(mailAddressToBeCopied);
 };
 
 const settingsOpen = ref<boolean>(false);
@@ -216,7 +224,7 @@ const toggleCheckedEmail = (uuid: string) => {
 };
 const toggleAllCheckedEmails = (e: Event) => {
   if ((e.target as HTMLInputElement).checked) {
-    checkedEmails.value = data.value?.map((mail) => mail.uuid) ?? [];
+    checkedEmails.value = mails.value?.map((mail) => mail.uuid) ?? [];
   } else {
     checkedEmails.value = [];
   }
@@ -231,9 +239,15 @@ const toggleEmail = (uuid: string) => {
 
     // The UUID comes from the list of emails, so it is in the list
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const currentEmail = data.value?.find((email) => email.uuid === uuid)!;
+    const currentEmail = mails.value?.find((email) => email.uuid === uuid)!;
     currentEmail.is_read = true;
     // TODO: send info that the email is read to BE
+    const client = useClient();
+    const request = client.post(
+      "api/mail_imports/mark_emails_as_read/{}/",
+      uuid,
+    );
+    request().then((res) => console.log(res));
   }
 };
 
@@ -241,18 +255,30 @@ const markAsRead = (uuids: string[]) => {
   uuids.forEach((uuid) => {
     // The UUID comes from the list of emails, so it is in the list
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const currentEmail = data.value?.find((email) => email.uuid === uuid)!;
+    const currentEmail = mails.value?.find((email) => email.uuid === uuid)!;
     currentEmail.is_read = true;
   });
   // TODO: mark checkedEmails as read in the BE
+  const client = useClient();
+  const request = client.post(
+    "mail_imports/folder_mail/mark_emails_as_read/{}/",
+    uuids[0],
+  );
+  request().then((res) => console.log(res));
 };
 
 const toggleEmailPin = (uuid: string) => {
   // The UUID comes from the list of emails, so it is in the list
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-  const selectedEmail = data.value?.find((email) => email.uuid === uuid)!;
+  const selectedEmail = mails.value?.find((email) => email.uuid === uuid)!;
   selectedEmail.is_pinned = !selectedEmail?.is_pinned;
   // TODO: send info to backend that email is pinned
+  const client = useClient();
+  const request = client.post(
+    "api/mail_imports/mark_email_as_pinned/{}/",
+    uuid,
+  );
+  request().then((res) => console.log(res));
 };
 
 const dateFormatWithYear: Intl.DateTimeFormatOptions = {
