@@ -105,6 +105,8 @@ class Client {
         v = "||EMPTYARRAY||";
       } else if (Array.isArray(v)) {
         v = "||ARRAY||".concat(v.join("||ARRAYSEPERATOR||"));
+      } else if (v === null) {
+        v = "||NULL||";
       }
       formData.append(key, v);
     }
