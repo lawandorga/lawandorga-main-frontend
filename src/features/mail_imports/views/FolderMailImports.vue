@@ -11,7 +11,7 @@
             Mail-Adresse kopieren
           </ButtonNormal>
           <input
-            v-model="query"
+            v-model="searchQuery"
             type="search"
             placeholder="In Mails suchen"
             class="p-3 rounded-full bg-neutral-100"
@@ -46,7 +46,7 @@
           </button>
         </ToolTip>
         <template
-          v-for="mail in (query.length > 0 ? searchResults : mails)!
+          v-for="mail in (searchQuery.length > 0 ? searchResults : mails)!
             .sort((mail, previousMail) => {
               if (sorting === 'asc') {
                 return mail.sending_datetime < previousMail.sending_datetime
@@ -126,7 +126,7 @@
           </div>
         </template>
         <div
-          v-if="query.length > 0 && searchResults?.length === 0"
+          v-if="searchQuery.length > 0 && searchResults?.length === 0"
           class="col-span-5"
         >
           Keine Ergebnisse f&uuml;r diese Suchanfrage
@@ -172,6 +172,7 @@ import {
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
 import SettingsOverlay from "../components/SettingsOverlay.vue";
 import ToolTip from "@/components/ToolTip.vue";
+import useCmd from "@/composables/useCmd";
 
 // props
 const props = defineProps<{
@@ -187,15 +188,16 @@ const request = client.get(
   folderUuid,
 );
 useGet(request, mails);
-const query = ref<string>("");
+
+const searchQuery = ref<string>("");
 const searchResults = ref<ImportedMail[]>();
 const search = () => {
   searchResults.value = mails.value?.filter(
     (mail) =>
-      mail.subject.toLowerCase().includes(query.value) ||
-      mail.content.toLowerCase().includes(query.value) ||
-      mail.sender.toLowerCase().includes(query.value) ||
-      mail.bcc.toLowerCase().includes(query.value),
+      mail.subject.toLowerCase().includes(searchQuery.value) ||
+      mail.content.toLowerCase().includes(searchQuery.value) ||
+      mail.sender.toLowerCase().includes(searchQuery.value) ||
+      mail.bcc.toLowerCase().includes(searchQuery.value),
   );
 };
 
@@ -209,7 +211,7 @@ const sorting = ref<Sorting>("desc");
 const fieldsShown = ref<DisplayedFieldsObject>({
   subject: true,
   sender: false,
-  sending_datetime: false,
+  sending_datetime: true,
 });
 
 const checkedEmails = ref<string[]>([]);
@@ -241,13 +243,11 @@ const toggleEmail = (uuid: string) => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     const currentEmail = mails.value?.find((email) => email.uuid === uuid)!;
     currentEmail.is_read = true;
-    // TODO: send info that the email is read to BE
-    const client = useClient();
-    const request = client.post(
-      "api/mail_imports/mark_emails_as_read/{}/",
-      uuid,
-    );
-    request().then((res) => console.log(res));
+    const { commandRequest } = useCmd(request);
+    commandRequest({
+      action: "mail_imports/mark_emails_as_read",
+      email_uuids: [uuid],
+    });
   }
 };
 
@@ -258,13 +258,11 @@ const markAsRead = (uuids: string[]) => {
     const currentEmail = mails.value?.find((email) => email.uuid === uuid)!;
     currentEmail.is_read = true;
   });
-  // TODO: mark checkedEmails as read in the BE
-  const client = useClient();
-  const request = client.post(
-    "mail_imports/folder_mail/mark_emails_as_read/{}/",
-    uuids[0],
-  );
-  request().then((res) => console.log(res));
+  const { commandRequest } = useCmd(request);
+  commandRequest({
+    action: "mail_imports/mark_emails_as_read",
+    email_uuids: uuids,
+  });
 };
 
 const toggleEmailPin = (uuid: string) => {
@@ -272,13 +270,11 @@ const toggleEmailPin = (uuid: string) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const selectedEmail = mails.value?.find((email) => email.uuid === uuid)!;
   selectedEmail.is_pinned = !selectedEmail?.is_pinned;
-  // TODO: send info to backend that email is pinned
-  const client = useClient();
-  const request = client.post(
-    "api/mail_imports/mark_email_as_pinned/{}/",
-    uuid,
-  );
-  request().then((res) => console.log(res));
+  const { commandRequest } = useCmd(request);
+  commandRequest({
+    action: "mail_imports/mark_email_as_pinned",
+    email_uuid: uuid,
+  });
 };
 
 const dateFormatWithYear: Intl.DateTimeFormatOptions = {
