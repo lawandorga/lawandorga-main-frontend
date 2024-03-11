@@ -7,9 +7,7 @@
     >
       <template #buttons>
         <div class="flex items-center gap-4">
-          <ButtonNormal kind="action" @click="copyMailAddress">
-            Mail-Adresse kopieren
-          </ButtonNormal>
+          <CopyCCAdressFromFolder />
           <input
             v-model="searchQuery"
             type="search"
@@ -138,7 +136,7 @@ import {
   ImportedMail,
   Sorting,
 } from "@/types/mailImports";
-import { ButtonNormal, ModalFree } from "lorga-ui";
+import { ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import {
   AdjustmentsHorizontalIcon,
@@ -148,8 +146,9 @@ import {
   StarIcon as StarOutlineIcons,
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
-import SettingsOverlay from "../components/SettingsOverlay.vue";
+import CopyCCAdressFromFolder from "../actions/CopyCCAdressFromFolder.vue";
 import MailContent from "../components/MailContent.vue";
+import SettingsOverlay from "../components/SettingsOverlay.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import useCmd from "@/composables/useCmd";
 
@@ -178,11 +177,6 @@ const search = () => {
       mail.sender.toLowerCase().includes(searchQuery.value) ||
       mail.bcc.toLowerCase().includes(searchQuery.value),
   );
-};
-
-const mailAddressToBeCopied = "toBeDone@web.de"; // TODO: get the real one
-const copyMailAddress = () => {
-  navigator.clipboard.writeText(mailAddressToBeCopied);
 };
 
 const settingsOpen = ref<boolean>(false);
