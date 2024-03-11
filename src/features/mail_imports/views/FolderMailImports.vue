@@ -26,13 +26,13 @@
         class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
       >
         <input
-          id="toggleAllEmails"
+          id="toggleAllMails"
           class="self-center w-4 h-4 col-start-1 justify-self-center"
           type="checkbox"
-          @input="toggleAllCheckedEmails"
+          @input="toggleAllCheckedMails"
         />
         <ToolTip text="ge&ouml;ffnet" class="col-start-2">
-          <button @click="() => markAsRead(checkedEmails)">
+          <button @click="() => markAsRead(checkedMails)">
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
         </ToolTip>
@@ -46,35 +46,28 @@
           </button>
         </ToolTip>
         <template
-          v-for="mail in (searchQuery.length > 0 ? searchResults : mails)!
-            .sort((mail, previousMail) => {
-              if (sorting === 'asc') {
-                return mail.sending_datetime < previousMail.sending_datetime
-                  ? 1
-                  : -1;
-              } else {
-                return mail.sending_datetime < previousMail.sending_datetime
-                  ? -1
-                  : 1;
-              }
-            })
-            .sort((mail) => (mail.is_pinned ? -1 : 1))"
+          v-for="mail in sortMails(
+            searchQuery.length > 0 ? searchResults : mails,
+          )"
           :key="mail.uuid"
         >
           <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
           <input
-            :checked="checkedEmails.includes(mail.uuid)"
+            :checked="checkedMails.includes(mail.uuid)"
             class="self-center w-4 h-4 col-start-1 justify-self-center"
             type="checkbox"
-            @input="() => toggleCheckedEmail(mail.uuid)"
+            @input="() => toggleCheckedMail(mail.uuid)"
           />
-          <button class="col-start-2" @click="() => toggleEmailPin(mail.uuid)">
+          <button
+            class="col-start-2"
+            @click="() => toggleMailPinned(mail.uuid)"
+          >
             <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
             <ToolTip v-if="!mail.is_pinned" text="E-Mail anpinnen">
               <StarOutlineIcons class="w-5 h-5" />
             </ToolTip>
           </button>
-          <button class="contents" @click="() => toggleEmail(mail.uuid)">
+          <button class="contents" @click="() => toggleMailExpanded(mail.uuid)">
             <span
               v-if="fieldsShown.subject"
               :class="`col-span-1 overflow-hidden text-left whitespace-nowrap text-ellipsis ${
@@ -97,33 +90,18 @@
                 mail.is_read ? '' : 'font-semibold'
               }`"
             >
-              {{
-                new Date(mail.sending_datetime).toLocaleDateString(
-                  "de-DE",
-                  new Date(mail.sending_datetime).getFullYear() !==
-                    new Date().getFullYear()
-                    ? dateFormatWithYear
-                    : dateFormatWithoutYear,
-                )
-              }}
+              {{ formatDate(mail.sending_datetime) }}
             </span>
             <ChevronDownIcon
-              v-if="!expandedEmails.includes(mail.uuid)"
+              v-if="!expandedMails.includes(mail.uuid)"
               class="col-start-6 ml-auto"
             />
             <ChevronDownIcon
-              v-if="expandedEmails.includes(mail.uuid)"
+              v-if="expandedMails.includes(mail.uuid)"
               class="col-start-6 ml-auto rotate-180"
             />
           </button>
-          <div
-            v-if="expandedEmails.includes(mail.uuid)"
-            class="flex flex-col col-span-5 col-start-2 gap-2 mb-4 text-sm"
-          >
-            <div class="text-neutral-500">von {{ mail.sender }}</div>
-            <div class="text-neutral-500">an {{ mail.bcc }}</div>
-            <div class="mt-3">{{ mail.content }}</div>
-          </div>
+          <MailContent v-if="expandedMails.includes(mail.uuid)" :mail="mail" />
         </template>
         <div
           v-if="searchQuery.length > 0 && searchResults?.length === 0"
@@ -171,6 +149,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
 import SettingsOverlay from "../components/SettingsOverlay.vue";
+import MailContent from "../components/MailContent.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import useCmd from "@/composables/useCmd";
 
@@ -214,66 +193,83 @@ const fieldsShown = ref<DisplayedFieldsObject>({
   sending_datetime: true,
 });
 
-const checkedEmails = ref<string[]>([]);
-const toggleCheckedEmail = (uuid: string) => {
-  if (checkedEmails.value.includes(uuid)) {
-    checkedEmails.value.splice(checkedEmails.value.indexOf(uuid), 1);
-    (document.getElementById("toggleAllEmails") as HTMLInputElement).checked =
+const sortMails = (mails: ImportedMail[] | undefined) =>
+  mails
+    ? mails
+        .sort((mail, previousMail) => {
+          if (sorting.value === "asc") {
+            return mail.sending_datetime < previousMail.sending_datetime
+              ? 1
+              : -1;
+          } else {
+            return mail.sending_datetime < previousMail.sending_datetime
+              ? -1
+              : 1;
+          }
+        })
+        .sort((mail) => (mail.is_pinned ? -1 : 1))
+    : [];
+
+const checkedMails = ref<string[]>([]);
+const toggleCheckedMail = (uuid: string) => {
+  if (checkedMails.value.includes(uuid)) {
+    checkedMails.value.splice(checkedMails.value.indexOf(uuid), 1);
+    (document.getElementById("toggleAllMails") as HTMLInputElement).checked =
       false;
   } else {
-    checkedEmails.value.push(uuid);
+    checkedMails.value.push(uuid);
   }
 };
-const toggleAllCheckedEmails = (e: Event) => {
+const toggleAllCheckedMails = (e: Event) => {
   if ((e.target as HTMLInputElement).checked) {
-    checkedEmails.value = mails.value?.map((mail) => mail.uuid) ?? [];
+    checkedMails.value = mails.value?.map((mail) => mail.uuid) ?? [];
   } else {
-    checkedEmails.value = [];
+    checkedMails.value = [];
   }
 };
 
-const expandedEmails = ref<string[]>([]);
-const toggleEmail = (uuid: string) => {
-  if (expandedEmails.value.includes(uuid)) {
-    expandedEmails.value.splice(expandedEmails.value.indexOf(uuid), 1);
+const expandedMails = ref<string[]>([]);
+const toggleMailExpanded = (uuid: string) => {
+  if (expandedMails.value.includes(uuid)) {
+    expandedMails.value.splice(expandedMails.value.indexOf(uuid), 1);
   } else {
-    expandedEmails.value.push(uuid);
+    expandedMails.value.push(uuid);
 
-    // The UUID comes from the list of emails, so it is in the list
+    // The UUID comes from the list of mails, so it is in the list
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const currentEmail = mails.value?.find((email) => email.uuid === uuid)!;
-    currentEmail.is_read = true;
+    const currentMail = mails.value?.find((mail) => mail.uuid === uuid)!;
+    currentMail.is_read = true;
     const { commandRequest } = useCmd(request);
     commandRequest({
-      action: "mail_imports/mark_emails_as_read",
-      email_uuids: [uuid],
+      action: "mail_imports/mark_mails_as_read",
+      mail_uuids: [uuid],
     });
   }
 };
 
 const markAsRead = (uuids: string[]) => {
   uuids.forEach((uuid) => {
-    // The UUID comes from the list of emails, so it is in the list
+    // The UUID comes from the list of mails, so it is in the list
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const currentEmail = mails.value?.find((email) => email.uuid === uuid)!;
-    currentEmail.is_read = true;
+    const currentMail = mails.value?.find((mail) => mail.uuid === uuid)!;
+    currentMail.is_read = true;
   });
   const { commandRequest } = useCmd(request);
   commandRequest({
-    action: "mail_imports/mark_emails_as_read",
-    email_uuids: uuids,
+    action: "mail_imports/mark_mails_as_read",
+    mail_uuids: uuids,
   });
 };
 
-const toggleEmailPin = (uuid: string) => {
-  // The UUID comes from the list of emails, so it is in the list
+const toggleMailPinned = (uuid: string) => {
+  // The UUID comes from the list of mails, so it is in the list
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-  const selectedEmail = mails.value?.find((email) => email.uuid === uuid)!;
-  selectedEmail.is_pinned = !selectedEmail?.is_pinned;
+  const selectedMail = mails.value?.find((mail) => mail.uuid === uuid)!;
+  selectedMail.is_pinned = !selectedMail?.is_pinned;
   const { commandRequest } = useCmd(request);
   commandRequest({
-    action: "mail_imports/mark_email_as_pinned",
-    email_uuid: uuid,
+    action: "mail_imports/mark_mail_as_pinned",
+    mail_uuid: uuid,
   });
 };
 
@@ -286,4 +282,11 @@ const dateFormatWithoutYear: Intl.DateTimeFormatOptions = {
   day: "2-digit",
   month: "long",
 };
+const formatDate = (date: Date) =>
+  new Date(date).toLocaleDateString(
+    "de-DE",
+    new Date(date).getFullYear() !== new Date().getFullYear()
+      ? dateFormatWithYear
+      : dateFormatWithoutYear,
+  );
 </script>
