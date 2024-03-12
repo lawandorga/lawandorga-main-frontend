@@ -190,7 +190,7 @@ const fieldsShown = ref<DisplayedFieldsObject>({
 const sortMails = (mails: ImportedMail[] | undefined) =>
   mails
     ? mails
-        .sort((mail, previousMail) => {
+        .toSorted((mail, previousMail) => {
           if (sorting.value === "asc") {
             return mail.sending_datetime < previousMail.sending_datetime
               ? 1
@@ -201,7 +201,7 @@ const sortMails = (mails: ImportedMail[] | undefined) =>
               : 1;
           }
         })
-        .sort((mail) => (mail.is_pinned ? -1 : 1))
+        .toSorted((mail) => (mail.is_pinned ? -1 : 1))
     : [];
 
 const checkedMails = ref<string[]>([]);
@@ -220,6 +220,7 @@ const toggleAllCheckedMails = (e: Event) => {
   } else {
     checkedMails.value = [];
   }
+  console.log(checkedMails.value);
 };
 
 const expandedMails = ref<string[]>([]);
