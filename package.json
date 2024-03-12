@@ -9,7 +9,8 @@
     "lint": "eslint --ext .js,.vue ./src",
     "fix": "eslint --fix --ext .js,.vue ./src",
     "tscheck": "tsc --build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.19",

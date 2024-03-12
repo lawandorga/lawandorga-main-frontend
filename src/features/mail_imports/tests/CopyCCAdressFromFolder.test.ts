@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
-import { expect, it, vi } from "vitest";
+import { vi } from "vitest";
 import { Ref } from "vue";
 import CopyCCAdressFromFolder from "../actions/CopyCCAdressFromFolder.vue";
 
@@ -22,10 +22,9 @@ describe("CopyCCAdressFromFolder", () => {
   });
 
   it("should copy the address", async () => {
-    const writeText = vi.mock;
     Object.assign(navigator, {
       clipboard: {
-        writeText,
+        writeText: vi.mock,
       },
     });
 

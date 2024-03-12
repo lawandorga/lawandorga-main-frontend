@@ -172,10 +172,10 @@ const searchResults = ref<ImportedMail[]>();
 const search = () => {
   searchResults.value = mails.value?.filter(
     (mail) =>
-      mail.subject.toLowerCase().includes(searchQuery.value) ||
-      mail.content.toLowerCase().includes(searchQuery.value) ||
-      mail.sender.toLowerCase().includes(searchQuery.value) ||
-      mail.bcc.toLowerCase().includes(searchQuery.value),
+      mail.subject.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      mail.content.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      mail.sender.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      mail.bcc.toLowerCase().includes(searchQuery.value.toLowerCase()),
   );
 };
 
@@ -189,8 +189,8 @@ const fieldsShown = ref<DisplayedFieldsObject>({
 
 const sortMails = (mails: ImportedMail[] | undefined) =>
   mails
-    ? mails
-        .toSorted((mail, previousMail) => {
+    ? [...mails]
+        .sort((mail, previousMail) => {
           if (sorting.value === "asc") {
             return mail.sending_datetime < previousMail.sending_datetime
               ? 1
@@ -201,7 +201,7 @@ const sortMails = (mails: ImportedMail[] | undefined) =>
               : 1;
           }
         })
-        .toSorted((mail) => (mail.is_pinned ? -1 : 1))
+        .sort((mail) => (mail.is_pinned ? -1 : 1))
     : [];
 
 const checkedMails = ref<string[]>([]);
