@@ -1,3 +1,3 @@
 {
-  "recommendations": ["vue.volar", "heybourn.headwind", "vue.vscode-typescript-vue-plugin", "dbaeumer.vscode-eslint", "bradlc.vscode-tailwindcss"]
+  "recommendations": ["vue.volar", "heybourn.headwind", "dbaeumer.vscode-eslint", "bradlc.vscode-tailwindcss"]
 }
