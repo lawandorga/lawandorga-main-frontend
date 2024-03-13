@@ -12,11 +12,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/features/data_sheets/views/RecordsDetail.vue"),
   },
   {
-    path: "/data-sheets/migrate/",
-    name: "data-sheets-migrate",
-    component: () => import("@/features/data_sheets/views/MigrateView.vue"),
-  },
-  {
     path: "/admin/templates/",
     name: "admin-templates",
     component: () => import("@/features/data_sheets/views/AdminList.vue"),
