@@ -78,11 +78,6 @@
           ></div>
         </template>
         <template #action="slotProps">
-          <DeleteKey
-            v-if="slotProps.source === 'RECORD'"
-            :key-id="slotProps.id"
-            :query="query"
-          />
           <GroupsRemoveMember
             v-if="slotProps.source === 'GROUP' && userStore.user"
             title="Delete Key"
@@ -111,7 +106,6 @@ import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { useUserStore } from "@/store/user";
 import ActionsUserUnlockSelf from "@/features/users/actions/ActionsUserUnlockSelf.vue";
-import DeleteKey from "@/features/users/actions/DeleteKey.vue";
 import useClient from "@/api/client";
 import TestKeys from "@/features/users/actions/TestKeys.vue";
 import GroupsRemoveMember from "@/features/org/actions/GroupsRemoveMember.vue";
