@@ -31,7 +31,7 @@
           type="checkbox"
           @input="toggleAllCheckedMails"
         />
-        <ToolTip text="ge&ouml;ffnet" class="col-start-2">
+        <ToolTip text="Mark as read" class="col-start-2">
           <button @click="() => markAsRead(checkedMails)">
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
