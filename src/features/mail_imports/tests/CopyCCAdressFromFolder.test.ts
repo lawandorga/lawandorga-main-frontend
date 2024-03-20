@@ -18,7 +18,7 @@ describe("CopyCCAdressFromFolder", () => {
   }));
 
   it("should be rendered correctly", () => {
-    expect(wrapper.text()).toContain("Mail-Adresse kopieren");
+    expect(wrapper.text()).toContain("Copy email address");
   });
 
   it("should copy the address", async () => {
@@ -29,6 +29,6 @@ describe("CopyCCAdressFromFolder", () => {
     });
 
     await wrapper.find("button").trigger("click");
-    expect(wrapper.text()).toContain("Kopiert");
+    expect(wrapper.text()).toContain("Copied");
   });
 });

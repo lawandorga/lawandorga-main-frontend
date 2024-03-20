@@ -1,9 +1,9 @@
 <template>
   <div class="flex gap-2 mb-3 font-semibold text-zinc-500">
-    <h3>Angezeigte Informationen</h3>
+    <h3>Shown Information Fields</h3>
     <ToolTip
-      text="mind. eine Information muss ausgewählt sein"
-      tool-tip-id="at-least-one-setting"
+      text="At least one information field must be selected"
+      tool-tip-id="at-least-one-field"
     >
       <InformationCircleIcon class="w-5 h-5" />
     </ToolTip>
@@ -11,11 +11,11 @@
   <div class="flex flex-col gap-3">
     <span class="flex gap-2">
       <input id="subject" v-model="selectedFields.subject" type="checkbox" />
-      <label for="subject">Betreff</label>
+      <label for="subject">Subject</label>
     </span>
     <span class="flex gap-2">
       <input id="sender" v-model="selectedFields.sender" type="checkbox" />
-      <label for="sender">Absender:in(nen)</label>
+      <label for="sender">Sender(s)</label>
     </span>
     <span class="flex gap-2">
       <input
@@ -23,33 +23,33 @@
         v-model="selectedFields.sending_datetime"
         type="checkbox"
       />
-      <label for="date">Datum</label>
+      <label for="date">Date</label>
     </span>
   </div>
   <div class="flex gap-2 mt-4 mb-3 font-semibold text-zinc-500">
-    <h3>Sortierung</h3>
-    <ToolTip text="Angepinnte Mails erscheinen immer ganz oben">
+    <h3>Sorting</h3>
+    <ToolTip text="Pinned mails are always shown at the top">
       <InformationCircleIcon class="w-5 h-5" />
     </ToolTip>
   </div>
   <div class="flex flex-col gap-3">
     <span class="flex gap-2">
       <input id="desc" v-model="sorting" type="radio" value="desc" />
-      <label for="desc">Neueste Mails zuerst</label>
+      <label for="desc">Newest mails first</label>
     </span>
     <span class="flex gap-2">
       <input id="asc" v-model="sorting" type="radio" value="asc" />
-      <label for="asc">&Auml;lteste Mails zuerst</label>
+      <label for="asc">Oldest mails first</label>
     </span>
   </div>
   <div class="flex justify-end gap-3">
     <ButtonNormal kind="secondary" @click="closeOverlay">
       <XMarkIcon class="w-6 h-6 mr-2" />
-      <span class="pr-1">Schlie&szlig;en</span>
+      <span class="pr-1">Close</span>
     </ButtonNormal>
     <ButtonNormal kind="primary" @click="saveSettings">
       <CheckCircleIcon class="w-6 h-6 mr-2" />
-      <span class="pr-1">Speichern</span>
+      <span class="pr-1">Save</span>
     </ButtonNormal>
   </div>
 </template>
@@ -91,15 +91,15 @@ const selectedFields = ref({ ...currentlyShownFields.value });
 const sorting = ref<Sorting>(currentSorting.value);
 
 const saveSettings = () => {
-  const selectedSettingsCount = (
+  const selectedFieldsCount = (
     Object.keys(selectedFields.value) as PossibleDisplayedFields[]
   ).filter((key) => selectedFields.value[key]).length;
 
-  if (selectedSettingsCount === 0) {
-    const atLeastOneSettingTooltip = document.getElementById(
-      "at-least-one-setting",
+  if (selectedFieldsCount === 0) {
+    const atLeastOneFieldTooltip = document.getElementById(
+      "at-least-one-field",
     ) as HTMLElement;
-    atLeastOneSettingTooltip.style.visibility = "visible";
+    atLeastOneFieldTooltip.style.visibility = "visible";
     return;
   }
 

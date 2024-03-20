@@ -3,7 +3,7 @@
     <BoxHeadingStats
       title="Mail-Imports"
       :show="selectedType === 'MAIL_IMPORTS'"
-      :stats="[`${mails.length} Mails insgesamt`]"
+      :stats="[`${mails.length} mails`]"
     >
       <template #buttons>
         <div class="flex items-center gap-4">
@@ -11,7 +11,7 @@
           <input
             v-model="searchQuery"
             type="search"
-            placeholder="In Mails suchen"
+            placeholder="Search in mails"
             class="p-3 rounded-full bg-neutral-100"
             @input="search"
           />
@@ -34,10 +34,8 @@
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
         </ToolTip>
-        <span v-if="fieldsShown.subject" class="col-span-1">Betreff</span>
-        <span v-if="fieldsShown.sender" class="col-span-1">
-          Absender:in(nen)
-        </span>
+        <span v-if="fieldsShown.subject" class="col-span-1">Subject</span>
+        <span v-if="fieldsShown.sender" class="col-span-1">Sender(s)</span>
         <ToolTip class="col-start-6" text="Ansicht &auml;ndern">
           <button @click="settingsOpen = true">
             <AdjustmentsHorizontalIcon class="w-5 h-5" />
@@ -105,12 +103,12 @@
           v-if="searchQuery.length > 0 && searchResults?.length === 0"
           class="col-span-5"
         >
-          Keine Ergebnisse f&uuml;r diese Suchanfrage
+          No results for this search query
         </div>
       </div>
       <ModalFree
         v-model="settingsOpen"
-        title="Ansicht der Mail-Imports einstellen"
+        title="Edit the display of the mail-imports"
         width="max-w-xl"
       >
         <SettingsOverlay
@@ -220,7 +218,6 @@ const toggleAllCheckedMails = (e: Event) => {
   } else {
     checkedMails.value = [];
   }
-  console.log(checkedMails.value);
 };
 
 const expandedMails = ref<string[]>([]);

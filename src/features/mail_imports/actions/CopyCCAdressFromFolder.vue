@@ -5,7 +5,7 @@
     :disabled="addressCopied"
     @click="copyMailAddress"
   >
-    {{ addressCopied ? "Kopiert" : "Mail-Adresse kopieren" }}
+    {{ addressCopied ? "Copied" : "Copy email address" }}
   </ButtonNormal>
 </template>
 
