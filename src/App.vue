@@ -27,7 +27,7 @@
 
         <!-- Main Panel -->
         <main
-          class="relative flex-1 px-6 py-6 overflow-y-auto focus:outline-none print:p-0"
+          class="relative flex-1 px-6 py-6 overflow-x-hidden overflow-y-auto focus:outline-none print:p-0"
         >
           <router-view></router-view>
         </main>
