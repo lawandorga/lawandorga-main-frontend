@@ -7,7 +7,9 @@
     >
       <template #buttons>
         <div class="flex items-center gap-4">
-          <CopyCCAdressFromFolder />
+          <CopyCCAdressFromFolder
+            :address="`${folderUuid}@folders.law-orga.de`"
+          />
           <input
             v-model="searchQuery"
             type="search"

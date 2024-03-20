@@ -10,18 +10,16 @@
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
 import { ButtonNormal } from "lorga-ui";
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 
-const address = ref<string>();
+// props
+const props = defineProps<{
+  address: string;
+}>();
+const { address } = toRefs(props);
+
 const addressCopied = ref<boolean>(false);
-const client = useClient();
-const request = client.get(
-  "api/mail_imports/query/folder_mails/get_cc_address",
-);
-useGet(request, address);
 
 const copyMailAddress = () => {
   navigator.clipboard.writeText(address.value ?? "");
