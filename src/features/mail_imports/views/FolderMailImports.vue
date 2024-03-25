@@ -3,7 +3,7 @@
     <BoxHeadingStats
       title="Mail-Imports"
       :show="selectedType === 'MAIL_IMPORTS'"
-      :stats="[`${mails.length} mails`]"
+      :stats="[mails.length === 1 ? '1 mail' : `${mails.length} mails`]"
     >
       <template #buttons>
         <div class="flex items-center gap-4">
@@ -130,7 +130,6 @@
 <script setup lang="ts">
 import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useGet from "@/composables/useGet";
 import {
   DisplayedFieldsObject,
   ImportedMail,
@@ -156,16 +155,15 @@ import useCmd from "@/composables/useCmd";
 const props = defineProps<{
   folderUuid: string;
   selectedType: string;
+  mails: ImportedMail[];
 }>();
-const { folderUuid, selectedType } = toRefs(props);
+const { folderUuid, selectedType, mails } = toRefs(props);
 
-const mails = ref<ImportedMail[]>();
 const client = useClient();
 const request = client.get(
   "api/mail_imports/query/folder_mails/{}/",
   folderUuid,
 );
-useGet(request, mails);
 
 const searchQuery = ref<string>("");
 const searchResults = ref<ImportedMail[]>();

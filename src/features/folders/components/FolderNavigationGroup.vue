@@ -14,12 +14,16 @@
         <div v-show="isSelected" class="flex flex-shrink-0 ml-2 space-x-3">
           <component :is="button" v-for="button in buttons" :key="button" />
         </div>
+        <RedBadge v-if="badge">
+          {{ badge }}
+        </RedBadge>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import RedBadge from "@/components/RedBadge.vue";
 import { VNode } from "vue";
 
 defineProps<{
@@ -27,5 +31,6 @@ defineProps<{
   name: string;
   isFirst?: boolean;
   isSelected: boolean;
+  badge?: string;
 }>();
 </script>

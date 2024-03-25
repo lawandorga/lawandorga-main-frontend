@@ -45,6 +45,9 @@
           :grouping="grouping"
           :selected-id="selectedId"
           :selected-type="selectedType"
+          :number-of-unread-mails="
+            mails?.filter((mail) => !mail.is_read).length
+          "
           @selected="select($event.id, $event.type)"
           @grouping="updateGrouping($event)"
         />
@@ -101,6 +104,7 @@
         <FolderMailImports
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"
+          :mails="mails"
         />
 
         <FolderTimeline
@@ -150,6 +154,7 @@ import useClient from "@/api/client";
 import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
 import useGet from "@/composables/useGet";
+import { ImportedMail } from "@/types/mailImports";
 
 // record
 const route = useRoute();
@@ -211,4 +216,12 @@ const record = computed<IContent | null>(() => {
   if (!item) return null;
   return item;
 });
+
+// mails
+const mails = ref<ImportedMail[]>();
+const mailRequest = client.get(
+  "api/mail_imports/query/folder_mails/{}/",
+  folderUuid,
+);
+useGet(mailRequest, mails);
 </script>

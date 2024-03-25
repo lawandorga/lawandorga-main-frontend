@@ -29,9 +29,10 @@ const props = defineProps<{
   grouping: boolean;
   selectedType: string;
   selectedId: string | number | null;
+  numberOfUnreadMails: string;
 }>();
 
-const { folder, query } = toRefs(props);
+const { folder, query, numberOfUnreadMails } = toRefs(props);
 
 const emit = defineEmits(["grouping", "selected"]);
 
@@ -121,6 +122,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       type: "MAIL_IMPORTS",
       children: [],
       buttons: [],
+      badge: numberOfUnreadMails.value,
     });
   }
 

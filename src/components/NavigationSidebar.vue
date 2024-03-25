@@ -106,15 +106,14 @@
                     {{ item.label }}
                   </span>
                 </div>
-                <div
+                <RedBadge
                   v-if="item.notifications && item.notifications > 0"
-                  class="flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 bg-red-200 rounded-full"
-                  :class="{
-                    'absolute top-1 right-1 !w-4 !h-4 !text-xs': !expanded,
-                  }"
+                  :additional-classes="
+                    expanded ? '' : 'absolute top-1 right-1 !w-4 !h-4 !text-xs'
+                  "
                 >
                   {{ item.notifications }}
-                </div>
+                </RedBadge>
               </component>
             </template>
           </nav>
@@ -165,6 +164,7 @@ import { ref, watch } from "vue";
 import LogoWhite from "./LogoWhite.vue";
 import { CircleLoader } from "lorga-ui";
 import { storeToRefs } from "pinia";
+import RedBadge from "./RedBadge.vue";
 
 const { navigationItems } = useNavigationItems();
 const userStore = useUserStore();

@@ -12,12 +12,7 @@ describe("FolderMailImports", () => {
     props: {
       folderUuid: "123",
       selectedType: "MAIL_IMPORTS",
-    },
-  });
-
-  vi.mock("@/composables/useGet", () => ({
-    default: (_func: () => void, parameter: Ref) => {
-      parameter.value = [
+      mails: [
         {
           uuid: "12341234123412341234123412341234",
           sender: "hello@gmail.com",
@@ -50,9 +45,9 @@ describe("FolderMailImports", () => {
           is_read: false,
           is_pinned: false,
         },
-      ];
+      ],
     },
-  }));
+  });
 
   it("should display emails in correct order", () => {
     const subjects = wrapper.findAll(".text-ellipsis");

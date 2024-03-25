@@ -29,6 +29,7 @@
             :buttons="item.buttons"
             :is-first="index === 0 && grouping"
             :is-selected="selectedType === item.type"
+            :badge="item.badge"
           />
         </button>
 
@@ -82,6 +83,7 @@ export interface ContentGroupItem {
   name: string;
   children: ContentItem[];
   buttons: VNode[];
+  badge?: string;
 }
 
 import { ButtonToggle } from "lorga-ui";
