@@ -253,6 +253,7 @@ const markAsRead = (uuids: string[]) => {
     action: "mail_imports/mark_mails_as_read",
     mail_uuids: uuids,
   });
+  checkedMails.value = [];
 };
 
 const toggleMailPinned = (uuid: string) => {
