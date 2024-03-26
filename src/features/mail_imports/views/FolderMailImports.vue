@@ -187,23 +187,6 @@ const sortedMails = computed(() => {
     .sort((mail) => (mail.is_pinned ? -1 : 1));
 });
 
-// const sortMails = (mails: ImportedMail[] | undefined) =>
-//   mails
-//     ? [...mails]
-//         .sort((mail, previousMail) => {
-//           if (sorting.value === "asc") {
-//             return mail.sending_datetime < previousMail.sending_datetime
-//               ? 1
-//               : -1;
-//           } else {
-//             return mail.sending_datetime < previousMail.sending_datetime
-//               ? -1
-//               : 1;
-//           }
-//         })
-//         .sort((mail) => (mail.is_pinned ? -1 : 1))
-//     : [];
-
 const checkedMails = ref<string[]>([]);
 const toggleCheckedMail = (uuid: string) => {
   if (checkedMails.value.includes(uuid)) {
@@ -228,36 +211,36 @@ const toggleMailExpanded = (uuid: string) => {
     expandedMails.value.splice(expandedMails.value.indexOf(uuid), 1);
   } else {
     expandedMails.value.push(uuid);
-    const { commandRequest } = useCmd(query);
-    commandRequest({
-      action: "mail_imports/mark_mails_as_read",
-      mail_uuids: [uuid],
-    });
+    if (!mails.value.find((mail) => mail.uuid === uuid)?.is_read) {
+      const { commandRequest } = useCmd(query);
+      commandRequest({
+        action: "mail_imports/mark_mails_as_read",
+        mail_uuids: [uuid],
+      });
+    }
   }
 };
 
 const markAsRead = (uuids: string[]) => {
-  uuids.forEach((uuid) => {
-    // The UUID comes from the list of mails, so it is in the list
-    const currentMail = mails.value?.find((mail) => mail.uuid === uuid);
-    currentMail.is_read = true;
-  });
   const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/mark_mails_as_read",
     mail_uuids: uuids,
   });
   checkedMails.value = [];
+  (document.getElementById("toggleAllMails") as HTMLInputElement).checked =
+    false;
 };
 
 const toggleMailPinned = (uuid: string) => {
+  // TODO: remove this when the use case is working in the backend
   // The UUID comes from the list of mails, so it is in the list
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const selectedMail = mails.value?.find((mail) => mail.uuid === uuid)!;
   selectedMail.is_pinned = !selectedMail?.is_pinned;
   const { commandRequest } = useCmd(query);
   commandRequest({
-    action: "mail_imports/mark_mail_as_pinned",
+    action: "mail_imports/toggle_mail_pinned",
     mail_uuid: uuid,
   });
 };

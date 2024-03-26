@@ -10,6 +10,7 @@ describe("FolderMailImports", () => {
       plugins: [createTestingPinia()],
     },
     props: {
+      query: vi.fn,
       folderUuid: "123",
       selectedType: "MAIL_IMPORTS",
       mails: [
