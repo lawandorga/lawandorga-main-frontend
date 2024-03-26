@@ -43,12 +43,7 @@
             <AdjustmentsHorizontalIcon class="w-5 h-5" />
           </button>
         </ToolTip>
-        <template
-          v-for="mail in sortMails(
-            searchQuery.length > 0 ? searchResults : mails,
-          )"
-          :key="mail.uuid"
-        >
+        <template v-for="mail in searchResults || sortedMails" :key="mail.uuid">
           <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
           <input
             :checked="checkedMails.includes(mail.uuid)"
@@ -128,7 +123,6 @@
 </template>
 
 <script setup lang="ts">
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import {
   DisplayedFieldsObject,
@@ -136,7 +130,7 @@ import {
   Sorting,
 } from "@/types/mailImports";
 import { ModalFree } from "lorga-ui";
-import { ref, toRefs } from "vue";
+import { ref, toRefs, computed } from "vue";
 import {
   AdjustmentsHorizontalIcon,
   ChevronDownIcon,
@@ -156,14 +150,9 @@ const props = defineProps<{
   folderUuid: string;
   selectedType: string;
   mails: ImportedMail[];
+  query: () => void;
 }>();
-const { folderUuid, selectedType, mails } = toRefs(props);
-
-const client = useClient();
-const request = client.get(
-  "api/mail_imports/query/folder_mails/{}/",
-  folderUuid,
-);
+const { folderUuid, selectedType, mails, query } = toRefs(props);
 
 const searchQuery = ref<string>("");
 const searchResults = ref<ImportedMail[]>();
@@ -185,22 +174,35 @@ const fieldsShown = ref<DisplayedFieldsObject>({
   sending_datetime: true,
 });
 
-const sortMails = (mails: ImportedMail[] | undefined) =>
-  mails
-    ? [...mails]
-        .sort((mail, previousMail) => {
-          if (sorting.value === "asc") {
-            return mail.sending_datetime < previousMail.sending_datetime
-              ? 1
-              : -1;
-          } else {
-            return mail.sending_datetime < previousMail.sending_datetime
-              ? -1
-              : 1;
-          }
-        })
-        .sort((mail) => (mail.is_pinned ? -1 : 1))
-    : [];
+const sortedMails = computed(() => {
+  if (!mails.value) return [];
+  return [...mails.value]
+    .sort((mail, previousMail) => {
+      if (sorting.value === "asc") {
+        return mail.sending_datetime < previousMail.sending_datetime ? 1 : -1;
+      } else {
+        return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
+      }
+    })
+    .sort((mail) => (mail.is_pinned ? -1 : 1));
+});
+
+// const sortMails = (mails: ImportedMail[] | undefined) =>
+//   mails
+//     ? [...mails]
+//         .sort((mail, previousMail) => {
+//           if (sorting.value === "asc") {
+//             return mail.sending_datetime < previousMail.sending_datetime
+//               ? 1
+//               : -1;
+//           } else {
+//             return mail.sending_datetime < previousMail.sending_datetime
+//               ? -1
+//               : 1;
+//           }
+//         })
+//         .sort((mail) => (mail.is_pinned ? -1 : 1))
+//     : [];
 
 const checkedMails = ref<string[]>([]);
 const toggleCheckedMail = (uuid: string) => {
@@ -226,12 +228,7 @@ const toggleMailExpanded = (uuid: string) => {
     expandedMails.value.splice(expandedMails.value.indexOf(uuid), 1);
   } else {
     expandedMails.value.push(uuid);
-
-    // The UUID comes from the list of mails, so it is in the list
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const currentMail = mails.value?.find((mail) => mail.uuid === uuid)!;
-    currentMail.is_read = true;
-    const { commandRequest } = useCmd(request);
+    const { commandRequest } = useCmd(query);
     commandRequest({
       action: "mail_imports/mark_mails_as_read",
       mail_uuids: [uuid],
@@ -242,11 +239,10 @@ const toggleMailExpanded = (uuid: string) => {
 const markAsRead = (uuids: string[]) => {
   uuids.forEach((uuid) => {
     // The UUID comes from the list of mails, so it is in the list
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const currentMail = mails.value?.find((mail) => mail.uuid === uuid)!;
+    const currentMail = mails.value?.find((mail) => mail.uuid === uuid);
     currentMail.is_read = true;
   });
-  const { commandRequest } = useCmd(request);
+  const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/mark_mails_as_read",
     mail_uuids: uuids,
@@ -259,7 +255,7 @@ const toggleMailPinned = (uuid: string) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   const selectedMail = mails.value?.find((mail) => mail.uuid === uuid)!;
   selectedMail.is_pinned = !selectedMail?.is_pinned;
-  const { commandRequest } = useCmd(request);
+  const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/mark_mail_as_pinned",
     mail_uuid: uuid,

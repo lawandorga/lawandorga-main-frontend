@@ -105,6 +105,7 @@
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"
           :mails="mails"
+          :query="mailQuery"
         />
 
         <FolderTimeline
@@ -223,5 +224,5 @@ const mailRequest = client.get(
   "api/mail_imports/query/folder_mails/{}/",
   folderUuid,
 );
-useGet(mailRequest, mails);
+const mailQuery = useGet(mailRequest, mails);
 </script>
