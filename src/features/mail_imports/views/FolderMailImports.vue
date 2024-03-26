@@ -233,11 +233,6 @@ const markAsRead = (uuids: string[]) => {
 };
 
 const toggleMailPinned = (uuid: string) => {
-  // TODO: remove this when the use case is working in the backend
-  // The UUID comes from the list of mails, so it is in the list
-  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-  const selectedMail = mails.value?.find((mail) => mail.uuid === uuid)!;
-  selectedMail.is_pinned = !selectedMail?.is_pinned;
   const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/toggle_mail_pinned",
