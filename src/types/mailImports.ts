@@ -1,7 +1,7 @@
 export type ImportedMail = {
   uuid: string;
   sender: string;
-  bcc: string;
+  cc: string;
   subject: string;
   content: string;
   sending_datetime: Date;

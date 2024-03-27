@@ -162,7 +162,7 @@ const search = () => {
       mail.subject.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       mail.content.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       mail.sender.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      mail.bcc.toLowerCase().includes(searchQuery.value.toLowerCase()),
+      mail.cc.toLowerCase().includes(searchQuery.value.toLowerCase()),
   );
 };
 
