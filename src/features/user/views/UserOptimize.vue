@@ -80,6 +80,13 @@ const client = useClient();
 const { handleError } = useErrorHandling();
 
 const apps: IApps = {
+  MailImports: () =>
+    client
+      .post("api/command/")({ action: "mail_imports/import_mails" })
+      .catch((e) => {
+        handleError(e);
+        return Promise.reject(e);
+      }),
   Records: () =>
     client
       .post("api/command/")({ action: "data_sheets/optimize" })
