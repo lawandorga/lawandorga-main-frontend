@@ -2,10 +2,9 @@
   <ButtonNormal
     kind="action"
     class="w-[150px] text-center"
-    :disabled="addressCopied"
     @click="copyMailAddress"
   >
-    {{ addressCopied ? "Copied" : "Copy email address" }}
+    {{ addressCopied ? "Copied!" : "Copy email address" }}
   </ButtonNormal>
 </template>
 
@@ -24,5 +23,8 @@ const addressCopied = ref<boolean>(false);
 const copyMailAddress = () => {
   navigator.clipboard.writeText(address.value ?? "");
   addressCopied.value = true;
+  setTimeout(() => {
+    addressCopied.value = false;
+  }, 800);
 };
 </script>
