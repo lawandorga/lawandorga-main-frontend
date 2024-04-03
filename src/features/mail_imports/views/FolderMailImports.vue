@@ -60,7 +60,7 @@
         >
           Sender(s)
         </span>
-        <ToolTip class="col-start-6" text="Ansicht &auml;ndern">
+        <ToolTip class="col-start-6" text="Edit display">
           <button @click="settingsOpen = true">
             <AdjustmentsHorizontalIcon class="w-5 h-5" />
           </button>
@@ -179,7 +179,7 @@ import useCmd from "@/composables/useCmd";
 const props = defineProps<{
   folderUuid: string;
   selectedType: string;
-  mails: ImportedMail[];
+  mails?: ImportedMail[];
   query: () => void;
 }>();
 const { folderUuid, selectedType, mails, query } = toRefs(props);
@@ -249,7 +249,7 @@ const toggleMailExpanded = (uuid: string) => {
     expandedMails.value.splice(expandedMails.value.indexOf(uuid), 1);
   } else {
     expandedMails.value.push(uuid);
-    if (!mails.value.find((mail) => mail.uuid === uuid)?.is_read) {
+    if (!mails.value?.find((mail) => mail.uuid === uuid)?.is_read) {
       const { commandRequest } = useCmd(query);
       commandRequest({
         action: "mail_imports/mark_mails_as_read",
@@ -260,7 +260,7 @@ const toggleMailExpanded = (uuid: string) => {
 };
 
 const areAllCheckedEmailsRead = () =>
-  mails.value.filter(
+  mails.value?.filter(
     (mail) => checkedMails.value.includes(mail.uuid) && !mail.is_read,
   ).length === 0;
 

@@ -29,7 +29,7 @@ const props = defineProps<{
   grouping: boolean;
   selectedType: string;
   selectedId: string | number | null;
-  numberOfUnreadMails: string;
+  numberOfUnreadMails?: string;
 }>();
 
 const { folder, query, numberOfUnreadMails } = toRefs(props);

@@ -46,7 +46,7 @@
           :selected-id="selectedId"
           :selected-type="selectedType"
           :number-of-unread-mails="
-            mails?.filter((mail) => !mail.is_read).length
+            mails?.filter((mail) => !mail.is_read).length.toString()
           "
           @selected="select($event.id, $event.type)"
           @grouping="updateGrouping($event)"
