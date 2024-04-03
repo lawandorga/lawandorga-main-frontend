@@ -118,7 +118,7 @@ const groups = computed<ContentGroupItem[]>(() => {
 
   if (userStore.user?.email === "dummy@law-orga.de") {
     g.push({
-      name: "Mail-Imports",
+      name: "Mail Imports",
       type: "MAIL_IMPORTS",
       children: [],
       buttons: [],

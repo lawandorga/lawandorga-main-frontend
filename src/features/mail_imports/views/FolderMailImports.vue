@@ -1,7 +1,7 @@
 <template>
   <div v-if="mails">
     <BoxHeadingStats
-      title="Mail-Imports"
+      title="Mail Imports"
       :show="selectedType === 'MAIL_IMPORTS'"
       :stats="[mails.length === 1 ? '1 mail' : `${mails.length} mails`]"
     >
@@ -34,7 +34,16 @@
           type="checkbox"
           @input="toggleAllCheckedMails"
         />
-        <ToolTip text="Mark as read" class="col-start-2">
+        <ToolTip
+          v-if="checkedMails.length !== 0 && areAllCheckedEmailsRead()"
+          text="Mark as unread"
+          class="col-start-2"
+        >
+          <button @click="() => markAsUnread(checkedMails)">
+            <EnvelopeIcon class="w-5 h-5" />
+          </button>
+        </ToolTip>
+        <ToolTip v-else text="Mark as read" class="col-start-2">
           <button @click="() => markAsRead(checkedMails)">
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
@@ -125,7 +134,7 @@
       </div>
       <ModalFree
         v-model="settingsOpen"
-        title="Edit the display of the mail-imports"
+        title="Edit the display of the mail imports"
         width="max-w-xl"
       >
         <SettingsOverlay
@@ -154,6 +163,7 @@ import { ref, toRefs, computed } from "vue";
 import {
   AdjustmentsHorizontalIcon,
   ChevronDownIcon,
+  EnvelopeIcon,
   EnvelopeOpenIcon,
   MagnifyingGlassIcon,
   StarIcon as StarOutlineIcons,
@@ -211,6 +221,7 @@ const sortedMails = computed(() => {
         return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
       }
     })
+    .sort((mail) => (mail.is_read ? -1 : 1))
     .sort((mail) => (mail.is_pinned ? -1 : 1));
 });
 
@@ -246,6 +257,22 @@ const toggleMailExpanded = (uuid: string) => {
       });
     }
   }
+};
+
+const areAllCheckedEmailsRead = () =>
+  mails.value.filter(
+    (mail) => checkedMails.value.includes(mail.uuid) && !mail.is_read,
+  ).length === 0;
+
+const markAsUnread = (uuids: string[]) => {
+  const { commandRequest } = useCmd(query);
+  commandRequest({
+    action: "mail_imports/mark_mails_as_unread",
+    mail_uuids: uuids,
+  });
+  checkedMails.value = [];
+  (document.getElementById("toggleAllMails") as HTMLInputElement).checked =
+    false;
 };
 
 const markAsRead = (uuids: string[]) => {
