@@ -22,6 +22,9 @@
           />
         </div>
       </template>
+      <ButtonNormal class="mb-4" @click="importMails">
+        Import new mails
+      </ButtonNormal>
       <div
         class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
       >
@@ -36,15 +39,28 @@
             <EnvelopeOpenIcon class="w-5 h-5" />
           </button>
         </ToolTip>
-        <span v-if="fieldsShown.subject" class="col-span-1">Subject</span>
-        <span v-if="fieldsShown.sender" class="col-span-1">Sender(s)</span>
+        <span
+          v-if="fieldsShown.subject"
+          class="col-span-1 font-semibold text-neutral-600"
+        >
+          Subject
+        </span>
+        <span
+          v-if="fieldsShown.sender"
+          class="col-span-1 font-semibold text-neutral-600"
+        >
+          Sender(s)
+        </span>
         <ToolTip class="col-start-6" text="Ansicht &auml;ndern">
           <button @click="settingsOpen = true">
             <AdjustmentsHorizontalIcon class="w-5 h-5" />
           </button>
         </ToolTip>
-        <template v-for="mail in searchResults || sortedMails" :key="mail.uuid">
-          <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
+        <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
+        <template
+          v-for="(mail, index) in searchResults || sortedMails"
+          :key="mail.uuid"
+        >
           <input
             :checked="checkedMails.includes(mail.uuid)"
             class="self-center w-4 h-4 col-start-1 justify-self-center"
@@ -95,6 +111,10 @@
             />
           </button>
           <MailContent v-if="expandedMails.includes(mail.uuid)" :mail="mail" />
+          <div
+            v-if="index !== mails.length - 1"
+            class="w-auto h-px col-span-6 col-start-1 bg-neutral-300"
+          />
         </template>
         <div
           v-if="searchQuery.length > 0 && searchResults?.length === 0"
@@ -129,7 +149,7 @@ import {
   ImportedMail,
   Sorting,
 } from "@/types/mailImports";
-import { ModalFree } from "lorga-ui";
+import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs, computed } from "vue";
 import {
   AdjustmentsHorizontalIcon,
@@ -164,6 +184,13 @@ const search = () => {
       mail.sender.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       mail.cc.toLowerCase().includes(searchQuery.value.toLowerCase()),
   );
+};
+
+const importMails = () => {
+  const { commandRequest } = useCmd(query);
+  commandRequest({
+    action: "mail_imports/import_mails",
+  });
 };
 
 const settingsOpen = ref<boolean>(false);
