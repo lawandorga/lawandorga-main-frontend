@@ -22,7 +22,7 @@
         </div>
       </template>
       <ButtonNormal class="mb-4" @click="importMails">
-        Import new mails
+        {{ importRunning ? "Importing..." : "Import new mails" }}
       </ButtonNormal>
       <div
         class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
@@ -195,10 +195,13 @@ const searchResults = computed<ImportedMail[]>(() => {
   );
 });
 
-const importMails = () => {
-  commandRequest({
+const importRunning = ref<boolean>(false);
+const importMails = async () => {
+  importRunning.value = true;
+  await commandRequest({
     action: "mail_imports/import_mails",
   });
+  importRunning.value = false;
 };
 
 const settingsOpen = ref<boolean>(false);
