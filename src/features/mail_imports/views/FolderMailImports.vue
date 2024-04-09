@@ -15,7 +15,6 @@
             type="search"
             placeholder="Search in mails"
             class="p-3 rounded-full bg-neutral-100"
-            @input="search"
           />
           <MagnifyingGlassIcon
             class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
@@ -185,16 +184,17 @@ const props = defineProps<{
 const { folderUuid, selectedType, mails, query } = toRefs(props);
 
 const searchQuery = ref<string>("");
-const searchResults = ref<ImportedMail[]>();
-const search = () => {
-  searchResults.value = mails.value?.filter(
+const searchResults = computed<ImportedMail[]>(() => {
+  if (!mails.value) return [];
+  if (!searchQuery.value) return mails.value;
+  return mails.value.filter(
     (mail) =>
       mail.subject.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       mail.content.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       mail.sender.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      mail.cc.toLowerCase().includes(searchQuery.value.toLowerCase()),
+      mail.to.toLowerCase().includes(searchQuery.value.toLowerCase()),
   );
-};
+});
 
 const importMails = () => {
   const { commandRequest } = useCmd(query);
@@ -213,16 +213,18 @@ const fieldsShown = ref<DisplayedFieldsObject>({
 
 const sortedMails = computed(() => {
   if (!mails.value) return [];
-  return [...mails.value]
-    .sort((mail, previousMail) => {
-      if (sorting.value === "asc") {
-        return mail.sending_datetime < previousMail.sending_datetime ? 1 : -1;
-      } else {
-        return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
-      }
-    })
-    .sort((mail) => (mail.is_read ? -1 : 1))
-    .sort((mail) => (mail.is_pinned ? -1 : 1));
+  return (
+    [...mails.value]
+      .sort((mail, previousMail) => {
+        if (sorting.value === "asc") {
+          return mail.sending_datetime < previousMail.sending_datetime ? 1 : -1;
+        } else {
+          return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
+        }
+      })
+      // .sort((mail) => (mail.is_read ? -1 : 1))
+      .sort((mail) => (mail.is_pinned ? -1 : 1))
+  );
 });
 
 const checkedMails = ref<string[]>([]);
