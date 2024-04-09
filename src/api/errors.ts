@@ -5,14 +5,14 @@ import { AxiosError } from "axios";
 import { Router, useRouter } from "vue-router";
 import { getLoginUrl } from "@/utils/login";
 
-interface IContext {
+interface Context {
   error: AxiosError;
   alertStore: ReturnType<typeof useAlertStore>;
   userStore: ReturnType<typeof useUserStore>;
   router: Router;
 }
 
-export function handleAuthenticationError(context: IContext): Promise<void> {
+export function handleAuthenticationError(context: Context): Promise<void> {
   const userStore = context.userStore;
   const error = context.error;
 
@@ -26,7 +26,7 @@ export function handleAuthenticationError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function handleFileTooBigError(context: IContext): Promise<void> {
+export function handleFileTooBigError(context: Context): Promise<void> {
   const error = context.error;
 
   if (error.response && error.response.status === 413) {
@@ -41,7 +41,7 @@ export function handleFileTooBigError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function handleNetworkError(context: IContext): Promise<void> {
+export function handleNetworkError(context: Context): Promise<void> {
   const alertStore = context.alertStore;
   const error = context.error;
 
@@ -58,7 +58,7 @@ export function handleNetworkError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function handleFileDownloadError(context: IContext): Promise<void> {
+export function handleFileDownloadError(context: Context): Promise<void> {
   const alertStore = context.alertStore;
   const error = context.error;
 
@@ -93,7 +93,7 @@ export function handleFileDownloadError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function handleServerError(context: IContext): Promise<void> {
+export function handleServerError(context: Context): Promise<void> {
   const alertStore = context.alertStore;
   const error = context.error;
 
@@ -107,7 +107,7 @@ export function handleServerError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function handleTitleError(context: IContext): Promise<void> {
+export function handleTitleError(context: Context): Promise<void> {
   const error = context.error as AxiosError<{ title?: string }>;
   const alertStore = context.alertStore;
 
@@ -123,7 +123,7 @@ export function handleTitleError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function handleDetailError(context: IContext): Promise<void> {
+export function handleDetailError(context: Context): Promise<void> {
   const error = context.error as AxiosError<{ detail?: string }>;
   const alertStore = context.alertStore;
 
@@ -139,7 +139,7 @@ export function handleDetailError(context: IContext): Promise<void> {
   return Promise.reject(context);
 }
 
-export function resetContext(context: IContext): Promise<void> {
+export function resetContext(context: Context): Promise<void> {
   const error = context.error;
   return Promise.reject(error);
 }
@@ -215,7 +215,7 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
   return Promise.reject(newError);
 }
 
-export function handleQueryError(context: IContext): Promise<void> {
+export function handleQueryError(context: Context): Promise<void> {
   return Promise.reject(context)
     .catch(handleAuthenticationError)
     .catch(handleNetworkError)
@@ -227,27 +227,27 @@ export function handleQueryError(context: IContext): Promise<void> {
     .catch(cleanUpError);
 }
 
-export function handleCommandError(context: IContext): Promise<void> {
+export function handleCommandError(context: Context): Promise<void> {
   return Promise.reject(context)
-    .catch((context: IContext) => {
+    .catch((context: Context) => {
       handleAuthenticationError(context).catch(() => {
         // ignore as command error should always be unhandled for the modal or form
       });
       return Promise.reject(context);
     })
-    .catch((context: IContext) => {
+    .catch((context: Context) => {
       handleFileTooBigError(context).catch(() => {
         // ignore as command error should always be unhandled for the modal or form
       });
       return Promise.reject(context);
     })
-    .catch((context: IContext) => {
+    .catch((context: Context) => {
       handleNetworkError(context).catch(() => {
         // ignore as command error should always be unhandled for the modal or form
       });
       return Promise.reject(context);
     })
-    .catch((context: IContext) => {
+    .catch((context: Context) => {
       handleServerError(context).catch(() => {
         // ignore as command error should always be unhandled for the modal or form
       });
@@ -257,7 +257,7 @@ export function handleCommandError(context: IContext): Promise<void> {
     .catch(cleanUpError);
 }
 
-export function handleError(context: IContext): Promise<void> {
+export function handleError(context: Context): Promise<void> {
   return Promise.reject(context)
     .catch(handleAuthenticationError)
     .catch(handleNetworkError)
@@ -274,8 +274,8 @@ export function buildContext(
   alertStore: ReturnType<typeof useAlertStore>,
   userStore: ReturnType<typeof useUserStore>,
   router: Router,
-): IContext {
-  const context: IContext = {
+): Context {
+  const context: Context = {
     error,
     alertStore,
     userStore,
@@ -292,10 +292,10 @@ export function useErrorHandling() {
   const injectHandleError =
     (
       // eslint-disable-next-line no-unused-vars
-      f: (context: IContext) => Promise<void>,
-      alertStore: IContext["alertStore"],
-      userStore: IContext["userStore"],
-      router: IContext["router"],
+      f: (context: Context) => Promise<void>,
+      alertStore: Context["alertStore"],
+      userStore: Context["userStore"],
+      router: Context["router"],
     ) =>
     (error: AxiosError) => {
       const context = buildContext(error, alertStore, userStore, router);
