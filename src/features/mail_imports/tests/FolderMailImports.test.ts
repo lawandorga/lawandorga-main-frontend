@@ -4,6 +4,8 @@ import { vi } from "vitest";
 import { nextTick } from "vue";
 import FolderMailImportsVue from "../views/FolderMailImports.vue";
 
+vi.mock("vue-router");
+
 describe("FolderMailImports", () => {
   const wrapper = mount(FolderMailImportsVue, {
     global: {
