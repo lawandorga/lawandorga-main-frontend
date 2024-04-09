@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { vi } from "vitest";
-import { Ref, nextTick } from "vue";
+import { nextTick } from "vue";
 import FolderMailImportsVue from "../views/FolderMailImports.vue";
 
 describe("FolderMailImports", () => {
@@ -57,8 +57,8 @@ describe("FolderMailImports", () => {
     const subjects = wrapper.findAll(".text-ellipsis");
     expect(subjects).toHaveLength(3);
     expect(subjects[0].text()).toBe("Second email");
-    expect(subjects[1].text()).toBe("First email");
-    expect(subjects[2].text()).toBe("Third email");
+    expect(subjects[1].text()).toBe("Third email");
+    expect(subjects[2].text()).toBe("First email");
   });
 
   describe("SearchBar", () => {

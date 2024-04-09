@@ -65,10 +65,7 @@
           </button>
         </ToolTip>
         <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
-        <template
-          v-for="(mail, index) in searchResults || sortedMails"
-          :key="mail.uuid"
-        >
+        <template v-for="(mail, index) in sortedMails" :key="mail.uuid">
           <input
             :checked="checkedMails.includes(mail.uuid)"
             class="self-center w-4 h-4 col-start-1 justify-self-center"
@@ -183,6 +180,8 @@ const props = defineProps<{
 }>();
 const { folderUuid, selectedType, mails, query } = toRefs(props);
 
+const { commandRequest } = useCmd(query);
+
 const searchQuery = ref<string>("");
 const searchResults = computed<ImportedMail[]>(() => {
   if (!mails.value) return [];
@@ -197,7 +196,6 @@ const searchResults = computed<ImportedMail[]>(() => {
 });
 
 const importMails = () => {
-  const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/import_mails",
   });
@@ -212,19 +210,16 @@ const fieldsShown = ref<DisplayedFieldsObject>({
 });
 
 const sortedMails = computed(() => {
-  if (!mails.value) return [];
-  return (
-    [...mails.value]
-      .sort((mail, previousMail) => {
-        if (sorting.value === "asc") {
-          return mail.sending_datetime < previousMail.sending_datetime ? 1 : -1;
-        } else {
-          return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
-        }
-      })
-      // .sort((mail) => (mail.is_read ? -1 : 1))
-      .sort((mail) => (mail.is_pinned ? -1 : 1))
-  );
+  if (!searchResults.value) return [];
+  return [...searchResults.value]
+    .sort((mail, previousMail) => {
+      if (sorting.value === "asc") {
+        return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
+      } else {
+        return mail.sending_datetime < previousMail.sending_datetime ? 1 : -1;
+      }
+    })
+    .sort((mail) => (mail.is_pinned ? -1 : 1));
 });
 
 const checkedMails = ref<string[]>([]);
@@ -252,7 +247,6 @@ const toggleMailExpanded = (uuid: string) => {
   } else {
     expandedMails.value.push(uuid);
     if (!mails.value?.find((mail) => mail.uuid === uuid)?.is_read) {
-      const { commandRequest } = useCmd(query);
       commandRequest({
         action: "mail_imports/mark_mails_as_read",
         mail_uuids: [uuid],
@@ -267,7 +261,6 @@ const areAllCheckedEmailsRead = () =>
   ).length === 0;
 
 const markAsUnread = (uuids: string[]) => {
-  const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/mark_mails_as_unread",
     mail_uuids: uuids,
@@ -278,7 +271,6 @@ const markAsUnread = (uuids: string[]) => {
 };
 
 const markAsRead = (uuids: string[]) => {
-  const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/mark_mails_as_read",
     mail_uuids: uuids,
@@ -289,7 +281,6 @@ const markAsRead = (uuids: string[]) => {
 };
 
 const toggleMailPinned = (uuid: string) => {
-  const { commandRequest } = useCmd(query);
   commandRequest({
     action: "mail_imports/toggle_mail_pinned",
     mail_uuid: uuid,
