@@ -62,13 +62,13 @@ import TemplateUpdate from "@/features/questionnaires/actions/TemplateUpdate.vue
 import TemplateDelete from "@/features/questionnaires/actions/TemplateDelete.vue";
 import useClient from "@/api/client";
 
-interface IQuestionnaireTemplate {
+interface QuestionnaireTemplate {
   id: string;
   name: string;
   notes: string;
 }
 
-const templates = ref<IQuestionnaireTemplate>();
+const templates = ref<QuestionnaireTemplate>();
 
 const request = useClient().get("api/questionnaires/query/templates/");
 const query = useGet(request, templates);

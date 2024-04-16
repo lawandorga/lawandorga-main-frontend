@@ -34,7 +34,7 @@ import { ButtonNormal, CircleLoader, FormGenerator, types } from "lorga-ui";
 import { useRoute } from "vue-router";
 import useClient from "@/api/client";
 import { ref } from "vue";
-import { IUploadLink } from "@/types/uploads";
+import { UploadLink } from "@/types/uploads";
 import useGet from "@/composables/useGet";
 import useCmd from "@/composables/useCmd";
 
@@ -55,7 +55,7 @@ const fields: types.FormField[] = [
 
 const client = useClient();
 
-const link = ref<IUploadLink>();
+const link = ref<UploadLink>();
 useGet(
   client.get("api/uploads/query/{}/public/", route.params.uuid as string),
   link,

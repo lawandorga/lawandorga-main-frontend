@@ -142,7 +142,7 @@ import FolderFile from "@/features/files/components/FolderFile.vue";
 import FolderAccess from "@/features/folders/components/FolderAccess.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import { IContent, IFolderDetail } from "@/types/folders";
+import { Content, FolderDetail } from "@/types/folders";
 import FolderUploads from "@/features/uploads/components/FolderUploads.vue";
 import FolderNavigationContent from "@/features/folders/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/features/folders/components/FolderNavigationSelf.vue";
@@ -162,7 +162,7 @@ const folderUuid = computed(() => route.params.uuid as string);
 // folder
 const client = useClient();
 const request = client.get(`/api/folders/query/{}/`, folderUuid);
-const folder = ref<IFolderDetail>();
+const folder = ref<FolderDetail>();
 const query = useGet(request, folder, folderUuid);
 
 const userAccess = computed(() => {
@@ -207,9 +207,9 @@ const updateGrouping = (value: boolean) => {
   userStore.updateSetting("recordGrouping", value);
 };
 
-const record = computed<IContent | null>(() => {
+const record = computed<Content | null>(() => {
   if (!folder.value) return null;
-  const item = folder.value.content.find((item: IContent) => {
+  const item = folder.value.content.find((item: Content) => {
     return item.repository === "RECORDS_RECORD";
   });
   if (!item) return null;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { computed, toRefs } from "vue";
-import { IFolderDetail } from "@/types/folders";
+import { FolderDetail } from "@/types/folders";
 import { CircleLoader } from "lorga-ui";
 
 const props = defineProps<{
-  folder: IFolderDetail | null;
+  folder: FolderDetail | null;
   selectedId: string | number | null;
   selectedType: string;
 }>();

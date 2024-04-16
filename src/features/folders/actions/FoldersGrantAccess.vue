@@ -17,14 +17,14 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { IFolderPerson } from "@/types/folders";
+import { FolderPerson } from "@/types/folders";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   folderUuid: string;
   query: () => void;
-  availablePersons: IFolderPerson[];
+  availablePersons: FolderPerson[];
 }>();
 
 const { query, availablePersons } = toRefs(props);

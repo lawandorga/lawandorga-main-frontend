@@ -1,4 +1,4 @@
-export interface IArticle {
+export interface Article {
   id: number;
   title: string;
   description: string;
@@ -7,24 +7,24 @@ export interface IArticle {
   author_name?: string;
 }
 
-export interface IArticleList {
+export interface ArticleList {
   id: number;
   title: string;
   description: string;
   date: string;
 }
 
-export interface IRoadmapItem {
+export interface RoadmapItem {
   id: number;
   title: string;
   description: string;
   date: string;
 }
 
-export interface ILoginPage {
+export interface LoginPage {
   content: string;
-  roadmap_items: IRoadmapItem[];
-  articles: IArticleList[];
+  roadmap_items: RoadmapItem[];
+  articles: ArticleList[];
 }
 
 export interface ImprintPage {

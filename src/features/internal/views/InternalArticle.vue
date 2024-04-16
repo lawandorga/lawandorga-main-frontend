@@ -27,11 +27,11 @@
 import { ref } from "vue";
 import InternalService from "@/features/internal/internal_service";
 import { useRoute } from "vue-router";
-import { IArticle } from "@/types/internal";
+import { Article } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import useGet from "@/composables/useGet";
 
-const article = ref<IArticle | null>(null);
+const article = ref<Article | null>(null);
 const route = useRoute();
 
 useGet(InternalService.getArticle, article, route.params.id as string);

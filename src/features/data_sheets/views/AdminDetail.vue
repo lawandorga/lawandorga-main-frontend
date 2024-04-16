@@ -118,7 +118,7 @@ import useClient from "@/api/client";
 import CreateField from "../actions/CreateField.vue";
 import UpdateField from "../actions/UpdateField.vue";
 
-interface IField {
+interface Field {
   field_type: string;
   encrypted: string;
   name: string;
@@ -129,10 +129,10 @@ interface IField {
   group_id: number | null;
 }
 
-interface ITemplate {
+interface Template {
   id: number;
   name: string;
-  fields: IField[];
+  fields: Field[];
 }
 
 // other
@@ -145,7 +145,7 @@ const retrieve = client.get(
   route.params.id as string,
 );
 
-const template = ref<ITemplate>();
+const template = ref<Template>();
 const query = useGet(retrieve, template);
 
 // help

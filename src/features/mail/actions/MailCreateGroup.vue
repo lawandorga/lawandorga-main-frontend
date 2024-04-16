@@ -15,13 +15,13 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { IAvailableMailDomain } from "@/types/mail";
+import { AvailableMailDomain } from "@/types/mail";
 import { ModalCreate, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;
-  availableDomains: IAvailableMailDomain[];
+  availableDomains: AvailableMailDomain[];
 }>();
 const { availableDomains, query } = toRefs(props);
 

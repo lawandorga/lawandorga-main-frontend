@@ -65,7 +65,7 @@ import useClient from "@/api/client";
 import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
 import useCmd from "@/composables/useCmd";
 
-interface IQuestionnaire {
+interface Questionnaire {
   id: number;
   template: {
     id: number;
@@ -85,7 +85,7 @@ interface IQuestionnaire {
   }[];
 }
 
-const recordQuestionnaire = ref<IQuestionnaire>();
+const recordQuestionnaire = ref<Questionnaire>();
 const route = useRoute();
 
 const client = useClient();

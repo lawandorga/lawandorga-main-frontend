@@ -27,14 +27,14 @@
 </template>
 
 <script setup lang="ts">
-import { IFolderGroup, IFolderItem } from "@/types/folders";
+import { FolderGroup, FolderItem } from "@/types/folders";
 import { TableGenerator } from "lorga-ui";
 import FoldersGrantAccessGroup from "../actions/FoldersGrantAccessGroup.vue";
 import FoldersRevokeAccessGroup from "../actions/FoldersRevokeAccessGroup.vue";
 
 defineProps<{
   query: () => void;
-  item: IFolderItem;
-  availableGroups: IFolderGroup[];
+  item: FolderItem;
+  availableGroups: FolderGroup[];
 }>();
 </script>

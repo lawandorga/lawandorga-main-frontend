@@ -14,14 +14,14 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { IMailUser } from "@/types/mail";
+import { MailUser } from "@/types/mail";
 import { ModalForm, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;
   groupUuid: string;
-  availableUsers: IMailUser[];
+  availableUsers: MailUser[];
 }>();
 const { query, availableUsers } = toRefs(props);
 

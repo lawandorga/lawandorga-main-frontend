@@ -5,7 +5,7 @@ import useClient from "@/api/client";
 import useQuery from "@/composables/useQuery";
 import useCmd from "@/composables/useCmd";
 
-export interface IQuestionnaireTemplate {
+export interface QuestionnaireTemplate {
   id: number;
   rlc: number;
   name: string;
@@ -23,7 +23,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const getRequest = client.get("api/questionnaires/query/templates/");
 
-const templates = ref<IQuestionnaireTemplate[]>([]);
+const templates = ref<QuestionnaireTemplate[]>([]);
 const getQuery = useQuery(getRequest, templates);
 
 const fields = computed<types.FormField[]>(() => [

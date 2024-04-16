@@ -1,17 +1,17 @@
-import { IContent, IFolderItem } from "@/types/folders";
+import { Content, FolderItem } from "@/types/folders";
 import { computed, Ref } from "vue";
 
 export function useFolderProperties(
-  folders: Ref<(IFolderItem | IContent)[] | null>,
+  folders: Ref<(FolderItem | Content)[] | null>,
 ) {
-  const getFolderProperties = (item: IFolderItem): string => {
+  const getFolderProperties = (item: FolderItem): string => {
     const properties: string[] = [];
     if (!item.folder.has_access) {
       properties.push("N");
       return properties.join(", ");
     }
     if (item.folder.stop_inherit) properties.push("C");
-    if (item.content.some((i: IContent) => i.repository === "RECORDS_RECORD"))
+    if (item.content.some((i: Content) => i.repository === "RECORDS_RECORD"))
       properties.push("R");
     return properties.join(", ");
   };

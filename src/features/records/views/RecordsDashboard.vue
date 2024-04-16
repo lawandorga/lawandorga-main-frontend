@@ -74,40 +74,40 @@ import { useUserStore } from "@/store/user";
 import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
 import useClient from "@/api/client";
 import TabControls from "@/components/TabControls.vue";
-import { IRecordListPageV2 } from "../types/recordListPageV2";
-import { IListRecordV2 } from "../types/listRecordV2";
+import { RecordListPageV2 } from "../types/recordListPageV2";
+import { ListRecordV2 } from "../types/listRecordV2";
 import SettingsViews from "../components/SettingsViews.vue";
-import { IView } from "../types/view";
+import { View } from "../types/view";
 import CreateDeletion from "../actions/CreateDeletion.vue";
 import DeletionRequests from "../components/DeletionRequests.vue";
-import { IDeletion } from "../types/deletion";
+import { Deletion } from "../types/deletion";
 import AccessRequests from "../components/AccessRequests.vue";
-import { IAccessRequest } from "../types/accessRequest";
+import { AccessRequest } from "../types/accessRequest";
 import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 
 const client = useClient();
 const request = client.get("/api/records/query/dashboard/");
 
-const page = ref<IRecordListPageV2 | null>(null);
+const page = ref<RecordListPageV2 | null>(null);
 const query = useGet(request, page);
 
-const records = computed<IListRecordV2[] | null>(() => {
+const records = computed<ListRecordV2[] | null>(() => {
   if (page.value === null) return null;
   return page.value.records;
 });
 
-const views = computed<IView[]>(() => {
+const views = computed<View[]>(() => {
   if (page.value === null) return [];
   return page.value.views;
 });
 
-const deletionRequests = computed<IDeletion[]>(() => {
+const deletionRequests = computed<Deletion[]>(() => {
   if (page.value === null) return [];
   return page.value.deletions;
 });
 
-const accessRequests = computed<IAccessRequest[]>(() => {
+const accessRequests = computed<AccessRequest[]>(() => {
   if (page.value === null) return [];
   return page.value.access_requests;
 });

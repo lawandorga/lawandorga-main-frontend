@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { IContent, IFolderDetail } from "@/types/folders";
+import { Content, FolderDetail } from "@/types/folders";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
 import { computed, toRefs } from "vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
@@ -69,14 +69,14 @@ import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 const props = defineProps<{
   selectedId: string | number | null;
   selectedType: string;
-  folder: IFolderDetail;
+  folder: FolderDetail;
   query: () => void;
 }>();
 
 const { folder } = toRefs(props);
 
-const record = computed<IContent | null>(() => {
-  const item = folder.value.content.find((item: IContent) => {
+const record = computed<Content | null>(() => {
+  const item = folder.value.content.find((item: Content) => {
     return item.repository === "RECORDS_RECORD";
   });
   if (!item) return null;

@@ -84,7 +84,7 @@ import { computed, Ref, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useGet from "@/composables/useGet";
-import { GroupMember, IGroupDetail, IGroupPermission } from "@/types/core";
+import { GroupMember, GroupDetail, GroupPermission } from "@/types/core";
 import { useRoute } from "vue-router";
 import GroupsAddMember from "@/features/org/actions/GroupsAddMember.vue";
 import GroupsRemoveMember from "@/features/org/actions/GroupsRemoveMember.vue";
@@ -98,7 +98,7 @@ const client = useClient();
 
 const request = client.get("api/query/group/{}/", route.params.id as string);
 
-const group = ref(null) as Ref<IGroupDetail | null>;
+const group = ref(null) as Ref<GroupDetail | null>;
 const query = useGet(request, group);
 
 const members = computed<GroupMember[] | null>(() => {
@@ -106,7 +106,7 @@ const members = computed<GroupMember[] | null>(() => {
   return group.value.members;
 });
 
-const permissions = computed<IGroupPermission[] | null>(() => {
+const permissions = computed<GroupPermission[] | null>(() => {
   if (!group.value) return null;
   return group.value.permissions;
 });

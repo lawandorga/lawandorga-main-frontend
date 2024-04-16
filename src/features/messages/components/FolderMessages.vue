@@ -47,7 +47,7 @@ import { CircleLoader } from "lorga-ui";
 import DeleteMessage from "../actions/DeleteMessage.vue";
 import useClient from "@/api/client";
 
-interface IMessage {
+interface Message {
   id: number;
   message: string;
   sender_name: string;
@@ -61,7 +61,7 @@ const props = defineProps<{
 
 const { selectedType, folderUuid } = toRefs(props);
 
-const messages = ref<IMessage[] | null>(null);
+const messages = ref<Message[] | null>(null);
 
 const loading = ref(false);
 

@@ -156,11 +156,11 @@ import FoldersToggleInheritance from "@/features/folders/actions/FoldersToggleIn
 import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
 import {
-  IContent,
-  IFolder,
-  IFolderGroup,
-  IFolderItem,
-  IFolderPerson,
+  Content,
+  Folder,
+  FolderGroup,
+  FolderItem,
+  FolderPerson,
 } from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
@@ -173,10 +173,10 @@ import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
 
 const props = defineProps<{
   query: () => void;
-  folderList: IFolder[];
-  folderItems: IFolderItem[];
-  availablePersons: IFolderPerson[];
-  availableGroups: IFolderGroup[];
+  folderList: Folder[];
+  folderItems: FolderItem[];
+  availablePersons: FolderPerson[];
+  availableGroups: FolderGroup[];
 }>();
 const { folderItems } = toRefs(props);
 
@@ -184,8 +184,8 @@ const userStore = useUserStore();
 
 const findFolderPath = (
   id: string,
-  folderItems: IFolderItem[],
-): IFolderItem[] | null => {
+  folderItems: FolderItem[],
+): FolderItem[] | null => {
   for (let i of folderItems) {
     if (i.folder.uuid === id) return [i];
     const innerFound = findFolderPath(id, i.children);
@@ -201,21 +201,21 @@ const selectedFolderInTableView = userStore.getSetting(
 
 const selectedFolder = ref<string | undefined>(selectedFolderInTableView);
 
-const path = computed<IFolderItem[] | null>(() => {
+const path = computed<FolderItem[] | null>(() => {
   if (selectedFolder.value)
     return findFolderPath(selectedFolder.value, folderItems.value);
 
   return null;
 });
 
-const selected = computed<IFolderItem | null>(() => {
+const selected = computed<FolderItem | null>(() => {
   if (path.value) return path.value[path.value.length - 1];
   return null;
 });
 
-const tableFolders = computed<(IFolderItem | IContent)[]>(() => {
+const tableFolders = computed<(FolderItem | Content)[]>(() => {
   if (selected.value) {
-    let items: (IFolderItem | IContent)[] = [];
+    let items: (FolderItem | Content)[] = [];
     items = items.concat(selected.value.children);
     const content = selected.value.content.filter(
       (c) => c.repository !== "RECORDS_RECORD",
@@ -226,7 +226,7 @@ const tableFolders = computed<(IFolderItem | IContent)[]>(() => {
   return folderItems.value;
 });
 
-const tableFoldersAndPathFolders = computed<(IFolderItem | IContent)[]>(() => {
+const tableFoldersAndPathFolders = computed<(FolderItem | Content)[]>(() => {
   if (tableFolders.value && path.value)
     return tableFolders.value.concat(path.value);
   return [];

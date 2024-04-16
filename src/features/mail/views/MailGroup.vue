@@ -16,7 +16,7 @@
       <TableGenerator
         :head="[
           { name: 'Address', key: 'localpart' },
-          { name: 'Domain', key: (o: IMailAddress) => o.domain.name },
+          { name: 'Domain', key: (o: MailAddress) => o.domain.name },
           { name: 'default', key: 'is_default' },
           { name: '', key: 'action' },
         ]"
@@ -86,12 +86,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet from "@/composables/useGet";
 import { mailGetGroupPage } from "@/features/mail/mail";
 import { useUserStore } from "@/store/user";
-import {
-  IMailAddress,
-  IMailDomain,
-  IMailGroupPage,
-  IMailUser,
-} from "@/types/mail";
+import { MailAddress, MailDomain, MailGroupPage, MailUser } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "lorga-ui";
 import { computed, ref } from "vue";
@@ -102,23 +97,23 @@ const userStore = useUserStore();
 
 // page
 const route = useRoute();
-const page = ref<IMailGroupPage>();
+const page = ref<MailGroupPage>();
 const query = useGet(mailGetGroupPage, page, route.params.uuid as string);
 
 // available domains
-const availableDomains = computed<IMailDomain[]>(() => {
+const availableDomains = computed<MailDomain[]>(() => {
   if (!page.value) return [];
   return page.value.available_domains;
 });
 
 // members
-const members = computed<IMailUser[] | null>(() => {
+const members = computed<MailUser[] | null>(() => {
   if (!page.value) return null;
   return page.value.members;
 });
 
 // addresses
-const addresses = computed<IMailAddress[] | null>(() => {
+const addresses = computed<MailAddress[] | null>(() => {
   if (!page.value) return null;
   return page.value.addresses;
 });

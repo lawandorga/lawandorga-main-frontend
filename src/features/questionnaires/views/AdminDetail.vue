@@ -86,7 +86,7 @@ import TemplateFieldDelete from "../actions/TemplateFieldDelete.vue";
 import TemplateFieldCreate from "../actions/TemplateFieldCreate.vue";
 import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
 
-interface ITextField {
+interface TextField {
   id: number;
   name: string;
   order: number;
@@ -94,28 +94,28 @@ interface ITextField {
   type: string;
 }
 
-interface IFileField {
+interface FileField {
   id: number;
   name: string;
 }
 
-interface ITemplate {
+interface Template {
   id: number;
   name: string;
   notes: string;
-  fields: ITextField[];
-  files: IFileField[];
+  fields: TextField[];
+  files: FileField[];
 }
 
 const route = useRoute();
 
-const template = ref<ITemplate>();
+const template = ref<Template>();
 const query = useGet2(
   `api/questionnaires/query/template/${route.params.id}/`,
   template,
 );
 
-const fields = computed<ITextField[] | undefined>(() => template.value?.fields);
+const fields = computed<TextField[] | undefined>(() => template.value?.fields);
 
-const files = computed<IFileField[] | undefined>(() => template.value?.files);
+const files = computed<FileField[] | undefined>(() => template.value?.files);
 </script>

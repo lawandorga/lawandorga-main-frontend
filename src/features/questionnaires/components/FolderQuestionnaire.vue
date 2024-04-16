@@ -88,20 +88,20 @@ import QuestionnaireFileDownload from "../actions/QuestionnaireFileDownload.vue"
 import QuestionnaireDelete from "../actions/QuestionnaireDelete.vue";
 import useClient from "@/api/client";
 
-interface IQuestionnaireField {
+interface QuestionnaireField {
   id: number;
   type: string;
   name: string;
   question: string;
 }
 
-export interface IQuestionnaireAnswer {
+export interface QuestionnaireAnswer {
   id: number;
   data: string;
-  field: IQuestionnaireField;
+  field: QuestionnaireField;
 }
 
-export interface IQuestionnaireTemplate {
+export interface QuestionnaireTemplate {
   id: number;
   rlc: number;
   name: string;
@@ -110,13 +110,13 @@ export interface IQuestionnaireTemplate {
   created: string;
 }
 
-export interface IQuestionnaire {
+export interface Questionnaire {
   id: number;
   uuid: string;
   code: string;
   record: number;
-  template: IQuestionnaireTemplate;
-  answers: IQuestionnaireAnswer[];
+  template: QuestionnaireTemplate;
+  answers: QuestionnaireAnswer[];
   created: string;
   updated: string;
 }
@@ -129,7 +129,7 @@ const props = defineProps<{
 
 const { selectedId, query, selectedType } = toRefs(props);
 
-const questionnaire = ref<IQuestionnaire | null>(null);
+const questionnaire = ref<Questionnaire | null>(null);
 
 const loading = ref(false);
 
@@ -160,7 +160,7 @@ update();
 // copy link
 const alertStore = useAlertStore();
 const base = window.location.origin;
-const copyLink = (recordQuestionnaire: IQuestionnaire) => {
+const copyLink = (recordQuestionnaire: Questionnaire) => {
   navigator.clipboard
     .writeText(`${base}/records/upload/${recordQuestionnaire.code}/`)
     .then(() => alertStore.showSuccess("Link Copied"));

@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { IContent, IFolderDetail } from "@/types/folders";
+import { Content, FolderDetail } from "@/types/folders";
 import { h, toRefs, computed } from "vue";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
@@ -20,7 +20,7 @@ import FolderNavigationRaw, {
 } from "./FolderNavigationRaw.vue";
 
 const props = defineProps<{
-  folder: IFolderDetail;
+  folder: FolderDetail;
   query: () => void;
   grouping: boolean;
   selectedType: string;
@@ -31,8 +31,8 @@ const { folder, query } = toRefs(props);
 
 const emit = defineEmits(["grouping", "selected"]);
 
-const record = computed<IContent | null>(() => {
-  const item = folder.value.content.find((item: IContent) => {
+const record = computed<Content | null>(() => {
+  const item = folder.value.content.find((item: Content) => {
     return item.repository === "RECORDS_RECORD";
   });
   if (!item) return null;

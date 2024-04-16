@@ -52,12 +52,12 @@
 <script lang="ts" setup>
 import { TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
-import { IAccessRequest } from "../types/accessRequest";
+import { AccessRequest } from "../types/accessRequest";
 import DeclineAccessRequest from "../actions/DeclineAccessRequest.vue";
 import GrantAccessRequest from "../actions/GrantAccessRequest.vue";
 
 defineProps<{
-  accessRequests: IAccessRequest[];
+  accessRequests: AccessRequest[];
   query: () => void;
 }>();
 </script>

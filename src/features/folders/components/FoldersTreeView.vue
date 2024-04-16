@@ -101,12 +101,7 @@
 import FoldersCreateFolder from "@/features/folders/actions/FoldersCreateFolder.vue";
 import { computed, ref, toRefs } from "vue";
 import FoldersTree from "@/features/folders/components/FoldersTree.vue";
-import {
-  IFolder,
-  IFolderGroup,
-  IFolderItem,
-  IFolderPerson,
-} from "@/types/folders";
+import { Folder, FolderGroup, FolderItem, FolderPerson } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
 import FoldersCreateRootFolder from "@/features/folders/actions/FoldersCreateRootFolder.vue";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
@@ -118,9 +113,9 @@ import FoldersAddContent from "@/features/folders/actions/FoldersAddContent.vue"
 import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
 
 const props = defineProps<{
-  availablePersons: IFolderPerson[];
-  availableGroups: IFolderGroup[];
-  folderItems: IFolderItem[];
+  availablePersons: FolderPerson[];
+  availableGroups: FolderGroup[];
+  folderItems: FolderItem[];
   query: () => void;
 }>();
 const { availablePersons, folderItems } = toRefs(props);
@@ -130,14 +125,14 @@ const contentActions = ref<typeof FoldersCreateFolder>();
 const foldersActions = ref<typeof FoldersCreateFolder>();
 
 // folders as list
-const pushIntoList = (l: IFolder[], item: IFolderItem) => {
+const pushIntoList = (l: Folder[], item: FolderItem) => {
   l.push(item.folder);
   for (let i of item.children) pushIntoList(l, i);
 };
 
-const folderList = computed<IFolder[]>(() => {
+const folderList = computed<Folder[]>(() => {
   if (folderItems.value === null) return [];
-  const fl: IFolder[] = [];
+  const fl: Folder[] = [];
   for (let i of folderItems.value) {
     pushIntoList(fl, i);
   }
@@ -152,8 +147,8 @@ const selected = ref<string | null>(null);
 
 const findFolder = (
   id: string,
-  folderItems: IFolderItem[],
-): IFolderItem | null => {
+  folderItems: FolderItem[],
+): FolderItem | null => {
   for (let i of folderItems) {
     if (i.folder.uuid === selected.value) return i;
     const innerFound = findFolder(id, i.children);
@@ -162,7 +157,7 @@ const findFolder = (
   return null;
 };
 
-const selectedItem = computed<IFolderItem | null>(() => {
+const selectedItem = computed<FolderItem | null>(() => {
   if (selected.value === null || folderItems.value === null) return null;
   return findFolder(selected.value, folderItems.value);
 });

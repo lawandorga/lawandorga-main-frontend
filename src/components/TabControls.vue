@@ -3,7 +3,7 @@
     <TabList class="inline-flex w-full rounded">
       <template v-for="(tab, index) in internalTabs" :key="tab.key">
         <div v-if="tab.spacer" class="mx-auto"></div>
-        <Tab v-else v-slot="{ selected }" as="template">
+        <TabComponent v-else v-slot="{ selected }" as="template">
           <button
             :class="[
               'first:rounded-l last:rounded-r px-4 py-2.5 text-sm font-medium transition',
@@ -27,7 +27,7 @@
               {{ tab.badge }}
             </span>
           </button>
-        </Tab>
+        </TabComponent>
       </template>
     </TabList>
     <TabPanels class="mt-4">
@@ -46,11 +46,17 @@
 </template>
 
 <script setup lang="ts">
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import {
+  TabGroup,
+  TabList,
+  Tab as TabComponent,
+  TabPanels,
+  TabPanel,
+} from "@headlessui/vue";
 import { ref, toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-type ITab =
+type Tab =
   | {
       name: string;
       key: string;
@@ -59,7 +65,7 @@ type ITab =
     }
   | { spacer: true };
 
-const props = defineProps<{ tabs: ITab[]; defaultTab?: number | string }>();
+const props = defineProps<{ tabs: Tab[]; defaultTab?: number | string }>();
 
 const emit = defineEmits(["clicked"]);
 
@@ -69,7 +75,7 @@ const route = useRoute();
 const router = useRouter();
 
 // needed as copy because the headless ui tab component has a different tab order than the input
-const internalTabs = ref<ITab[]>(tabs.value);
+const internalTabs = ref<Tab[]>(tabs.value);
 
 const selectedTab = ref(0);
 

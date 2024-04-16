@@ -135,7 +135,7 @@ interface HasPermission {
   group_id: number;
 }
 
-interface IData {
+interface Data {
   user: RlcUser;
   permissions: HasPermission[] | null;
 }
@@ -143,7 +143,7 @@ interface IData {
 const route = useRoute();
 const userStore = useUserStore();
 
-const data = ref<IData | null>(null);
+const data = ref<Data | null>(null);
 
 const user = computed<RlcUser | null>(() => {
   if (!data.value) return null;

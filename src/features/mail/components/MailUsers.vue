@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { IMailUser, MailDashboardPage, NoMailAccount } from "@/types/mail";
+import { MailUser, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue";
@@ -30,7 +30,7 @@ const props = defineProps({
 const { page } = toRefs(props);
 
 // addresses
-const addresses = computed<IMailUser[] | null>(() => {
+const addresses = computed<MailUser[] | null>(() => {
   if (page.value && !page.value.noMailAccount) return page.value.users;
   return null;
 });

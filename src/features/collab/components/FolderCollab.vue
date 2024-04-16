@@ -36,7 +36,7 @@ import CollabForm from "./CollabForm.vue";
 import CollabShowHistory from "../actions/CollabShowHistory.vue";
 import CollabPrint from "../actions/CollabPrint.vue";
 
-export interface IHistory {
+export interface History {
   user: string;
   time: string;
   text: string;
@@ -48,7 +48,7 @@ interface Collab {
   text: string;
   created_at: string;
   password: string;
-  history: IHistory[];
+  history: History[];
 }
 
 const props = defineProps<{

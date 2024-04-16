@@ -2,18 +2,18 @@
 import { formatDate } from "@/utils/date";
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref } from "vue";
-import { IHistory } from "@/features/collab/components/FolderCollab.vue";
+import { History } from "@/features/collab/components/FolderCollab.vue";
 
 defineProps<{
-  history: IHistory[];
+  history: History[];
 }>();
 
 const open = ref(false);
 
-const selectedVersion = ref<IHistory>();
+const selectedVersion = ref<History>();
 const selectedVersionModalOpen = ref(false);
 
-const versionSelected = (item: IHistory) => {
+const versionSelected = (item: History) => {
   open.value = false;
   selectedVersion.value = item;
   selectedVersionModalOpen.value = true;

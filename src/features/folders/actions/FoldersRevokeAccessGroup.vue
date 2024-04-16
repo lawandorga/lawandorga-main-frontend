@@ -18,13 +18,13 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { IAccess } from "@/types/folders";
+import { Access } from "@/types/folders";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   query: () => void;
-  groups: IAccess[];
+  groups: Access[];
   groupUuid: string;
   folderUuid: string;
 }>();

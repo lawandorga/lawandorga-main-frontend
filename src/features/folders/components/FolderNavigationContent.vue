@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { IFolderDetail } from "@/types/folders";
+import { FolderDetail } from "@/types/folders";
 import { computed, h, toRefs } from "vue";
 import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
@@ -23,7 +23,7 @@ import FolderNavigationRaw, {
 import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
 
 const props = defineProps<{
-  folder: IFolderDetail;
+  folder: FolderDetail;
   query: () => void;
   grouping: boolean;
   selectedType: string;

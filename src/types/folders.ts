@@ -1,10 +1,10 @@
-export interface IFolder {
+export interface Folder {
   name: string;
   uuid: string;
   stop_inherit: boolean;
 }
 
-export interface ITreeFolder {
+export interface TreeFolder {
   name: string;
   uuid: string;
   stop_inherit: boolean;
@@ -12,24 +12,24 @@ export interface ITreeFolder {
   actions: string[];
 }
 
-export interface IAccess {
+export interface Access {
   name: string;
   uuid: string | null;
   source: string;
   actions: string[];
 }
 
-export interface IFolderGroup {
+export interface FolderGroup {
   name: string;
   uuid: string;
 }
 
-export interface IFolderPerson {
+export interface FolderPerson {
   name: string;
   uuid: string;
 }
 
-export interface IContent {
+export interface Content {
   uuid: string;
   name: string;
   repository:
@@ -42,34 +42,34 @@ export interface IContent {
     | "COLLAB";
 }
 
-export interface IFolderItem {
-  folder: ITreeFolder;
-  children: IFolderItem[];
-  access: IAccess[];
-  group_access: IAccess[];
-  content: IContent[];
+export interface FolderItem {
+  folder: TreeFolder;
+  children: FolderItem[];
+  access: Access[];
+  group_access: Access[];
+  content: Content[];
 }
 
-export interface IFolderPage {
-  tree: IFolderItem[];
-  available_persons: IFolderPerson[];
-  available_groups: IFolderGroup[];
+export interface FolderPage {
+  tree: FolderItem[];
+  available_persons: FolderPerson[];
+  available_groups: FolderGroup[];
 }
 
-export interface ISubfolder {
+export interface Subfolder {
   name: string;
   uuid: string;
 }
 
-export interface IFolderDetail {
-  folder: IFolder;
-  access: IAccess[];
-  group_access: IAccess[];
-  content: IContent[];
-  subfolders: ISubfolder[];
+export interface FolderDetail {
+  folder: Folder;
+  access: Access[];
+  group_access: Access[];
+  content: Content[];
+  subfolders: Subfolder[];
 }
 
-export interface IAvailableFolder {
+export interface AvailableFolder {
   name: string;
   id: string;
 }

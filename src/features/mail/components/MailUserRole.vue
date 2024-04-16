@@ -146,9 +146,9 @@ import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
 import MailRegeneratePassword from "@/features/mail/actions/MailRegeneratePassword.vue";
 import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
 import {
-  IMailAddress,
+  MailAddress,
   MailDashboardPage,
-  ISelfMailUser,
+  SelfMailUser,
   NoMailAccount,
 } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
@@ -162,14 +162,14 @@ const props = defineProps<{
 const { page } = toRefs(props);
 
 // user
-const user = computed<ISelfMailUser | null | false>(() => {
+const user = computed<SelfMailUser | null | false>(() => {
   if (page.value == undefined) return null;
   else if (page.value.noMailAccount) return false;
   return page.value.user;
 });
 
 // addresses
-const addresses = computed<IMailAddress[] | null>(() => {
+const addresses = computed<MailAddress[] | null>(() => {
   if (user.value === null || user.value === false) return null;
   return user.value.account.addresses;
 });

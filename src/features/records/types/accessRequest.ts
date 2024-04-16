@@ -1,4 +1,4 @@
-export interface IAccessRequest {
+export interface AccessRequest {
   requested_by_detail: string;
   record_detail: string;
   processed_by_detail: string;

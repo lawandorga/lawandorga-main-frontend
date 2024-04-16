@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import MailCreateGroup from "@/features/mail/actions/MailCreateGroup.vue";
 import MailDeleteGroup from "@/features/mail/actions/MailDeleteGroup.vue";
-import { IMailGroup, MailDashboardPage, NoMailAccount } from "@/types/mail";
+import { MailGroup, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue";
@@ -50,7 +50,7 @@ const props = defineProps({
 const { page } = toRefs(props);
 
 // groups
-const groups = computed<IMailGroup[] | null>(() => {
+const groups = computed<MailGroup[] | null>(() => {
   if (page.value && !page.value.noMailAccount) return page.value.groups;
   return null;
 });

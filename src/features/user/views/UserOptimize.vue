@@ -71,7 +71,7 @@ import {
 import { CircleLoader } from "lorga-ui";
 import { ref, computed } from "vue";
 
-interface IApps {
+interface Apps {
   [key: string]: () => Promise<void>;
 }
 
@@ -79,7 +79,7 @@ const client = useClient();
 
 const { handleError } = useErrorHandling();
 
-const apps: IApps = {
+const apps: Apps = {
   MailImports: () =>
     client
       .post("api/command/")({ action: "mail_imports/import_mails" })
@@ -125,11 +125,11 @@ const apps: IApps = {
 };
 
 const status = ref<{
-  [key: keyof IApps]: "optimizing" | "error" | "success" | "waiting";
+  [key: keyof Apps]: "optimizing" | "error" | "success" | "waiting";
 }>({});
 
-const funcs = computed<{ [key: keyof IApps]: () => Promise<void> }>(() => {
-  const d: { [key: keyof IApps]: () => Promise<void> } = {};
+const funcs = computed<{ [key: keyof Apps]: () => Promise<void> }>(() => {
+  const d: { [key: keyof Apps]: () => Promise<void> } = {};
   Object.keys(apps).forEach((key) => {
     status.value[key] = "waiting";
     d[key] = () => {

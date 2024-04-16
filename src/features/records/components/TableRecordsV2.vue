@@ -4,7 +4,7 @@ import { FormInput, TableSortable, ButtonNormal } from "lorga-ui";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useSearch from "@/composables/useSearch";
 import { useUserStore } from "@/store/user";
-import { IListRecordV2 } from "../types/listRecordV2";
+import { ListRecordV2 } from "../types/listRecordV2";
 
 // get display values
 const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
@@ -55,7 +55,7 @@ const getValueFromRecord = (
 // props
 const props = defineProps({
   records: {
-    type: Array as PropType<IListRecordV2[] | null>,
+    type: Array as PropType<ListRecordV2[] | null>,
     required: false,
     default: null,
   },

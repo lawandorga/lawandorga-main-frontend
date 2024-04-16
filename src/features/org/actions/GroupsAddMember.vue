@@ -24,11 +24,11 @@ import useQuery from "@/composables/useQuery";
 const props = defineProps<{ groupId: number; query: () => void }>();
 const { query } = toRefs(props);
 
-interface IUser {
+interface User {
   id: number;
   name: string;
 }
-const users = ref<IUser[]>([]);
+const users = ref<User[]>([]);
 const client = useClient();
 const request = client.get("api/rlc_users/");
 const userQuery = useQuery(request, users);

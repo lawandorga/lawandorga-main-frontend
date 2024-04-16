@@ -39,7 +39,7 @@ import { CogIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";
 import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
-import { ILink } from "@/types/org";
+import { Link } from "@/types/org";
 import LinksCreateLink from "@/features/admin/actions/LinksCreateLink.vue";
 import LinksDeleteLink from "@/features/admin/actions/LinksDeleteLink.vue";
 
@@ -47,7 +47,7 @@ const client = useClient();
 
 const request = client.get("/api/query/links/");
 
-const links = ref<ILink[]>([]);
+const links = ref<Link[]>([]);
 
 const query = useGet(request, links);
 </script>

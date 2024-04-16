@@ -67,7 +67,7 @@ import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";
-import { IUploadLink } from "@/types/uploads";
+import { UploadLink } from "@/types/uploads";
 import useClient from "@/api/client";
 import UploadsDisableLink from "@/features/uploads/actions/UploadsDisableLink.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
@@ -100,9 +100,9 @@ watch([selectedId, selectedType], () => {
 });
 
 // query the link
-const link = ref<IUploadLink | null>(null);
+const link = ref<UploadLink | null>(null);
 const loading = ref(false);
-const request = client.get<IUploadLink>(`api/uploads/query/{}/`, selectedId);
+const request = client.get<UploadLink>(`api/uploads/query/{}/`, selectedId);
 const linkQuery = useQuery(request, link);
 const update = () => {
   if (link.value && selectedId.value !== link.value.uuid) link.value = null;

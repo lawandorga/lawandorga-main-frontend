@@ -1,45 +1,46 @@
-export interface IMailDomain {
+export interface MailDomain {
   uuid: string;
   name: string;
   is_active: boolean;
 }
 
-export interface IAvailableMailDomain {
+export interface AvailableMailDomain {
   uuid: string;
   name: string;
 }
 
-export interface IMailGroup {
+export interface MailGroup {
   uuid: string;
   email: string | null;
 }
 
-export interface IMailUser {
+export interface MailUser {
   name: string;
   uuid: string;
   email: string | null;
 }
-export interface IMailAddress {
+
+export interface MailAddress {
   uuid: string;
   is_default: boolean;
   localpart: string;
-  domain: IMailDomain;
+  domain: MailDomain;
 }
 
-interface ISelfMailAccount {
-  addresses: IMailAddress[];
+interface SelfMailAccount {
+  addresses: MailAddress[];
 }
 
-interface ISelfGroup {
+interface SelfGroup {
   email: string | null;
 }
 
-export interface ISelfMailUser {
+export interface SelfMailUser {
   email: string | null;
   uuid: string | null;
-  account: ISelfMailAccount;
+  account: SelfMailAccount;
   aliases: string[];
-  groups: ISelfGroup[];
+  groups: SelfGroup[];
 }
 
 export interface NoMailAccount {
@@ -47,27 +48,27 @@ export interface NoMailAccount {
 }
 
 export interface MailDashboardPage {
-  user: ISelfMailUser;
-  available_domains: IAvailableMailDomain[];
-  domain: IMailDomain;
+  user: SelfMailUser;
+  available_domains: AvailableMailDomain[];
+  domain: MailDomain;
   noMailAccount: false;
-  users: IMailUser[];
-  groups: IMailGroup[];
+  users: MailUser[];
+  groups: MailGroup[];
 }
 
-export interface IMailGroupPage {
-  available_domains: IMailDomain[];
-  addresses: IMailAddress[];
-  members: IMailUser[];
-  available_users: IMailUser[];
+export interface MailGroupPage {
+  available_domains: MailDomain[];
+  addresses: MailAddress[];
+  members: MailUser[];
+  available_users: MailUser[];
 }
 
-export interface IMailUserPage {
-  available_domains: IMailDomain[];
-  addresses: IMailAddress[];
+export interface MailUserPage {
+  available_domains: MailDomain[];
+  addresses: MailAddress[];
 }
 
-export interface IMailCheckDomain {
+export interface MailCheckDomain {
   valid: boolean;
   wrong_setting: string | null;
 }

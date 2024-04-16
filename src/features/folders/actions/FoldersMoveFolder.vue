@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { IFolder } from "@/types/folders";
+import { Folder } from "@/types/folders";
 import { ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import { ButtonNormal } from "lorga-ui";
@@ -21,7 +21,7 @@ import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
-  availableFolders: IFolder[];
+  availableFolders: Folder[];
   folderUuid: string;
 }>();
 

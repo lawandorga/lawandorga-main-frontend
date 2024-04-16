@@ -1,4 +1,4 @@
-export interface IUploadLink {
+export interface UploadLink {
   uuid: string;
   name: string;
   link: string;

@@ -44,14 +44,14 @@
 <script lang="ts" setup>
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { TableGenerator } from "lorga-ui";
-import { IAccess } from "@/types/folders";
+import { Access } from "@/types/folders";
 import FoldersRevokeAccessUserSimple from "@/features/folders/actions/FoldersRevokeAccessUserSimple.vue";
 import FoldersRevokeAccessGroupSimple from "../actions/FoldersRevokeAccessGroupSimple.vue";
 
 defineProps<{
   selectedType: string;
-  access: IAccess[];
-  groupAccess: IAccess[];
+  access: Access[];
+  groupAccess: Access[];
   selectedId: string | null | number;
   folderUuid: string;
   query: () => void;

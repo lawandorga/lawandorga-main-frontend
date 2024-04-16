@@ -29,12 +29,12 @@
 <script setup lang="ts">
 import FoldersGrantAccess from "@/features/folders/actions/FoldersGrantAccess.vue";
 import FoldersRevokeAccessUser from "@/features/folders/actions/FoldersRevokeAccessUser.vue";
-import { IFolderItem, IFolderPerson } from "@/types/folders";
+import { FolderItem, FolderPerson } from "@/types/folders";
 import { TableGenerator } from "lorga-ui";
 
 defineProps<{
   query: () => void;
-  item: IFolderItem;
-  availablePersons: IFolderPerson[];
+  item: FolderItem;
+  availablePersons: FolderPerson[];
 }>();
 </script>

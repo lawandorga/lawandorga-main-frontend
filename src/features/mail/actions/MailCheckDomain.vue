@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { mailCheckDomain } from "@/features/mail/mail";
-import { IMailCheckDomain } from "@/types/mail";
+import { MailCheckDomain } from "@/types/mail";
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
 
@@ -24,7 +24,7 @@ const props = defineProps<{
 
 const { query, domainUuid } = toRefs(props);
 
-const check = ref<IMailCheckDomain>();
+const check = ref<MailCheckDomain>();
 
 const checkModalOpen = ref(false);
 

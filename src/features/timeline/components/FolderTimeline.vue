@@ -21,7 +21,7 @@ const props = defineProps<{
 }>();
 const { folderUuid, selectedType } = toRefs(props);
 
-interface ITimelineEvent {
+interface TimelineEvent {
   uuid: string;
   time: string;
   text: string;
@@ -31,7 +31,7 @@ interface ITimelineEvent {
 }
 
 // retrieve timeline
-const timeline = ref<null | ITimelineEvent[]>(null);
+const timeline = ref<null | TimelineEvent[]>(null);
 const loading = ref(false);
 
 const client = useClient();

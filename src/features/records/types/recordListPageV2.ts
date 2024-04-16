@@ -1,13 +1,13 @@
-import { IAccessRequest } from "./accessRequest";
-import { IDeletion } from "./deletion";
-import { IListRecordV2 } from "./listRecordV2";
-import { IView } from "./view";
+import { AccessRequest } from "./accessRequest";
+import { Deletion } from "./deletion";
+import { ListRecordV2 } from "./listRecordV2";
+import { View } from "./view";
 
-export interface IRecordListPageV2 {
-  records: IListRecordV2[];
+export interface RecordListPageV2 {
+  records: ListRecordV2[];
   columns: string[];
-  views: IView[];
-  deletions: IDeletion[];
-  access_requests: IAccessRequest[];
+  views: View[];
+  deletions: Deletion[];
+  access_requests: AccessRequest[];
   badges: { access_requests: number; deletion_requests: number };
 }
