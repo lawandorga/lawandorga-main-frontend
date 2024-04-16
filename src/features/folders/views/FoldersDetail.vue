@@ -45,9 +45,7 @@
           :grouping="grouping"
           :selected-id="selectedId"
           :selected-type="selectedType"
-          :number-of-unread-mails="
-            mails?.filter((mail) => !mail.is_read).length.toString()
-          "
+          :number-of-unread-mails="getNumberOfUnreadMails()"
           @selected="select($event.id, $event.type)"
           @grouping="updateGrouping($event)"
         />
@@ -225,4 +223,10 @@ const mailRequest = client.get(
   folderUuid,
 );
 const mailQuery = useGet(mailRequest, mails);
+
+const getNumberOfUnreadMails = () => {
+  const count = mails.value?.filter((mail) => !mail.is_read).length;
+  if (!count) return "";
+  return count.toString();
+};
 </script>
