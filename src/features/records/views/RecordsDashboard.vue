@@ -28,16 +28,19 @@
         <template v-for="view in views" :key="view.uuid" #[view.name]>
           <TableRecordsV2 :records="records" :columns="view.columns">
             <template #head-action>
-              <RecordsCreateRecordV2 :query="query" />
+              <RecordsCreateRecordV2 :query="queryRecords" />
             </template>
             <template #action="{ record }">
               <div class="flex items-center justify-end space-x-3">
                 <CreateAccessRequest
                   v-if="!record.has_access"
                   :record-uuid="record.uuid"
-                  :query="query"
+                  :query="queryInfos"
                 />
-                <CreateDeletion :record-uuid="record.uuid" :query="query" />
+                <CreateDeletion
+                  :record-uuid="record.uuid"
+                  :query="queryInfos"
+                />
               </div>
             </template>
           </TableRecordsV2>
@@ -47,12 +50,15 @@
         </template>
         <template #deletions>
           <DeletionRequests
-            :query="query"
+            :query="queryInfos"
             :deletion-requests="deletionRequests"
           />
         </template>
         <template #accessRequests>
-          <AccessRequests :query="query" :access-requests="accessRequests" />
+          <AccessRequests
+            :query="queryInfos"
+            :access-requests="accessRequests"
+          />
         </template>
         <template #recordPermissions>
           <RecordsPermissionsTable />
@@ -65,62 +71,35 @@
 <script lang="ts" setup>
 import TableRecordsV2 from "@/features/records/components/TableRecordsV2.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import { computed, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon } from "@heroicons/vue/24/outline";
-import useGet from "@/composables/useGet";
 import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
 import { useUserStore } from "@/store/user";
 import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
-import useClient from "@/api/client";
 import TabControls from "@/components/TabControls.vue";
-import { RecordListPageV2 } from "../types/recordListPageV2";
-import { ListRecordV2 } from "../types/listRecordV2";
 import SettingsViews from "../components/SettingsViews.vue";
-import { View } from "../types/view";
 import CreateDeletion from "../actions/CreateDeletion.vue";
 import DeletionRequests from "../components/DeletionRequests.vue";
-import { Deletion } from "../types/deletion";
 import AccessRequests from "../components/AccessRequests.vue";
-import { AccessRequest } from "../types/accessRequest";
 import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
+import { useRecords } from "../api/useRecords";
+import { useInfos } from "../api/useInfos";
 
-const client = useClient();
-const request = client.get("/api/records/query/dashboard/");
+const {
+  deletionRequests,
+  accessRequests,
+  accessRequestsBadge,
+  deletionsBadge,
+  query: queryInfos,
+} = useInfos();
 
-const page = ref<RecordListPageV2 | null>(null);
-const query = useGet(request, page);
+const { records, views, query: queryRecords } = useRecords();
 
-const records = computed<ListRecordV2[] | null>(() => {
-  if (page.value === null) return null;
-  return page.value.records;
-});
-
-const views = computed<View[]>(() => {
-  if (page.value === null) return [];
-  return page.value.views;
-});
-
-const deletionRequests = computed<Deletion[]>(() => {
-  if (page.value === null) return [];
-  return page.value.deletions;
-});
-
-const accessRequests = computed<AccessRequest[]>(() => {
-  if (page.value === null) return [];
-  return page.value.access_requests;
-});
-
-const accessRequestsBadge = computed<number>(() => {
-  if (page.value === null) return 0;
-  return page.value.badges.access_requests;
-});
-
-const deletionsBadge = computed<number>(() => {
-  if (page.value === null) return 0;
-  return page.value.badges.deletion_requests;
-});
+const query = () => {
+  queryInfos();
+  queryRecords();
+};
 
 const userStore = useUserStore();
 </script>

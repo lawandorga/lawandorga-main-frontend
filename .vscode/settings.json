@@ -12,11 +12,6 @@
     "comments": false,
     "strings": true
   },
-  "tailwindCSS.emmetCompletions": true,
-  "emmet.includeLanguages": {
-    "edge": "html",
-    "vue-html": "html",
-  },
   "[tf]": {
     "editor.defaultFormatter": "hashicorp.terraform",
     "editor.formatOnSave": true
