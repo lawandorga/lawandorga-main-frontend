@@ -1,3 +1,50 @@
+<script lang="ts" setup>
+import RecordsTableV3 from "@/features/records/components/RecordsTableV3.vue";
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { RectangleStackIcon } from "@heroicons/vue/24/outline";
+import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
+import { useUserStore } from "@/store/user";
+import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
+import TabControls from "@/components/TabControls.vue";
+import SettingsViews from "../components/SettingsViews.vue";
+import CreateDeletion from "../actions/CreateDeletion.vue";
+import DeletionRequests from "../components/DeletionRequests.vue";
+import AccessRequests from "../components/AccessRequests.vue";
+import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
+import RecordsPermissions from "@/components/RecordsPermissions.vue";
+import { useRecords } from "../api/useRecords";
+import { useInfos } from "../api/useInfos";
+import { FormInput, PaginationBar } from "lorga-ui";
+import { ref } from "vue";
+
+const search = ref("");
+
+const {
+  deletionRequests,
+  accessRequests,
+  accessRequestsBadge,
+  deletionsBadge,
+  query: queryInfos,
+} = useInfos();
+
+const {
+  records,
+  views,
+  total,
+  query: queryRecords,
+  queryParams,
+  setQueryParam,
+} = useRecords(search);
+
+const query = () => {
+  queryInfos();
+  queryRecords();
+};
+
+const userStore = useUserStore();
+</script>
+
 <template>
   <BoxLoader :show="!!userStore.loaded && !!views.length">
     <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
@@ -26,7 +73,19 @@
         ]"
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
-          <TableRecordsV2 :records="records" :columns="view.columns">
+          <FormInput
+            :model-value="search"
+            class="mb-4"
+            name="search"
+            label=""
+            placeholder="Token"
+            type="search"
+            required
+            @change="
+              (e: Event) => (search = (e.target as HTMLInputElement).value)
+            "
+          />
+          <RecordsTableV3 :records="records" :columns="view.columns">
             <template #head-action>
               <RecordsCreateRecordV2 :query="queryRecords" />
             </template>
@@ -43,7 +102,27 @@
                 />
               </div>
             </template>
-          </TableRecordsV2>
+          </RecordsTableV3>
+          <PaginationBar
+            :total="total"
+            :set-query-param="setQueryParam"
+            :query-params="queryParams"
+          />
+          <div
+            class="px-5 py-2 mt-10 text-orange-700 bg-orange-100 border-2 border-orange-300"
+          >
+            <p>
+              Info: We're currently updating this view. Everything you see
+              should work. But if you face any issues regarding the records,
+              like not being able to find some, please let us know. Speed and
+              search improvements will follow.
+              <br />
+              E-Mail:
+              <a href="mailto:it@law-orga.de" class="underline">
+                it@law-orga.de
+              </a>
+            </p>
+          </div>
         </template>
         <template #settings>
           <SettingsViews :query="query" :views="views" />
@@ -67,39 +146,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import TableRecordsV2 from "@/features/records/components/TableRecordsV2.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { RectangleStackIcon } from "@heroicons/vue/24/outline";
-import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
-import { useUserStore } from "@/store/user";
-import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
-import TabControls from "@/components/TabControls.vue";
-import SettingsViews from "../components/SettingsViews.vue";
-import CreateDeletion from "../actions/CreateDeletion.vue";
-import DeletionRequests from "../components/DeletionRequests.vue";
-import AccessRequests from "../components/AccessRequests.vue";
-import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
-import RecordsPermissions from "@/components/RecordsPermissions.vue";
-import { useRecords } from "../api/useRecords";
-import { useInfos } from "../api/useInfos";
-
-const {
-  deletionRequests,
-  accessRequests,
-  accessRequestsBadge,
-  deletionsBadge,
-  query: queryInfos,
-} = useInfos();
-
-const { records, views, query: queryRecords } = useRecords();
-
-const query = () => {
-  queryInfos();
-  queryRecords();
-};
-
-const userStore = useUserStore();
-</script>
