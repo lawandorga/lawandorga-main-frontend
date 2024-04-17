@@ -21,7 +21,7 @@ interface View {
 }
 
 interface RecordsData {
-  records: Record[];
+  records: Record[] | undefined;
   total: number;
   views: View[];
 }
@@ -65,6 +65,7 @@ export function useRecords(search: Ref<string>, year: Ref<string>) {
 
   const setQueryParam: SetQueryParam = (key, value) => {
     queryParams.value = { ...queryParams.value, [key]: value };
+    if (data.value) data.value.records = undefined;
     return queryParams.value;
   };
 
