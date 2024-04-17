@@ -24,10 +24,17 @@ interface AccessRequest {
   updated: string;
 }
 
+interface View {
+  uuid: string;
+  name: string;
+  columns: string[];
+}
+
 interface InfosData {
   deletions: Deletion[];
   access_requests: AccessRequest[];
   badges: { access_requests: number; deletion_requests: number };
+  views: View[];
 }
 
 export function useInfos() {
@@ -57,11 +64,17 @@ export function useInfos() {
     return data.value.badges.deletion_requests;
   });
 
+  const views = computed<View[]>(() => {
+    if (!data.value) return [];
+    return data.value?.views;
+  });
+
   return {
     query,
     deletionRequests,
     accessRequests,
     accessRequestsBadge,
     deletionsBadge,
+    views,
   };
 }

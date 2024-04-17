@@ -24,6 +24,7 @@ const year = ref("");
 const {
   deletionRequests,
   accessRequests,
+  views,
   accessRequestsBadge,
   deletionsBadge,
   query: queryInfos,
@@ -31,7 +32,6 @@ const {
 
 const {
   records,
-  views,
   total,
   query: queryRecords,
   queryParams,

@@ -14,16 +14,9 @@ interface Record {
   folder_uuid: string;
 }
 
-interface View {
-  uuid: string;
-  name: string;
-  columns: string[];
-}
-
 interface RecordsData {
   records: Record[] | undefined;
   total: number;
-  views: View[];
 }
 
 export function useRecords(search: Ref<string>, year: Ref<string>) {
@@ -54,11 +47,6 @@ export function useRecords(search: Ref<string>, year: Ref<string>) {
     return data.value?.records;
   });
 
-  const views = computed<View[]>(() => {
-    if (!data.value) return [];
-    return data.value?.views;
-  });
-
   const total = computed<number>(() => {
     return data.value?.total || 0;
   });
@@ -72,7 +60,6 @@ export function useRecords(search: Ref<string>, year: Ref<string>) {
   return {
     query,
     records,
-    views,
     total,
     queryParams,
     setQueryParam,
