@@ -26,20 +26,25 @@ interface RecordsData {
   views: View[];
 }
 
-export function useRecords(search: Ref<string>) {
+export function useRecords(search: Ref<string>, year: Ref<string>) {
   const client = useClient();
 
   const queryParams = ref<QueryParams>({
     offset: 0,
     limit: 10,
     token: search.value,
+    year: year.value,
   });
-  watch(search, (value) => {
-    queryParams.value = { ...queryParams.value, token: value };
+  watch([search, year], () => {
+    queryParams.value = {
+      ...queryParams.value,
+      token: search.value,
+      year: year.value,
+    };
   });
 
   const request = client.get(
-    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}",
+    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}&year={year}",
   );
 
   const data = ref<RecordsData>();

@@ -19,6 +19,7 @@ import { FormInput, PaginationBar } from "lorga-ui";
 import { ref } from "vue";
 
 const search = ref("");
+const year = ref("");
 
 const {
   deletionRequests,
@@ -35,7 +36,7 @@ const {
   query: queryRecords,
   queryParams,
   setQueryParam,
-} = useRecords(search);
+} = useRecords(search, year);
 
 const query = () => {
   queryInfos();
@@ -73,18 +74,32 @@ const userStore = useUserStore();
         ]"
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
-          <FormInput
-            :model-value="search"
-            class="mb-4"
-            name="search"
-            label=""
-            placeholder="Token"
-            type="search"
-            required
-            @change="
-              (e: Event) => (search = (e.target as HTMLInputElement).value)
-            "
-          />
+          <div class="flex gap-5">
+            <FormInput
+              :model-value="search"
+              class="mb-4"
+              name="search"
+              label="Token"
+              placeholder="AZ-1234"
+              type="search"
+              required
+              @change="
+                (e: Event) => (search = (e.target as HTMLInputElement).value)
+              "
+            />
+            <FormInput
+              :model-value="search"
+              class="mb-4"
+              name="search"
+              label="Created Year"
+              placeholder="2024"
+              type="number"
+              required
+              @change="
+                (e: Event) => (year = (e.target as HTMLInputElement).value)
+              "
+            />
+          </div>
           <RecordsTableV3 :records="records" :columns="view.columns">
             <template #head-action>
               <RecordsCreateRecordV2 :query="queryRecords" />
@@ -113,9 +128,9 @@ const userStore = useUserStore();
           >
             <p>
               Info: We're currently updating this view. Everything you see
-              should work. But if you face any issues regarding the records,
-              like not being able to find some, please let us know. Speed and
-              search improvements will follow.
+              should work. But if you face any issues, like not being able to
+              find some records, please let us know. Speed and search
+              improvements will follow.
               <br />
               E-Mail:
               <a href="mailto:it@law-orga.de" class="underline">
