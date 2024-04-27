@@ -19,25 +19,31 @@ interface RecordsData {
   total: number;
 }
 
-export function useRecords(search: Ref<string>, year: Ref<string>) {
+export function useRecords(
+  tokenSearch: Ref<string>,
+  yearSearch: Ref<string>,
+  generalSearch: Ref<string>,
+) {
   const client = useClient();
 
   const queryParams = ref<QueryParams>({
     offset: 0,
     limit: 10,
-    token: search.value,
-    year: year.value,
+    token: tokenSearch.value,
+    year: yearSearch.value,
+    general: generalSearch.value,
   });
-  watch([search, year], () => {
+  watch([tokenSearch, yearSearch, generalSearch], () => {
     queryParams.value = {
       ...queryParams.value,
-      token: search.value,
-      year: year.value,
+      token: tokenSearch.value,
+      year: yearSearch.value,
+      general: generalSearch.value,
     };
   });
 
   const request = client.get(
-    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}&year={year}",
+    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}&year={year}&general={general}",
   );
 
   const data = ref<RecordsData>();

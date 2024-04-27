@@ -18,8 +18,9 @@ import { useInfos } from "../api/useInfos";
 import { FormInput, PaginationBar } from "lorga-ui";
 import { ref } from "vue";
 
-const search = ref("");
-const year = ref("");
+const tokenSearch = ref("");
+const yearSearch = ref("");
+const generalSearch = ref("");
 
 const {
   deletionRequests,
@@ -36,7 +37,7 @@ const {
   query: queryRecords,
   queryParams,
   setQueryParam,
-} = useRecords(search, year);
+} = useRecords(tokenSearch, yearSearch, generalSearch);
 
 const query = () => {
   queryInfos();
@@ -74,9 +75,9 @@ const userStore = useUserStore();
         ]"
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
-          <div class="flex gap-5">
+          <div class="flex flex-wrap gap-5">
             <FormInput
-              :model-value="search"
+              :model-value="tokenSearch"
               class="mb-4"
               name="search"
               label="Token"
@@ -84,19 +85,34 @@ const userStore = useUserStore();
               type="search"
               required
               @change="
-                (e: Event) => (search = (e.target as HTMLInputElement).value)
+                (e: Event) =>
+                  (tokenSearch = (e.target as HTMLInputElement).value)
               "
             />
             <FormInput
-              :model-value="search"
+              :model-value="yearSearch"
               class="mb-4"
-              name="search"
+              name="year"
               label="Created Year"
               placeholder="2024"
               type="number"
               required
               @change="
-                (e: Event) => (year = (e.target as HTMLInputElement).value)
+                (e: Event) =>
+                  (yearSearch = (e.target as HTMLInputElement).value)
+              "
+            />
+            <FormInput
+              :model-value="generalSearch"
+              class="mb-4 min-w-96"
+              name="general"
+              label="General Search"
+              placeholder="Search for anything in the unencrypted data"
+              type="text"
+              required
+              @change="
+                (e: Event) =>
+                  (generalSearch = (e.target as HTMLInputElement).value)
               "
             />
           </div>
