@@ -1,12 +1,18 @@
+export interface AvailableMailDomain {
+  uuid: string;
+  name: string;
+}
+export interface MailAddress {
+  uuid: string;
+  is_default: boolean;
+  localpart: string;
+  domain: MailDomain;
+}
+
 export interface MailDomain {
   uuid: string;
   name: string;
   is_active: boolean;
-}
-
-export interface AvailableMailDomain {
-  uuid: string;
-  name: string;
 }
 
 export interface MailGroup {
@@ -18,13 +24,6 @@ export interface MailUser {
   name: string;
   uuid: string;
   email: string | null;
-}
-
-export interface MailAddress {
-  uuid: string;
-  is_default: boolean;
-  localpart: string;
-  domain: MailDomain;
 }
 
 interface SelfMailAccount {
@@ -54,13 +53,6 @@ export interface MailDashboardPage {
   noMailAccount: false;
   users: MailUser[];
   groups: MailGroup[];
-}
-
-export interface MailGroupPage {
-  available_domains: MailDomain[];
-  addresses: MailAddress[];
-  members: MailUser[];
-  available_users: MailUser[];
 }
 
 export interface MailUserPage {

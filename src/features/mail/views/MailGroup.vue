@@ -6,7 +6,7 @@
         :pages="[
           {
             name: 'Group',
-            to: { name: 'mail-group', params: { uuid: $route.params.uuid } },
+            to: { name: 'mail-group', params: { uuid: uuid } },
           },
         ]"
         class="mb-6"
@@ -25,7 +25,7 @@
         <template #head-action>
           <MailGroupAddAddress
             :query="query"
-            :group-uuid="$route.params.uuid as string"
+            :group-uuid="uuid"
             :available-domains="availableDomains"
           />
         </template>
@@ -35,13 +35,13 @@
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :group-uuid="$route.params.uuid as string"
+            :group-uuid="uuid"
           />
           <MailGroupDeleteAddress
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :group-uuid="$route.params.uuid as string"
+            :group-uuid="uuid"
             :available-domains="availableDomains"
           />
         </template>
@@ -58,14 +58,14 @@
           <MailGroupAddMember
             v-if="page"
             :query="query"
-            :group-uuid="$route.params.uuid as string"
+            :group-uuid="uuid"
             :available-users="page.available_users"
           />
         </template>
         <template #action="item">
           <MailGroupRemoveMember
             :query="query"
-            :group-uuid="$route.params.uuid as string"
+            :group-uuid="uuid"
             :member-name="item.name"
             :member-uuid="item.uuid"
           />
@@ -83,38 +83,16 @@ import MailGroupRemoveMember from "@/features/mail/actions/MailGroupRemoveMember
 import MailSetDefaultGroupAddress from "@/features/mail/actions/MailSetDefaultGroupAddress.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import useGet from "@/composables/useGet";
-import { mailGetGroupPage } from "@/features/mail/mail";
 import { useUserStore } from "@/store/user";
-import { MailAddress, MailDomain, MailGroupPage, MailUser } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "lorga-ui";
-import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { MailAddress, useGetGroupPage } from "../api/useGetGroupPage";
 
-// store
 const userStore = useUserStore();
 
-// page
 const route = useRoute();
-const page = ref<MailGroupPage>();
-const query = useGet(mailGetGroupPage, page, route.params.uuid as string);
-
-// available domains
-const availableDomains = computed<MailDomain[]>(() => {
-  if (!page.value) return [];
-  return page.value.available_domains;
-});
-
-// members
-const members = computed<MailUser[] | null>(() => {
-  if (!page.value) return null;
-  return page.value.members;
-});
-
-// addresses
-const addresses = computed<MailAddress[] | null>(() => {
-  if (!page.value) return null;
-  return page.value.addresses;
-});
+const uuid = route.params.uuid as string;
+const { page, query, availableDomains, members, addresses } =
+  useGetGroupPage(uuid);
 </script>

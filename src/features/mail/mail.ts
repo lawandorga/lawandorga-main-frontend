@@ -1,7 +1,7 @@
 import {
   MailCheckDomain,
-  MailGroupPage,
   MailDashboardPage,
+  MailUserPage,
   NoMailAccount,
 } from "@/types/mail";
 import axios from "axios";
@@ -22,10 +22,6 @@ export function mailGetDashboardPage(): Promise<
     });
 }
 
-export function mailGetGroupPage(uuid: string): Promise<MailGroupPage> {
-  return axios.get(`mail/query/page/group/${uuid}/`).then((r) => r.data);
-}
-
 export function mailCheckDomain(data: {
   uuid: string;
 }): Promise<MailCheckDomain> {
@@ -34,7 +30,7 @@ export function mailCheckDomain(data: {
     .then((r) => r.data);
 }
 
-export function mailGetUserPage(uuid: string): Promise<MailGroupPage> {
+export function mailGetUserPage(uuid: string): Promise<MailUserPage> {
   return axios.get(`mail/query/page/user/${uuid}/`).then((r) => r.data);
 }
 
