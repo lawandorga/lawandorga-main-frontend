@@ -4,6 +4,7 @@
     "javascript",
     "typescript"
   ],
+  "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
@@ -14,7 +15,6 @@
   },
   "[tf]": {
     "editor.defaultFormatter": "hashicorp.terraform",
-    "editor.formatOnSave": true
   },
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
@@ -22,5 +22,7 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "css.customData": [".vscode/tailwind.json"]
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ]
 }

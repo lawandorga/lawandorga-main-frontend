@@ -49,16 +49,18 @@ export default [
           ignores: [],
         },
       ],
-      // "prettier/prettier": [
-      //   "error",
-      //   {
-      //     trailingComma: "all",
-      //     singleQuote: false,
-      //     semi: true,
-      //     htmlWhitespaceSensitivity: "ignore",
-      //     endOfLine: "auto",
-      //   },
-      // ],
+      "prettier/prettier": [
+        "error",
+        {
+          trailingComma: "all",
+          singleQuote: false,
+          semi: true,
+          htmlWhitespaceSensitivity: "ignore",
+          endOfLine: "auto",
+          printWidth: 80,
+          indent: 2,
+        },
+      ],
     },
   }),
 ];

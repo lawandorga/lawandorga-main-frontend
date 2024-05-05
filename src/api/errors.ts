@@ -146,25 +146,25 @@ export function resetContext(context: Context): Promise<void> {
 
 type BackendAxiosError =
   | AxiosError<{
-    err_type: string;
-    title: string;
-    status: number;
-    detail: string | null;
-    instance: string | null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    internal: any;
-    general_errors: string[] | null;
-    param_errors: { [key: string]: string[] } | null;
-  }>
+      err_type: string;
+      title: string;
+      status: number;
+      detail: string | null;
+      instance: string | null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      internal: any;
+      general_errors: string[] | null;
+      param_errors: { [key: string]: string[] } | null;
+    }>
   | AxiosError<{
-    [key: string]: string[];
-  }>
+      [key: string]: string[];
+    }>
   | AxiosError<{
-    non_field_errors: string[];
-  }>
+      non_field_errors: string[];
+    }>
   | AxiosError<{
-    detail: string;
-  }>;
+      detail: string;
+    }>;
 
 export function cleanUpError(error: BackendAxiosError): Promise<void> {
   const newError: types.ICommandError = {
@@ -204,7 +204,8 @@ export function cleanUpError(error: BackendAxiosError): Promise<void> {
       newError.paramErrors = data;
       newError.title = "Request Error";
     }
-  } catch (_) {  // eslint-disable-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars
+  } catch (_) {
     newError.title = "Unknown Error";
     if (error.response?.status)
       newError.title = `Unknown Error (${error.response.status})`;
@@ -297,10 +298,10 @@ export function useErrorHandling() {
       userStore: Context["userStore"],
       router: Context["router"],
     ) =>
-      (error: AxiosError) => {
-        const context = buildContext(error, alertStore, userStore, router);
-        return f(context);
-      };
+    (error: AxiosError) => {
+      const context = buildContext(error, alertStore, userStore, router);
+      return f(context);
+    };
 
   const handleQueryErrorInjected = injectHandleError(
     handleQueryError,
