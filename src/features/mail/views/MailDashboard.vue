@@ -38,7 +38,12 @@
             ]"
           >
             <template #mailUserRole>
-              <MailUserRole :query="query" :page="page" />
+              <MailUserRole
+                :query="query"
+                :page="page"
+                :user="user"
+                :addresses="addresses"
+              />
             </template>
             <template #webmail><MailWebmail /></template>
             <template #users><MailUsers :page="page" /></template>
@@ -60,22 +65,15 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-import { ref } from "vue";
 import TabControls from "@/components/TabControls.vue";
 import MailUserRole from "@/features/mail/components/MailUserRole.vue";
 import MailDomain from "@/features/mail/components/MailDomain.vue";
-import { MailDashboardPage, NoMailAccount } from "@/types/mail";
-import { mailGetDashboardPage } from "@/features/mail/mail";
-import useGet from "@/composables/useGet";
 import MailUsers from "@/features/mail/components/MailUsers.vue";
 import MailGroups from "@/features/mail/components/MailGroups.vue";
 import MailWebmail from "@/features/mail/components/MailWebmail.vue";
 import MailCreateMailUser from "@/features/mail/actions/MailCreateMailUser.vue";
+import { useGetDashboardPage } from "../api/useGetDashboardPage";
 
-// user store
 const userStore = useUserStore();
-
-// load the page
-const page = ref<MailDashboardPage | NoMailAccount>();
-const query = useGet(mailGetDashboardPage, page);
+const { page, query, user, addresses } = useGetDashboardPage();
 </script>

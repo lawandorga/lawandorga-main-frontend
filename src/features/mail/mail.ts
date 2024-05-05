@@ -1,26 +1,5 @@
-import {
-  MailCheckDomain,
-  MailDashboardPage,
-  MailUserPage,
-  NoMailAccount,
-} from "@/types/mail";
+import { MailCheckDomain, MailUserPage } from "@/types/mail";
 import axios from "axios";
-
-export function mailGetDashboardPage(): Promise<
-  MailDashboardPage | NoMailAccount
-> {
-  return axios
-    .get("mail/query/page/dashboard/")
-    .then((response) => {
-      const data = response.data;
-      data["noMailAccount"] = false;
-      return data;
-    })
-    .catch((error) => {
-      if (error.response.status === 444) return { noMailAccount: true };
-      throw error;
-    });
-}
 
 export function mailCheckDomain(data: {
   uuid: string;

@@ -152,25 +152,13 @@ import {
   NoMailAccount,
 } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
-import { computed, toRefs } from "vue";
+import { toRefs } from "vue";
 
-// page
 const props = defineProps<{
   page: MailDashboardPage | NoMailAccount;
+  user: SelfMailUser | null | false;
+  addresses: MailAddress[] | null;
   query: () => void;
 }>();
 const { page } = toRefs(props);
-
-// user
-const user = computed<SelfMailUser | null | false>(() => {
-  if (page.value == undefined) return null;
-  else if (page.value.noMailAccount) return false;
-  return page.value.user;
-});
-
-// addresses
-const addresses = computed<MailAddress[] | null>(() => {
-  if (user.value === null || user.value === false) return null;
-  return user.value.account.addresses;
-});
 </script>
