@@ -105,19 +105,10 @@
 import MailAddDomain from "@/features/mail/actions/MailAddDomain.vue";
 import MailChangeDomain from "@/features/mail/actions/MailChangeDomain.vue";
 import MailCheckDomain from "@/features/mail/actions/MailCheckDomain.vue";
-import { MailDomain, MailDashboardPage, NoMailAccount } from "@/types/mail";
-import { computed, toRefs } from "vue";
+import { MailDomain } from "../api/useGetDashboardPage";
 
-// page
-const props = defineProps<{
-  page: MailDashboardPage | NoMailAccount;
+defineProps<{
+  domain: MailDomain | null;
   query: () => void;
 }>();
-const { page } = toRefs(props);
-
-// domain
-const domain = computed<MailDomain | null>(() => {
-  if (page.value && !page.value.noMailAccount) return page.value.domain;
-  return null;
-});
 </script>

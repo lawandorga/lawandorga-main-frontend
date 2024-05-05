@@ -25,7 +25,7 @@
         <template #head-action>
           <MailAddAddress
             :query="query"
-            :user-uuid="$route.params.uuid as string"
+            :user-uuid="uuid"
             :available-domains="page.available_domains"
           />
         </template>
@@ -35,13 +35,13 @@
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :user-uuid="$route.params.uuid as string"
+            :user-uuid="uuid"
           />
           <MailDeleteAddress
             :email="`${item.localpart}@${item.domain.name}`"
             :query="query"
             :address-uuid="item.uuid"
-            :user-uuid="$route.params.uuid as string"
+            :user-uuid="uuid"
           />
         </template>
       </TableGenerator>
@@ -55,26 +55,16 @@ import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
 import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import useGet from "@/composables/useGet";
-import { mailGetUserPage } from "@/features/mail/mail";
 import { useUserStore } from "@/store/user";
-import { MailAddress, MailUserPage } from "@/types/mail";
 import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "lorga-ui";
-import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { MailAddress, useGetUserPage } from "../api/useGetUserPage";
 
-// store
 const userStore = useUserStore();
 
-// page
 const route = useRoute();
-const page = ref<MailUserPage>();
-const query = useGet(mailGetUserPage, page, route.params.uuid as string);
+const uuid = route.params.uuid as string;
 
-// addresses
-const addresses = computed<MailAddress[] | null>(() => {
-  if (!page.value) return null;
-  return page.value.addresses;
-});
+const { page, query, addresses } = useGetUserPage(uuid);
 </script>

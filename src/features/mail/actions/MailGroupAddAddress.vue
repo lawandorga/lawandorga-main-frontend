@@ -13,14 +13,14 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { AvailableMailDomain } from "@/types/mail";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
+import { MailDomain } from "../api/useGetGroupPage";
 
 const props = defineProps<{
   query: () => void;
   groupUuid: string | null;
-  availableDomains: AvailableMailDomain[];
+  availableDomains: MailDomain[];
 }>();
 
 const { availableDomains, query } = toRefs(props);

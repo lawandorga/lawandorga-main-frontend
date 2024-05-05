@@ -4,7 +4,7 @@
       { name: 'User', key: 'name' },
       { name: 'E-Mail', key: 'email' },
     ]"
-    :data="addresses"
+    :data="users"
   >
     <template #name="item">
       <ButtonLink :to="{ name: 'mail-user', params: { uuid: item.uuid } }">
@@ -15,23 +15,11 @@
 </template>
 
 <script setup lang="ts">
-import { MailUser, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
-import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import { MailUser } from "../api/useGetDashboardPage";
 
-// page
-const props = defineProps({
-  page: {
-    required: true,
-    type: Object as PropType<MailDashboardPage | NoMailAccount>,
-  },
-});
-const { page } = toRefs(props);
-
-// addresses
-const addresses = computed<MailUser[] | null>(() => {
-  if (page.value && !page.value.noMailAccount) return page.value.users;
-  return null;
-});
+defineProps<{
+  users: MailUser[] | null;
+}>();
 </script>

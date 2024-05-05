@@ -13,9 +13,9 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { AvailableMailDomain } from "@/types/mail";
 import { ModalCreate, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
+import { AvailableMailDomain } from "../api/useGetDashboardPage";
 
 const props = defineProps<{
   query: () => void;

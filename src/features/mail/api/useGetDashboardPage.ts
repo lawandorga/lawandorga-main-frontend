@@ -89,9 +89,21 @@ export function useGetDashboardPage() {
     return user.value.account.addresses;
   });
 
+  const domain = computed<MailDomain | null>(() => {
+    if (page.value && !page.value.noMailAccount) return page.value.domain;
+    return null;
+  });
+
+  const users = computed<MailUser[] | null>(() => {
+    if (page.value && !page.value.noMailAccount) return page.value.users;
+    return null;
+  });
+
   return {
     query,
     page,
+    domain,
+    users,
     user,
     addresses,
   };

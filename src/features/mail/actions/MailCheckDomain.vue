@@ -12,10 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { mailCheckDomain } from "@/features/mail/mail";
-import { MailCheckDomain } from "@/types/mail";
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
+import useClient from "@/api/client";
 
 const props = defineProps<{
   domainUuid: string;
@@ -24,14 +23,22 @@ const props = defineProps<{
 
 const { query, domainUuid } = toRefs(props);
 
+interface MailCheckDomain {
+  valid: boolean;
+  wrong_setting: string | null;
+}
+
 const check = ref<MailCheckDomain>();
 
 const checkModalOpen = ref(false);
 
+const client = useClient();
+const request = client.postAndReturn("api/mail/domains/{uuid}/check_domain/");
+
 const checkDomainSettings = () => {
   check.value = undefined;
   checkModalOpen.value = true;
-  mailCheckDomain({ uuid: domainUuid.value }).then((d) => {
+  request({ uuid: domainUuid.value }).then((d) => {
     query.value();
     check.value = d;
   });

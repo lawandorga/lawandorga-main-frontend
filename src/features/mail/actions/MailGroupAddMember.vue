@@ -14,9 +14,9 @@
 
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
-import { MailUser } from "@/types/mail";
 import { ModalForm, types, ButtonNormal } from "lorga-ui";
 import { computed, toRefs } from "vue";
+import { MailUser } from "../api/useGetGroupPage";
 
 const props = defineProps<{
   query: () => void;

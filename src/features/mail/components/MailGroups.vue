@@ -31,10 +31,14 @@
 <script setup lang="ts">
 import MailCreateGroup from "@/features/mail/actions/MailCreateGroup.vue";
 import MailDeleteGroup from "@/features/mail/actions/MailDeleteGroup.vue";
-import { MailGroup, MailDashboardPage, NoMailAccount } from "@/types/mail";
 import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import {
+  MailDashboardPage,
+  MailGroup,
+  NoMailAccount,
+} from "../api/useGetDashboardPage";
 
 // props
 const props = defineProps({

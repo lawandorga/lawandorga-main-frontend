@@ -46,12 +46,12 @@
               />
             </template>
             <template #webmail><MailWebmail /></template>
-            <template #users><MailUsers :page="page" /></template>
+            <template #users><MailUsers :users="users" /></template>
             <template #groups>
               <MailGroups :page="page" :query="query" />
             </template>
             <template #domain>
-              <MailDomain :page="page" :query="query" />
+              <MailDomain :domain="domain" :query="query" />
             </template>
           </TabControls>
         </template>
@@ -75,5 +75,5 @@ import MailCreateMailUser from "@/features/mail/actions/MailCreateMailUser.vue";
 import { useGetDashboardPage } from "../api/useGetDashboardPage";
 
 const userStore = useUserStore();
-const { page, query, user, addresses } = useGetDashboardPage();
+const { page, query, user, addresses, domain, users } = useGetDashboardPage();
 </script>

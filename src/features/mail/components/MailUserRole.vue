@@ -145,14 +145,14 @@ import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
 import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
 import MailRegeneratePassword from "@/features/mail/actions/MailRegeneratePassword.vue";
 import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
+import { TableGenerator } from "lorga-ui";
+import { toRefs } from "vue";
 import {
   MailAddress,
   MailDashboardPage,
-  SelfMailUser,
   NoMailAccount,
-} from "@/types/mail";
-import { TableGenerator } from "lorga-ui";
-import { toRefs } from "vue";
+  SelfMailUser,
+} from "../api/useGetDashboardPage";
 
 const props = defineProps<{
   page: MailDashboardPage | NoMailAccount;
