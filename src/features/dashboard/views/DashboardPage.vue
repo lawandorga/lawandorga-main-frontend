@@ -188,32 +188,20 @@
 <script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { ref } from "vue";
 import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
-import { DashboardInformation, DashboardNote } from "@/types/user";
 import { formatDate } from "@/utils/date";
-import useGet from "@/composables/useGet";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import useClient from "@/api/client";
 import DashboardCreateNote from "@/features/dashboard/actions/DashboardCreateNote.vue";
 import DashboardDeleteNote from "@/features/dashboard/actions/DashboardDeleteNote.vue";
 import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNote.vue";
+import { useDashboard } from "../api/useDashboard";
+import { useNotes } from "../api/useNotes";
 
-const client = useClient();
-
-const data = ref<DashboardInformation | null>(null);
-
-const request = client.get<DashboardInformation>(
-  "api/auth/query/page/dashboard/",
-);
-
-useGet(request, data);
+const { data } = useDashboard();
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
-const notes = ref<DashboardNote[] | null>(null);
-
-const notesQuery = useGet(client.get("api/query/notes/"), notes);
+const { notes, notesQuery } = useNotes();
 </script>

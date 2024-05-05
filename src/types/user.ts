@@ -34,40 +34,6 @@ export interface RlcUser {
   speciality_of_study_display: string | null;
 }
 
-export interface DashboardInformation {
-  records:
-  | { identifier: string; folder_uuid: string; state: string; uuid: string }[]
-  | null;
-  members: { id: number; name: string; rlcuserid: number }[] | null;
-  questionnaires:
-  | {
-    name: string;
-    folder_uuid: string;
-  }[]
-  | null;
-  changed_records:
-  | {
-    identifier: string;
-    folder_uuid: string;
-    updated: string;
-    uuid: string;
-  }[]
-  | null;
-  follow_ups:
-  | {
-    folder_uuid: string;
-    title: string;
-    time: string;
-  }[]
-  | null;
-}
-
-export interface DashboardNote {
-  id: number;
-  title: string;
-  note: string;
-}
-
 export interface BadgeInformation {
   profiles: number;
   record_deletion_requests: number;
