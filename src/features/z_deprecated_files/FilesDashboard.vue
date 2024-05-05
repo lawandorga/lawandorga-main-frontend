@@ -279,7 +279,7 @@ export default defineComponent({
     FolderIcon,
     DocumentIcon,
     TableSortable,
-    FolderOpenIcon, // eslint-disable-line vue/no-unused-components
+    FolderOpenIcon,
     BreadcrumbsBar,
     ModalDelete,
     TableGenerator,

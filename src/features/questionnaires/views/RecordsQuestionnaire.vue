@@ -100,7 +100,6 @@ const { commandRequest } = useCmd(query);
 const sendAnswer = computed(() => (data: JsonModel) => {
   const formData = new FormData();
   formData.append("action", "questionnaires/submit_answers");
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   formData.append("questionnaire_id", recordQuestionnaire.value!.id.toString());
   Object.keys(data).forEach((key) => formData.append(key, data[key]));
   return commandRequest(formData);

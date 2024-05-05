@@ -7,7 +7,7 @@
     "build:production": "vite build",
     "serve": "vite preview",
     "lint": "eslint ./src",
-    "fix": "eslint --fix --ext .js,.vue ./src",
+    "fix": "eslint --fix ./src",
     "tscheck": "tsc --build",
     "test": "vitest run",
     "test:watch": "vitest"
