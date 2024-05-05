@@ -22,8 +22,6 @@
     "@tailwindcss/typography": "^0.5.9",
     "@tiptap/extension-bullet-list": "^2.1.12",
     "@tiptap/extension-character-count": "^2.1.12",
-    "@tiptap/extension-collaboration": "^2.1.12",
-    "@tiptap/extension-collaboration-cursor": "^2.1.12",
     "@tiptap/extension-highlight": "^2.2.4",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/extension-list-item": "^2.2.4",
@@ -63,10 +61,7 @@
     "vue": "^3.2.45",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.2.5",
-    "vue-tsc": "^1.8.22",
-    "vuex": "^4.1.0",
-    "y-webrtc": "^10.2.6",
-    "yjs": "^13.6.8"
+    "vue-tsc": "^1.8.22"
   },
   "browserslist": [
     "> 1%",
