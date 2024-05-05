@@ -79,4 +79,3 @@ const userStore = useUserStore();
 const page = ref<MailDashboardPage | NoMailAccount>();
 const query = useGet(mailGetDashboardPage, page);
 </script>
-@/features/mail/mail

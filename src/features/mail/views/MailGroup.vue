@@ -118,4 +118,3 @@ const addresses = computed<MailAddress[] | null>(() => {
   return page.value.addresses;
 });
 </script>
-@/features/mail/mail

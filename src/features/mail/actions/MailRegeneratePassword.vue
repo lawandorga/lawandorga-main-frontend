@@ -35,4 +35,3 @@ watch(regeneratePasswordModalOpen, (newValue) => {
   if (!newValue) password.value = "";
 });
 </script>
-@/features/mail/mail

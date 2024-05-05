@@ -37,4 +37,3 @@ const checkDomainSettings = () => {
   });
 };
 </script>
-@/features/mail/mail
