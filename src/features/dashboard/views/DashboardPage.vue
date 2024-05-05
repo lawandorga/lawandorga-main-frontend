@@ -51,19 +51,20 @@
         </div>
         <div v-if="data?.records">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
-            Active Records
+            Active Data Sheets
           </h2>
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
-            <li v-for="record in data.records" :key="record.id" class="block">
+            <li v-for="sheet in data.records" :key="sheet.uuid" class="block">
               <router-link
                 :to="{
-                  name: 'records-detail',
-                  params: { record: record.uuid },
+                  name: 'folders-detail',
+                  params: { uuid: sheet.folder_uuid },
+                  query: { selectedType: 'RECORD', selectedId: sheet.uuid },
                 }"
                 class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >
-                {{ record.identifier }}
-                ({{ record.state }})
+                {{ sheet.identifier }}
+                ({{ sheet.state }})
                 <div
                   class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
                 >
@@ -80,13 +81,13 @@
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
               v-for="record in data.changed_records"
-              :key="record.id"
+              :key="record.uuid"
               class="block"
             >
               <router-link
                 :to="{
-                  name: 'records-detail',
-                  params: { record: record.uuid },
+                  name: 'folders-detail',
+                  params: { uuid: record.folder_uuid },
                 }"
                 class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
               >

@@ -36,30 +36,30 @@ export interface RlcUser {
 
 export interface DashboardInformation {
   records:
-    | { identifier: string; id: number; state: string; uuid: string }[]
-    | null;
+  | { identifier: string; folder_uuid: string; state: string; uuid: string }[]
+  | null;
   members: { id: number; name: string; rlcuserid: number }[] | null;
   questionnaires:
-    | {
-        name: string;
-        folder_uuid: string;
-      }[]
-    | null;
+  | {
+    name: string;
+    folder_uuid: string;
+  }[]
+  | null;
   changed_records:
-    | {
-        identifier: string;
-        id: number;
-        updated: string;
-        uuid: string;
-      }[]
-    | null;
+  | {
+    identifier: string;
+    folder_uuid: string;
+    updated: string;
+    uuid: string;
+  }[]
+  | null;
   follow_ups:
-    | {
-        folder_uuid: string;
-        title: string;
-        time: string;
-      }[]
-    | null;
+  | {
+    folder_uuid: string;
+    title: string;
+    time: string;
+  }[]
+  | null;
 }
 
 export interface DashboardNote {
