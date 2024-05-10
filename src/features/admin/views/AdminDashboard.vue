@@ -69,11 +69,12 @@
 
 <script lang="ts" setup>
 import {
+  CogIcon,
+  DocumentTextIcon,
   QuestionMarkCircleIcon,
   RectangleGroupIcon,
   UsersIcon,
   UserIcon,
-  CogIcon,
   WindowIcon,
 } from "@heroicons/vue/24/outline";
 import { type Component, computed } from "vue";
@@ -95,72 +96,88 @@ type AdminItem =
     }
   | { placeholder: true; class?: string };
 
-const items = computed<AdminItem[]>(() => [
-  {
-    title: "Profiles",
-    description:
-      "Here you can manage the users of your RLC. If you have the 'manage_users' permission you can change their contact information. If you have the 'manage_permissions' permission you can update the permissions of every user.",
-    link: { name: "admin-profiles" },
-    icon: UserIcon,
-    notifications: store.badges?.profiles,
-    class: "rounded-t-lg sm:rounded-tr-none",
-  },
-  {
-    title: "Groups",
-    description:
-      "Here you can manage the groups of your RLC. If you have the 'manage_groups' permission you can add, change and remove groups. You can also add and remove users. If you have the 'manage_permissions' permission you can add permissions to a group or remove permissions from a group.",
-    link: { name: "admin-groups" },
-    icon: UsersIcon,
-    notifications: 0,
-    class: "sm:rounded-tr-lg",
-  },
-  {
-    title: "Data Sheet Templates",
-    description:
-      "Add and edit your data sheet templates. You can add, change and remove fields.",
-    link: { name: "admin-templates" },
-    icon: RectangleGroupIcon,
-    notifications: 0,
-    class: "",
-  },
-  // {
-  //   title: "Record-Access-Requests",
-  //   description:
-  //     "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
-  //   link: { name: "admin-recordpermitrequests" },
-  //   icon: LockOpenIcon,
-  //   notifications: store.badges?.record_permit_requests,
-  //   class: "",
-  // },
-  // {
-  //   title: "Record-Deletion-Requests",
-  //   description:
-  //     "If somebody requested to delete a record you can take a look and allow that request here.",
-  //   link: { name: "admin-recorddeletionrequests" },
-  //   icon: TrashIcon,
-  //   notifications: store.badges?.record_deletion_requests,
-  //   class: "",
-  // },
-  {
-    title: "Questionnaire Templates",
-    description:
-      "Here you can create questionnaire templates that can be send out from the record detail page.",
-    link: { name: "questionnaires-admin-list" },
-    icon: QuestionMarkCircleIcon,
-    notifications: 0,
-    class: "",
-  },
-  {
-    title: "Sidebar",
-    description: "Here you can change the sidebar and add external links.",
-    link: { name: "admin-sidebar" },
-    icon: WindowIcon,
-    notifications: 0,
-    class: "sm:rounded-bl-lg",
-  },
-  {
+const items = computed<AdminItem[]>(() => {
+  const generalItems = [
+    {
+      title: "Profiles",
+      description:
+        "Here you can manage the users of your RLC. If you have the 'manage_users' permission you can change their contact information. If you have the 'manage_permissions' permission you can update the permissions of every user.",
+      link: { name: "admin-profiles" },
+      icon: UserIcon,
+      notifications: store.badges?.profiles,
+      class: "rounded-t-lg sm:rounded-tr-none",
+    },
+    {
+      title: "Groups",
+      description:
+        "Here you can manage the groups of your RLC. If you have the 'manage_groups' permission you can add, change and remove groups. You can also add and remove users. If you have the 'manage_permissions' permission you can add permissions to a group or remove permissions from a group.",
+      link: { name: "admin-groups" },
+      icon: UsersIcon,
+      notifications: 0,
+      class: "sm:rounded-tr-lg",
+    },
+    {
+      title: "Data Sheet Templates",
+      description:
+        "Add and edit your data sheet templates. You can add, change and remove fields.",
+      link: { name: "admin-templates" },
+      icon: RectangleGroupIcon,
+      notifications: 0,
+      class: "",
+    },
+    // {
+    //   title: "Record-Access-Requests",
+    //   description:
+    //     "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
+    //   link: { name: "admin-recordpermitrequests" },
+    //   icon: LockOpenIcon,
+    //   notifications: store.badges?.record_permit_requests,
+    //   class: "",
+    // },
+    // {
+    //   title: "Record-Deletion-Requests",
+    //   description:
+    //     "If somebody requested to delete a record you can take a look and allow that request here.",
+    //   link: { name: "admin-recorddeletionrequests" },
+    //   icon: TrashIcon,
+    //   notifications: store.badges?.record_deletion_requests,
+    //   class: "",
+    // },
+    {
+      title: "Questionnaire Templates",
+      description:
+        "Here you can create questionnaire templates that can be send out from the record detail page.",
+      link: { name: "questionnaires-admin-list" },
+      icon: QuestionMarkCircleIcon,
+      notifications: 0,
+      class: "",
+    },
+    {
+      title: "Sidebar",
+      description: "Here you can change the sidebar and add external links.",
+      link: { name: "admin-sidebar" },
+      icon: WindowIcon,
+      notifications: 0,
+      class: "sm:rounded-bl-lg",
+    },
+  ];
+
+  const placeholderItem = {
     placeholder: true,
     class: "rounded-b-lg sm:rounded-bl-none",
-  },
-]);
+  };
+
+  const collabItem = {
+    title: "Collab",
+    description: "Here you can manage and customize templates for standard document elements like footers and letterheads to ensure consistency across your organization's communications.",
+    link: { name: "admin-collab-docs" },
+    icon: DocumentTextIcon,
+    notifications: 0,
+    class: "sm:rounded-bl-lg",
+  };
+
+  return store.user?.email === "dummy@law-orga.de"
+    ? [...generalItems, collabItem]
+    : [...generalItems, placeholderItem];
+});
 </script>
