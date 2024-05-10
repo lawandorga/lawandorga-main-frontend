@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin/collabdocs",
     name: "admin-collab-docs",
     component: () => import("@/features/admin/views/AdminCollabDocuments.vue"),
-  }
+  },
 ];
 
 export default routes;
