@@ -2,7 +2,7 @@
 import RecordsTableV3 from "@/features/records/components/RecordsTableV3.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { RectangleStackIcon } from "@heroicons/vue/24/outline";
+import { RectangleStackIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
 import { useUserStore } from "@/store/user";
 import RecordsCreateRecordV2 from "@/features/records/actions/RecordsCreateRecordV2.vue";
@@ -15,12 +15,18 @@ import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { useRecords } from "../api/useRecords";
 import { useInfos } from "../api/useInfos";
-import { FormInput, PaginationBar } from "lorga-ui";
+import { ButtonNormal, FormInput, PaginationBar } from "lorga-ui";
 import { ref } from "vue";
 
 const tokenSearch = ref("");
 const yearSearch = ref("");
 const generalSearch = ref("");
+
+const resetSearch = () => {
+  tokenSearch.value = "";
+  yearSearch.value = "";
+  generalSearch.value = "";
+};
 
 const {
   deletionRequests,
@@ -115,6 +121,12 @@ const userStore = useUserStore();
                   (generalSearch = (e.target as HTMLInputElement).value)
               "
             />
+            <div class="flex items-center">
+              <ButtonNormal kind="action" class="mb-4" @click="resetSearch">
+                <XMarkIcon class="w-6 h-6" />
+                <span>Reset Search</span>
+              </ButtonNormal>
+            </div>
           </div>
           <RecordsTableV3 :records="records" :columns="view.columns">
             <template #head-action>
