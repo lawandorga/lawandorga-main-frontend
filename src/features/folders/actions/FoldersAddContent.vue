@@ -83,6 +83,18 @@
       :folder-uuid="folderUuid"
       :query="query"
     />
+    <UploadsCreateLink
+      ref="uploadsCreateLink"
+      class="hidden"
+      :folder-uuid="folderUuid"
+      :query="query"
+    />
+    <CollabCreate
+      ref="collabCreate"
+      class="hidden"
+      :folder-uuid="folderUuid"
+      :query="query"
+    />
   </ButtonNormal>
 </template>
 
@@ -99,6 +111,8 @@ import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultip
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
 import RecordsCreateRecordWithinFolder from "@/features/records/actions/RecordsCreateRecordWithinFolder.vue";
 import { ButtonNormal } from "lorga-ui";
+import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
+import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
 
 defineProps<{ query: () => void; folderUuid?: string }>();
 
@@ -113,6 +127,8 @@ const recordsCreateRecordWithinFolder = ref();
 const filesUploadFile = ref();
 const filesUploadMultipleFiles = ref();
 const questionnairesPublishQuestionnaire = ref();
+const uploadsCreateLink = ref();
+const collabCreate = ref();
 
 // add content options
 const addContentOptions = computed(() => [
@@ -142,6 +158,20 @@ const addContentOptions = computed(() => [
     onClick: () => {
       close();
       questionnairesPublishQuestionnaire.value.commandModalOpen = true;
+    },
+  },
+  {
+    text: "Public Upload Link",
+    onClick: () => {
+      close();
+      uploadsCreateLink.value.commandModalOpen = true;
+    },
+  },
+  {
+    text: "Collab Document",
+    onClick: () => {
+      close();
+      collabCreate.value.commandModalOpen = true;
     },
   },
 ]);

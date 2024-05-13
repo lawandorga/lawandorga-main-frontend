@@ -9,7 +9,7 @@
       >
         <component
           :is="button"
-          v-for="button in groups.map((i) => i.buttons).flat()"
+          v-for="button in ungroupedButtons"
           :key="button"
         />
       </li>
@@ -95,6 +95,7 @@ import { useRoute, useRouter } from "vue-router";
 defineProps<{
   grouping: boolean;
   groups: ContentGroupItem[];
+  ungroupedButtons: VNode[];
   selectedType: string;
   selectedId: string | number | null;
   hideGroupingControl?: boolean;

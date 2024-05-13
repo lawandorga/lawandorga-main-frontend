@@ -2,6 +2,7 @@
   <FolderNavigationRaw
     :groups="groups"
     :grouping="grouping"
+    :ungrouped-buttons="ungroupedButtons"
     :selected-id="selectedId"
     :selected-type="selectedType"
     @selected="emit('selected', $event)"
@@ -21,6 +22,7 @@ import FolderNavigationRaw, {
   ContentGroupItem,
 } from "@/features/folders/components/FolderNavigationRaw.vue";
 import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
+import FoldersAddContent from "../actions/FoldersAddContent.vue";
 
 const props = defineProps<{
   folder: FolderDetail;
@@ -34,6 +36,13 @@ const props = defineProps<{
 const { folder, query, numberOfUnreadMails } = toRefs(props);
 
 const emit = defineEmits(["grouping", "selected"]);
+
+const ungroupedButtons = computed(() => [
+  h(FoldersAddContent, {
+    query: query.value,
+    folderUuid: folder.value.folder.uuid,
+  }),
+]);
 
 const groups = computed<ContentGroupItem[]>(() => {
   const g: ContentGroupItem[] = [];

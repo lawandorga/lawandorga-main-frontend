@@ -2,6 +2,7 @@
   <FolderNavigationRaw
     :groups="groups"
     :grouping="grouping"
+    :ungrouped-buttons="ungroupedButtons"
     :selected-id="selectedId"
     :selected-type="selectedType"
     hide-grouping-control
@@ -39,6 +40,24 @@ const record = computed<Content | null>(() => {
   return item;
 });
 
+const changeNameButton = computed(() =>
+  record.value
+    ? h(ChangeToken, {
+        text: "Change Record Token",
+        recordToken: folder.value.folder.name,
+        recordUuid: record.value.uuid,
+        query: query.value,
+      })
+    : h(FoldersChangeName, {
+        text: "Change Folder Name",
+        folderName: folder.value.folder.name,
+        folderUuid: folder.value.folder.uuid,
+        query: query.value,
+      }),
+);
+
+const ungroupedButtons = computed(() => [changeNameButton.value]);
+
 const groups = computed<ContentGroupItem[]>(() => {
   return [
     {
@@ -50,21 +69,7 @@ const groups = computed<ContentGroupItem[]>(() => {
         { name: "Users With Access", type: "ACCESS", id: "ACCESS" },
         { name: "Subfolders", type: "SUBFOLDER", id: "SUBFOLDER" },
       ],
-      buttons: [
-        record.value
-          ? h(ChangeToken, {
-              text: "Change Record Token",
-              recordToken: folder.value.folder.name,
-              recordUuid: record.value.uuid,
-              query: query.value,
-            })
-          : h(FoldersChangeName, {
-              text: "Change Folder Name",
-              folderName: folder.value.folder.name,
-              folderUuid: folder.value.folder.uuid,
-              query: query.value,
-            }),
-      ],
+      buttons: [changeNameButton.value],
     },
   ];
 });
