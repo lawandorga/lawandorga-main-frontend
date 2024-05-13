@@ -71,6 +71,12 @@
           :selected-id="selectedId"
         />
 
+        <FolderSubfolders
+          :folders="folder.subfolders"
+          :selected-id="selectedId"
+          :selected-type="selectedType"
+        />
+
         <FolderFile
           :query="query"
           :selected-id="selectedId"
@@ -154,6 +160,7 @@ import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
 import useGet from "@/composables/useGet";
 import { ImportedMail } from "@/types/mailImports";
+import FolderSubfolders from "../components/FolderSubfolders.vue";
 
 // record
 const route = useRoute();

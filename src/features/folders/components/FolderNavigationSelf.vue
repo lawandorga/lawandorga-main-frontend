@@ -46,7 +46,10 @@ const groups = computed<ContentGroupItem[]>(() => {
         folder.value?.folder.name
       }`,
       type: "FOLDER",
-      children: [{ name: "Users With Access", type: "ACCESS", id: "ACCESS" }],
+      children: [
+        { name: "Users With Access", type: "ACCESS", id: "ACCESS" },
+        { name: "Subfolders", type: "SUBFOLDER", id: "SUBFOLDER" },
+      ],
       buttons: [
         record.value
           ? h(ChangeToken, {
