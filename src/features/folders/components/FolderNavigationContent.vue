@@ -96,7 +96,7 @@ const groups = computed<ContentGroupItem[]>(() => {
   });
 
   g.push({
-    name: "Public Uploads",
+    name: "Public File Uploads",
     type: "UPLOAD",
     children: folder.value.content
       .filter((c) => c.repository === "UPLOAD")
