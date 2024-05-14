@@ -22,9 +22,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/features/admin/views/AdminSidebar.vue"),
   },
   {
-    path: "/admin/collabdocs",
-    name: "admin-collab-docs",
+    path: "/admin/collab/templates",
+    name: "admin-collab-templates",
     component: () => import("@/features/admin/views/AdminCollabDocuments.vue"),
+  },
+  {
+    path: "/admin/collab/letterhead/:uuid",
+    name: "admin-collab-letterhead",
+    component: () => import("@/features/admin/views/AdminCollabFooter.vue"),
+  },
+  {
+    path: "/admin/collab/footer/:uuid",
+    name: "admin-collab-footer",
+    component: () => import("@/features/admin/views/AdminCollabLetterhead.vue"),
   },
 ];
 

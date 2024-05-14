@@ -163,7 +163,7 @@ const items = computed<AdminItem[]>(() => {
   ];
 
   const placeholderItem = {
-    placeholder: true,
+    placeholder: true as const,
     class: "rounded-b-lg sm:rounded-bl-none",
   };
 
@@ -177,8 +177,11 @@ const items = computed<AdminItem[]>(() => {
     class: "sm:rounded-bl-lg",
   };
 
-  return store.user?.email === "dummy@law-orga.de"
-    ? [...generalItems, collabItem]
-    : [...generalItems, placeholderItem];
+  const items: AdminItem[] =
+    store.user?.email === "dummy@law-orga.de"
+      ? [...generalItems, collabItem]
+      : [...generalItems, placeholderItem];
+
+  return items;
 });
 </script>
