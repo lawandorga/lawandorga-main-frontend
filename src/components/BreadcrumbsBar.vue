@@ -4,32 +4,26 @@
     aria-label="Breadcrumb"
   >
     <div class="flex items-center space-x-2">
-      <div class="flex items-center px-4 rounded-md shadow-sm bg-gray-50">
-        <div class="flex items-center justify-center h-11">
-          <button
-            class="text-gray-400 hover:text-gray-500"
-            @click="$router.back()"
-          >
-            <ChevronLeftIcon class="w-6 h-6" />
-          </button>
-        </div>
-      </div>
-      <ol
-        role="list"
-        class="flex px-6 space-x-4 rounded-md shadow-sm bg-gray-50"
+      <button
+        class="flex items-center px-4 text-gray-400 rounded-md shadow-sm bg-gray-50 hover:text-gray-500 h-11"
+        @click="$router.back()"
       >
+        <ChevronLeftIcon class="w-6 h-6" />
+      </button>
+      <ol role="list" class="flex rounded-md shadow-sm bg-gray-50">
         <li class="flex h-11">
-          <div class="flex items-center">
-            <router-link :to="base" class="text-gray-400 hover:text-gray-500">
-              <div class="flex-shrink-0">
-                <slot />
-              </div>
-              <span class="sr-only">Start</span>
-            </router-link>
-          </div>
+          <router-link
+            :to="base"
+            class="flex items-center pl-6 pr-4 text-gray-400 hover:text-gray-500"
+          >
+            <div class="flex-shrink-0">
+              <slot />
+            </div>
+            <span class="sr-only">Start</span>
+          </router-link>
         </li>
         <li v-for="page in pages" :key="page.name" class="flex h-11">
-          <div class="flex items-center">
+          <div class="flex">
             <svg
               class="flex-shrink-0 w-6 h-full text-gray-200"
               viewBox="0 0 24 44"
@@ -42,7 +36,7 @@
             </svg>
             <router-link
               :to="page.to"
-              class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+              class="flex items-center pl-4 pr-6 text-sm font-medium text-gray-500 hover:text-gray-700 h-11"
             >
               {{ page.name }}
             </router-link>
