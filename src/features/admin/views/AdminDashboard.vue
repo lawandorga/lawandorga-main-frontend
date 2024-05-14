@@ -177,11 +177,8 @@ const items = computed<AdminItem[]>(() => {
     class: "sm:rounded-bl-lg",
   };
 
-  const items: AdminItem[] =
-    store.user?.email === "dummy@law-orga.de"
-      ? [...generalItems, collabItem]
-      : [...generalItems, placeholderItem];
-
-  return items;
+  return store.user?.email === "dummy@law-orga.de"
+    ? [...generalItems, collabItem]
+    : [...generalItems, placeholderItem];
 });
 </script>
