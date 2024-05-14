@@ -171,7 +171,7 @@ const items = computed<AdminItem[]>(() => {
     title: "Collab",
     description:
       "Here you can manage and customize templates for standard document elements like footers and letterheads to ensure consistency across your organization's communications.",
-    link: { name: "admin-collab-docs" },
+    link: { name: "admin-collab-templates" },
     icon: DocumentTextIcon,
     notifications: 0,
     class: "sm:rounded-bl-lg",
