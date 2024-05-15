@@ -5,6 +5,7 @@ import useCollab from "../../records/api/useCollab";
 import { ref } from "vue";
 import { ButtonNormal } from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
+import CollabDelete from "@/features/collab/actions/CollabDelete.vue";
 
 const { getTemplates } = useCollab();
 const templates = ref(getTemplates());
@@ -48,15 +49,26 @@ const templates = ref(getTemplates());
         </tr>
       </thead>
       <tbody>
-        <tr v-for="template in templates" :key="template.uuid" class="h-14">
-          <td class="px-10 border border-gray-300">{{ template.title }}</td>
-          <td class="border border-gray-300 px-9">
+        <tr
+          v-for="template in templates"
+          :key="template.uuid"
+          class="h-14 text-formcolor"
+        >
+          <!-- TODO: make the title a button to edit the template -->
+          <td class="px-10 font-semibold border border-gray-300">
+            {{ template.title }}
+          </td>
+          <td class="font-medium border border-gray-300 px-9">
             {{ template.description }}
           </td>
-          <td class="border border-gray-300 px-9">
-            <!-- edit button -->
-            <!-- delete button -->
-            Buttons
+          <td class="gap-6 border border-gray-300 px-9">
+            <!-- TODO: @click -->
+            <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
+            <CollabDelete
+              :title="template.title"
+              :type="template.type"
+              :uuid="template.uuid"
+            />
           </td>
         </tr>
       </tbody>
