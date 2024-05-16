@@ -5,7 +5,7 @@ import useCollab from "../../records/api/useCollab";
 import { ref } from "vue";
 import { ButtonNormal } from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
-import CollabDelete from "@/features/collab/actions/CollabDelete.vue";
+import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 
 const { getTemplates } = useCollab();
 const templates = ref(getTemplates());
@@ -23,7 +23,7 @@ const templates = ref(getTemplates());
       <template #buttons>
         <!-- TODO: @click -->
         <ButtonNormal>
-          <PlusCircleIcon class="w-6 h-6 pr-2" />
+          <PlusCircleIcon class="pr-2 w-7 h-7" />
           New template
         </ButtonNormal>
       </template>
@@ -59,12 +59,14 @@ const templates = ref(getTemplates());
             {{ template.title }}
           </td>
           <td class="font-medium border border-gray-300 px-9">
-            {{ template.description }}
+            <span class="line-clamp-2">
+              {{ template.description }}
+            </span>
           </td>
           <td class="gap-6 border border-gray-300 px-9">
             <!-- TODO: @click -->
             <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
-            <CollabDelete
+            <DeleteCollabTemplate
               :title="template.title"
               :type="template.type"
               :uuid="template.uuid"

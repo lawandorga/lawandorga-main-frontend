@@ -28,6 +28,13 @@ const useCollab = () => {
         type: "footer",
         uuid: "def",
       },
+      {
+        description:
+          "This letterhead has a very long description, it is long enough that we can't show it all in the description box",
+        title: "Another Letterhead",
+        type: "letterhead",
+        uuid: "ghi",
+      },
     ];
   };
 
