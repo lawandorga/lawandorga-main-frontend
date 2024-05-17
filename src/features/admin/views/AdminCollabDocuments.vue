@@ -67,7 +67,7 @@ const { templates, query } = useCollab();
             <!-- TODO: @click -->
             <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
             <DeleteCollabTemplate
-              :title="template.title"
+              :title="template.name"
               :type="template.type"
               :uuid="template.uuid"
             />
