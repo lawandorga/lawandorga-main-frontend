@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { CollabTemplateType } from "@/features/records/api/useCollab";
+import { TemplateType } from "@/features/records/api/useCollab";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { ref } from "vue";
 
 defineProps<{
   title: string;
-  type: CollabTemplateType;
+  type: TemplateType;
   uuid: string; // TODO: string or number?
 }>();
 

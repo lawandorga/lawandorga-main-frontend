@@ -2,13 +2,12 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollab from "../../records/api/useCollab";
-import { ref } from "vue";
 import { ButtonNormal } from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
+import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 
-const { getTemplates } = useCollab();
-const templates = ref(getTemplates());
+const { templates, query } = useCollab();
 </script>
 
 <template>
@@ -29,6 +28,7 @@ const templates = ref(getTemplates());
       </template>
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
+    <CreateCollabLetterhead :query="query" />
     <table
       class="w-full text-base text-left bg-white border border-collapse border-gray-300 rounded-md table-fixed drop-shadow-sm"
     >
@@ -38,7 +38,7 @@ const templates = ref(getTemplates());
             scope="col"
             class="px-10 text-lg font-semibold border border-gray-300"
           >
-            Title
+            Name
           </th>
           <th scope="col" class="font-semibold border border-gray-300 px-9">
             Description
@@ -56,7 +56,7 @@ const templates = ref(getTemplates());
         >
           <!-- TODO: make the title a button to edit the template -->
           <td class="px-10 font-semibold border border-gray-300">
-            {{ template.title }}
+            {{ template.name }}
           </td>
           <td class="font-medium border border-gray-300 px-9">
             <span class="line-clamp-2">
