@@ -6,7 +6,7 @@ export type TemplateType = "letterhead" | "footer";
 export interface Letterhead {
   name: string;
   description: string;
-  type: TemplateType;
+  template_type: TemplateType;
   uuid: string;
 }
 

@@ -67,6 +67,7 @@ const { templates, query } = useCollab();
             <!-- TODO: @click -->
             <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
             <DeleteCollabTemplate
+              v-if="template.template_type === 'letterhead'"
               :title="template.name"
               :type="template.type"
               :uuid="template.uuid"
