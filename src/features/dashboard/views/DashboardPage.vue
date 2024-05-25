@@ -30,9 +30,12 @@
               <h3 class="mb-2 font-medium text-gray-700">
                 {{ note.title }}
               </h3>
-              <p class="text-sm text-gray-700 break-words whitespace-pre-line">
-                {{ note.note }}
-              </p>
+              <!-- eslint-disable vue/no-v-html -->
+              <p
+                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                v-html="note.note_with_links"
+              ></p>
+              <!-- eslint-enable vue/no-v-html -->
               <div class="flex justify-end mt-2 space-x-3">
                 <DashboardUpdateNote
                   :query="notesQuery"
