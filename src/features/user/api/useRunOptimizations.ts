@@ -13,9 +13,9 @@ export function useRunOptimizations() {
   const { handleError } = useErrorHandling();
 
   const apps: Apps = {
-    MailImports: () =>
+    Groups: () =>
       client
-        .post("api/command/")({ action: "mail_imports/import_mails" })
+        .post("api/command/")({ action: "org/optimize_groups" })
         .catch((e) => {
           handleError(e);
           return Promise.reject(e);
@@ -51,6 +51,13 @@ export function useRunOptimizations() {
     Questionnaires: () =>
       client
         .post("api/command/")({ action: "questionnaires/optimize" })
+        .catch((e) => {
+          handleError(e);
+          return Promise.reject(e);
+        }),
+    MailImports: () =>
+      client
+        .post("api/command/")({ action: "mail_imports/import_mails" })
         .catch((e) => {
           handleError(e);
           return Promise.reject(e);
