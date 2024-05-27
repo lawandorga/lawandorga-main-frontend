@@ -2,7 +2,7 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollab from "../../records/api/useCollab";
-import { ButtonNormal } from "lorga-ui";
+import { ButtonNormal, TableGenerator } from "lorga-ui";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 
@@ -21,7 +21,30 @@ const { templates, query } = useCollab();
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <CreateCollabLetterhead :query="query" />
-    <table
+    <TableGenerator
+      :head="[
+        { name: 'Name', key: 'name' },
+        { name: 'Description', key: 'description' },
+        { name: 'Options', key: 'options' },
+      ]"
+      :data="templates"
+    >
+      <template #name="slotProps">
+        <!-- TODO: @click -->
+        <ButtonNormal kind="action">{{ slotProps.name }}</ButtonNormal>
+      </template>
+      <template #options="slotProps">
+        <!-- TODO: @click -->
+        <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
+        <DeleteCollabTemplate
+          v-if="slotProps.template_type === 'letterhead'"
+          :title="slotProps.name"
+          :type="slotProps.template_type"
+          :uuid="slotProps.uuid"
+        />
+      </template>
+    </TableGenerator>
+    <!-- <table
       class="w-full text-base text-left bg-white border border-collapse border-gray-300 rounded-md table-fixed drop-shadow-sm"
     >
       <thead class="h-16 bg-gray-50 text-zinc-700">
@@ -46,7 +69,6 @@ const { templates, query } = useCollab();
           :key="template.uuid"
           class="h-14 text-formcolor"
         >
-          <!-- TODO: make the title a button to edit the template -->
           <td class="px-10 font-semibold border border-gray-300">
             {{ template.name }}
           </td>
@@ -56,7 +78,6 @@ const { templates, query } = useCollab();
             </span>
           </td>
           <td class="gap-6 border border-gray-300 px-9">
-            <!-- TODO: @click -->
             <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
             <DeleteCollabTemplate
               v-if="template.template_type === 'letterhead'"
@@ -67,6 +88,6 @@ const { templates, query } = useCollab();
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </template>
