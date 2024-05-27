@@ -2,7 +2,7 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollab from "../../records/api/useCollab";
-import { ButtonNormal } from "lorga-ui";
+import { ButtonNormal, ModalCreate } from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
@@ -19,13 +19,6 @@ const { templates, query } = useCollab();
         { name: 'Collab Templates', to: { name: 'admin-collab-templates' } },
       ]"
     >
-      <template #buttons>
-        <!-- TODO: @click -->
-        <ButtonNormal>
-          <PlusCircleIcon class="pr-2 w-7 h-7" />
-          New template
-        </ButtonNormal>
-      </template>
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
     <CreateCollabLetterhead :query="query" />
@@ -76,5 +69,11 @@ const { templates, query } = useCollab();
         </tr>
       </tbody>
     </table>
+    <ModalCreate
+      v-model="newTemplateOverlayOpen"
+      title="New Document Template"
+      :fields="fields"
+      :request="openNewTemplatePage"
+    />
   </div>
 </template>
