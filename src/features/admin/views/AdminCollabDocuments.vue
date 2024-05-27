@@ -2,7 +2,7 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollab from "../../records/api/useCollab";
-import { ButtonNormal, ModalCreate } from "lorga-ui";
+import { ButtonNormal } from "lorga-ui";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 
