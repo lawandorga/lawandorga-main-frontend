@@ -61,18 +61,12 @@ const { templates, query } = useCollab();
             <DeleteCollabTemplate
               v-if="template.template_type === 'letterhead'"
               :title="template.name"
-              :type="template.type"
+              :type="template.template_type"
               :uuid="template.uuid"
             />
           </td>
         </tr>
       </tbody>
     </table>
-    <ModalCreate
-      v-model="newTemplateOverlayOpen"
-      title="New Document Template"
-      :fields="fields"
-      :request="openNewTemplatePage"
-    />
   </div>
 </template>
