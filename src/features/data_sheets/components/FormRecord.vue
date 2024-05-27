@@ -107,9 +107,7 @@ import {
 } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 import { DjangoError } from "@/types/shared";
-import { AxiosError } from "axios";
 import { Record, RecordField, RecordValue } from "@/types/records";
-import { useErrorHandling } from "@/api/errors";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
 
@@ -189,17 +187,11 @@ function deleteEntry(field: RecordField) {
   delete record.value.entries[field.uuid];
 }
 
-const { handleCommandError } = useErrorHandling();
-
-function handleError(field: RecordField, e: AxiosError) {
-  return handleCommandError(e).catch((error: types.ICommandError) => {
-    if (error.paramErrors.value) {
-      errors.value[field.name] = error.paramErrors.value as string[];
-    } else if (error.generalErrors)
-      errors.value[field.name] = error.generalErrors;
-    else if (error.title) errors.value[field.name] = error.title;
-    else return Promise.reject(error);
-    return Promise.resolve();
-  });
+function handleError(field: RecordField, error: types.ICommandError) {
+  if (error.paramErrors.value) {
+    errors.value[field.name] = error.paramErrors.value as string[];
+  } else if (error.generalErrors)
+    errors.value[field.name] = error.generalErrors;
+  else if (error.title) errors.value[field.name] = error.title;
 }
 </script>
