@@ -6,6 +6,7 @@ import { TableGenerator } from "lorga-ui";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
 import DeleteCollabLetterhead from "../actions/DeleteCollabLetterhead.vue";
+import DeleteCollabFooter from "../actions/DeleteCollabFooter.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 
 const { templates, query } = useCollab();
@@ -42,6 +43,15 @@ const { templates, query } = useCollab();
         >
           {{ v }}
         </ButtonLink>
+        <ButtonLink
+          v-if="i.template_type === 'footer'"
+          :to="{
+            name: 'admin-collab-footer',
+            params: { uuid: i.uuid },
+          }"
+        >
+          {{ v }}
+        </ButtonLink>
       </template>
       <template #options="slotProps">
         <ButtonLink
@@ -55,6 +65,22 @@ const { templates, query } = useCollab();
         </ButtonLink>
         <DeleteCollabLetterhead
           v-if="slotProps.template_type === 'letterhead'"
+          :title="slotProps.name"
+          :uuid="slotProps.uuid"
+          :query="query"
+        />
+
+        <ButtonLink
+          v-if="slotProps.template_type === 'footer'"
+          :to="{
+            name: 'admin-collab-footer',
+            params: { uuid: slotProps.uuid },
+          }"
+        >
+          {{ "Edit" }}
+        </ButtonLink>
+        <DeleteCollabFooter
+          v-if="slotProps.template_type === 'footer'"
           :title="slotProps.name"
           :uuid="slotProps.uuid"
           :query="query"
