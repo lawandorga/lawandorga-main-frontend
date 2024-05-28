@@ -44,3 +44,8 @@ if ("serviceWorker" in navigator) {
       // registration failed
     });
 }
+
+// lorga ui config
+// import { useConfig } from "lorga-ui";
+// const { overwrite } = useConfig();
+// overwrite("table.td", "px-10");

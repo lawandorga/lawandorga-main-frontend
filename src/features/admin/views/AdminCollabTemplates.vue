@@ -5,7 +5,7 @@ import useCollab from "../../records/api/useCollab";
 import { ButtonNormal, TableGenerator } from "lorga-ui";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
-import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const { templates, query } = useCollab();
 </script>
@@ -21,8 +21,7 @@ const { templates, query } = useCollab();
     >
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
-    <CreateCollabLetterhead :query="query" class="mx-2" />
-    <CreateCollabFooter :query="query" class="mx-2" />
+    <CreateCollabLetterhead :query="query" />
     <TableGenerator
       :head="[
         { name: 'Name', key: 'name' },
@@ -31,9 +30,16 @@ const { templates, query } = useCollab();
       ]"
       :data="templates"
     >
-      <template #name="slotProps">
-        <!-- TODO: @click -->
-        <ButtonNormal kind="action">{{ slotProps.name }}</ButtonNormal>
+      <template #name="{ i, v }">
+        <ButtonLink
+          v-if="i.template_type === 'letterhead'"
+          :to="{
+            name: 'admin-collab-letterhead',
+            params: { uuid: i.uuid },
+          }"
+        >
+          {{ v }}
+        </ButtonLink>
       </template>
       <template #options="slotProps">
         <!-- TODO: @click -->
