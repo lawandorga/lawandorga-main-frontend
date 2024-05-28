@@ -2,7 +2,7 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollab from "../../records/api/useCollab";
-import { ButtonNormal, TableGenerator } from "lorga-ui";
+import { TableGenerator } from "lorga-ui";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
 import DeleteCollabLetterhead from "../actions/DeleteCollabLetterhead.vue";
@@ -44,12 +44,20 @@ const { templates, query } = useCollab();
         </ButtonLink>
       </template>
       <template #options="slotProps">
-        <!-- TODO: @click -->
-        <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
+        <ButtonLink
+          v-if="slotProps.template_type === 'letterhead'"
+          :to="{
+            name: 'admin-collab-letterhead',
+            params: { uuid: slotProps.uuid },
+          }"
+        >
+          {{ "Edit" }}
+        </ButtonLink>
         <DeleteCollabLetterhead
           v-if="slotProps.template_type === 'letterhead'"
           :title="slotProps.name"
           :uuid="slotProps.uuid"
+          :query="query"
         />
       </template>
     </TableGenerator>
