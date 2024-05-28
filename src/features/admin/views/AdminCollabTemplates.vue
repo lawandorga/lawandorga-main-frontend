@@ -3,8 +3,9 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollab from "../../records/api/useCollab";
 import { ButtonNormal, TableGenerator } from "lorga-ui";
-import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
+import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
+import DeleteCollabLetterhead from "../actions/DeleteCollabLetterhead.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 
 const { templates, query } = useCollab();
@@ -21,7 +22,8 @@ const { templates, query } = useCollab();
     >
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
-    <CreateCollabLetterhead :query="query" />
+    <CreateCollabLetterhead :query="query" class="mx-2" />
+    <CreateCollabFooter :query="query" class="mx-2" />
     <TableGenerator
       :head="[
         { name: 'Name', key: 'name' },
@@ -44,10 +46,9 @@ const { templates, query } = useCollab();
       <template #options="slotProps">
         <!-- TODO: @click -->
         <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
-        <DeleteCollabTemplate
+        <DeleteCollabLetterhead
           v-if="slotProps.template_type === 'letterhead'"
           :title="slotProps.name"
-          :type="slotProps.template_type"
           :uuid="slotProps.uuid"
         />
       </template>
