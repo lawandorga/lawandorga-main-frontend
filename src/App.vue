@@ -53,6 +53,9 @@ import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import BannerList from "./components/BannerList.vue";
 import { getCookie } from "./utils/cookie";
+// import { useConfig } from "lorga-ui";
+// const { overwrite } = useConfig();
+// overwrite("table.td", "px-10");
 
 if (!getCookie("csrftoken")) {
   const redirect = window.location.href;
