@@ -5,6 +5,7 @@ import useCollab from "../../records/api/useCollab";
 import { ButtonNormal, TableGenerator } from "lorga-ui";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
+import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
 
 const { templates, query } = useCollab();
 </script>
@@ -20,7 +21,8 @@ const { templates, query } = useCollab();
     >
       <CogIcon class="w-6 h-6" />
     </BreadcrumbsBar>
-    <CreateCollabLetterhead :query="query" />
+    <CreateCollabLetterhead :query="query" class="mx-2" />
+    <CreateCollabFooter :query="query" class="mx-2" />
     <TableGenerator
       :head="[
         { name: 'Name', key: 'name' },
