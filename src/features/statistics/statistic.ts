@@ -5,7 +5,7 @@ import {
   UserAction,
   TagCount,
   RecordsCreatedClosed,
-} from "@/types/statistic";
+} from "@/features/statistics/types";
 import axios from "axios";
 
 class StatisticService {

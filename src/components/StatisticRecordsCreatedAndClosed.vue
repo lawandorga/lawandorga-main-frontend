@@ -8,7 +8,7 @@ import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 import getColors from "@/utils/getColors";
 import StatisticService from "@/features/statistics/statistic";
-import { RecordsCreatedClosed } from "@/types/statistic";
+import { RecordsCreatedClosed } from "@/features/statistics/types";
 
 Chart.register(...registerables);
 

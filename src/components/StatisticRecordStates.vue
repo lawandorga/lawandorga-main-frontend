@@ -8,7 +8,7 @@ import { PieChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 import getColors from "@/utils/getColors";
 import StatisticService from "@/features/statistics/statistic";
-import { RecordState } from "@/types/statistic";
+import { RecordState } from "@/features/statistics/types";
 
 Chart.register(...registerables);
 
