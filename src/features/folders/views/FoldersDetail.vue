@@ -148,38 +148,23 @@ import FolderFile from "@/features/files/components/FolderFile.vue";
 import FolderAccess from "@/features/folders/components/FolderAccess.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import { Content, FolderDetail } from "@/types/folders";
 import FolderUploads from "@/features/uploads/components/FolderUploads.vue";
 import FolderNavigationContent from "@/features/folders/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/features/folders/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/features/folders/components/FolderSelf.vue";
 import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
 import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
-import useClient from "@/api/client";
 import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
-import useGet from "@/composables/useGet";
 import FolderSubfolders from "../components/FolderSubfolders.vue";
 import { useMailImports } from "@/features/mail_imports/api/useMailImports";
+import { useFolder } from "../api/useFolder";
 
-// record
 const route = useRoute();
 const folderUuid = computed(() => route.params.uuid as string);
 
-// folder
-const client = useClient();
-const request = client.get(`/api/folders/query/{}/`, folderUuid);
-const folder = ref<FolderDetail>();
-const query = useGet(request, folder, folderUuid);
-
-const userAccess = computed(() => {
-  if (!folder.value) return [];
-  return folder.value.access;
-});
-const groupAccess = computed(() => {
-  if (!folder.value) return [];
-  return folder.value.group_access;
-});
+const { folder, query, record, userAccess, groupAccess } =
+  useFolder(folderUuid);
 
 // selected
 const id: string | null = (route.query.selectedId as string) || null;
@@ -200,6 +185,7 @@ const select = (id: number | string | null, type: string) => {
     }
   }
 };
+
 // user settings
 const userStore = useUserStore();
 const { loaded } = storeToRefs(userStore);
@@ -213,15 +199,6 @@ const updateGrouping = (value: boolean) => {
   grouping.value = value;
   userStore.updateSetting("recordGrouping", value);
 };
-
-const record = computed<Content | null>(() => {
-  if (!folder.value) return null;
-  const item = folder.value.content.find((item: Content) => {
-    return item.repository === "RECORDS_RECORD";
-  });
-  if (!item) return null;
-  return item;
-});
 
 // mails
 const { mailQuery, mails } = useMailImports(folderUuid);

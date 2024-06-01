@@ -25,10 +25,10 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { Content, FolderDetail } from "@/types/folders";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
 import { computed, toRefs } from "vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
+import { Content, FolderDetail } from "../api/useFolder";
 
 const props = defineProps<{
   selectedId: string | number | null;

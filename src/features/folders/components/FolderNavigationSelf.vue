@@ -12,13 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import { Content, FolderDetail } from "@/types/folders";
 import { h, toRefs, computed } from "vue";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,
 } from "./FolderNavigationRaw.vue";
+import { Content, FolderDetail } from "../api/useFolder";
 
 const props = defineProps<{
   folder: FolderDetail;

@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { FolderDetail } from "@/types/folders";
 import { computed, h, toRefs } from "vue";
 import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
@@ -23,6 +22,7 @@ import FolderNavigationRaw, {
 } from "@/features/folders/components/FolderNavigationRaw.vue";
 import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
 import FoldersAddContent from "../actions/FoldersAddContent.vue";
+import { FolderDetail } from "../api/useFolder";
 
 const props = defineProps<{
   folder: FolderDetail;

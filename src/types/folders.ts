@@ -55,16 +55,3 @@ export interface FolderPage {
   available_persons: FolderPerson[];
   available_groups: FolderGroup[];
 }
-
-export interface Subfolder {
-  name: string;
-  uuid: string;
-}
-
-export interface FolderDetail {
-  folder: Folder;
-  access: Access[];
-  group_access: Access[];
-  content: Content[];
-  subfolders: Subfolder[];
-}
