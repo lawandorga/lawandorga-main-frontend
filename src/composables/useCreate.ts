@@ -1,5 +1,5 @@
 import { useErrorHandling } from "@/api/errors";
-import { JsonModel } from "@/types/shared";
+import { JsonModel } from "@/types_deprecated/shared";
 import { ref, Ref, unref } from "vue";
 
 type Nullable<T> = T extends (infer U)[]

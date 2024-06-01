@@ -264,7 +264,7 @@ import useCreate from "@/composables/useCreate";
 import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
-import { DjangoModel } from "@/types/shared";
+import { DjangoModel } from "@/types_deprecated/shared";
 import FilesPermissions from "@/features/z_deprecated_files/FilesPermissions.vue";
 import FilesHelp from "@/features/z_deprecated_files/FilesHelp.vue";
 import { useUserStore } from "@/store/user";

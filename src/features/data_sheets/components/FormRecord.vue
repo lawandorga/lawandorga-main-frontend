@@ -106,7 +106,7 @@ import {
   types,
 } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
-import { DjangoError } from "@/types/shared";
+import { DjangoError } from "@/types_deprecated/shared";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
 import { Sheet, SheetField, SheetValue } from "../api/useDataSheet";

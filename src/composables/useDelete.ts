@@ -1,5 +1,5 @@
 import { useErrorHandling } from "@/api/errors";
-import { Reffed } from "@/types/shared";
+import { Reffed } from "@/types_deprecated/shared";
 import { ref, Ref, unref } from "vue";
 
 export default function useDelete<

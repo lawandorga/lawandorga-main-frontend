@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuItem from "./FormMenuItem.vue";
-import { BooleanFunction, VoidFunction } from "@/types/shared";
+import { BooleanFunction, VoidFunction } from "@/types_deprecated/shared";
 
 export default defineComponent({
   components: {

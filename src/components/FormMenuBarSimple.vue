@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { Editor } from "@tiptap/vue-3";
-import { BooleanFunction, VoidFunction } from "@/types/shared";
+import { BooleanFunction, VoidFunction } from "@/types_deprecated/shared";
 import { ref } from "vue";
 import MenuItem from "./FormMenuItem.vue";
 
