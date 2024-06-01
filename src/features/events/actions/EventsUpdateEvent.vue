@@ -40,8 +40,8 @@ import { ref, toRefs } from "vue";
 import { FormGenerator, ButtonNormal, ModalFree, types } from "lorga-ui";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import { useUserStore } from "@/store/user";
-import { Event } from "@/types/event";
 import useCmd from "@/composables/useCmd";
+import { Event } from "../api/useEvents";
 
 const props = defineProps<{ query: () => void; event: Event }>();
 const { query } = toRefs(props);

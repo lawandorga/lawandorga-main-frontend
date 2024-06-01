@@ -114,16 +114,14 @@ import { EyeIcon, CalendarIcon, HomeIcon } from "@heroicons/vue/20/solid";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
-import { Event } from "@/types/event";
 import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useRoute, useRouter } from "vue-router";
 import EventsCreateEvent from "@/features/events/actions/EventsCreateEvent.vue";
-import useGet from "@/composables/useGet";
 import EventsUpdateEvent from "@/features/events/actions/EventsUpdateEvent.vue";
 import EventsDeleteEvent from "@/features/events/actions/EventsDeleteEvent.vue";
 import EventsGetCalendarLink from "@/features/events/actions/EventsGetCalendarLink.vue";
 import { useUserStore } from "@/store/user";
-import useClient from "@/api/client";
+import { useEvents, Event } from "../api/useEvents";
 
 const showGlobal = ref(true);
 const router = useRouter();
@@ -140,11 +138,7 @@ function groupBy<T>(xs: T[], getKey: (element: T) => string) {
   }, {});
 }
 
-const client = useClient();
-const request = client.get("api/events/");
-
-const events = ref<Event[] | null>(null);
-const query = useGet(request, events);
+const { events, query } = useEvents();
 
 const nextEventIndex = computed<number>(() => {
   if (!events.value) return 0;
