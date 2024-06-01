@@ -13,7 +13,7 @@
         <UploadsDisableLink
           v-if="!link.disabled"
           :link-uuid="link.uuid"
-          :query="linkQuery"
+          :query="query"
         />
       </template>
       <div>
@@ -39,7 +39,7 @@
               Show
             </ButtonNormal>
             <UploadsDownloadFile
-              :link-uuid="selectedId as string"
+              :link-uuid="selectedId"
               :file-uuid="file.uuid"
               :name="file.name"
             >
@@ -65,28 +65,23 @@
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
-import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";
-import { UploadLink } from "@/types/uploads";
 import useClient from "@/api/client";
 import UploadsDisableLink from "@/features/uploads/actions/UploadsDisableLink.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
 import UploadsDownloadFile from "@/features/uploads/actions/UploadsDownloadFile.vue";
 import UploadsCopyLink from "@/features/uploads/actions/UploadsCopyLink.vue";
+import { useLink } from "../api/useLink";
 
-// props
 const props = defineProps<{
   selectedId: number | string | null;
   selectedType: string;
   folderUuid: string;
-  query: () => void;
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
-// client
 const client = useClient();
 
-// show a file
 const selectedFile = ref<string | null>(null);
 const fileDownload = (uuid: string | number) => {
   return client.downloadDataUrl(
@@ -95,26 +90,18 @@ const fileDownload = (uuid: string | number) => {
     uuid,
   )();
 };
+
 watch([selectedId, selectedType], () => {
   selectedFile.value = null;
 });
 
-// query the link
-const link = ref<UploadLink | null>(null);
-const loading = ref(false);
-const request = client.get<UploadLink>(`api/uploads/query/{}/`, selectedId);
-const linkQuery = useQuery(request, link);
-const update = () => {
-  if (link.value && selectedId.value !== link.value.uuid) link.value = null;
-  if (selectedType.value === "UPLOAD" && selectedId.value) {
-    loading.value = true;
-    linkQuery().then(() => {
-      loading.value = false;
-    });
-  }
-};
-watch(selectedId, () => {
-  update();
-});
-update();
+const { link, query, loading } = useLink(selectedId, selectedType);
+
+watch(
+  selectedId,
+  () => {
+    query();
+  },
+  { immediate: true },
+);
 </script>

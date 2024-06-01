@@ -32,11 +32,9 @@
 <script lang="ts" setup>
 import { ButtonNormal, CircleLoader, FormGenerator, types } from "lorga-ui";
 import { useRoute } from "vue-router";
-import useClient from "@/api/client";
 import { ref } from "vue";
-import { UploadLink } from "@/types/uploads";
-import useGet from "@/composables/useGet";
 import useCmd from "@/composables/useCmd";
+import { usePublicLink } from "../api/usePublicLink";
 
 const route = useRoute();
 if (!("cookie" in route.query)) {
@@ -53,13 +51,7 @@ const fields: types.FormField[] = [
   { label: "File", name: "file", type: "file", required: true },
 ];
 
-const client = useClient();
-
-const link = ref<UploadLink>();
-useGet(
-  client.get("api/uploads/query/{}/public/", route.params.uuid as string),
-  link,
-);
+const { link } = usePublicLink(route.params.uuid as string);
 
 const { commandRequest } = useCmd();
 

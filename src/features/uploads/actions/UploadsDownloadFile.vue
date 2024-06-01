@@ -9,7 +9,7 @@ import { toRefs } from "vue";
 
 const props = defineProps<{
   fileUuid: string;
-  linkUuid: string;
+  linkUuid: string | number | null;
   name: string;
 }>();
 const { fileUuid, linkUuid, name } = toRefs(props);
