@@ -77,8 +77,8 @@
       :folder-uuid="folderUuid"
       :query="query"
     />
-    <RecordsCreateRecordWithinFolder
-      ref="recordsCreateRecordWithinFolder"
+    <CreateDataSheet
+      ref="createDataSheet"
       class="hidden"
       :folder-uuid="folderUuid"
       :query="query"
@@ -109,7 +109,7 @@ import {
 import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
 import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
-import RecordsCreateRecordWithinFolder from "@/features/records/actions/RecordsCreateRecordWithinFolder.vue";
+import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
 import { ButtonNormal } from "lorga-ui";
 import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
 import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
@@ -123,7 +123,7 @@ function close() {
 }
 
 // records
-const recordsCreateRecordWithinFolder = ref();
+const createDataSheet = ref();
 const filesUploadFile = ref();
 const filesUploadMultipleFiles = ref();
 const questionnairesPublishQuestionnaire = ref();
@@ -136,7 +136,7 @@ const addContentOptions = computed(() => [
     text: "Data Sheet",
     onClick: () => {
       close();
-      recordsCreateRecordWithinFolder.value.createWithinFolderModalOpen = true;
+      createDataSheet.value.createWithinFolderModalOpen = true;
     },
   },
   {

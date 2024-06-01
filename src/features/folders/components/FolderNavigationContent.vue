@@ -16,7 +16,7 @@ import { computed, h, toRefs } from "vue";
 import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
 import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
-import RecordsCreateRecordWithinFolder from "@/features/records/actions/RecordsCreateRecordWithinFolder.vue";
+import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
 import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,
@@ -54,7 +54,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       .filter((c) => c.repository === "RECORD")
       .map((c) => ({ name: c.name, type: "RECORD", id: c.uuid })),
     buttons: [
-      h(RecordsCreateRecordWithinFolder, {
+      h(CreateDataSheet, {
         query: query.value,
         folderUuid: folder.value.folder.uuid,
       }),
