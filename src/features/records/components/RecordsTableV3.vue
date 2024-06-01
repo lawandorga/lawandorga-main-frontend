@@ -2,13 +2,10 @@
 import { toRefs, computed } from "vue";
 import { TableGenerator } from "lorga-ui";
 import ButtonLink from "@/components/ButtonLink.vue";
-import { ListRecordV2 } from "../types/listRecordV2";
+import { Record } from "../api/useRecords";
 
 const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-const getEntryFromRecord = (
-  r: ListRecordV2,
-  key: string,
-): string | string[] => {
+const getEntryFromRecord = (r: Record, key: string): string | string[] => {
   const entry = r.attributes[key];
   if (entry !== undefined) {
     return entry;
@@ -16,7 +13,7 @@ const getEntryFromRecord = (
   return "";
 };
 
-const getDisplayValueFromRecord = (r: ListRecordV2, key: string): string => {
+const getDisplayValueFromRecord = (r: Record, key: string): string => {
   const entry = getEntryFromRecord(r, key);
   if (Array.isArray(entry)) return entry.join(", ");
   if (dtRegex.test(entry)) {
@@ -27,7 +24,7 @@ const getDisplayValueFromRecord = (r: ListRecordV2, key: string): string => {
 };
 
 const props = defineProps<{
-  records?: ListRecordV2[];
+  records?: Record[];
   columns: string[] | null;
 }>();
 

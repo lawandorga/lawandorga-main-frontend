@@ -6,7 +6,7 @@ import {
   SetQueryParam,
 } from "lorga-ui/dist/types/components/PaginationBar.vue";
 
-interface Record {
+export interface Record {
   token: string;
   attributes: { [key: string]: string | string[] };
   delete_requested: boolean;

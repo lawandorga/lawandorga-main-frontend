@@ -36,18 +36,9 @@ import { TableGenerator } from "lorga-ui";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import { ref } from "vue";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
-import { Link } from "@/types/org";
 import LinksCreateLink from "@/features/admin/actions/LinksCreateLink.vue";
 import LinksDeleteLink from "@/features/admin/actions/LinksDeleteLink.vue";
+import { useLinks } from "../api/useLinks";
 
-const client = useClient();
-
-const request = client.get("/api/query/links/");
-
-const links = ref<Link[]>([]);
-
-const query = useGet(request, links);
+const { links, query } = useLinks();
 </script>
