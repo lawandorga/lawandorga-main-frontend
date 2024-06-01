@@ -241,7 +241,7 @@ import {
   FilesFile,
   FilesPermission,
   FilesPossiblePermission,
-} from "@/types/files";
+} from "@/features/z_deprecated_files/types";
 import { defineComponent, Ref, ref, watch } from "vue";
 import FilesService from "./files_service";
 import {
@@ -582,5 +582,3 @@ function createUpdateDeleteFile(
   };
 }
 </script>
-@/features/z_deprecated_files/files @/services/files_service
-@/features/z_deprecated_files/files_service @/features/z_deprecated_files/core

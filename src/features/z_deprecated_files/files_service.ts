@@ -3,7 +3,7 @@ import {
   FilesPermission,
   FilesFile,
   FilesPossiblePermission,
-} from "@/types/files";
+} from "./types";
 import { downloadFileRequest } from "@/utils/download";
 import axios from "axios";
 
