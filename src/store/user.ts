@@ -1,10 +1,9 @@
-import { Rlc } from "@/types/core";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import useClient from "@/api/client";
 import useCmd from "@/composables/useCmd";
 
-export interface RlcUser {
+interface RlcUser {
   id: number;
   user_id: number;
   birthday: string;
@@ -26,7 +25,7 @@ export interface RlcUser {
   speciality_of_study_display: string | null;
 }
 
-export interface BadgeInformation {
+interface BadgeInformation {
   profiles: number;
   record_deletion_requests: number;
   record_permit_requests: number;
@@ -34,9 +33,23 @@ export interface BadgeInformation {
   record?: number;
 }
 
-export type Settings = Record<string, string | boolean>;
+type Settings = Record<string, string | boolean>;
 
-export interface DataResponse {
+interface Link {
+  id: string;
+  name: string;
+  link: string;
+  order: number;
+}
+
+interface Rlc {
+  id: number;
+  name: string;
+  use_record_pool: boolean;
+  links: Link[];
+}
+
+interface DataResponse {
   user: RlcUser;
   rlc: Rlc;
   permissions: string[];

@@ -1,10 +1,3 @@
-export interface Link {
-  id: string;
-  name: string;
-  link: string;
-  order: number;
-}
-
 export interface Group {
   id: number;
   name: string;
@@ -32,11 +25,4 @@ export interface GroupMember {
   id: number;
   name: string;
   email: string;
-}
-
-export interface Rlc {
-  id: number;
-  name: string;
-  use_record_pool: boolean;
-  links: Link[];
 }
