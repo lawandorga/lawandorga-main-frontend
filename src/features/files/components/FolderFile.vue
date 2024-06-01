@@ -31,14 +31,12 @@ import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FilesDownloadFile from "@/features/files/actions/FilesDownloadFile.vue";
 import { CircleLoader } from "lorga-ui";
 import { formatDate } from "@/utils/date";
-import { watch, ref, toRefs } from "vue";
-import { RecordsDocument } from "@/types/records";
-import useQuery from "@/composables/useQuery";
+import { toRefs } from "vue";
 import FilesDeleteFile from "@/features/files/actions/FilesDeleteFile.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
 import useClient from "@/api/client";
+import { useFile } from "../api/useFile";
 
-// props
 const props = defineProps<{
   selectedId: string | number | null;
   selectedType: string;
@@ -46,31 +44,10 @@ const props = defineProps<{
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
-// download file request
 const client = useClient();
 const downloadFile = (id: number | string) => {
   return client.downloadDataUrl("api/files/v2/query/{}/download/", id)();
 };
 
-// retrieve file
-const file = ref<null | RecordsDocument>(null);
-const loading = ref(false);
-
-const request = client.get("/api/files/v2/query/{}/", selectedId);
-const filesQuery = useQuery(request, file);
-
-// get file
-const update = () => {
-  if (selectedType.value === "FILE" && selectedId.value) {
-    loading.value = true;
-    filesQuery().then(() => {
-      loading.value = false;
-    });
-  }
-};
-watch(selectedId, () => {
-  file.value = null;
-  update();
-});
-update();
+const { file, loading } = useFile(selectedId, selectedType);
 </script>

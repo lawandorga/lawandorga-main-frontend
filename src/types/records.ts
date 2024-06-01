@@ -45,10 +45,3 @@ export type RecordField = {
   type: string;
   uuid: string;
 };
-
-export interface RecordsDocument {
-  uuid: string;
-  name: string;
-  created: string;
-  updated: string;
-}
