@@ -14,11 +14,10 @@
 
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import { RecordTemplate } from "@/types/records";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
-import { computed, ref, toRefs, watch } from "vue";
+import { computed, toRefs, watch } from "vue";
 import useClient from "@/api/client";
-import useQuery from "@/composables/useQuery";
+import { useTemplates } from "../api/useTemplates";
 
 // props
 const props = defineProps<{
@@ -40,10 +39,7 @@ const {
   commandModalOpen: createWithinFolderModalOpen,
 } = useCommand(request, query.value);
 
-const availableTemplates = ref<RecordTemplate[]>([]);
-
-const templateRequest = client.get("api/data_sheets/query/templates/");
-const getTemplates = useQuery(templateRequest, availableTemplates);
+const { templates: availableTemplates, query: getTemplates } = useTemplates();
 
 watch(createWithinFolderModalOpen, (newValue) => {
   if (newValue) {
@@ -69,7 +65,7 @@ const createWithinFolderFields = computed<types.FormField[]>(() => [
     type: "select",
     name: "template",
     required: true,
-    options: availableTemplates.value,
+    options: availableTemplates.value || [],
   },
 ]);
 
