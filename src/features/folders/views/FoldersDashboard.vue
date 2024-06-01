@@ -60,55 +60,16 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";
 import { FolderIcon } from "@heroicons/vue/24/outline";
-import { computed, ref } from "vue";
-import { Folder, FolderItem, FolderPage } from "@/types/folders";
-import useGet from "@/composables/useGet";
 import TabControls from "@/components/TabControls.vue";
 import FoldersTableView from "@/features/folders/components/FoldersTableView.vue";
 import FoldersTreeView from "@/features/folders/components/FoldersTreeView.vue";
-import useClient from "@/api/client";
+import { useFolderPage } from "../api/useFolderPage";
 
-// store
 const userStore = useUserStore();
 
-// folders
-const client = useClient();
-const request = client.get<FolderPage>("api/folders/query/");
-const page = ref<FolderPage>();
-const query = useGet(request, page);
+const { query, availableGroups, availablePersons, folderItems, folderList } =
+  useFolderPage();
 
-const availableGroups = computed(() => {
-  if (!page.value) return [];
-  return page.value.available_groups;
-});
-
-const availablePersons = computed(() => {
-  if (!page.value) return [];
-  return page.value.available_persons;
-});
-
-// folder items
-const folderItems = computed<FolderItem[]>(() => {
-  if (!page.value) return [];
-  return page.value.tree;
-});
-
-// folders as list
-const pushIntoList = (l: Folder[], item: FolderItem) => {
-  l.push(item.folder);
-  for (let i of item.children) pushIntoList(l, i);
-};
-
-const folderList = computed<Folder[]>(() => {
-  if (folderItems.value === null) return [];
-  const fl: Folder[] = [];
-  for (let i of folderItems.value) {
-    pushIntoList(fl, i);
-  }
-  return fl;
-});
-
-// save tab selection
 const setting = userStore.getSetting("foldersDashboardViewTab") as string;
 const tabChanged = (key: string) => {
   userStore.updateSetting("foldersDashboardViewTab", key);

@@ -60,7 +60,6 @@
 import { computed } from "vue";
 import { FormGenerator } from "lorga-ui";
 import { useRoute } from "vue-router";
-import { JsonModel } from "@/types/shared";
 import { PaperClipIcon } from "@heroicons/vue/24/outline";
 import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
 import useCmd from "@/composables/useCmd";
@@ -73,7 +72,7 @@ const { questionnaire, fields, query, error } = useQuestionnaireToFillOut(
 
 const { commandRequest } = useCmd(query);
 
-const sendAnswer = computed(() => (data: JsonModel) => {
+const sendAnswer = computed(() => (data: Record<string, string>) => {
   const formData = new FormData();
   formData.append("action", "questionnaires/submit_answers");
   formData.append("questionnaire_id", questionnaire.value!.id.toString());

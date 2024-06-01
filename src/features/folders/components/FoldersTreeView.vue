@@ -12,11 +12,11 @@
           :folders="folderItems"
           @add-child-clicked="
             parent = $event;
-            foldersActions.createModalOpen = true;
+            foldersActions!.createModalOpen = true;
           "
           @add-content-clicked="
             parent = $event;
-            contentActions.addContentModalOpen = true;
+            contentActions!.addContentModalOpen = true;
           "
           @folder-clicked="selected = $event"
           @show-meta-clicked="selected = $event"
@@ -101,7 +101,6 @@
 import FoldersCreateFolder from "@/features/folders/actions/FoldersCreateFolder.vue";
 import { computed, ref, toRefs } from "vue";
 import FoldersTree from "@/features/folders/components/FoldersTree.vue";
-import { Folder, FolderGroup, FolderItem, FolderPerson } from "@/types/folders";
 import ButtonClose from "@/components/ButtonClose.vue";
 import FoldersCreateRootFolder from "@/features/folders/actions/FoldersCreateRootFolder.vue";
 import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
@@ -111,6 +110,12 @@ import FoldersMoveFolder from "@/features/folders/actions/FoldersMoveFolder.vue"
 import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
 import FoldersAddContent from "@/features/folders/actions/FoldersAddContent.vue";
 import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+import {
+  Folder,
+  FolderGroup,
+  FolderItem,
+  FolderPerson,
+} from "../api/useFolderPage";
 
 const props = defineProps<{
   availablePersons: FolderPerson[];

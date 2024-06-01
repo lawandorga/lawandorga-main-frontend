@@ -155,13 +155,6 @@ import FoldersMoveFolder from "@/features/folders/actions/FoldersMoveFolder.vue"
 import FoldersToggleInheritance from "@/features/folders/actions/FoldersToggleInheritance.vue";
 import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
-import {
-  Content,
-  Folder,
-  FolderGroup,
-  FolderItem,
-  FolderPerson,
-} from "@/types/folders";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, TableGenerator } from "lorga-ui";
@@ -170,6 +163,13 @@ import FolderProperty from "./FolderProperty.vue";
 import FoldersBadge from "./FoldersBadge.vue";
 import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
 import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+import {
+  Content,
+  Folder,
+  FolderGroup,
+  FolderItem,
+  FolderPerson,
+} from "../api/useFolderPage";
 
 const props = defineProps<{
   query: () => void;

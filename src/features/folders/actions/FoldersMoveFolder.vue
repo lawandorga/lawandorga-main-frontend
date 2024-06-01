@@ -13,11 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import { Folder } from "@/types/folders";
 import { ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import { ButtonNormal } from "lorga-ui";
 import useCmd from "@/composables/useCmd";
+import { Folder } from "../api/useFolderPage";
 
 const props = defineProps<{
   query: () => void;

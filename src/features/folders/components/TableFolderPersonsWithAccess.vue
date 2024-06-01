@@ -29,8 +29,8 @@
 <script setup lang="ts">
 import FoldersGrantAccess from "@/features/folders/actions/FoldersGrantAccess.vue";
 import FoldersRevokeAccessUser from "@/features/folders/actions/FoldersRevokeAccessUser.vue";
-import { FolderItem, FolderPerson } from "@/types/folders";
 import { TableGenerator } from "lorga-ui";
+import { FolderItem, FolderPerson } from "../api/useFolderPage";
 
 defineProps<{
   query: () => void;

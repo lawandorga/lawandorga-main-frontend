@@ -44,9 +44,9 @@
 <script lang="ts" setup>
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { TableGenerator } from "lorga-ui";
-import { Access } from "@/types/folders";
 import FoldersRevokeAccessUserSimple from "@/features/folders/actions/FoldersRevokeAccessUserSimple.vue";
 import FoldersRevokeAccessGroupSimple from "../actions/FoldersRevokeAccessGroupSimple.vue";
+import { Access } from "../api/useFolderPage";
 
 defineProps<{
   selectedType: string;

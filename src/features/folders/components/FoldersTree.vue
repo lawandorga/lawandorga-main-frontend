@@ -117,12 +117,12 @@
 <script setup lang="ts">
 import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
-import { FolderItem } from "@/types/folders";
 import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import { useRoute } from "vue-router";
 import FoldersBadge from "./FoldersBadge.vue";
+import { FolderItem } from "../api/useFolderPage";
 
 const props = withDefaults(
   defineProps<{
