@@ -107,14 +107,14 @@ import {
 } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 import { DjangoError } from "@/types/shared";
-import { Record, RecordField, RecordValue } from "@/types/records";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
+import { Sheet, SheetField, SheetValue } from "../api/useDataSheet";
 
-const props = defineProps<{ record: Record; query: () => void }>();
+const props = defineProps<{ record: Sheet; query: () => void }>();
 const { record } = toRefs(props);
 
-const entries = ref<Record["entries"]>({});
+const entries = ref<Sheet["entries"]>({});
 const nonFieldErrors = ref<string[]>([]);
 const errors = ref<DjangoError>({});
 
@@ -142,7 +142,7 @@ function getAttrs(uuid: string) {
   return {};
 }
 
-function change(field: RecordField, value: RecordValue) {
+function change(field: SheetField, value: SheetValue) {
   errors.value = {};
   const entries_include = Object.keys(entries.value).includes(field.uuid);
   if (field.type === "file") {
@@ -156,7 +156,7 @@ function change(field: RecordField, value: RecordValue) {
 
 const { commandRequest } = useCmd();
 
-function createFileEntry(field: RecordField, value: RecordValue) {
+function createFileEntry(field: SheetField, value: SheetValue) {
   const formData = new FormData();
   formData.append("field_id", field.uuid);
   formData.append("record_id", record.value.id.toString());
@@ -166,7 +166,7 @@ function createFileEntry(field: RecordField, value: RecordValue) {
   record.value.entries[field.uuid] = (value as File).name;
 }
 
-function createOrUpdateEntry(field: RecordField, value: RecordValue) {
+function createOrUpdateEntry(field: SheetField, value: SheetValue) {
   const data = {
     field_id: field.uuid,
     record_id: record.value.id,
@@ -177,7 +177,7 @@ function createOrUpdateEntry(field: RecordField, value: RecordValue) {
   record.value.entries[field.uuid] = value;
 }
 
-function deleteEntry(field: RecordField) {
+function deleteEntry(field: SheetField) {
   const data = {
     field_id: field.uuid,
     record_id: record.value.id,
@@ -187,7 +187,7 @@ function deleteEntry(field: RecordField) {
   delete record.value.entries[field.uuid];
 }
 
-function handleError(field: RecordField, error: types.ICommandError) {
+function handleError(field: SheetField, error: types.ICommandError) {
   if (error.paramErrors.value) {
     errors.value[field.name] = error.paramErrors.value as string[];
   } else if (error.generalErrors)
