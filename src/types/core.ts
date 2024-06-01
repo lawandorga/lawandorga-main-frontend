@@ -1,4 +1,9 @@
-import { Link } from "./org";
+export interface Link {
+  id: string;
+  name: string;
+  link: string;
+  order: number;
+}
 
 export interface Group {
   id: number;
