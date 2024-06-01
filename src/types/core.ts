@@ -40,10 +40,3 @@ export interface Rlc {
   use_record_pool: boolean;
   links: Link[];
 }
-
-export interface Permission {
-  id: number;
-  name: string;
-  description: string;
-  recommended_for: string;
-}

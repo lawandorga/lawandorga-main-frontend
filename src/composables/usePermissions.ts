@@ -1,7 +1,13 @@
 import useClient from "@/api/client";
 import { ref } from "vue";
 import useGet from "./useGet";
-import { Permission } from "@/types/core";
+
+export interface Permission {
+  id: number;
+  name: string;
+  description: string;
+  recommended_for: string;
+}
 
 export function usePermissions() {
   const client = useClient();
