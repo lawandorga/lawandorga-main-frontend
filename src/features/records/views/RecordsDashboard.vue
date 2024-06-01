@@ -81,10 +81,11 @@ const userStore = useUserStore();
         ]"
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
-          <div class="flex flex-wrap gap-5">
+          <div
+            class="flex flex-wrap gap-3 px-4 py-3 mb-5 border-2 rounded-lg shadow-sm bg-gray-50"
+          >
             <FormInput
               :model-value="tokenSearch"
-              class="mb-4"
               name="search"
               label="Token"
               placeholder="AZ-1234"
@@ -97,7 +98,6 @@ const userStore = useUserStore();
             />
             <FormInput
               :model-value="yearSearch"
-              class="mb-4"
               name="year"
               label="Created Year"
               placeholder="2024"
@@ -110,7 +110,7 @@ const userStore = useUserStore();
             />
             <FormInput
               :model-value="generalSearch"
-              class="mb-4 min-w-96"
+              class="min-w-96"
               name="general"
               label="General Search"
               placeholder="Search for anything in the unencrypted data"
@@ -122,13 +122,17 @@ const userStore = useUserStore();
               "
             />
             <div class="flex items-center">
-              <ButtonNormal kind="action" class="mb-4" @click="resetSearch">
+              <ButtonNormal kind="action" class="" @click="resetSearch">
                 <XMarkIcon class="w-6 h-6" />
                 <span>Reset Search</span>
               </ButtonNormal>
             </div>
           </div>
-          <RecordsTableV3 :records="records" :columns="view.columns">
+          <RecordsTableV3
+            :records="records"
+            :columns="view.columns"
+            @click="generalSearch = $event"
+          >
             <template #head-action>
               <RecordsCreateRecordV2 :query="queryRecords" />
             </template>

@@ -4,35 +4,37 @@ import { TableGenerator } from "lorga-ui";
 import ButtonLink from "@/components/ButtonLink.vue";
 import { ListRecordV2 } from "../types/listRecordV2";
 
-// get display values
 const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-const getDisplayValueFromRecord = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  r: Record<string, any>,
+const getEntryFromRecord = (
+  r: ListRecordV2,
   key: string,
-): string => {
+): string | string[] => {
   const entry = r.attributes[key];
   if (entry !== undefined) {
-    if (Array.isArray(entry)) return entry.join(", ");
-    if (dtRegex.test(entry)) {
-      const date = new Date(entry);
-      return date.toLocaleString("de-DE").replace(",", "");
-    }
     return entry;
   }
   return "";
 };
 
-// props
+const getDisplayValueFromRecord = (r: ListRecordV2, key: string): string => {
+  const entry = getEntryFromRecord(r, key);
+  if (Array.isArray(entry)) return entry.join(", ");
+  if (dtRegex.test(entry)) {
+    const date = new Date(entry);
+    return date.toLocaleString("de-DE").replace(",", "");
+  }
+  return entry;
+};
+
 const props = defineProps<{
   records?: ListRecordV2[];
   columns: string[] | null;
 }>();
 
-// records
 const { records, columns } = toRefs(props);
 
-// head
+const emit = defineEmits(["click"]);
+
 const head = computed<{ name: string; key: string; sortable: boolean }[]>(
   () => {
     if (records.value === null || columns.value === null) return [];
@@ -81,12 +83,24 @@ const head = computed<{ name: string; key: string; sortable: boolean }[]>(
             class="list-disc pl-3.5"
           >
             <li v-for="a in i.attributes[headItem.key]" :key="a">
-              {{ a }}
+              <button
+                type="button"
+                class="hover:underline"
+                @click="emit('click', a)"
+              >
+                {{ a }}
+              </button>
             </li>
           </ul>
 
           <div v-else class="max-w-xs text-left whitespace-normal line-clamp-3">
-            {{ getDisplayValueFromRecord(i, headItem.key) }}
+            <button
+              type="button"
+              class="hover:underline"
+              @click="emit('click', getEntryFromRecord(i, headItem.key))"
+            >
+              {{ getDisplayValueFromRecord(i, headItem.key) }}
+            </button>
           </div>
         </template>
 
