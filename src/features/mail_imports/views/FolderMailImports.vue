@@ -149,11 +149,7 @@
 
 <script setup lang="ts">
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import {
-  DisplayedFieldsObject,
-  ImportedMail,
-  Sorting,
-} from "@/types/mailImports";
+import { DisplayedFieldsObject, Sorting } from "@/features/mail_imports/types";
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs, computed } from "vue";
 import {
@@ -170,6 +166,7 @@ import MailContent from "../components/MailContent.vue";
 import SettingsOverlay from "../components/SettingsOverlay.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import useCmd from "@/composables/useCmd";
+import { ImportedMail } from "../api/useMailImports";
 
 // props
 const props = defineProps<{
@@ -299,7 +296,7 @@ const dateFormatWithoutYear: Intl.DateTimeFormatOptions = {
   day: "2-digit",
   month: "long",
 };
-const formatDate = (date: Date) =>
+const formatDate = (date: string) =>
   new Date(date).toLocaleDateString(
     "de-DE",
     new Date(date).getFullYear() !== new Date().getFullYear()

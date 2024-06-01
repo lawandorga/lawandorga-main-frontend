@@ -1,15 +1,3 @@
-export type ImportedMail = {
-  uuid: string;
-  sender: string;
-  to: string;
-  cc: string;
-  subject: string;
-  content: string;
-  sending_datetime: Date;
-  is_read: boolean;
-  is_pinned: boolean;
-};
-
 export type Sorting = "asc" | "desc";
 
 export type PossibleDisplayedFields = "subject" | "sender" | "sending_datetime";

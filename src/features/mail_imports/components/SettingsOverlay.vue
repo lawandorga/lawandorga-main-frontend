@@ -60,7 +60,7 @@ import {
   DisplayedFieldsObject,
   PossibleDisplayedFields,
   Sorting,
-} from "@/types/mailImports";
+} from "@/features/mail_imports/types";
 import { ButtonNormal } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import {

@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { ImportedMail } from "@/types/mailImports";
 import { toRefs } from "vue";
+import { ImportedMail } from "../api/useMailImports";
 
 const props = defineProps<{
   mail: ImportedMail;

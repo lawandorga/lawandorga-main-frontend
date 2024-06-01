@@ -159,8 +159,8 @@ import useClient from "@/api/client";
 import FolderCollab from "@/features/collab/components/FolderCollab.vue";
 import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
 import useGet from "@/composables/useGet";
-import { ImportedMail } from "@/types/mailImports";
 import FolderSubfolders from "../components/FolderSubfolders.vue";
+import { useMailImports } from "@/features/mail_imports/api/useMailImports";
 
 // record
 const route = useRoute();
@@ -224,12 +224,7 @@ const record = computed<Content | null>(() => {
 });
 
 // mails
-const mails = ref<ImportedMail[]>();
-const mailRequest = client.get(
-  "api/mail_imports/query/folder_mails/{}/",
-  folderUuid,
-);
-const mailQuery = useGet(mailRequest, mails);
+const { mailQuery, mails } = useMailImports(folderUuid);
 
 const getNumberOfUnreadMails = () => {
   const count = mails.value?.filter((mail) => !mail.is_read).length;
