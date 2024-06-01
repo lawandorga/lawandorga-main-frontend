@@ -1,12 +1,3 @@
-export interface Article {
-  id: number;
-  title: string;
-  description: string;
-  date: string;
-  content?: string;
-  author_name?: string;
-}
-
 export interface ArticleList {
   id: number;
   title: string;

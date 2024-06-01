@@ -24,15 +24,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import InternalService from "@/features/internal/internal_service";
 import { useRoute } from "vue-router";
-import { Article } from "@/types/internal";
 import { formatDate } from "@/utils/date";
-import useGet from "@/composables/useGet";
+import { useArticle } from "../api/useArticle";
 
-const article = ref<Article | null>(null);
 const route = useRoute();
-
-useGet(InternalService.getArticle, article, route.params.id as string);
+const { article } = useArticle(route.params.id as string);
 </script>

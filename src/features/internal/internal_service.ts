@@ -1,13 +1,7 @@
-import { Article, ImprintPage, LoginPage, TomsPage } from "@/types/internal";
+import { ImprintPage, LoginPage, TomsPage } from "@/types/internal";
 import axios from "axios";
 
 class InternalService {
-  getArticle(id: number | string): Promise<Article> {
-    return axios
-      .get<Article>(`internal/pages/article/${id}/`)
-      .then((response) => response.data);
-  }
-
   getLoginPage(): Promise<LoginPage> {
     return axios
       .get<LoginPage>("internal/pages/index/")

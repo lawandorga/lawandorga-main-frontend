@@ -227,7 +227,7 @@
 <script lang="ts" setup>
 import { ButtonNormal } from "lorga-ui";
 import InternalService from "@/features/internal/internal_service";
-import { Article, LoginPage, RoadmapItem } from "@/types/internal";
+import { LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import useGet from "@/composables/useGet";
@@ -296,7 +296,7 @@ const roadmapItems = computed<RoadmapItem[]>(() => {
   return page.value.roadmap_items;
 });
 
-const articles = computed<Article[]>(() => {
+const articles = computed<LoginPage["articles"]>(() => {
   if (!page.value) return [];
   return page.value.articles;
 });
