@@ -226,13 +226,15 @@
 
 <script lang="ts" setup>
 import { ButtonNormal } from "lorga-ui";
-import InternalService from "@/features/internal/internal_service";
-import { LoginPage, RoadmapItem } from "@/types/internal";
 import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
-import useGet from "@/composables/useGet";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
+import {
+  useLoginPage,
+  LoginPage,
+  RoadmapItem,
+} from "@/features/internal/api/useLoginPage";
 
 const getLoginUrl = () => {
   const loginUrl = getRawLoginUrl();
@@ -288,8 +290,7 @@ const sponsorGroups = [
 
 const userStore = useUserStore();
 
-const page = ref<LoginPage | null>(null);
-useGet(InternalService.getLoginPage, page);
+const { page } = useLoginPage();
 
 const roadmapItems = computed<RoadmapItem[]>(() => {
   if (!page.value) return [];
