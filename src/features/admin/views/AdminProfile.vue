@@ -1,5 +1,5 @@
 <template>
-  <BoxLoader :show="!!data">
+  <BoxLoader :show="!!user">
     <div v-if="user" class="max-w-screen-lg mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
@@ -111,11 +111,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
-import useGet from "@/composables/useGet";
 import { TableGenerator, ButtonNormal } from "lorga-ui";
-import { RlcUser } from "@/types/user";
 import { useRoute } from "vue-router";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
@@ -123,39 +120,11 @@ import { useUserStore } from "@/store/user";
 import UsersChangePassword from "@/features/admin/actions/UsersChangePassword.vue";
 import UserAddPermission from "@/features/permissions/actions/UserAddPermission.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
-import useClient from "@/api/client";
 import UserUpdateInformation from "@/features/users/actions/UserUpdateInformation.vue";
-
-interface HasPermission {
-  id: number;
-  permission_name: string;
-  source: string;
-  group_name: string;
-  user_name: string;
-  group_id: number;
-}
-
-interface Data {
-  user: RlcUser;
-  permissions: HasPermission[] | null;
-}
+import { useProfileData } from "../api/useProfileData";
 
 const route = useRoute();
 const userStore = useUserStore();
 
-const data = ref<Data | null>(null);
-
-const user = computed<RlcUser | null>(() => {
-  if (!data.value) return null;
-  return data.value.user;
-});
-
-const permissions = computed<HasPermission[] | null>(() => {
-  if (!data.value) return null;
-  return data.value.permissions;
-});
-
-const client = useClient();
-const request = client.get("/api/rlc_users/{}/", route.params.id as string);
-const query = useGet(request, data);
+const { query, permissions, user } = useProfileData(route.params.id as string);
 </script>
