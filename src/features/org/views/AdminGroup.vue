@@ -80,34 +80,18 @@
 <script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator, ButtonNormal } from "lorga-ui";
-import { computed, Ref, ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import useGet from "@/composables/useGet";
-import { GroupMember, GroupDetail, GroupPermission } from "@/types/core";
 import { useRoute } from "vue-router";
 import GroupsAddMember from "@/features/org/actions/GroupsAddMember.vue";
 import GroupsRemoveMember from "@/features/org/actions/GroupsRemoveMember.vue";
-import useClient from "@/api/client";
 import GroupAddPermission from "@/features/permissions/actions/GroupAddPermission.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
+import { useGroup } from "../api/useGroup";
 
 const route = useRoute();
 
-const client = useClient();
-
-const request = client.get("api/query/group/{}/", route.params.id as string);
-
-const group = ref(null) as Ref<GroupDetail | null>;
-const query = useGet(request, group);
-
-const members = computed<GroupMember[] | null>(() => {
-  if (!group.value) return null;
-  return group.value.members;
-});
-
-const permissions = computed<GroupPermission[] | null>(() => {
-  if (!group.value) return null;
-  return group.value.permissions;
-});
+const { members, permissions, query, group } = useGroup(
+  route.params.id as string,
+);
 </script>
