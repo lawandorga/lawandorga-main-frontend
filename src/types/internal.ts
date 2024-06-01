@@ -17,8 +17,3 @@ export interface LoginPage {
   roadmap_items: RoadmapItem[];
   articles: ArticleList[];
 }
-
-export interface ImprintPage {
-  id: number;
-  content: string;
-}

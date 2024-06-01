@@ -5,7 +5,7 @@ import filesRoutes from "@/features/z_deprecated_files/files";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "@/features/statistics/routes";
 import helpRoutes from "@/features/help/routes";
-import internalRoutes from "@/features/internal/internal";
+import internalRoutes from "@/features/internal/routes";
 import legalRoutes from "@/features/legal/routes";
 import eventsRoutes from "@/features/events/routes";
 import mailRoutes from "@/features/mail/routes";
