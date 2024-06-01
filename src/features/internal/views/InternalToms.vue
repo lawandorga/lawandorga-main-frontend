@@ -19,12 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import InternalService from "@/features/internal/internal_service";
-import { ImprintPage } from "@/types/internal";
-import useGet from "@/composables/useGet";
-import { ref } from "vue";
+import { useTomsPage } from "../api/useTomsPage";
 
-const article = ref<ImprintPage | null>(null);
-
-useGet(InternalService.getTomsPage, article);
+const { page: article } = useTomsPage();
 </script>

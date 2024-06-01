@@ -22,8 +22,3 @@ export interface ImprintPage {
   id: number;
   content: string;
 }
-
-export interface TomsPage {
-  id: number;
-  content: string;
-}
