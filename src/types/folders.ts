@@ -68,8 +68,3 @@ export interface FolderDetail {
   content: Content[];
   subfolders: Subfolder[];
 }
-
-export interface AvailableFolder {
-  name: string;
-  id: string;
-}

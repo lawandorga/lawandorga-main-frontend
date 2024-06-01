@@ -76,23 +76,19 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ScaleIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-import { ref } from "vue";
 import { ButtonNormal } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
-import { LegalRequirement } from "@/types/legal";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
 import useCmd from "@/composables/useCmd";
+import {
+  useLegalRequirements,
+  LegalRequirement,
+} from "../api/useLegalRequirements";
 
 const userStore = useUserStore();
 
-const legalRequirements = ref<LegalRequirement[] | null>(null);
-
-const client = useClient();
-const request = client.get("api/legal/legal_requirements/");
-const query = useGet(request, legalRequirements);
+const { legalRequirements, query } = useLegalRequirements();
 
 const { commandRequest } = useCmd(query, () => userStore.updateData());
 
