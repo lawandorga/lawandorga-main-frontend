@@ -10,16 +10,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
 import { TableGenerator } from "lorga-ui";
-import { HasPermission } from "@/types/core";
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import { useRecordsPermissions } from "../api/useRecordsPermissions";
 
-const permissions = ref<HasPermission[] | null>(null);
-
-const request = useClient().get(
-  "api/permissions/query/has_permissions/record/",
-);
-useGet(request, permissions);
+const { permissions } = useRecordsPermissions();
 </script>

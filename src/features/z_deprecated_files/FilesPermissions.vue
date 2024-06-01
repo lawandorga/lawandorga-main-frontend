@@ -26,9 +26,18 @@
 import { watch, ref } from "vue";
 import { ModalFree, TableGenerator } from "lorga-ui";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import { HasPermission } from "@/types/core";
 import useClient from "@/api/client";
 import useQuery from "@/composables/useQuery";
+
+export interface HasPermission {
+  id: number;
+  permission: number;
+  user_has_permission: number;
+  group_has_permission: number;
+  group_object: { name: string; id: number };
+  permission_object: { name: string; id: number };
+  user_object: { name: string; id: number };
+}
 
 const generalPermissionsModalOpen = ref(false);
 const permissions = ref<HasPermission[] | null>(null);
