@@ -1,5 +1,14 @@
-import { Group } from "@/types/core";
 import axios from "axios";
+
+interface Group {
+  id: number;
+  name: string;
+  creator_id: string;
+  members: number[];
+  visible: boolean;
+  description: string;
+  note: string;
+}
 
 class CoreService {
   getGroups(): Promise<Group[]> {

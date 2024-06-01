@@ -255,7 +255,6 @@ import {
 import BoxLoader from "@/components/BoxLoader.vue";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
 import CoreService from "@/features/z_deprecated_files/core";
-import { Group } from "@/types/core";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { FolderOpenIcon } from "@heroicons/vue/24/outline";
 import { FolderIcon, DocumentIcon } from "@heroicons/vue/20/solid";
@@ -443,7 +442,7 @@ function createDeletePermission(permissions: Ref<FilesPermission[] | null>) {
       label: "Permission",
       type: "select",
       name: "permission",
-      options: [] as Group[],
+      options: [],
       required: true,
     },
     {

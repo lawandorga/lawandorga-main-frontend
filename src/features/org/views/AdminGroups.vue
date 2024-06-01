@@ -50,23 +50,15 @@
 </template>
 
 <script lang="ts" setup>
-import { Group } from "@/types/core";
-import { Ref, ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import useClient from "@/api/client";
 import GroupsCreateGroup from "@/features/org/actions/GroupsCreateGroup.vue";
 import GroupsUpdateGroup from "@/features/org/actions/GroupsUpdateGroup.vue";
 import GroupsDeleteGroup from "@/features/org/actions/GroupsDeleteGroup.vue";
+import { useGroups } from "../api/useGroups";
 
-const groups = ref(null) as Ref<Group[] | null>;
-
-const client = useClient();
-const request = client.get("api/query/groups/");
-
-const query = useGet(request, groups);
+const { query, groups } = useGroups();
 </script>
