@@ -53,9 +53,18 @@ import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import BannerList from "./components/BannerList.vue";
 import { getCookie } from "./utils/cookie";
-// import { useConfig } from "lorga-ui";
-// const { overwrite } = useConfig();
-// overwrite("table.td", "px-10");
+import { useConfig } from "lorga-ui";
+
+const { overwrite } = useConfig();
+overwrite("table.td", "px-6 py-4 text-base text-gray-500 bg-white h-15");
+overwrite(
+  "table.table",
+  "min-w-full divide-y divide-gray-200 table-fixed w-fit",
+);
+overwrite(
+  "table.th",
+  "h-16 px-6 py-3 text-base font-semibold text-left text-zinc-700 bg-gray-50 whitespace-nowrap",
+);
 
 if (!getCookie("csrftoken")) {
   const redirect = window.location.href;

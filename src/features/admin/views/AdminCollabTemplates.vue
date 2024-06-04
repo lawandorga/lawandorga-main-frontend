@@ -53,6 +53,11 @@ const { templates, query } = useCollab();
           {{ v }}
         </ButtonLink>
       </template>
+      <template #description="slotProps">
+        <div class="line-clamp-2 text-wrap text-ellipsis">
+          {{ slotProps.description }}
+        </div>
+      </template>
       <template #options="slotProps">
         <ButtonLink
           v-if="slotProps.template_type === 'letterhead'"
@@ -87,50 +92,5 @@ const { templates, query } = useCollab();
         />
       </template>
     </TableGenerator>
-    <!-- <table
-      class="w-full text-base text-left bg-white border border-collapse border-gray-300 rounded-md table-fixed drop-shadow-sm"
-    >
-      <thead class="h-16 bg-gray-50 text-zinc-700">
-        <tr>
-          <th
-            scope="col"
-            class="px-10 text-lg font-semibold border border-gray-300"
-          >
-            Name
-          </th>
-          <th scope="col" class="font-semibold border border-gray-300 px-9">
-            Description
-          </th>
-          <th scope="col" class="font-semibold border border-gray-300 px-9">
-            Options
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="template in templates"
-          :key="template.uuid"
-          class="h-14 text-formcolor"
-        >
-          <td class="px-10 font-semibold border border-gray-300">
-            {{ template.name }}
-          </td>
-          <td class="font-medium border border-gray-300 px-9">
-            <span class="line-clamp-2">
-              {{ template.description }}
-            </span>
-          </td>
-          <td class="gap-6 border border-gray-300 px-9">
-            <ButtonNormal kind="action" class="mr-6">Edit</ButtonNormal>
-            <DeleteCollabTemplate
-              v-if="template.template_type === 'letterhead'"
-              :title="template.name"
-              :type="template.template_type"
-              :uuid="template.uuid"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
   </div>
 </template>
