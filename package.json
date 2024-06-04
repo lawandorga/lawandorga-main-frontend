@@ -22,7 +22,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@tiptap/extension-bullet-list": "^2.1.12",
     "@tiptap/extension-character-count": "^2.1.12",
-    "@tiptap/extension-highlight": "^2.2.4",
+    "@tiptap/extension-highlight": "^2.4.0",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/extension-list-item": "^2.2.4",
     "@tiptap/extension-ordered-list": "^2.0.0-beta.209",
