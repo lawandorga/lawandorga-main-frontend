@@ -29,7 +29,7 @@ const { templates, query } = useCollab();
       :head="[
         { name: 'Name', key: 'name' },
         { name: 'Description', key: 'description' },
-        { name: 'Options', key: 'options' },
+        { name: '', key: 'action' },
       ]"
       :data="templates"
     >
@@ -54,17 +54,18 @@ const { templates, query } = useCollab();
         </ButtonLink>
       </template>
       <template #description="slotProps">
-        <div class="line-clamp-2 text-wrap text-ellipsis">
+        <div class="line-clamp-1 text-ellipsis">
           {{ slotProps.description }}
         </div>
       </template>
-      <template #options="slotProps">
+      <template #action="slotProps">
         <ButtonLink
           v-if="slotProps.template_type === 'letterhead'"
           :to="{
             name: 'admin-collab-letterhead',
             params: { uuid: slotProps.uuid },
           }"
+          class="text-sm no-underline"
         >
           {{ "Edit" }}
         </ButtonLink>
@@ -81,6 +82,7 @@ const { templates, query } = useCollab();
             name: 'admin-collab-footer',
             params: { uuid: slotProps.uuid },
           }"
+          class="text-sm no-underline"
         >
           {{ "Edit" }}
         </ButtonLink>
@@ -94,3 +96,9 @@ const { templates, query } = useCollab();
     </TableGenerator>
   </div>
 </template>
+
+<style scoped>
+:deep(table) {
+  table-layout: fixed;
+}
+</style>

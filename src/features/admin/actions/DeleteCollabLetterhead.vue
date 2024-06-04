@@ -14,7 +14,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
 
 <template>
-  <ButtonNormal kind="delete" class="ml-5" @click="commandModalOpen = true">
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Delete
   </ButtonNormal>
   <ModalDelete
