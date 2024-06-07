@@ -13,6 +13,6 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
   >
     <CogIcon class="w-6 h-6" />
   </BreadcrumbsBar>
-  
+
   <div>HEADER</div>
 </template>
