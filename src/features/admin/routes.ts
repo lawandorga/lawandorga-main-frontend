@@ -29,12 +29,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/collab/letterhead/:uuid",
     name: "admin-collab-letterhead",
-    component: () => import("@/features/admin/views/AdminCollabFooter.vue"),
+    component: () => import("@/features/admin/views/AdminCollabLetterhead.vue"),
   },
   {
     path: "/admin/collab/footer/:uuid",
     name: "admin-collab-footer",
-    component: () => import("@/features/admin/views/AdminCollabLetterhead.vue"),
+    component: () => import("@/features/admin/views/AdminCollabFooter.vue"),
   },
 ];
 
