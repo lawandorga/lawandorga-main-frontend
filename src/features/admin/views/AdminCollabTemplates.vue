@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import useCollab from "../../records/api/useCollab";
+import useCollab from "../api/useCollabTemplates";
 import { TableGenerator } from "lorga-ui";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
@@ -28,6 +28,7 @@ const { templates, query } = useCollab();
     <TableGenerator
       :head="[
         { name: 'Name', key: 'name' },
+        { name: 'Type', key: 'template_type' },
         { name: 'Description', key: 'description' },
         { name: '', key: 'action' },
       ]"

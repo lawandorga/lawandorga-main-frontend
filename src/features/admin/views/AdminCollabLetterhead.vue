@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
 </script>
 
 <template>

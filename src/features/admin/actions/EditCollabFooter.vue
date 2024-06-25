@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ButtonNormal, ModalForm, types } from "lorga-ui";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
+  footerName: string;
+  footerDescription: string;
 }>();
 const { query } = toRefs(props);
 
@@ -55,13 +57,16 @@ const fields = computed<types.FormField[]>(() => [
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Edit Footer
-    <ModalForm
+    <ModalUpdate
       v-model="commandModalOpen"
       title="Edit Footer"
       :fields="fields"
       :request="commandRequest"
-      submit="Create"
-      :data="{ action: 'collab/create_footer' }"
+      :data="{
+        action: 'collab/update_footer',
+        name: footerName,
+        description: footerDescription,
+      }"
     />
   </ButtonNormal>
 </template>

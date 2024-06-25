@@ -2,8 +2,13 @@
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import EditCollabFooter from "../actions/EditCollabFooter.vue";
-import useCollab from "../../records/api/useCollab";
-const { query } = useCollab();
+import { useFooter } from "../api/useFooter";
+import { useRoute } from "vue-router";
+import DinA4Layout from "../components/DinA4Layout.vue";
+
+const route = useRoute();
+
+const { footer, query } = useFooter(route.params.uuid as string);
 </script>
 
 <template>
@@ -19,7 +24,7 @@ const { query } = useCollab();
     </BreadcrumbsBar>
 
     <!-- Main board -->
-    <div class="flex flex-grow mt-4 space-x-4">
+    <div v-if="footer" class="flex flex-grow mt-4 space-x-4">
       <div class="flex flex-col w-2/3 bg-white rounded-md shadow">
         <div class="rounded-md bg-gray-50">
           <div class="px-10 py-5">
@@ -27,21 +32,38 @@ const { query } = useCollab();
           </div>
         </div>
         <div class="flex-grow px-10 py-5">
-          <div class="flex flex-row h-full">
-            <div class="flex flex-col w-2/3 h-full">
-              <div class="bg-gray-200">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                laborum?
+          <DinA4Layout>
+            <template #footer>
+              <div>
+                {{ footer.column1 }}
               </div>
-              <div class="flex-grow bg-gray-100"><span>test</span></div>
-              <div class="bg-gray-200">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatem, dolores!
+              <div>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
+                veniam in, dicta sapiente tempore nemo qui excepturi libero enim
+                illo. Quas magnam commodi alias at illo fuga ipsa doloremque
+                maxime.
               </div>
-            </div>
-            <div class="flex flex-col justify-end w-1/3">
-              <EditCollabFooter :query="query" class="mx-2" />
-            </div>
+              <div>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
+                veniam in, dicta sapiente tempore nemo qui excepturi libero enim
+                illo. Quas magnam commodi alias at illo fuga ipsa doloremque
+                maxime.
+              </div>
+              <div>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
+                veniam in, dicta sapiente tempore nemo qui excepturi libero enim
+                illo. Quas magnam commodi alias at illo fuga ipsa doloremque
+                maxime.
+              </div>
+            </template>
+          </DinA4Layout>
+          <div class="mt-4">
+            <EditCollabFooter
+              :footer-name="footer.name"
+              :footer-description="footer.description"
+              :query="query"
+              class="mx-2"
+            />
           </div>
         </div>
       </div>
