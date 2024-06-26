@@ -1,22 +1,18 @@
+import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 interface Footer {
   name: string;
   description: string;
-  column1: string | undefined;
+  column_1: string | undefined;
+  column_2: string | undefined;
+  column_3: string | undefined;
+  column_4: string | undefined;
 }
 
 export function useFooter(id: string) {
   const footer = ref<Footer>();
-
-  // todo: fetch footer data
-  footer.value = {
-    name: "Footer",
-    description: "This is a footer",
-    column1: id,
-  };
-
-  const query = () => ({});
+  const query = useGet2("/api/collab/query/footer/" + id + "/", footer);
 
   return {
     footer,

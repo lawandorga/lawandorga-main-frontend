@@ -18,6 +18,7 @@ const { footer, query } = useFooter(route.params.uuid as string);
       :base="{ name: 'admin-dashboard' }"
       :pages="[
         { name: 'Collab Templates', to: { name: 'admin-collab-templates' } },
+        { name: 'Preview', to: { name: 'admin-collab-footer' } },
       ]"
     >
       <CogIcon class="w-6 h-6" />
@@ -35,25 +36,16 @@ const { footer, query } = useFooter(route.params.uuid as string);
           <DinA4Layout>
             <template #footer>
               <div>
-                {{ footer.column1 }}
+                {{ footer.column_1 }}
               </div>
               <div>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
-                veniam in, dicta sapiente tempore nemo qui excepturi libero enim
-                illo. Quas magnam commodi alias at illo fuga ipsa doloremque
-                maxime.
+                {{ footer.column_2 }}
               </div>
               <div>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
-                veniam in, dicta sapiente tempore nemo qui excepturi libero enim
-                illo. Quas magnam commodi alias at illo fuga ipsa doloremque
-                maxime.
+                {{ footer.column_3 }}
               </div>
               <div>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
-                veniam in, dicta sapiente tempore nemo qui excepturi libero enim
-                illo. Quas magnam commodi alias at illo fuga ipsa doloremque
-                maxime.
+                {{ footer.column_4 }}
               </div>
             </template>
           </DinA4Layout>
@@ -76,9 +68,7 @@ const { footer, query } = useFooter(route.params.uuid as string);
           </div>
         </div>
         <div class="px-10 py-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur
-          quam, pariatur nihil consequatur sunt ducimus magni. Deleniti, numquam
-          animi fuga laboriosam et non laudantium corporis?
+          {{ footer.description }}
         </div>
       </div>
     </div>
