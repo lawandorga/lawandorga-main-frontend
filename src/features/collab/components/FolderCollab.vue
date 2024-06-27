@@ -19,7 +19,11 @@
         :collab-uuid="collab.uuid"
         :password="collab.password"
       />
-      <CollabAddTemplate v-if="store.user?.email === 'dummy@law-orga.de'" />
+      <CollabAddTemplate
+        v-if="store.user?.email === 'dummy@law-orga.de'"
+        :query="request"
+        :uuid="collab.uuid"
+      />
     </BoxHeadingStats>
   </template>
   <CircleLoader v-else-if="selectedType === 'COLLAB' && selectedId !== null" />

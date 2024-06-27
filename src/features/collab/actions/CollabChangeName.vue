@@ -32,7 +32,7 @@ defineExpose({
       :fields="fields"
       :request="commandRequest"
       :data="{
-        action: 'collab/update_collab',
+        action: 'collab/update_collab_title',
         collab_uuid: uuid,
         title: name,
       }"
