@@ -5,11 +5,6 @@
       :title="collab.name"
       :stats="[`Created: ${formatDate(collab.created_at)}`]"
     >
-      <CollabForm
-        :text="collab.text"
-        :collab-uuid="collab.uuid"
-        :password="collab.password"
-      />
       <template #buttons>
         <CollabPrint />
         <CollabShowHistory :history="collab.history" />
@@ -19,6 +14,12 @@
           :name="collab.name"
         />
       </template>
+      <CollabForm
+        :text="collab.text"
+        :collab-uuid="collab.uuid"
+        :password="collab.password"
+      />
+      <CollabAddTemplate v-if="store.user?.email === 'dummy@law-orga.de'" />
     </BoxHeadingStats>
   </template>
   <CircleLoader v-else-if="selectedType === 'COLLAB' && selectedId !== null" />
@@ -35,6 +36,8 @@ import CollabChangeName from "../actions/CollabChangeName.vue";
 import CollabForm from "./CollabForm.vue";
 import CollabShowHistory from "../actions/CollabShowHistory.vue";
 import CollabPrint from "../actions/CollabPrint.vue";
+import CollabAddTemplate from "../actions/CollabAddTemplate.vue";
+import { useUserStore } from "@/store/user";
 
 export interface History {
   user: string;
@@ -76,4 +79,6 @@ const allQuery = () => {
   query.value();
   collabQuery();
 };
+
+const store = useUserStore();
 </script>
