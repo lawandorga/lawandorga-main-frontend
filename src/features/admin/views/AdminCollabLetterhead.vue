@@ -43,18 +43,17 @@ const { letterhead, query } = useLetterhead(route.params.uuid as string);
               class="mx-2"
             />
             <DinA4Layout>
-              <template #letterhead>
-                <div>
-                  {{ letterhead.address_line_1 }}
-                </div>
-                <div>
-                  {{ letterhead.address_line_2 }}
-                </div>
-                <div>
-                  {{ letterhead.address_line_3 }}
-                </div>
-                <div>
-                  {{ letterhead.address_line_4 }}
+              <template #header>
+                <div class="flex justify-between">
+                  <div class="w-1/3 text-justify">
+                    <p>{{ letterhead.address_line_1 }}</p>
+                    <p>{{ letterhead.address_line_2 }}</p>
+                    <p>{{ letterhead.address_line_3 }}</p>
+                    <p>{{ letterhead.address_line_4 }}</p>
+                  </div>
+                  <div class="w-1/3 text-justify">
+                    {{ letterhead.text_right }}
+                  </div>
                 </div>
               </template>
             </DinA4Layout>
