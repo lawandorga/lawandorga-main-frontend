@@ -6,6 +6,11 @@
       :stats="[`Created: ${formatDate(collab.created_at)}`]"
     >
       <template #buttons>
+        <CollabPrintNew
+          v-if="store.user?.email === 'dummy@law-orga.de'"
+          :uuid="collab.uuid"
+          :name="collab.name"
+        />
         <CollabPrint />
         <CollabShowHistory :history="collab.history" />
         <CollabChangeName
@@ -42,6 +47,7 @@ import CollabShowHistory from "../actions/CollabShowHistory.vue";
 import CollabPrint from "../actions/CollabPrint.vue";
 import CollabAddTemplate from "../actions/CollabAddTemplate.vue";
 import { useUserStore } from "@/store/user";
+import CollabPrintNew from "../actions/CollabPrintNew.vue";
 
 export interface History {
   user: string;

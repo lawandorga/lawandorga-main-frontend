@@ -36,12 +36,12 @@ export function downloadFileRequest(
   axios: AxiosInstance,
   url: string,
   fileName: string,
-) {
+): Promise<void> {
   const openedWindow = window.open();
   if (openedWindow && openedWindow.document)
     openedWindow.document.body.innerHTML =
       "One moment please. File is being downloaded...";
-  axios
+  return axios
     .get<Blob>(url, {
       responseType: "blob",
     })

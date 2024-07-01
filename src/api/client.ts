@@ -76,7 +76,7 @@ class Client {
   downloadFile(
     url: string,
     ...params: UrlParamType[]
-  ): (data?: { [key: string]: any; filename: string }) => void {
+  ): (data?: { [key: string]: any; filename: string }) => Promise<void> {
     return (data?: any) =>
       downloadFileRequest(
         this.caller,
