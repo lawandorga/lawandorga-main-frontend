@@ -29,7 +29,9 @@ const { footer, query } = useFooter(route.params.uuid as string);
       <div class="flex flex-col w-2/3 bg-white rounded-md shadow">
         <div class="rounded-md bg-gray-50">
           <div class="px-10 py-5">
-            <span class="text-xl font-normal">{{ footer.name }} (Vorschau)</span>
+            <span class="text-xl font-normal">
+              {{ footer.name }} (Vorschau)
+            </span>
           </div>
         </div>
         <div class="flex-grow px-10 py-5">

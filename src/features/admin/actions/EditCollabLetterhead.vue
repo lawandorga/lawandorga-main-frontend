@@ -67,18 +67,18 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-    <ButtonNormal kind="action" @click="commandModalOpen = true">
-      Edit Letterhead
-      <ModalUpdate
-        v-model="commandModalOpen"
-        title="Edit Letterhead"
-        :fields="fields"
-        :request="commandRequest"
-        :data="{
-          action: 'collab/update_letterhead',
-          name: letterheadName,
-          description: letterheadDescription,
-        }"
-      />
-    </ButtonNormal>
-  </template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Edit Letterhead
+    <ModalUpdate
+      v-model="commandModalOpen"
+      title="Edit Letterhead"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        action: 'collab/update_letterhead',
+        name: letterheadName,
+        description: letterheadDescription,
+      }"
+    />
+  </ButtonNormal>
+</template>
