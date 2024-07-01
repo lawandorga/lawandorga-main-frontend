@@ -51,12 +51,13 @@ const fields = computed<types.FormField[]>(() => [
 
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Print New
+    Download PDF
   </ButtonNormal>
   <ModalForm
     v-model="commandModalOpen"
     :fields="fields"
-    submit="Print"
+    submit="Download PDF"
+    title="Download PDF"
     :request="printRequest"
     :data="{
       uuid: uuid,
