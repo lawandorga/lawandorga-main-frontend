@@ -18,7 +18,7 @@ const { footer, query } = useFooter(route.params.uuid as string);
       :base="{ name: 'admin-dashboard' }"
       :pages="[
         { name: 'Collab Templates', to: { name: 'admin-collab-templates' } },
-        { name: 'Preview', to: { name: 'admin-collab-footer' } },
+        { name: 'Footer', to: { name: 'admin-collab-footer' } },
       ]"
     >
       <CogIcon class="w-6 h-6" />
@@ -29,7 +29,7 @@ const { footer, query } = useFooter(route.params.uuid as string);
       <div class="flex flex-col w-2/3 bg-white rounded-md shadow">
         <div class="rounded-md bg-gray-50">
           <div class="px-10 py-5">
-            <span class="text-xl font-normal">My Footer (Vorschau)</span>
+            <span class="text-xl font-normal">{{ footer.name }} (Vorschau)</span>
           </div>
         </div>
         <div class="flex-grow px-10 py-5">
