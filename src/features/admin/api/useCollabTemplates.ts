@@ -3,16 +3,12 @@ import { ref } from "vue";
 
 export type TemplateType = "letterhead" | "footer";
 
-export interface Letterhead {
+export type Templates = Array<{
   name: string;
   description: string;
   template_type: TemplateType;
   uuid: string;
-}
-
-// interface Footer {}
-
-export type Templates = Letterhead[]; // | Footer[];
+}>;
 
 const useCollab = () => {
   const templates = ref<Templates>([]);
