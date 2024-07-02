@@ -174,7 +174,7 @@ const items = computed<AdminItem[]>(() => {
     link: { name: "admin-collab-templates" },
     icon: DocumentTextIcon,
     notifications: 0,
-    class: "sm:rounded-bl-lg",
+    class: "sm:rounded-br-lg",
   };
 
   return store.user?.email === "dummy@law-orga.de"

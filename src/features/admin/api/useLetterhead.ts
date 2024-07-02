@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 interface Letterhead {
   name: string;
+  uuid: string;
   description: string;
   address_line_1: string | undefined;
   address_line_2: string | undefined;

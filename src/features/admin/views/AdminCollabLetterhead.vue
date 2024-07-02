@@ -39,6 +39,7 @@ const { letterhead, query } = useLetterhead(route.params.uuid as string);
             <EditCollabLetterhead
               :letterhead-name="letterhead.name"
               :letterhead-description="letterhead.description"
+              :letterhead-uuid="letterhead.uuid"
               :query="query"
               class="mx-2"
             />

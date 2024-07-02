@@ -7,6 +7,7 @@ const props = defineProps<{
   query: () => void;
   letterheadName: string;
   letterheadDescription: string;
+  letterheadUuid: string;
 }>();
 const { query } = toRefs(props);
 
@@ -78,6 +79,7 @@ const fields = computed<types.FormField[]>(() => [
         action: 'collab/update_letterhead',
         name: letterheadName,
         description: letterheadDescription,
+        letterhead_uuid: letterheadUuid,
       }"
     />
   </ButtonNormal>
