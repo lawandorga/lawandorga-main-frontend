@@ -37,9 +37,7 @@ const { letterhead, query } = useLetterhead(route.params.uuid as string);
         <div class="flex-grow px-10 py-5">
           <div class="mt-4">
             <EditCollabLetterhead
-              :letterhead-name="letterhead.name"
-              :letterhead-description="letterhead.description"
-              :letterhead-uuid="letterhead.uuid"
+              :letterhead="letterhead"
               :query="query"
               class="mx-2"
             />

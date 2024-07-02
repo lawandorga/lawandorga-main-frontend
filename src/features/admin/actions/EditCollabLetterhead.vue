@@ -2,12 +2,11 @@
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
+import { Letterhead } from "../api/useLetterhead";
 
 const props = defineProps<{
   query: () => void;
-  letterheadName: string;
-  letterheadDescription: string;
-  letterheadUuid: string;
+  letterhead: Letterhead;
 }>();
 const { query } = toRefs(props);
 
@@ -77,9 +76,10 @@ const fields = computed<types.FormField[]>(() => [
       :request="commandRequest"
       :data="{
         action: 'collab/update_letterhead',
-        name: letterheadName,
-        description: letterheadDescription,
-        letterhead_uuid: letterheadUuid,
+        name: letterhead.name,
+        description: letterhead.description,
+        letterhead_uuid: letterhead.uuid,
+        address_line_1: letterhead.address_line_1,
       }"
     />
   </ButtonNormal>
