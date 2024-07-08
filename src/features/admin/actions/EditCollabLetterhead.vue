@@ -80,6 +80,11 @@ const fields = computed<types.FormField[]>(() => [
         description: letterhead.description,
         letterhead_uuid: letterhead.uuid,
         address_line_1: letterhead.address_line_1,
+        address_line_2: letterhead.address_line_2,
+        address_line_3: letterhead.address_line_3,
+        address_line_4: letterhead.address_line_4,
+        address_line_5: letterhead.address_line_5,
+        text_right: letterhead.text_right,
       }"
     />
   </ButtonNormal>
