@@ -26,10 +26,10 @@
       />
       <CollabAddTemplate
         v-if="store.user?.email === 'dummy@law-orga.de'"
-        :query="request"
+        :query="collabQuery"
         :uuid="collab.uuid"
-        :letterhead="collab.letterhead"
-        :footer="collab.footer"
+        :selected-letterhead="collab.letterhead"
+        :selected-footer="collab.footer"
       />
     </BoxHeadingStats>
   </template>

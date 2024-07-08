@@ -14,10 +14,10 @@ import { Footer } from "@/features/admin/api/useFooter";
 const props = defineProps<{
   query: () => void;
   uuid: string;
-  letterhead: Letterhead | null;
-  footer: Footer | null;
+  selectedLetterhead: Letterhead | null;
+  selectedFooter: Footer | null;
 }>();
-const { query, uuid, letterhead, footer } = toRefs(props);
+const { query, uuid, selectedLetterhead, selectedFooter } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
@@ -46,24 +46,24 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-  <div v-if="!!letterhead" class="flex items-center mt-6">
+  <div v-if="!!selectedLetterhead" class="flex items-center mt-6">
     <CheckIcon class="w-6 h-6" />
     <span class="text-[color:var(--lorgablue)] ml-4 font-semibold">
       Letterhead
-      <i class="font-bold">{{ letterhead.name }}</i>
+      <i class="font-bold">{{ selectedLetterhead.name }}</i>
       applied
     </span>
   </div>
-  <div v-if="!!footer" class="flex items-center mt-6">
+  <div v-if="!!selectedFooter" class="flex items-center mt-6">
     <CheckIcon class="w-6 h-6" />
     <span class="text-[color:var(--lorgablue)] ml-4 font-semibold">
       Footer
-      <i class="font-bold">{{ footer.name }}</i>
+      <i class="font-bold">{{ selectedFooter.name }}</i>
       applied
     </span>
   </div>
   <ButtonNormal kind="secondary" class="mt-6" @click="commandModalOpen = true">
-    <template v-if="!!letterhead || !!footer">
+    <template v-if="!!selectedLetterhead || !!selectedFooter">
       <ArrowPathIcon class="w-5 h-5 mr-2" />
       Change Template
     </template>
@@ -80,8 +80,8 @@ const fields = computed<types.FormField[]>(() => [
     :data="{
       action: 'collab/assign_template_to_collab',
       collab_uuid: uuid,
-      letterhead_uuid: letterhead?.uuid || null,
-      footer_uuid: footer?.uuid || null,
+      letterhead_uuid: selectedLetterhead?.uuid || null,
+      footer_uuid: selectedFooter?.uuid || null,
     }"
   />
 </template>
