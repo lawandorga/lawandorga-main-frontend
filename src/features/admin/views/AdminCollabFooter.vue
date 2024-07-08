@@ -36,6 +36,7 @@ const { footer, query } = useFooter(route.params.uuid as string);
         </div>
         <div class="flex-grow px-10 py-5">
           <DinA4Layout>
+            <template #header>Header</template>
             <template #footer>
               <div>
                 {{ footer.column_1 }}

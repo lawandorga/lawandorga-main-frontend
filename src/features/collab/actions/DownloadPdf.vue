@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ButtonNormal, ModalForm, types } from "lorga-ui";
-import { computed, toRefs } from "vue";
-import useCollab from "@/features/admin/api/useCollabTemplates";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
 
@@ -24,43 +23,21 @@ const printRequest = (data: Record<string, string>) => {
     letterhead_uuid: data.letterhead_uuid,
   });
 };
-
-const { templates } = useCollab();
-
-const fields = computed<types.FormField[]>(() => [
-  {
-    label: "Letterhead",
-    name: "letterhead_uuid",
-    type: "select",
-    options: templates.value.filter(
-      (template) => template.template_type === "letterhead",
-    ),
-    required: false,
-  },
-  {
-    label: "Footer",
-    name: "footer_uuid",
-    type: "select",
-    options: templates.value.filter(
-      (template) => template.template_type === "footer",
-    ),
-    required: false,
-  },
-]);
 </script>
 
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Download PDF
   </ButtonNormal>
-  <ModalForm
+  <ModalConfirm
     v-model="commandModalOpen"
-    :fields="fields"
     submit="Download PDF"
     title="Download PDF"
     :request="printRequest"
     :data="{
       uuid: uuid,
     }"
-  />
+  >
+    Are you sure you want to download the PDF?
+  </ModalConfirm>
 </template>
