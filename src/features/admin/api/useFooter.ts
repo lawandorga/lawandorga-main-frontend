@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 interface Footer {
   name: string;
+  uuid: string;
   description: string;
   column_1: string | undefined;
   column_2: string | undefined;

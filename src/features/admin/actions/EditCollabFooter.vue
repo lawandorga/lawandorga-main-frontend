@@ -2,11 +2,11 @@
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
+import { Footer } from "../api/useFooter";
 
 const props = defineProps<{
   query: () => void;
-  footerName: string;
-  footerDescription: string;
+  footer: Footer;
 }>();
 const { query } = toRefs(props);
 
@@ -64,8 +64,13 @@ const fields = computed<types.FormField[]>(() => [
       :request="commandRequest"
       :data="{
         action: 'collab/update_footer',
-        name: footerName,
-        description: footerDescription,
+        name: footer.name,
+        description: footer.description,
+        footer_uuid: footer.uuid,
+        column_1: footer.column_1,
+        column_2: footer.column_2,
+        column_3: footer.column_3,
+        column_4: footer.column_4,
       }"
     />
   </ButtonNormal>

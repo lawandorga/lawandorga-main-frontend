@@ -52,12 +52,7 @@ const { footer, query } = useFooter(route.params.uuid as string);
             </template>
           </DinA4Layout>
           <div class="mt-4">
-            <EditCollabFooter
-              :footer-name="footer.name"
-              :footer-description="footer.description"
-              :query="query"
-              class="mx-2"
-            />
+            <EditCollabFooter :query="query" :footer="footer" class="mx-2" />
           </div>
         </div>
       </div>
