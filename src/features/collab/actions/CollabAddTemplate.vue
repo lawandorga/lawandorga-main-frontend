@@ -48,7 +48,7 @@ const fields = computed<types.FormField[]>(() => [
     submit="Apply template"
     :request="commandRequest"
     :data="{
-      action: 'collab/update_collab_template',
+      action: 'collab/assign_template_to_collab',
       collab_uuid: uuid,
     }"
   />
