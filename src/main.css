@@ -8,3 +8,7 @@
 .has-tooltip:focus .tooltip {
   @apply visible;
 }
+
+:root {
+  --lorgablue: #003C4D;
+}

@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
-import { PlusCircleIcon } from "@heroicons/vue/24/outline";
+import {
+  ArrowPathIcon,
+  CheckIcon,
+  PlusCircleIcon,
+} from "@heroicons/vue/24/outline";
 import { computed, toRefs } from "vue";
 import useCollab from "@/features/admin/api/useCollabTemplates";
 import useCmd from "@/composables/useCmd";
+import { Letterhead } from "@/features/admin/api/useLetterhead";
+import { Footer } from "@/features/admin/api/useFooter";
 
 const props = defineProps<{
   query: () => void;
   uuid: string;
+  letterhead: Letterhead | null;
+  footer: Footer | null;
 }>();
-const { query, uuid } = toRefs(props);
+const { query, uuid, letterhead, footer } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
@@ -38,9 +46,31 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-  <ButtonNormal kind="secondary" class="mt-4" @click="commandModalOpen = true">
-    <PlusCircleIcon class="w-5 h-5 mr-2" />
-    Add Template
+  <div v-if="!!letterhead" class="flex items-center mt-6">
+    <CheckIcon class="w-6 h-6" />
+    <span class="text-[color:var(--lorgablue)] ml-4 font-semibold">
+      Letterhead
+      <i class="font-bold">{{ letterhead.name }}</i>
+      applied
+    </span>
+  </div>
+  <div v-if="!!footer" class="flex items-center mt-6">
+    <CheckIcon class="w-6 h-6" />
+    <span class="text-[color:var(--lorgablue)] ml-4 font-semibold">
+      Footer
+      <i class="font-bold">{{ footer.name }}</i>
+      applied
+    </span>
+  </div>
+  <ButtonNormal kind="secondary" class="mt-6" @click="commandModalOpen = true">
+    <template v-if="!!letterhead || !!footer">
+      <ArrowPathIcon class="w-5 h-5 mr-2" />
+      Change Template
+    </template>
+    <template v-else>
+      <PlusCircleIcon class="w-5 h-5 mr-2" />
+      Add Template
+    </template>
   </ButtonNormal>
   <ModalForm
     v-model="commandModalOpen"
@@ -50,6 +80,8 @@ const fields = computed<types.FormField[]>(() => [
     :data="{
       action: 'collab/assign_template_to_collab',
       collab_uuid: uuid,
+      letterhead_uuid: letterhead?.uuid || null,
+      footer_uuid: footer?.uuid || null,
     }"
   />
 </template>

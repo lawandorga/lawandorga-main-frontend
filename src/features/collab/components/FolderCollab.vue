@@ -28,6 +28,8 @@
         v-if="store.user?.email === 'dummy@law-orga.de'"
         :query="request"
         :uuid="collab.uuid"
+        :letterhead="collab.letterhead"
+        :footer="collab.footer"
       />
     </BoxHeadingStats>
   </template>
@@ -48,6 +50,8 @@ import CollabPrint from "../actions/CollabPrint.vue";
 import CollabAddTemplate from "../actions/CollabAddTemplate.vue";
 import { useUserStore } from "@/store/user";
 import DownloadPdf from "../actions/DownloadPdf.vue";
+import { Letterhead } from "@/features/admin/api/useLetterhead";
+import { Footer } from "@/features/admin/api/useFooter";
 
 export interface History {
   user: string;
@@ -62,6 +66,8 @@ interface Collab {
   created_at: string;
   password: string;
   history: History[];
+  letterhead: Letterhead | null;
+  footer: Footer | null;
 }
 
 const props = defineProps<{

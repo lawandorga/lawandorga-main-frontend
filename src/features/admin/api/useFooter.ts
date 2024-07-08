@@ -1,7 +1,7 @@
 import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
-interface Footer {
+export interface Footer {
   name: string;
   uuid: string;
   description: string;
