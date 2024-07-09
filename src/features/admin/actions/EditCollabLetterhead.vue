@@ -63,6 +63,12 @@ const fields = computed<types.FormField[]>(() => [
     type: "text",
     required: false,
   },
+  {
+    label: "Logo",
+    name: "logo",
+    type: "file",
+    required: false,
+  },
 ]);
 </script>
 

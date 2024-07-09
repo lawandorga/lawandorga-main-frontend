@@ -11,6 +11,7 @@ export interface Letterhead {
   address_line_4: string | undefined;
   address_line_5: string | undefined;
   text_right: string | undefined;
+  logo_base64: string;
 }
 
 export function useLetterhead(id: string) {

@@ -44,6 +44,9 @@ const { letterhead, query } = useLetterhead(route.params.uuid as string);
             <DinA4Layout>
               <template #header>
                 <div class="flex justify-between">
+                  <div class="w-1/3">
+                    <img :src="letterhead.logo_base64" alt="Logo" />
+                  </div>
                   <div class="w-1/3 text-justify">
                     <p>{{ letterhead.address_line_1 }}</p>
                     <p>{{ letterhead.address_line_2 }}</p>
