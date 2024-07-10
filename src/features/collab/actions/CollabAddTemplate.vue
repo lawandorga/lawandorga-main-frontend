@@ -3,6 +3,7 @@ import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import {
   ArrowPathIcon,
   CheckIcon,
+  PencilIcon,
   PlusCircleIcon,
 } from "@heroicons/vue/24/outline";
 import { computed, toRefs } from "vue";
@@ -10,6 +11,7 @@ import useCollab from "@/features/admin/api/useCollabTemplates";
 import useCmd from "@/composables/useCmd";
 import { Letterhead } from "@/features/admin/api/useLetterhead";
 import { Footer } from "@/features/admin/api/useFooter";
+import ButtonLink from "@/components/ButtonLink.vue";
 
 const props = defineProps<{
   query: () => void;
@@ -53,6 +55,16 @@ const fields = computed<types.FormField[]>(() => [
       <i class="font-bold">{{ selectedLetterhead.name }}</i>
       applied
     </span>
+    <ButtonLink
+      :to="{
+        name: 'admin-collab-letterhead',
+        params: { uuid: selectedLetterhead.uuid },
+      }"
+      class="flex items-center gap-2 ml-4 font-semibold text-gray-600 no-underline"
+    >
+      <PencilIcon class="w-5 h-5 mt-[2px]" />
+      Edit
+    </ButtonLink>
   </div>
   <div v-if="!!selectedFooter" class="flex items-center mt-6">
     <CheckIcon class="w-6 h-6" />
@@ -61,6 +73,16 @@ const fields = computed<types.FormField[]>(() => [
       <i class="font-bold">{{ selectedFooter.name }}</i>
       applied
     </span>
+    <ButtonLink
+      :to="{
+        name: 'admin-collab-footer',
+        params: { uuid: selectedFooter.uuid },
+      }"
+      class="flex items-center gap-2 ml-4 font-semibold text-gray-600 no-underline"
+    >
+      <PencilIcon class="w-5 h-5 mt-[2px]" />
+      Edit
+    </ButtonLink>
   </div>
   <ButtonNormal kind="secondary" class="mt-6" @click="commandModalOpen = true">
     <template v-if="!!selectedLetterhead || !!selectedFooter">
