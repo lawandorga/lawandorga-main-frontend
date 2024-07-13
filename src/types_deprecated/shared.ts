@@ -22,10 +22,3 @@ export type JsonModel = {
 };
 
 export type DjangoModel = { id: number; url?: string; type?: string };
-
-/*
-// errors
-*/
-export interface DjangoError {
-  [key: string]: string[] | string;
-}

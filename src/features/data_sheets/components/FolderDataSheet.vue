@@ -8,7 +8,7 @@
         `Template: ${record.template_name}`,
       ]"
     >
-      <FormRecord :record="record" :query="recordsQuery"></FormRecord>
+      <FormDataSheet :record="record" :query="recordsQuery"></FormDataSheet>
       <template #buttons>
         <DataSheetChangeName
           :id="record.id"
@@ -32,7 +32,7 @@ import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
 import { formatDate } from "@/utils/date";
 import { toRefs } from "vue";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import FormRecord from "./FormRecord.vue";
+import FormDataSheet from "./FormDataSheet.vue";
 import { CircleLoader } from "lorga-ui";
 import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
 import { useDataSheet } from "../api/useDataSheet";

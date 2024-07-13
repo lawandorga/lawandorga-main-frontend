@@ -106,7 +106,6 @@ import {
   types,
 } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
-import { DjangoError } from "@/types_deprecated/shared";
 import useCmd from "@/composables/useCmd";
 import useClient from "@/api/client";
 import { Sheet, SheetField, SheetValue } from "../api/useDataSheet";
@@ -116,7 +115,7 @@ const { record } = toRefs(props);
 
 const entries = ref<Sheet["entries"]>({});
 const nonFieldErrors = ref<string[]>([]);
-const errors = ref<DjangoError>({});
+const errors = ref<{ [key: string]: string[] }>({});
 
 const fields = computed(() => {
   return record.value.fields;
@@ -190,8 +189,8 @@ function deleteEntry(field: SheetField) {
 function handleError(field: SheetField, error: types.ICommandError) {
   if (error.paramErrors.value) {
     errors.value[field.name] = error.paramErrors.value as string[];
-  } else if (error.generalErrors)
+  } else if (error.generalErrors.length)
     errors.value[field.name] = error.generalErrors;
-  else if (error.title) errors.value[field.name] = error.title;
+  else if (error.title) errors.value[field.name] = [error.title];
 }
 </script>
