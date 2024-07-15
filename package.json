@@ -13,7 +13,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.19",
+    "@headlessui/vue": "^1.7.22",
     "@heroicons/vue": "^2.0.11",
     "@hocuspocus/provider": "^2.11.3",
     "@pinia/testing": "^0.1.3",
