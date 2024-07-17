@@ -60,7 +60,7 @@ const fields = computed<types.FormField[]>(() => [
   {
     label: "Text right",
     name: "text_right",
-    type: "text",
+    type: "textarea",
     required: false,
   },
   {
