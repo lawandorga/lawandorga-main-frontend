@@ -30,31 +30,15 @@ const { templates, query } = useCollab();
     <TableGenerator
       :head="[
         { name: 'Name', key: 'name' },
-        { name: 'Type', key: 'template_type' },
         { name: 'Description', key: 'description' },
         { name: '', key: 'action' },
       ]"
       :data="templates"
     >
-      <template #name="{ i, v }">
-        <ButtonLink
-          v-if="i.template_type === 'letterhead'"
-          :to="{
-            name: 'admin-collab-letterhead',
-            params: { uuid: i.uuid },
-          }"
-        >
+      <template #name="{ v }">
+        <div class="text-[color:var(--lorgablue)] font-semibold">
           {{ v }}
-        </ButtonLink>
-        <ButtonLink
-          v-if="i.template_type === 'footer'"
-          :to="{
-            name: 'admin-collab-footer',
-            params: { uuid: i.uuid },
-          }"
-        >
-          {{ v }}
-        </ButtonLink>
+        </div>
       </template>
       <template #description="slotProps">
         <div class="line-clamp-1 text-ellipsis">

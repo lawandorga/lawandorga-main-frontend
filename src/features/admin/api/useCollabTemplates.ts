@@ -1,12 +1,9 @@
 import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
-export type TemplateType = "letterhead" | "footer";
-
 export type Templates = Array<{
   name: string;
   description: string;
-  template_type: TemplateType;
   uuid: string;
 }>;
 
