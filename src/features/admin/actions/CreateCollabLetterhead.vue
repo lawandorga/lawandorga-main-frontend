@@ -63,7 +63,7 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
     Create Letterhead
     <ModalForm
       v-model="commandModalOpen"

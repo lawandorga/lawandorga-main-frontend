@@ -22,9 +22,11 @@ const { templates, query } = useCollab();
       ]"
     >
       <CogIcon class="w-6 h-6" />
+      <template #buttons>
+        <CreateCollabLetterhead :query="query" />
+        <CreateCollabFooter :query="query" />
+      </template>
     </BreadcrumbsBar>
-    <CreateCollabLetterhead :query="query" class="mx-2" />
-    <CreateCollabFooter :query="query" class="mx-2" />
     <TableGenerator
       :head="[
         { name: 'Name', key: 'name' },
