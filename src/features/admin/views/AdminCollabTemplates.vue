@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import useCollab from "../api/useCollabTemplates";
+import useCollabTemplates from "../api/useCollabTemplates";
 import { TableGenerator } from "lorga-ui";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
@@ -9,7 +9,7 @@ import DeleteCollabLetterhead from "../actions/DeleteCollabLetterhead.vue";
 import DeleteCollabFooter from "../actions/DeleteCollabFooter.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 
-const { templates, query } = useCollab();
+const { templates, query } = useCollabTemplates();
 </script>
 
 <template>

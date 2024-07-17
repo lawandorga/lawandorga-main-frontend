@@ -7,7 +7,7 @@ export type Templates = Array<{
   uuid: string;
 }>;
 
-const useCollab = () => {
+const useCollabTemplates = () => {
   const templates = ref<Templates>([]);
   const query = useGet2("/api/collab/query/templates/", templates);
 
@@ -17,4 +17,4 @@ const useCollab = () => {
   };
 };
 
-export default useCollab;
+export default useCollabTemplates;

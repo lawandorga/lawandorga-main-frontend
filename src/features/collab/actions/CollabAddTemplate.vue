@@ -7,7 +7,7 @@ import {
   PlusCircleIcon,
 } from "@heroicons/vue/24/outline";
 import { computed, toRefs } from "vue";
-import useCollab from "@/features/admin/api/useCollabTemplates";
+import useCollabTemplates from "@/features/admin/api/useCollabTemplates";
 import useCmd from "@/composables/useCmd";
 import { Letterhead } from "@/features/admin/api/useLetterhead";
 import { Footer } from "@/features/admin/api/useFooter";
@@ -23,25 +23,14 @@ const { query, uuid, selectedLetterhead, selectedFooter } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
-const { templates } = useCollab();
+const { templates } = useCollabTemplates();
 
 const fields = computed<types.FormField[]>(() => [
   {
-    label: "Letterhead",
-    name: "letterhead_uuid",
+    label: "Template",
+    name: "template_uuid",
     type: "select",
-    options: templates.value.filter(
-      (template) => template.template_type === "letterhead",
-    ),
-    required: false,
-  },
-  {
-    label: "Footer",
-    name: "footer_uuid",
-    type: "select",
-    options: templates.value.filter(
-      (template) => template.template_type === "footer",
-    ),
+    options: templates.value,
     required: false,
   },
 ]);
@@ -96,14 +85,13 @@ const fields = computed<types.FormField[]>(() => [
   </ButtonNormal>
   <ModalForm
     v-model="commandModalOpen"
+    title="Apply Template"
     :fields="fields"
     submit="Apply template"
     :request="commandRequest"
     :data="{
       action: 'collab/assign_template_to_collab',
       collab_uuid: uuid,
-      letterhead_uuid: selectedLetterhead?.uuid || null,
-      footer_uuid: selectedFooter?.uuid || null,
     }"
   />
 </template>
