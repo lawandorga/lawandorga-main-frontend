@@ -3,8 +3,9 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollabTemplates from "../api/useCollabTemplates";
 import { TableGenerator } from "lorga-ui";
-import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
-import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
+// import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
+// import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
+import CreateCollabTemplate from "../actions/CreateCollabTemplate.vue";
 import DeleteCollabLetterhead from "../actions/DeleteCollabLetterhead.vue";
 import DeleteCollabFooter from "../actions/DeleteCollabFooter.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
@@ -23,8 +24,9 @@ const { templates, query } = useCollabTemplates();
     >
       <CogIcon class="w-6 h-6" />
       <template #buttons>
-        <CreateCollabLetterhead :query="query" />
-        <CreateCollabFooter :query="query" />
+        <!--<CreateCollabLetterhead :query="query" />
+        <CreateCollabFooter :query="query" /> -->
+        <CreateCollabTemplate :query="query" />
       </template>
     </BreadcrumbsBar>
     <TableGenerator
