@@ -3,11 +3,8 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import useCollabTemplates from "../api/useCollabTemplates";
 import { TableGenerator } from "lorga-ui";
-// import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
-// import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
 import CreateCollabTemplate from "../actions/CreateCollabTemplate.vue";
-import DeleteCollabLetterhead from "../actions/DeleteCollabLetterhead.vue";
-import DeleteCollabFooter from "../actions/DeleteCollabFooter.vue";
+import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 
 const { templates, query } = useCollabTemplates();
@@ -24,8 +21,6 @@ const { templates, query } = useCollabTemplates();
     >
       <CogIcon class="w-6 h-6" />
       <template #buttons>
-        <!--<CreateCollabLetterhead :query="query" />
-        <CreateCollabFooter :query="query" /> -->
         <CreateCollabTemplate :query="query" />
       </template>
     </BreadcrumbsBar>
@@ -49,34 +44,17 @@ const { templates, query } = useCollabTemplates();
       </template>
       <template #action="slotProps">
         <ButtonLink
-          v-if="slotProps.template_type === 'letterhead'"
           :to="{
-            name: 'admin-collab-letterhead',
-            params: { uuid: slotProps.uuid },
+            name: 'admin-collab-edit-template',
+            params: {
+              uuid: slotProps.uuid,
+            },
           }"
           class="text-sm no-underline"
         >
           {{ "Edit" }}
         </ButtonLink>
-        <DeleteCollabLetterhead
-          v-if="slotProps.template_type === 'letterhead'"
-          :title="slotProps.name"
-          :uuid="slotProps.uuid"
-          :query="query"
-        />
-
-        <ButtonLink
-          v-if="slotProps.template_type === 'footer'"
-          :to="{
-            name: 'admin-collab-footer',
-            params: { uuid: slotProps.uuid },
-          }"
-          class="text-sm no-underline"
-        >
-          {{ "Edit" }}
-        </ButtonLink>
-        <DeleteCollabFooter
-          v-if="slotProps.template_type === 'footer'"
+        <DeleteCollabTemplate
           :title="slotProps.name"
           :uuid="slotProps.uuid"
           :query="query"

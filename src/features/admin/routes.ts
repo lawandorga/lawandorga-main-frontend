@@ -36,6 +36,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "admin-collab-footer",
     component: () => import("@/features/admin/views/AdminCollabFooter.vue"),
   },
+  {
+    path: "/admin/collab/template/:uuid",
+    name: "admin-collab-edit-template",
+    component: () =>
+      import("@/features/admin/views/AdminCollabEditTemplate.vue"),
+  },
 ];
 
 export default routes;

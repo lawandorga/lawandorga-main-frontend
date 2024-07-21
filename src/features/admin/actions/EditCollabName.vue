@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
+import { PencilIcon } from "@heroicons/vue/24/outline";
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
+  uuid: string;
+  name: string;
 }>();
 const { query } = toRefs(props);
 
@@ -17,25 +20,23 @@ const fields = computed<types.FormField[]>(() => [
     type: "text",
     required: true,
   },
-  {
-    label: "Description",
-    name: "description",
-    type: "text",
-    required: false,
-  },
 ]);
 </script>
 
 <template>
-  <ButtonNormal kind="primary" @click="commandModalOpen = true">
-    Create Template
+  <ButtonNormal kind="" class="flex" @click="commandModalOpen = true">
+    <PencilIcon class="w-4 h-4 stroke-2" />
     <ModalForm
       v-model="commandModalOpen"
-      title="Create Template"
+      title="Change Template Name"
       :fields="fields"
       :request="commandRequest"
-      submit="Create"
-      :data="{ action: 'collab/create_template' }"
+      submit="Change"
+      :data="{
+        action: 'collab/update_template_name',
+        template_uuid: uuid,
+        name,
+      }"
     />
   </ButtonNormal>
 </template>
