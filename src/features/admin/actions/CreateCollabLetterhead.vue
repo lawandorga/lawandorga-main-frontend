@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
+import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import { computed, toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
 
@@ -64,6 +65,7 @@ const fields = computed<types.FormField[]>(() => [
 
 <template>
   <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    <PlusCircleIcon class="w-6 h-6 mr-3" />
     Create Letterhead
     <ModalForm
       v-model="commandModalOpen"
