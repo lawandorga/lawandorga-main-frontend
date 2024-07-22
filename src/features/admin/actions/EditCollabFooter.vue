@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
+import { PencilIcon } from "@heroicons/vue/24/outline";
 import useCmd from "@/composables/useCmd";
 import { Footer } from "../api/useFooter";
 
@@ -41,7 +42,8 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    <PencilIcon class="w-4 h-4 mr-2" />
     Edit Footer
     <ModalUpdate
       v-model="commandModalOpen"

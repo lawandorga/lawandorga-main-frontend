@@ -2,9 +2,7 @@ import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 export interface Footer {
-  name: string;
   uuid: string;
-  description: string;
   column_1: string | undefined;
   column_2: string | undefined;
   column_3: string | undefined;

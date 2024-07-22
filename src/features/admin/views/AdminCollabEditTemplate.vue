@@ -9,6 +9,8 @@ import DinA4Layout from "../components/DinA4Layout.vue";
 import { ButtonNormal } from "lorga-ui";
 import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
+import EditCollabLetterhead from "../actions/EditCollabLetterhead.vue";
+import EditCollabFooter from "../actions/EditCollabFooter.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -40,10 +42,47 @@ const { template, query } = useTemplate(uuid);
           <EditCollabName :query="query" :uuid="uuid" :name="template?.name" />
         </div>
         <div class="flex gap-8 mt-4 ml-14 mr-11 mb-7">
-          <DinA4Layout class="w-3/5" />
+          <DinA4Layout class="w-3/5">
+            <template v-if="template?.letterhead" #header>
+              <div class="w-2/5">
+                <p>{{ template.letterhead.address_line_1 }}</p>
+                <p>{{ template.letterhead.address_line_2 }}</p>
+                <p>{{ template.letterhead.address_line_3 }}</p>
+                <p>{{ template.letterhead.address_line_4 }}</p>
+                <p>{{ template.letterhead.address_line_5 }}</p>
+              </div>
+              <div class="w-2/5">
+                <p class="whitespace-pre-line">
+                  {{ template.letterhead.text_right }}
+                </p>
+              </div>
+            </template>
+            <template v-if="template?.footer" #footer>
+              <p>{{ template.footer.column_1 }}</p>
+              <p>{{ template.footer.column_2 }}</p>
+              <p>{{ template.footer.column_3 }}</p>
+              <p>{{ template.footer.column_4 }}</p>
+            </template>
+          </DinA4Layout>
           <div class="flex flex-col justify-between">
-            <CreateCollabLetterhead :query="query" class="mt-4" :uuid="uuid" />
-            <CreateCollabFooter :query="query" :uuid="uuid" />
+            <EditCollabLetterhead
+              v-if="template?.letterhead"
+              :query="query"
+              class="mt-4"
+              :letterhead="template.letterhead"
+            />
+            <CreateCollabLetterhead
+              v-else
+              :query="query"
+              class="mt-4"
+              :uuid="uuid"
+            />
+            <EditCollabFooter
+              v-if="template?.footer"
+              :query="query"
+              :footer="template.footer"
+            />
+            <CreateCollabFooter v-else :query="query" :uuid="uuid" />
           </div>
         </div>
         <ButtonNormal

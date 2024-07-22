@@ -2,9 +2,7 @@ import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 export interface Letterhead {
-  name: string;
   uuid: string;
-  description: string;
   address_line_1: string | undefined;
   address_line_2: string | undefined;
   address_line_3: string | undefined;
