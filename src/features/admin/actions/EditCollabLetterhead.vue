@@ -14,20 +14,6 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const fields = computed<types.FormField[]>(() => [
   {
-    label: "Name",
-    name: "name",
-    type: "text",
-    required: true,
-    value: "test",
-  },
-  {
-    label: "Description",
-    name: "description",
-    type: "text",
-    value: "ABC",
-    required: true,
-  },
-  {
     label: "Address line 1",
     name: "address_line_1",
     type: "text",
@@ -82,8 +68,6 @@ const fields = computed<types.FormField[]>(() => [
       :request="commandRequest"
       :data="{
         action: 'collab/update_letterhead',
-        name: letterhead.name,
-        description: letterhead.description,
         letterhead_uuid: letterhead.uuid,
         address_line_1: letterhead.address_line_1,
         address_line_2: letterhead.address_line_2,

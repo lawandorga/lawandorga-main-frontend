@@ -14,20 +14,6 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const fields = computed<types.FormField[]>(() => [
   {
-    label: "Name",
-    name: "name",
-    type: "text",
-    required: true,
-    value: "test",
-  },
-  {
-    label: "Description",
-    name: "description",
-    type: "text",
-    value: "ABC",
-    required: true,
-  },
-  {
     label: "Column 1",
     name: "column_1",
     type: "text",
@@ -64,8 +50,6 @@ const fields = computed<types.FormField[]>(() => [
       :request="commandRequest"
       :data="{
         action: 'collab/update_footer',
-        name: footer.name,
-        description: footer.description,
         footer_uuid: footer.uuid,
         column_1: footer.column_1,
         column_2: footer.column_2,
