@@ -24,13 +24,27 @@
         :collab-uuid="collab.uuid"
         :password="collab.password"
       />
-      <CollabAddTemplate
-        v-if="store.user?.email === 'dummy@law-orga.de'"
-        :query="collabQuery"
-        :uuid="collab.uuid"
-        :selected-letterhead="collab.letterhead"
-        :selected-footer="collab.footer"
-      />
+      <template v-if="store.user?.email === 'dummy@law-orga.de'">
+        <template v-if="!!collab.template">
+          <div class="flex items-center mt-6">
+            <CheckIcon class="w-6 h-6" />
+            <span class="text-[color:var(--lorgablue)] ml-4 font-semibold">
+              Template
+              <i class="font-bold">{{ collab.template.name }}</i>
+              applied
+            </span>
+          </div>
+          <div class="flex gap-4">
+            <CollabEditTemplate
+              :query="collabQuery"
+              :uuid="collab.uuid"
+              :selected-template="collab.template"
+            />
+            <CollabRemoveTemplate :query="collabQuery" :uuid="collab.uuid" />
+          </div>
+        </template>
+        <CollabAddTemplate v-else :query="collabQuery" :uuid="collab.uuid" />
+      </template>
     </BoxHeadingStats>
   </template>
   <CircleLoader v-else-if="selectedType === 'COLLAB' && selectedId !== null" />
@@ -42,6 +56,7 @@ import { ref, toRefs, watch } from "vue";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
+import { CheckIcon } from "@heroicons/vue/24/outline";
 import useClient from "@/api/client";
 import CollabChangeName from "../actions/CollabChangeName.vue";
 import CollabForm from "./CollabForm.vue";
@@ -50,8 +65,9 @@ import CollabPrint from "../actions/CollabPrint.vue";
 import CollabAddTemplate from "../actions/CollabAddTemplate.vue";
 import { useUserStore } from "@/store/user";
 import DownloadPdf from "../actions/DownloadPdf.vue";
-import { Letterhead } from "@/features/admin/api/useLetterhead";
-import { Footer } from "@/features/admin/api/useFooter";
+import { CollabTemplate } from "@/features/admin/api/useTemplate";
+import CollabEditTemplate from "../actions/CollabEditTemplate.vue";
+import CollabRemoveTemplate from "../actions/CollabRemoveTemplate.vue";
 
 export interface History {
   user: string;
@@ -66,8 +82,7 @@ interface Collab {
   created_at: string;
   password: string;
   history: History[];
-  letterhead: Letterhead | null;
-  footer: Footer | null;
+  template: CollabTemplate | null;
 }
 
 const props = defineProps<{

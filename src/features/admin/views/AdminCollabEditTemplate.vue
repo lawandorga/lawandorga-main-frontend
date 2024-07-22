@@ -43,7 +43,7 @@ const { template, query } = useTemplate(uuid);
         </div>
         <div class="flex gap-8 mt-4 ml-14 mr-11 mb-7">
           <DinA4Layout class="w-3/5">
-            <template v-if="template?.letterhead" #header>
+            <template v-if="!!template?.letterhead" #header>
               <div class="w-2/5">
                 <p>{{ template.letterhead.address_line_1 }}</p>
                 <p>{{ template.letterhead.address_line_2 }}</p>
@@ -57,7 +57,7 @@ const { template, query } = useTemplate(uuid);
                 </p>
               </div>
             </template>
-            <template v-if="template?.footer" #footer>
+            <template v-if="!!template?.footer" #footer>
               <p>{{ template.footer.column_1 }}</p>
               <p>{{ template.footer.column_2 }}</p>
               <p>{{ template.footer.column_3 }}</p>
@@ -66,7 +66,7 @@ const { template, query } = useTemplate(uuid);
           </DinA4Layout>
           <div class="flex flex-col justify-between">
             <EditCollabLetterhead
-              v-if="template?.letterhead"
+              v-if="!!template?.letterhead"
               :query="query"
               class="mt-4"
               :letterhead="template.letterhead"
@@ -78,7 +78,7 @@ const { template, query } = useTemplate(uuid);
               :uuid="uuid"
             />
             <EditCollabFooter
-              v-if="template?.footer"
+              v-if="!!template?.footer"
               :query="query"
               :footer="template.footer"
             />

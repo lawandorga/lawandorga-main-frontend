@@ -1,9 +1,9 @@
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Create Collab
+    Create Collab Document
     <ModalForm
       v-model="commandModalOpen"
-      title="Create Collab"
+      title="Create Collab Document"
       :fields="fields"
       :request="commandRequest"
       submit="Create"
