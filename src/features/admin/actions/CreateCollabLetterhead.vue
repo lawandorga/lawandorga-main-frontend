@@ -6,24 +6,13 @@ import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;
+  uuid: string;
 }>();
 const { query } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const fields = computed<types.FormField[]>(() => [
-  {
-    label: "Name",
-    name: "name",
-    type: "text",
-    required: true,
-  },
-  {
-    label: "Description",
-    name: "description",
-    type: "text",
-    required: true,
-  },
   {
     label: "Address Line 1",
     name: "address_line_1",
@@ -73,7 +62,7 @@ const fields = computed<types.FormField[]>(() => [
       :fields="fields"
       :request="commandRequest"
       submit="Create"
-      :data="{ action: 'collab/create_letterhead' }"
+      :data="{ action: 'collab/create_letterhead', template_uuid: uuid }"
     />
   </ButtonNormal>
 </template>
