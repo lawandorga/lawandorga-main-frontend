@@ -43,7 +43,7 @@ const { template, query } = useTemplate(uuid);
           <DinA4Layout class="w-3/5" />
           <div class="flex flex-col justify-between">
             <CreateCollabLetterhead :query="query" class="mt-4" :uuid="uuid" />
-            <CreateCollabFooter :query="query" />
+            <CreateCollabFooter :query="query" :uuid="uuid" />
           </div>
         </div>
         <ButtonNormal
