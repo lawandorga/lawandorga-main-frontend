@@ -7,7 +7,7 @@ import useCmd from "@/composables/useCmd";
 const props = defineProps<{
   query: () => void;
   uuid: string;
-  name: string;
+  name: string | undefined;
 }>();
 const { query } = toRefs(props);
 

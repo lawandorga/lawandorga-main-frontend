@@ -11,14 +11,13 @@ import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
 import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
 import EditCollabLetterhead from "../actions/EditCollabLetterhead.vue";
 import EditCollabFooter from "../actions/EditCollabFooter.vue";
+import { computed } from "vue";
 
 const route = useRoute();
 const router = useRouter();
-const { uuid } = route.params;
-if (Array.isArray(uuid)) {
-  throw Error("Unexpected amount of uuids");
-}
-const { template, query } = useTemplate(uuid);
+const uuid = computed<string>(() => route.params.uuid as string);
+
+const { template, query } = useTemplate(uuid.value);
 </script>
 
 <template>
