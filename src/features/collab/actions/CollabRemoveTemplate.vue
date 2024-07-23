@@ -8,7 +8,7 @@ import { CollabTemplate } from "@/features/admin/api/useTemplate";
 const props = defineProps<{
   query: () => void;
   uuid: string;
-  selectedTemplate: CollabTemplate | null;
+  selectedTemplate?: CollabTemplate;
 }>();
 const { query } = toRefs(props);
 const { commandRequest, commandModalOpen } = useCmd(query.value);
@@ -21,7 +21,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
   </ButtonNormal>
   <ModalConfirm
     v-model="commandModalOpen"
-    title="Remove Template?"
+    title="Remove Template"
     submit="Confirm"
     :request="commandRequest"
     :data="{
@@ -29,5 +29,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
       collab_uuid: uuid,
       template_uuid: null,
     }"
-  />
+  >
+    Are you sure you want to remove this applied template?
+  </ModalConfirm>
 </template>
