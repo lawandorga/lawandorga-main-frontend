@@ -6,8 +6,29 @@ import { TableGenerator } from "lorga-ui";
 import CreateCollabTemplate from "../actions/CreateCollabTemplate.vue";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+import { watch } from "vue";
+import { useRouter } from "vue-router";
 
 const { templates, query } = useCollabTemplates();
+
+const router = useRouter();
+
+watch(templates, (newTemplates, oldTemplates) => {
+  if (newTemplates.length === oldTemplates.length + 1) {
+    const newTemplateUuids = newTemplates.map((template) => template.uuid);
+    const oldTemplateUuids = oldTemplates.map((template) => template.uuid);
+    const newTemplateUuid = newTemplateUuids.find(
+      (uuid) => !oldTemplateUuids.includes(uuid),
+    );
+
+    router.push({
+      name: "admin-collab-edit-template",
+      params: {
+        uuid: newTemplateUuid,
+      },
+    });
+  }
+});
 </script>
 
 <template>
