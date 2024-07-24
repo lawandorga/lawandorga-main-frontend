@@ -15,6 +15,7 @@ const getPreviewLink = (data: Record<string, unknown>): string | undefined => {
     v-if="getPreviewLink(data)"
     class="font-medium underline text-formcolor"
     target="_blank"
+    rel="noopener noreferrer"
     :href="getPreviewLink(data)"
   >
     > Preview Template
