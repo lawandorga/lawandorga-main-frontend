@@ -31,9 +31,8 @@ const fields = computed<types.FormField[]>(() => [
 
 const getPreviewLink = (data: Record<string, unknown>): string | undefined => {
   const templateUuid = data.template_uuid as string | undefined;
-  const collabUuid = props.uuid;
   if (!templateUuid) return undefined;
-  return `${import.meta.env.VITE_BACKEND_URL}/api/collab/query/${collabUuid}/pdf/`;
+  return `${import.meta.env.VITE_BACKEND_URL}/api/collab/query/template/${templateUuid}/pdf/`;
 };
 
 const previewLink = ref<string | undefined>();
