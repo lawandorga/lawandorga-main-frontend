@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
-import { computed, ref, toRefs } from "vue";
+import { computed, toRefs } from "vue";
 import useCollabTemplates from "@/features/admin/api/useCollabTemplates";
 import useCmd from "@/composables/useCmd";
+import TemplatePreview from "../components/TemplatePreview.vue";
 
 const props = defineProps<{
   query: () => void;
@@ -28,17 +29,6 @@ const fields = computed<types.FormField[]>(() => [
     type: "slot",
   },
 ]);
-
-const getPreviewLink = (data: Record<string, unknown>): string | undefined => {
-  const templateUuid = data.template_uuid as string | undefined;
-  if (!templateUuid) return undefined;
-  return `${import.meta.env.VITE_BACKEND_URL}/api/collab/query/template/${templateUuid}/pdf/`;
-};
-
-const previewLink = ref<string | undefined>();
-const updatePreview = (data: Record<string, unknown>) => {
-  previewLink.value = getPreviewLink(data);
-};
 </script>
 
 <template>
@@ -56,17 +46,9 @@ const updatePreview = (data: Record<string, unknown>) => {
       action: 'collab/assign_template_to_collab',
       collab_uuid: uuid,
     }"
-    @change="updatePreview"
   >
-    <template #preview>
-      <a
-        v-if="previewLink"
-        class="font-medium underline text-formcolor"
-        target="_blank"
-        :href="previewLink"
-      >
-        > Preview Template
-      </a>
+    <template #preview="{ data }">
+      <TemplatePreview :data="data" />
     </template>
   </ModalForm>
 </template>

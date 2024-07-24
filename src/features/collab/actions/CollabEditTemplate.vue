@@ -5,6 +5,7 @@ import { computed, toRefs } from "vue";
 import useCollabTemplates from "@/features/admin/api/useCollabTemplates";
 import useCmd from "@/composables/useCmd";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
+import TemplatePreview from "../components/TemplatePreview.vue";
 
 const props = defineProps<{
   query: () => void;
@@ -25,6 +26,10 @@ const fields = computed<types.FormField[]>(() => [
     options: templates.value,
     required: false,
   },
+  {
+    name: "preview",
+    type: "slot",
+  },
 ]);
 </script>
 
@@ -44,5 +49,9 @@ const fields = computed<types.FormField[]>(() => [
       collab_uuid: uuid,
       template_uuid: selectedTemplate?.uuid,
     }"
-  />
+  >
+    <template #preview="{ data }">
+      <TemplatePreview :data="data" />
+    </template>
+  </ModalForm>
 </template>
