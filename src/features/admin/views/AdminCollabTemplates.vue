@@ -54,7 +54,8 @@ const { templates, query } = useCollabTemplates();
       :data="templates"
     >
       <template #name="{ v }">
-        <div class="text-[color:var(--lorgablue)] font-semibold">
+        <div>
+          <!-- class="text-[color:var(--lorgablue)] font-semibold"> looks too clickable -->
           {{ v }}
         </div>
       </template>
