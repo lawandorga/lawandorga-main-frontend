@@ -27,7 +27,10 @@ const { template, query } = useTemplate(uuid.value);
       :base="{ name: 'admin-dashboard' }"
       :pages="[
         { name: 'Collab Templates', to: { name: 'admin-collab-templates' } },
-        { name: 'New Template', to: { name: 'admin-collab-edit-template' } },
+        {
+          name: template?.name ?? 'New Template',
+          to: { name: 'admin-collab-edit-template' },
+        },
       ]"
     >
       <CogIcon class="w-6 h-6" />
