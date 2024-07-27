@@ -28,7 +28,7 @@
         <template v-if="!!collab.template">
           <div class="flex items-center mt-6">
             <CheckIcon class="w-6 h-6" />
-            <span class="text-[color:var(--lorgablue)] ml-4 font-semibold">
+            <span class="ml-4 font-semibold text-formcolor">
               Template
               <i class="font-bold">{{ collab.template.name }}</i>
               applied
