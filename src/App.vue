@@ -69,6 +69,11 @@ overwrite(
   "table.tdAction",
   "md:sticky right-0 gap-5 flex items-center md:!border-l-0",
 );
+overwrite(
+  "button.outline.color",
+  "outline-zinc-400 outline-1 outline shadow-md text-zinc-600",
+);
+overwrite("button.outline.size", "rounded p-2 font-semibold");
 
 if (!getCookie("csrftoken")) {
   const redirect = window.location.href;
