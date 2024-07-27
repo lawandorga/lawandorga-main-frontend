@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { ButtonNormal, ModalForm, types } from "lorga-ui";
+import {
+  ButtonNormal,
+  ModalFree,
+  TableRow,
+  TableTable,
+  TableHead,
+  TableHeader,
+  TableBody,
+  TableData,
+} from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
-import { computed, toRefs } from "vue";
+import { ref, toRefs } from "vue";
 import useCollabTemplates from "@/features/admin/api/useCollabTemplates";
 import useCmd from "@/composables/useCmd";
 import TemplatePreview from "../components/TemplatePreview.vue";
@@ -16,19 +25,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 const { templates } = useCollabTemplates();
 
-const fields = computed<types.FormField[]>(() => [
-  {
-    label: "Template",
-    name: "template_uuid",
-    type: "select",
-    options: templates.value,
-    required: false,
-  },
-  {
-    name: "preview",
-    type: "slot",
-  },
-]);
+const selectedTemplateId = ref<string>("");
 </script>
 
 <template>
@@ -36,19 +33,51 @@ const fields = computed<types.FormField[]>(() => [
     <PlusCircleIcon class="w-5 h-5 mr-2" />
     Add Template
   </ButtonNormal>
-  <ModalForm
-    v-model="commandModalOpen"
-    title="Add Template"
-    :fields="fields"
-    submit="Add template"
-    :request="commandRequest"
-    :data="{
-      action: 'collab/assign_template_to_collab',
-      collab_uuid: uuid,
-    }"
-  >
-    <template #preview="{ data }">
-      <TemplatePreview :data="data" />
-    </template>
-  </ModalForm>
+  <ModalFree v-model="commandModalOpen" title="Add Template" width="max-w-4xl">
+    <TableTable>
+      <TableHead>
+        <TableRow>
+          <TableHeader><span class="ml-[27px]">Name</span></TableHeader>
+          <TableHeader>Description</TableHeader>
+          <TableHeader />
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow v-for="template in templates" :key="template.uuid">
+          <label :for="template.uuid" class="contents">
+            <TableData>
+              <input
+                :id="template.uuid"
+                v-model="selectedTemplateId"
+                type="radio"
+                :value="template.uuid"
+                class="mr-2"
+              />
+              {{ template.name }}
+            </TableData>
+            <TableData>
+              {{ template.description }}
+            </TableData>
+            <TableData>
+              <TemplatePreview :data="{ template_uuid: template.uuid }" />
+            </TableData>
+          </label>
+        </TableRow>
+      </TableBody>
+    </TableTable>
+    <ButtonNormal
+      class="flex justify-end mt-4"
+      @click="
+        () => {
+          commandRequest({
+            action: 'collab/assign_template_to_collab',
+            collab_uuid: uuid,
+            template_uuid: selectedTemplateId,
+          });
+        }
+      "
+    >
+      Add template
+    </ButtonNormal>
+  </ModalFree>
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ArrowTopRightOnSquareIcon } from "@heroicons/vue/24/outline";
+
 defineProps<{
   data: Record<string, unknown>;
 }>();
@@ -13,11 +15,12 @@ const getPreviewLink = (data: Record<string, unknown>): string | undefined => {
 <template>
   <a
     v-if="getPreviewLink(data)"
-    class="font-medium underline text-formcolor"
+    class="flex items-center gap-2 font-medium text-formcolor"
     target="_blank"
     rel="noopener noreferrer"
     :href="getPreviewLink(data)"
   >
-    > Preview Template
+    <ArrowTopRightOnSquareIcon class="w-4 h-4 stroke-2" />
+    Preview Template
   </a>
 </template>
