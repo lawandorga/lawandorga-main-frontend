@@ -21,6 +21,8 @@ const printRequest = (data: Record<string, string>) => {
     uuid: uuid.value,
     footer_uuid: data.footer_uuid,
     letterhead_uuid: data.letterhead_uuid,
+  }).then(() => {
+    commandModalOpen.value = false;
   });
 };
 </script>

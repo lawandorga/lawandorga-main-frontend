@@ -54,6 +54,7 @@ const fields = computed<types.FormField[]>(() => [
     name: "logo",
     type: "file",
     required: false,
+    helptext: "Max file size is 1MB",
   },
 ]);
 </script>
