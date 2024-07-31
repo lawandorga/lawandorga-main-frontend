@@ -82,7 +82,7 @@ const userStore = useUserStore();
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
           <div
-            class="flex flex-wrap gap-3 px-4 py-3 mb-5 border-2 rounded-lg shadow-sm bg-gray-50"
+            class="flex flex-wrap items-end gap-3 px-4 py-3 mb-5 border-2 rounded-lg shadow-sm bg-gray-50"
           >
             <FormInput
               :model-value="tokenSearch"
