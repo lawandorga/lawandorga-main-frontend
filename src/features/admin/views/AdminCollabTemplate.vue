@@ -55,6 +55,11 @@ const { template, query } = useTemplate(uuid.value);
               </div>
               <div class="w-2/5">
                 <p class="whitespace-pre-line">
+                  <img
+                    :src="template.letterhead.logo_base64"
+                    alt="Logo"
+                    class="h-10 ml-auto"
+                  />
                   {{ template.letterhead.text_right }}
                 </p>
               </div>
