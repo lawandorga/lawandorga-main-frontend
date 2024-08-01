@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ButtonNormal, FormGenerator, ModalFree, types } from "lorga-ui";
+import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import { computed, toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
@@ -63,19 +63,15 @@ const fields = computed<types.FormField[]>(() => [
   <ButtonNormal kind="primary" @click="commandModalOpen = true">
     <PlusCircleIcon class="w-6 h-6 mr-3" />
     Create Letterhead
-    <ModalFree v-model="commandModalOpen" title="Create Letterhead">
-      <div class="w-32 h-40 bg-white shadow-md">
-        <div class="bg-[#003C4D33] w-full h-14 relative">
-          <div class="absolute w-12 bg-formcolor h-7 top-2 left-2" />
-          <div class="absolute w-12 bg-zinc-400 h-7 right-2 top-5" />
-        </div>
-      </div>
-      <FormGenerator
-        :fields="fields"
-        :request="commandRequest"
-        submit="Create"
-        :data="{ action: 'collab/create_letterhead', template_uuid: uuid }"
-      />
-    </ModalFree>
+    <ModalForm
+      v-model="commandModalOpen"
+      title="Create Letterhead"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        action: 'collab/create_letterhead',
+        template_uuid: uuid,
+      }"
+    />
   </ButtonNormal>
 </template>
