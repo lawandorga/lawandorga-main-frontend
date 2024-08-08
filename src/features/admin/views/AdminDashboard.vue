@@ -125,24 +125,6 @@ const items = computed<AdminItem[]>(() => {
       notifications: 0,
       class: "",
     },
-    // {
-    //   title: "Record-Access-Requests",
-    //   description:
-    //     "Here you can allow somebody access to a record. But first he or she must have requested access to that specific record.",
-    //   link: { name: "admin-recordpermitrequests" },
-    //   icon: LockOpenIcon,
-    //   notifications: store.badges?.record_permit_requests,
-    //   class: "",
-    // },
-    // {
-    //   title: "Record-Deletion-Requests",
-    //   description:
-    //     "If somebody requested to delete a record you can take a look and allow that request here.",
-    //   link: { name: "admin-recorddeletionrequests" },
-    //   icon: TrashIcon,
-    //   notifications: store.badges?.record_deletion_requests,
-    //   class: "",
-    // },
     {
       title: "Questionnaire Templates",
       description:
@@ -162,10 +144,10 @@ const items = computed<AdminItem[]>(() => {
     },
   ];
 
-  const placeholderItem = {
-    placeholder: true as const,
-    class: "rounded-b-lg sm:rounded-bl-none",
-  };
+  // const placeholderItem = {
+  //   placeholder: true as const,
+  //   class: "rounded-b-lg sm:rounded-bl-none",
+  // };
 
   const collabItem = {
     title: "Collab",
@@ -177,8 +159,6 @@ const items = computed<AdminItem[]>(() => {
     class: "sm:rounded-br-lg",
   };
 
-  return store.user?.email === "dummy@law-orga.de"
-    ? [...generalItems, collabItem]
-    : [...generalItems, placeholderItem];
+  return [...generalItems, collabItem];
 });
 </script>
