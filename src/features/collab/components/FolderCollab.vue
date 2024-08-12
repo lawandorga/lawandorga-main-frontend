@@ -6,12 +6,7 @@
       :stats="[`Created: ${formatDate(collab.created_at)}`]"
     >
       <template #buttons>
-        <DownloadPdf
-          v-if="store.user?.email === 'dummy@law-orga.de'"
-          :uuid="collab.uuid"
-          :name="collab.name"
-        />
-        <CollabPrint />
+        <DownloadPdf :uuid="collab.uuid" :name="collab.name" />
         <CollabShowHistory :history="collab.history" />
         <CollabChangeName
           :uuid="collab.uuid"
@@ -24,27 +19,25 @@
         :collab-uuid="collab.uuid"
         :password="collab.password"
       />
-      <template v-if="store.user?.email === 'dummy@law-orga.de'">
-        <template v-if="!!collab.template">
-          <div class="flex items-center mt-6">
-            <CheckIcon class="w-6 h-6" />
-            <span class="ml-4 font-semibold text-formcolor">
-              Template
-              <i class="font-bold">{{ collab.template.name }}</i>
-              applied
-            </span>
-          </div>
-          <div class="flex gap-4">
-            <CollabEditTemplate
-              :query="collabQuery"
-              :uuid="collab.uuid"
-              :selected-template="collab.template"
-            />
-            <CollabRemoveTemplate :query="collabQuery" :uuid="collab.uuid" />
-          </div>
-        </template>
-        <CollabAddTemplate v-else :query="collabQuery" :uuid="collab.uuid" />
+      <template v-if="!!collab.template">
+        <div class="flex items-center mt-6">
+          <CheckIcon class="w-6 h-6" />
+          <span class="ml-4 font-semibold text-formcolor">
+            Template
+            <i class="font-bold">{{ collab.template.name }}</i>
+            applied
+          </span>
+        </div>
+        <div class="flex gap-4">
+          <CollabEditTemplate
+            :query="collabQuery"
+            :uuid="collab.uuid"
+            :selected-template="collab.template"
+          />
+          <CollabRemoveTemplate :query="collabQuery" :uuid="collab.uuid" />
+        </div>
       </template>
+      <CollabAddTemplate v-else :query="collabQuery" :uuid="collab.uuid" />
     </BoxHeadingStats>
   </template>
   <CircleLoader v-else-if="selectedType === 'COLLAB' && selectedId !== null" />
@@ -61,9 +54,7 @@ import useClient from "@/api/client";
 import CollabChangeName from "../actions/CollabChangeName.vue";
 import CollabForm from "./CollabForm.vue";
 import CollabShowHistory from "../actions/CollabShowHistory.vue";
-import CollabPrint from "../actions/CollabPrint.vue";
 import CollabAddTemplate from "../actions/CollabAddTemplate.vue";
-import { useUserStore } from "@/store/user";
 import DownloadPdf from "../actions/DownloadPdf.vue";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
 import CollabEditTemplate from "../actions/CollabEditTemplate.vue";
@@ -110,6 +101,4 @@ const allQuery = () => {
   query.value();
   collabQuery();
 };
-
-const store = useUserStore();
 </script>
