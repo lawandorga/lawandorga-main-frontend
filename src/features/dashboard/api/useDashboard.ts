@@ -28,6 +28,14 @@ export interface DashboardInformation {
         time: string;
       }[]
     | null;
+  articles:
+    | {
+        id: number;
+        title: string;
+        description: string;
+        date: Date;
+      }[]
+    | null;
 }
 
 export function useDashboard() {
