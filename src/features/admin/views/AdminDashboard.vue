@@ -142,6 +142,15 @@ const items = computed<AdminItem[]>(() => {
       notifications: 0,
       class: "sm:rounded-bl-lg",
     },
+    {
+      title: "Collab",
+      description:
+        "Here you can manage and customize templates for standard document elements like footers and letterheads to ensure consistency across your organization's communications.",
+      link: { name: "admin-collab-templates" },
+      icon: DocumentTextIcon,
+      notifications: 0,
+      class: "sm:rounded-br-lg",
+    },
   ];
 
   // const placeholderItem = {
@@ -149,16 +158,6 @@ const items = computed<AdminItem[]>(() => {
   //   class: "rounded-b-lg sm:rounded-bl-none",
   // };
 
-  const collabItem = {
-    title: "Collab",
-    description:
-      "Here you can manage and customize templates for standard document elements like footers and letterheads to ensure consistency across your organization's communications.",
-    link: { name: "admin-collab-templates" },
-    icon: DocumentTextIcon,
-    notifications: 0,
-    class: "sm:rounded-br-lg",
-  };
-
-  return [...generalItems, collabItem];
+  return generalItems;
 });
 </script>
