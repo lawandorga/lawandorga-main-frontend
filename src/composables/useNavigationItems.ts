@@ -71,13 +71,18 @@ export default function useNavigationItems() {
         permissions: [],
         notifications: store.recordBadges,
       },
-      {
+    ];
+
+    if (!store.rlc?.disable_files)
+      items1.push({
         label: "Files",
         icon: FolderOpenIcon,
         is: "router-link",
         attrs: { to: { name: "files-dashboard" } },
         permissions: [],
-      },
+      });
+
+    items1.push(
       {
         label: "Collab",
         icon: DocumentTextIcon,
@@ -138,7 +143,7 @@ export default function useNavigationItems() {
         attrs: { to: { name: "chat-dashboard" } },
         permissions: [],
       },
-    ];
+    );
 
     if (store.rlc?.links.length) {
       items1.push({ divider: true });

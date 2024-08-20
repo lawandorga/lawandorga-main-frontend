@@ -47,6 +47,7 @@ interface Rlc {
   name: string;
   use_record_pool: boolean;
   links: Link[];
+  disable_files: boolean;
 }
 
 interface DataResponse {
