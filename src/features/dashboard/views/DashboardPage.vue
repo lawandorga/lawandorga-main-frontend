@@ -154,13 +154,13 @@
             </li>
           </ul>
         </div>
-        <div v-if="data?.follow_ups">
+        <div v-if="followUps">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Follow Ups
           </h2>
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
-              v-for="followUp in data.follow_ups"
+              v-for="followUp in followUps"
               :key="followUp.folder_uuid"
               class="block"
             >
@@ -231,6 +231,7 @@ import DashboardDeleteNote from "@/features/dashboard/actions/DashboardDeleteNot
 import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNote.vue";
 import { useDashboard } from "../api/useDashboard";
 import { useNotes } from "../api/useNotes";
+import { useFollowUps } from "../api/useFollowUps";
 
 const { data } = useDashboard();
 
@@ -238,4 +239,6 @@ const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
 const { notes, notesQuery } = useNotes();
+
+const { followUps } = useFollowUps();
 </script>
