@@ -154,7 +154,7 @@
             </li>
           </ul>
         </div>
-        <div v-if="followUps">
+        <div v-if="followUps?.length">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Follow Ups
           </h2>
