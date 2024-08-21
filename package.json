@@ -21,7 +21,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
     "@tiptap/extension-bullet-list": "^2.1.12",
-    "@tiptap/extension-character-count": "^2.5.9",
+    "@tiptap/extension-character-count": "^2.6.4",
     "@tiptap/extension-highlight": "^2.5.4",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/extension-list-item": "^2.2.4",
