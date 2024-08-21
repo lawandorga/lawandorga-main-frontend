@@ -3,9 +3,6 @@ import useClient from "@/api/client";
 import { ref } from "vue";
 
 export interface DashboardInformation {
-  records:
-    | { identifier: string; folder_uuid: string; state: string; uuid: string }[]
-    | null;
   members: { id: number; name: string; rlcuserid: number }[] | null;
   questionnaires:
     | {
@@ -19,13 +16,6 @@ export interface DashboardInformation {
         folder_uuid: string;
         updated: string;
         uuid: string;
-      }[]
-    | null;
-  follow_ups:
-    | {
-        folder_uuid: string;
-        title: string;
-        time: string;
       }[]
     | null;
   articles:

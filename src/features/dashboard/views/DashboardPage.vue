@@ -51,12 +51,12 @@
             </article>
           </div>
         </div>
-        <div v-if="data?.records">
+        <div v-if="records?.length">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Active Data Sheets
           </h2>
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
-            <li v-for="sheet in data.records" :key="sheet.uuid" class="block">
+            <li v-for="sheet in records" :key="sheet.uuid" class="block">
               <router-link
                 :to="{
                   name: 'folders-detail',
@@ -232,6 +232,7 @@ import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNot
 import { useDashboard } from "../api/useDashboard";
 import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
+import { useRecords } from "../api/useRecords";
 
 const { data } = useDashboard();
 
@@ -241,4 +242,5 @@ const { user } = storeToRefs(userStore);
 const { notes, notesQuery } = useNotes();
 
 const { followUps } = useFollowUps();
+const { records } = useRecords();
 </script>
