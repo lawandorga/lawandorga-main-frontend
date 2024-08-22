@@ -127,13 +127,13 @@
             </li>
           </ul>
         </div>
-        <div v-if="data?.questionnaires">
+        <div v-if="questionnaires?.length">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Questionnaires
           </h2>
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
-              v-for="questionnaire in data.questionnaires"
+              v-for="questionnaire in questionnaires"
               :key="questionnaire.name"
               class="block"
             >
@@ -233,6 +233,7 @@ import { useDashboard } from "../api/useDashboard";
 import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
+import { useQuestionnaires } from "../api/useQuestionnaires";
 
 const { data } = useDashboard();
 
@@ -243,4 +244,5 @@ const { notes, notesQuery } = useNotes();
 
 const { followUps } = useFollowUps();
 const { records } = useRecords();
+const { questionnaires } = useQuestionnaires();
 </script>

@@ -4,12 +4,6 @@ import { ref } from "vue";
 
 export interface DashboardInformation {
   members: { id: number; name: string; rlcuserid: number }[] | null;
-  questionnaires:
-    | {
-        name: string;
-        folder_uuid: string;
-      }[]
-    | null;
   changed_records:
     | {
         identifier: string;
