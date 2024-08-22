@@ -104,12 +104,12 @@
             </li>
           </ul>
         </div>
-        <div v-if="data?.members">
+        <div v-if="members?.length">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             New Members in no groups
           </h2>
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
-            <li v-for="member in data.members" :key="member.id" class="block">
+            <li v-for="member in members" :key="member.id" class="block">
               <router-link
                 :to="{
                   name: 'admin-profile',
@@ -236,6 +236,7 @@ import { useRecords } from "../api/useRecords";
 import { useQuestionnaires } from "../api/useQuestionnaires";
 import { useChangedRecords } from "../api/useChangedRecords";
 import { useArticles } from "../api/useArticles";
+import { useMembers } from "../api/useMembers";
 
 const { data } = useDashboard();
 
@@ -249,4 +250,5 @@ const { records } = useRecords();
 const { questionnaires } = useQuestionnaires();
 const { changedRecords } = useChangedRecords();
 const { articles } = useArticles();
+const { members } = useMembers();
 </script>

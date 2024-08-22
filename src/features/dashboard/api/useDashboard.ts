@@ -2,9 +2,7 @@ import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
 import { ref } from "vue";
 
-export interface DashboardInformation {
-  members: { id: number; name: string; rlcuserid: number }[] | null;
-}
+export interface DashboardInformation {}
 
 export function useDashboard() {
   const client = useClient();
