@@ -4,14 +4,6 @@ import { ref } from "vue";
 
 export interface DashboardInformation {
   members: { id: number; name: string; rlcuserid: number }[] | null;
-  articles:
-    | {
-        id: number;
-        title: string;
-        description: string;
-        date: Date;
-      }[]
-    | null;
 }
 
 export function useDashboard() {

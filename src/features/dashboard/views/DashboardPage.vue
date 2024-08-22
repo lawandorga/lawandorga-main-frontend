@@ -182,7 +182,7 @@
             </li>
           </ul>
         </div>
-        <div v-if="data?.articles" class="lg:col-span-2 xl:col-span-3">
+        <div v-if="articles?.length" class="lg:col-span-2 xl:col-span-3">
           <div class="flex justify-between mt-8">
             <h2
               class="items-baseline text-lg font-medium leading-6 text-gray-700"
@@ -194,7 +194,7 @@
             class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
           >
             <article
-              v-for="article in data.articles"
+              v-for="article in articles"
               :key="article.id"
               class="flex flex-col justify-between px-6 pt-4 pb-4 bg-white rounded shadow"
             >
@@ -235,6 +235,7 @@ import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
 import { useQuestionnaires } from "../api/useQuestionnaires";
 import { useChangedRecords } from "../api/useChangedRecords";
+import { useArticles } from "../api/useArticles";
 
 const { data } = useDashboard();
 
@@ -247,4 +248,5 @@ const { followUps } = useFollowUps();
 const { records } = useRecords();
 const { questionnaires } = useQuestionnaires();
 const { changedRecords } = useChangedRecords();
+const { articles } = useArticles();
 </script>
