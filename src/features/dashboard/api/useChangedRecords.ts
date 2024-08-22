@@ -10,7 +10,7 @@ interface Record {
 
 export function useChangedRecords() {
   const changedRecords = ref<Record[] | null>();
-  useGet2("/api/records/query/dashboard/changed/", changedRecords);
+  useGet2("/api/records/query/dashboard/changed", changedRecords);
 
   return {
     changedRecords,
