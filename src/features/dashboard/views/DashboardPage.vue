@@ -76,13 +76,13 @@
             </li>
           </ul>
         </div>
-        <div v-if="data?.changed_records">
+        <div v-if="changedRecords?.length">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Records updated in the last 10 days
           </h2>
           <ul class="p-1 mt-2 space-y-1 bg-white rounded shadow">
             <li
-              v-for="record in data.changed_records"
+              v-for="record in changedRecords"
               :key="record.uuid"
               class="block"
             >
@@ -234,6 +234,7 @@ import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
 import { useQuestionnaires } from "../api/useQuestionnaires";
+import { useChangedRecords } from "../api/useChangedRecords";
 
 const { data } = useDashboard();
 
@@ -245,4 +246,5 @@ const { notes, notesQuery } = useNotes();
 const { followUps } = useFollowUps();
 const { records } = useRecords();
 const { questionnaires } = useQuestionnaires();
+const { changedRecords } = useChangedRecords();
 </script>
