@@ -1,5 +1,14 @@
 <template>
-  <BoxLoader :show="!!data">
+  <BoxLoader
+    :show="
+      !!followUps ||
+      !!records ||
+      !!questionnaires ||
+      !!changedRecords ||
+      !!articles ||
+      !!members
+    "
+  >
     <div class="max-w-5xl mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
@@ -229,7 +238,6 @@ import { storeToRefs } from "pinia";
 import DashboardCreateNote from "@/features/dashboard/actions/DashboardCreateNote.vue";
 import DashboardDeleteNote from "@/features/dashboard/actions/DashboardDeleteNote.vue";
 import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNote.vue";
-import { useDashboard } from "../api/useDashboard";
 import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
@@ -237,8 +245,6 @@ import { useQuestionnaires } from "../api/useQuestionnaires";
 import { useChangedRecords } from "../api/useChangedRecords";
 import { useArticles } from "../api/useArticles";
 import { useMembers } from "../api/useMembers";
-
-const { data } = useDashboard();
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
