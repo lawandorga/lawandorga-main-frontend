@@ -4,7 +4,7 @@
   >
     <router-link
       class="text-lg font-medium text-formcolor"
-      :to="{ name: 'start' }"
+      :to="router.options.history.state.back"
     >
       &#x21b5; Back
     </router-link>
@@ -27,6 +27,7 @@
 import { useRoute } from "vue-router";
 import { formatDate } from "@/utils/date";
 import { useArticle } from "../api/useArticle";
+import router from "@/router";
 
 const route = useRoute();
 const { article } = useArticle(route.params.id as string);

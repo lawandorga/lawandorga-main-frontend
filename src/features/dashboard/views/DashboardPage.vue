@@ -207,19 +207,23 @@
               :key="article.id"
               class="flex flex-col justify-between px-6 pt-4 pb-4 bg-white rounded shadow"
             >
-              <div>
-                <h3 class="mb-2 font-medium text-gray-700">
-                  {{ article.title }}
-                </h3>
-                <p
-                  class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
-                >
-                  {{ article.description }}
+              <router-link
+                :to="{ name: 'internal-article', params: { id: article.id } }"
+              >
+                <div>
+                  <h3 class="mb-2 font-medium text-gray-700">
+                    {{ article.title }}
+                  </h3>
+                  <p
+                    class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                  >
+                    {{ article.description }}
+                  </p>
+                </div>
+                <p class="text-sm text-gray-500 text-end">
+                  {{ new Date(article.date).toLocaleDateString() }}
                 </p>
-              </div>
-              <p class="text-sm text-gray-500 text-end">
-                {{ new Date(article.date).toLocaleDateString() }}
-              </p>
+              </router-link>
             </article>
           </div>
         </div>
