@@ -11,7 +11,11 @@
       ]"
     >
       <template #buttons>
-        <ButtonNormal kind="action" @click="copyLink(questionnaire)">
+        <ButtonNormal
+          kind="action"
+          class="mr-3"
+          @click="copyLink(questionnaire)"
+        >
           Copy Link
         </ButtonNormal>
         <QuestionnaireDelete

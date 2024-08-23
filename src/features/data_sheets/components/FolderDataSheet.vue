@@ -14,6 +14,7 @@
           :id="record.id"
           :query="allQuery"
           :name="record.name"
+          class="mr-3"
         />
         <DeleteDataSheet
           :sheet-uuid="record.uuid"

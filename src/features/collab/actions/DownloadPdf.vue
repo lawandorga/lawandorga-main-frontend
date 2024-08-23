@@ -28,7 +28,7 @@ const printRequest = (data: Record<string, string>) => {
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Download PDF
   </ButtonNormal>
   <ModalConfirm

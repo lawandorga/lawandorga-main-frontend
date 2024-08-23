@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="regeneratePasswordModalOpen = true">
+  <ButtonNormal kind="secondary" @click="regeneratePasswordModalOpen = true">
     Regenerate password
     <ModalConfirm
       v-model="regeneratePasswordModalOpen"

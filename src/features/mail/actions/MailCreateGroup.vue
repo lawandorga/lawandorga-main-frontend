@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="createModalOpen = true">
+  <ButtonNormal kind="primary" @click="createModalOpen = true">
     Create Group
     <ModalCreate
       v-model="createModalOpen"

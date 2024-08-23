@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
     Add Event
     <ModalFree v-model="commandModalOpen" width="max-w-2xl" title="Add Event">
       <FormGenerator

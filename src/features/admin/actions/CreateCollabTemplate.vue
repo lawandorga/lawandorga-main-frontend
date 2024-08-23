@@ -31,7 +31,7 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Create Template
     <ModalForm
       v-model="commandModalOpen"

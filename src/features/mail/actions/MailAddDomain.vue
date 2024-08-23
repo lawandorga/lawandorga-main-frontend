@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
     Add A Domain
     <ModalCreate
       v-model="commandModalOpen"

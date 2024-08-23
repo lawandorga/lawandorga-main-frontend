@@ -14,7 +14,7 @@
       </BreadcrumbsBar>
       <div class="flex justify-end gap-4 align-baseline">
         <ButtonToggle v-model="showGlobal" text="Show global events" />
-        <ButtonNormal size="xs" kind="action" @click="loadPastEvents">
+        <ButtonNormal size="xs" kind="secondary" @click="loadPastEvents">
           Show earlier
         </ButtonNormal>
       </div>

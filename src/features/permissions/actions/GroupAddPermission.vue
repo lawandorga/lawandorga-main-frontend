@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Add Permission
     <ModalCreate
       v-model="commandModalOpen"

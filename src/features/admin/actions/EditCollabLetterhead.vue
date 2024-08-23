@@ -61,7 +61,7 @@ const fields = computed<types.FormField[]>(() => [
 </script>
 
 <template>
-  <ButtonNormal kind="outline" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     <PencilIcon class="w-4 h-4 mr-2" />
     Edit Letterhead
     <ModalUpdate

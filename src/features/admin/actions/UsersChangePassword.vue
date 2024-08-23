@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal v-if="show" kind="action" @click="commandModalOpen = true">
+  <ButtonNormal v-if="show" kind="secondary" @click="commandModalOpen = true">
     Change Password
     <ModalForm
       v-model="commandModalOpen"

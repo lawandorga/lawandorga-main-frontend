@@ -1,10 +1,10 @@
 <template>
-  <ButtonNormal kind="action" @click="modalOpen = true">
+  <ButtonNormal kind="secondary" @click="modalOpen = true">
     Get Calendar Link
     <ModalFree v-model="modalOpen" title="Calendar Link" width="max-w-3xl">
       <div class="flex flex-row flex-wrap items-baseline justify-between">
         <p class="shrink max-w">{{ calendarIcsInfo?.calendar_url }}</p>
-        <ButtonNormal kind="action" @click="copyLink">
+        <ButtonNormal kind="primary" @click="copyLink">
           <span v-if="copyButtonState">Copied!</span>
           <span v-else>Copy</span>
         </ButtonNormal>

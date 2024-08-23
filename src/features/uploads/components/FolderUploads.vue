@@ -9,7 +9,7 @@
       ]"
     >
       <template #buttons>
-        <UploadsCopyLink :link="link.link" />
+        <UploadsCopyLink :link="link.link" class="mr-3" />
         <UploadsDisableLink
           v-if="!link.disabled"
           :link-uuid="link.uuid"

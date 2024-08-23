@@ -21,7 +21,7 @@ const versionSelected = (item: History) => {
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="open = true">Show History</ButtonNormal>
+  <ButtonNormal kind="link" @click="open = true">Show History</ButtonNormal>
   <ModalFree v-model="open" title="History">
     <ul class="space-y-2">
       <li v-for="item in history" :key="item.time">

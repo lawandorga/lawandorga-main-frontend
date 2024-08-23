@@ -2,12 +2,9 @@
   <section
     class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
   >
-    <router-link
-      class="text-lg font-medium text-formcolor"
-      :to="router.options.history.state.back"
-    >
+    <button class="text-lg font-medium text-formcolor" @click="$router.back()">
       &#x21b5; Back
-    </router-link>
+    </button>
   </section>
   <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
     <article v-if="article" class="mx-auto prose prose-lg">
@@ -27,7 +24,6 @@
 import { useRoute } from "vue-router";
 import { formatDate } from "@/utils/date";
 import { useArticle } from "../api/useArticle";
-import router from "@/router";
 
 const route = useRoute();
 const { article } = useArticle(route.params.id as string);

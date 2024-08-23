@@ -84,7 +84,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Edit
   </ButtonNormal>
   <ModalUpdate

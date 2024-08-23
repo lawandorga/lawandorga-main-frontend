@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal size="xs" kind="action" @click="commandModalOpen = true">
+  <ButtonNormal size="xs" kind="secondary" @click="commandModalOpen = true">
     Create Group
     <ModalCreate
       v-model="commandModalOpen"

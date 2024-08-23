@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Create Link
     <ModalCreate
       v-model="commandModalOpen"

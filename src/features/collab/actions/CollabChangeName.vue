@@ -23,7 +23,7 @@ defineExpose({
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="link" @click="commandModalOpen = true">
     Change Name
     <ModalUpdate
       v-model="commandModalOpen"

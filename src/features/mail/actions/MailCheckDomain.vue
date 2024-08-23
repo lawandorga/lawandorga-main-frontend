@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="checkDomainSettings()">
+  <ButtonNormal kind="primary" @click="checkDomainSettings()">
     Check Settings
     <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
       <div v-if="check && check.valid">Your settings are correct.</div>

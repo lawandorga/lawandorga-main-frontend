@@ -1,9 +1,5 @@
 <template>
-  <ButtonNormal
-    kind="action"
-    class="w-[150px] text-center"
-    @click="copyMailAddress"
-  >
+  <ButtonNormal kind="secondary" @click="copyMailAddress">
     {{ addressCopied ? "Copied!" : "Copy email address" }}
   </ButtonNormal>
 </template>

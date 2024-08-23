@@ -1,6 +1,6 @@
 <template>
   <ButtonNormal
-    kind="action"
+    kind="primary"
     @click="createMailUserRole({ action: 'mail/create_user' })"
   >
     Create my mail user role

@@ -10,6 +10,7 @@
           :name="file.name"
           :file-uuid="file.uuid"
           :query="query"
+          class="ml-4 mr-3"
         />
         <FilesDeleteFile
           :file-uuid="file.uuid"

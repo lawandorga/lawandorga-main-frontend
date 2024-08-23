@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Disable Link
     <ModalConfirm
       v-model="commandModalOpen"

@@ -1,5 +1,5 @@
 <template>
-  <ButtonNormal kind="action" @click="addAddressModalOpen = true">
+  <ButtonNormal kind="primary" @click="addAddressModalOpen = true">
     Add Address
     <ModalCreate
       v-model="addAddressModalOpen"

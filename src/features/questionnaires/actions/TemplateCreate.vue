@@ -25,7 +25,7 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Create Template
   </ButtonNormal>
   <ModalCreate
