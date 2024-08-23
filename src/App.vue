@@ -70,6 +70,22 @@ overwrite(
   "md:sticky right-0 gap-5 flex items-center md:!border-l-0",
 );
 overwrite(
+  "button.primary.size",
+  "text-base font-semibold px-4 py-2.5 rounded-lg drop-shadow",
+);
+overwrite(
+  "button.secondary.size",
+  "text-base font-semibold px-4 py-2.5 rounded-lg drop-shadow",
+);
+overwrite(
+  "button.link.size",
+  "text-base font-semibold px-4 py-2.5 rounded-lg drop-shadow",
+);
+overwrite(
+  "button.link.color",
+  "text-formcolor hover:bg-blue-50 border border-solid border-transparent focus:border-[#ABD0DA]",
+);
+overwrite(
   "button.outline.color",
   "outline-zinc-400 outline-1 outline shadow-md text-zinc-600",
 );
