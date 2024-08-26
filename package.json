@@ -42,7 +42,7 @@
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.16",
-    "axios": "^1.7.4",
+    "axios": "^1.7.5",
     "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
