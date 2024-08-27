@@ -20,8 +20,8 @@ import { ButtonNormal, CircleLoader } from "lorga-ui";
 export default defineComponent({
   components: {
     CircleLoader,
-    ButtonNormal
-},
+    ButtonNormal,
+  },
   props: {
     to: {
       type: [String, Object],
