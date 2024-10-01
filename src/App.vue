@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import NavigationDefault from "@/components/NavigationDefault.vue";
 import { ref, computed } from "vue";
-import { AlertList } from "lorga-ui";
+import { AlertList, useConfig } from "lorga-ui";
 import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
 import NavigationMobile from "./components/NavigationMobile.vue";
@@ -53,7 +53,6 @@ import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import BannerList from "./components/BannerList.vue";
 import { getCookie } from "./utils/cookie";
-import { useConfig } from "lorga-ui";
 
 const { overwrite } = useConfig();
 overwrite(

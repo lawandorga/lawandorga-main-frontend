@@ -13,9 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import { ModalUpdate, types } from "lorga-ui";
+import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
-import { ButtonNormal } from "lorga-ui";
 import useCmd from "@/composables/useCmd";
 import { Folder } from "../api/useFolderPage";
 

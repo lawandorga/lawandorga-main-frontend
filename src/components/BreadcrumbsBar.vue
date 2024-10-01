@@ -10,7 +10,7 @@
       >
         <ChevronLeftIcon class="w-6 h-6" />
       </button>
-      <ol role="list" class="flex rounded-md shadow-sm bg-gray-50">
+      <ol class="flex rounded-md shadow-sm bg-gray-50">
         <li class="flex h-11">
           <router-link
             :to="base"

@@ -2,7 +2,7 @@
   <div
     class="sticky top-0 overflow-hidden bg-white rounded shadow print:hidden"
   >
-    <ul role="list" class="">
+    <ul class="">
       <li
         v-if="!grouping"
         class="flex flex-wrap px-4 py-3 gap-x-5 gap-y-1 sm:px-6 bg-gray-50"

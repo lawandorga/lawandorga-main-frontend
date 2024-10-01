@@ -111,7 +111,7 @@ export function handleTitleError(context: Context): Promise<void> {
   const error = context.error as AxiosError<{ title?: string }>;
   const alertStore = context.alertStore;
 
-  if (error.response && error.response.data && error.response.data.title) {
+  if (error?.response?.data.title) {
     alertStore.createAlert({
       type: "error",
       heading: `Error ${error.response.status}`,
@@ -127,7 +127,7 @@ export function handleDetailError(context: Context): Promise<void> {
   const error = context.error as AxiosError<{ detail?: string }>;
   const alertStore = context.alertStore;
 
-  if (error.response && error.response.data && error.response.data.detail) {
+  if (error.response?.data.detail) {
     alertStore.createAlert({
       type: "error",
       heading: `Error ${error.response.status}`,

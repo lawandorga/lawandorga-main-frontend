@@ -3,7 +3,7 @@ import { AxiosInstance, AxiosResponse } from "axios";
 export function createObjectURL(data: Blob): string {
   if (window.webkitURL) {
     return window.webkitURL.createObjectURL(data);
-  } else if (window.URL && window.URL.createObjectURL) {
+  } else if (window.URL?.createObjectURL) {
     return window.URL.createObjectURL(data);
   } else {
     alert("Error downloading file.");
@@ -38,7 +38,7 @@ export function downloadFileRequest(
   fileName: string,
 ): Promise<void> {
   const openedWindow = window.open();
-  if (openedWindow && openedWindow.document)
+  if (openedWindow?.document)
     openedWindow.document.body.innerHTML =
       "One moment please. File is being downloaded...";
   return axios
