@@ -2,6 +2,11 @@ import useClient from "@/api/client";
 import useGet from "@/composables/useGet";
 import { Ref, ref } from "vue";
 
+export type MailAttachment = {
+  name: string;
+  location: string;
+};
+
 export type ImportedMail = {
   uuid: string;
   sender: string;
@@ -12,6 +17,7 @@ export type ImportedMail = {
   sending_datetime: string;
   is_read: boolean;
   is_pinned: boolean;
+  mail_attachments: Array<MailAttachment>;
 };
 
 export function useMailImports(folderUuid: Ref<string>) {
