@@ -117,10 +117,7 @@
           </button>
           <MailContent v-if="expandedMails.includes(mail.uuid)" :mail="mail" />
           <MailAttachment
-            v-if="
-              store.user?.email === 'dummy@law-orga.de' &&
-              !!mail.mail_attachments.length
-            "
+            v-if="!!mail.mail_attachments.length"
             :attachments="mail.mail_attachments"
           />
           <div
@@ -174,10 +171,7 @@ import SettingsOverlay from "../components/SettingsOverlay.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import useCmd from "@/composables/useCmd";
 import { ImportedMail } from "../api/useMailImports";
-import { useUserStore } from "@/store/user";
 import MailAttachment from "../components/MailAttachment.vue";
-
-const store = useUserStore();
 
 // props
 const props = defineProps<{

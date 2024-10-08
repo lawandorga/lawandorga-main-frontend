@@ -26,6 +26,7 @@ describe("FolderMailImports", () => {
           sending_datetime: new Date(2022, 5, 21),
           is_read: true,
           is_pinned: false,
+          mail_attachments: [],
         },
         {
           uuid: "23452345234523452345234523452345",
@@ -38,6 +39,7 @@ describe("FolderMailImports", () => {
           sending_datetime: new Date(2021, 1, 10),
           is_read: true,
           is_pinned: true,
+          mail_attachments: [],
         },
         {
           uuid: "34563456345634563456345634563456",
@@ -50,6 +52,7 @@ describe("FolderMailImports", () => {
           sending_datetime: new Date(2023, 11, 1),
           is_read: false,
           is_pinned: false,
+          mail_attachments: [],
         },
       ],
     },

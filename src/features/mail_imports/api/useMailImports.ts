@@ -4,7 +4,7 @@ import { Ref, ref } from "vue";
 
 export type MailAttachment = {
   name: string;
-  location: string;
+  uuid: string;
 };
 
 export type ImportedMail = {
