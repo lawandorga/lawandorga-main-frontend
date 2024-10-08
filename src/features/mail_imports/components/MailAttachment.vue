@@ -4,7 +4,7 @@
       <a
         :href="getLink(attachment.uuid)"
         target="_blank"
-        rel=noopener
+        rel="noopener"
         class="p-1 text-sm border rounded-md bg-slate-100 border-slate-400"
       >
         {{ attachment.name }}
