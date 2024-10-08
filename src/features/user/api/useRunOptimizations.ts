@@ -1,5 +1,4 @@
 import useClient from "@/api/client";
-import { useErrorHandling } from "@/api/errors";
 import { useUserStore } from "@/store/user";
 import { computed, ref } from "vue";
 
@@ -10,56 +9,47 @@ export interface Apps {
 export function useRunOptimizations() {
   const client = useClient();
 
-  const { handleError } = useErrorHandling();
-
   const apps: Apps = {
     Groups: () =>
       client
         .post("api/command/")({ action: "org/optimize_groups" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
     Records: () =>
       client
         .post("api/command/")({ action: "data_sheets/optimize" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
     Collab: () =>
       client
         .post("api/command/")({ action: "collab/optimize" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
     Folders: () =>
       client
         .post("api/command/")({ action: "folders/optimize" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
     Messages: () =>
       client
         .post("api/command/")({ action: "messages/optimize" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
     Questionnaires: () =>
       client
         .post("api/command/")({ action: "questionnaires/optimize" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
     MailImports: () =>
       client
         .post("api/command/")({ action: "mail_imports/import_mails" })
         .catch((e) => {
-          handleError(e);
           return Promise.reject(e);
         }),
   };
