@@ -219,9 +219,9 @@ const sortedMails = computed(() => {
   return [...searchResults.value]
     .sort((mail, previousMail) => {
       if (sorting.value === "asc") {
-        return mail.sending_datetime < previousMail.sending_datetime ? -1 : 1;
+        return mail.sending_datetime > previousMail.sending_datetime ? -1 : 1;
       } else {
-        return mail.sending_datetime < previousMail.sending_datetime ? 1 : -1;
+        return mail.sending_datetime > previousMail.sending_datetime ? 1 : -1;
       }
     })
     .sort((mail) => (mail.is_pinned ? -1 : 1));
