@@ -29,6 +29,13 @@
         </div>
       </div>
       <div class="flex items-center ml-4 md:ml-6">
+        <ButtonNormal
+          v-if="user?.email === 'dummy@law-orga.de'"
+          kind="secondary"
+          class="mr-4"
+        >
+          Add a Task
+        </ButtonNormal>
         <router-link
           v-if="false"
           :to="{ name: 'admin-notifications' }"
@@ -55,6 +62,11 @@ import { computed } from "vue";
 import { BellIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
+import { ButtonNormal } from "lorga-ui";
+import { useUserStore } from "@/store/user";
+
+const userStore = useUserStore();
+const { user } = userStore;
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();
