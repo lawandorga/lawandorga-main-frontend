@@ -36,21 +36,6 @@
         >
           Add a Task
         </ButtonNormal>
-        <router-link
-          v-if="false"
-          :to="{ name: 'admin-notifications' }"
-          class="relative block p-1 text-gray-300 rounded-full hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-        >
-          <span class="sr-only">View notifications</span>
-          <BellIcon class="w-6 h-6" aria-hidden="true" />
-          <div
-            v-if="notifications > 0"
-            class="absolute top-0 left-0 flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 transform translate-x-4 -translate-y-1 bg-red-200 rounded-full"
-          >
-            {{ notifications }}
-          </div>
-        </router-link>
-
         <NavigationDropdown />
       </div>
     </div>
@@ -59,7 +44,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { BellIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
+import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
 import { ButtonNormal } from "lorga-ui";
@@ -70,8 +55,6 @@ const { user } = userStore;
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();
-
-const notifications = computed(() => 0);
 
 const route = useRoute();
 const inside = computed(() => {
