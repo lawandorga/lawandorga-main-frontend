@@ -9,24 +9,32 @@ provider "scaleway" {
 data "terraform_remote_state" "cluster" {
   backend = "s3"
   config = {
-    bucket                      = "lawandorga-main-infrastructure"
-    key                         = "cluster.tfstate"
-    region                      = "fr-par"
-    endpoint                    = "https://s3.fr-par.scw.cloud"
+    bucket = "lawandorga-main-infrastructure"
+    key    = "cluster.tfstate"
+    region = "fr-par"
+
     skip_region_validation      = true
     skip_credentials_validation = true
+    skip_requesting_account_id  = true
+    endpoints = {
+      s3 = "https://s3.fr-par.scw.cloud"
+    }
   }
 }
 
 data "terraform_remote_state" "cert_manager" {
   backend = "s3"
   config = {
-    bucket                      = "lawandorga-main-infrastructure"
-    key                         = "cert-manager.tfstate"
-    region                      = "fr-par"
-    endpoint                    = "https://s3.fr-par.scw.cloud"
+    bucket = "lawandorga-main-infrastructure"
+    key    = "cert-manager.tfstate"
+    region = "fr-par"
+
     skip_region_validation      = true
     skip_credentials_validation = true
+    skip_requesting_account_id  = true
+    endpoints = {
+      s3 = "https://s3.fr-par.scw.cloud"
+    }
   }
 }
 

@@ -17,14 +17,14 @@ terraform {
     bucket = "lawandorga-main-infrastructure"
     key    = "lawandorga-main-frontend.tfstate"
     region = "fr-par"
-    # endpoints = {
-    #   iam = "https://s3.fr-par.scw.cloud"
-    #   s3  = "https://s3.fr-par.scw.cloud"
-    #   sts = "https://s3.fr-par.scw.cloud"
-    # }
-    endpoint = "https://s3.fr-par.scw.cloud"
+
+    skip_requesting_account_id  = true
     skip_region_validation      = true
     skip_credentials_validation = true
+
+    endpoints = {
+      s3 = "https://s3.fr-par.scw.cloud"
+    }
   }
   required_version = ">= 1.0.0"
 }
