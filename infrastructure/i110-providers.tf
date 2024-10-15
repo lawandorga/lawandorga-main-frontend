@@ -16,6 +16,7 @@ data "terraform_remote_state" "cluster" {
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
+
     endpoints = {
       s3 = "https://s3.fr-par.scw.cloud"
     }
@@ -32,6 +33,7 @@ data "terraform_remote_state" "cert_manager" {
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
+
     endpoints = {
       s3 = "https://s3.fr-par.scw.cloud"
     }

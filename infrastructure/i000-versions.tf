@@ -25,6 +25,8 @@ terraform {
     endpoints = {
       s3 = "https://s3.fr-par.scw.cloud"
     }
+
+    profile = "lawandorga"
   }
   required_version = ">= 1.0.0"
 }
