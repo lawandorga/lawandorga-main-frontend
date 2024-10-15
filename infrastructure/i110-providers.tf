@@ -20,6 +20,9 @@ data "terraform_remote_state" "cluster" {
     endpoints = {
       s3 = "https://s3.fr-par.scw.cloud"
     }
+
+    access_key = var.scw_access_key
+    secret_key = var.scw_secret_key
   }
 }
 
@@ -37,6 +40,9 @@ data "terraform_remote_state" "cert_manager" {
     endpoints = {
       s3 = "https://s3.fr-par.scw.cloud"
     }
+
+    access_key = var.scw_access_key
+    secret_key = var.scw_secret_key
   }
 }
 
