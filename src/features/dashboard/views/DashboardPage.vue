@@ -19,6 +19,91 @@
       </BreadcrumbsBar>
       <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        <div class="hidden lg:col-span-2 xl:col-span-3">
+          <div class="flex justify-between mt-8">
+            <h2
+              class="items-baseline text-lg font-medium leading-6 text-gray-700"
+            >
+              Todos you've been assigned to
+            </h2>
+          </div>
+          <div
+            class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
+          >
+            <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+              <div class="flex justify-between">
+                <h3 class="mb-2 font-medium text-gray-700">
+                  An interesting title
+                </h3>
+                <div
+                  class="w-6 h-6 bg-formcolor rounded-full flex items-center justify-center text-white text-md font-bold hover:cursor-context-menu"
+                  title="Created by: Johannes Stock"
+                >
+                  J
+                </div>
+              </div>
+              <p
+                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+              >
+                For: Folder UUID 1234567890
+              </p>
+              <p
+                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+              >
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis,
+                eaque sequi, labore deleniti!
+              </p>
+              <div class="flex justify-between mt-2">
+                <i class="text-sm text-gray-500">21. September 2024</i>
+                <DashboardUpdateTodo />
+              </div>
+            </article>
+          </div>
+          <div class="flex justify-between mt-8">
+            <h2
+              class="items-baseline text-lg font-medium leading-6 text-gray-700"
+            >
+              Todos you created
+            </h2>
+          </div>
+          <div
+            class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
+          >
+            <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+              <div class="flex justify-between">
+                <h3 class="mb-2 font-medium text-gray-700">
+                  An interesting title
+                </h3>
+                <div
+                  class="w-6 h-6 bg-formcolor rounded-full flex items-center justify-center text-white text-md font-bold hover:cursor-context-menu"
+                  title="Assigned to: Johannes Stock"
+                >
+                  J
+                </div>
+              </div>
+              <p
+                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+              >
+                State: Not done
+              </p>
+              <p
+                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+              >
+                For: Folder UUID 1234567890
+              </p>
+              <p
+                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+              >
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis,
+                eaque sequi, labore deleniti!
+              </p>
+              <div class="flex justify-between mt-2">
+                <i class="text-sm text-gray-500">21. September 2024</i>
+                <DashboardDeleteTodo />
+              </div>
+            </article>
+          </div>
+        </div>
         <div class="lg:col-span-2 xl:col-span-3">
           <div class="flex justify-between mt-8">
             <h2
@@ -245,6 +330,8 @@ import { ButtonNormal } from "lorga-ui";
 import DashboardCreateNote from "@/features/dashboard/actions/DashboardCreateNote.vue";
 import DashboardDeleteNote from "@/features/dashboard/actions/DashboardDeleteNote.vue";
 import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNote.vue";
+import DashboardUpdateTodo from "@/features/dashboard/actions/DashboardUpdateTodo.vue";
+import DashboardDeleteTodo from "@/features/dashboard/actions/DashboardDeleteTodo.vue";
 import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
