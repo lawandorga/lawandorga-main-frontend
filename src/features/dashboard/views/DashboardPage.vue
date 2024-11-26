@@ -250,12 +250,13 @@
                   <h3 class="mb-2 font-medium text-gray-700">
                     An interesting title
                   </h3>
-                  <div>icon</div>
+                  <ChevronUpDownIcon class="rotate-45 h-6 w-6 cursor-pointer" />
                 </div>
                 <p
-                  class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                  class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
                 >
-                  <a href="" class="underline">UUID 1234567890</a>
+                  <FolderOpenIcon class="w-6 h-6" />
+                  <a href="" class="ml-2 underline">UUID 1234567890</a>
                 </p>
                 <p
                   class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
@@ -281,7 +282,12 @@
 <script lang="ts" setup>
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
+import {
+  FolderOpenIcon,
+  Squares2X2Icon,
+  ChevronRightIcon,
+  ChevronUpDownIcon,
+} from "@heroicons/vue/24/outline";
 import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
