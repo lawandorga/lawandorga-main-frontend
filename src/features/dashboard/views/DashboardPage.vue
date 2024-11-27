@@ -229,7 +229,10 @@
             </article>
           </div>
         </div>
-        <div class="lg:col-span-2 xl:col-span-3">
+        <div
+          v-if="user?.email === 'dummy@law-orga.de'"
+          class="lg:col-span-2 xl:col-span-3"
+        >
           <div class="flex justify-between mt-8 mb-10">
             <h2
               class="items-baseline text-lg font-semibold leading-6 text-gray-700"
@@ -239,6 +242,7 @@
           </div>
         </div>
         <div
+          v-if="user?.email === 'dummy@law-orga.de'"
           class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
         >
           <div class="py-8">
@@ -250,7 +254,7 @@
                   <h3 class="mb-2 font-medium text-gray-700">
                     An interesting title
                   </h3>
-                  <ChevronUpDownIcon class="rotate-45 h-6 w-6 cursor-pointer" />
+                  <ChevronUpDownIcon class="w-6 h-6 rotate-45 cursor-pointer" />
                 </div>
                 <p
                   class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
@@ -264,7 +268,7 @@
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                   Omnis, eaque sequi, labore deleniti!
                 </p>
-                <div class="flex justify-between mt-4 pt-2 border-t-2">
+                <div class="flex justify-between pt-2 mt-4 border-t-2">
                   <p class="content-center text-sm text-gray-500">
                     21. September 2024
                   </p>
