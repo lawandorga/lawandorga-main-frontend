@@ -50,7 +50,7 @@
     "jsdom": "^24.1.1",
     "lodash": "^4.17.21",
     "lorga-ui": "^1.3.49",
-    "pinia": "^2.2.2",
+    "pinia": "^2.2.6",
     "postcss": "^8.4.31",
     "prettier": "^3.2.5",
     "remixicon": "^4.2.0",
