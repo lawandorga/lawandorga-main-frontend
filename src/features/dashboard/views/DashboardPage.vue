@@ -233,7 +233,7 @@
           v-if="user?.email === 'dummy@law-orga.de'"
           class="lg:col-span-2 xl:col-span-3"
         >
-          <div class="flex justify-between mt-8 mb-10">
+          <div class="flex justify-between mt-8 mb-4">
             <h2
               class="items-baseline text-lg font-semibold leading-6 text-gray-700"
             >
@@ -241,42 +241,208 @@
             </h2>
           </div>
         </div>
-        <div
-          v-if="user?.email === 'dummy@law-orga.de'"
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
-        >
-          <div class="py-8">
-            <div
-              class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
-            >
-              <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
-                <div class="flex justify-between">
-                  <h3 class="mb-2 font-medium text-gray-700">
-                    An interesting title
-                  </h3>
-                  <ChevronUpDownIcon class="w-6 h-6 rotate-45 cursor-pointer" />
+        <div class="lg:col-span-2 xl:col-span-3">
+          <TabControls
+            v-if="user?.email === 'dummy@law-orga.de'"
+            :tabs="[
+              { name: 'My Tasks', key: 'mytasks' },
+              { name: 'Created Tasks', key: 'createdtasks' },
+              { name: 'Completed Tasks', key: 'completedtasks' },
+            ]"
+          >
+            <template #mytasks>
+              <div
+                class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
+              >
+                <div class="py-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                    <button>
+                      <div class="flex justify-between">
+                        <h3 class="mb-2 font-medium text-gray-700">
+                          An interesting title A1
+                        </h3>
+                        <ChevronUpDownIcon class="rotate-45 h-6 w-6" />
+                      </div>
+                      <p
+                        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                      >
+                        <FolderOpenIcon class="w-6 h-6" />
+                        <a href="" class="ml-2 underline">UUID 1234567890</a>
+                      </p>
+                      <p
+                        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
+                      >
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Omnis, eaque sequi, labore deleniti!
+                      </p>
+                    </button>
+                    <div class="flex justify-between mt-4 pt-2 border-t-2">
+                      <p class="content-center text-sm text-gray-500">
+                        21. September 2024
+                      </p>
+                      <!--<DashboardUpdateTodo />-->
+                    </div>
+                  </article>
+                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                    <button>
+                      <div class="flex justify-between">
+                        <h3 class="mb-2 font-medium text-gray-700">
+                          An interesting title A2
+                        </h3>
+                        <ChevronUpDownIcon class="rotate-45 h-6 w-6" />
+                      </div>
+                      <p
+                        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                      >
+                        <FolderOpenIcon class="w-6 h-6" />
+                        <a href="" class="ml-2 underline">UUID 1234567890</a>
+                      </p>
+                      <p
+                        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
+                      >
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Omnis, eaque sequi, labore deleniti!
+                      </p>
+                    </button>
+                    <div class="flex justify-between mt-4 pt-2 border-t-2">
+                      <p class="content-center text-sm text-gray-500">
+                        21. September 2024
+                      </p>
+                      <!--<DashboardUpdateTodo />-->
+                    </div>
+                  </article>
                 </div>
-                <p
-                  class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
-                >
-                  <FolderOpenIcon class="w-6 h-6" />
-                  <a href="" class="ml-2 underline">UUID 1234567890</a>
-                </p>
-                <p
-                  class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
-                >
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Omnis, eaque sequi, labore deleniti!
-                </p>
-                <div class="flex justify-between pt-2 mt-4 border-t-2">
-                  <p class="content-center text-sm text-gray-500">
-                    21. September 2024
-                  </p>
-                  <!--<DashboardUpdateTodo />-->
+              </div>
+            </template>
+            <template #createdtasks>
+              <div
+                class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
+              >
+                <div class="py-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                    <button>
+                      <div class="flex justify-between">
+                        <h3 class="mb-2 font-medium text-gray-700">
+                          An interesting title B1
+                        </h3>
+                        <ChevronUpDownIcon class="rotate-45 h-6 w-6" />
+                      </div>
+                      <p
+                        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                      >
+                        <FolderOpenIcon class="w-6 h-6" />
+                        <a href="" class="ml-2 underline">UUID 1234567890</a>
+                      </p>
+                      <p
+                        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
+                      >
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Omnis, eaque sequi, labore deleniti!
+                      </p>
+                    </button>
+                    <div class="flex justify-between mt-4 pt-2 border-t-2">
+                      <p class="content-center text-sm text-gray-500">
+                        21. September 2024
+                      </p>
+                      <!--<DashboardUpdateTodo />-->
+                    </div>
+                  </article>
+                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                    <button>
+                      <div class="flex justify-between">
+                        <h3 class="mb-2 font-medium text-gray-700">
+                          An interesting title B2
+                        </h3>
+                        <ChevronUpDownIcon class="rotate-45 h-6 w-6" />
+                      </div>
+                      <p
+                        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                      >
+                        <FolderOpenIcon class="w-6 h-6" />
+                        <a href="" class="ml-2 underline">UUID 1234567890</a>
+                      </p>
+                      <p
+                        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
+                      >
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Omnis, eaque sequi, labore deleniti!
+                      </p>
+                    </button>
+                    <div class="flex justify-between mt-4 pt-2 border-t-2">
+                      <p class="content-center text-sm text-gray-500">
+                        21. September 2024
+                      </p>
+                      <!--<DashboardUpdateTodo />-->
+                    </div>
+                  </article>
                 </div>
-              </article>
-            </div>
-          </div>
+              </div>
+            </template>
+            <template #completedtasks>
+              <div
+                class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
+              >
+                <div class="py-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                    <button>
+                      <div class="flex justify-between">
+                        <h3 class="mb-2 font-medium text-gray-700">
+                          An interesting title C1
+                        </h3>
+                        <ChevronUpDownIcon class="rotate-45 h-6 w-6" />
+                      </div>
+                      <p
+                        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                      >
+                        <FolderOpenIcon class="w-6 h-6" />
+                        <a href="" class="ml-2 underline">UUID 1234567890</a>
+                      </p>
+                      <p
+                        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
+                      >
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Omnis, eaque sequi, labore deleniti!
+                      </p>
+                    </button>
+                    <div class="flex justify-between mt-4 pt-2 border-t-2">
+                      <p class="content-center text-sm text-gray-500">
+                        21. September 2024
+                      </p>
+                      <!--<DashboardUpdateTodo />-->
+                    </div>
+                  </article>
+                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                    <button>
+                      <div class="flex justify-between">
+                        <h3 class="mb-2 font-medium text-gray-700">
+                          An interesting title C2
+                        </h3>
+                        <ChevronUpDownIcon class="rotate-45 h-6 w-6" />
+                      </div>
+                      <p
+                        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                      >
+                        <FolderOpenIcon class="w-6 h-6" />
+                        <a href="" class="ml-2 underline">UUID 1234567890</a>
+                      </p>
+                      <p
+                        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
+                      >
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Omnis, eaque sequi, labore deleniti!
+                      </p>
+                    </button>
+                    <div class="flex justify-between mt-4 pt-2 border-t-2">
+                      <p class="content-center text-sm text-gray-500">
+                        21. September 2024
+                      </p>
+                      <!--<DashboardUpdateTodo />-->
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </template>
+          </TabControls>
         </div>
       </div>
     </div>
@@ -284,6 +450,7 @@
 </template>
 
 <script lang="ts" setup>
+// import { ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import {
@@ -303,6 +470,7 @@ import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNot
 import DashboardUpdateTodo from "@/features/dashboard/actions/DashboardUpdateTodo.vue";
 import DashboardDeleteTodo from "@/features/dashboard/actions/DashboardDeleteTodo.vue";
 */
+import TabControls from "@/components/TabControls.vue";
 import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";

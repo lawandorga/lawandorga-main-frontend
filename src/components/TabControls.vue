@@ -56,14 +56,12 @@ import {
 import { ref, toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-type Tab =
-  | {
-      name: string;
-      key: string;
-      badge?: number | string;
-      spacer?: boolean;
-    }
-  | { spacer: true };
+type Tab = {
+  name: string;
+  key: string;
+  badge?: number | string;
+  spacer?: boolean;
+};
 
 const props = defineProps<{ tabs: Tab[]; defaultTab?: number | string }>();
 
