@@ -1,21 +1,16 @@
 <template>
   <TabGroup :selected-index="selectedTab" @change="changeTab">
-    <TabList class="inline-flex w-full rounded">
-      <template v-for="(tab, index) in internalTabs" :key="tab.key">
+    <TabList class="inline-flex w-full rounded gap-6">
+      <template v-for="tab in internalTabs" :key="tab.key">
         <div v-if="tab.spacer" class="mx-auto"></div>
         <TabComponent v-else v-slot="{ selected }" as="template">
           <button
             :class="[
-              'first:rounded-l last:rounded-r px-4 py-2.5 text-sm font-medium transition',
-              'focus:outline-none shadow focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-200 focus:ring-gray-300 focus:z-10',
-              selected
-                ? 'bg-white text-gray-800'
-                : 'text-gray-600 hover:bg-gray-50 bg-gray-100',
-              internalTabs[index - 1]?.spacer
-                ? 'rounded-l'
-                : internalTabs[index + 1]?.spacer
-                  ? 'rounded-r'
-                  : '',
+              'py-2.5 pr-3 text-lg font-semibold',
+              selected ? 'border-b-2 border-solid' : '',
+              tab.highlighted
+                ? ' text-formcolor border-formcolor'
+                : 'text-gray-600 border-gray-600',
             ]"
             type="button"
           >
@@ -30,12 +25,12 @@
         </TabComponent>
       </template>
     </TabList>
-    <TabPanels class="mt-4">
+    <TabPanels>
       <template v-for="tab in internalTabs" :key="tab.key">
         <TabPanel
           v-if="!tab.spacer"
           :class="[
-            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300',
+            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300 bg-lime-500',
           ]"
         >
           <slot :name="tab.key" />
@@ -61,6 +56,7 @@ type Tab = {
   key: string;
   badge?: number | string;
   spacer?: boolean;
+  highlighted?: boolean;
 };
 
 const props = defineProps<{ tabs: Tab[]; defaultTab?: number | string }>();

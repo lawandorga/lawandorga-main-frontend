@@ -245,8 +245,8 @@
           <TabControls
             v-if="user?.email === 'dummy@law-orga.de'"
             :tabs="[
-              { name: 'My Tasks', key: 'mytasks' },
-              { name: 'Created Tasks', key: 'createdtasks' },
+              { name: 'My Tasks', key: 'mytasks', highlighted: true },
+              { name: 'Created Tasks', key: 'createdtasks', highlighted: true },
               { name: 'Completed Tasks', key: 'completedtasks' },
             ]"
           >
