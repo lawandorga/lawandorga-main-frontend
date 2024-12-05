@@ -1,6 +1,6 @@
 <template>
   <TabGroup :selected-index="selectedTab" @change="changeTab">
-    <TabList class="inline-flex w-full rounded gap-6">
+    <TabList class="inline-flex w-full gap-6 rounded">
       <template v-for="tab in internalTabs" :key="tab.key">
         <div v-if="tab.spacer" class="mx-auto"></div>
         <TabComponent v-else v-slot="{ selected }" as="template">
@@ -30,7 +30,7 @@
         <TabPanel
           v-if="!tab.spacer"
           :class="[
-            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300 bg-lime-500',
+            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300',
           ]"
         >
           <slot :name="tab.key" />
