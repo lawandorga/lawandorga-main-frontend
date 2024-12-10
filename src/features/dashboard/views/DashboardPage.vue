@@ -18,6 +18,7 @@
         <Squares2X2Icon class="w-6 h-6" />
       </BreadcrumbsBar>
       <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
+      User: {{ user?.id }}
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <div class="lg:col-span-2 xl:col-span-3">
           <div class="flex justify-between mt-8">
@@ -245,17 +246,25 @@
           <TabControls
             v-if="user?.email === 'dummy@law-orga.de'"
             :tabs="[
-              { name: 'My Tasks', key: 'mytasks', highlighted: true },
+              { name: 'My Tasks', key: 'owntasks', highlighted: true },
               { name: 'Created Tasks', key: 'createdtasks', highlighted: true },
               { name: 'Completed Tasks', key: 'completedtasks' },
             ]"
           >
-            <template #mytasks>
+            <template #owntasks>
               <div
                 class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
               >
-                <div class="py-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                  <article class="px-6 pt-4 pb-4 bg-white rounded shadow">
+                {{ assignedTasks }}
+                <div
+                  v-if="assignedTasks.tasks && assignedTasks.tasks.length"
+                  class="py-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-3"
+                >
+                  <article
+                    v-for="task in assignedTasks.tasks"
+                    :key="task?.id"
+                    class="px-6 pt-4 pb-4 bg-white rounded shadow"
+                  >
                     <button>
                       <div class="flex justify-between">
                         <h3 class="mb-2 font-medium text-gray-700">
@@ -478,6 +487,7 @@ import { useQuestionnaires } from "../api/useQuestionnaires";
 import { useChangedRecords } from "../api/useChangedRecords";
 import { useArticles } from "../api/useArticles";
 import { useMembers } from "../api/useMembers";
+// import { useTasks } from "../api/useTasks";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -490,4 +500,11 @@ const { questionnaires } = useQuestionnaires();
 const { changedRecords } = useChangedRecords();
 const { articles } = useArticles();
 const { members } = useMembers();
+
+document.addEventListener("readystatechange", () => {
+  console.log("I'm loaded");
+  console.log(user.value?.id);
+  console.log(user.value);
+});
+// const { assignedTasks, createdTasks } = useTasks(user.value?.id);
 </script>
