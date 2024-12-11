@@ -54,7 +54,7 @@ const userStore = useUserStore();
 </script>
 
 <template>
-  <BoxLoader :show="!!userStore.loaded && !!views.length">
+  <BoxLoader :show="!!userStore.loaded">
     <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
@@ -65,7 +65,7 @@ const userStore = useUserStore();
       <TabControls
         :tabs="[
           ...views.map((view) => ({ name: view.name, key: view.name })),
-          { spacer: true },
+          { key: 'spacer', spacer: true },
           { name: 'Views', key: 'settings' },
           {
             name: 'Access-Requests',
