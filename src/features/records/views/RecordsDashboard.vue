@@ -15,12 +15,13 @@ import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
 import RecordsPermissions from "@/components/RecordsPermissions.vue";
 import { useRecords } from "../api/useRecords";
 import { useInfos } from "../api/useInfos";
-import { ButtonNormal, FormInput, PaginationBar } from "lorga-ui";
+import { ButtonNormal, FormInput, FormSelect, PaginationBar } from "lorga-ui";
 import { ref } from "vue";
 
 const tokenSearch = ref("");
 const yearSearch = ref("");
 const generalSearch = ref("");
+const orderBy = ref("-created");
 
 const resetSearch = () => {
   tokenSearch.value = "";
@@ -43,7 +44,7 @@ const {
   query: queryRecords,
   queryParams,
   setQueryParam,
-} = useRecords(tokenSearch, yearSearch, generalSearch);
+} = useRecords(tokenSearch, yearSearch, generalSearch, orderBy);
 
 const query = () => {
   queryInfos();
@@ -126,6 +127,21 @@ const userStore = useUserStore();
                 <XMarkIcon class="w-6 h-6" />
                 <span>Reset Search</span>
               </ButtonNormal>
+            </div>
+            <div>
+              <FormSelect
+                v-model="orderBy"
+                label="Order By"
+                required
+                :options="[
+                  { name: 'Created', value: '-created' },
+                  { name: 'Updated', value: '-updated' },
+                  { name: 'Token', value: 'name' },
+                  { name: 'Created Desc', value: 'created' },
+                  { name: 'Updated Desc', value: 'updated' },
+                  { name: 'Token Desc', value: '-name' },
+                ]"
+              />
             </div>
           </div>
           <RecordsTableV3

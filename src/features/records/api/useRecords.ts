@@ -23,6 +23,7 @@ export function useRecords(
   tokenSearch: Ref<string>,
   yearSearch: Ref<string>,
   generalSearch: Ref<string>,
+  orderBy: Ref<string>,
 ) {
   const client = useClient();
 
@@ -32,18 +33,20 @@ export function useRecords(
     token: tokenSearch.value,
     year: yearSearch.value,
     general: generalSearch.value,
+    order_by: orderBy.value,
   });
-  watch([tokenSearch, yearSearch, generalSearch], () => {
+  watch([tokenSearch, yearSearch, generalSearch, orderBy], () => {
     queryParams.value = {
       ...queryParams.value,
       token: tokenSearch.value,
       year: yearSearch.value,
       general: generalSearch.value,
+      order_by: orderBy.value,
     };
   });
 
   const request = client.get(
-    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}&year={year}&general={general}",
+    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}&year={year}&general={general}&order_by={order_by}",
   );
 
   const data = ref<RecordsData>();
