@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+// import useGet2 from "@/composables/useGet2";
 import {
   TabGroup,
   TabList,
@@ -89,6 +90,8 @@ const updateTab = () => {
   internalTabs.value = tabs.value;
   changeTab(selected);
 };
+
+// useGet2(query);
 
 updateTab();
 
