@@ -69,8 +69,10 @@ class Client {
     url: string,
     ...params: UrlParamType[]
   ): (data?: D) => Promise<R> {
-    return (data?: D) =>
-      this.caller.get(this.buildUrl(url, data, ...params)).then((r) => r.data);
+    return (data?: D) => {
+      const builtUrl = this.buildUrl(url, data, ...params);
+      return this.caller.get(builtUrl).then((r) => r.data);
+    };
   }
 
   downloadFile(
