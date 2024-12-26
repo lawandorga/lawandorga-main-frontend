@@ -119,7 +119,14 @@ class Client {
   ): (data?: D) => Promise<void> {
     return (data?: D) => {
       return this.caller
-        .post(this.buildUrl(url, data, ...params), this._data(data))
+        .post(
+          this.buildUrl(
+            `${url}?action=${data ? data["action"] : null}`,
+            data,
+            ...params,
+          ),
+          this._data(data),
+        )
         .then(() => {
           // ignore
         });
