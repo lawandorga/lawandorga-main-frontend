@@ -97,7 +97,8 @@ class Client {
         .then((r) => blobToDataURL(r.data));
   }
 
-  _data<D extends Record<string, any>>(data?: D): FormData {
+  _data<D extends Record<string, any>>(data?: D | FormData): FormData {
+    if (data instanceof FormData) return data;
     const formData = new FormData();
     for (const key in data) {
       let v: any = data[key];
@@ -113,6 +114,14 @@ class Client {
     return formData;
   }
 
+  private getAction(data?: Record<string, any> | FormData): string | null {
+    if (data instanceof FormData) {
+      const action = data.get("action") as string;
+      return action ? action : null;
+    }
+    return data ? data["action"] : null;
+  }
+
   post<D extends Record<string, any>>(
     url: string,
     ...params: UrlParamType[]
@@ -121,7 +130,7 @@ class Client {
       return this.caller
         .post(
           this.buildUrl(
-            `${url}?action=${data ? data["action"] : null}`,
+            `${url}?action=${this.getAction(data)}`,
             data,
             ...params,
           ),
