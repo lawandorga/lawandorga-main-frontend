@@ -1,9 +1,5 @@
-import useGet from "@/composables/useGet";
 import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
-import useClient from "@/api/client";
-import useGet2 from "@/composables/useGet2";
-import useQuery from "@/composables/useQuery";
 
 interface Task {
   id: number;
@@ -14,33 +10,27 @@ interface Task {
   deadline: Date;
   is_done: boolean;
   created_at: string;
+  page_url: string;
 }
 
-export const useTasks = () => {
+export const useAssignedTasks = () => {
+  const assignedTasks = ref<Task[] | null>(null);
+
+  const assignedTasksQuery = useGet2(`api/tasks/query/own/`, assignedTasks);
+
   return {
-    assignedTasks: useAssignedTasks(),
-    createdTasks: useCreatedTasks(),
+    assignedTasksQuery,
+    assignedTasks,
   };
 };
 
-const useAssignedTasks = () => {
-  const client = useClient();
-  const tasks = ref<Task[]>();
+export const useCreatedTasks = () => {
+  const createdTasks = ref<Task[] | null>(null);
 
-  useGet(client.get(`api/tasks/query/own/`), tasks);
-  console.log("Tasks:", tasks.value);
-  return {
-    tasks,
-  };
-};
+  const createdTaskQuery = useGet2(`api/tasks/query/created/`, createdTasks);
 
-const useCreatedTasks = () => {
-  const tasks = ref<Task[] | null>(null);
-
-  const createdTaskQuery = useGet2(`api/tasks/query/created/`, tasks);
-  console.log("created tasks:", tasks.value);
   return {
     createdTaskQuery,
-    tasks,
+    createdTasks,
   };
 };
