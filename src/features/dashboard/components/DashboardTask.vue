@@ -1,4 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { toRefs } from "vue";
+import { Task } from "../api/useTasks";
+
+const props = defineProps<{
+  task: Task;
+  openedTaskId: number | null;
+}>();
+const { task, openedTaskId } = toRefs(props);
+</script>
 
 <template>
   <article

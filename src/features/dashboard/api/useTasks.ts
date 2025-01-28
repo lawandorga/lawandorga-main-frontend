@@ -1,7 +1,7 @@
 import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   description: string;
