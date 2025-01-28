@@ -230,7 +230,7 @@
             </article>
           </div>
         </div>
-        <DashboardTasks />
+        <DashboardTaskList />
       </div>
     </div>
   </BoxLoader>
@@ -254,7 +254,7 @@ import { useQuestionnaires } from "../api/useQuestionnaires";
 import { useChangedRecords } from "../api/useChangedRecords";
 import { useArticles } from "../api/useArticles";
 import { useMembers } from "../api/useMembers";
-import DashboardTasks from "../components/DashboardTasks.vue";
+import DashboardTaskList from "../components/DashboardTaskList.vue";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
