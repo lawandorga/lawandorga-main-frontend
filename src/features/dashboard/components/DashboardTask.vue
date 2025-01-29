@@ -2,11 +2,13 @@
 import { toRefs } from "vue";
 import { Task } from "../api/useTasks";
 
+import { FolderOpenIcon, ChevronUpDownIcon } from "@heroicons/vue/24/outline";
+
 const props = defineProps<{
   task: Task;
   openedTaskId: number | null;
 }>();
-const { task, openedTaskId } = toRefs(props);
+const { task } = toRefs(props);
 </script>
 
 <template>
@@ -16,7 +18,7 @@ const { task, openedTaskId } = toRefs(props);
     <button class="w-full" onclick="openedTaskId = task?.id">
       <div class="flex justify-between">
         <h3 class="mb-2 font-medium text-gray-700">
-          {{ task?.title }}
+          {{ task.title }}
         </h3>
         <ChevronUpDownIcon class="w-6 h-6 rotate-45" />
       </div>
@@ -38,6 +40,5 @@ const { task, openedTaskId } = toRefs(props);
         Due on {{ new Date(task.deadline).toLocaleString() }}
       </p>
     </div>
-    <DashboardUpdateTodo v-if="openedTaskId === task.id" />
   </article>
 </template>

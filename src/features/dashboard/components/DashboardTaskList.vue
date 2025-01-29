@@ -3,18 +3,12 @@ import { storeToRefs } from "pinia";
 import { useAssignedTasks, useCreatedTasks } from "../api/useTasks";
 import { useUserStore } from "@/store/user";
 import TabControls from "@/components/TabControls.vue";
-import { FolderOpenIcon, ChevronUpDownIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";
 import DashboardTask from "@/features/dashboard/components/DashboardTask.vue";
-/*
-import DashboardUpdateTodo from "@/features/dashboard/actions/DashboardUpdateTodo.vue";
-import DashboardDeleteTodo from "@/features/dashboard/actions/DashboardDeleteTodo.vue";
-*/
-
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-const { assignedTasks, assignedTasksQuery } = useAssignedTasks();
-const { createdTasks, createdTasksQuery } = useCreatedTasks();
+const { assignedTasks } = useAssignedTasks();
+const { createdTasks } = useCreatedTasks();
 
 const openedTaskId = ref<number | null>(null);
 </script>
@@ -49,7 +43,7 @@ const openedTaskId = ref<number | null>(null);
           >
             <DashboardTask
               v-for="task in assignedTasks"
-              :key="task?.id"
+              :key="task.id"
               :opened-task-id="openedTaskId"
               :task="task"
             />
@@ -66,7 +60,7 @@ const openedTaskId = ref<number | null>(null);
           >
             <DashboardTask
               v-for="task in createdTasks"
-              :key="task?.id"
+              :key="task.id"
               :opened-task-id="openedTaskId"
               :task="task"
             />

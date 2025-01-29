@@ -27,10 +27,10 @@ export const useAssignedTasks = () => {
 export const useCreatedTasks = () => {
   const createdTasks = ref<Task[] | null>(null);
 
-  const createdTaskQuery = useGet2(`api/tasks/query/created/`, createdTasks);
+  const createdTasksQuery = useGet2(`api/tasks/query/created/`, createdTasks);
 
   return {
-    createdTaskQuery,
+    createdTasksQuery,
     createdTasks,
   };
 };
