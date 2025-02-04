@@ -10,7 +10,13 @@ const { user } = storeToRefs(userStore);
 const { assignedTasks } = useAssignedTasks();
 const { createdTasks } = useCreatedTasks();
 
-const openedTaskId = ref<number | null>(null);
+const assignedOpenTasks = computed<Task[]>(
+  () => assignedTasks.value?.filter((task: Task) => !task.is_done) ?? [],
+);
+
+const createdOpenTasks = computed<Task[]>(
+  () => createdTasks.value?.filter((task: Task) => !task.is_done) ?? [],
+);
 
 /* If the user assigns a task to themself, it's in both lists. Therefore it shows up twice in the completed tasks, which we don't want. This code filters out the duplicates. */
 const completedTasks = computed<Task[]>(() => {
@@ -27,6 +33,8 @@ const completedTasks = computed<Task[]>(() => {
     task.updated_at > nextTask.updated_at ? -1 : 1,
   );
 });
+
+const openedTaskId = ref<number | null>(null);
 </script>
 
 <template>
@@ -51,41 +59,47 @@ const completedTasks = computed<Task[]>(() => {
     >
       <template #owntasks>
         <div
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
+          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
         >
           <div
-            v-if="assignedTasks && assignedTasks.length"
+            v-if="assignedOpenTasks && assignedOpenTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
             <DashboardTask
-              v-for="task in assignedTasks"
+              v-for="task in assignedOpenTasks"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
               :task="task"
             />
+          </div>
+          <div v-else class="col-span-3 pt-4 text-gray-500">
+            No tasks assigned to you.
           </div>
         </div>
       </template>
       <template #createdtasks>
         <div
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
+          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
         >
           <div
-            v-if="createdTasks && createdTasks.length"
+            v-if="createdOpenTasks && createdOpenTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
             <DashboardTask
-              v-for="task in createdTasks"
+              v-for="task in createdOpenTasks"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
               :task="task"
             />
           </div>
+          <div v-else class="col-span-3 pt-4 text-gray-500">
+            No tasks created by you.
+          </div>
         </div>
       </template>
       <template #completedtasks>
         <div
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
+          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
         >
           <div
             v-if="completedTasks && completedTasks.length"
@@ -97,6 +111,9 @@ const completedTasks = computed<Task[]>(() => {
               :opened-task-id="openedTaskId"
               :task="task"
             />
+          </div>
+          <div v-else class="col-span-3 pt-4 text-gray-500">
+            No completed tasks.
           </div>
         </div>
       </template>
