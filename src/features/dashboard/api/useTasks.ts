@@ -2,7 +2,7 @@ import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 export interface Task {
-  id: number;
+  uuid: number;
   title: string;
   description: string;
   assignee: string;
@@ -10,6 +10,7 @@ export interface Task {
   deadline: Date;
   is_done: boolean;
   created_at: string;
+  updated_at: string;
   page_url: string;
 }
 

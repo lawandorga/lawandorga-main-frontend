@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useAssignedTasks, useCreatedTasks } from "../api/useTasks";
+import { Task, useAssignedTasks, useCreatedTasks } from "../api/useTasks";
 import { useUserStore } from "@/store/user";
 import TabControls from "@/components/TabControls.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import DashboardTask from "@/features/dashboard/components/DashboardTask.vue";
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -11,6 +11,22 @@ const { assignedTasks } = useAssignedTasks();
 const { createdTasks } = useCreatedTasks();
 
 const openedTaskId = ref<number | null>(null);
+
+/* If the user assigns a task to themself, it's in both lists. Therefore it shows up twice in the completed tasks, which we don't want. This code filters out the duplicates. */
+const completedTasks = computed<Task[]>(() => {
+  const allTasks = [
+    ...(assignedTasks.value?.filter((task: Task) => task.is_done) ?? []),
+    ...(createdTasks.value?.filter((task: Task) => task.is_done) ?? []),
+  ];
+
+  const uniqueTasks = Array.from(
+    new Map(allTasks.map((task) => [task.uuid, task])).values(),
+  );
+
+  return uniqueTasks.sort((task, nextTask) =>
+    task.updated_at > nextTask.updated_at ? -1 : 1,
+  );
+});
 </script>
 
 <template>
@@ -43,7 +59,7 @@ const openedTaskId = ref<number | null>(null);
           >
             <DashboardTask
               v-for="task in assignedTasks"
-              :key="task.id"
+              :key="task.uuid"
               :opened-task-id="openedTaskId"
               :task="task"
             />
@@ -60,7 +76,7 @@ const openedTaskId = ref<number | null>(null);
           >
             <DashboardTask
               v-for="task in createdTasks"
-              :key="task.id"
+              :key="task.uuid"
               :opened-task-id="openedTaskId"
               :task="task"
             />
@@ -71,8 +87,16 @@ const openedTaskId = ref<number | null>(null);
         <div
           class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw]"
         >
-          <div class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3">
-            To do here: Filter own tasks for completed and display them
+          <div
+            v-if="completedTasks && completedTasks.length"
+            class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
+          >
+            <DashboardTask
+              v-for="task in completedTasks"
+              :key="task.uuid"
+              :opened-task-id="openedTaskId"
+              :task="task"
+            />
           </div>
         </div>
       </template>
