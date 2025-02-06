@@ -29,7 +29,10 @@
         </div>
       </div>
       <div class="flex items-center ml-4 md:ml-6">
-        <DashboardCreateTask v-if="user?.email === 'dummy@law-orga.de'" />
+        <DashboardCreateTask
+          v-if="user?.email === 'dummy@law-orga.de'"
+          :query="() => {}"
+        />
         <NavigationDropdown />
       </div>
     </div>

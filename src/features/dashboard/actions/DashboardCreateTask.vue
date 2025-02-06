@@ -15,35 +15,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { computed } from "vue";
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
-import { ButtonNormal, ModalCreate } from "lorga-ui";
-import { FormField, FormOptionInput } from "lorga-ui/dist/types/types/form";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
-// TODO: create query function
+// TODO: create query function  -- this is not a todo this comes from the outside on the dashboard you want to requery the tasks after a new one was created
 
-const { profiles } = useProfiles();
-const profileData = ref<FormOptionInput[]>([]);
+const { formProfiles } = useProfiles();
 
-watch(profiles, (newProfiles) => {
-  if (newProfiles) {
-    profileData.value =
-      newProfiles?.map(
-        (profile): FormOptionInput => ({
-          id: profile.id,
-          name: profile.name,
-          value: profile.id,
-        }),
-      ) ?? [];
-  }
-});
+// TODO: pls rename this to CreateTask often i made mistake of naming with
+// nouns in the beginning but for the actions it is best to just use the actual action
+// kinda like avoiding hungarian notation
 
 // TODO: get the current URL
-const taskFields = computed<FormField[]>(() => [
+const taskFields = computed<types.FormField[]>(() => [
   { label: "Title", name: "title", required: true, type: "text" },
   {
     label: "Description",
@@ -62,7 +51,7 @@ const taskFields = computed<FormField[]>(() => [
     name: "assignee_id",
     required: true,
     type: "select",
-    options: profileData.value,
+    options: formProfiles.value,
   },
   {
     label: "Page URL",
