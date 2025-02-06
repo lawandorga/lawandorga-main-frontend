@@ -36,7 +36,7 @@ watch(profiles, (newProfiles) => {
         (profile): FormOptionInput => ({
           id: profile.id,
           name: profile.name,
-          value: profile.user_id,
+          value: profile.id,
         }),
       ) ?? [];
   }
@@ -58,18 +58,18 @@ const taskFields = computed<FormField[]>(() => [
     type: "date",
   },
   {
-    label: "Creator",
-    name: "creator",
-    required: false,
-    disabled: true,
-    type: "text",
-  },
-  {
     label: "Assignee",
-    name: "assignee",
+    name: "assignee_id",
     required: true,
     type: "select",
     options: profileData.value,
+  },
+  {
+    label: "Page URL",
+    name: "page_url",
+    required: false,
+    disabled: false,
+    type: "text",
   },
 ]);
 
