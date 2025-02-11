@@ -9,6 +9,7 @@
       :request="commandRequest"
       :data="{
         action: 'tasks/create_task',
+        page_url: pageURL,
       }"
     />
   </ButtonNormal>
@@ -21,6 +22,7 @@ import { useProfiles } from "@/features/admin/api/useProfiles";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
+const pageURL = window.location.pathname;
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
 // TODO: create query function  -- this is not a todo this comes from the outside on the dashboard you want to requery the tasks after a new one was created
@@ -52,13 +54,6 @@ const taskFields = computed<types.FormField[]>(() => [
     required: true,
     type: "select",
     options: formProfiles.value,
-  },
-  {
-    label: "Page URL",
-    name: "page_url",
-    required: false,
-    disabled: false,
-    type: "text",
   },
 ]);
 
