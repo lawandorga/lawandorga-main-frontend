@@ -23,8 +23,8 @@ import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
 const pageURL = window.location.pathname;
-const props = defineProps<{ query: () => void }>();
-const { query } = toRefs(props);
+const props = defineProps<{ query: () => void; secondQuery: () => void }>();
+const { query, secondQuery } = toRefs(props);
 
 const { formProfiles } = useProfiles();
 
@@ -51,5 +51,5 @@ const taskFields = computed<types.FormField[]>(() => [
   },
 ]);
 
-const { commandModalOpen, commandRequest } = useCmd(query);
+const { commandModalOpen, commandRequest } = useCmd(query, secondQuery);
 </script>

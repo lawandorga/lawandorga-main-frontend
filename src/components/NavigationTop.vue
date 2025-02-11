@@ -31,7 +31,8 @@
       <div class="flex items-center ml-4 md:ml-6">
         <CreateTask
           v-if="user?.email === 'dummy@law-orga.de'"
-          :query="() => {}"
+          :query="assignedTasksQuery"
+          :second-query="createdTasksQuery"
         />
         <NavigationDropdown />
       </div>
@@ -46,9 +47,13 @@ import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@/store/user";
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
+import { useTaskStore } from "@/features/dashboard/api/useTasks";
 
 const userStore = useUserStore();
 const { user } = userStore;
+
+const createdTaskStore = useTaskStore();
+const { assignedTasksQuery, createdTasksQuery } = createdTaskStore;
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();

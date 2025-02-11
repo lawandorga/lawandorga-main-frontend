@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { Task, useAssignedTasks, useCreatedTasks } from "../api/useTasks";
+import { Task, useTaskStore } from "../api/useTasks";
 import { useUserStore } from "@/store/user";
 import TabControls from "@/components/TabControls.vue";
 import { computed, ref } from "vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-const { assignedTasks } = useAssignedTasks();
-const { createdTasks } = useCreatedTasks();
+const taskStore = useTaskStore();
+const { assignedTasks, createdTasks } = storeToRefs(taskStore);
 
 const assignedOpenTasks = computed<Task[]>(
   () => assignedTasks.value?.filter((task: Task) => !task.is_done) ?? [],
