@@ -29,10 +29,6 @@ const { query } = toRefs(props);
 
 const { formProfiles } = useProfiles();
 
-// TODO: pls rename this to CreateTask often i made mistake of naming with
-// nouns in the beginning but for the actions it is best to just use the actual action
-// kinda like avoiding hungarian notation
-
 // TODO: get the current URL
 const taskFields = computed<types.FormField[]>(() => [
   { label: "Title", name: "title", required: true, type: "text" },

@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="flex items-center ml-4 md:ml-6">
-        <DashboardCreateTask
+        <CreateTask
           v-if="user?.email === 'dummy@law-orga.de'"
           :query="() => {}"
         />
@@ -45,7 +45,7 @@ import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@/store/user";
-import DashboardCreateTask from "@/features/dashboard/actions/DashboardCreateTask.vue";
+import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 
 const userStore = useUserStore();
 const { user } = userStore;
