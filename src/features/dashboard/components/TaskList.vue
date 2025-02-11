@@ -4,7 +4,7 @@ import { Task, useAssignedTasks, useCreatedTasks } from "../api/useTasks";
 import { useUserStore } from "@/store/user";
 import TabControls from "@/components/TabControls.vue";
 import { computed, ref } from "vue";
-import DashboardTask from "@/features/dashboard/components/DashboardTask.vue";
+import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const { assignedTasks } = useAssignedTasks();
@@ -68,7 +68,7 @@ const openedTaskId = ref<number | null>(null);
             v-if="assignedOpenTasks && assignedOpenTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
-            <DashboardTask
+            <SingleTask
               v-for="task in sortTasks(assignedOpenTasks)"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
@@ -88,7 +88,7 @@ const openedTaskId = ref<number | null>(null);
             v-if="createdOpenTasks && createdOpenTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
-            <DashboardTask
+            <SingleTask
               v-for="task in sortTasks(createdOpenTasks)"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
@@ -108,7 +108,7 @@ const openedTaskId = ref<number | null>(null);
             v-if="completedTasks && completedTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
-            <DashboardTask
+            <SingleTask
               v-for="task in completedTasks"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
