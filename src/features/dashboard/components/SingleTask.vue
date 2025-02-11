@@ -35,7 +35,7 @@ const { task } = toRefs(props);
         {{ task.description }}
       </p>
     </button>
-    <div class="flex justify-between pt-2 mt-4 border-t-2">
+    <div v-if="task.deadline" class="flex justify-between pt-2 mt-4 border-t-2">
       <p class="content-center text-sm text-gray-500">
         Due on {{ new Date(task.deadline).toLocaleString() }}
       </p>
