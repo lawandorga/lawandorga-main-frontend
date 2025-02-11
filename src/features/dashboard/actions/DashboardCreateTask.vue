@@ -46,7 +46,7 @@ const taskFields = computed<types.FormField[]>(() => [
     label: "Deadline",
     name: "deadline",
     required: false,
-    type: "date",
+    type: "datetime-local",
   },
   {
     label: "Assignee",
