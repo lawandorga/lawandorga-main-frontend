@@ -18,6 +18,11 @@ const createdOpenTasks = computed<Task[]>(
   () => createdTasks.value?.filter((task: Task) => !task.is_done) ?? [],
 );
 
+const sortTasks = (tasks: Task[]) =>
+  tasks.sort((task, nextTask) =>
+    task.updated_at > nextTask.updated_at ? -1 : 1,
+  );
+
 /* If the user assigns a task to themself, it's in both lists. Therefore it shows up twice in the completed tasks, which we don't want. This code filters out the duplicates. */
 const completedTasks = computed<Task[]>(() => {
   const allTasks = [
@@ -29,9 +34,7 @@ const completedTasks = computed<Task[]>(() => {
     new Map(allTasks.map((task) => [task.uuid, task])).values(),
   );
 
-  return uniqueTasks.sort((task, nextTask) =>
-    task.updated_at > nextTask.updated_at ? -1 : 1,
-  );
+  return sortTasks(uniqueTasks);
 });
 
 const openedTaskId = ref<number | null>(null);
@@ -66,7 +69,7 @@ const openedTaskId = ref<number | null>(null);
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
             <DashboardTask
-              v-for="task in assignedOpenTasks"
+              v-for="task in sortTasks(assignedOpenTasks)"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
               :task="task"
@@ -86,7 +89,7 @@ const openedTaskId = ref<number | null>(null);
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
             <DashboardTask
-              v-for="task in createdOpenTasks"
+              v-for="task in sortTasks(createdOpenTasks)"
               :key="task.uuid"
               :opened-task-id="openedTaskId"
               :task="task"
