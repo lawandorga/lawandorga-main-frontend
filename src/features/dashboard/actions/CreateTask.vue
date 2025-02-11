@@ -25,11 +25,9 @@ import { toRefs } from "vue";
 const pageURL = window.location.pathname;
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
-// TODO: create query function  -- this is not a todo this comes from the outside on the dashboard you want to requery the tasks after a new one was created
 
 const { formProfiles } = useProfiles();
 
-// TODO: get the current URL
 const taskFields = computed<types.FormField[]>(() => [
   { label: "Title", name: "title", required: true, type: "text" },
   {
