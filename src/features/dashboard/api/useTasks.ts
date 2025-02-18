@@ -1,4 +1,5 @@
 import useGet2 from "@/composables/useGet2";
+import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export interface Task {
@@ -14,24 +15,17 @@ export interface Task {
   page_url: string;
 }
 
-export const useAssignedTasks = () => {
+export const useTaskStore = defineStore("tasks", () => {
   const assignedTasks = ref<Task[] | null>(null);
-
-  const assignedTasksQuery = useGet2(`api/tasks/query/own/`, assignedTasks);
-
-  return {
-    assignedTasksQuery,
-    assignedTasks,
-  };
-};
-
-export const useCreatedTasks = () => {
   const createdTasks = ref<Task[] | null>(null);
 
+  const assignedTasksQuery = useGet2(`api/tasks/query/own/`, assignedTasks);
   const createdTasksQuery = useGet2(`api/tasks/query/created/`, createdTasks);
 
   return {
-    createdTasksQuery,
+    assignedTasks,
     createdTasks,
+    assignedTasksQuery,
+    createdTasksQuery,
   };
-};
+});

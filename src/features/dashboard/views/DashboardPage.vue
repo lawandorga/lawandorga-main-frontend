@@ -27,7 +27,7 @@
             >
               Notes from your LC
             </h2>
-            <DashboardCreateNote :query="notesQuery" />
+            <CreateNote :query="notesQuery" />
           </div>
           <div
             class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
@@ -46,13 +46,13 @@
                 {{ note.note_with_links }}
               </p>
               <div class="flex justify-end gap-3 mt-2 space-x-3">
-                <DashboardUpdateNote
+                <UpdateNote
                   :query="notesQuery"
                   :note-id="note.id"
                   :note-title="note.title"
                   :note-note="note.note"
                 />
-                <DashboardDeleteNote
+                <DeleteNote
                   :query="notesQuery"
                   :note-id="note.id"
                   :note-title="note.title"
@@ -230,7 +230,7 @@
             </article>
           </div>
         </div>
-        <DashboardTaskList />
+        <TaskList />
       </div>
     </div>
   </BoxLoader>
@@ -244,9 +244,9 @@ import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { ButtonNormal } from "lorga-ui";
-import DashboardCreateNote from "@/features/dashboard/actions/DashboardCreateNote.vue";
-import DashboardDeleteNote from "@/features/dashboard/actions/DashboardDeleteNote.vue";
-import DashboardUpdateNote from "@/features/dashboard/actions/DashboardUpdateNote.vue";
+import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
+import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
+import UpdateNote from "@/features/dashboard/actions/UpdateNote.vue";
 import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
@@ -254,7 +254,7 @@ import { useQuestionnaires } from "../api/useQuestionnaires";
 import { useChangedRecords } from "../api/useChangedRecords";
 import { useArticles } from "../api/useArticles";
 import { useMembers } from "../api/useMembers";
-import DashboardTaskList from "../components/DashboardTaskList.vue";
+import TaskList from "../components/TaskList.vue";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);

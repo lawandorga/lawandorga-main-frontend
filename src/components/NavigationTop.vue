@@ -29,13 +29,11 @@
         </div>
       </div>
       <div class="flex items-center ml-4 md:ml-6">
-        <ButtonNormal
+        <CreateTask
           v-if="user?.email === 'dummy@law-orga.de'"
-          kind="secondary"
-          class="mr-4"
-        >
-          Add a Task
-        </ButtonNormal>
+          :query="assignedTasksQuery"
+          :second-query="createdTasksQuery"
+        />
         <NavigationDropdown />
       </div>
     </div>
@@ -47,11 +45,15 @@ import { computed } from "vue";
 import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
-import { ButtonNormal } from "lorga-ui";
 import { useUserStore } from "@/store/user";
+import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
+import { useTaskStore } from "@/features/dashboard/api/useTasks";
 
 const userStore = useUserStore();
 const { user } = userStore;
+
+const createdTaskStore = useTaskStore();
+const { assignedTasksQuery, createdTasksQuery } = createdTaskStore;
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();
