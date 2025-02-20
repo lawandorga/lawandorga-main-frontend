@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia";
 import { Task, useTaskStore } from "../api/useTasks";
 import { useUserStore } from "@/store/user";
 import TabControls from "@/components/TabControls.vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -36,8 +36,6 @@ const completedTasks = computed<Task[]>(() => {
 
   return sortTasks(uniqueTasks);
 });
-
-const openedTaskId = ref<number | null>(null);
 </script>
 
 <template>
@@ -71,7 +69,6 @@ const openedTaskId = ref<number | null>(null);
             <SingleTask
               v-for="task in sortTasks(assignedOpenTasks)"
               :key="task.uuid"
-              :opened-task-id="openedTaskId"
               :task="task"
             />
           </div>
@@ -91,7 +88,6 @@ const openedTaskId = ref<number | null>(null);
             <SingleTask
               v-for="task in sortTasks(createdOpenTasks)"
               :key="task.uuid"
-              :opened-task-id="openedTaskId"
               :task="task"
             />
           </div>
@@ -111,7 +107,6 @@ const openedTaskId = ref<number | null>(null);
             <SingleTask
               v-for="task in completedTasks"
               :key="task.uuid"
-              :opened-task-id="openedTaskId"
               :task="task"
             />
           </div>
