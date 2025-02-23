@@ -103,6 +103,7 @@ const userStore = useUserStore();
               label="Created Year"
               placeholder="2024"
               type="number"
+              max="9999"
               required
               @change="
                 (e: Event) =>
