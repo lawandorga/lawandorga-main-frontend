@@ -35,6 +35,17 @@ function request(data: { files: File[]; folder_uuid: string }): Promise<void> {
       formData.append("files", i);
     });
   if (data.folder_uuid) formData.append("folder_uuid", data.folder_uuid);
+  if (data.files.length > 100) {
+    return Promise.reject({
+      response: {
+        data: {
+          title: "You can only upload 100 files at a time.",
+          param_errors: {},
+          general_errors: [],
+        },
+      },
+    });
+  }
 
   const config = {
     onUploadProgress: function (progressEvent: AxiosProgressEvent) {
