@@ -37,7 +37,7 @@
       <ul class="text-sm text-gray-600">
         <li>
           <span class="font-mono text-sm">(C)&nbsp;</span>
-          stands for access cut to above.
+          stands for access cut from above.
         </li>
         <li>
           <span class="font-mono">(R)&nbsp;</span>

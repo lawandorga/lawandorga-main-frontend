@@ -58,7 +58,7 @@
             v-if="selectedItem.folder.stop_inherit"
             class="mt-4 text-sm text-green-700"
           >
-            Info: This folder has the access cut to above. That means that
+            Info: This folder has the access cut from above. That means that
             persons who have access to its parent will
             <b>not</b>
             have access to this folder.
