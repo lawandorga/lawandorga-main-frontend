@@ -19,7 +19,6 @@ import recordsRoutes from "@/features/records/routes";
 import questionnaireRoutes from "@/features/questionnaires/routes";
 import orgRoutes from "@/features/org/routes";
 import folderRoutes from "@/features/folders/routes";
-import collabRoutes from "@/features/collab/routes";
 import usersRoutes from "@/features/users/routes";
 import { useUserStore } from "@/store/user";
 
@@ -42,7 +41,6 @@ const routes: Array<RouteRecordRaw> = [
   ...folderRoutes,
   ...usersRoutes,
   ...userRoutes,
-  ...collabRoutes,
   ...dataSheetsRoutes,
   ...recordsRoutes,
   ...filesRoutes,

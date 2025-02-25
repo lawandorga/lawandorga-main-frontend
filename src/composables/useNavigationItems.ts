@@ -3,7 +3,6 @@ import {
   RectangleStackIcon,
   FolderOpenIcon,
   LinkIcon,
-  DocumentTextIcon,
   ChartPieIcon,
   CogIcon,
   LifebuoyIcon,
@@ -54,13 +53,6 @@ export default function useNavigationItems() {
         },
         permissions: [],
       },
-      // {
-      //   label: "Records",
-      //   icon: RectangleStackIcon,
-      //   is: "router-link",
-      //   attrs: { to: { name: "records-dashboard" } },
-      //   permissions: [],
-      // },
       {
         label: "Records",
         icon: RectangleStackIcon,
@@ -83,13 +75,6 @@ export default function useNavigationItems() {
       });
 
     items1.push(
-      {
-        label: "Collab",
-        icon: DocumentTextIcon,
-        is: "router-link",
-        attrs: { to: { name: "collab-migrate" } },
-        permissions: [],
-      },
       {
         label: "Events",
         icon: CalendarDaysIcon,
