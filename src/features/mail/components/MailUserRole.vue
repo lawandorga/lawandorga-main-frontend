@@ -23,18 +23,18 @@
           <thead>
             <tr>
               <th></th>
-              <th>IMAP</th>
-              <th>SMTP</th>
+              <th scope="col">IMAP</th>
+              <th scope="col">SMTP</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th class="!align-middle">Server</th>
+              <th scope="row" class="!align-middle">Server</th>
               <td>mail.law-orga.de</td>
               <td>mail.law-orga.de</td>
             </tr>
             <tr>
-              <th>Port</th>
+              <th scope="row">Port</th>
               <td>
                 143 with StartTLS
                 <br />
@@ -55,12 +55,12 @@
               </td>
             </tr>
             <tr>
-              <th>Username</th>
+              <th scope="row">Username</th>
               <td>{{ user.email || "None yet" }}</td>
               <td>{{ user.email || "None yet" }}</td>
             </tr>
             <tr>
-              <th>Password</th>
+              <th scope="row">Password</th>
               <td>*******</td>
               <td>*******</td>
             </tr>

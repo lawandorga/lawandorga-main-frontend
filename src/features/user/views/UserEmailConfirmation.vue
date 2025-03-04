@@ -35,7 +35,7 @@ const route = useRoute();
 const client = useClient();
 
 const request = client.post(
-  "api/rlc_users/{}/confirm_email/{}/",
+  "api/org_users/{}/confirm_email/{}/",
   route.params.user as string,
   route.params.token as string,
 );

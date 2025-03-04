@@ -9,7 +9,7 @@
       v-model="commandModalOpen"
       title="Unlock User"
       :request="commandRequest"
-      :data="{ another_rlc_user_id: userId, action: 'auth/unlock_user' }"
+      :data="{ another_org_user_id: userId, action: 'auth/unlock_user' }"
     >
       Are you sure you want to unlock '{{ userName }}'?
     </ModalConfirm>
