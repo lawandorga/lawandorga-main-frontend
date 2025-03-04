@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import useClient from "@/api/client";
 import useCmd from "@/composables/useCmd";
 
-interface RlcUser {
+interface OrgUser {
   id: number;
   user_id: number;
   birthday: string;
@@ -42,7 +42,7 @@ interface Link {
   order: number;
 }
 
-interface Rlc {
+interface Org {
   id: number;
   name: string;
   use_record_pool: boolean;
@@ -51,17 +51,17 @@ interface Rlc {
 }
 
 interface DataResponse {
-  user: RlcUser;
-  rlc: Rlc;
+  user: OrgUser;
+  rlc: Org;
   permissions: string[];
   badges: BadgeInformation;
   settings: Settings;
 }
 
 export const useUserStore = defineStore("user", () => {
-  const rlc = ref<Rlc>();
+  const rlc = ref<Org>();
 
-  const user = ref<RlcUser>();
+  const user = ref<OrgUser>();
 
   const permissions = ref<string[]>();
 

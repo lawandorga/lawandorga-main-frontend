@@ -2,7 +2,7 @@ import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
 import { computed, ref, Ref } from "vue";
 
-export interface RlcUserSmall {
+export interface OrgUserSmall {
   id: number;
   user_id: number;
   phone_number: string | null;
@@ -15,7 +15,7 @@ export interface RlcUserSmall {
 }
 
 export function useProfiles() {
-  const profiles = ref(null) as Ref<RlcUserSmall[] | null>;
+  const profiles = ref(null) as Ref<OrgUserSmall[] | null>;
 
   const client = useClient();
   const request = client.get("api/rlc_users/");

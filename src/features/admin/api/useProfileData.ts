@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
 
-export interface RlcUser {
+export interface OrgUser {
   id: number;
   user_id: number;
   birthday: string;
@@ -34,14 +34,14 @@ interface HasPermission {
 }
 
 interface Data {
-  user: RlcUser;
+  user: OrgUser;
   permissions: HasPermission[] | null;
 }
 
 export function useProfileData(id: string) {
   const data = ref<Data | null>(null);
 
-  const user = computed<RlcUser | null>(() => {
+  const user = computed<OrgUser | null>(() => {
     if (!data.value) return null;
     return data.value.user;
   });
