@@ -71,8 +71,10 @@
 </template>
 
 <script setup lang="ts">
+type ContentItemId = number | string | null;
+
 export interface ContentItem {
-  id: number | string | null;
+  id: ContentItemId;
   created?: string;
   name: string;
   type: string;
@@ -97,7 +99,7 @@ defineProps<{
   groups: ContentGroupItem[];
   ungroupedButtons: VNode[];
   selectedType: string;
-  selectedId: string | number | null;
+  selectedId: ContentItemId;
   hideGroupingControl?: boolean;
 }>();
 
