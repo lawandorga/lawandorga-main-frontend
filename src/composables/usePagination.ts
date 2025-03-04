@@ -6,7 +6,7 @@ export default function usePagination(items: Ref<any[] | null>, perPage: 12) {
     if (items.value === null) return [1];
     return Array.from(
       Array(Math.ceil(items.value.length / perPage)).keys(),
-    ).map((i) => (i += 1));
+    ).map((i) => i + 1);
   });
 
   const currentPage = ref(1);
