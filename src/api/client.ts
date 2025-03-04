@@ -6,7 +6,6 @@ import { inject, InjectionKey, provide, Ref, unref } from "vue";
 
 const clientKey = Symbol() as InjectionKey<Client>;
 
-// type ErrorHandler = (error: AxiosError) => Promise<void>;
 type CallerInstance = AxiosInstance;
 type UrlParamType =
   | string

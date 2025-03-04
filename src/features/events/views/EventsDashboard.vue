@@ -129,13 +129,18 @@ const route = useRoute();
 const userStore = useUserStore();
 
 // eslint-disable-next-line no-unused-vars
-function groupBy<T>(xs: T[], getKey: (element: T) => string) {
-  if (!xs) return null;
+function groupBy<T>(items: T[], getKey: (element: T) => string) {
+  if (!items) return null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return xs.reduce(function (rv: any, x: T) {
-    (rv[getKey(x)] = rv[getKey(x)] || []).push(x);
-    return rv;
+  const itemsGroupedByKey = items.reduce(function (results: any, item: T) {
+    const currentKey = getKey(item);
+    if (!results[currentKey]) {
+      results[currentKey] = [];
+    }
+    results[currentKey].push(item);
+    return results;
   }, {});
+  return itemsGroupedByKey;
 }
 
 const { events, query } = useEvents();

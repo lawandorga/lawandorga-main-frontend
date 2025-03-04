@@ -519,16 +519,6 @@ function createUpdateDeleteFile(
     createModalOpen: createFileModalOpen,
   } = useCreate(FilesService.createFile, items);
 
-  // const { createRequest, createModalOpen: createFileModalOpen } = useCreate(
-  //     FilesService.createFile,
-  //     items,
-  //   );
-  //   const createFileRequest = (data: JsonModel) => {
-  //     const formData = new FormData();
-  //     formData.append("folder", (data.folder as number).toString());
-  //     return createRequest(formData);
-  //   };
-
   // update
   const updateFileFields = ref([
     {

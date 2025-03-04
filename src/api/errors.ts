@@ -129,15 +129,16 @@ export function handleFileDownloadError(
   const alertStore = context.alertStore;
   const error = context.error;
 
-  if (
+  const isJsonBlobError =
     error.request.responseType === "blob" &&
     error.response !== undefined &&
     error.response.data instanceof Blob &&
     error.response.data.type &&
-    error.response.data.type.toLowerCase().indexOf("json") != -1
-  ) {
-    const data: Blob = error.response.data;
-    const status: number = error.response.status;
+    error.response.data.type.toLowerCase().indexOf("json") != -1;
+
+  if (isJsonBlobError) {
+    const data = error.response?.data as Blob;
+    const status = error.response?.status as number;
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
