@@ -22,7 +22,7 @@
         <table aria-describedby="table-describe">
           <thead>
             <tr>
-              <th></th>
+              <th scope="col"></th>
               <th scope="col">IMAP</th>
               <th scope="col">SMTP</th>
             </tr>
