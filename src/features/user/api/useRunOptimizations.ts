@@ -22,12 +22,6 @@ export function useRunOptimizations() {
         .catch((e) => {
           return Promise.reject(e);
         }),
-    Collab: () =>
-      client
-        .post("api/command/")({ action: "collab/optimize" })
-        .catch((e) => {
-          return Promise.reject(e);
-        }),
     Folders: () =>
       client
         .post("api/command/")({ action: "folders/optimize" })
