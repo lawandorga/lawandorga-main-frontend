@@ -14,7 +14,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuItem from "./FormMenuItem.vue";
-import { BooleanFunction, VoidFunction } from "@/types_deprecated/shared";
 
 export default defineComponent({
   components: {
@@ -242,8 +241,8 @@ export default defineComponent({
         type?: "divider";
         icon: string;
         title: string;
-        action: VoidFunction;
-        isActive?: BooleanFunction;
+        action: () => void;
+        isActive?: () => boolean;
       }[],
     };
   },

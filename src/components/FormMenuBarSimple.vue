@@ -13,7 +13,6 @@
 
 <script setup lang="ts">
 import { Editor } from "@tiptap/vue-3";
-import { BooleanFunction, VoidFunction } from "@/types_deprecated/shared";
 import { ref } from "vue";
 import MenuItem from "./FormMenuItem.vue";
 
@@ -94,7 +93,7 @@ const items = ref([
   type?: "divider";
   icon: string;
   title: string;
-  action: VoidFunction;
-  isActive?: BooleanFunction;
+  action: () => void;
+  isActive?: () => boolean;
 }[]);
 </script>

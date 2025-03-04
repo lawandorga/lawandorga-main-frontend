@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts">
-import { BooleanFunction, VoidFunction } from "@/types_deprecated/shared";
 import { defineComponent, PropType } from "vue";
 import remixiconUrl from "remixicon/fonts/remixicon.symbol.svg";
 
@@ -32,11 +31,11 @@ export default defineComponent({
       required: true,
     },
     action: {
-      type: Function as PropType<VoidFunction>,
+      type: Function as PropType<() => void>,
       required: true,
     },
     isActive: {
-      type: Function as PropType<BooleanFunction>,
+      type: Function as PropType<() => boolean>,
       default: null,
       required: false,
     },

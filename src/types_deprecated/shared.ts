@@ -8,12 +8,6 @@ export type Reffed<T extends unknown[]> = T extends (infer U)[]
   : never;
 
 /*
-// functions
-*/
-export type VoidFunction = () => void;
-export type BooleanFunction = () => void;
-
-/*
 // models
 */
 export type JsonModel = {
