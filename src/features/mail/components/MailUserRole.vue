@@ -21,9 +21,11 @@
         <h2 id="table-describe" class="">IMAP & SMTP Settings</h2>
         <table aria-describedby="table-describe">
           <thead>
-            <th></th>
-            <th>IMAP</th>
-            <th>SMTP</th>
+            <tr>
+              <th></th>
+              <th>IMAP</th>
+              <th>SMTP</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
@@ -88,8 +90,10 @@
             aria-describedby="table-describe-groups"
           >
             <thead>
-              <th>Group</th>
-              <th>Username</th>
+              <tr>
+                <th>Group</th>
+                <th>Username</th>
+              </tr>
             </thead>
             <tbody>
               <tr>
