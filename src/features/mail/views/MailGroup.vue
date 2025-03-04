@@ -1,3 +1,25 @@
+<script lang="ts" setup>
+import MailGroupAddAddress from "@/features/mail/actions/MailGroupAddAddress.vue";
+import MailGroupAddMember from "@/features/mail/actions/MailGroupAddMember.vue";
+import MailGroupDeleteAddress from "@/features/mail/actions/MailGroupDeleteAddress.vue";
+import MailGroupRemoveMember from "@/features/mail/actions/MailGroupRemoveMember.vue";
+import MailSetDefaultGroupAddress from "@/features/mail/actions/MailSetDefaultGroupAddress.vue";
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { useUserStore } from "@/store/user";
+import { EnvelopeIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import { useRoute } from "vue-router";
+import { type MailAddress, useGetGroupPage } from "../api/useGetGroupPage";
+
+const userStore = useUserStore();
+
+const route = useRoute();
+const uuid = route.params.uuid as string;
+const { page, query, availableDomains, members, addresses } =
+  useGetGroupPage(uuid);
+</script>
+
 <template>
   <BoxLoader :show="userStore.loaded">
     <div v-if="userStore.loaded" class="max-w-3xl mx-auto space-y-8">
@@ -74,25 +96,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import MailGroupAddAddress from "@/features/mail/actions/MailGroupAddAddress.vue";
-import MailGroupAddMember from "@/features/mail/actions/MailGroupAddMember.vue";
-import MailGroupDeleteAddress from "@/features/mail/actions/MailGroupDeleteAddress.vue";
-import MailGroupRemoveMember from "@/features/mail/actions/MailGroupRemoveMember.vue";
-import MailSetDefaultGroupAddress from "@/features/mail/actions/MailSetDefaultGroupAddress.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { useUserStore } from "@/store/user";
-import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator } from "lorga-ui";
-import { useRoute } from "vue-router";
-import { MailAddress, useGetGroupPage } from "../api/useGetGroupPage";
-
-const userStore = useUserStore();
-
-const route = useRoute();
-const uuid = route.params.uuid as string;
-const { page, query, availableDomains, members, addresses } =
-  useGetGroupPage(uuid);
-</script>

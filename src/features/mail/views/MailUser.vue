@@ -1,3 +1,23 @@
+<script lang="ts" setup>
+import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
+import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
+import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { useUserStore } from "@/store/user";
+import { EnvelopeIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import { useRoute } from "vue-router";
+import { type MailAddress, useGetUserPage } from "../api/useGetUserPage";
+
+const userStore = useUserStore();
+
+const route = useRoute();
+const uuid = route.params.uuid as string;
+
+const { page, query, addresses } = useGetUserPage(uuid);
+</script>
+
 <template>
   <BoxLoader :show="userStore.loaded && !!page">
     <div v-if="userStore.loaded && !!page" class="max-w-3xl mx-auto">
@@ -48,23 +68,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
-import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
-import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { useUserStore } from "@/store/user";
-import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator } from "lorga-ui";
-import { useRoute } from "vue-router";
-import { MailAddress, useGetUserPage } from "../api/useGetUserPage";
-
-const userStore = useUserStore();
-
-const route = useRoute();
-const uuid = route.params.uuid as string;
-
-const { page, query, addresses } = useGetUserPage(uuid);
-</script>

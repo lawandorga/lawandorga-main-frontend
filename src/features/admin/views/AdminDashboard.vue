@@ -10,7 +10,10 @@
     <div
       class="bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
     >
-      <template v-for="item in items" :key="item.title">
+      <template
+        v-for="item in items"
+        :key="item.placeholder ? item.placeholder : item.title"
+      >
         <div
           v-if="item.placeholder"
           class="bg-gray-50"
@@ -152,11 +155,6 @@ const items = computed<AdminItem[]>(() => {
       class: "sm:rounded-br-lg",
     },
   ];
-
-  // const placeholderItem = {
-  //   placeholder: true as const,
-  //   class: "rounded-b-lg sm:rounded-bl-none",
-  // };
 
   return generalItems;
 });
