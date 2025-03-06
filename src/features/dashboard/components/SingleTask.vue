@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { toRefs } from "vue";
+import { ref, toRefs } from "vue";
 import { Task } from "../api/useTasks";
 import useCmd from "@/composables/useCmd";
 
 import { useTaskStore } from "@/features/dashboard/api/useTasks";
-import { FolderOpenIcon, ChevronUpDownIcon } from "@heroicons/vue/24/outline";
 import {
+  CheckIcon,
+  ChevronUpDownIcon,
+  FolderOpenIcon,
+  PencilIcon,
+} from "@heroicons/vue/24/outline";
+import {
+  ButtonNormal,
   ModalFree,
   TableTable,
   TableRow,
@@ -25,7 +31,18 @@ const { commandModalOpen, commandRequest } = useCmd(
   assignedTasksQuery,
   createdTasksQuery,
 );
-console.log(commandRequest);
+
+const editingTitle = ref(false);
+const newTitle = ref(task.value.title);
+
+const saveTask = () => {
+  commandRequest({
+    action: "tasks/update_task",
+    task_id: task.value.uuid,
+    title: newTitle.value,
+  });
+  editingTitle.value = false;
+};
 </script>
 
 <template>
@@ -62,16 +79,37 @@ console.log(commandRequest);
   </article>
   <ModalFree
     v-model="commandModalOpen"
-    :title="`Update ${task.title}`"
     width="max-w-screen-md"
+    title="Update Task"
   >
     <TableTable>
       <TableBody>
         <TableRow class="border-t border-solid">
+          <TableHeader class="w-1/4 border-r border-solid">
+            Task name
+          </TableHeader>
+          <TableData>
+            <div class="flex items-center gap-2">
+              <input
+                v-if="editingTitle"
+                v-model="newTitle"
+                class="w-full p-2 border border-gray-300 border-solid rounded"
+              />
+              <h3 v-else class="font-medium text-gray-700">{{ newTitle }}</h3>
+              <button @click="editingTitle = !editingTitle">
+                <CheckIcon v-if="editingTitle" class="w-4 h-4 stroke-2" />
+                <PencilIcon v-else class="w-4 h-4 stroke-2" />
+              </button>
+            </div>
+          </TableData>
+        </TableRow>
+        <TableRow class="border-t border-solid">
           <TableHeader class="w-1/4 border-r border-solid">Case ID</TableHeader>
           <TableData>
-            <FolderOpenIcon class="w-6 h-6" />
-            <a href="" class="ml-2 underline">{{ task.page_url }}</a>
+            <a :href="task.page_url" class="flex">
+              <FolderOpenIcon class="w-6 h-6" />
+              <span class="ml-2 underline">{{ task.page_url }}</span>
+            </a>
           </TableData>
         </TableRow>
         <TableRow>
@@ -91,12 +129,15 @@ console.log(commandRequest);
           <TableData>Ich bin das vierte</TableData>
         </TableRow>
         <TableRow>
-          <TableHeader class="w-1/4 border-r border-solid font-bold">
+          <TableHeader class="w-1/4 font-bold border-r border-solid">
             Notes
           </TableHeader>
           <TableData>Ich bin das vierte</TableData>
         </TableRow>
       </TableBody>
     </TableTable>
+    <div class="flex justify-end gap-2 mt-4">
+      <ButtonNormal @click="saveTask">Save</ButtonNormal>
+    </div>
   </ModalFree>
 </template>
