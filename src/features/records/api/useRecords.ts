@@ -12,6 +12,7 @@ export interface Record {
   delete_requested: boolean;
   has_access: boolean;
   folder_uuid: string;
+  data_sheet_uuid: string;
 }
 
 interface RecordsData {
