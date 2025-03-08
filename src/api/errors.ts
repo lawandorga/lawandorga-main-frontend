@@ -14,7 +14,7 @@ interface Context {
 }
 
 // eslint-disable-next-line no-unused-vars
-type ErrorFinder = (context: Context) => Promise<ICommandError>;
+type ErrorFinder = (context: Context) => ICommandError | undefined;
 
 class ErrorFinderResult {
   constructor(
@@ -40,30 +40,21 @@ class ErrorFinderResult {
     };
   }
 
-  async run(finderFn: ErrorFinder): Promise<ErrorFinderResult> {
+  run(finderFn: ErrorFinder): ErrorFinderResult {
     if (this.isErrorFound()) {
       return this;
     }
-    return finderFn(this.context)
-      .then((error: ICommandError) => {
-        return new ErrorFinderResult(this.context, error);
-      })
-      .catch(() => {
-        return this;
-      });
+    const result = finderFn(this.context);
+    if (result) {
+      return new ErrorFinderResult(this.context, result);
+    }
+    return this;
   }
 }
 
-const wrapErrorFinder = (finderFn: ErrorFinder) => {
-  const wrapped = (result: ErrorFinderResult) => {
-    return result.run(finderFn);
-  };
-  return wrapped;
-};
-
 export function handleAuthenticationError(
   context: Context,
-): Promise<ICommandError> {
+): ICommandError | undefined {
   const userStore = context.userStore;
   const error = context.error;
 
@@ -72,20 +63,19 @@ export function handleAuthenticationError(
 
     window.location.href = getLoginUrl();
 
-    return Promise.resolve({
+    return {
       title: "Authentication Error",
       paramErrors: {},
       generalErrors: [
         "You are not authenticated. You will be redirected to the login page.",
       ],
-    });
+    };
   }
-  return Promise.reject();
 }
 
 export function handleFileTooBigError(
   context: Context,
-): Promise<ICommandError> {
+): ICommandError | undefined {
   const error = context.error;
 
   if (error.response && error.response.status === 413) {
@@ -95,12 +85,13 @@ export function handleFileTooBigError(
       generalErrors: [],
     };
 
-    return Promise.resolve(newError);
+    return newError;
   }
-  return Promise.reject();
 }
 
-export function handleNetworkError(context: Context): Promise<ICommandError> {
+export function handleNetworkError(
+  context: Context,
+): undefined | ICommandError {
   const alertStore = context.alertStore;
   const error = context.error;
 
@@ -112,20 +103,20 @@ export function handleNetworkError(context: Context): Promise<ICommandError> {
         "There seems to be a network error. Make sure you're connected to the internet.",
     });
 
-    return Promise.resolve({
+    return {
       title: "Network Error",
       paramErrors: {},
       generalErrors: [
         "There seems to be a network error. Make sure you're connected to the internet.",
       ],
-    });
+    };
   }
-  return Promise.reject();
+  return;
 }
 
 export function handleFileDownloadError(
   context: Context,
-): Promise<ICommandError> {
+): ICommandError | undefined {
   const alertStore = context.alertStore;
   const error = context.error;
 
@@ -137,37 +128,21 @@ export function handleFileDownloadError(
     error.response.data.type.toLowerCase().indexOf("json") != -1;
 
   if (isJsonBlobError) {
-    const data = error.response?.data as Blob;
     const status = error.response?.status as number;
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = JSON.parse(reader.result as string);
-        alertStore.createAlert({
-          type: "error",
-          heading: `Error ${status}`,
-          message: "detail" in result ? result.detail : "",
-        });
-        resolve(
-          Promise.resolve({
-            title: `Error ${status}`,
-            paramErrors: {},
-            generalErrors: ["detail" in result ? result.detail : ""],
-          }),
-        );
-      };
-      reader.onerror = () => {
-        reject(error);
-      };
-      reader.readAsText(data);
+    alertStore.createAlert({
+      type: "error",
+      heading: `Error ${status}`,
+      message: "Some error occurred while downloading the file.",
     });
+    return {
+      title: `Error ${status}`,
+      paramErrors: {},
+      generalErrors: ["Some error occurred while downloading the file."],
+    };
   }
-
-  return Promise.reject();
 }
 
-export function handleServerError(context: Context): Promise<ICommandError> {
+export function handleServerError(context: Context): undefined {
   const alertStore = context.alertStore;
   const error = context.error;
 
@@ -178,10 +153,9 @@ export function handleServerError(context: Context): Promise<ICommandError> {
       message: "Server Error",
     });
   }
-  return Promise.reject();
 }
 
-export function handleTitleError(context: Context): Promise<ICommandError> {
+export function handleTitleError(context: Context): undefined | ICommandError {
   const error = context.error as AxiosError<{ title?: string }>;
   const alertStore = context.alertStore;
 
@@ -192,16 +166,15 @@ export function handleTitleError(context: Context): Promise<ICommandError> {
       message: error.response.data.title,
     });
 
-    return Promise.resolve({
+    return {
       title: error.response.data.title,
       paramErrors: {},
       generalErrors: [],
-    });
+    };
   }
-  return Promise.reject();
 }
 
-export function handleDetailError(context: Context): Promise<ICommandError> {
+export function handleDetailError(context: Context): undefined | ICommandError {
   const error = context.error as AxiosError<{ detail?: string }>;
   const alertStore = context.alertStore;
 
@@ -212,13 +185,12 @@ export function handleDetailError(context: Context): Promise<ICommandError> {
       message: error.response.data.detail,
     });
 
-    return Promise.resolve({
+    return {
       title: `Error ${error.response.status}`,
       paramErrors: {},
       generalErrors: [error.response.data.detail],
-    });
+    };
   }
-  return Promise.reject();
 }
 
 type BackendAxiosError =
@@ -243,7 +215,7 @@ type BackendAxiosError =
       detail: string;
     }>;
 
-export function cleanUpError(context: Context): Promise<ICommandError> {
+export function cleanUpError(context: Context): ICommandError {
   const error = context.error as BackendAxiosError;
 
   const newError: types.ICommandError = {
@@ -292,47 +264,48 @@ export function cleanUpError(context: Context): Promise<ICommandError> {
     newError.generalErrors = [];
   }
 
-  return Promise.resolve(newError);
+  return newError;
 }
 
 export function handleQueryError(context: Context): Promise<void> {
-  return new ErrorFinderResult(context, undefined)
+  const res = new ErrorFinderResult(context, undefined)
     .run(handleAuthenticationError)
-    .then(wrapErrorFinder(handleNetworkError))
-    .then(wrapErrorFinder(handleFileDownloadError))
-    .then(wrapErrorFinder(handleServerError))
-    .then(wrapErrorFinder(handleDetailError))
-    .then(wrapErrorFinder(handleTitleError))
-    .then(wrapErrorFinder(cleanUpError))
-    .then((result) => Promise.reject(result.getAnyError()));
+    .run(handleNetworkError)
+    .run(handleFileDownloadError)
+    .run(handleServerError)
+    .run(handleDetailError)
+    .run(handleTitleError)
+    .run(cleanUpError);
+  return Promise.reject(res.getAnyError());
 }
 
 export function handleDownloadError(context: Context): Promise<void> {
-  return new ErrorFinderResult(context, undefined)
-    .run(handleFileDownloadError)
-    .then((result) => Promise.reject(result.getAnyError()));
+  const res = new ErrorFinderResult(context, undefined).run(
+    handleFileDownloadError,
+  );
+  return Promise.reject(res.getAnyError());
 }
 
 export function handleCommandError(context: Context): Promise<void> {
-  return new ErrorFinderResult(context, undefined)
+  const res = new ErrorFinderResult(context, undefined)
     .run(handleAuthenticationError)
-    .then(wrapErrorFinder(handleFileTooBigError))
-    .then(wrapErrorFinder(handleNetworkError))
-    .then(wrapErrorFinder(handleServerError))
-    .then(wrapErrorFinder(cleanUpError))
-    .then((result) => Promise.reject(result.getAnyError()));
+    .run(handleFileTooBigError)
+    .run(handleNetworkError)
+    .run(handleServerError)
+    .run(cleanUpError);
+  return Promise.reject(res.getAnyError());
 }
 
 export function handleError(context: Context): Promise<void> {
-  return new ErrorFinderResult(context, undefined)
+  const res = new ErrorFinderResult(context, undefined)
     .run(handleAuthenticationError)
-    .then(wrapErrorFinder(handleNetworkError))
-    .then(wrapErrorFinder(handleFileDownloadError))
-    .then(wrapErrorFinder(handleServerError))
-    .then(wrapErrorFinder(handleDetailError))
-    .then(wrapErrorFinder(handleTitleError))
-    .then(wrapErrorFinder(cleanUpError))
-    .then((result) => Promise.reject(result.getAnyError()));
+    .run(handleNetworkError)
+    .run(handleFileDownloadError)
+    .run(handleServerError)
+    .run(handleDetailError)
+    .run(handleTitleError)
+    .run(cleanUpError);
+  return Promise.reject(res.getAnyError());
 }
 
 export function buildContext(
@@ -350,23 +323,23 @@ export function buildContext(
   return context;
 }
 
+function injectHandleError(
+  // eslint-disable-next-line no-unused-vars
+  f: (context: Context) => Promise<void>,
+  alertStore: Context["alertStore"],
+  userStore: Context["userStore"],
+  router: Context["router"],
+) {
+  return (error: AxiosError) => {
+    const context = buildContext(error, alertStore, userStore, router);
+    return f(context);
+  };
+}
+
 export function useErrorHandling() {
   const alertStore = useAlertStore();
   const userStore = useUserStore();
   const router = useRouter();
-
-  const injectHandleError =
-    (
-      // eslint-disable-next-line no-unused-vars
-      f: (context: Context) => Promise<void>,
-      alertStore: Context["alertStore"],
-      userStore: Context["userStore"],
-      router: Context["router"],
-    ) =>
-    (error: AxiosError) => {
-      const context = buildContext(error, alertStore, userStore, router);
-      return f(context);
-    };
 
   const handleQueryErrorInjected = injectHandleError(
     handleQueryError,

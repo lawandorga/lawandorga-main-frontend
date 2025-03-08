@@ -8,3 +8,4 @@ dist-ssr
 *.tfvars
 **/.terraform/*
 *.tfstate.*backup
+tsconfig.tsbuildinfo
