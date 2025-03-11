@@ -12,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/features/admin/views/AdminProfiles.vue"),
   },
   {
+    path: "/admin/org/",
+    name: "admin-org",
+    component: () => import("@/features/admin/views/AdminOrg.vue"),
+  },
+  {
     path: "/admin/profiles/:id/",
     name: "admin-profile",
     component: () => import("@/features/admin/views/AdminProfile.vue"),

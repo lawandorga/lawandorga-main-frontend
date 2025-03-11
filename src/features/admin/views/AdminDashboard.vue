@@ -79,6 +79,7 @@ import {
   UsersIcon,
   UserIcon,
   WindowIcon,
+  HomeModernIcon,
 } from "@heroicons/vue/24/outline";
 import { type Component, computed } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
@@ -100,7 +101,7 @@ type AdminItem =
   | { placeholder: true; class?: string };
 
 const items = computed<AdminItem[]>(() => {
-  const generalItems = [
+  const generalItems: AdminItem[] = [
     {
       title: "Profiles",
       description:
@@ -143,7 +144,7 @@ const items = computed<AdminItem[]>(() => {
       link: { name: "admin-sidebar" },
       icon: WindowIcon,
       notifications: 0,
-      class: "sm:rounded-bl-lg",
+      class: "",
     },
     {
       title: "Collab",
@@ -152,7 +153,19 @@ const items = computed<AdminItem[]>(() => {
       link: { name: "admin-collab-templates" },
       icon: DocumentTextIcon,
       notifications: 0,
-      class: "sm:rounded-br-lg",
+      class: "",
+    },
+    {
+      title: "Org",
+      description: "Here you can manage the settings of your organization.",
+      link: { name: "admin-org" },
+      icon: HomeModernIcon,
+      notifications: 0,
+      class: "rounded-b-lg sm:rounded-br-none",
+    },
+    {
+      placeholder: true,
+      class: "rounded-br-lg",
     },
   ];
 
