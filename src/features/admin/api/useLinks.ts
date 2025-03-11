@@ -5,7 +5,7 @@ import useClient from "@/api/client";
 export function useLinks() {
   const client = useClient();
 
-  const request = client.get("/api/query/links/");
+  const request = client.get("/api/org/query/links/");
 
   interface Link {
     id: string;

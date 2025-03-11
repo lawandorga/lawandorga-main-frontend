@@ -24,7 +24,7 @@ interface GroupDetail {
 export function useGroup(id: string) {
   const client = useClient();
 
-  const request = client.get("api/query/group/{}/", id);
+  const request = client.get("api/org/query/group/{}/", id);
 
   const group = ref(null) as Ref<GroupDetail | null>;
   const query = useGet(request, group);

@@ -16,7 +16,7 @@ export function useGroups() {
   const groups = ref(null) as Ref<Group[] | null>;
 
   const client = useClient();
-  const request = client.get("api/query/groups/");
+  const request = client.get("api/org/query/groups/");
 
   const query = useGet(request, groups);
 

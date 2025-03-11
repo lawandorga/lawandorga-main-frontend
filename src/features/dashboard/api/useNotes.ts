@@ -13,7 +13,7 @@ export function useNotes() {
   const client = useClient();
   const notes = ref<DashboardNote[] | null>(null);
 
-  const notesQuery = useGet(client.get("api/query/notes/"), notes);
+  const notesQuery = useGet(client.get("api/org/query/notes/"), notes);
 
   return {
     notesQuery,

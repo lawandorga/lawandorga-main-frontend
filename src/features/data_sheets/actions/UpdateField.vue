@@ -21,7 +21,7 @@ const { query, fieldKind } = toRefs(props);
 const { commandRequest, commandModalOpen } = useCmd(query);
 
 const client = useClient();
-const request = client.get("api/query/groups/");
+const request = client.get("api/org/query/groups/");
 const groups = ref([]);
 const groupsQuery = useQuery(request, groups);
 
