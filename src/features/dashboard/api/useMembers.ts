@@ -9,7 +9,7 @@ interface Member {
 
 export function useMembers() {
   const members = ref<Member[] | null>();
-  useGet2("/api/org_users/dashboard/", members);
+  useGet2("/api/auth/org_users/dashboard/", members);
 
   return {
     members,

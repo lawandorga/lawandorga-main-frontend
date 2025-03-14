@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { ChartBarIcon } from "@heroicons/vue/24/outline";
+import StatisticRecordStates from "@/features/statistics/components/RecordStates.vue";
+import StatisticChartWrapper from "@/features/statistics/components/ChartWrapper.vue";
+import StatisticRecordTags from "@/features/statistics/components/RecordTags.vue";
+import StatisticClientSex from "@/features/statistics/components/ClientSex.vue";
+import StatisticClientAge from "@/features/statistics/components/ClientAge.vue";
+import StatisticClientNationality from "@/features/statistics/components/ClientNationality.vue";
+import StatisticClientState from "@/features/statistics/components/ClientState.vue";
+import StatisticActiveUsers from "@/features/statistics/components/ActiveUsers.vue";
+import StatisticRecordsCreatedAndClosed from "@/features/statistics/components/RecordsCreatedAndClosed.vue";
+import CreatedRecords from "../components/CreatedRecords.vue";
+</script>
+
 <template>
   <div>
     <BreadcrumbsBar
@@ -9,15 +24,15 @@
     </BreadcrumbsBar>
   </div>
   <div class="grid grid-cols-12 gap-4 mt-6">
-    <!-- general -->
+    <StatisticChartWrapper title="Created Records" class="col-span-12">
+      <CreatedRecords />
+    </StatisticChartWrapper>
     <StatisticChartWrapper
       title="Most Active Users In The Last 30 Days"
       class="col-span-12"
     >
       <StatisticActiveUsers />
     </StatisticChartWrapper>
-
-    <!-- records -->
     <StatisticChartWrapper
       title="Data Sheets Created And Closed"
       class="col-span-12"
@@ -36,8 +51,6 @@
     >
       <StatisticRecordTags />
     </StatisticChartWrapper>
-
-    <!-- record client -->
     <StatisticChartWrapper
       title="Data Sheet Client Sex"
       class="col-span-12 xl:col-span-6"
@@ -73,17 +86,3 @@
     </StatisticChartWrapper>
   </div>
 </template>
-
-<script setup lang="ts">
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { ChartBarIcon } from "@heroicons/vue/24/outline";
-import StatisticRecordStates from "@/components/StatisticRecordStates.vue";
-import StatisticChartWrapper from "@/components/StatisticChartWrapper.vue";
-import StatisticRecordTags from "@/components/StatisticRecordTags.vue";
-import StatisticClientSex from "@/components/StatisticClientSex.vue";
-import StatisticClientAge from "@/components/StatisticClientAge.vue";
-import StatisticClientNationality from "@/components/StatisticClientNationality.vue";
-import StatisticClientState from "@/components/StatisticClientState.vue";
-import StatisticActiveUsers from "@/components/StatisticActiveUsers.vue";
-import StatisticRecordsCreatedAndClosed from "@/components/StatisticRecordsCreatedAndClosed.vue";
-</script>

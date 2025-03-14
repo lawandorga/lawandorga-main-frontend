@@ -18,7 +18,7 @@ export function useProfiles() {
   const profiles = ref(null) as Ref<OrgUserSmall[] | null>;
 
   const client = useClient();
-  const request = client.get("api/org_users/");
+  const request = client.get("api/auth/org_users/");
   const query = useGet(request, profiles);
 
   const formProfiles = computed(() => {

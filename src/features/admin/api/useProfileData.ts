@@ -52,7 +52,7 @@ export function useProfileData(id: string) {
   });
 
   const client = useClient();
-  const request = client.get("/api/org_users/{}/", id);
+  const request = client.get("/api/auth/org_users/{}/", id);
   const query = useGet(request, data);
 
   return {

@@ -30,7 +30,7 @@ interface User {
 }
 const users = ref<User[]>([]);
 const client = useClient();
-const request = client.get("api/org_users/");
+const request = client.get("api/auth/org_users/");
 const userQuery = useQuery(request, users);
 
 const fields = computed<types.FormField[]>(() => [

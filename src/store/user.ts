@@ -87,7 +87,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const client = useClient();
-  const request = client.get("api/org_users/data_self/");
+  const request = client.get("api/auth/org_users/data_self/");
 
   const updateData = () => {
     return request()

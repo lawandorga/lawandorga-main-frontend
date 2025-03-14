@@ -58,16 +58,6 @@
         ]"
         :data="keys"
       >
-        <template #name="slotProps">
-          <ButtonLink
-            :to="{
-              name: 'admin-profile',
-              params: { id: slotProps.id },
-            }"
-          >
-            {{ slotProps.name }}
-          </ButtonLink>
-        </template>
         <template #head-action>
           <TestKeys :query="query" />
         </template>
@@ -79,7 +69,11 @@
         </template>
         <template #action="slotProps">
           <GroupsRemoveMember
-            v-if="slotProps.source === 'GROUP' && userStore.user"
+            v-if="
+              slotProps.source === 'GROUP' &&
+              userStore.user &&
+              slotProps.group_id
+            "
             title="Delete Key"
             button="Delete"
             :member-name="userStore.user.name"
@@ -103,7 +97,6 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import ButtonLink from "@/components/ButtonLink.vue";
 import { useUserStore } from "@/store/user";
 import ActionsUserUnlockSelf from "@/features/users/actions/ActionsUserUnlockSelf.vue";
 import useClient from "@/api/client";
@@ -113,7 +106,7 @@ import GroupsRemoveMember from "@/features/org/actions/GroupsRemoveMember.vue";
 interface Key {
   id: number;
   correct: boolean;
-  source: "RECORD" | "RLC";
+  source: "RECORD" | "RLC" | "GROUP";
   information: string;
   group_id: number | null;
 }
@@ -123,6 +116,6 @@ const userStore = useUserStore();
 const keys = ref<Key[]>();
 
 const client = useClient();
-const request = client.get("api/keys/");
+const request = client.get("api/auth/keys/");
 const query = useGet(request, keys);
 </script>
