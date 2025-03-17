@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
+import { ref, toRefs, watch } from "vue";
 import { Task } from "../api/useTasks";
 import useCmd from "@/composables/useCmd";
 
@@ -9,6 +9,7 @@ import {
   ChevronUpDownIcon,
   FolderOpenIcon,
   PencilIcon,
+  XMarkIcon,
 } from "@heroicons/vue/24/outline";
 import {
   ButtonNormal,
@@ -34,14 +35,47 @@ const { commandModalOpen, commandRequest } = useCmd(
 
 const editingTitle = ref(false);
 const newTitle = ref(task.value.title);
+const editingDueDate = ref(false);
+const newDueDate = ref<string | null>(task.value.deadline);
+
+function formatDateTime(date: Date) {
+  const zeroPad = (input: number) => input.toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const month = zeroPad(date.getMonth() + 1);
+  const day = zeroPad(date.getDate());
+  const hours = zeroPad(date.getHours());
+  const minutes = zeroPad(date.getMinutes());
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+watch(editingDueDate, () => {
+  if (!newDueDate.value) {
+    newDueDate.value = formatDateTime(new Date());
+  } else {
+    newDueDate.value = formatDateTime(new Date(newDueDate.value));
+  }
+});
 
 const saveTask = () => {
   commandRequest({
     action: "tasks/update_task",
     task_id: task.value.uuid,
     title: newTitle.value,
+    deadline: newDueDate.value,
   });
   editingTitle.value = false;
+  editingDueDate.value = false;
+};
+
+const formatDate = (date: string) => {
+  const formatter = new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+  return formatter.format(new Date(date));
 };
 </script>
 
@@ -72,8 +106,13 @@ const saveTask = () => {
       {{ task.description }}
     </p>
     <div v-if="task.deadline" class="flex justify-between pt-2 mt-4 border-t-2">
-      <p class="content-center text-sm text-gray-500">
-        Due on {{ new Date(task.deadline).toLocaleString() }}
+      <p
+        class="content-center text-sm text-gray-500"
+        :class="{
+          'text-red-500': task.deadline && new Date(task.deadline) < new Date(),
+        }"
+      >
+        Due on {{ formatDate(task.deadline) }}
       </p>
     </div>
   </article>
@@ -114,13 +153,33 @@ const saveTask = () => {
         </TableRow>
         <TableRow>
           <TableHeader class="w-1/4 border-r border-solid">Due on</TableHeader>
-          <TableData>Ich bin das vierte</TableData>
+          <TableData>
+            <div class="flex items-center gap-2">
+              <input
+                v-if="editingDueDate"
+                v-model="newDueDate"
+                class="w-full p-2 border border-gray-300 border-solid rounded"
+                type="datetime-local"
+              />
+              <h3 v-else-if="newDueDate" class="text-gray-700">
+                {{ formatDate(newDueDate) }}
+              </h3>
+              <h3 v-else>No due date</h3>
+              <button @click="editingDueDate = !editingDueDate">
+                <CheckIcon v-if="editingDueDate" class="w-4 h-4 stroke-2" />
+                <PencilIcon v-else class="w-4 h-4 stroke-2" />
+              </button>
+              <button v-if="newDueDate" @click="newDueDate = null">
+                <XMarkIcon class="w-5 h-5 stroke-2" />
+              </button>
+            </div>
+          </TableData>
         </TableRow>
         <TableRow>
           <TableHeader class="w-1/4 border-r border-solid">
             Created by
           </TableHeader>
-          <TableData>Ich bin das vierte</TableData>
+          <TableData>{{ task.creator_name }}</TableData>
         </TableRow>
         <TableRow>
           <TableHeader class="w-1/4 border-r border-solid">

@@ -7,8 +7,8 @@ export interface Task {
   title: string;
   description: string;
   assignee: string;
-  creator: string;
-  deadline: Date;
+  creator_name: string;
+  deadline: string;
   is_done: boolean;
   created_at: string;
   updated_at: string;
