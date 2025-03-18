@@ -20,47 +20,7 @@
       <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
       User: {{ user?.id }}
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-        <div class="lg:col-span-2 xl:col-span-3">
-          <div class="flex justify-between mt-8">
-            <h2
-              class="items-baseline text-lg font-medium leading-6 text-gray-700"
-            >
-              Notes from your LC
-            </h2>
-            <CreateNote :query="notesQuery" />
-          </div>
-          <div
-            class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3"
-          >
-            <article
-              v-for="note in notes"
-              :key="note.id"
-              class="px-6 pt-4 pb-4 bg-white rounded shadow"
-            >
-              <h3 class="mb-2 font-medium text-gray-700">
-                {{ note.title }}
-              </h3>
-              <p
-                class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
-              >
-                {{ note.note_with_links }}
-              </p>
-              <div class="flex justify-end gap-3 mt-2 space-x-3">
-                <UpdateNote
-                  :query="notesQuery"
-                  :note-id="note.id"
-                  :note-title="note.title"
-                  :note-note="note.note"
-                />
-                <DeleteNote
-                  :query="notesQuery"
-                  :note-id="note.id"
-                  :note-title="note.title"
-                />
-              </div>
-            </article>
-          </div>
-        </div>
+        <OrgNotes />
         <div v-if="records?.length">
           <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
             Active Data Sheets
@@ -244,10 +204,6 @@ import { formatDate } from "@/utils/date";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { ButtonNormal } from "lorga-ui";
-import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
-import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
-import UpdateNote from "@/features/dashboard/actions/UpdateNote.vue";
-import { useNotes } from "../api/useNotes";
 import { useFollowUps } from "../api/useFollowUps";
 import { useRecords } from "../api/useRecords";
 import { useQuestionnaires } from "../api/useQuestionnaires";
@@ -255,11 +211,10 @@ import { useChangedRecords } from "../api/useChangedRecords";
 import { useArticles } from "../api/useArticles";
 import { useMembers } from "../api/useMembers";
 import TaskList from "../components/TaskList.vue";
+import OrgNotes from "../components/OrgNotes.vue";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-
-const { notes, notesQuery } = useNotes();
 
 const { followUps } = useFollowUps();
 const { records } = useRecords();

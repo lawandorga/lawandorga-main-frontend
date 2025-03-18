@@ -74,22 +74,25 @@ export default function useNavigationItems() {
         permissions: [],
       });
 
-    items1.push(
-      {
+    if (store.rlc?.is_events_enabled)
+      items1.push({
         label: "Events",
         icon: CalendarDaysIcon,
         is: "router-link",
         attrs: { to: { name: "events-dashboard" } },
         permissions: [],
-      },
-      {
-        label: "Statistics",
-        icon: ChartPieIcon,
-        is: "router-link",
-        attrs: { to: { name: "statistics-dashboard" } },
-        permissions: [],
-      },
-      {
+      });
+
+    items1.push({
+      label: "Statistics",
+      icon: ChartPieIcon,
+      is: "router-link",
+      attrs: { to: { name: "statistics-dashboard" } },
+      permissions: [],
+    });
+
+    if (store.rlc?.is_mail_enabled)
+      items1.push({
         label: "Mail",
         icon: EnvelopeIcon,
         is: "router-link",
@@ -97,7 +100,9 @@ export default function useNavigationItems() {
           to: { name: "mail-dashboard" },
         },
         permissions: [],
-      },
+      });
+
+    items1.push(
       {
         label: "Admin",
         icon: CogIcon,
@@ -121,14 +126,16 @@ export default function useNavigationItems() {
         attrs: { to: { name: "legal-dashboard" } },
         permissions: [],
       },
-      {
+    );
+
+    if (store.rlc?.is_chat_enabled)
+      items1.push({
         label: "Chat (Beta)",
         icon: ChatBubbleBottomCenterTextIcon,
         is: "router-link",
         attrs: { to: { name: "chat-dashboard" } },
         permissions: [],
-      },
-    );
+      });
 
     if (store.rlc?.links.length) {
       items1.push({ divider: true });

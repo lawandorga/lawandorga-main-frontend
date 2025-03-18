@@ -9,6 +9,9 @@ interface Org {
     name: string;
     id: number;
   } | null;
+  is_events_enabled: boolean;
+  is_chat_enabled: boolean;
+  is_mail_enabled: boolean;
 }
 
 export function useOrg() {

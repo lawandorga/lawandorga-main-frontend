@@ -6,7 +6,9 @@ export interface DashboardNote {
   id: number;
   title: string;
   note: string;
+  order: number;
   note_with_links: string;
+  is_wide: boolean;
 }
 
 export function useNotes() {

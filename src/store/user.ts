@@ -48,18 +48,22 @@ interface Org {
   use_record_pool: boolean;
   links: Link[];
   disable_files: boolean;
+  is_events_enabled: boolean;
+  is_chat_enabled: boolean;
+  is_mail_enabled: boolean;
 }
 
 interface DataResponse {
   user: OrgUser;
   rlc: Org;
+  org: Org;
   permissions: string[];
   badges: BadgeInformation;
   settings: Settings;
 }
 
 export const useUserStore = defineStore("user", () => {
-  const rlc = ref<Org>();
+  const org = ref<Org>();
 
   const user = ref<OrgUser>();
 
@@ -79,7 +83,7 @@ export const useUserStore = defineStore("user", () => {
   const settings = ref<Settings>();
 
   const setData = (data: DataResponse) => {
-    rlc.value = data.rlc;
+    org.value = data.rlc;
     user.value = data.user;
     badges.value = data.badges;
     settings.value = data.settings;
@@ -131,7 +135,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const loaded = computed(() => {
-    return !!rlc.value && !!user.value;
+    return !!org.value && !!user.value;
   });
 
   const locked = computed(() => {
@@ -147,7 +151,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const reset = () => {
-    rlc.value = undefined;
+    org.value = undefined;
     user.value = undefined;
     badges.value = undefined;
     settings.value = undefined;
@@ -155,7 +159,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   return {
-    rlc,
+    rlc: org,
     user,
     badges,
     adminBadges,

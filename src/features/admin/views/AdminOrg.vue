@@ -31,6 +31,9 @@ const { query, org } = useOrg();
                 :default-group-for-new-users="
                   org.default_group_for_new_users?.id || null
                 "
+                :org-is-events-enabled="org.is_events_enabled"
+                :org-is-mail-enabled="org.is_mail_enabled"
+                :org-is-chat-enabled="org.is_chat_enabled"
               />
             </div>
           </div>
@@ -40,6 +43,9 @@ const { query, org } = useOrg();
               Default group for new users:
               {{ org.default_group_for_new_users?.name || "---" }}
             </p>
+            <p>Events enabled: {{ org.is_events_enabled ? "Yes" : "No" }}</p>
+            <p>Mail enabled: {{ org.is_mail_enabled ? "Yes" : "No" }}</p>
+            <p>Chat enabled: {{ org.is_chat_enabled ? "Yes" : "No" }}</p>
           </div>
         </div>
       </div>

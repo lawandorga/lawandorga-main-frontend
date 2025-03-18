@@ -11,6 +11,9 @@
         org_id: orgId,
         org_name: orgName,
         default_group_for_new_users_id: defaultGroupForNewUsers,
+        is_events_enabled: orgIsEventsEnabled,
+        is_mail_enabled: orgIsMailEnabled,
+        is_chat_enabled: orgIsChatEnabled,
       }"
     />
   </ButtonNormal>
@@ -19,6 +22,7 @@
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { useGroups } from "@/features/org/api/useGroups";
+import { useUserStore } from "@/store/user";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
@@ -27,6 +31,9 @@ const props = defineProps<{
   orgId: number;
   orgName: string;
   defaultGroupForNewUsers: number | null;
+  orgIsEventsEnabled: boolean;
+  orgIsMailEnabled: boolean;
+  orgIsChatEnabled: boolean;
 }>();
 const { query } = toRefs(props);
 
@@ -46,7 +53,30 @@ const fields = computed<types.FormField[]>(() => [
     required: true,
     options: groups.value || [],
   },
+  {
+    label: "Events Enabled",
+    type: "singlecheckbox",
+    name: "is_events_enabled",
+    helptext: "If enabled it will show up in the navigation",
+  },
+  {
+    label: "Mail Enabled",
+    type: "singlecheckbox",
+    name: "is_mail_enabled",
+    helptext: "If enabled it will show up in the navigation",
+  },
+  {
+    label: "Chat Enabled",
+    type: "singlecheckbox",
+    name: "is_chat_enabled",
+    helptext: "If enabled it will show up in the navigation",
+  },
 ]);
 
-const { commandModalOpen, commandRequest } = useCmd(query.value);
+const userStore = useUserStore();
+
+const { commandModalOpen, commandRequest } = useCmd(
+  query,
+  userStore.updateData,
+);
 </script>
