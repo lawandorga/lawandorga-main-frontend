@@ -37,6 +37,8 @@ const editingTitle = ref(false);
 const newTitle = ref(task.value.title);
 const editingDueDate = ref(false);
 const newDueDate = ref<string | null>(task.value.deadline);
+const editingDescription = ref(false);
+const newDescription = ref<string | null>(task.value.description);
 
 function formatDateTime(date: Date) {
   const zeroPad = (input: number) => input.toString().padStart(2, "0");
@@ -85,7 +87,7 @@ const formatDate = (date: string) => {
   >
     <button class="w-full" @click="commandModalOpen = true">
       <div class="flex justify-between">
-        <h3 class="mb-2 font-medium text-gray-700">
+        <h3 class="text-left mb-2 font-medium text-gray-700">
           {{ task.title }}
         </h3>
         <ChevronUpDownIcon class="w-6 h-6 rotate-45" />
@@ -191,7 +193,23 @@ const formatDate = (date: string) => {
           <TableHeader class="w-1/4 font-bold border-r border-solid">
             Notes
           </TableHeader>
-          <TableData>Ich bin das vierte</TableData>
+          <!-- TODO: Changes are not saved / send to backend -->
+          <TableData>
+            <div class="flex items-center gap-2">
+              <textarea
+                v-if="editingDescription"
+                v-model="newDescription"
+                class="w-full p-2 border text-gray-700 border-solid rounded"
+              ></textarea>
+              <h3 v-else class="text-gray-700">
+                {{ newDescription }}
+              </h3>
+              <button @click="editingDescription = !editingDescription">
+                <CheckIcon v-if="editingDescription" class="w-4 h-4 stroke-2" />
+                <PencilIcon v-else class="w-4 h-4 stroke-2" />
+              </button>
+            </div>
+          </TableData>
         </TableRow>
       </TableBody>
     </TableTable>
