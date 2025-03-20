@@ -13,12 +13,6 @@ export interface TagCount {
   count: number;
 }
 
-export interface RecordsCreatedClosed {
-  month: string;
-  created: number;
-  closed: number;
-}
-
 export interface RecordTagStats {
   tags: TagCount[];
   state:

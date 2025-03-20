@@ -38,6 +38,7 @@ const { notes, notesQuery } = useNotes();
             :note-title="note.title"
             :note-note="note.note"
             :note-order="note.order"
+            :note-is-wide="note.is_wide"
           />
           <DeleteNote
             :query="notesQuery"

@@ -1,6 +1,6 @@
 <template>
   <ButtonNormal
-    v-if="userStore.rlc?.id === event.org.id"
+    v-if="userStore.org?.id === event.org.id"
     size="xs"
     kind="action"
     @click="commandModalOpen = true"

@@ -59,12 +59,12 @@
                     {{ event.name }}
                   </h2>
                   <EventsUpdateEvent
-                    v-if="event.org.id === userStore.rlc?.id"
+                    v-if="event.org.id === userStore.org?.id"
                     :event="event"
                     :query="query"
                   />
                   <EventsDeleteEvent
-                    v-if="event.org.id === userStore.rlc?.id"
+                    v-if="event.org.id === userStore.org?.id"
                     :event-id="event.id"
                     :event-org-id="event.org.id"
                     :query="query"

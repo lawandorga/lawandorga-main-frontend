@@ -45,7 +45,7 @@
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
-              {{ userStore.rlc?.name }}: {{ userStore.user?.name }}
+              {{ userStore.org?.name }}: {{ userStore.user?.name }}
             </div>
             <div class="truncate">{{ userStore.user?.email }}</div>
           </div>

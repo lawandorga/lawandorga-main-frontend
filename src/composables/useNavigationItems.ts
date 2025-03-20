@@ -65,7 +65,7 @@ export default function useNavigationItems() {
       },
     ];
 
-    if (!store.rlc?.disable_files)
+    if (!store.org?.disable_files)
       items1.push({
         label: "Files",
         icon: FolderOpenIcon,
@@ -74,7 +74,7 @@ export default function useNavigationItems() {
         permissions: [],
       });
 
-    if (store.rlc?.is_events_enabled)
+    if (store.org?.is_events_enabled)
       items1.push({
         label: "Events",
         icon: CalendarDaysIcon,
@@ -91,7 +91,7 @@ export default function useNavigationItems() {
       permissions: [],
     });
 
-    if (store.rlc?.is_mail_enabled)
+    if (store.org?.is_mail_enabled)
       items1.push({
         label: "Mail",
         icon: EnvelopeIcon,
@@ -128,7 +128,7 @@ export default function useNavigationItems() {
       },
     );
 
-    if (store.rlc?.is_chat_enabled)
+    if (store.org?.is_chat_enabled)
       items1.push({
         label: "Chat (Beta)",
         icon: ChatBubbleBottomCenterTextIcon,
@@ -137,9 +137,9 @@ export default function useNavigationItems() {
         permissions: [],
       });
 
-    if (store.rlc?.links.length) {
+    if (store.org?.links.length) {
       items1.push({ divider: true });
-      store.rlc?.links.forEach((l) => {
+      store.org?.links.forEach((l) => {
         items1.push({
           label: l.name,
           icon: LinkIcon,

@@ -157,7 +157,7 @@
             <h2
               class="items-baseline text-lg font-medium leading-6 text-gray-700"
             >
-              News from your LC
+              News from Law&Orga
             </h2>
           </div>
           <div

@@ -12,6 +12,7 @@
         title: noteTitle,
         note: noteNote,
         order: noteOrder,
+        is_wide: noteIsWide,
         action: 'org/update_note',
       }"
     >
@@ -34,6 +35,7 @@ const props = defineProps<{
   noteTitle: string;
   noteNote: string;
   noteOrder: number;
+  noteIsWide: boolean;
 }>();
 const { query, noteId } = toRefs(props);
 
@@ -49,6 +51,12 @@ const noteFields: types.FormField[] = [
     required: true,
     type: "number",
     helptext: "The highest number will be first.",
+  },
+  {
+    label: "Is Wide",
+    name: "is_wide",
+    type: "singlecheckbox",
+    helptext: "Should it be displayed wider?",
   },
 ];
 

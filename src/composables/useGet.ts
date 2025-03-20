@@ -12,7 +12,7 @@ function useGet<
   /* eslint-enable */
 >(
   getFunc: Fn,
-  obj: Ref<Type> | Type,
+  obj: Ref<Type | undefined>,
   ...params: Nullable<Parameters<Fn>>
 ): () => void {
   const { handleQueryError } = useErrorHandling();
@@ -20,8 +20,7 @@ function useGet<
   const getRequest = () => {
     getFunc(...params.map(unref))
       .then((newItem) => {
-        if (isRef(obj)) obj.value = newItem;
-        else obj = newItem;
+        obj.value = newItem;
       })
       .catch(handleQueryError);
   };
@@ -30,7 +29,10 @@ function useGet<
     return params.filter((p) => isRef(p));
   });
 
-  watch(refParams.value, getRequest);
+  watch(refParams.value, () => {
+    obj.value = undefined;
+    getRequest();
+  });
 
   if (
     refParams.value.length === 0 ||

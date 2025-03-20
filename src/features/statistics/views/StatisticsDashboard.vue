@@ -33,24 +33,14 @@ import CreatedRecords from "../components/CreatedRecords.vue";
     >
       <StatisticActiveUsers />
     </StatisticChartWrapper>
-    <StatisticChartWrapper
-      title="Data Sheets Created And Closed"
-      class="col-span-12"
-    >
-      <StatisticRecordsCreatedAndClosed />
-    </StatisticChartWrapper>
+    <StatisticRecordsCreatedAndClosed />
     <StatisticChartWrapper
       title="Different Data Sheet States"
       class="col-span-12 xl:col-span-6"
     >
       <StatisticRecordStates />
     </StatisticChartWrapper>
-    <StatisticChartWrapper
-      title="Data Sheet Tags"
-      class="col-span-12 xl:col-span-6"
-    >
-      <StatisticRecordTags />
-    </StatisticChartWrapper>
+    <StatisticRecordTags />
     <StatisticChartWrapper
       title="Data Sheet Client Sex"
       class="col-span-12 xl:col-span-6"

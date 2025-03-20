@@ -55,7 +55,6 @@ interface Org {
 
 interface DataResponse {
   user: OrgUser;
-  rlc: Org;
   org: Org;
   permissions: string[];
   badges: BadgeInformation;
@@ -83,7 +82,7 @@ export const useUserStore = defineStore("user", () => {
   const settings = ref<Settings>();
 
   const setData = (data: DataResponse) => {
-    org.value = data.rlc;
+    org.value = data.org;
     user.value = data.user;
     badges.value = data.badges;
     settings.value = data.settings;
@@ -159,7 +158,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   return {
-    rlc: org,
+    org,
     user,
     badges,
     adminBadges,

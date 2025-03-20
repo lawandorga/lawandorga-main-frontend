@@ -1,41 +1,43 @@
 <template>
-  <BarChart :chart-data="chartData" />
+  <StatisticChartWrapper
+    title="Data Sheets Created And Closed"
+    class="relative col-span-12"
+  >
+    <div class="absolute z-20 w-32 top-3 right-5">
+      <FormSelect v-model="year" :options="formYears" label="" required />
+    </div>
+    <CircleLoader v-if="stats === undefined" />
+    <BarChart :chart-data="chartData" />
+  </StatisticChartWrapper>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+<script lang="ts" setup>
+import StatisticChartWrapper from "@/features/statistics/components/ChartWrapper.vue";
+import { ref, computed } from "vue";
 import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 import getColors from "@/utils/getColors";
-import StatisticService from "@/features/statistics/statistic";
-import { RecordsCreatedClosed } from "@/features/statistics/types";
+import { useCreatedAndClosed } from "../api/useCreatedAndClosed";
+import { CircleLoader, FormSelect } from "lorga-ui";
 
 Chart.register(...registerables);
 
-export default defineComponent({
-  components: { BarChart },
-  setup() {
-    const data = ref<RecordsCreatedClosed[]>([]);
+const year = ref();
+const { stats, formYears } = useCreatedAndClosed(year);
 
-    StatisticService.getRecordsCreatedAndClosed().then((d) => (data.value = d));
-
-    const chartData = computed(() => ({
-      labels: data.value.map((i) => i.month),
-      datasets: [
-        {
-          label: "Created",
-          data: data.value.map((i) => i.created),
-          backgroundColor: getColors(1),
-        },
-        {
-          label: "Closed",
-          data: data.value.map((i) => i.closed),
-          backgroundColor: getColors(2).slice(1),
-        },
-      ],
-    }));
-
-    return { chartData };
-  },
-});
+const chartData = computed(() => ({
+  labels: stats.value.map((i) => i.month),
+  datasets: [
+    {
+      label: "Created",
+      data: stats.value.map((i) => i.created),
+      backgroundColor: getColors(1),
+    },
+    {
+      label: "Closed",
+      data: stats.value.map((i) => i.closed),
+      backgroundColor: getColors(2).slice(1),
+    },
+  ],
+}));
 </script>
