@@ -64,6 +64,7 @@ const saveTask = () => {
     task_id: task.value.uuid,
     title: newTitle.value,
     deadline: newDueDate.value,
+    description: newDescription.value,
   });
   editingTitle.value = false;
   editingDueDate.value = false;
@@ -90,7 +91,7 @@ const formatDate = (date: string) => {
         <h3 class="text-left mb-2 font-medium text-gray-700">
           {{ task.title }}
         </h3>
-        <ChevronUpDownIcon class="w-6 h-6 rotate-45" />
+        <ChevronUpDownIcon class="w-12 h-12 rotate-45 relative bottom-3" />
       </div>
     </button>
     <p
@@ -193,12 +194,12 @@ const formatDate = (date: string) => {
           <TableHeader class="w-1/4 font-bold border-r border-solid">
             Notes
           </TableHeader>
-          <!-- TODO: Changes are not saved / send to backend -->
           <TableData>
             <div class="flex items-center gap-2">
               <textarea
                 v-if="editingDescription"
                 v-model="newDescription"
+                rows="4"
                 class="w-full p-2 border text-gray-700 border-solid rounded"
               ></textarea>
               <h3 v-else class="text-gray-700">
