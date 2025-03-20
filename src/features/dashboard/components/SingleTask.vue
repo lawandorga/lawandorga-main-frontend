@@ -75,6 +75,22 @@ const saveTask = () => {
   editingDueDate.value = false;
 };
 
+const markAsDone = () => {
+  commandRequest({
+    action: "tasks/update_task",
+    task_id: task.value.uuid,
+    is_done: true,
+  });
+};
+
+const markAsUndone = () => {
+  commandRequest({
+    action: "tasks/update_task",
+    task_id: task.value.uuid,
+    is_done: false,
+  });
+};
+
 const formatDate = (date: string) => {
   const formatter = new Intl.DateTimeFormat("en", {
     day: "numeric",
@@ -85,6 +101,16 @@ const formatDate = (date: string) => {
   });
   return formatter.format(new Date(date));
 };
+
+const formatDateShort = (date: string) => {
+  const formatter = new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
+  return formatter.format(new Date(date));
+};
+
 const { formProfiles } = useProfiles();
 
 watch(newAssigneeId, () => {
@@ -120,15 +146,24 @@ watch(newAssigneeId, () => {
     >
       {{ task.description }}
     </p>
-    <div v-if="task.deadline" class="flex justify-between pt-2 mt-4 border-t-2">
+    <div class="flex pt-2 mt-4 border-t-2">
       <p
-        class="content-center text-sm text-gray-500"
+        v-if="task.deadline"
+        class="text-sm text-gray-500"
         :class="{
           'text-red-500': task.deadline && new Date(task.deadline) < new Date(),
         }"
       >
-        Due on {{ formatDate(task.deadline) }}
+        {{ formatDateShort(task.deadline) }}
       </p>
+      <div class="ml-auto">
+        <a
+          class="block cursor-pointer font-semibold"
+          @click="task.is_done ? markAsUndone() : markAsDone()"
+        >
+          {{ task.is_done ? "Mark as undone" : "Mark as done" }}
+        </a>
+      </div>
     </div>
   </article>
   <ModalFree
@@ -250,6 +285,12 @@ watch(newAssigneeId, () => {
       </TableBody>
     </TableTable>
     <div class="flex justify-end gap-2 mt-4">
+      <ButtonNormal
+        kind="secondary"
+        @click="task.is_done ? markAsUndone() : markAsDone()"
+      >
+        {{ task.is_done ? "Mark as undone" : "Mark as done" }}
+      </ButtonNormal>
       <ButtonNormal @click="saveTask">Save</ButtonNormal>
     </div>
   </ModalFree>
