@@ -255,7 +255,7 @@ export function cleanUpError(context: Context): ICommandError {
       newError.paramErrors = data;
       newError.title = "Request Error";
     }
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   } catch (_) {
     newError.title = "Unknown Error";
     if (error.response?.status)
