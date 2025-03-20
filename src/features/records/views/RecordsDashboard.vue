@@ -172,21 +172,6 @@ const userStore = useUserStore();
             :set-query-param="setQueryParam"
             :query-params="queryParams"
           />
-          <div
-            class="px-5 py-2 mt-10 text-orange-700 bg-orange-100 border-2 border-orange-300"
-          >
-            <p>
-              Info: We're currently updating this view. Everything you see
-              should work. But if you face any issues, like not being able to
-              find some records, please let us know. Speed and search
-              improvements will follow.
-              <br />
-              E-Mail:
-              <a href="mailto:it@law-orga.de" class="underline">
-                it@law-orga.de
-              </a>
-            </p>
-          </div>
         </template>
         <template #settings>
           <SettingsViews :query="query" :views="views" />
