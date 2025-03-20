@@ -20,6 +20,7 @@ import {
   TableBody,
   TableHeader,
 } from "lorga-ui";
+import { useProfiles } from "@/features/admin/api/useProfiles";
 
 const props = defineProps<{
   task: Task;
@@ -36,9 +37,12 @@ const { commandModalOpen, commandRequest } = useCmd(
 const editingTitle = ref(false);
 const newTitle = ref(task.value.title);
 const editingDueDate = ref(false);
-const newDueDate = ref<string | null>(task.value.deadline);
+const newDueDate = ref<string | undefined>(task.value.deadline);
+const editingAssignee = ref(false);
+const newAssigneeName = ref<string | undefined>(task.value.assignee_name);
+const newAssigneeId = ref<number | undefined>(task.value.assignee_id);
 const editingDescription = ref(false);
-const newDescription = ref<string | null>(task.value.description);
+const newDescription = ref<string | undefined>(task.value.description);
 
 function formatDateTime(date: Date) {
   const zeroPad = (input: number) => input.toString().padStart(2, "0");
@@ -65,6 +69,7 @@ const saveTask = () => {
     title: newTitle.value,
     deadline: newDueDate.value,
     description: newDescription.value,
+    assignee_id: newAssigneeId.value,
   });
   editingTitle.value = false;
   editingDueDate.value = false;
@@ -80,6 +85,13 @@ const formatDate = (date: string) => {
   });
   return formatter.format(new Date(date));
 };
+const { formProfiles } = useProfiles();
+
+watch(newAssigneeId, () => {
+  newAssigneeName.value = formProfiles.value.find(
+    (profile) => profile.value === newAssigneeId.value,
+  )?.name;
+});
 </script>
 
 <template>
@@ -164,15 +176,15 @@ const formatDate = (date: string) => {
                 class="w-full p-2 border border-gray-300 border-solid rounded"
                 type="datetime-local"
               />
-              <h3 v-else-if="newDueDate" class="text-gray-700">
+              <span v-else-if="newDueDate" class="text-gray-700">
                 {{ formatDate(newDueDate) }}
-              </h3>
-              <h3 v-else>No due date</h3>
+              </span>
+              <span v-else>No due date</span>
               <button @click="editingDueDate = !editingDueDate">
                 <CheckIcon v-if="editingDueDate" class="w-4 h-4 stroke-2" />
                 <PencilIcon v-else class="w-4 h-4 stroke-2" />
               </button>
-              <button v-if="newDueDate" @click="newDueDate = null">
+              <button v-if="newDueDate" @click="newDueDate = undefined">
                 <XMarkIcon class="w-5 h-5 stroke-2" />
               </button>
             </div>
@@ -188,7 +200,30 @@ const formatDate = (date: string) => {
           <TableHeader class="w-1/4 border-r border-solid">
             Assigned to
           </TableHeader>
-          <TableData>Ich bin das vierte</TableData>
+          <TableData>
+            <div class="flex items-center gap-2">
+              <select
+                v-if="editingAssignee"
+                v-model="newAssigneeId"
+                class="block w-full py-2 pl-3 pr-6 placeholder-gray-400 bg-no-repeat border border-gray-300 rounded-md shadow-sm appearance-none cursor-pointer focus:outline-none focus:ring-formcolor focus:border-formcolor focus:ring-1 sm:text-sm"
+              >
+                <option
+                  v-for="option in formProfiles"
+                  :key="option.name"
+                  :value="option.value"
+                >
+                  {{ option.name }}
+                </option>
+              </select>
+              <span v-else class="text-gray-700">
+                {{ newAssigneeName }}
+              </span>
+              <button @click="editingAssignee = !editingAssignee">
+                <CheckIcon v-if="editingAssignee" class="w-4 h-4 stroke-2" />
+                <PencilIcon v-else class="w-4 h-4 stroke-2" />
+              </button>
+            </div>
+          </TableData>
         </TableRow>
         <TableRow>
           <TableHeader class="w-1/4 font-bold border-r border-solid">
@@ -202,9 +237,9 @@ const formatDate = (date: string) => {
                 rows="4"
                 class="w-full p-2 border text-gray-700 border-solid rounded"
               ></textarea>
-              <h3 v-else class="text-gray-700">
+              <span v-else class="text-gray-700">
                 {{ newDescription }}
-              </h3>
+              </span>
               <button @click="editingDescription = !editingDescription">
                 <CheckIcon v-if="editingDescription" class="w-4 h-4 stroke-2" />
                 <PencilIcon v-else class="w-4 h-4 stroke-2" />

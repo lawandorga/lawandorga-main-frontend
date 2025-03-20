@@ -6,7 +6,8 @@ export interface Task {
   uuid: number;
   title: string;
   description: string;
-  assignee: string;
+  assignee_id: number;
+  assignee_name: string;
   creator_name: string;
   deadline: string;
   is_done: boolean;
