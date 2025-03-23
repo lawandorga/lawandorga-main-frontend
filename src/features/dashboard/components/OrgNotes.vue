@@ -28,7 +28,7 @@ const { notes, notesQuery } = useNotes();
         <!-- eslint-disable vue/no-v-html -->
         <p
           class="text-sm prose-sm prose text-gray-700 break-words whitespace-pre-line"
-          v-html="note.note_with_links"
+          v-html="note.note"
         ></p>
         <!-- eslint-enable vue/no-v-html -->
         <div class="flex justify-end gap-3 mt-2 space-x-3">

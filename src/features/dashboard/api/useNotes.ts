@@ -7,7 +7,6 @@ export interface DashboardNote {
   title: string;
   note: string;
   order: number;
-  note_with_links: string;
   is_wide: boolean;
 }
 
