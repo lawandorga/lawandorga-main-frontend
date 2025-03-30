@@ -51,14 +51,14 @@ import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import { CheckIcon } from "@heroicons/vue/24/outline";
 import useClient from "@/api/client";
-import CollabChangeName from "../actions/CollabChangeName.vue";
+import CollabChangeName from "../actions/ChangeName.vue";
 import CollabForm from "./CollabForm.vue";
-import CollabShowHistory from "../actions/CollabShowHistory.vue";
-import CollabAddTemplate from "../actions/CollabAddTemplate.vue";
+import CollabShowHistory from "../actions/ShowHistory.vue";
+import CollabAddTemplate from "../actions/AddTemplate.vue";
 import DownloadPdf from "../actions/DownloadPdf.vue";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
-import CollabEditTemplate from "../actions/CollabEditTemplate.vue";
-import CollabRemoveTemplate from "../actions/CollabRemoveTemplate.vue";
+import CollabEditTemplate from "../actions/EditTemplate.vue";
+import CollabRemoveTemplate from "../actions/RemoveTemplate.vue";
 
 export interface History {
   user: string;

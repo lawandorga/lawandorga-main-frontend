@@ -117,10 +117,10 @@ import { useRoute } from "vue-router";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-import UsersChangePassword from "@/features/admin/actions/UsersChangePassword.vue";
-import UserAddPermission from "@/features/permissions/actions/UserAddPermission.vue";
+import UsersChangePassword from "@/features/admin/actions/ChangePassword.vue";
+import UserAddPermission from "@/features/permissions/actions/AddPermissionToUser.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
-import UserUpdateInformation from "@/features/users/actions/UserUpdateInformation.vue";
+import UserUpdateInformation from "@/features/users/actions/UpdateUserInformation.vue";
 import { useProfileData } from "../api/useProfileData";
 
 const route = useRoute();

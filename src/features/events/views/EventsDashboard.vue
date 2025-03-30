@@ -116,10 +116,10 @@ import BoxLoader from "@/components/BoxLoader.vue";
 import { computed, ref } from "vue";
 import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useRoute, useRouter } from "vue-router";
-import EventsCreateEvent from "@/features/events/actions/EventsCreateEvent.vue";
-import EventsUpdateEvent from "@/features/events/actions/EventsUpdateEvent.vue";
-import EventsDeleteEvent from "@/features/events/actions/EventsDeleteEvent.vue";
-import EventsGetCalendarLink from "@/features/events/actions/EventsGetCalendarLink.vue";
+import EventsCreateEvent from "@/features/events/actions/CreateEvent.vue";
+import EventsUpdateEvent from "@/features/events/actions/UpdateEvent.vue";
+import EventsDeleteEvent from "@/features/events/actions/DeleteEvent.vue";
+import EventsGetCalendarLink from "@/features/events/actions/GetCalendarLink.vue";
 import { useUserStore } from "@/store/user";
 import { useEvents, Event } from "../api/useEvents";
 

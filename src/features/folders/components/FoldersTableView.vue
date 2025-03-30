@@ -146,13 +146,13 @@
 </template>
 
 <script setup lang="ts">
-import FoldersAddContent from "@/features/folders/actions/FoldersAddContent.vue";
-import FoldersChangeName from "@/features/folders/actions/FoldersChangeName.vue";
-import FoldersCreateFolder from "@/features/folders/actions/FoldersCreateFolder.vue";
-import FoldersCreateRootFolder from "@/features/folders/actions/FoldersCreateRootFolder.vue";
-import FoldersDeleteFolder from "@/features/folders/actions/FoldersDeleteFolder.vue";
-import FoldersMoveFolder from "@/features/folders/actions/FoldersMoveFolder.vue";
-import FoldersToggleInheritance from "@/features/folders/actions/FoldersToggleInheritance.vue";
+import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
+import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
+import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
+import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
+import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
+import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
+import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
 import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";

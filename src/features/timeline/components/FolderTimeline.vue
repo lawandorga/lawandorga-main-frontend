@@ -4,14 +4,14 @@ import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
-import TimelineEventCreate from "../actions/TimelineEventCreate.vue";
-import TimelineEventDelete from "../actions/TimelineEventDelete.vue";
+import TimelineEventCreate from "../actions/CreateTimelineEvent.vue";
+import TimelineEventDelete from "../actions/DeleteTimelineEvent.vue";
 import { formatDate } from "@/utils/date";
-import TimelineEventUpdate from "../actions/TimelineEventUpdate.vue";
-import FollowUpCreate from "../actions/FollowUpCreate.vue";
-import FollowUpUpdate from "../actions/FollowUpUpdate.vue";
-import FollowUpDelete from "../actions/FollowUpDelete.vue";
-import FollowUpSetDone from "../actions/FollowUpSetDone.vue";
+import TimelineEventUpdate from "../actions/UpdateTimelineEvent.vue";
+import FollowUpCreate from "../actions/CreateFollowUp.vue";
+import FollowUpUpdate from "../actions/UpdateFollowUp.vue";
+import FollowUpDelete from "../actions/DeleteFollowUp.vue";
+import FollowUpSetDone from "../actions/SetFollowUpToDone.vue";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/vue/20/solid";
 
 const props = defineProps<{

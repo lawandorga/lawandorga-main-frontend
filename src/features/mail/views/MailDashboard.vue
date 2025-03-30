@@ -71,7 +71,7 @@ import MailDomain from "@/features/mail/components/MailDomain.vue";
 import MailUsers from "@/features/mail/components/MailUsers.vue";
 import MailGroups from "@/features/mail/components/MailGroups.vue";
 import MailWebmail from "@/features/mail/components/MailWebmail.vue";
-import MailCreateMailUser from "@/features/mail/actions/MailCreateMailUser.vue";
+import MailCreateMailUser from "@/features/mail/actions/CreateMailUser.vue";
 import { useGetDashboardPage } from "../api/useGetDashboardPage";
 
 const userStore = useUserStore();

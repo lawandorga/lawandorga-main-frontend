@@ -2,7 +2,15 @@ import { ref, Ref, watch } from "vue";
 import useQuery from "@/composables/useQuery";
 import useClient from "@/api/client";
 
-export type SheetValue = string | number | string[] | number[] | File;
+export type SheetValue =
+  | string
+  | number
+  | string[]
+  | number[]
+  | File
+  | boolean
+  | undefined
+  | null;
 
 export type SheetField = {
   id: number;

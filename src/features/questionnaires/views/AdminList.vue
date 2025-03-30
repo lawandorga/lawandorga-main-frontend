@@ -57,9 +57,9 @@ import useGet from "@/composables/useGet";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import TemplateCreate from "@/features/questionnaires/actions/TemplateCreate.vue";
-import TemplateUpdate from "@/features/questionnaires/actions/TemplateUpdate.vue";
-import TemplateDelete from "@/features/questionnaires/actions/TemplateDelete.vue";
+import TemplateCreate from "@/features/questionnaires/actions/CreateTemplate.vue";
+import TemplateUpdate from "@/features/questionnaires/actions/UpdateTemplate.vue";
+import TemplateDelete from "@/features/questionnaires/actions/DeleteTemplate.vue";
 import useClient from "@/api/client";
 
 interface QuestionnaireTemplate {

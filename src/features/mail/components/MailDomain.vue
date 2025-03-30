@@ -102,9 +102,9 @@
 </template>
 
 <script lang="ts" setup>
-import MailAddDomain from "@/features/mail/actions/MailAddDomain.vue";
-import MailChangeDomain from "@/features/mail/actions/MailChangeDomain.vue";
-import MailCheckDomain from "@/features/mail/actions/MailCheckDomain.vue";
+import MailAddDomain from "@/features/mail/actions/AddDomain.vue";
+import MailChangeDomain from "@/features/mail/actions/ChangeDomain.vue";
+import MailCheckDomain from "@/features/mail/actions/CheckDomain.vue";
 import { MailDomain } from "../api/useGetDashboardPage";
 
 defineProps<{

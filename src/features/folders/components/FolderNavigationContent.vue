@@ -12,16 +12,16 @@
 
 <script setup lang="ts">
 import { computed, h, toRefs } from "vue";
-import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
-import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
-import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
+import FilesUploadMultipleFiles from "@/features/files/actions/UploadMultipleFiles.vue";
+import FilesUploadFile from "@/features/files/actions/UploadFile.vue";
+import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/PublishQuestionnaire.vue";
 import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
-import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
+import UploadsCreateLink from "@/features/uploads/actions/CreateUploadLink.vue";
 import FolderNavigationRaw, {
   ContentGroupItem,
 } from "@/features/folders/components/FolderNavigationRaw.vue";
-import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
-import FoldersAddContent from "../actions/FoldersAddContent.vue";
+import CollabCreate from "@/features/collab/actions/CreateCollab.vue";
+import FoldersAddContent from "../actions/AddContent.vue";
 import { FolderDetail } from "../api/useFolder";
 
 const props = defineProps<{

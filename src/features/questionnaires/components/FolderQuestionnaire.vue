@@ -88,8 +88,8 @@ import { formatDate } from "@/utils/date";
 import useQuery from "@/composables/useQuery";
 import { Ref, ref, toRefs, watch } from "vue";
 import { useAlertStore } from "@/store/alert";
-import QuestionnaireFileDownload from "../actions/QuestionnaireFileDownload.vue";
-import QuestionnaireDelete from "../actions/QuestionnaireDelete.vue";
+import QuestionnaireFileDownload from "../actions/DownloadQuestionnaireFile.vue";
+import QuestionnaireDelete from "../actions/DeleteQuestionnaire.vue";
 import useClient from "@/api/client";
 
 interface QuestionnaireField {

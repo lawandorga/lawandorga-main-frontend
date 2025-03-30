@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import MailGroupAddAddress from "@/features/mail/actions/MailGroupAddAddress.vue";
-import MailGroupAddMember from "@/features/mail/actions/MailGroupAddMember.vue";
-import MailGroupDeleteAddress from "@/features/mail/actions/MailGroupDeleteAddress.vue";
-import MailGroupRemoveMember from "@/features/mail/actions/MailGroupRemoveMember.vue";
-import MailSetDefaultGroupAddress from "@/features/mail/actions/MailSetDefaultGroupAddress.vue";
+import MailGroupAddAddress from "@/features/mail/actions/AddAddressToGroup.vue";
+import MailGroupAddMember from "@/features/mail/actions/AddMemberToGroup.vue";
+import MailGroupDeleteAddress from "@/features/mail/actions/DeleteGroupAddress.vue";
+import MailGroupRemoveMember from "@/features/mail/actions/RemoveMemberFromGroup.vue";
+import MailSetDefaultGroupAddress from "@/features/mail/actions/SetDefaultGroupAddress.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";

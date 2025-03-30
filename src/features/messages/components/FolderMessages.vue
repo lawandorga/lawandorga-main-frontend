@@ -41,7 +41,7 @@
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { formatDate } from "@/utils/date";
 import { ref, toRefs, watch } from "vue";
-import MessagesSendMessage from "@/features/messages/actions/MessagesSendMessage.vue";
+import MessagesSendMessage from "@/features/messages/actions/SendMessage.vue";
 import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
 import DeleteMessage from "../actions/DeleteMessage.vue";

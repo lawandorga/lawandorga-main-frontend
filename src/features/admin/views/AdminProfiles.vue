@@ -64,10 +64,10 @@ import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
-import UsersDeleteUser from "@/features/admin/actions/OrgUsersDeleteUser.vue";
-import UsersActivateDeactivateUser from "@/features/admin/actions/OrgUsersActivateDeactivateUser.vue";
-import UsersAcceptUser from "@/features/admin/actions/OrgUsersAcceptUser.vue";
-import UsersUnlockUser from "@/features/admin/actions/OrgUsersUnlockUser.vue";
+import UsersDeleteUser from "@/features/admin/actions/DeleteUser.vue";
+import UsersActivateDeactivateUser from "@/features/admin/actions/ActivateDeactivateUser.vue";
+import UsersAcceptUser from "@/features/admin/actions/AcceptOrgUser.vue";
+import UsersUnlockUser from "@/features/admin/actions/UnlockUser.vue";
 import { useProfiles } from "../api/useProfiles";
 
 const { profiles, query } = useProfiles();

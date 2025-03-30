@@ -98,10 +98,10 @@ import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-import ActionsUserUnlockSelf from "@/features/users/actions/ActionsUserUnlockSelf.vue";
+import ActionsUserUnlockSelf from "@/features/users/actions/UnlockSelf.vue";
 import useClient from "@/api/client";
 import TestKeys from "@/features/users/actions/TestKeys.vue";
-import GroupsRemoveMember from "@/features/org/actions/GroupsRemoveMember.vue";
+import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
 
 interface Key {
   id: number;

@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import MailCreateGroup from "@/features/mail/actions/MailCreateGroup.vue";
-import MailDeleteGroup from "@/features/mail/actions/MailDeleteGroup.vue";
+import MailCreateGroup from "@/features/mail/actions/CreateGroup.vue";
+import MailDeleteGroup from "@/features/mail/actions/DeleteGroup.vue";
 import { TableGenerator } from "lorga-ui";
 import { computed, PropType, toRefs } from "vue";
 import ButtonLink from "@/components/ButtonLink.vue";

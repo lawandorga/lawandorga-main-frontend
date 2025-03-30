@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import ChatCreateMatrixUser from "@/features/matrix_chat/actions/ChatCreateMatrixUser.vue";
+import ChatCreateMatrixUser from "@/features/matrix_chat/actions/CreateMatrixUser.vue";
 import useClient from "@/api/client";
 import BoxLoader from "@/components/BoxLoader.vue";
 import useGet from "@/composables/useGet";

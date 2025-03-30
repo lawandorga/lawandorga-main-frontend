@@ -61,7 +61,7 @@ import { computed } from "vue";
 import { FormGenerator } from "lorga-ui";
 import { useRoute } from "vue-router";
 import { PaperClipIcon } from "@heroicons/vue/24/outline";
-import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
+import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
 import useCmd from "@/composables/useCmd";
 import { useQuestionnaireToFillOut } from "../api/useQuestionnaireToFillOut";
 

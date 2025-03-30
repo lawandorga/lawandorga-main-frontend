@@ -67,10 +67,10 @@ import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import { Ref, ref, toRefs, watch } from "vue";
 import useClient from "@/api/client";
-import UploadsDisableLink from "@/features/uploads/actions/UploadsDisableLink.vue";
+import UploadsDisableLink from "@/features/uploads/actions/DisableUpdateLink.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
-import UploadsDownloadFile from "@/features/uploads/actions/UploadsDownloadFile.vue";
-import UploadsCopyLink from "@/features/uploads/actions/UploadsCopyLink.vue";
+import UploadsDownloadFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
+import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
 import { useLink } from "../api/useLink";
 
 const props = defineProps<{

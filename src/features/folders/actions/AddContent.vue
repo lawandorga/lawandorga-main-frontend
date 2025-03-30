@@ -106,13 +106,13 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import FilesUploadFile from "@/features/files/actions/FilesUploadFile.vue";
-import FilesUploadMultipleFiles from "@/features/files/actions/FilesUploadMultipleFiles.vue";
-import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/QuestionnairesPublishQuestionnaire.vue";
+import FilesUploadFile from "@/features/files/actions/UploadFile.vue";
+import FilesUploadMultipleFiles from "@/features/files/actions/UploadMultipleFiles.vue";
+import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/PublishQuestionnaire.vue";
 import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
 import { ButtonNormal } from "lorga-ui";
-import UploadsCreateLink from "@/features/uploads/actions/UploadsCreateLink.vue";
-import CollabCreate from "@/features/collab/actions/CollabCreate.vue";
+import UploadsCreateLink from "@/features/uploads/actions/CreateUploadLink.vue";
+import CollabCreate from "@/features/collab/actions/CreateCollab.vue";
 
 defineProps<{ query: () => void; folderUuid?: string }>();
 

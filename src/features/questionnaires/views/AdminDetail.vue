@@ -79,12 +79,12 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
 import useGet2 from "@/composables/useGet2";
-import TemplateFileDelete from "../actions/TemplateFileDelete.vue";
-import TemplateFileCreate from "../actions/TemplateFileCreate.vue";
-import TemplateFieldUpdate from "../actions/TemplateFieldUpdate.vue";
-import TemplateFieldDelete from "../actions/TemplateFieldDelete.vue";
-import TemplateFieldCreate from "../actions/TemplateFieldCreate.vue";
-import TemplateFileDownload from "../actions/TemplateFileDownload.vue";
+import TemplateFileDelete from "../actions/DeleteTemplateFile.vue";
+import TemplateFileCreate from "../actions/CreateTemplateFile.vue";
+import TemplateFieldUpdate from "../actions/UpdateTemplateField.vue";
+import TemplateFieldDelete from "../actions/DeleteTemplateField.vue";
+import TemplateFieldCreate from "../actions/CreateTemplateField.vue";
+import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
 
 interface TextField {
   id: number;

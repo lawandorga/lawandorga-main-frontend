@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
-import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
-import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
+import MailAddAddress from "@/features/mail/actions/AddAddressToUser.vue";
+import MailDeleteAddress from "@/features/mail/actions/DeleteUserAddress.vue";
+import MailSetDefaultAddress from "@/features/mail/actions/SetDefaultUserAddress.vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";

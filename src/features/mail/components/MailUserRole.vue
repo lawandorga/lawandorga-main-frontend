@@ -145,10 +145,10 @@
 </template>
 
 <script setup lang="ts">
-import MailAddAddress from "@/features/mail/actions/MailAddAddress.vue";
-import MailDeleteAddress from "@/features/mail/actions/MailDeleteAddress.vue";
-import MailRegeneratePassword from "@/features/mail/actions/MailRegeneratePassword.vue";
-import MailSetDefaultAddress from "@/features/mail/actions/MailSetDefaultAddress.vue";
+import MailAddAddress from "@/features/mail/actions/AddAddressToUser.vue";
+import MailDeleteAddress from "@/features/mail/actions/DeleteUserAddress.vue";
+import MailRegeneratePassword from "@/features/mail/actions/RegeneratePassword.vue";
+import MailSetDefaultAddress from "@/features/mail/actions/SetDefaultUserAddress.vue";
 import { TableGenerator } from "lorga-ui";
 import { toRefs } from "vue";
 import {
