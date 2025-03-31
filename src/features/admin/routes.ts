@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/profiles/",
     name: "admin-profiles",
-    component: () => import("@/features/admin/views/AdminProfiles.vue"),
+    component: () => import("@/features/admin/views/AdminOrgUsers.vue"),
   },
   {
     path: "/admin/org/",
@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/profiles/:id/",
     name: "admin-profile",
-    component: () => import("@/features/admin/views/AdminProfile.vue"),
+    component: () => import("@/features/admin/views/AdminOrgUser.vue"),
   },
   {
     path: "/admin/sidebar/",

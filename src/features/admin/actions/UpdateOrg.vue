@@ -14,6 +14,7 @@
         is_events_enabled: orgIsEventsEnabled,
         is_mail_enabled: orgIsMailEnabled,
         is_chat_enabled: orgIsChatEnabled,
+        user_qualifications: orgUserQualifications,
       }"
     />
   </ButtonNormal>
@@ -34,6 +35,7 @@ const props = defineProps<{
   orgIsEventsEnabled: boolean;
   orgIsMailEnabled: boolean;
   orgIsChatEnabled: boolean;
+  orgUserQualifications: string[];
 }>();
 const { query } = toRefs(props);
 
@@ -70,6 +72,12 @@ const fields = computed<types.FormField[]>(() => [
     type: "singlecheckbox",
     name: "is_chat_enabled",
     helptext: "If enabled it will show up in the navigation",
+  },
+  {
+    label: "User Qualifications",
+    type: "list",
+    name: "user_qualifications",
+    helptext: "List of qualifications that can be assigned to a user",
   },
 ]);
 

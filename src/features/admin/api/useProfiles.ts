@@ -12,6 +12,7 @@ export interface OrgUserSmall {
   email_confirmed: boolean;
   locked: boolean;
   is_active: boolean;
+  qualifications: string[];
 }
 
 export function useProfiles() {

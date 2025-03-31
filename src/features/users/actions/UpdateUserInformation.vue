@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
+import useGet2 from "@/composables/useGet2";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
-import { toRefs } from "vue";
+import { computed, ref, toRefs } from "vue";
 
-const userFields: types.FormField[] = [
+const qualifications = ref<string[]>([]);
+useGet2("api/auth/org_users/qualifications/", qualifications);
+
+const userFields = computed<types.FormField[]>((): types.FormField[] => [
   {
     label: "Name",
     type: "text",
@@ -59,7 +63,14 @@ const userFields: types.FormField[] = [
     name: "note",
     required: false,
   },
-];
+  {
+    label: "Qualifications",
+    type: "multiple",
+    name: "qualifications",
+    required: false,
+    options: qualifications.value,
+  },
+]);
 
 const props = defineProps<{
   query: () => void;
@@ -71,6 +82,7 @@ const props = defineProps<{
   userPostalCode: string | null;
   userSpecialityOfStudy: string | null;
   userNote: string;
+  userQualifications: string[];
 }>();
 const { query } = toRefs(props);
 
@@ -94,6 +106,7 @@ const { commandRequest, commandModalOpen } = useCmd(query);
       speciality_of_study: userSpecialityOfStudy,
       note: userNote,
       other_user_id: userId,
+      qualifications: userQualifications,
       action: 'auth/update_user_data',
     }"
     :request="commandRequest"

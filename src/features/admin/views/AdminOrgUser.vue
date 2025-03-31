@@ -30,35 +30,52 @@
                 :user-postal-code="user.postal_code"
                 :user-speciality-of-study="user.speciality_of_study"
                 :user-note="user.note"
+                :user-qualifications="user.qualifications"
               />
             </div>
           </div>
           <div class="mt-4">
-            <p v-if="user.email">E-Mail: {{ user.email }}</p>
-            <p v-if="user.phone_number">Phone: {{ user.phone_number }}</p>
+            <h3 class="text-lg font-semibold">Contact & Address</h3>
+            <p v-if="user.email" class="text-sm">
+              <span class="font-medium">E-Mail:</span>
+              {{ user.email }}
+            </p>
+            <p v-if="user.phone_number" class="text-sm">
+              <span class="font-medium">Phone:</span>
+              {{ user.phone_number }}
+            </p>
             <div
               v-if="
                 ['street', 'city', 'postal_code', 'note'].every((item) =>
                   Object.keys(user || {}).includes(item),
                 )
               "
+              class="space-y-2 text-sm"
             >
               <p>
-                Address:
+                <span class="font-medium">Address:{{ " " }}</span>
                 <span v-if="user.street && user.postal_code && user.city">
                   {{ user.street }}, {{ user.postal_code }} {{ user.city }}
                 </span>
               </p>
-              <p v-if="user.note">
-                Note:
-                <br />
+            </div>
+            <h3 class="block mt-4 text-lg font-semibold">
+              Additional Information
+            </h3>
+            <p v-if="user.speciality_of_study_display" class="text-sm">
+              <span class="font-medium">Speciality of Study:</span>
+              {{ user.speciality_of_study_display }}
+            </p>
+            <p v-if="user.qualifications" class="text-sm">
+              <span class="font-medium">Qualifications:</span>
+              {{ user.qualifications.join(", ") }}
+            </p>
+            <div v-if="user.note" class="flex space-x-1 text-sm">
+              <span class="font-medium">Note:</span>
+              <p>
                 {{ user.note }}
               </p>
             </div>
-            <p v-if="user.speciality_of_study_display">
-              Speciality of Study:
-              {{ user.speciality_of_study_display }}
-            </p>
           </div>
         </div>
 

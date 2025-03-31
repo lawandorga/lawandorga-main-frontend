@@ -12,6 +12,7 @@ interface Org {
   is_events_enabled: boolean;
   is_chat_enabled: boolean;
   is_mail_enabled: boolean;
+  user_qualifications: string[];
 }
 
 export function useOrg() {

@@ -1,6 +1,6 @@
 <template>
   <BoxLoader show>
-    <div class="max-w-screen-lg mx-auto space-y-6">
+    <div class="max-w-screen-xl mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -18,15 +18,26 @@
         ]"
         :data="profiles"
       >
-        <template #name="slotProps">
-          <ButtonLink
-            :to="{
-              name: 'admin-profile',
-              params: { id: slotProps.id },
-            }"
-          >
-            {{ slotProps.name }}
-          </ButtonLink>
+        <template #name="{ i }">
+          <div class="flex items-center space-x-1">
+            <ButtonLink
+              :to="{
+                name: 'admin-profile',
+                params: { id: i.id },
+              }"
+            >
+              <span class="whitespace-nowrap">
+                {{ i.name }}
+              </span>
+            </ButtonLink>
+            <template v-for="q in i.qualifications" :key="q">
+              <span
+                class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full"
+              >
+                {{ q }}
+              </span>
+            </template>
+          </div>
         </template>
         <template #action="slotProps">
           <UsersAcceptUser

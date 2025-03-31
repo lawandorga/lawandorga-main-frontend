@@ -17,6 +17,7 @@ export interface OrgUser {
   accepted: boolean;
   updated: string;
   note: string;
+  qualifications: string[];
   name: string;
   email: string;
   created: string;
