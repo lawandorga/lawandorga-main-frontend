@@ -7,6 +7,7 @@ import { useTaskStore } from "@/features/dashboard/api/useTasks";
 import {
   CheckIcon,
   ChevronUpDownIcon,
+  ExclamationCircleIcon,
   FolderOpenIcon,
   PencilIcon,
   XMarkIcon,
@@ -124,36 +125,44 @@ watch(newAssigneeId, () => {
   <article
     class="flex flex-col justify-between px-6 pt-4 pb-4 bg-white rounded shadow"
   >
-    <button class="w-full" @click="commandModalOpen = true">
-      <div class="flex justify-between">
-        <h3 class="text-left mb-2 font-medium text-gray-700">
-          {{ task.title }}
-        </h3>
-        <ChevronUpDownIcon class="w-12 h-12 rotate-45 relative bottom-3" />
-      </div>
-    </button>
-    <p
-      v-if="task.page_url"
-      class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
-    >
-      <FolderOpenIcon class="w-6 h-6" />
-      <a :href="task.page_url" class="ml-2 underline">
-        {{ task.page_url }}
-      </a>
-    </p>
-    <p
-      class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor text-left"
-    >
-      {{ task.description }}
-    </p>
+    <div>
+      <button class="w-full" @click="commandModalOpen = true">
+        <div class="flex justify-between">
+          <h3 class="text-left mb-2 font-semibold text-formcolor">
+            {{ task.title }}
+          </h3>
+          <ChevronUpDownIcon
+            class="flex-grow-0 flex-shrink-0 w-6 h-6 rotate-45 relative"
+          />
+        </div>
+      </button>
+      <p
+        v-if="task.page_url"
+        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line"
+      >
+        <FolderOpenIcon class="w-6 h-6" />
+        <a :href="task.page_url" class="ml-2 underline">
+          {{ task.page_url }}
+        </a>
+      </p>
+      <p
+        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line font-semibold"
+      >
+        {{ task.description }}
+      </p>
+    </div>
     <div class="flex pt-2 mt-4 border-t-2">
       <p
         v-if="task.deadline"
-        class="text-sm text-gray-500"
+        class="text-sm text-gray-500 font-semibold flex gap-1 items-center"
         :class="{
           'text-red-500': task.deadline && new Date(task.deadline) < new Date(),
         }"
       >
+        <ExclamationCircleIcon
+          v-if="new Date(task.deadline) < new Date()"
+          class="w-4"
+        />
         {{ formatDateShort(task.deadline) }}
       </p>
       <div class="ml-auto">
@@ -161,7 +170,7 @@ watch(newAssigneeId, () => {
           class="block cursor-pointer font-semibold"
           @click="task.is_done ? markAsUndone() : markAsDone()"
         >
-          {{ task.is_done ? "Mark as undone" : "Mark as done" }}
+          {{ task.is_done ? "Mark as not done" : "Mark as done" }}
         </a>
       </div>
     </div>
@@ -289,7 +298,7 @@ watch(newAssigneeId, () => {
         kind="secondary"
         @click="task.is_done ? markAsUndone() : markAsDone()"
       >
-        {{ task.is_done ? "Mark as undone" : "Mark as done" }}
+        {{ task.is_done ? "Mark as not done" : "Mark as done" }}
       </ButtonNormal>
       <ButtonNormal @click="saveTask">Save</ButtonNormal>
     </div>
