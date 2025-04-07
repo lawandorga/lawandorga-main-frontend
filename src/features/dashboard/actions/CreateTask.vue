@@ -9,7 +9,7 @@
       :request="commandRequest"
       :data="{
         action: 'tasks/create_task',
-        page_url: pageURL,
+        page_url: route.fullPath,
       }"
     />
   </ButtonNormal>
@@ -24,7 +24,6 @@ import { useTaskStore } from "@/features/dashboard/api/useTasks";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const pageURL = route.fullPath;
 
 const createdTaskStore = useTaskStore();
 const { assignedTasksQuery, createdTasksQuery } = createdTaskStore;

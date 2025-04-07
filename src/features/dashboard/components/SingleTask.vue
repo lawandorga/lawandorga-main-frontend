@@ -68,9 +68,9 @@ const saveTask = () => {
     action: "tasks/update_task",
     task_id: task.value.uuid,
     title: newTitle.value,
-    deadline: newDueDate.value,
     description: newDescription.value,
     assignee_id: newAssigneeId.value,
+    deadline: newDueDate.value,
   });
   editingTitle.value = false;
   editingDueDate.value = false;
@@ -80,7 +80,11 @@ const markAsDone = () => {
   commandRequest({
     action: "tasks/update_task",
     task_id: task.value.uuid,
+    title: newTitle.value,
+    description: newDescription.value,
+    assignee_id: newAssigneeId.value,
     is_done: true,
+    deadline: newDueDate.value,
   });
 };
 
@@ -88,7 +92,11 @@ const markAsUndone = () => {
   commandRequest({
     action: "tasks/update_task",
     task_id: task.value.uuid,
+    title: newTitle.value,
+    description: newDescription.value,
+    assignee_id: newAssigneeId.value,
     is_done: false,
+    deadline: newDueDate.value,
   });
 };
 
@@ -138,9 +146,9 @@ watch(newAssigneeId, () => {
       </button>
       <p
         v-if="task.page_url"
-        class="flex items-center text-sm text-gray-700 break-words whitespace-pre-line"
+        class="flex text-sm text-gray-700 break-words whitespace-pre-line"
       >
-        <FolderOpenIcon class="w-6 h-6" />
+        <FolderOpenIcon class="w-6 h-6 flex-grow-0 flex-shrink-0" />
         <a :href="task.page_url" class="ml-2 underline">
           {{ task.page_url }}
         </a>
@@ -156,11 +164,14 @@ watch(newAssigneeId, () => {
         v-if="task.deadline"
         class="text-sm text-gray-500 font-semibold flex gap-1 items-center"
         :class="{
-          'text-red-500': task.deadline && new Date(task.deadline) < new Date(),
+          'text-red-500':
+            task.deadline &&
+            new Date(task.deadline) < new Date() &&
+            !task.is_done,
         }"
       >
         <ExclamationCircleIcon
-          v-if="new Date(task.deadline) < new Date()"
+          v-if="new Date(task.deadline) < new Date() && !task.is_done"
           class="w-4"
         />
         {{ formatDateShort(task.deadline) }}
