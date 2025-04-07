@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { Task, useTaskStore } from "../api/useTasks";
-import { useUserStore } from "@/store/user";
 import TabControls from "@/components/TabControls.vue";
 import { computed } from "vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
 const taskStore = useTaskStore();
 const { assignedTasks, createdTasks } = storeToRefs(taskStore);
 
@@ -39,10 +36,7 @@ const completedTasks = computed<Task[]>(() => {
 </script>
 
 <template>
-  <div
-    v-if="user?.email === 'dummy@law-orga.de'"
-    class="lg:col-span-2 xl:col-span-3"
-  >
+  <div class="lg:col-span-2 xl:col-span-3">
     <div class="flex justify-between mt-8 mb-4">
       <h2 class="items-baseline text-lg font-semibold leading-6 text-gray-700">
         Tasks
@@ -51,7 +45,6 @@ const completedTasks = computed<Task[]>(() => {
   </div>
   <div class="lg:col-span-2 xl:col-span-3">
     <TabControls
-      v-if="user?.email === 'dummy@law-orga.de'"
       :tabs="[
         { name: 'My Tasks', key: 'owntasks', highlighted: true },
         { name: 'Created Tasks', key: 'createdtasks', highlighted: true },

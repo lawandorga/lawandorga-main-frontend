@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="flex items-center ml-4 md:ml-6">
-        <CreateTask v-if="user?.email === 'dummy@law-orga.de'" />
+        <CreateTask />
         <NavigationDropdown />
       </div>
     </div>
@@ -41,11 +41,7 @@ import { computed } from "vue";
 import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
-import { useUserStore } from "@/store/user";
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
-
-const userStore = useUserStore();
-const { user } = userStore;
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();
