@@ -48,7 +48,7 @@ const taskFields = computed<types.FormField[]>(() => [
     label: "Assignee",
     name: "assignee_id",
     required: true,
-    type: "select",
+    type: "searchselect",
     options: formProfiles.value,
   },
 ]);
