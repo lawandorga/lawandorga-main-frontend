@@ -13,7 +13,7 @@ interface Group {
 class CoreService {
   getGroups(): Promise<Group[]> {
     return axios
-      .get<Group[]>("query/groups/")
+      .get<Group[]>("org/query/groups/")
       .then((response) => response.data);
   }
 }
