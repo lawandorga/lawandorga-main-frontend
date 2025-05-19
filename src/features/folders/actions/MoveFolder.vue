@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Move
-    <ModalUpdate
-      v-model="commandModalOpen"
-      title="Move Folder"
-      :fields="moveFolderFields"
-      :request="commandRequest"
-      :data="{ folder_uuid: folderUuid, action: 'folders/move_folder' }"
-      submit="Move"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
@@ -40,3 +26,17 @@ const moveFolderFields = computed<types.FormField[]>(() => {
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Move
+    <ModalUpdate
+      v-model="commandModalOpen"
+      title="Move Folder"
+      :fields="moveFolderFields"
+      :request="commandRequest"
+      :data="{ folder_uuid: folderUuid, action: 'folders/move_folder' }"
+      submit="Move"
+    />
+  </ButtonNormal>
+</template>

@@ -1,28 +1,3 @@
-<template>
-  <CircleLoader v-if="loading" />
-  <div
-    v-else-if="content.includes('data:application/pdf')"
-    class="flex h-full aspect-square"
-  >
-    <iframe
-      class="w-full max-w-full"
-      :src="content"
-      title="File Content"
-    ></iframe>
-  </div>
-  <div
-    v-else-if="content.includes('data:image')"
-    class="flex h-full aspect-square"
-  >
-    <img class="w-full max-w-full" :src="content" alt="File Content" />
-  </div>
-  <div v-else class="flex h-full aspect-square">
-    <object class="w-full max-w-full" :data="content" frameborder="0">
-      <span class="sr-only">File Content</span>
-    </object>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { isDataUrlDisplayable } from "@/utils/download";
 import { CircleLoader } from "lorga-ui";
@@ -70,3 +45,28 @@ const content = computed<string>(() => {
   else return `data:text/plain;base64,${message}`;
 });
 </script>
+
+<template>
+  <CircleLoader v-if="loading" />
+  <div
+    v-else-if="content.includes('data:application/pdf')"
+    class="flex h-full aspect-square"
+  >
+    <iframe
+      class="w-full max-w-full"
+      :src="content"
+      title="File Content"
+    ></iframe>
+  </div>
+  <div
+    v-else-if="content.includes('data:image')"
+    class="flex h-full aspect-square"
+  >
+    <img class="w-full max-w-full" :src="content" alt="File Content" />
+  </div>
+  <div v-else class="flex h-full aspect-square">
+    <object class="w-full max-w-full" :data="content" frameborder="0">
+      <span class="sr-only">File Content</span>
+    </object>
+  </div>
+</template>

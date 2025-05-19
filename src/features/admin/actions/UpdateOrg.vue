@@ -1,25 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Update Org
-    <ModalForm
-      v-model="commandModalOpen"
-      title="Update Org"
-      :request="commandRequest"
-      :fields="fields"
-      :data="{
-        action: 'org/update_org',
-        org_id: orgId,
-        org_name: orgName,
-        default_group_for_new_users_id: defaultGroupForNewUsers,
-        is_events_enabled: orgIsEventsEnabled,
-        is_mail_enabled: orgIsMailEnabled,
-        is_chat_enabled: orgIsChatEnabled,
-        user_qualifications: orgUserQualifications,
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { useGroups } from "@/features/org/api/useGroups";
@@ -88,3 +66,25 @@ const { commandModalOpen, commandRequest } = useCmd(
   userStore.updateData,
 );
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Update Org
+    <ModalForm
+      v-model="commandModalOpen"
+      title="Update Org"
+      :request="commandRequest"
+      :fields="fields"
+      :data="{
+        action: 'org/update_org',
+        org_id: orgId,
+        org_name: orgName,
+        default_group_for_new_users_id: defaultGroupForNewUsers,
+        is_events_enabled: orgIsEventsEnabled,
+        is_mail_enabled: orgIsMailEnabled,
+        is_chat_enabled: orgIsChatEnabled,
+        user_qualifications: orgUserQualifications,
+      }"
+    />
+  </ButtonNormal>
+</template>

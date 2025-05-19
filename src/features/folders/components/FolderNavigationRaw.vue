@@ -1,3 +1,50 @@
+<script setup lang="ts">
+type ContentItemId = number | string | null;
+
+export interface ContentItem {
+  id: ContentItemId;
+  created?: string;
+  name: string;
+  type: string;
+}
+
+export interface ContentGroupItem {
+  type: string;
+  name: string;
+  children: ContentItem[];
+  buttons: VNode[];
+  badge?: string;
+}
+
+import { ButtonToggle } from "lorga-ui";
+import { VNode } from "vue";
+import FolderNavigationChild from "@/features/folders/components/FolderNavigationChild.vue";
+import FolderNavigationGroup from "@/features/folders/components/FolderNavigationGroup.vue";
+import { useRoute, useRouter } from "vue-router";
+
+defineProps<{
+  grouping: boolean;
+  groups: ContentGroupItem[];
+  ungroupedButtons: VNode[];
+  selectedType: string;
+  selectedId: ContentItemId;
+  hideGroupingControl?: boolean;
+}>();
+
+const emit = defineEmits(["grouping", "selected"]);
+
+const route = useRoute();
+const router = useRouter();
+
+const selected = (type: string, id: string | number | null) => {
+  emit("selected", { type, id });
+  router.push({
+    path: route.path,
+    query: { ...route.query, selectedType: type, selectedId: id },
+  });
+};
+</script>
+
 <template>
   <div
     class="sticky top-0 overflow-hidden bg-white rounded shadow print:hidden"
@@ -69,50 +116,3 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-type ContentItemId = number | string | null;
-
-export interface ContentItem {
-  id: ContentItemId;
-  created?: string;
-  name: string;
-  type: string;
-}
-
-export interface ContentGroupItem {
-  type: string;
-  name: string;
-  children: ContentItem[];
-  buttons: VNode[];
-  badge?: string;
-}
-
-import { ButtonToggle } from "lorga-ui";
-import { VNode } from "vue";
-import FolderNavigationChild from "@/features/folders/components/FolderNavigationChild.vue";
-import FolderNavigationGroup from "@/features/folders/components/FolderNavigationGroup.vue";
-import { useRoute, useRouter } from "vue-router";
-
-defineProps<{
-  grouping: boolean;
-  groups: ContentGroupItem[];
-  ungroupedButtons: VNode[];
-  selectedType: string;
-  selectedId: ContentItemId;
-  hideGroupingControl?: boolean;
-}>();
-
-const emit = defineEmits(["grouping", "selected"]);
-
-const route = useRoute();
-const router = useRouter();
-
-const selected = (type: string, id: string | number | null) => {
-  emit("selected", { type, id });
-  router.push({
-    path: route.path,
-    query: { ...route.query, selectedType: type, selectedId: id },
-  });
-};
-</script>

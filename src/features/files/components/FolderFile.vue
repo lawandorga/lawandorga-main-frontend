@@ -1,3 +1,29 @@
+<script lang="ts" setup>
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import FilesDownloadFile from "@/features/files/actions/DownloadFile.vue";
+import { CircleLoader } from "lorga-ui";
+import { formatDate } from "@/utils/date";
+import { toRefs } from "vue";
+import FilesDeleteFile from "@/features/files/actions/DeleteFile.vue";
+import FileDisplay from "@/components/FileDisplay.vue";
+import useClient from "@/api/client";
+import { useFile } from "../api/useFile";
+
+const props = defineProps<{
+  selectedId: string | number | null;
+  selectedType: string;
+  query: () => void;
+}>();
+const { selectedId, selectedType } = toRefs(props);
+
+const client = useClient();
+const downloadFile = (id: number | string) => {
+  return client.downloadDataUrl("api/files/v2/query/{}/download/", id)();
+};
+
+const { file, loading } = useFile(selectedId, selectedType);
+</script>
+
 <template>
   <div v-if="file">
     <BoxHeadingStats
@@ -26,29 +52,3 @@
   </div>
   <div v-else-if="loading"><CircleLoader /></div>
 </template>
-
-<script lang="ts" setup>
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import FilesDownloadFile from "@/features/files/actions/DownloadFile.vue";
-import { CircleLoader } from "lorga-ui";
-import { formatDate } from "@/utils/date";
-import { toRefs } from "vue";
-import FilesDeleteFile from "@/features/files/actions/DeleteFile.vue";
-import FileDisplay from "@/components/FileDisplay.vue";
-import useClient from "@/api/client";
-import { useFile } from "../api/useFile";
-
-const props = defineProps<{
-  selectedId: string | number | null;
-  selectedType: string;
-  query: () => void;
-}>();
-const { selectedId, selectedType } = toRefs(props);
-
-const client = useClient();
-const downloadFile = (id: number | string) => {
-  return client.downloadDataUrl("api/files/v2/query/{}/download/", id)();
-};
-
-const { file, loading } = useFile(selectedId, selectedType);
-</script>

@@ -1,3 +1,10 @@
+<script lang="ts" setup>
+import { TableGenerator } from "lorga-ui";
+import { useRecordsPermissions } from "../api/useRecordsPermissions";
+
+const { permissions } = useRecordsPermissions();
+</script>
+
 <template>
   <TableGenerator
     :head="[
@@ -8,10 +15,3 @@
     :data="permissions"
   />
 </template>
-
-<script lang="ts" setup>
-import { TableGenerator } from "lorga-ui";
-import { useRecordsPermissions } from "../api/useRecordsPermissions";
-
-const { permissions } = useRecordsPermissions();
-</script>

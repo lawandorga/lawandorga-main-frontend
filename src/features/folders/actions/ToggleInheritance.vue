@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{
+  query: () => void;
+  folderUuid: string;
+  folderName: string;
+  folderInheritanceStopped: boolean;
+}>();
+
+const { query } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query.value);
+</script>
+
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     <template v-if="folderInheritanceStopped">Allow Access From Above</template>
@@ -25,20 +42,3 @@
     </ModalConfirm>
   </ButtonNormal>
 </template>
-
-<script setup lang="ts">
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { toRefs } from "vue";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{
-  query: () => void;
-  folderUuid: string;
-  folderName: string;
-  folderInheritanceStopped: boolean;
-}>();
-
-const { query } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query.value);
-</script>

@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { LifebuoyIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import useGet from "@/composables/useGet";
+import useClient from "@/api/client";
+
+const client = useClient();
+const request = client.get("/api/permissions/query/permissions/");
+const permissions = ref();
+useGet(request, permissions);
+</script>
+
 <template>
   <div class="mx-auto space-y-6 max-w-screen-2xl">
     <BreadcrumbsBar
@@ -23,17 +37,3 @@
     </TableGenerator>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from "vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { LifebuoyIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
-
-const client = useClient();
-const request = client.get("/api/permissions/query/permissions/");
-const permissions = ref();
-useGet(request, permissions);
-</script>

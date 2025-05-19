@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
+import { TableGenerator } from "lorga-ui";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
+import ButtonLink from "@/components/ButtonLink.vue";
+import GroupsCreateGroup from "@/features/org/actions/CreateGroup.vue";
+import GroupsUpdateGroup from "@/features/org/actions/UpdateGroup.vue";
+import GroupsDeleteGroup from "@/features/org/actions/DeleteGroup.vue";
+import { useGroups } from "../api/useGroups";
+
+const { query, groups } = useGroups();
+</script>
+
 <template>
   <BoxLoader show>
     <div class="max-w-2xl mx-auto space-y-6">
@@ -48,17 +62,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import ButtonLink from "@/components/ButtonLink.vue";
-import GroupsCreateGroup from "@/features/org/actions/CreateGroup.vue";
-import GroupsUpdateGroup from "@/features/org/actions/UpdateGroup.vue";
-import GroupsDeleteGroup from "@/features/org/actions/DeleteGroup.vue";
-import { useGroups } from "../api/useGroups";
-
-const { query, groups } = useGroups();
-</script>

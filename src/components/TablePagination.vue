@@ -1,3 +1,60 @@
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+import { TableData, TableRow } from "lorga-ui";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/20/solid";
+
+export default defineComponent({
+  components: {
+    TableRow,
+    TableData,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+  },
+  props: {
+    start: {
+      type: Number,
+      required: true,
+    },
+    end: {
+      type: Number,
+      required: true,
+    },
+    current: {
+      type: Number,
+      required: true,
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
+    pages: {
+      type: Array as PropType<number[]>,
+      required: true,
+    },
+    colspan: {
+      type: Number,
+      required: true,
+    },
+    previousPage: {
+      type: Function,
+      required: true,
+    },
+    setPage: {
+      type: Function,
+      required: true,
+    },
+    nextPage: {
+      type: Function,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: "objects",
+    },
+  },
+});
+</script>
+
 <template>
   <TableRow>
     <TableData :colspan="colspan" class="md:!pr-0">
@@ -68,60 +125,3 @@
     </TableData>
   </TableRow>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { TableData, TableRow } from "lorga-ui";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/20/solid";
-
-export default defineComponent({
-  components: {
-    TableRow,
-    TableData,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-  },
-  props: {
-    start: {
-      type: Number,
-      required: true,
-    },
-    end: {
-      type: Number,
-      required: true,
-    },
-    current: {
-      type: Number,
-      required: true,
-    },
-    total: {
-      type: Number,
-      required: true,
-    },
-    pages: {
-      type: Array as PropType<number[]>,
-      required: true,
-    },
-    colspan: {
-      type: Number,
-      required: true,
-    },
-    previousPage: {
-      type: Function,
-      required: true,
-    },
-    setPage: {
-      type: Function,
-      required: true,
-    },
-    nextPage: {
-      type: Function,
-      required: true,
-    },
-    name: {
-      type: String,
-      default: "objects",
-    },
-  },
-});
-</script>

@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import userRoutes from "@/features/user/routes";
 import adminRoutes from "@/features/admin/routes";
-import filesRoutes from "@/features/z_deprecated_files/files";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
 import statisticsRoutes from "@/features/statistics/routes";
 import helpRoutes from "@/features/help/routes";
@@ -43,7 +42,6 @@ const routes: Array<RouteRecordRaw> = [
   ...userRoutes,
   ...dataSheetsRoutes,
   ...recordsRoutes,
-  ...filesRoutes,
   ...statisticsRoutes,
   ...adminRoutes,
   ...helpRoutes,

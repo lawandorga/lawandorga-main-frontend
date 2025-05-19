@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Create Timeline Event
-  </ButtonNormal>
-  <ModalCreate
-    v-model="commandModalOpen"
-    :fields="fields"
-    title="Create Timeline Event"
-    :request="commandRequest"
-    :data="{ folder_uuid: folderUuid, action: 'timeline/create_event' }"
-    submit="Create"
-  />
-</template>
-
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
@@ -43,3 +29,17 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Create Timeline Event
+  </ButtonNormal>
+  <ModalCreate
+    v-model="commandModalOpen"
+    :fields="fields"
+    title="Create Timeline Event"
+    :request="commandRequest"
+    :data="{ folder_uuid: folderUuid, action: 'timeline/create_event' }"
+    submit="Create"
+  />
+</template>

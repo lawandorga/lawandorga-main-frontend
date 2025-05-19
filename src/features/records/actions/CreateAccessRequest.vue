@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { toRefs } from "vue";
+import { ButtonNormal, ModalForm } from "lorga-ui";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{
+  query: () => void;
+  recordUuid: string;
+}>();
+const { query, recordUuid } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query);
+</script>
+
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Request Access
@@ -21,17 +35,3 @@
     submit="Request Access"
   />
 </template>
-
-<script setup lang="ts">
-import { toRefs } from "vue";
-import { ButtonNormal, ModalForm } from "lorga-ui";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{
-  query: () => void;
-  recordUuid: string;
-}>();
-const { query, recordUuid } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query);
-</script>

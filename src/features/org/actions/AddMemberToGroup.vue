@@ -1,19 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Add Member
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Add Member"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{
-        action: 'org/add_member_to_group',
-        group_id: groupId,
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
@@ -49,3 +33,19 @@ watch(commandModalOpen, (newValue) => {
   if (newValue) userQuery();
 });
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Add Member
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Add Member"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        action: 'org/add_member_to_group',
+        group_id: groupId,
+      }"
+    />
+  </ButtonNormal>
+</template>

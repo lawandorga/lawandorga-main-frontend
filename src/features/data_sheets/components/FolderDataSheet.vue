@@ -1,3 +1,29 @@
+<script lang="ts" setup>
+import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
+import { formatDate } from "@/utils/date";
+import { toRefs } from "vue";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import FormDataSheet from "./FormDataSheet.vue";
+import { CircleLoader } from "lorga-ui";
+import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
+import { useDataSheet } from "../api/useDataSheet";
+
+const props = defineProps<{
+  selectedId: string | number | null;
+  selectedType: string;
+  query: () => void;
+  onDelete?: () => void;
+}>();
+const { selectedId, selectedType, query } = toRefs(props);
+
+const { record, recordsQuery } = useDataSheet(selectedId, selectedType);
+
+const allQuery = () => {
+  query.value();
+  recordsQuery();
+};
+</script>
+
 <template>
   <template v-if="record">
     <BoxHeadingStats
@@ -27,29 +53,3 @@
   </template>
   <CircleLoader v-else-if="selectedType === 'RECORD' && selectedId !== null" />
 </template>
-
-<script lang="ts" setup>
-import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
-import { formatDate } from "@/utils/date";
-import { toRefs } from "vue";
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import FormDataSheet from "./FormDataSheet.vue";
-import { CircleLoader } from "lorga-ui";
-import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
-import { useDataSheet } from "../api/useDataSheet";
-
-const props = defineProps<{
-  selectedId: string | number | null;
-  selectedType: string;
-  query: () => void;
-  onDelete?: () => void;
-}>();
-const { selectedId, selectedType, query } = toRefs(props);
-
-const { record, recordsQuery } = useDataSheet(selectedId, selectedType);
-
-const allQuery = () => {
-  query.value();
-  recordsQuery();
-};
-</script>

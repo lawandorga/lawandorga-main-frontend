@@ -1,3 +1,87 @@
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import {
+  Dialog,
+  DialogPanel,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue";
+import FilesUploadFile from "@/features/files/actions/UploadFile.vue";
+import FilesUploadMultipleFiles from "@/features/files/actions/UploadMultipleFiles.vue";
+import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/PublishQuestionnaire.vue";
+import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
+import { ButtonNormal } from "lorga-ui";
+import UploadsCreateLink from "@/features/uploads/actions/CreateUploadLink.vue";
+import CollabCreate from "@/features/collab/actions/CreateCollab.vue";
+
+defineProps<{ query: () => void; folderUuid?: string }>();
+
+// content
+const addContentModalOpen = ref(false);
+function close() {
+  addContentModalOpen.value = false;
+}
+
+// records
+const createDataSheet = ref();
+const filesUploadFile = ref();
+const filesUploadMultipleFiles = ref();
+const questionnairesPublishQuestionnaire = ref();
+const uploadsCreateLink = ref();
+const collabCreate = ref();
+
+// add content options
+const addContentOptions = computed(() => [
+  {
+    text: "Data Sheet",
+    onClick: () => {
+      close();
+      createDataSheet.value.createWithinFolderModalOpen = true;
+    },
+  },
+  {
+    text: "File",
+    onClick: () => {
+      close();
+      filesUploadFile.value.commandModalOpen = true;
+    },
+  },
+  {
+    text: "Multiple Files",
+    onClick: () => {
+      close();
+      filesUploadMultipleFiles.value.commandModalOpen = true;
+    },
+  },
+  {
+    text: "Questionnaire",
+    onClick: () => {
+      close();
+      questionnairesPublishQuestionnaire.value.commandModalOpen = true;
+    },
+  },
+  {
+    text: "Public Upload Link",
+    onClick: () => {
+      close();
+      uploadsCreateLink.value.commandModalOpen = true;
+    },
+  },
+  {
+    text: "Collab Document",
+    onClick: () => {
+      close();
+      collabCreate.value.commandModalOpen = true;
+    },
+  },
+]);
+
+// expose
+defineExpose({
+  addContentModalOpen,
+});
+</script>
+
 <template>
   <ButtonNormal kind="action" @click="addContentModalOpen = true">
     Add Content
@@ -97,87 +181,3 @@
     />
   </ButtonNormal>
 </template>
-
-<script setup lang="ts">
-import { computed, ref } from "vue";
-import {
-  Dialog,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import FilesUploadFile from "@/features/files/actions/UploadFile.vue";
-import FilesUploadMultipleFiles from "@/features/files/actions/UploadMultipleFiles.vue";
-import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/PublishQuestionnaire.vue";
-import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
-import { ButtonNormal } from "lorga-ui";
-import UploadsCreateLink from "@/features/uploads/actions/CreateUploadLink.vue";
-import CollabCreate from "@/features/collab/actions/CreateCollab.vue";
-
-defineProps<{ query: () => void; folderUuid?: string }>();
-
-// content
-const addContentModalOpen = ref(false);
-function close() {
-  addContentModalOpen.value = false;
-}
-
-// records
-const createDataSheet = ref();
-const filesUploadFile = ref();
-const filesUploadMultipleFiles = ref();
-const questionnairesPublishQuestionnaire = ref();
-const uploadsCreateLink = ref();
-const collabCreate = ref();
-
-// add content options
-const addContentOptions = computed(() => [
-  {
-    text: "Data Sheet",
-    onClick: () => {
-      close();
-      createDataSheet.value.createWithinFolderModalOpen = true;
-    },
-  },
-  {
-    text: "File",
-    onClick: () => {
-      close();
-      filesUploadFile.value.commandModalOpen = true;
-    },
-  },
-  {
-    text: "Multiple Files",
-    onClick: () => {
-      close();
-      filesUploadMultipleFiles.value.commandModalOpen = true;
-    },
-  },
-  {
-    text: "Questionnaire",
-    onClick: () => {
-      close();
-      questionnairesPublishQuestionnaire.value.commandModalOpen = true;
-    },
-  },
-  {
-    text: "Public Upload Link",
-    onClick: () => {
-      close();
-      uploadsCreateLink.value.commandModalOpen = true;
-    },
-  },
-  {
-    text: "Collab Document",
-    onClick: () => {
-      close();
-      collabCreate.value.commandModalOpen = true;
-    },
-  },
-]);
-
-// expose
-defineExpose({
-  addContentModalOpen,
-});
-</script>

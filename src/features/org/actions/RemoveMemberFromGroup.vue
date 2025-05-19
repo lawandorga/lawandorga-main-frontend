@@ -1,3 +1,22 @@
+<script lang="ts" setup>
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{
+  query: () => void;
+  title?: string;
+  button?: string;
+  groupId: number;
+  memberName: string;
+  memberId: number;
+}>();
+
+const { query, groupId, memberName, memberId } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query.value);
+</script>
+
 <template>
   <ButtonNormal kind="delete" @click="commandModalOpen = true">
     {{ button || "Remove" }}
@@ -17,22 +36,3 @@
     </ModalConfirm>
   </ButtonNormal>
 </template>
-
-<script lang="ts" setup>
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { toRefs } from "vue";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{
-  query: () => void;
-  title?: string;
-  button?: string;
-  groupId: number;
-  memberName: string;
-  memberId: number;
-}>();
-
-const { query, groupId, memberName, memberId } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query.value);
-</script>

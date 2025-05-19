@@ -1,21 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="changeDomainModalOpen = true">
-    Change The Domain
-    <ModalUpdate
-      v-model="changeDomainModalOpen"
-      title="Change domain"
-      submit="Save"
-      :fields="fields"
-      :request="changeDomainRequest"
-      :data="{
-        name: domainName,
-        domain_uuid: domainUuid,
-        action: 'mail/change_domain',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -44,3 +26,21 @@ const {
   commandRequest: changeDomainRequest,
 } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="changeDomainModalOpen = true">
+    Change The Domain
+    <ModalUpdate
+      v-model="changeDomainModalOpen"
+      title="Change domain"
+      submit="Save"
+      :fields="fields"
+      :request="changeDomainRequest"
+      :data="{
+        name: domainName,
+        domain_uuid: domainUuid,
+        action: 'mail/change_domain',
+      }"
+    />
+  </ButtonNormal>
+</template>

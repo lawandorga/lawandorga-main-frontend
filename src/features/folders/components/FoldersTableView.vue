@@ -1,3 +1,98 @@
+<script setup lang="ts">
+import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
+import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
+import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
+import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
+import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
+import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
+import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
+import { useFolderProperties } from "@/composables/useFolderProperties";
+import { useUserStore } from "@/store/user";
+import { ChevronRightIcon } from "@heroicons/vue/20/solid";
+import { FolderIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal, TableGenerator } from "lorga-ui";
+import { computed, ref, toRefs } from "vue";
+import FolderProperty from "./FolderProperty.vue";
+import FoldersBadge from "./FoldersBadge.vue";
+import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
+import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+import {
+  Content,
+  Folder,
+  FolderGroup,
+  FolderItem,
+  FolderPerson,
+} from "../api/useFolderPage";
+
+const props = defineProps<{
+  query: () => void;
+  folderList: Folder[];
+  folderItems: FolderItem[];
+  availablePersons: FolderPerson[];
+  availableGroups: FolderGroup[];
+}>();
+const { folderItems } = toRefs(props);
+
+const userStore = useUserStore();
+
+const findFolderPath = (
+  id: string,
+  folderItems: FolderItem[],
+): FolderItem[] | null => {
+  for (let i of folderItems) {
+    if (i.folder.uuid === id) return [i];
+    const innerFound = findFolderPath(id, i.children);
+    if (innerFound) return [i, ...innerFound];
+  }
+  return null;
+};
+
+const selectedFolderInTableView = userStore.getSetting(
+  "selectedFolderInTableView",
+  undefined,
+) as string | undefined;
+
+const selectedFolder = ref<string | undefined>(selectedFolderInTableView);
+
+const path = computed<FolderItem[] | null>(() => {
+  if (selectedFolder.value)
+    return findFolderPath(selectedFolder.value, folderItems.value);
+
+  return null;
+});
+
+const selected = computed<FolderItem | null>(() => {
+  if (path.value) return path.value[path.value.length - 1];
+  return null;
+});
+
+const tableFolders = computed<(FolderItem | Content)[]>(() => {
+  if (selected.value) {
+    let items: (FolderItem | Content)[] = [];
+    items = items.concat(selected.value.children);
+    const content = selected.value.content.filter(
+      (c) => c.repository !== "RECORDS_RECORD",
+    );
+    items = items.concat(content);
+    return items;
+  }
+  return folderItems.value;
+});
+
+const tableFoldersAndPathFolders = computed<(FolderItem | Content)[]>(() => {
+  if (tableFolders.value && path.value)
+    return tableFolders.value.concat(path.value);
+  return [];
+});
+
+const { properties } = useFolderProperties(tableFoldersAndPathFolders);
+
+const folderSelected = (uuid: string | undefined) => {
+  selectedFolder.value = uuid;
+  userStore.updateSetting("selectedFolderInTableView", uuid || "");
+};
+</script>
+
 <template>
   <div class="space-y-5">
     <div class="flex items-center px-5 py-2 bg-white rounded shadow">
@@ -144,98 +239,3 @@
     />
   </div>
 </template>
-
-<script setup lang="ts">
-import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
-import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
-import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
-import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
-import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
-import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
-import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
-import { useFolderProperties } from "@/composables/useFolderProperties";
-import { useUserStore } from "@/store/user";
-import { ChevronRightIcon } from "@heroicons/vue/20/solid";
-import { FolderIcon } from "@heroicons/vue/24/outline";
-import { ButtonNormal, TableGenerator } from "lorga-ui";
-import { computed, ref, toRefs } from "vue";
-import FolderProperty from "./FolderProperty.vue";
-import FoldersBadge from "./FoldersBadge.vue";
-import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
-import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
-import {
-  Content,
-  Folder,
-  FolderGroup,
-  FolderItem,
-  FolderPerson,
-} from "../api/useFolderPage";
-
-const props = defineProps<{
-  query: () => void;
-  folderList: Folder[];
-  folderItems: FolderItem[];
-  availablePersons: FolderPerson[];
-  availableGroups: FolderGroup[];
-}>();
-const { folderItems } = toRefs(props);
-
-const userStore = useUserStore();
-
-const findFolderPath = (
-  id: string,
-  folderItems: FolderItem[],
-): FolderItem[] | null => {
-  for (let i of folderItems) {
-    if (i.folder.uuid === id) return [i];
-    const innerFound = findFolderPath(id, i.children);
-    if (innerFound) return [i, ...innerFound];
-  }
-  return null;
-};
-
-const selectedFolderInTableView = userStore.getSetting(
-  "selectedFolderInTableView",
-  undefined,
-) as string | undefined;
-
-const selectedFolder = ref<string | undefined>(selectedFolderInTableView);
-
-const path = computed<FolderItem[] | null>(() => {
-  if (selectedFolder.value)
-    return findFolderPath(selectedFolder.value, folderItems.value);
-
-  return null;
-});
-
-const selected = computed<FolderItem | null>(() => {
-  if (path.value) return path.value[path.value.length - 1];
-  return null;
-});
-
-const tableFolders = computed<(FolderItem | Content)[]>(() => {
-  if (selected.value) {
-    let items: (FolderItem | Content)[] = [];
-    items = items.concat(selected.value.children);
-    const content = selected.value.content.filter(
-      (c) => c.repository !== "RECORDS_RECORD",
-    );
-    items = items.concat(content);
-    return items;
-  }
-  return folderItems.value;
-});
-
-const tableFoldersAndPathFolders = computed<(FolderItem | Content)[]>(() => {
-  if (tableFolders.value && path.value)
-    return tableFolders.value.concat(path.value);
-  return [];
-});
-
-const { properties } = useFolderProperties(tableFoldersAndPathFolders);
-
-const folderSelected = (uuid: string | undefined) => {
-  selectedFolder.value = uuid;
-  userStore.updateSetting("selectedFolderInTableView", uuid || "");
-};
-</script>

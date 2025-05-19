@@ -1,3 +1,26 @@
+<script lang="ts" setup>
+import useClient from "@/api/client";
+import { getRawLoginUrl } from "@/utils/login";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+
+const success = ref(false);
+const loading = ref(true);
+const route = useRoute();
+const client = useClient();
+
+const request = client.post(
+  "api/auth/org_users/{}/confirm_email/{}/",
+  route.params.user as string,
+  route.params.token as string,
+);
+
+request()
+  .then(() => (success.value = true))
+  .catch(() => (success.value = false))
+  .finally(() => (loading.value = false));
+</script>
+
 <template>
   <div class="max-w-2xl px-4 pt-4 pb-6 mx-auto mt-12 bg-white shadow">
     <h2 class="mb-4 text-2xl font-medium">E-Mail Confirmation</h2>
@@ -22,26 +45,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import useClient from "@/api/client";
-import { getRawLoginUrl } from "@/utils/login";
-import { ref } from "vue";
-import { useRoute } from "vue-router";
-
-const success = ref(false);
-const loading = ref(true);
-const route = useRoute();
-const client = useClient();
-
-const request = client.post(
-  "api/auth/org_users/{}/confirm_email/{}/",
-  route.params.user as string,
-  route.params.token as string,
-);
-
-request()
-  .then(() => (success.value = true))
-  .catch(() => (success.value = false))
-  .finally(() => (loading.value = false));
-</script>

@@ -1,23 +1,3 @@
-<template>
-  <ButtonNormal kind="delete" @click="commandModalOpen = true">
-    Delete
-    <ModalForm
-      v-model="commandModalOpen"
-      :fields="fields"
-      title="Delete Field"
-      :request="commandRequest"
-      :data="{
-        action: 'data_sheets/delete_field',
-        field_uuid: fieldUuid,
-        force_delete: false,
-      }"
-      submit="Delete"
-    >
-      Are you sure you want to delete the field '{{ fieldName }}'?
-    </ModalForm>
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { toRefs } from "vue";
@@ -42,3 +22,23 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
+    Delete
+    <ModalForm
+      v-model="commandModalOpen"
+      :fields="fields"
+      title="Delete Field"
+      :request="commandRequest"
+      :data="{
+        action: 'data_sheets/delete_field',
+        field_uuid: fieldUuid,
+        force_delete: false,
+      }"
+      submit="Delete"
+    >
+      Are you sure you want to delete the field '{{ fieldName }}'?
+    </ModalForm>
+  </ButtonNormal>
+</template>

@@ -1,3 +1,42 @@
+<script lang="ts">
+import useNavigationItems from "@/composables/useNavigationItems";
+import {
+  Dialog as HeadlessDialog,
+  DialogOverlay,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  components: {
+    XMarkIcon,
+    HeadlessDialog,
+    DialogOverlay,
+    TransitionChild,
+    TransitionRoot,
+  },
+  props: {
+    open: {
+      type: Boolean,
+      required: true,
+    },
+    setOpen: {
+      type: Function,
+      required: true,
+    },
+  },
+  setup() {
+    const { navigationItems } = useNavigationItems();
+
+    return {
+      sidebarItems: navigationItems,
+    };
+  },
+});
+</script>
+
 <template>
   <div class="print:hidden">
     <TransitionRoot as="template" :show="open">
@@ -89,42 +128,3 @@
     </TransitionRoot>
   </div>
 </template>
-
-<script lang="ts">
-import useNavigationItems from "@/composables/useNavigationItems";
-import {
-  Dialog as HeadlessDialog,
-  DialogOverlay,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import { XMarkIcon } from "@heroicons/vue/24/outline";
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  components: {
-    XMarkIcon,
-    HeadlessDialog,
-    DialogOverlay,
-    TransitionChild,
-    TransitionRoot,
-  },
-  props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
-    setOpen: {
-      type: Function,
-      required: true,
-    },
-  },
-  setup() {
-    const { navigationItems } = useNavigationItems();
-
-    return {
-      sidebarItems: navigationItems,
-    };
-  },
-});
-</script>

@@ -1,3 +1,15 @@
+<script lang="ts" setup>
+import MailAddDomain from "@/features/mail/actions/AddDomain.vue";
+import MailChangeDomain from "@/features/mail/actions/ChangeDomain.vue";
+import MailCheckDomain from "@/features/mail/actions/CheckDomain.vue";
+import { MailDomain } from "../api/useGetDashboardPage";
+
+defineProps<{
+  domain: MailDomain | null;
+  query: () => void;
+}>();
+</script>
+
 <template>
   <div class="px-6 py-5 bg-white rounded shadow">
     <div
@@ -100,15 +112,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import MailAddDomain from "@/features/mail/actions/AddDomain.vue";
-import MailChangeDomain from "@/features/mail/actions/ChangeDomain.vue";
-import MailCheckDomain from "@/features/mail/actions/CheckDomain.vue";
-import { MailDomain } from "../api/useGetDashboardPage";
-
-defineProps<{
-  domain: MailDomain | null;
-  query: () => void;
-}>();
-</script>

@@ -1,14 +1,3 @@
-<template>
-  <ButtonNormal kind="delete" @click="commandModalOpen = true">
-    Delete
-    <ModalDelete
-      v-model="commandModalOpen"
-      :data="{ group_id: groupId, action: 'org/delete_group' }"
-      :request="commandRequest"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { toRefs } from "vue";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
@@ -23,3 +12,14 @@ const { query, groupId } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
+    Delete
+    <ModalDelete
+      v-model="commandModalOpen"
+      :data="{ group_id: groupId, action: 'org/delete_group' }"
+      :request="commandRequest"
+    />
+  </ButtonNormal>
+</template>

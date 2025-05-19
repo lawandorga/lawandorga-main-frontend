@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="createWithinFolderModalOpen = true">
-    Create Data Sheet
-    <ModalForm
-      v-model="createWithinFolderModalOpen"
-      title="Create Data Sheet"
-      :fields="createWithinFolderFields"
-      :request="createWithinFolderRequest"
-      submit="Create"
-      :data="{ folder: folderUuid }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
@@ -73,3 +59,17 @@ defineExpose({
   createWithinFolderModalOpen,
 });
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="createWithinFolderModalOpen = true">
+    Create Data Sheet
+    <ModalForm
+      v-model="createWithinFolderModalOpen"
+      title="Create Data Sheet"
+      :fields="createWithinFolderFields"
+      :request="createWithinFolderRequest"
+      submit="Create"
+      :data="{ folder: folderUuid }"
+    />
+  </ButtonNormal>
+</template>

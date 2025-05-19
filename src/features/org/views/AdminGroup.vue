@@ -1,3 +1,22 @@
+<script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
+import { TableGenerator, ButtonNormal } from "lorga-ui";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
+import { useRoute } from "vue-router";
+import GroupsAddMember from "@/features/org/actions/AddMemberToGroup.vue";
+import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
+import GroupAddPermission from "@/features/permissions/actions/AddPermissionToGroup.vue";
+import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
+import { useGroup } from "../api/useGroup";
+
+const route = useRoute();
+
+const { members, permissions, query, group } = useGroup(
+  route.params.id as string,
+);
+</script>
+
 <template>
   <BoxLoader :show="!!group">
     <div v-if="!!group" class="max-w-screen-lg mx-auto space-y-6">
@@ -76,22 +95,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator, ButtonNormal } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import { useRoute } from "vue-router";
-import GroupsAddMember from "@/features/org/actions/AddMemberToGroup.vue";
-import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
-import GroupAddPermission from "@/features/permissions/actions/AddPermissionToGroup.vue";
-import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
-import { useGroup } from "../api/useGroup";
-
-const route = useRoute();
-
-const { members, permissions, query, group } = useGroup(
-  route.params.id as string,
-);
-</script>

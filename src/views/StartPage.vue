@@ -1,3 +1,86 @@
+<script lang="ts" setup>
+import { ButtonNormal } from "lorga-ui";
+import { formatDate } from "@/utils/date";
+import { useUserStore } from "@/store/user";
+import { computed } from "vue";
+import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
+import {
+  useLoginPage,
+  LoginPage,
+  RoadmapItem,
+} from "@/features/internal/api/useLoginPage";
+
+const getLoginUrl = () => {
+  const loginUrl = getRawLoginUrl();
+  const origin = window.location.origin;
+  const next = "/dashboard/";
+  return `${loginUrl}?next=${origin}${next}`;
+};
+
+const sponsors = [
+  {
+    name: "CMS Stiftung",
+    image: "/sponsor-cms.jpg",
+    type: "MAIN",
+    class: "",
+  },
+  {
+    name: "Prototype Fund",
+    image: "/sponsor-p.png",
+    type: "FORMER",
+    class: "p-2",
+  },
+  {
+    name: "Deutsche Stiftung für Engagement und Ehrenamt",
+    image: "/sponsor-dse.png",
+    type: "CURRENT",
+    class: "px-4",
+  },
+  {
+    name: "Bundesministerium für Bildung und Forschung",
+    image: "/sponsor-bmbf.png",
+    type: "FORMER",
+    class: "px-2 py-1",
+  },
+  {
+    name: "Robert Bosch Stiftung",
+    image: "/sponsor-rbs.png",
+    type: "FORMER",
+    class: "px-2 py-1",
+  },
+  {
+    name: "Google Impact Challenge",
+    image: "/sponsor-google.png",
+    type: "FORMER",
+    class: "",
+  },
+];
+
+const sponsorGroups = [
+  { name: "Main Sponsor", type: "MAIN", class: "" },
+  { name: "Current Sponsors", type: "CURRENT", class: "" },
+  { name: "Former Sponsors", type: "FORMER", class: "w-full" },
+];
+
+const userStore = useUserStore();
+
+const { page } = useLoginPage();
+
+const roadmapItems = computed<RoadmapItem[]>(() => {
+  if (!page.value) return [];
+  return page.value.roadmap_items;
+});
+
+const articles = computed<LoginPage["articles"]>(() => {
+  if (!page.value) return [];
+  return page.value.articles;
+});
+
+const passwordForgottenLink = `${
+  import.meta.env.VITE_AUTH_URL
+}/auth/user/password_reset/`;
+</script>
+
 <template>
   <main class="divide-y divide-gray-100">
     <section class="px-8 py-8 mx-auto bg-formcolor max-w-7xl">
@@ -223,86 +306,3 @@
     </section>
   </main>
 </template>
-
-<script lang="ts" setup>
-import { ButtonNormal } from "lorga-ui";
-import { formatDate } from "@/utils/date";
-import { useUserStore } from "@/store/user";
-import { computed } from "vue";
-import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
-import {
-  useLoginPage,
-  LoginPage,
-  RoadmapItem,
-} from "@/features/internal/api/useLoginPage";
-
-const getLoginUrl = () => {
-  const loginUrl = getRawLoginUrl();
-  const origin = window.location.origin;
-  const next = "/dashboard/";
-  return `${loginUrl}?next=${origin}${next}`;
-};
-
-const sponsors = [
-  {
-    name: "CMS Stiftung",
-    image: "/sponsor-cms.jpg",
-    type: "MAIN",
-    class: "",
-  },
-  {
-    name: "Prototype Fund",
-    image: "/sponsor-p.png",
-    type: "FORMER",
-    class: "p-2",
-  },
-  {
-    name: "Deutsche Stiftung für Engagement und Ehrenamt",
-    image: "/sponsor-dse.png",
-    type: "CURRENT",
-    class: "px-4",
-  },
-  {
-    name: "Bundesministerium für Bildung und Forschung",
-    image: "/sponsor-bmbf.png",
-    type: "FORMER",
-    class: "px-2 py-1",
-  },
-  {
-    name: "Robert Bosch Stiftung",
-    image: "/sponsor-rbs.png",
-    type: "FORMER",
-    class: "px-2 py-1",
-  },
-  {
-    name: "Google Impact Challenge",
-    image: "/sponsor-google.png",
-    type: "FORMER",
-    class: "",
-  },
-];
-
-const sponsorGroups = [
-  { name: "Main Sponsor", type: "MAIN", class: "" },
-  { name: "Current Sponsors", type: "CURRENT", class: "" },
-  { name: "Former Sponsors", type: "FORMER", class: "w-full" },
-];
-
-const userStore = useUserStore();
-
-const { page } = useLoginPage();
-
-const roadmapItems = computed<RoadmapItem[]>(() => {
-  if (!page.value) return [];
-  return page.value.roadmap_items;
-});
-
-const articles = computed<LoginPage["articles"]>(() => {
-  if (!page.value) return [];
-  return page.value.articles;
-});
-
-const passwordForgottenLink = `${
-  import.meta.env.VITE_AUTH_URL
-}/auth/user/password_reset/`;
-</script>

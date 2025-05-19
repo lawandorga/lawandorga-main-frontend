@@ -1,18 +1,3 @@
-<template>
-  <ButtonNormal class="mt-4" kind="action" @click="commandModalOpen = true">
-    Unlock myself
-  </ButtonNormal>
-  <ModalConfirm
-    v-model="commandModalOpen"
-    title="Unlock"
-    :request="unlockRequest"
-    :data="{ action: 'auth/unlock_myself' }"
-  >
-    If the unlock request completes successfully this modal will close and you
-    will be able to do everything again.
-  </ModalConfirm>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { useUserStore } from "@/store/user";
@@ -28,3 +13,18 @@ const unlockRequest = (data: Record<string, any>) =>
     userStore.updateData();
   });
 </script>
+
+<template>
+  <ButtonNormal class="mt-4" kind="action" @click="commandModalOpen = true">
+    Unlock myself
+  </ButtonNormal>
+  <ModalConfirm
+    v-model="commandModalOpen"
+    title="Unlock"
+    :request="unlockRequest"
+    :data="{ action: 'auth/unlock_myself' }"
+  >
+    If the unlock request completes successfully this modal will close and you
+    will be able to do everything again.
+  </ModalConfirm>
+</template>

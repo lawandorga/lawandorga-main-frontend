@@ -1,14 +1,7 @@
-<template>
-  <ButtonNormal kind="secondary" @click="copyMailAddress">
-    {{ addressCopied ? "Copied!" : "Copy email address" }}
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal } from "lorga-ui";
 import { ref, toRefs } from "vue";
 
-// props
 const props = defineProps<{
   address: string;
 }>();
@@ -24,3 +17,9 @@ const copyMailAddress = () => {
   }, 800);
 };
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="copyMailAddress">
+    {{ addressCopied ? "Copied!" : "Copy email address" }}
+  </ButtonNormal>
+</template>

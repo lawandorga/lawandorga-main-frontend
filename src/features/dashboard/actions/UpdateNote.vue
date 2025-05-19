@@ -1,28 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Update
-    <ModalUpdate
-      v-model="commandModalOpen"
-      :request="commandRequest"
-      title="Update Note"
-      width="max-w-3xl"
-      :fields="noteFields"
-      :data="{
-        note_id: noteId,
-        title: noteTitle,
-        note: noteNote,
-        order: noteOrder,
-        is_wide: noteIsWide,
-        action: 'org/update_note',
-      }"
-    >
-      <template #custom="{ data }">
-        <FormWysiwyg v-model="data.note" required label="Description" />
-      </template>
-    </ModalUpdate>
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
@@ -62,3 +37,28 @@ const noteFields: types.FormField[] = [
 
 const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Update
+    <ModalUpdate
+      v-model="commandModalOpen"
+      :request="commandRequest"
+      title="Update Note"
+      width="max-w-3xl"
+      :fields="noteFields"
+      :data="{
+        note_id: noteId,
+        title: noteTitle,
+        note: noteNote,
+        order: noteOrder,
+        is_wide: noteIsWide,
+        action: 'org/update_note',
+      }"
+    >
+      <template #custom="{ data }">
+        <FormWysiwyg v-model="data.note" required label="Description" />
+      </template>
+    </ModalUpdate>
+  </ButtonNormal>
+</template>
