@@ -1,20 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Change
-    <ModalUpdate
-      v-model="commandModalOpen"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{
-        group_id: groupId,
-        name: groupName,
-        description: groupDescription,
-        action: 'org/update_group',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { toRefs } from "vue";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -45,3 +28,20 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Change
+    <ModalUpdate
+      v-model="commandModalOpen"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        group_id: groupId,
+        name: groupName,
+        description: groupDescription,
+        action: 'org/update_group',
+      }"
+    />
+  </ButtonNormal>
+</template>

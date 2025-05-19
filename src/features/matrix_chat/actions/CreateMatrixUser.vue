@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import useCmd from "@/composables/useCmd";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
+
+const props = defineProps<{ query: () => void }>();
+
+const { query } = toRefs(props);
+const { commandModalOpen, commandRequest } = useCmd(query);
+</script>
+
 <template>
   <ButtonNormal kind="primary" @click="commandModalOpen = true">
     Create Chat User
@@ -13,14 +24,3 @@
     </ModalConfirm>
   </ButtonNormal>
 </template>
-
-<script setup lang="ts">
-import useCmd from "@/composables/useCmd";
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { toRefs } from "vue";
-
-const props = defineProps<{ query: () => void }>();
-
-const { query } = toRefs(props);
-const { commandModalOpen, commandRequest } = useCmd(query);
-</script>

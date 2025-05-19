@@ -1,24 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="commandModalOpen = true">
-    Add Event
-    <ModalFree v-model="commandModalOpen" width="max-w-2xl" title="Add Event">
-      <FormGenerator
-        :fields="eventFields"
-        :request="commandRequest"
-        :data="{ action: 'events/create_event' }"
-      >
-        <template #custom="{ data }">
-          <FormWysiwyg
-            v-model="data.description"
-            required
-            label="Description"
-          />
-        </template>
-      </FormGenerator>
-    </ModalFree>
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
 import { FormGenerator, ModalFree, types, ButtonNormal } from "lorga-ui";
@@ -68,3 +47,24 @@ const eventFields = ref<types.FormField[]>([
 
 const { commandRequest, commandModalOpen } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    Add Event
+    <ModalFree v-model="commandModalOpen" width="max-w-2xl" title="Add Event">
+      <FormGenerator
+        :fields="eventFields"
+        :request="commandRequest"
+        :data="{ action: 'events/create_event' }"
+      >
+        <template #custom="{ data }">
+          <FormWysiwyg
+            v-model="data.description"
+            required
+            label="Description"
+          />
+        </template>
+      </FormGenerator>
+    </ModalFree>
+  </ButtonNormal>
+</template>

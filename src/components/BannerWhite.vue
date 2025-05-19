@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { MegaphoneIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import { RouteLocationRaw } from "vue-router";
+
+defineProps<{
+  text: string;
+  button: string;
+  to: RouteLocationRaw;
+  close: boolean;
+}>();
+
+const emit = defineEmits(["close"]);
+</script>
+
 <template>
   <div class="fixed inset-x-0 bottom-0 pb-2 sm:pb-5">
     <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -38,17 +52,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { MegaphoneIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { RouteLocationRaw } from "vue-router";
-
-defineProps<{
-  text: string;
-  button: string;
-  to: RouteLocationRaw;
-  close: boolean;
-}>();
-
-const emit = defineEmits(["close"]);
-</script>

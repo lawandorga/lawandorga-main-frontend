@@ -1,22 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="modalOpen = true">
-    Get Calendar Link
-    <ModalFree v-model="modalOpen" title="Calendar Link" width="max-w-3xl">
-      <div class="flex flex-row flex-wrap items-baseline justify-between">
-        <p class="shrink max-w">{{ calendarIcsInfo?.calendar_url }}</p>
-        <ButtonNormal kind="primary" @click="copyLink">
-          <span v-if="copyButtonState">Copied!</span>
-          <span v-else>Copy</span>
-        </ButtonNormal>
-      </div>
-      <p class="mb-4 text-sm text-gray-500">
-        Keep this link secret since it allows access to all your events!
-      </p>
-      <ButtonNormal kind="delete" @click="resetLink">Reset Link</ButtonNormal>
-    </ModalFree>
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { Ref, ref } from "vue";
@@ -54,3 +35,22 @@ async function resetLink() {
   copyButtonState.value = false;
 }
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="modalOpen = true">
+    Get Calendar Link
+    <ModalFree v-model="modalOpen" title="Calendar Link" width="max-w-3xl">
+      <div class="flex flex-row flex-wrap items-baseline justify-between">
+        <p class="shrink max-w">{{ calendarIcsInfo?.calendar_url }}</p>
+        <ButtonNormal kind="primary" @click="copyLink">
+          <span v-if="copyButtonState">Copied!</span>
+          <span v-else>Copy</span>
+        </ButtonNormal>
+      </div>
+      <p class="mb-4 text-sm text-gray-500">
+        Keep this link secret since it allows access to all your events!
+      </p>
+      <ButtonNormal kind="delete" @click="resetLink">Reset Link</ButtonNormal>
+    </ModalFree>
+  </ButtonNormal>
+</template>

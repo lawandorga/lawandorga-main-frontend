@@ -1,101 +1,3 @@
-<template>
-  <form ref="form" novalidate @submit.prevent="">
-    <div class="grid grid-cols-1 gap-4">
-      <div v-if="nonFieldErrors && nonFieldErrors.length">
-        <p
-          v-for="(error, index) in nonFieldErrors"
-          :key="index"
-          class="mt-2 text-sm leading-tight text-red-700"
-        >
-          {{ error }}
-        </p>
-      </div>
-      <div
-        v-for="field in fields"
-        :key="field.name"
-        :class="{
-          hidden: field.type === 'hidden',
-          'border-green-500 border px-2 pb-2 pt-2 rounded bg-gradient-to-t from-green-100 to-transparent print:hidden':
-            field.kind === 'Statistic',
-        }"
-      >
-        <FormTextarea
-          v-if="field.type === 'textarea'"
-          v-bind="getAttrs(field.uuid)"
-          :label="field.label"
-          :name="field.name"
-          required
-          @change:model-value="change(field, $event)"
-        />
-        <FormSelect
-          v-else-if="field.type === 'select'"
-          v-bind="getAttrs(field.uuid)"
-          :label="field.label"
-          :name="field.name"
-          required
-          :options="field.options"
-          @update:model-value="change(field, $event)"
-        />
-        <FormMultiple
-          v-else-if="field.type === 'multiple'"
-          v-bind="getAttrs(field.uuid)"
-          :label="field.label"
-          :name="field.name"
-          required
-          :options="field.options"
-          @update:model-value="change(field, $event)"
-        />
-
-        <FormFile
-          v-else-if="field.type === 'file'"
-          v-bind="getAttrs(field.uuid)"
-          :label="field.label"
-          :name="field.name"
-          required
-          @update:model-value="change(field, $event)"
-        >
-          <ButtonNormal
-            v-if="field.uuid in entries"
-            kind="action"
-            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
-            @click="downloadFile(field.uuid)"
-          >
-            Download
-          </ButtonNormal>
-          <ButtonNormal
-            v-if="field.name in entries"
-            kind="delete"
-            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
-            @click="change(field, '')"
-          >
-            Delete
-          </ButtonNormal>
-        </FormFile>
-        <FormInput
-          v-else
-          :name="field.name"
-          v-bind="getAttrs(field.uuid)"
-          :label="field.label"
-          :type="field.type"
-          required
-          @change:model-value="change(field, $event)"
-        />
-        <p
-          v-if="errors[field.name]"
-          class="text-red-700 text-sm leading-tight ml-1.5 mt-1"
-        >
-          {{ errors[field.name][0] }}
-        </p>
-      </div>
-      <div class="text-sm text-green-800 print:hidden">
-        Green fields are statistic fields that are used by Law&Orga internally
-        to help us and you. It is in no way required to fill out these fields.
-        But it would help us a lot.
-      </div>
-    </div>
-  </form>
-</template>
-
 <script lang="ts" setup>
 import {
   FormSelect,
@@ -195,3 +97,101 @@ function handleError(field: SheetField, error: types.ICommandError) {
   else if (error.title) errors.value[field.name] = [error.title];
 }
 </script>
+
+<template>
+  <form ref="form" novalidate @submit.prevent="">
+    <div class="grid grid-cols-1 gap-4">
+      <div v-if="nonFieldErrors && nonFieldErrors.length">
+        <p
+          v-for="(error, index) in nonFieldErrors"
+          :key="index"
+          class="mt-2 text-sm leading-tight text-red-700"
+        >
+          {{ error }}
+        </p>
+      </div>
+      <div
+        v-for="field in fields"
+        :key="field.name"
+        :class="{
+          hidden: field.type === 'hidden',
+          'border-green-500 border px-2 pb-2 pt-2 rounded bg-gradient-to-t from-green-100 to-transparent print:hidden':
+            field.kind === 'Statistic',
+        }"
+      >
+        <FormTextarea
+          v-if="field.type === 'textarea'"
+          v-bind="getAttrs(field.uuid)"
+          :label="field.label"
+          :name="field.name"
+          required
+          @change:model-value="change(field, $event)"
+        />
+        <FormSelect
+          v-else-if="field.type === 'select'"
+          v-bind="getAttrs(field.uuid)"
+          :label="field.label"
+          :name="field.name"
+          required
+          :options="field.options"
+          @update:model-value="change(field, $event)"
+        />
+        <FormMultiple
+          v-else-if="field.type === 'multiple'"
+          v-bind="getAttrs(field.uuid)"
+          :label="field.label"
+          :name="field.name"
+          required
+          :options="field.options"
+          @update:model-value="change(field, $event)"
+        />
+
+        <FormFile
+          v-else-if="field.type === 'file'"
+          v-bind="getAttrs(field.uuid)"
+          :label="field.label"
+          :name="field.name"
+          required
+          @update:model-value="change(field, $event)"
+        >
+          <ButtonNormal
+            v-if="field.uuid in entries"
+            kind="action"
+            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            @click="downloadFile(field.uuid)"
+          >
+            Download
+          </ButtonNormal>
+          <ButtonNormal
+            v-if="field.name in entries"
+            kind="delete"
+            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            @click="change(field, '')"
+          >
+            Delete
+          </ButtonNormal>
+        </FormFile>
+        <FormInput
+          v-else
+          :name="field.name"
+          v-bind="getAttrs(field.uuid)"
+          :label="field.label"
+          :type="field.type"
+          required
+          @change:model-value="change(field, $event)"
+        />
+        <p
+          v-if="errors[field.name]"
+          class="text-red-700 text-sm leading-tight ml-1.5 mt-1"
+        >
+          {{ errors[field.name][0] }}
+        </p>
+      </div>
+      <div class="text-sm text-green-800 print:hidden">
+        Green fields are statistic fields that are used by Law&Orga internally
+        to help us and you. It is in no way required to fill out these fields.
+        But it would help us a lot.
+      </div>
+    </div>
+  </form>
+</template>

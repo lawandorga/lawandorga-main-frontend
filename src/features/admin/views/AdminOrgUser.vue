@@ -1,3 +1,22 @@
+<script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
+import { TableGenerator, ButtonNormal } from "lorga-ui";
+import { useRoute } from "vue-router";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
+import { useUserStore } from "@/store/user";
+import UsersChangePassword from "@/features/admin/actions/ChangePassword.vue";
+import UserAddPermission from "@/features/permissions/actions/AddPermissionToUser.vue";
+import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
+import UserUpdateInformation from "@/features/users/actions/UpdateUserInformation.vue";
+import { useProfileData } from "../api/useProfileData";
+
+const route = useRoute();
+const userStore = useUserStore();
+
+const { query, permissions, user } = useProfileData(route.params.id as string);
+</script>
+
 <template>
   <BoxLoader :show="!!user">
     <div v-if="user" class="max-w-screen-lg mx-auto space-y-6">
@@ -126,22 +145,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator, ButtonNormal } from "lorga-ui";
-import { useRoute } from "vue-router";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/store/user";
-import UsersChangePassword from "@/features/admin/actions/ChangePassword.vue";
-import UserAddPermission from "@/features/permissions/actions/AddPermissionToUser.vue";
-import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
-import UserUpdateInformation from "@/features/users/actions/UpdateUserInformation.vue";
-import { useProfileData } from "../api/useProfileData";
-
-const route = useRoute();
-const userStore = useUserStore();
-
-const { query, permissions, user } = useProfileData(route.params.id as string);
-</script>

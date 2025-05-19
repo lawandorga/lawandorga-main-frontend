@@ -1,3 +1,58 @@
+<script setup lang="ts">
+import ToolTip from "@/components/ToolTip.vue";
+import {
+  DisplayedFieldsObject,
+  PossibleDisplayedFields,
+  Sorting,
+} from "@/features/mail_imports/types";
+import { ButtonNormal } from "lorga-ui";
+import { ref, toRefs } from "vue";
+import {
+  CheckCircleIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
+
+// props
+const props = defineProps<{
+  closeOverlay: () => void;
+  currentlyShownFields: DisplayedFieldsObject;
+  currentSorting: Sorting;
+  // eslint-disable-next-line no-unused-vars
+  setShownFields: (newFields: DisplayedFieldsObject) => void;
+  // eslint-disable-next-line no-unused-vars
+  setSorting: (newSorting: Sorting) => void;
+}>();
+const {
+  closeOverlay,
+  currentlyShownFields,
+  currentSorting,
+  setShownFields,
+  setSorting,
+} = toRefs(props);
+
+const selectedFields = ref({ ...currentlyShownFields.value });
+const sorting = ref<Sorting>(currentSorting.value);
+
+const saveSettings = () => {
+  const selectedFieldsCount = (
+    Object.keys(selectedFields.value) as PossibleDisplayedFields[]
+  ).filter((key) => selectedFields.value[key]).length;
+
+  if (selectedFieldsCount === 0) {
+    const atLeastOneFieldTooltip = document.getElementById(
+      "at-least-one-field",
+    ) as HTMLElement;
+    atLeastOneFieldTooltip.style.visibility = "visible";
+    return;
+  }
+
+  setShownFields.value(selectedFields.value);
+  setSorting.value(sorting.value);
+  closeOverlay.value();
+};
+</script>
+
 <template>
   <div class="flex gap-2 mb-3 font-semibold text-zinc-500">
     <h3>Shown Information Fields</h3>
@@ -53,58 +108,3 @@
     </ButtonNormal>
   </div>
 </template>
-
-<script setup lang="ts">
-import ToolTip from "@/components/ToolTip.vue";
-import {
-  DisplayedFieldsObject,
-  PossibleDisplayedFields,
-  Sorting,
-} from "@/features/mail_imports/types";
-import { ButtonNormal } from "lorga-ui";
-import { ref, toRefs } from "vue";
-import {
-  CheckCircleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/outline";
-
-// props
-const props = defineProps<{
-  closeOverlay: () => void;
-  currentlyShownFields: DisplayedFieldsObject;
-  currentSorting: Sorting;
-  // eslint-disable-next-line no-unused-vars
-  setShownFields: (newFields: DisplayedFieldsObject) => void;
-  // eslint-disable-next-line no-unused-vars
-  setSorting: (newSorting: Sorting) => void;
-}>();
-const {
-  closeOverlay,
-  currentlyShownFields,
-  currentSorting,
-  setShownFields,
-  setSorting,
-} = toRefs(props);
-
-const selectedFields = ref({ ...currentlyShownFields.value });
-const sorting = ref<Sorting>(currentSorting.value);
-
-const saveSettings = () => {
-  const selectedFieldsCount = (
-    Object.keys(selectedFields.value) as PossibleDisplayedFields[]
-  ).filter((key) => selectedFields.value[key]).length;
-
-  if (selectedFieldsCount === 0) {
-    const atLeastOneFieldTooltip = document.getElementById(
-      "at-least-one-field",
-    ) as HTMLElement;
-    atLeastOneFieldTooltip.style.visibility = "visible";
-    return;
-  }
-
-  setShownFields.value(selectedFields.value);
-  setSorting.value(sorting.value);
-  closeOverlay.value();
-};
-</script>

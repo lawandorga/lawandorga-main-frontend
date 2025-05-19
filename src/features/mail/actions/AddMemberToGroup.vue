@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="addMemberModalOpen = true">
-    Add Member
-    <ModalForm
-      v-model="addMemberModalOpen"
-      :fields="addMemberFields"
-      :request="addMemberRequest"
-      :data="{ group_uuid: groupUuid, action: 'mail/add_member_to_group' }"
-      title="Add member"
-      submit="Add"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ModalForm, types, ButtonNormal } from "lorga-ui";
@@ -40,3 +26,17 @@ const addMemberFields = computed<types.FormField[]>(() => [
   },
 ]);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="addMemberModalOpen = true">
+    Add Member
+    <ModalForm
+      v-model="addMemberModalOpen"
+      :fields="addMemberFields"
+      :request="addMemberRequest"
+      :data="{ group_uuid: groupUuid, action: 'mail/add_member_to_group' }"
+      title="Add member"
+      submit="Add"
+    />
+  </ButtonNormal>
+</template>

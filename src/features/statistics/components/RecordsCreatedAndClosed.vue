@@ -1,16 +1,3 @@
-<template>
-  <StatisticChartWrapper
-    title="Data Sheets Created And Closed"
-    class="relative col-span-12"
-  >
-    <div class="absolute z-20 w-32 top-3 right-5">
-      <FormSelect v-model="year" :options="formYears" label="" required />
-    </div>
-    <CircleLoader v-if="stats === undefined" />
-    <BarChart :chart-data="chartData" />
-  </StatisticChartWrapper>
-</template>
-
 <script lang="ts" setup>
 import StatisticChartWrapper from "@/features/statistics/components/ChartWrapper.vue";
 import { ref, computed } from "vue";
@@ -41,3 +28,16 @@ const chartData = computed(() => ({
   ],
 }));
 </script>
+
+<template>
+  <StatisticChartWrapper
+    title="Data Sheets Created And Closed"
+    class="relative col-span-12"
+  >
+    <div class="absolute z-20 w-32 top-3 right-5">
+      <FormSelect v-model="year" :options="formYears" label="" required />
+    </div>
+    <CircleLoader v-if="stats === undefined" />
+    <BarChart :chart-data="chartData" />
+  </StatisticChartWrapper>
+</template>

@@ -1,3 +1,74 @@
+<script setup lang="ts">
+import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
+import { computed, ref, toRefs } from "vue";
+import FoldersTree from "@/features/folders/components/FoldersTree.vue";
+import ButtonClose from "@/components/ButtonClose.vue";
+import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
+import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
+import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
+import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
+import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
+import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
+import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
+import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+import {
+  Folder,
+  FolderGroup,
+  FolderItem,
+  FolderPerson,
+} from "../api/useFolderPage";
+
+const props = defineProps<{
+  availablePersons: FolderPerson[];
+  availableGroups: FolderGroup[];
+  folderItems: FolderItem[];
+  query: () => void;
+}>();
+const { availablePersons, folderItems } = toRefs(props);
+
+// actions
+const contentActions = ref<typeof FoldersCreateFolder>();
+const foldersActions = ref<typeof FoldersCreateFolder>();
+
+// folders as list
+const pushIntoList = (l: Folder[], item: FolderItem) => {
+  l.push(item.folder);
+  for (let i of item.children) pushIntoList(l, i);
+};
+
+const folderList = computed<Folder[]>(() => {
+  if (folderItems.value === null) return [];
+  const fl: Folder[] = [];
+  for (let i of folderItems.value) {
+    pushIntoList(fl, i);
+  }
+  return fl;
+});
+
+// parent
+const parent = ref<string | null>(null);
+
+// selected folder
+const selected = ref<string | null>(null);
+
+const findFolder = (
+  id: string,
+  folderItems: FolderItem[],
+): FolderItem | null => {
+  for (let i of folderItems) {
+    if (i.folder.uuid === selected.value) return i;
+    const innerFound = findFolder(id, i.children);
+    if (innerFound) return innerFound;
+  }
+  return null;
+};
+
+const selectedItem = computed<FolderItem | null>(() => {
+  if (selected.value === null || folderItems.value === null) return null;
+  return findFolder(selected.value, folderItems.value);
+});
+</script>
+
 <template>
   <div
     v-if="!!foldersActions && !!contentActions"
@@ -96,74 +167,3 @@
     :folder-uuid="parent ? parent : undefined"
   />
 </template>
-
-<script setup lang="ts">
-import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
-import { computed, ref, toRefs } from "vue";
-import FoldersTree from "@/features/folders/components/FoldersTree.vue";
-import ButtonClose from "@/components/ButtonClose.vue";
-import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
-import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
-import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
-import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
-import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
-import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
-import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
-import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
-import {
-  Folder,
-  FolderGroup,
-  FolderItem,
-  FolderPerson,
-} from "../api/useFolderPage";
-
-const props = defineProps<{
-  availablePersons: FolderPerson[];
-  availableGroups: FolderGroup[];
-  folderItems: FolderItem[];
-  query: () => void;
-}>();
-const { availablePersons, folderItems } = toRefs(props);
-
-// actions
-const contentActions = ref<typeof FoldersCreateFolder>();
-const foldersActions = ref<typeof FoldersCreateFolder>();
-
-// folders as list
-const pushIntoList = (l: Folder[], item: FolderItem) => {
-  l.push(item.folder);
-  for (let i of item.children) pushIntoList(l, i);
-};
-
-const folderList = computed<Folder[]>(() => {
-  if (folderItems.value === null) return [];
-  const fl: Folder[] = [];
-  for (let i of folderItems.value) {
-    pushIntoList(fl, i);
-  }
-  return fl;
-});
-
-// parent
-const parent = ref<string | null>(null);
-
-// selected folder
-const selected = ref<string | null>(null);
-
-const findFolder = (
-  id: string,
-  folderItems: FolderItem[],
-): FolderItem | null => {
-  for (let i of folderItems) {
-    if (i.folder.uuid === selected.value) return i;
-    const innerFound = findFolder(id, i.children);
-    if (innerFound) return innerFound;
-  }
-  return null;
-};
-
-const selectedItem = computed<FolderItem | null>(() => {
-  if (selected.value === null || folderItems.value === null) return null;
-  return findFolder(selected.value, folderItems.value);
-});
-</script>

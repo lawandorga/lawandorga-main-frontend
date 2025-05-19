@@ -1,3 +1,48 @@
+<script setup lang="ts">
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
+import { formatDate } from "@/utils/date";
+import { Ref, ref, toRefs, watch } from "vue";
+import useClient from "@/api/client";
+import UploadsDisableLink from "@/features/uploads/actions/DisableUpdateLink.vue";
+import FileDisplay from "@/components/FileDisplay.vue";
+import UploadsDownloadFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
+import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
+import { useLink } from "../api/useLink";
+
+const props = defineProps<{
+  selectedId: number | string | null;
+  selectedType: string;
+  folderUuid: string;
+}>();
+const { selectedId, selectedType } = toRefs(props);
+
+const client = useClient();
+
+const selectedFile = ref<string | null>(null);
+const fileDownload = (uuid: string | number) => {
+  return client.downloadDataUrl(
+    "api/uploads/query/{}/{}/",
+    selectedId as Ref<string>,
+    uuid,
+  )();
+};
+
+watch([selectedId, selectedType], () => {
+  selectedFile.value = null;
+});
+
+const { link, query, loading } = useLink(selectedId, selectedType);
+
+watch(
+  selectedId,
+  () => {
+    query();
+  },
+  { immediate: true },
+);
+</script>
+
 <template>
   <div v-if="link">
     <BoxHeadingStats
@@ -60,48 +105,3 @@
     <CircleLoader />
   </div>
 </template>
-
-<script setup lang="ts">
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
-import { formatDate } from "@/utils/date";
-import { Ref, ref, toRefs, watch } from "vue";
-import useClient from "@/api/client";
-import UploadsDisableLink from "@/features/uploads/actions/DisableUpdateLink.vue";
-import FileDisplay from "@/components/FileDisplay.vue";
-import UploadsDownloadFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
-import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
-import { useLink } from "../api/useLink";
-
-const props = defineProps<{
-  selectedId: number | string | null;
-  selectedType: string;
-  folderUuid: string;
-}>();
-const { selectedId, selectedType } = toRefs(props);
-
-const client = useClient();
-
-const selectedFile = ref<string | null>(null);
-const fileDownload = (uuid: string | number) => {
-  return client.downloadDataUrl(
-    "api/uploads/query/{}/{}/",
-    selectedId as Ref<string>,
-    uuid,
-  )();
-};
-
-watch([selectedId, selectedType], () => {
-  selectedFile.value = null;
-});
-
-const { link, query, loading } = useLink(selectedId, selectedType);
-
-watch(
-  selectedId,
-  () => {
-    query();
-  },
-  { immediate: true },
-);
-</script>

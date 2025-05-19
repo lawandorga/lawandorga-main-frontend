@@ -1,3 +1,13 @@
+<script setup lang="ts">
+defineProps<{
+  type: string;
+  showType: boolean;
+  name: string;
+  isSelected: boolean;
+  small: boolean;
+}>();
+</script>
+
 <template>
   <div
     class="relative block w-full px-4 sm:px-6"
@@ -25,13 +35,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  type: string;
-  showType: boolean;
-  name: string;
-  isSelected: boolean;
-  small: boolean;
-}>();
-</script>

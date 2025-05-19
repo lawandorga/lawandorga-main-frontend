@@ -1,3 +1,51 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+import BoxLoader from "@/components/BoxLoader.vue";
+import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
+import { ModalFree, TableGenerator } from "lorga-ui";
+import useGet from "@/composables/useGet";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
+import { useRoute } from "vue-router";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import useClient from "@/api/client";
+import CreateField from "../actions/CreateField.vue";
+import UpdateField from "../actions/UpdateField.vue";
+
+interface Field {
+  field_type: string;
+  encrypted: string;
+  name: string;
+  uuid: string;
+  order: number;
+  kind: string;
+  share_keys: boolean | null;
+  group_id: number | null;
+}
+
+interface Template {
+  id: number;
+  name: string;
+  fields: Field[];
+}
+
+// other
+const route = useRoute();
+const client = useClient();
+
+// template
+const retrieve = client.get(
+  "api/data_sheets/query/templates/{}/",
+  route.params.id as string,
+);
+
+const template = ref<Template>();
+const query = useGet(retrieve, template);
+
+// help
+const helpModalOpen = ref(false);
+</script>
+
 <template>
   <BoxLoader :show="!!template">
     <div v-if="template" class="max-w-5xl mx-auto space-y-6">
@@ -103,51 +151,3 @@
     </ModalFree>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import { ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
-import { ModalFree, TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import { useRoute } from "vue-router";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import useClient from "@/api/client";
-import CreateField from "../actions/CreateField.vue";
-import UpdateField from "../actions/UpdateField.vue";
-
-interface Field {
-  field_type: string;
-  encrypted: string;
-  name: string;
-  uuid: string;
-  order: number;
-  kind: string;
-  share_keys: boolean | null;
-  group_id: number | null;
-}
-
-interface Template {
-  id: number;
-  name: string;
-  fields: Field[];
-}
-
-// other
-const route = useRoute();
-const client = useClient();
-
-// template
-const retrieve = client.get(
-  "api/data_sheets/query/templates/{}/",
-  route.params.id as string,
-);
-
-const template = ref<Template>();
-const query = useGet(retrieve, template);
-
-// help
-const helpModalOpen = ref(false);
-</script>

@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { useUserStore } from "@/store/user";
+import { FolderIcon } from "@heroicons/vue/24/outline";
+import TabControls from "@/components/TabControls.vue";
+import FoldersTableView from "@/features/folders/components/FoldersTableView.vue";
+import FoldersTreeView from "@/features/folders/components/FoldersTreeView.vue";
+import { useFolderPage } from "../api/useFolderPage";
+
+const userStore = useUserStore();
+
+const { query, availableGroups, availablePersons, folderItems, folderList } =
+  useFolderPage();
+
+const setting = userStore.getSetting("foldersDashboardViewTab") as string;
+const tabChanged = (key: string) => {
+  userStore.updateSetting("foldersDashboardViewTab", key);
+};
+</script>
+
 <template>
   <BoxLoader :show="userStore.loaded">
     <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
@@ -54,24 +75,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script setup lang="ts">
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { useUserStore } from "@/store/user";
-import { FolderIcon } from "@heroicons/vue/24/outline";
-import TabControls from "@/components/TabControls.vue";
-import FoldersTableView from "@/features/folders/components/FoldersTableView.vue";
-import FoldersTreeView from "@/features/folders/components/FoldersTreeView.vue";
-import { useFolderPage } from "../api/useFolderPage";
-
-const userStore = useUserStore();
-
-const { query, availableGroups, availablePersons, folderItems, folderList } =
-  useFolderPage();
-
-const setting = userStore.getSetting("foldersDashboardViewTab") as string;
-const tabChanged = (key: string) => {
-  userStore.updateSetting("foldersDashboardViewTab", key);
-};
-</script>

@@ -1,21 +1,3 @@
-<template>
-  <ButtonNormal kind="delete" @click="commandModalOpen = true">
-    Revoke access
-    <ModalUpdate
-      v-model="commandModalOpen"
-      title="Revoke Access"
-      :fields="revokeAccessFields"
-      :request="commandRequest"
-      :data="{
-        action: 'folders/revoke_access_from_user',
-        folder_uuid: folderUuid,
-        of_uuid: userUuid,
-      }"
-      submit="Revoke Access"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -44,3 +26,21 @@ const revokeAccessFields = computed<types.FormField[]>(() => {
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
+    Revoke access
+    <ModalUpdate
+      v-model="commandModalOpen"
+      title="Revoke Access"
+      :fields="revokeAccessFields"
+      :request="commandRequest"
+      :data="{
+        action: 'folders/revoke_access_from_user',
+        folder_uuid: folderUuid,
+        of_uuid: userUuid,
+      }"
+      submit="Revoke Access"
+    />
+  </ButtonNormal>
+</template>

@@ -1,3 +1,18 @@
+<script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
+import { TableGenerator } from "lorga-ui";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
+import ButtonLink from "@/components/ButtonLink.vue";
+import UsersDeleteUser from "@/features/admin/actions/DeleteUser.vue";
+import UsersActivateDeactivateUser from "@/features/admin/actions/ActivateDeactivateUser.vue";
+import UsersAcceptUser from "@/features/admin/actions/AcceptOrgUser.vue";
+import UsersUnlockUser from "@/features/admin/actions/UnlockUser.vue";
+import { useProfiles } from "../api/useProfiles";
+
+const { profiles, query } = useProfiles();
+</script>
+
 <template>
   <BoxLoader show>
     <div class="max-w-screen-xl mx-auto space-y-6">
@@ -68,18 +83,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import ButtonLink from "@/components/ButtonLink.vue";
-import UsersDeleteUser from "@/features/admin/actions/DeleteUser.vue";
-import UsersActivateDeactivateUser from "@/features/admin/actions/ActivateDeactivateUser.vue";
-import UsersAcceptUser from "@/features/admin/actions/AcceptOrgUser.vue";
-import UsersUnlockUser from "@/features/admin/actions/UnlockUser.vue";
-import { useProfiles } from "../api/useProfiles";
-
-const { profiles, query } = useProfiles();
-</script>

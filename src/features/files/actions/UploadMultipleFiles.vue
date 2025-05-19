@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Upload Multiple Files
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Upload Multiple Files"
-      :fields="fieldsMultiple"
-      :request="commandRequest"
-      :data="{ folder_uuid: folderUuid }"
-      submit="Upload"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs, ref, computed } from "vue";
@@ -90,3 +76,17 @@ defineExpose({
   commandModalOpen,
 });
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Upload Multiple Files
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Upload Multiple Files"
+      :fields="fieldsMultiple"
+      :request="commandRequest"
+      :data="{ folder_uuid: folderUuid }"
+      submit="Upload"
+    />
+  </ButtonNormal>
+</template>

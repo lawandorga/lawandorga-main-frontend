@@ -1,16 +1,3 @@
-<template>
-  <ButtonNormal kind="delete" @click="commandModalOpen = true">
-    Delete
-    <ModalDelete
-      v-model="commandModalOpen"
-      :request="commandRequest"
-      :data="{ id: linkId, action: 'org/delete_link' }"
-      title="Delete Link"
-      :obj-name="name"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { useUserStore } from "@/store/user";
@@ -32,3 +19,16 @@ const updateStore = () => {
 
 const { commandRequest, commandModalOpen } = useCmd(updateStore, query);
 </script>
+
+<template>
+  <ButtonNormal kind="delete" @click="commandModalOpen = true">
+    Delete
+    <ModalDelete
+      v-model="commandModalOpen"
+      :request="commandRequest"
+      :data="{ id: linkId, action: 'org/delete_link' }"
+      title="Delete Link"
+      :obj-name="name"
+    />
+  </ButtonNormal>
+</template>

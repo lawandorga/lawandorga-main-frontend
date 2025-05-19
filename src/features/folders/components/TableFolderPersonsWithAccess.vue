@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import FoldersGrantAccess from "@/features/folders/actions/GrantUserAccessToFolder.vue";
+import FoldersRevokeAccessUser from "@/features/folders/actions/RevokeAccessFromUser.vue";
+import { TableGenerator } from "lorga-ui";
+import { FolderItem, FolderPerson } from "../api/useFolderPage";
+
+defineProps<{
+  query: () => void;
+  item: FolderItem;
+  availablePersons: FolderPerson[];
+}>();
+</script>
+
 <template>
   <TableGenerator
     :data="item.access"
@@ -25,16 +38,3 @@
     </template>
   </TableGenerator>
 </template>
-
-<script setup lang="ts">
-import FoldersGrantAccess from "@/features/folders/actions/GrantUserAccessToFolder.vue";
-import FoldersRevokeAccessUser from "@/features/folders/actions/RevokeAccessFromUser.vue";
-import { TableGenerator } from "lorga-ui";
-import { FolderItem, FolderPerson } from "../api/useFolderPage";
-
-defineProps<{
-  query: () => void;
-  item: FolderItem;
-  availablePersons: FolderPerson[];
-}>();
-</script>

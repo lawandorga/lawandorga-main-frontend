@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { toRefs } from "vue";
+import { MailAttachment } from "../api/useMailImports";
+
+const props = defineProps<{
+  attachments: Array<MailAttachment>;
+}>();
+const { attachments } = toRefs(props);
+
+const getLink = (id: string) =>
+  `${import.meta.env.VITE_BACKEND_URL}/api/mail_imports/query/mail_attachments/${id}/`;
+</script>
+
 <template>
   <ul class="flex flex-wrap gap-2 col-span-full">
     <li v-for="attachment in attachments" :key="attachment.uuid">
@@ -12,16 +25,3 @@
     </li>
   </ul>
 </template>
-
-<script setup lang="ts">
-import { toRefs } from "vue";
-import { MailAttachment } from "../api/useMailImports";
-
-const props = defineProps<{
-  attachments: Array<MailAttachment>;
-}>();
-const { attachments } = toRefs(props);
-
-const getLink = (id: string) =>
-  `${import.meta.env.VITE_BACKEND_URL}/api/mail_imports/query/mail_attachments/${id}/`;
-</script>

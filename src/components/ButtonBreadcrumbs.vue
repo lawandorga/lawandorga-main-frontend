@@ -1,18 +1,3 @@
-<template>
-  <ButtonNormal
-    :is="is"
-    kind="secondary"
-    :to="to"
-    :href="href"
-    :disabled="disabledComputed"
-    :type="type"
-    @click="emitClick()"
-  >
-    <CircleLoader v-show="loading" color="text-white" class="mr-2" />
-    <slot />
-  </ButtonNormal>
-</template>
-
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ButtonNormal, CircleLoader } from "lorga-ui";
@@ -68,3 +53,18 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <ButtonNormal
+    :is="is"
+    kind="secondary"
+    :to="to"
+    :href="href"
+    :disabled="disabledComputed"
+    :type="type"
+    @click="emitClick()"
+  >
+    <CircleLoader v-show="loading" color="text-white" class="mr-2" />
+    <slot />
+  </ButtonNormal>
+</template>

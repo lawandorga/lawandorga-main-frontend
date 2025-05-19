@@ -1,18 +1,3 @@
-<template>
-  <ButtonNormal size="xs" kind="secondary" @click="commandModalOpen = true">
-    Create Group
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Create Group"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{
-        action: 'org/create_group',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
@@ -38,3 +23,18 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal size="xs" kind="secondary" @click="commandModalOpen = true">
+    Create Group
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Create Group"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        action: 'org/create_group',
+      }"
+    />
+  </ButtonNormal>
+</template>

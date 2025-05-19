@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Create Link
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Create Link"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{ folder_uuid: folderUuid, action: 'upload/create_link' }"
-      submit="Create"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
@@ -40,3 +26,17 @@ defineExpose({
   commandModalOpen,
 });
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Create Link
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Create Link"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{ folder_uuid: folderUuid, action: 'upload/create_link' }"
+      submit="Create"
+    />
+  </ButtonNormal>
+</template>

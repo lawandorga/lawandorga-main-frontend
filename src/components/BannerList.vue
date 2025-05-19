@@ -1,23 +1,3 @@
-<template>
-  <transition
-    enter-active-class="transition duration-200 opacity-0"
-    enter-class="opacity-0"
-    enter-to-class="opacity-100"
-    leave-class="opacity-100"
-    leave-to-class="opacity-0"
-    leave-active-class="transition duration-150"
-  >
-    <BannerWhite
-      v-if="banner"
-      :text="banner.text"
-      :to="banner.to"
-      :close="banner.close"
-      :button="banner.button"
-      @close="banner?.onClose"
-    />
-  </transition>
-</template>
-
 <script setup lang="ts">
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
@@ -62,3 +42,23 @@ if (isOptimizationDue) {
   banner.value = optimizationBanner;
 }
 </script>
+
+<template>
+  <transition
+    enter-active-class="transition duration-200 opacity-0"
+    enter-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-class="opacity-100"
+    leave-to-class="opacity-0"
+    leave-active-class="transition duration-150"
+  >
+    <BannerWhite
+      v-if="banner"
+      :text="banner.text"
+      :to="banner.to"
+      :close="banner.close"
+      :button="banner.button"
+      @close="banner?.onClose"
+    />
+  </transition>
+</template>

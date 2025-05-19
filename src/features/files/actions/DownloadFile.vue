@@ -1,7 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="downloadFile">Download File</ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
@@ -20,3 +16,7 @@ const downloadFile = () => {
   request({ filename: name.value, uuid: fileUuid.value });
 };
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="downloadFile">Download File</ButtonNormal>
+</template>

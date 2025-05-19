@@ -1,3 +1,14 @@
+<script lang="ts" setup>
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{ query: () => void; deletionUuid: string }>();
+const { query, deletionUuid } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query.value);
+</script>
+
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Decline
@@ -16,14 +27,3 @@
     <b>The record will not be deleted.</b>
   </ModalConfirm>
 </template>
-
-<script lang="ts" setup>
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { toRefs } from "vue";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{ query: () => void; deletionUuid: string }>();
-const { query, deletionUuid } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query.value);
-</script>

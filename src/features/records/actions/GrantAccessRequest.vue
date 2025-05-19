@@ -1,3 +1,19 @@
+<script lang="ts" setup>
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{
+  query: () => void;
+  accessRequestUuid: string;
+  username: string;
+  recordname: string;
+}>();
+const { query, accessRequestUuid } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query);
+</script>
+
 <template>
   <ButtonNormal kind="action" @click="commandModalOpen = true">
     Grant
@@ -16,19 +32,3 @@
     {{ username }} will get access to '{{ recordname }}'.
   </ModalConfirm>
 </template>
-
-<script lang="ts" setup>
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { toRefs } from "vue";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{
-  query: () => void;
-  accessRequestUuid: string;
-  username: string;
-  recordname: string;
-}>();
-const { query, accessRequestUuid } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query);
-</script>

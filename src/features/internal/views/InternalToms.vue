@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { useTomsPage } from "../api/useTomsPage";
+
+const { page: article } = useTomsPage();
+</script>
+
 <template>
   <section
     class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
@@ -17,9 +23,3 @@
     </article>
   </section>
 </template>
-
-<script lang="ts" setup>
-import { useTomsPage } from "../api/useTomsPage";
-
-const { page: article } = useTomsPage();
-</script>

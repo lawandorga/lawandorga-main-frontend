@@ -1,3 +1,30 @@
+<script lang="ts" setup>
+import { Bars3CenterLeftIcon } from "@heroicons/vue/24/outline";
+import useNavigationItems from "@/composables/useNavigationItems";
+import { useUserStore } from "@/store/user";
+import { ref, watch } from "vue";
+import LogoWhite from "./LogoWhite.vue";
+import { CircleLoader } from "lorga-ui";
+import { storeToRefs } from "pinia";
+import RedBadge from "./RedBadge.vue";
+
+const { navigationItems } = useNavigationItems();
+const userStore = useUserStore();
+const { loaded } = storeToRefs(userStore);
+
+const expanded = ref(userStore.getSetting("navigationExpanded", true));
+
+watch(loaded, () => {
+  expanded.value = userStore.getSetting("navigationExpanded", true);
+});
+
+const expandClicked = () => {
+  expanded.value = !expanded.value;
+  userStore.updateSetting("navigationExpanded", expanded.value);
+  return undefined;
+};
+</script>
+
 <template>
   <div class="hidden md:flex md:flex-shrink-0 print:hidden">
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
@@ -155,30 +182,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { Bars3CenterLeftIcon } from "@heroicons/vue/24/outline";
-import useNavigationItems from "@/composables/useNavigationItems";
-import { useUserStore } from "@/store/user";
-import { ref, watch } from "vue";
-import LogoWhite from "./LogoWhite.vue";
-import { CircleLoader } from "lorga-ui";
-import { storeToRefs } from "pinia";
-import RedBadge from "./RedBadge.vue";
-
-const { navigationItems } = useNavigationItems();
-const userStore = useUserStore();
-const { loaded } = storeToRefs(userStore);
-
-const expanded = ref(userStore.getSetting("navigationExpanded", true));
-
-watch(loaded, () => {
-  expanded.value = userStore.getSetting("navigationExpanded", true);
-});
-
-const expandClicked = () => {
-  expanded.value = !expanded.value;
-  userStore.updateSetting("navigationExpanded", expanded.value);
-  return undefined;
-};
-</script>

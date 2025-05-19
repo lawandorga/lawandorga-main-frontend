@@ -1,3 +1,19 @@
+<script lang="ts" setup>
+import { toRefs } from "vue";
+import { ModalConfirm, ButtonNormal } from "lorga-ui";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{
+  userId: number;
+  query: () => void;
+  userAccepted: boolean;
+  userName: string;
+}>();
+const { userId, query } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query);
+</script>
+
 <template>
   <ButtonNormal
     v-if="!userAccepted"
@@ -15,19 +31,3 @@
     </ModalConfirm>
   </ButtonNormal>
 </template>
-
-<script lang="ts" setup>
-import { toRefs } from "vue";
-import { ModalConfirm, ButtonNormal } from "lorga-ui";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{
-  userId: number;
-  query: () => void;
-  userAccepted: boolean;
-  userName: string;
-}>();
-const { userId, query } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query);
-</script>

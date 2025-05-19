@@ -1,17 +1,3 @@
-<template>
-  <label class="block" :for="id">
-    <FormLabel :required="required" :label="label" />
-  </label>
-  <div v-if="editor" class="break-words border border-gray-300 rounded-md">
-    <MenuBarSimple
-      class="sticky top-[-26px] z-10 flex items-center p-2 border-b border-gray-300 print:hidden"
-      :editor="editor"
-    />
-    <EditorContent :editor="editor" />
-  </div>
-  <FormHelptext :helptext="helptext" />
-</template>
-
 <script setup lang="ts">
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { StarterKit } from "@tiptap/starter-kit";
@@ -87,3 +73,17 @@ watch(modelValue, (newValue) => {
   if (!isSet.value) setEditorContent(newValue);
 });
 </script>
+
+<template>
+  <label class="block" :for="id">
+    <FormLabel :required="required" :label="label" />
+  </label>
+  <div v-if="editor" class="break-words border border-gray-300 rounded-md">
+    <MenuBarSimple
+      class="sticky top-[-26px] z-10 flex items-center p-2 border-b border-gray-300 print:hidden"
+      :editor="editor"
+    />
+    <EditorContent :editor="editor" />
+  </div>
+  <FormHelptext :helptext="helptext" />
+</template>

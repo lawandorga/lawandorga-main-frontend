@@ -1,42 +1,3 @@
-<template>
-  <div v-if="messages">
-    <BoxHeadingStats
-      title="Messages"
-      :show="selectedType === 'MESSAGES'"
-      :stats="[`${messages?.length} messages in total`]"
-    >
-      <ul v-if="messages" class="space-y-5">
-        <li v-for="message in messages" :key="message.message">
-          <div class="w-full">
-            <div
-              class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
-            >
-              <b>{{ message.sender_name }}:</b>
-              <i class="text-sm tracking-tight">
-                {{ formatDate(message.created) }}
-              </i>
-            </div>
-            <div class="flex justify-between">
-              <p class="" style="margin-top: 2px; margin-bottom: 0">
-                {{ message.message }}
-              </p>
-              <DeleteMessage
-                :message-id="message.id"
-                :delete-name="`${message.sender_name}: ${message.message}`"
-                :query="query"
-              />
-            </div>
-          </div>
-        </li>
-        <div style="height: auto; padding-top: 16px">
-          <MessagesSendMessage :query="query" :folder-uuid="folderUuid" />
-        </div>
-      </ul>
-    </BoxHeadingStats>
-  </div>
-  <div v-else-if="loading"><CircleLoader /></div>
-</template>
-
 <script setup lang="ts">
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { formatDate } from "@/utils/date";
@@ -83,3 +44,42 @@ watch(selectedType, () => {
 });
 update();
 </script>
+
+<template>
+  <div v-if="messages">
+    <BoxHeadingStats
+      title="Messages"
+      :show="selectedType === 'MESSAGES'"
+      :stats="[`${messages?.length} messages in total`]"
+    >
+      <ul v-if="messages" class="space-y-5">
+        <li v-for="message in messages" :key="message.message">
+          <div class="w-full">
+            <div
+              class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
+            >
+              <b>{{ message.sender_name }}:</b>
+              <i class="text-sm tracking-tight">
+                {{ formatDate(message.created) }}
+              </i>
+            </div>
+            <div class="flex justify-between">
+              <p class="" style="margin-top: 2px; margin-bottom: 0">
+                {{ message.message }}
+              </p>
+              <DeleteMessage
+                :message-id="message.id"
+                :delete-name="`${message.sender_name}: ${message.message}`"
+                :query="query"
+              />
+            </div>
+          </div>
+        </li>
+        <div style="height: auto; padding-top: 16px">
+          <MessagesSendMessage :query="query" :folder-uuid="folderUuid" />
+        </div>
+      </ul>
+    </BoxHeadingStats>
+  </div>
+  <div v-else-if="loading"><CircleLoader /></div>
+</template>

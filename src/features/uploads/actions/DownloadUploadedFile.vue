@@ -1,7 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="download">Download File</ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useClient from "@/api/client";
 import { ButtonNormal } from "lorga-ui";
@@ -25,3 +21,7 @@ const download = () => {
   request({ filename: name.value });
 };
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="download">Download File</ButtonNormal>
+</template>

@@ -1,3 +1,6 @@
+<script lang="ts" setup>
+import { ButtonNormal } from "lorga-ui";
+</script>
 <template>
   <div
     class="px-4 py-16 bg-white lg:min-h-full sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8"
@@ -29,7 +32,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ButtonNormal } from "lorga-ui";
-</script>

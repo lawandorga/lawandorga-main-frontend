@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import MailAddAddress from "@/features/mail/actions/AddAddressToUser.vue";
+import MailDeleteAddress from "@/features/mail/actions/DeleteUserAddress.vue";
+import MailRegeneratePassword from "@/features/mail/actions/RegeneratePassword.vue";
+import MailSetDefaultAddress from "@/features/mail/actions/SetDefaultUserAddress.vue";
+import { TableGenerator } from "lorga-ui";
+import { toRefs } from "vue";
+import {
+  MailAddress,
+  MailDashboardPage,
+  NoMailAccount,
+  SelfMailUser,
+} from "../api/useGetDashboardPage";
+
+const props = defineProps<{
+  page: MailDashboardPage | NoMailAccount;
+  user: SelfMailUser | null | false;
+  addresses: MailAddress[] | null;
+  query: () => void;
+}>();
+const { page } = toRefs(props);
+</script>
+
 <template>
   <template v-if="!!user">
     <div class="px-6 py-5 bg-white rounded shadow">
@@ -143,26 +166,3 @@
     </div>
   </template>
 </template>
-
-<script setup lang="ts">
-import MailAddAddress from "@/features/mail/actions/AddAddressToUser.vue";
-import MailDeleteAddress from "@/features/mail/actions/DeleteUserAddress.vue";
-import MailRegeneratePassword from "@/features/mail/actions/RegeneratePassword.vue";
-import MailSetDefaultAddress from "@/features/mail/actions/SetDefaultUserAddress.vue";
-import { TableGenerator } from "lorga-ui";
-import { toRefs } from "vue";
-import {
-  MailAddress,
-  MailDashboardPage,
-  NoMailAccount,
-  SelfMailUser,
-} from "../api/useGetDashboardPage";
-
-const props = defineProps<{
-  page: MailDashboardPage | NoMailAccount;
-  user: SelfMailUser | null | false;
-  addresses: MailAddress[] | null;
-  query: () => void;
-}>();
-const { page } = toRefs(props);
-</script>

@@ -1,24 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Update
-  </ButtonNormal>
-  <ModalUpdate
-    v-model="commandModalOpen"
-    :fields="fields"
-    title="Update Folow Up"
-    :request="commandRequest"
-    :data="{
-      action: 'timeline/update_follow_up',
-      uuid: followUpUuid,
-      time: followUpTime.slice(0, 16),
-      text: followUpText,
-      title: followUpTitle,
-      is_done: followUpIsDone,
-    }"
-    submit="Update"
-  />
-</template>
-
 <script lang="ts" setup>
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
@@ -63,3 +42,24 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Update
+  </ButtonNormal>
+  <ModalUpdate
+    v-model="commandModalOpen"
+    :fields="fields"
+    title="Update Folow Up"
+    :request="commandRequest"
+    :data="{
+      action: 'timeline/update_follow_up',
+      uuid: followUpUuid,
+      time: followUpTime.slice(0, 16),
+      text: followUpText,
+      title: followUpTitle,
+      is_done: followUpIsDone,
+    }"
+    submit="Update"
+  />
+</template>

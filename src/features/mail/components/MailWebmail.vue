@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="px-6 py-5 bg-white rounded shadow">
     <div
@@ -22,5 +24,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>

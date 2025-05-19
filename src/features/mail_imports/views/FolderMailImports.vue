@@ -1,156 +1,3 @@
-<template>
-  <div v-if="mails">
-    <BoxHeadingStats
-      title="Mail Imports"
-      :show="selectedType === 'MAIL_IMPORTS'"
-      :stats="[mails.length === 1 ? '1 mail' : `${mails.length} mails`]"
-    >
-      <template #buttons>
-        <div class="flex items-center gap-4">
-          <CopyCCAdressFromFolder
-            :address="`${folderUuid}@folders.law-orga.de`"
-          />
-          <input
-            v-model="searchQuery"
-            type="search"
-            placeholder="Search in mails"
-            class="p-3 rounded-full bg-neutral-100"
-          />
-          <MagnifyingGlassIcon
-            class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
-          />
-        </div>
-      </template>
-      <ButtonNormal class="mb-4" @click="importMails">
-        {{ importRunning ? "Importing..." : "Import new mails" }}
-      </ButtonNormal>
-      <div
-        class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
-      >
-        <input
-          id="toggleAllMails"
-          class="self-center w-4 h-4 col-start-1 justify-self-center"
-          type="checkbox"
-          @input="toggleAllCheckedMails"
-        />
-        <ToolTip
-          v-if="checkedMails.length !== 0 && areAllCheckedEmailsRead()"
-          text="Mark as unread"
-          class="col-start-2"
-        >
-          <button @click="() => markAsUnread(checkedMails)">
-            <EnvelopeIcon class="w-5 h-5" />
-          </button>
-        </ToolTip>
-        <ToolTip v-else text="Mark as read" class="col-start-2">
-          <button @click="() => markAsRead(checkedMails)">
-            <EnvelopeOpenIcon class="w-5 h-5" />
-          </button>
-        </ToolTip>
-        <span
-          v-if="fieldsShown.subject"
-          class="col-span-1 font-semibold text-neutral-600"
-        >
-          Subject
-        </span>
-        <span
-          v-if="fieldsShown.sender"
-          class="col-span-1 font-semibold text-neutral-600"
-        >
-          Sender(s)
-        </span>
-        <ToolTip class="col-start-6" text="Edit display">
-          <button @click="settingsOpen = true">
-            <AdjustmentsHorizontalIcon class="w-5 h-5" />
-          </button>
-        </ToolTip>
-        <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
-        <template v-for="(mail, index) in sortedMails" :key="mail.uuid">
-          <input
-            :checked="checkedMails.includes(mail.uuid)"
-            class="self-center w-4 h-4 col-start-1 justify-self-center"
-            type="checkbox"
-            @input="() => toggleCheckedMail(mail.uuid)"
-          />
-          <button
-            class="col-start-2"
-            @click="() => toggleMailPinned(mail.uuid)"
-          >
-            <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
-            <ToolTip v-if="!mail.is_pinned" text="E-Mail anpinnen">
-              <StarOutlineIcons class="w-5 h-5" />
-            </ToolTip>
-          </button>
-          <button class="contents" @click="() => toggleMailExpanded(mail.uuid)">
-            <span
-              v-if="fieldsShown.subject"
-              :class="`col-span-1 overflow-hidden text-left whitespace-nowrap text-ellipsis ${
-                mail.is_read ? '' : 'font-bold'
-              }`"
-            >
-              {{ mail.subject }}
-            </span>
-            <span
-              v-if="fieldsShown.sender"
-              :class="`col-span-1 text-left ${
-                mail.is_read ? '' : 'font-semibold'
-              }`"
-            >
-              {{ mail.sender }}
-            </span>
-            <span
-              v-if="fieldsShown.sending_datetime"
-              :class="`col-start-5 text-right  ${
-                mail.is_read ? '' : 'font-semibold'
-              }`"
-            >
-              {{ formatDate(mail.sending_datetime) }}
-            </span>
-            <ChevronDownIcon
-              v-if="!expandedMails.includes(mail.uuid)"
-              class="col-start-6 ml-auto"
-            />
-            <ChevronDownIcon
-              v-if="expandedMails.includes(mail.uuid)"
-              class="col-start-6 ml-auto rotate-180"
-            />
-          </button>
-          <MailContent v-if="expandedMails.includes(mail.uuid)" :mail="mail" />
-          <MailAttachment
-            v-if="!!mail.mail_attachments.length"
-            :attachments="mail.mail_attachments"
-          />
-          <div
-            v-if="index !== mails.length - 1"
-            class="w-auto h-px col-span-6 col-start-1 bg-neutral-300"
-          />
-        </template>
-        <div
-          v-if="searchQuery.length > 0 && searchResults?.length === 0"
-          class="col-span-5"
-        >
-          No results for this search query
-        </div>
-      </div>
-      <ModalFree
-        v-model="settingsOpen"
-        title="Edit the display of the mail imports"
-        width="max-w-xl"
-      >
-        <SettingsOverlay
-          :close-overlay="() => (settingsOpen = false)"
-          :set-shown-fields="
-            (newFields: DisplayedFieldsObject) => (fieldsShown = newFields)
-          "
-          :set-sorting="(newSorting: Sorting) => (sorting = newSorting)"
-          :currently-shown-fields="fieldsShown"
-          :current-sorting="sorting"
-        />
-      </ModalFree>
-    </BoxHeadingStats>
-  </div>
-</template>
-
 <script setup lang="ts">
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { DisplayedFieldsObject, Sorting } from "@/features/mail_imports/types";
@@ -309,3 +156,156 @@ const formatDate = (date: string) =>
       : dateFormatWithoutYear,
   );
 </script>
+
+<template>
+  <div v-if="mails">
+    <BoxHeadingStats
+      title="Mail Imports"
+      :show="selectedType === 'MAIL_IMPORTS'"
+      :stats="[mails.length === 1 ? '1 mail' : `${mails.length} mails`]"
+    >
+      <template #buttons>
+        <div class="flex items-center gap-4">
+          <CopyCCAdressFromFolder
+            :address="`${folderUuid}@folders.law-orga.de`"
+          />
+          <input
+            v-model="searchQuery"
+            type="search"
+            placeholder="Search in mails"
+            class="p-3 rounded-full bg-neutral-100"
+          />
+          <MagnifyingGlassIcon
+            class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
+          />
+        </div>
+      </template>
+      <ButtonNormal class="mb-4" @click="importMails">
+        {{ importRunning ? "Importing..." : "Import new mails" }}
+      </ButtonNormal>
+      <div
+        class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
+      >
+        <input
+          id="toggleAllMails"
+          class="self-center w-4 h-4 col-start-1 justify-self-center"
+          type="checkbox"
+          @input="toggleAllCheckedMails"
+        />
+        <ToolTip
+          v-if="checkedMails.length !== 0 && areAllCheckedEmailsRead()"
+          text="Mark as unread"
+          class="col-start-2"
+        >
+          <button @click="() => markAsUnread(checkedMails)">
+            <EnvelopeIcon class="w-5 h-5" />
+          </button>
+        </ToolTip>
+        <ToolTip v-else text="Mark as read" class="col-start-2">
+          <button @click="() => markAsRead(checkedMails)">
+            <EnvelopeOpenIcon class="w-5 h-5" />
+          </button>
+        </ToolTip>
+        <span
+          v-if="fieldsShown.subject"
+          class="col-span-1 font-semibold text-neutral-600"
+        >
+          Subject
+        </span>
+        <span
+          v-if="fieldsShown.sender"
+          class="col-span-1 font-semibold text-neutral-600"
+        >
+          Sender(s)
+        </span>
+        <ToolTip class="col-start-6" text="Edit display">
+          <button @click="settingsOpen = true">
+            <AdjustmentsHorizontalIcon class="w-5 h-5" />
+          </button>
+        </ToolTip>
+        <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
+        <template v-for="(mail, index) in sortedMails" :key="mail.uuid">
+          <input
+            :checked="checkedMails.includes(mail.uuid)"
+            class="self-center w-4 h-4 col-start-1 justify-self-center"
+            type="checkbox"
+            @input="() => toggleCheckedMail(mail.uuid)"
+          />
+          <button
+            class="col-start-2"
+            @click="() => toggleMailPinned(mail.uuid)"
+          >
+            <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
+            <ToolTip v-if="!mail.is_pinned" text="E-Mail anpinnen">
+              <StarOutlineIcons class="w-5 h-5" />
+            </ToolTip>
+          </button>
+          <button class="contents" @click="() => toggleMailExpanded(mail.uuid)">
+            <span
+              v-if="fieldsShown.subject"
+              :class="`col-span-1 overflow-hidden text-left whitespace-nowrap text-ellipsis ${
+                mail.is_read ? '' : 'font-bold'
+              }`"
+            >
+              {{ mail.subject }}
+            </span>
+            <span
+              v-if="fieldsShown.sender"
+              :class="`col-span-1 text-left ${
+                mail.is_read ? '' : 'font-semibold'
+              }`"
+            >
+              {{ mail.sender }}
+            </span>
+            <span
+              v-if="fieldsShown.sending_datetime"
+              :class="`col-start-5 text-right  ${
+                mail.is_read ? '' : 'font-semibold'
+              }`"
+            >
+              {{ formatDate(mail.sending_datetime) }}
+            </span>
+            <ChevronDownIcon
+              v-if="!expandedMails.includes(mail.uuid)"
+              class="col-start-6 ml-auto"
+            />
+            <ChevronDownIcon
+              v-if="expandedMails.includes(mail.uuid)"
+              class="col-start-6 ml-auto rotate-180"
+            />
+          </button>
+          <MailContent v-if="expandedMails.includes(mail.uuid)" :mail="mail" />
+          <MailAttachment
+            v-if="!!mail.mail_attachments.length"
+            :attachments="mail.mail_attachments"
+          />
+          <div
+            v-if="index !== mails.length - 1"
+            class="w-auto h-px col-span-6 col-start-1 bg-neutral-300"
+          />
+        </template>
+        <div
+          v-if="searchQuery.length > 0 && searchResults?.length === 0"
+          class="col-span-5"
+        >
+          No results for this search query
+        </div>
+      </div>
+      <ModalFree
+        v-model="settingsOpen"
+        title="Edit the display of the mail imports"
+        width="max-w-xl"
+      >
+        <SettingsOverlay
+          :close-overlay="() => (settingsOpen = false)"
+          :set-shown-fields="
+            (newFields: DisplayedFieldsObject) => (fieldsShown = newFields)
+          "
+          :set-sorting="(newSorting: Sorting) => (sorting = newSorting)"
+          :currently-shown-fields="fieldsShown"
+          :current-sorting="sorting"
+        />
+      </ModalFree>
+    </BoxHeadingStats>
+  </div>
+</template>

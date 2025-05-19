@@ -1,3 +1,64 @@
+<script setup lang="ts">
+import { useFolderProperties } from "@/composables/useFolderProperties";
+import { useUserStore } from "@/store/user";
+import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
+import { ButtonNormal } from "lorga-ui";
+import { ref, toRefs } from "vue";
+import { useRoute } from "vue-router";
+import FoldersBadge from "./FoldersBadge.vue";
+import { FolderItem } from "../api/useFolderPage";
+
+const props = withDefaults(
+  defineProps<{
+    folders: FolderItem[] | null;
+    depth?: number;
+    openFolders?: string[];
+  }>(),
+  { depth: 0, openFolders: () => [] },
+);
+const { folders, openFolders } = toRefs(props);
+
+const emit = defineEmits([
+  "addChildClicked",
+  "addContentClicked",
+  "showMetaClicked",
+  "folderClicked",
+]);
+
+const route = useRoute();
+const userStore = useUserStore();
+
+const queryOpen =
+  !Array.isArray(route.query.open) && route.query.open ? route.query.open : "";
+
+const openedFolders: string[] = queryOpen.includes(",")
+  ? queryOpen.split(",")
+  : [];
+
+const open = ref<string[]>(
+  openedFolders
+    .concat(openFolders.value)
+    .concat(userStore.getSetting<string[]>("openFolders", []) as string[]),
+);
+
+const openOrCloseFolder = (uuid: string) => {
+  if (!open.value.includes(uuid)) openFolder(uuid);
+  else closeFolder(uuid);
+};
+
+const openFolder = (uuid: string) => {
+  open.value.push(uuid);
+  userStore.updateSetting("openFolders", open.value);
+};
+
+const closeFolder = (uuid: string) => {
+  open.value = open.value.filter((i) => i !== uuid);
+  userStore.updateSetting("openFolders", open.value);
+};
+
+const { properties } = useFolderProperties(folders);
+</script>
+
 <template>
   <template v-for="item in folders" :key="item.folder.uuid">
     <div
@@ -108,64 +169,3 @@
     </template>
   </template>
 </template>
-
-<script setup lang="ts">
-import { useFolderProperties } from "@/composables/useFolderProperties";
-import { useUserStore } from "@/store/user";
-import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
-import { ButtonNormal } from "lorga-ui";
-import { ref, toRefs } from "vue";
-import { useRoute } from "vue-router";
-import FoldersBadge from "./FoldersBadge.vue";
-import { FolderItem } from "../api/useFolderPage";
-
-const props = withDefaults(
-  defineProps<{
-    folders: FolderItem[] | null;
-    depth?: number;
-    openFolders?: string[];
-  }>(),
-  { depth: 0, openFolders: () => [] },
-);
-const { folders, openFolders } = toRefs(props);
-
-const emit = defineEmits([
-  "addChildClicked",
-  "addContentClicked",
-  "showMetaClicked",
-  "folderClicked",
-]);
-
-const route = useRoute();
-const userStore = useUserStore();
-
-const queryOpen =
-  !Array.isArray(route.query.open) && route.query.open ? route.query.open : "";
-
-const openedFolders: string[] = queryOpen.includes(",")
-  ? queryOpen.split(",")
-  : [];
-
-const open = ref<string[]>(
-  openedFolders
-    .concat(openFolders.value)
-    .concat(userStore.getSetting<string[]>("openFolders", []) as string[]),
-);
-
-const openOrCloseFolder = (uuid: string) => {
-  if (!open.value.includes(uuid)) openFolder(uuid);
-  else closeFolder(uuid);
-};
-
-const openFolder = (uuid: string) => {
-  open.value.push(uuid);
-  userStore.updateSetting("openFolders", open.value);
-};
-
-const closeFolder = (uuid: string) => {
-  open.value = open.value.filter((i) => i !== uuid);
-  userStore.updateSetting("openFolders", open.value);
-};
-
-const { properties } = useFolderProperties(folders);
-</script>

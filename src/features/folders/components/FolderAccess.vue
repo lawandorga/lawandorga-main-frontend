@@ -1,3 +1,20 @@
+<script lang="ts" setup>
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import { TableGenerator } from "lorga-ui";
+import FoldersRevokeAccessUserSimple from "@/features/folders/actions/RevokeAccessFromUserSimple.vue";
+import FoldersRevokeAccessGroupSimple from "../actions/RevokeAccessFromGroupSimple.vue";
+import { Access } from "../api/useFolderPage";
+
+defineProps<{
+  selectedType: string;
+  access: Access[];
+  groupAccess: Access[];
+  selectedId: string | null | number;
+  folderUuid: string;
+  query: () => void;
+}>();
+</script>
+
 <template>
   <BoxHeadingStats
     title="Access"
@@ -40,20 +57,3 @@
     </TableGenerator>
   </BoxHeadingStats>
 </template>
-
-<script lang="ts" setup>
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { TableGenerator } from "lorga-ui";
-import FoldersRevokeAccessUserSimple from "@/features/folders/actions/RevokeAccessFromUserSimple.vue";
-import FoldersRevokeAccessGroupSimple from "../actions/RevokeAccessFromGroupSimple.vue";
-import { Access } from "../api/useFolderPage";
-
-defineProps<{
-  selectedType: string;
-  access: Access[];
-  groupAccess: Access[];
-  selectedId: string | null | number;
-  folderUuid: string;
-  query: () => void;
-}>();
-</script>

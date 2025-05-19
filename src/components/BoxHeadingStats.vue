@@ -1,3 +1,12 @@
+<script setup lang="ts">
+defineProps<{
+  show: boolean;
+  title: string;
+  stats: string[];
+  nopadding?: boolean;
+}>();
+</script>
+
 <template>
   <div v-show="show">
     <div class="bg-white rounded shadow print:shadow-none">
@@ -32,12 +41,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  show: boolean;
-  title: string;
-  stats: string[];
-  nopadding?: boolean;
-}>();
-</script>

@@ -1,20 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="commandModalOpen = true">
-    Add Permission
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Add Permission"
-      :fields="permissionFields"
-      :data="{
-        group_id: null,
-        action: 'permissions/create_has_permission',
-        user_id: userId,
-      }"
-      :request="commandRequest"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
@@ -38,3 +21,20 @@ const permissionFields = computed<types.FormField[]>(() => [
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    Add Permission
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Add Permission"
+      :fields="permissionFields"
+      :data="{
+        group_id: null,
+        action: 'permissions/create_has_permission',
+        user_id: userId,
+      }"
+      :request="commandRequest"
+    />
+  </ButtonNormal>
+</template>

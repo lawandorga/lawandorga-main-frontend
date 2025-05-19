@@ -1,19 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="commandModalOpen = true">
-    Add A Domain
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Add a domain"
-      submit="Add"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{
-        action: 'mail/add_domain',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
@@ -37,3 +21,19 @@ const fields: types.FormField[] = [
 
 const { commandModalOpen, commandRequest } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    Add A Domain
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Add a domain"
+      submit="Add"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        action: 'mail/add_domain',
+      }"
+    />
+  </ButtonNormal>
+</template>

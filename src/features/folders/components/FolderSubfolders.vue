@@ -1,3 +1,16 @@
+<script lang="ts" setup>
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import { TableGenerator } from "lorga-ui";
+import ButtonLink from "@/components/ButtonLink.vue";
+import { Subfolder } from "../api/useFolder";
+
+defineProps<{
+  selectedType: string;
+  folders: Subfolder[];
+  selectedId: string | null | number;
+}>();
+</script>
+
 <template>
   <BoxHeadingStats
     title="Subfolders"
@@ -25,16 +38,3 @@
     </TableGenerator>
   </BoxHeadingStats>
 </template>
-
-<script lang="ts" setup>
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { TableGenerator } from "lorga-ui";
-import ButtonLink from "@/components/ButtonLink.vue";
-import { Subfolder } from "../api/useFolder";
-
-defineProps<{
-  selectedType: string;
-  folders: Subfolder[];
-  selectedId: string | null | number;
-}>();
-</script>

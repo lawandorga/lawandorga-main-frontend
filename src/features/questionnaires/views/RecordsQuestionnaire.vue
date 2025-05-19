@@ -1,3 +1,28 @@
+<script lang="ts" setup>
+import { computed } from "vue";
+import { FormGenerator } from "lorga-ui";
+import { useRoute } from "vue-router";
+import { PaperClipIcon } from "@heroicons/vue/24/outline";
+import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
+import useCmd from "@/composables/useCmd";
+import { useQuestionnaireToFillOut } from "../api/useQuestionnaireToFillOut";
+
+const route = useRoute();
+const { questionnaire, fields, query, error } = useQuestionnaireToFillOut(
+  route.params.code as string,
+);
+
+const { commandRequest } = useCmd(query);
+
+const sendAnswer = computed(() => (data: Record<string, string>) => {
+  const formData = new FormData();
+  formData.append("action", "questionnaires/submit_answers");
+  formData.append("questionnaire_id", questionnaire.value!.id.toString());
+  Object.keys(data).forEach((key) => formData.append(key, data[key]));
+  return commandRequest(formData);
+});
+</script>
+
 <template>
   <div class="max-w-2xl px-6 py-5 mx-auto bg-white shadow">
     <template v-if="error">
@@ -55,28 +80,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { computed } from "vue";
-import { FormGenerator } from "lorga-ui";
-import { useRoute } from "vue-router";
-import { PaperClipIcon } from "@heroicons/vue/24/outline";
-import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
-import useCmd from "@/composables/useCmd";
-import { useQuestionnaireToFillOut } from "../api/useQuestionnaireToFillOut";
-
-const route = useRoute();
-const { questionnaire, fields, query, error } = useQuestionnaireToFillOut(
-  route.params.code as string,
-);
-
-const { commandRequest } = useCmd(query);
-
-const sendAnswer = computed(() => (data: Record<string, string>) => {
-  const formData = new FormData();
-  formData.append("action", "questionnaires/submit_answers");
-  formData.append("questionnaire_id", questionnaire.value!.id.toString());
-  Object.keys(data).forEach((key) => formData.append(key, data[key]));
-  return commandRequest(formData);
-});
-</script>

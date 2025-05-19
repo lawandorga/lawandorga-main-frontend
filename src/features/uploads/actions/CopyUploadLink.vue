@@ -1,9 +1,3 @@
-<template>
-  <ButtonNormal v-if="link" kind="action" @click="copyLink(link)">
-    Copy Link
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { useAlertStore } from "@/store/alert";
 import { ButtonNormal } from "lorga-ui";
@@ -17,3 +11,9 @@ const copyLink = (link: string) => {
     .then(() => alertStore.showSuccess("Link Copied"));
 };
 </script>
+
+<template>
+  <ButtonNormal v-if="link" kind="action" @click="copyLink(link)">
+    Copy Link
+  </ButtonNormal>
+</template>

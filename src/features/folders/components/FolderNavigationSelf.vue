@@ -1,16 +1,3 @@
-<template>
-  <FolderNavigationRaw
-    :groups="groups"
-    :grouping="grouping"
-    :ungrouped-buttons="ungroupedButtons"
-    :selected-id="selectedId"
-    :selected-type="selectedType"
-    hide-grouping-control
-    @selected="emit('selected', $event)"
-    @grouping="emit('grouping', $event)"
-  />
-</template>
-
 <script setup lang="ts">
 import { h, toRefs, computed } from "vue";
 import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
@@ -74,3 +61,16 @@ const groups = computed<ContentGroupItem[]>(() => {
   ];
 });
 </script>
+
+<template>
+  <FolderNavigationRaw
+    :groups="groups"
+    :grouping="grouping"
+    :ungrouped-buttons="ungroupedButtons"
+    :selected-id="selectedId"
+    :selected-type="selectedType"
+    hide-grouping-control
+    @selected="emit('selected', $event)"
+    @grouping="emit('grouping', $event)"
+  />
+</template>

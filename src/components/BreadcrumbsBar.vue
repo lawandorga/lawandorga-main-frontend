@@ -1,3 +1,33 @@
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+import { RouteParams } from "vue-router";
+import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
+
+interface LocationAsName {
+  name: string;
+  params?: RouteParams;
+}
+
+export default defineComponent({
+  components: {
+    ChevronLeftIcon,
+  },
+  props: {
+    pages: {
+      type: Array as PropType<{ name: string; to: LocationAsName }[]>,
+      default: () => [],
+    },
+    base: {
+      type: Object as PropType<LocationAsName>,
+      required: true,
+    },
+  },
+  setup() {
+    return {};
+  },
+});
+</script>
+
 <template>
   <nav
     class="flex flex-col items-start lg:space-y-0 lg:flex-row lg:justify-between print:hidden"
@@ -49,36 +79,6 @@
     </div>
   </nav>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { RouteParams } from "vue-router";
-import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
-
-interface LocationAsName {
-  name: string;
-  params?: RouteParams;
-}
-
-export default defineComponent({
-  components: {
-    ChevronLeftIcon,
-  },
-  props: {
-    pages: {
-      type: Array as PropType<{ name: string; to: LocationAsName }[]>,
-      default: () => [],
-    },
-    base: {
-      type: Object as PropType<LocationAsName>,
-      required: true,
-    },
-  },
-  setup() {
-    return {};
-  },
-});
-</script>
 
 <style lang="postcss">
 .children\:mt-6 > * {

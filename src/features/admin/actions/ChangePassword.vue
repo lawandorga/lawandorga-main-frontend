@@ -1,18 +1,3 @@
-<template>
-  <ButtonNormal v-if="show" kind="secondary" @click="commandModalOpen = true">
-    Change Password
-    <ModalForm
-      v-model="commandModalOpen"
-      title="Change Password"
-      :request="commandRequest"
-      :fields="passwordFields"
-      :data="{
-        action: 'auth/change_password',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { useUserStore } from "@/store/user";
@@ -54,3 +39,18 @@ const passwordFields: types.FormField[] = [
 
 const { commandModalOpen, commandRequest } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal v-if="show" kind="secondary" @click="commandModalOpen = true">
+    Change Password
+    <ModalForm
+      v-model="commandModalOpen"
+      title="Change Password"
+      :request="commandRequest"
+      :fields="passwordFields"
+      :data="{
+        action: 'auth/change_password',
+      }"
+    />
+  </ButtonNormal>
+</template>

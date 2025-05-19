@@ -1,33 +1,3 @@
-<template>
-  <TableGenerator
-    :head="[
-      { name: 'Group', key: 'group' },
-      { name: '', key: 'action' },
-    ]"
-    :data="groups"
-  >
-    <template #head-action>
-      <MailCreateGroup
-        v-if="page && !page.noMailAccount"
-        :available-domains="page.available_domains"
-        :query="query"
-      />
-    </template>
-    <template #group="item">
-      <ButtonLink :to="{ name: 'mail-group', params: { uuid: item.uuid } }">
-        {{ item.email || "not-set" }}
-      </ButtonLink>
-    </template>
-    <template #action="item">
-      <MailDeleteGroup
-        :query="query"
-        :group-name="item.email || 'not-set'"
-        :group-uuid="item.uuid"
-      />
-    </template>
-  </TableGenerator>
-</template>
-
 <script setup lang="ts">
 import MailCreateGroup from "@/features/mail/actions/CreateGroup.vue";
 import MailDeleteGroup from "@/features/mail/actions/DeleteGroup.vue";
@@ -59,3 +29,33 @@ const groups = computed<MailGroup[] | null>(() => {
   return null;
 });
 </script>
+
+<template>
+  <TableGenerator
+    :head="[
+      { name: 'Group', key: 'group' },
+      { name: '', key: 'action' },
+    ]"
+    :data="groups"
+  >
+    <template #head-action>
+      <MailCreateGroup
+        v-if="page && !page.noMailAccount"
+        :available-domains="page.available_domains"
+        :query="query"
+      />
+    </template>
+    <template #group="item">
+      <ButtonLink :to="{ name: 'mail-group', params: { uuid: item.uuid } }">
+        {{ item.email || "not-set" }}
+      </ButtonLink>
+    </template>
+    <template #action="item">
+      <MailDeleteGroup
+        :query="query"
+        :group-name="item.email || 'not-set'"
+        :group-uuid="item.uuid"
+      />
+    </template>
+  </TableGenerator>
+</template>

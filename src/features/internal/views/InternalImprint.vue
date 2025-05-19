@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { useImprintPage } from "../api/useImprintPage";
+
+const { article } = useImprintPage();
+</script>
+
 <template>
   <section
     class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
@@ -17,9 +23,3 @@
     </article>
   </section>
 </template>
-
-<script lang="ts" setup>
-import { useImprintPage } from "../api/useImprintPage";
-
-const { article } = useImprintPage();
-</script>

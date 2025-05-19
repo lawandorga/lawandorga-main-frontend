@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { mailRegeneratePassword } from "@/features/mail/mail";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { ref, watch } from "vue";
+
+const regeneratePasswordModalOpen = ref(false);
+const password = ref("");
+const regeneratePassword = () =>
+  mailRegeneratePassword().then((d) => (password.value = d.password));
+watch(regeneratePasswordModalOpen, (newValue) => {
+  if (!newValue) password.value = "";
+});
+</script>
+
 <template>
   <ButtonNormal kind="secondary" @click="regeneratePasswordModalOpen = true">
     Regenerate password
@@ -21,17 +35,3 @@
     </ModalConfirm>
   </ButtonNormal>
 </template>
-
-<script setup lang="ts">
-import { mailRegeneratePassword } from "@/features/mail/mail";
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { ref, watch } from "vue";
-
-const regeneratePasswordModalOpen = ref(false);
-const password = ref("");
-const regeneratePassword = () =>
-  mailRegeneratePassword().then((d) => (password.value = d.password));
-watch(regeneratePasswordModalOpen, (newValue) => {
-  if (!newValue) password.value = "";
-});
-</script>

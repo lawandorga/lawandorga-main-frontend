@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { EnvelopeIcon } from "@heroicons/vue/24/outline";
+import { useUserStore } from "@/store/user";
+import TabControls from "@/components/TabControls.vue";
+import MailUserRole from "@/features/mail/components/MailUserRole.vue";
+import MailDomain from "@/features/mail/components/MailDomain.vue";
+import MailUsers from "@/features/mail/components/MailUsers.vue";
+import MailGroups from "@/features/mail/components/MailGroups.vue";
+import MailWebmail from "@/features/mail/components/MailWebmail.vue";
+import MailCreateMailUser from "@/features/mail/actions/CreateMailUser.vue";
+import { useGetDashboardPage } from "../api/useGetDashboardPage";
+
+const userStore = useUserStore();
+const { page, query, user, addresses, domain, users } = useGetDashboardPage();
+</script>
+
 <template>
   <BoxLoader :show="userStore.loaded">
     <div v-if="userStore.loaded" class="max-w-3xl mx-auto">
@@ -59,21 +77,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script setup lang="ts">
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/store/user";
-import TabControls from "@/components/TabControls.vue";
-import MailUserRole from "@/features/mail/components/MailUserRole.vue";
-import MailDomain from "@/features/mail/components/MailDomain.vue";
-import MailUsers from "@/features/mail/components/MailUsers.vue";
-import MailGroups from "@/features/mail/components/MailGroups.vue";
-import MailWebmail from "@/features/mail/components/MailWebmail.vue";
-import MailCreateMailUser from "@/features/mail/actions/CreateMailUser.vue";
-import { useGetDashboardPage } from "../api/useGetDashboardPage";
-
-const userStore = useUserStore();
-const { page, query, user, addresses, domain, users } = useGetDashboardPage();
-</script>

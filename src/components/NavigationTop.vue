@@ -1,3 +1,19 @@
+<script lang="ts" setup>
+import { computed } from "vue";
+import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
+import NavigationDropdown from "./NavigationDropdown.vue";
+import { useRoute } from "vue-router";
+import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
+
+// eslint-disable-next-line no-unused-vars
+defineProps<{ setOpen: (open: boolean) => void }>();
+
+const route = useRoute();
+const inside = computed(() => {
+  return route.name !== "start";
+});
+</script>
+
 <template>
   <div
     class="relative z-10 flex flex-shrink-0 h-16 border-b border-white shadow bg-formcolor border-opacity-20 print:hidden"
@@ -35,19 +51,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { computed } from "vue";
-import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
-import NavigationDropdown from "./NavigationDropdown.vue";
-import { useRoute } from "vue-router";
-import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
-
-// eslint-disable-next-line no-unused-vars
-defineProps<{ setOpen: (open: boolean) => void }>();
-
-const route = useRoute();
-const inside = computed(() => {
-  return route.name !== "start";
-});
-</script>

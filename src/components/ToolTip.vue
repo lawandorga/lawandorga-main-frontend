@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { toRefs } from "vue";
+
+// props
+const props = defineProps<{
+  text: string;
+  toolTipId?: string;
+}>();
+const { text, toolTipId } = toRefs(props);
+</script>
+
 <template>
   <div class="relative self-center has-tooltip w-min">
     <div
@@ -10,14 +21,3 @@
     <slot />
   </div>
 </template>
-
-<script setup lang="ts">
-import { toRefs } from "vue";
-
-// props
-const props = defineProps<{
-  text: string;
-  toolTipId?: string;
-}>();
-const { text, toolTipId } = toRefs(props);
-</script>

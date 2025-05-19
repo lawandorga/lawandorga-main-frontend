@@ -1,18 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="createModalOpen = true">
-    Create Group
-    <ModalCreate
-      v-model="createModalOpen"
-      :request="createRequest"
-      :fields="fields"
-      title="Create Group"
-      :data="{
-        action: 'mail/create_group',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ModalCreate, types, ButtonNormal } from "lorga-ui";
@@ -40,3 +25,18 @@ const fields = computed<types.FormField[]>(() => {
 const { commandRequest: createRequest, commandModalOpen: createModalOpen } =
   useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="createModalOpen = true">
+    Create Group
+    <ModalCreate
+      v-model="createModalOpen"
+      :request="createRequest"
+      :fields="fields"
+      title="Create Group"
+      :data="{
+        action: 'mail/create_group',
+      }"
+    />
+  </ButtonNormal>
+</template>

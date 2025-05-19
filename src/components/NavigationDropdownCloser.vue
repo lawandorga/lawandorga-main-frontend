@@ -1,7 +1,3 @@
-<template>
-  <div></div>
-</template>
-
 <script lang="ts" setup>
 import { watch } from "vue";
 import { useRoute } from "vue-router";
@@ -17,3 +13,7 @@ watch(
   () => props.close(),
 );
 </script>
+
+<template>
+  <div></div>
+</template>

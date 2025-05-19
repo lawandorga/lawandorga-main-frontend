@@ -1,15 +1,3 @@
-<template>
-  <FolderNavigationRaw
-    :groups="groups"
-    :grouping="grouping"
-    :ungrouped-buttons="ungroupedButtons"
-    :selected-id="selectedId"
-    :selected-type="selectedType"
-    @selected="emit('selected', $event)"
-    @grouping="emit('grouping', $event)"
-  />
-</template>
-
 <script setup lang="ts">
 import { computed, h, toRefs } from "vue";
 import FilesUploadMultipleFiles from "@/features/files/actions/UploadMultipleFiles.vue";
@@ -154,3 +142,15 @@ const groups = computed<ContentGroupItem[]>(() => {
   return g;
 });
 </script>
+
+<template>
+  <FolderNavigationRaw
+    :groups="groups"
+    :grouping="grouping"
+    :ungrouped-buttons="ungroupedButtons"
+    :selected-id="selectedId"
+    :selected-type="selectedType"
+    @selected="emit('selected', $event)"
+    @grouping="emit('grouping', $event)"
+  />
+</template>

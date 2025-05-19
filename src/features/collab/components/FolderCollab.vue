@@ -1,48 +1,3 @@
-<template>
-  <template v-if="collab">
-    <BoxHeadingStats
-      :show="selectedType === 'COLLAB'"
-      :title="collab.name"
-      :stats="[`Created: ${formatDate(collab.created_at)}`]"
-    >
-      <template #buttons>
-        <DownloadPdf :uuid="collab.uuid" :name="collab.name" />
-        <CollabShowHistory :history="collab.history" />
-        <CollabChangeName
-          :uuid="collab.uuid"
-          :query="allQuery"
-          :name="collab.name"
-        />
-      </template>
-      <CollabForm
-        :text="collab.text"
-        :collab-uuid="collab.uuid"
-        :password="collab.password"
-      />
-      <template v-if="!!collab.template">
-        <div class="flex items-center mt-6">
-          <CheckIcon class="w-6 h-6" />
-          <span class="ml-4 font-semibold text-formcolor">
-            Template
-            <i class="font-bold">{{ collab.template.name }}</i>
-            applied
-          </span>
-        </div>
-        <div class="flex gap-4">
-          <CollabEditTemplate
-            :query="collabQuery"
-            :uuid="collab.uuid"
-            :selected-template="collab.template"
-          />
-          <CollabRemoveTemplate :query="collabQuery" :uuid="collab.uuid" />
-        </div>
-      </template>
-      <CollabAddTemplate v-else :query="collabQuery" :uuid="collab.uuid" />
-    </BoxHeadingStats>
-  </template>
-  <CircleLoader v-else-if="selectedType === 'COLLAB' && selectedId !== null" />
-</template>
-
 <script lang="ts" setup>
 import { formatDate } from "@/utils/date";
 import { ref, toRefs, watch } from "vue";
@@ -102,3 +57,48 @@ const allQuery = () => {
   collabQuery();
 };
 </script>
+
+<template>
+  <template v-if="collab">
+    <BoxHeadingStats
+      :show="selectedType === 'COLLAB'"
+      :title="collab.name"
+      :stats="[`Created: ${formatDate(collab.created_at)}`]"
+    >
+      <template #buttons>
+        <DownloadPdf :uuid="collab.uuid" :name="collab.name" />
+        <CollabShowHistory :history="collab.history" />
+        <CollabChangeName
+          :uuid="collab.uuid"
+          :query="allQuery"
+          :name="collab.name"
+        />
+      </template>
+      <CollabForm
+        :text="collab.text"
+        :collab-uuid="collab.uuid"
+        :password="collab.password"
+      />
+      <template v-if="!!collab.template">
+        <div class="flex items-center mt-6">
+          <CheckIcon class="w-6 h-6" />
+          <span class="ml-4 font-semibold text-formcolor">
+            Template
+            <i class="font-bold">{{ collab.template.name }}</i>
+            applied
+          </span>
+        </div>
+        <div class="flex gap-4">
+          <CollabEditTemplate
+            :query="collabQuery"
+            :uuid="collab.uuid"
+            :selected-template="collab.template"
+          />
+          <CollabRemoveTemplate :query="collabQuery" :uuid="collab.uuid" />
+        </div>
+      </template>
+      <CollabAddTemplate v-else :query="collabQuery" :uuid="collab.uuid" />
+    </BoxHeadingStats>
+  </template>
+  <CircleLoader v-else-if="selectedType === 'COLLAB' && selectedId !== null" />
+</template>

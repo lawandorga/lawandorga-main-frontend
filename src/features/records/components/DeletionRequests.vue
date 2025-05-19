@@ -1,3 +1,16 @@
+<script lang="ts" setup>
+import { TableGenerator } from "lorga-ui";
+import { formatDate } from "@/utils/date";
+import AcceptDeletion from "../actions/AcceptDeletion.vue";
+import DeclineDeletion from "../actions/DeclineDeletion.vue";
+import { Deletion } from "../types/deletion";
+
+defineProps<{
+  deletionRequests: Deletion[];
+  query: () => void;
+}>();
+</script>
+
 <template>
   <TableGenerator
     :head="[
@@ -38,16 +51,3 @@
     </template>
   </TableGenerator>
 </template>
-
-<script lang="ts" setup>
-import { TableGenerator } from "lorga-ui";
-import { formatDate } from "@/utils/date";
-import AcceptDeletion from "../actions/AcceptDeletion.vue";
-import DeclineDeletion from "../actions/DeclineDeletion.vue";
-import { Deletion } from "../types/deletion";
-
-defineProps<{
-  deletionRequests: Deletion[];
-  query: () => void;
-}>();
-</script>

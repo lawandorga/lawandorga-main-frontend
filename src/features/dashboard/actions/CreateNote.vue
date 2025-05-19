@@ -1,24 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Create Note
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Create Note"
-      :fields="noteFields"
-      submit="Create"
-      width="max-w-3xl"
-      :request="commandRequest"
-      :data="{
-        action: 'org/create_note',
-      }"
-    >
-      <template #custom="{ data }">
-        <FormWysiwyg v-model="data.note" required label="Description" />
-      </template>
-    </ModalCreate>
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
@@ -45,3 +24,24 @@ const noteFields: types.FormField[] = [
 
 const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Create Note
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Create Note"
+      :fields="noteFields"
+      submit="Create"
+      width="max-w-3xl"
+      :request="commandRequest"
+      :data="{
+        action: 'org/create_note',
+      }"
+    >
+      <template #custom="{ data }">
+        <FormWysiwyg v-model="data.note" required label="Description" />
+      </template>
+    </ModalCreate>
+  </ButtonNormal>
+</template>
