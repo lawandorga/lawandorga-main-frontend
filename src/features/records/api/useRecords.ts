@@ -13,6 +13,7 @@ export interface Record {
   has_access: boolean;
   folder_uuid: string;
   data_sheet_uuid: string;
+  uuid: string;
 }
 
 interface RecordsData {

@@ -12,6 +12,7 @@
       name: viewName,
       columns: viewColumns,
       ordering: viewOrdering,
+      shared: viewShared,
       action: 'records/update_view',
     }"
   />
@@ -27,6 +28,7 @@ const props = defineProps<{
   viewUuid: string;
   viewName: string;
   viewOrdering: number;
+  viewShared: boolean;
   viewColumns: string[];
 }>();
 const { query, viewUuid } = toRefs(props);
@@ -37,6 +39,13 @@ const fields: types.FormField[] = [
     type: "text",
     name: "name",
     required: true,
+  },
+  {
+    label: "Shared",
+    name: "shared",
+    type: "toggle",
+    helptext:
+      "If the view is shared, it will be available for all users of the organization.",
   },
   {
     label: "Columns",
