@@ -19,6 +19,7 @@ import questionnaireRoutes from "@/features/questionnaires/routes";
 import orgRoutes from "@/features/org/routes";
 import folderRoutes from "@/features/folders/routes";
 import usersRoutes from "@/features/users/routes";
+import oldFilesRoutes from "@/features/z_deprecated_files/files";
 import { useUserStore } from "@/store/user";
 
 const routes: Array<RouteRecordRaw> = [
@@ -53,6 +54,7 @@ const routes: Array<RouteRecordRaw> = [
   ...chatRoutes,
   ...questionnaireRoutes,
   ...orgRoutes,
+  ...oldFilesRoutes,
   {
     path: "/error",
     name: "error",
