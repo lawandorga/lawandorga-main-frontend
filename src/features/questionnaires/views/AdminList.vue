@@ -13,6 +13,7 @@
       <TableGenerator
         :head="[
           { name: 'Name', key: 'name' },
+          { name: 'Note', key: 'notes' },
           { name: '', key: 'action' },
         ]"
         :data="templates"

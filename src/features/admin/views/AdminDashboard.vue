@@ -75,7 +75,7 @@ const items = computed<AdminItem[]>(() => {
       class: "",
     },
     {
-      title: "Collab",
+      title: "Collab Templates",
       description:
         "Here you can manage and customize templates for standard document elements like footers and letterheads to ensure consistency across your organization's communications.",
       link: { name: "admin-collab-templates" },

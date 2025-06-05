@@ -24,9 +24,11 @@ interface AccessRequest {
   updated: string;
 }
 
-interface View {
+export interface View {
   uuid: string;
   name: string;
+  shared: boolean;
+  ordering: number;
   columns: string[];
 }
 

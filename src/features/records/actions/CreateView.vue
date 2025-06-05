@@ -16,6 +16,13 @@ const fields: types.FormField[] = [
     required: true,
   },
   {
+    label: "Shared",
+    name: "shared",
+    type: "toggle",
+    helptext:
+      "If the view is shared, it will be available for all users of the organization.",
+  },
+  {
     label: "Columns",
     type: "list",
     name: "columns",
@@ -24,11 +31,11 @@ const fields: types.FormField[] = [
       "The name of the columns must match with names of the fields in the data sheet templates. The matching is case sensitive.",
   },
   {
-    label: "Shared",
-    name: "shared",
-    type: "toggle",
-    helptext:
-      "If the view is shared, it will be available for all users of the organization.",
+    label: "Ordering",
+    name: "ordering",
+    type: "number",
+    required: true,
+    helptext: "Views with lower numbers will be shown first, like 1 -> 2 -> 3.",
   },
 ];
 

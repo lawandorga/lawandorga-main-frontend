@@ -3,8 +3,12 @@
     :head="[
       { name: 'Name', key: 'name' },
       { name: 'Columns', key: 'columns' },
-      { name: 'Shared', key: 'shared' },
-      { name: 'Order', key: 'ordering' },
+      { name: 'Shared', fn: (item) => (item.shared ? 'Yes' : 'No') },
+      {
+        name: 'Order',
+        key: 'ordering',
+        fn: (item) => item.ordering.toString(),
+      },
       { name: '', key: 'actions' },
     ]"
     :data="views"
@@ -25,6 +29,7 @@
           :view-columns="item.columns"
           :view-name="item.name"
           :view-ordering="item.ordering"
+          :view-shared="item.shared"
         />
         <DeleteView
           :query="query"
@@ -41,12 +46,10 @@ import { TableGenerator } from "lorga-ui";
 import CreateView from "../actions/CreateView.vue";
 import DeleteView from "../actions/DeleteView.vue";
 import UpdateView from "../actions/UpdateView.vue";
+import { View } from "../api/useInfos";
 
 defineProps<{
-  views: {
-    name: string;
-    columns: string[];
-  }[];
+  views: View[];
   query: () => void;
 }>();
 </script>
