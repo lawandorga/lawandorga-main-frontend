@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import useCmd from "@/composables/useCmd";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+import { toRefs } from "vue";
+
+const props = defineProps<{
+  query: () => void;
+  groupUuid: string;
+  folderUuid: string;
+}>();
+const { query } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query.value);
+</script>
+
 <template>
   <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Revoke access
@@ -16,18 +31,3 @@
     </ModalConfirm>
   </ButtonNormal>
 </template>
-
-<script setup lang="ts">
-import useCmd from "@/composables/useCmd";
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
-import { toRefs } from "vue";
-
-const props = defineProps<{
-  query: () => void;
-  groupUuid: string;
-  folderUuid: string;
-}>();
-const { query } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query.value);
-</script>

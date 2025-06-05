@@ -1,16 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="createModalOpen = true">
-    Add Subfolder
-    <ModalCreate
-      v-model="createModalOpen"
-      title="Create Folder"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{ parent: parent, action: 'folders/create_folder' }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
@@ -34,3 +21,16 @@ defineExpose({
   createModalOpen,
 });
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="createModalOpen = true">
+    Add Subfolder
+    <ModalCreate
+      v-model="createModalOpen"
+      title="Create Folder"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{ parent: parent, action: 'folders/create_folder' }"
+    />
+  </ButtonNormal>
+</template>

@@ -1,16 +1,3 @@
-<template>
-  <div class="flex flex-wrap">
-    <template v-for="(item, index) in items">
-      <div
-        v-if="item.type === 'divider'"
-        :key="`divider${index}`"
-        class="mx-3 divider"
-      />
-      <MenuItem v-else :key="index" v-bind="item" />
-    </template>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Editor } from "@tiptap/vue-3";
 import { ref } from "vue";
@@ -97,3 +84,16 @@ const items = ref([
   isActive?: () => boolean;
 }[]);
 </script>
+
+<template>
+  <div class="flex flex-wrap">
+    <template v-for="(item, index) in items">
+      <div
+        v-if="item.type === 'divider'"
+        :key="`divider${index}`"
+        class="mx-3 divider"
+      />
+      <MenuItem v-else :key="index" v-bind="item" />
+    </template>
+  </div>
+</template>

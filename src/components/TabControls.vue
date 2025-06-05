@@ -1,45 +1,3 @@
-<template>
-  <TabGroup :selected-index="selectedTab" @change="changeTab">
-    <TabList class="inline-flex w-full gap-6 rounded">
-      <template v-for="tab in internalTabs" :key="tab.key">
-        <div v-if="'spacer' in tab" class="mx-auto"></div>
-        <TabComponent v-else v-slot="{ selected }" as="template">
-          <button
-            :class="[
-              'py-2.5 pr-3 text-lg font-semibold',
-              selected ? 'border-b-2 border-solid' : '',
-              tab.highlighted
-                ? ' text-formcolor border-formcolor'
-                : 'text-gray-600 border-gray-600',
-            ]"
-            type="button"
-          >
-            {{ tab.name }}
-            <span
-              v-if="tab.badge"
-              className="inline-flex items-center justify-center rounded-full w-5 h-5 bg-red-200 ml-1.5 text-xs font-medium text-red-800"
-            >
-              {{ tab.badge }}
-            </span>
-          </button>
-        </TabComponent>
-      </template>
-    </TabList>
-    <TabPanels>
-      <template v-for="tab in internalTabs" :key="tab.key">
-        <TabPanel
-          v-if="!Object.keys(tab).includes('spacer')"
-          :class="[
-            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300',
-          ]"
-        >
-          <slot :name="tab.key" />
-        </TabPanel>
-      </template>
-    </TabPanels>
-  </TabGroup>
-</template>
-
 <script setup lang="ts">
 import {
   TabGroup,
@@ -94,3 +52,45 @@ updateTab();
 
 watch([defaultTab, tabs], updateTab, { flush: "post" });
 </script>
+
+<template>
+  <TabGroup :selected-index="selectedTab" @change="changeTab">
+    <TabList class="inline-flex w-full gap-6 rounded">
+      <template v-for="tab in internalTabs" :key="tab.key">
+        <div v-if="'spacer' in tab" class="mx-auto"></div>
+        <TabComponent v-else v-slot="{ selected }" as="template">
+          <button
+            :class="[
+              'py-2.5 pr-3 text-lg font-semibold',
+              selected ? 'border-b-2 border-solid' : '',
+              tab.highlighted
+                ? ' text-formcolor border-formcolor'
+                : 'text-gray-600 border-gray-600',
+            ]"
+            type="button"
+          >
+            {{ tab.name }}
+            <span
+              v-if="tab.badge"
+              className="inline-flex items-center justify-center rounded-full w-5 h-5 bg-red-200 ml-1.5 text-xs font-medium text-red-800"
+            >
+              {{ tab.badge }}
+            </span>
+          </button>
+        </TabComponent>
+      </template>
+    </TabList>
+    <TabPanels>
+      <template v-for="tab in internalTabs" :key="tab.key">
+        <TabPanel
+          v-if="!Object.keys(tab).includes('spacer')"
+          :class="[
+            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300',
+          ]"
+        >
+          <slot :name="tab.key" />
+        </TabPanel>
+      </template>
+    </TabPanels>
+  </TabGroup>
+</template>

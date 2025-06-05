@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineProps<{ property?: string }>();
+</script>
+
 <template>
   <div
     v-if="property"
@@ -6,7 +10,3 @@
     {{ property }}
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps<{ property?: string }>();
-</script>

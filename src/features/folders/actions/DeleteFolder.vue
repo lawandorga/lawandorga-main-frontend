@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { ButtonNormal, ModalDelete } from "lorga-ui";
+import { toRefs } from "vue";
+import useCmd from "@/composables/useCmd";
+
+const props = defineProps<{
+  folderUuid: string;
+  folderName: string;
+  query: () => void;
+}>();
+const { query } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query.value);
+</script>
+
 <template>
   <ButtonNormal kind="delete" @click="commandModalOpen = true">
     Delete
@@ -16,18 +31,3 @@
     </ModalDelete>
   </ButtonNormal>
 </template>
-
-<script setup lang="ts">
-import { ButtonNormal, ModalDelete } from "lorga-ui";
-import { toRefs } from "vue";
-import useCmd from "@/composables/useCmd";
-
-const props = defineProps<{
-  folderUuid: string;
-  folderName: string;
-  query: () => void;
-}>();
-const { query } = toRefs(props);
-
-const { commandRequest, commandModalOpen } = useCmd(query.value);
-</script>

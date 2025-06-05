@@ -1,3 +1,12 @@
+<script lang="ts" setup>
+import { useRoute } from "vue-router";
+import { formatDate } from "@/utils/date";
+import { useArticle } from "../api/useArticle";
+
+const route = useRoute();
+const { article } = useArticle(route.params.id as string);
+</script>
+
 <template>
   <section
     class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
@@ -19,12 +28,3 @@
     </article>
   </section>
 </template>
-
-<script lang="ts" setup>
-import { useRoute } from "vue-router";
-import { formatDate } from "@/utils/date";
-import { useArticle } from "../api/useArticle";
-
-const route = useRoute();
-const { article } = useArticle(route.params.id as string);
-</script>

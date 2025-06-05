@@ -1,16 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Create View
-  </ButtonNormal>
-  <ModalCreate
-    v-model="commandModalOpen"
-    title="Create View"
-    :fields="fields"
-    :request="commandRequest"
-    :data="{ action: 'records/create_view' }"
-  />
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
@@ -54,3 +41,16 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Create View
+  </ButtonNormal>
+  <ModalCreate
+    v-model="commandModalOpen"
+    title="Create View"
+    :fields="fields"
+    :request="commandRequest"
+    :data="{ action: 'records/create_view' }"
+  />
+</template>

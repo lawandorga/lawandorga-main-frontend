@@ -1,20 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Update Template
-    <ModalUpdate
-      v-model="commandModalOpen"
-      :fields="updateFields"
-      :data="{
-        template_id: templateId,
-        template_name: templateName,
-        action: 'data_sheets/update_template',
-      }"
-      :request="commandRequest"
-      title="Update Template"
-    />
-  </ButtonNormal>
-</template>
-
 <script lang="ts" setup>
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -38,3 +21,20 @@ const updateFields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Update Template
+    <ModalUpdate
+      v-model="commandModalOpen"
+      :fields="updateFields"
+      :data="{
+        template_id: templateId,
+        template_name: templateName,
+        action: 'data_sheets/update_template',
+      }"
+      :request="commandRequest"
+      title="Update Template"
+    />
+  </ButtonNormal>
+</template>

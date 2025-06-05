@@ -1,20 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    {{ text }}
-    <ModalUpdate
-      v-model="commandModalOpen"
-      title="Change name"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{
-        folder_uuid: folderUuid,
-        name: folderName,
-        action: 'folders/rename_folder',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -37,3 +20,20 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    {{ text }}
+    <ModalUpdate
+      v-model="commandModalOpen"
+      title="Change name"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        folder_uuid: folderUuid,
+        name: folderName,
+        action: 'folders/rename_folder',
+      }"
+    />
+  </ButtonNormal>
+</template>

@@ -1,3 +1,18 @@
+<script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
+import {
+  CheckIcon,
+  ExclamationTriangleIcon,
+  PauseIcon,
+} from "@heroicons/vue/20/solid";
+import { CircleLoader } from "lorga-ui";
+import { useRunOptimizations } from "../api/useRunOptimizations";
+
+const { status, runAll } = useRunOptimizations();
+
+runAll();
+</script>
+
 <template>
   <BoxLoader show>
     <div class="max-w-3xl px-5 py-4 mx-auto bg-white border rounded shadow">
@@ -57,18 +72,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import {
-  CheckIcon,
-  ExclamationTriangleIcon,
-  PauseIcon,
-} from "@heroicons/vue/20/solid";
-import { CircleLoader } from "lorga-ui";
-import { useRunOptimizations } from "../api/useRunOptimizations";
-
-const { status, runAll } = useRunOptimizations();
-
-runAll();
-</script>

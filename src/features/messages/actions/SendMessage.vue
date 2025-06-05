@@ -1,13 +1,3 @@
-<template>
-  <FormGenerator
-    :fields="fields"
-    :data="{ folder_uuid: folderUuid, action: 'messages/create_message' }"
-    :request="commandRequest"
-    @success="data['message'] = ''"
-    @change="data = $event"
-  ></FormGenerator>
-</template>
-
 <script setup lang="ts">
 import { FormGenerator, types } from "lorga-ui";
 import { ref, toRefs } from "vue";
@@ -32,3 +22,13 @@ const fields: types.FormField[] = [
 ];
 const { commandRequest } = useCmd(query);
 </script>
+
+<template>
+  <FormGenerator
+    :fields="fields"
+    :data="{ folder_uuid: folderUuid, action: 'messages/create_message' }"
+    :request="commandRequest"
+    @success="data['message'] = ''"
+    @change="data = $event"
+  ></FormGenerator>
+</template>

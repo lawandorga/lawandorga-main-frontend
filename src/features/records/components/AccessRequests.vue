@@ -1,3 +1,16 @@
+<script lang="ts" setup>
+import { TableGenerator } from "lorga-ui";
+import { formatDate } from "@/utils/date";
+import { AccessRequest } from "../types/accessRequest";
+import DeclineAccessRequest from "../actions/DeclineAccessRequest.vue";
+import GrantAccessRequest from "../actions/GrantAccessRequest.vue";
+
+defineProps<{
+  accessRequests: AccessRequest[];
+  query: () => void;
+}>();
+</script>
+
 <template>
   <TableGenerator
     :head="[
@@ -48,16 +61,3 @@
     </template>
   </TableGenerator>
 </template>
-
-<script lang="ts" setup>
-import { TableGenerator } from "lorga-ui";
-import { formatDate } from "@/utils/date";
-import { AccessRequest } from "../types/accessRequest";
-import DeclineAccessRequest from "../actions/DeclineAccessRequest.vue";
-import GrantAccessRequest from "../actions/GrantAccessRequest.vue";
-
-defineProps<{
-  accessRequests: AccessRequest[];
-  query: () => void;
-}>();
-</script>

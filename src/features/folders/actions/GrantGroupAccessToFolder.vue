@@ -1,20 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Grant access
-    <ModalUpdate
-      v-model="commandModalOpen"
-      title="Grant Access To Group"
-      :fields="grantAccessFields"
-      :request="commandRequest"
-      :data="{
-        folder_uuid: folderUuid,
-        action: 'folders/grant_access_to_group',
-      }"
-      submit="Grant Access"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -43,3 +26,20 @@ const grantAccessFields = computed<types.FormField[]>(() => {
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    Grant access
+    <ModalUpdate
+      v-model="commandModalOpen"
+      title="Grant Access To Group"
+      :fields="grantAccessFields"
+      :request="commandRequest"
+      :data="{
+        folder_uuid: folderUuid,
+        action: 'folders/grant_access_to_group',
+      }"
+      submit="Grant Access"
+    />
+  </ButtonNormal>
+</template>

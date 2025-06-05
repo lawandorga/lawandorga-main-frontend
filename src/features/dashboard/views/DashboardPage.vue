@@ -1,3 +1,31 @@
+<script lang="ts" setup>
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { formatDate } from "@/utils/date";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
+import { ButtonNormal } from "lorga-ui";
+import { useFollowUps } from "../api/useFollowUps";
+import { useRecords } from "../api/useRecords";
+import { useQuestionnaires } from "../api/useQuestionnaires";
+import { useChangedRecords } from "../api/useChangedRecords";
+import { useArticles } from "../api/useArticles";
+import { useMembers } from "../api/useMembers";
+import TaskList from "../components/TaskList.vue";
+import OrgNotes from "../components/OrgNotes.vue";
+
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
+const { followUps } = useFollowUps();
+const { records } = useRecords();
+const { questionnaires } = useQuestionnaires();
+const { changedRecords } = useChangedRecords();
+const { articles } = useArticles();
+const { members } = useMembers();
+</script>
+
 <template>
   <BoxLoader
     :show="
@@ -195,31 +223,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { Squares2X2Icon, ChevronRightIcon } from "@heroicons/vue/24/outline";
-import { formatDate } from "@/utils/date";
-import { useUserStore } from "@/store/user";
-import { storeToRefs } from "pinia";
-import { ButtonNormal } from "lorga-ui";
-import { useFollowUps } from "../api/useFollowUps";
-import { useRecords } from "../api/useRecords";
-import { useQuestionnaires } from "../api/useQuestionnaires";
-import { useChangedRecords } from "../api/useChangedRecords";
-import { useArticles } from "../api/useArticles";
-import { useMembers } from "../api/useMembers";
-import TaskList from "../components/TaskList.vue";
-import OrgNotes from "../components/OrgNotes.vue";
-
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
-
-const { followUps } = useFollowUps();
-const { records } = useRecords();
-const { questionnaires } = useQuestionnaires();
-const { changedRecords } = useChangedRecords();
-const { articles } = useArticles();
-const { members } = useMembers();
-</script>

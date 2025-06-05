@@ -1,16 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="checkDomainSettings()">
-    Check Settings
-    <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
-      <div v-if="check && check.valid">Your settings are correct.</div>
-      <div v-else-if="check && !check.valid" class="text-red-700">
-        {{ check.wrong_setting }}
-      </div>
-      <div v-else-if="!check">Loading...</div>
-    </ModalFree>
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref, toRefs } from "vue";
@@ -44,3 +31,16 @@ const checkDomainSettings = () => {
   });
 };
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="checkDomainSettings()">
+    Check Settings
+    <ModalFree v-model="checkModalOpen" title="Check Domain Settings">
+      <div v-if="check && check.valid">Your settings are correct.</div>
+      <div v-else-if="check && !check.valid" class="text-red-700">
+        {{ check.wrong_setting }}
+      </div>
+      <div v-else-if="!check">Loading...</div>
+    </ModalFree>
+  </ButtonNormal>
+</template>

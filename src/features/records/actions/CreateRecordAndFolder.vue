@@ -1,17 +1,3 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Create Record
-    <ModalForm
-      v-model="commandModalOpen"
-      title="Create Record"
-      :fields="fields"
-      :request="commandRequest"
-      submit="Create"
-      @success="recordCreated($event)"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
@@ -75,3 +61,17 @@ defineExpose({
   commandModalOpen,
 });
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Create Record
+    <ModalForm
+      v-model="commandModalOpen"
+      title="Create Record"
+      :fields="fields"
+      :request="commandRequest"
+      submit="Create"
+      @success="recordCreated($event)"
+    />
+  </ButtonNormal>
+</template>

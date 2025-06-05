@@ -1,3 +1,25 @@
+<script setup lang="ts">
+import ChatCreateMatrixUser from "@/features/matrix_chat/actions/CreateMatrixUser.vue";
+import useClient from "@/api/client";
+import BoxLoader from "@/components/BoxLoader.vue";
+import useGet from "@/composables/useGet";
+import { useUserStore } from "@/store/user";
+import { CircleLoader } from "lorga-ui";
+import { ref } from "vue";
+
+interface ChatPage {
+  matrix_user: null | { _group: string; matrix_id: string };
+}
+
+const userStore = useUserStore();
+
+const client = useClient();
+const request = client.get("api/auth/query/page/chat/");
+const page = ref<ChatPage>();
+
+const query = useGet(request, page);
+</script>
+
 <template>
   <BoxLoader :show="userStore.loaded">
     <div class="px-6 py-5 bg-white rounded shadow">
@@ -36,25 +58,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script setup lang="ts">
-import ChatCreateMatrixUser from "@/features/matrix_chat/actions/CreateMatrixUser.vue";
-import useClient from "@/api/client";
-import BoxLoader from "@/components/BoxLoader.vue";
-import useGet from "@/composables/useGet";
-import { useUserStore } from "@/store/user";
-import { CircleLoader } from "lorga-ui";
-import { ref } from "vue";
-
-interface ChatPage {
-  matrix_user: null | { _group: string; matrix_id: string };
-}
-
-const userStore = useUserStore();
-
-const client = useClient();
-const request = client.get("api/auth/query/page/chat/");
-const page = ref<ChatPage>();
-
-const query = useGet(request, page);
-</script>

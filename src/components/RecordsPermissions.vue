@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+import { ref, watch } from "vue";
+import { ModalFree } from "lorga-ui";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
+
+const generalPermissionsModalOpen = ref(false);
+const show = ref(false);
+
+watch(generalPermissionsModalOpen, (newValue) => {
+  if (newValue === true) show.value = true;
+});
+</script>
+
 <template>
   <ButtonBreadcrumbs @click="generalPermissionsModalOpen = true">
     Show General Permissions
@@ -15,17 +29,3 @@
     <RecordsPermissionsTable v-if="show" />
   </ModalFree>
 </template>
-
-<script lang="ts" setup>
-import { ref, watch } from "vue";
-import { ModalFree } from "lorga-ui";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
-
-const generalPermissionsModalOpen = ref(false);
-const show = ref(false);
-
-watch(generalPermissionsModalOpen, (newValue) => {
-  if (newValue === true) show.value = true;
-});
-</script>

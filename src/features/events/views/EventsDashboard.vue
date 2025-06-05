@@ -1,3 +1,91 @@
+<script setup lang="ts">
+import { ButtonNormal, ButtonToggle } from "lorga-ui";
+import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
+import { EyeIcon, CalendarIcon, HomeIcon } from "@heroicons/vue/20/solid";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import BoxLoader from "@/components/BoxLoader.vue";
+import { computed, ref } from "vue";
+import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
+import { useRoute, useRouter } from "vue-router";
+import EventsCreateEvent from "@/features/events/actions/CreateEvent.vue";
+import EventsUpdateEvent from "@/features/events/actions/UpdateEvent.vue";
+import EventsDeleteEvent from "@/features/events/actions/DeleteEvent.vue";
+import EventsGetCalendarLink from "@/features/events/actions/GetCalendarLink.vue";
+import { useUserStore } from "@/store/user";
+import { useEvents, Event } from "../api/useEvents";
+
+const showGlobal = ref(true);
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+
+// eslint-disable-next-line no-unused-vars
+function groupBy<T>(items: T[], getKey: (element: T) => string) {
+  if (!items) return null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const itemsGroupedByKey = items.reduce(function (results: any, item: T) {
+    const currentKey = getKey(item);
+    if (!results[currentKey]) {
+      results[currentKey] = [];
+    }
+    results[currentKey].push(item);
+    return results;
+  }, {});
+  return itemsGroupedByKey;
+}
+
+const { events, query } = useEvents();
+
+const nextEventIndex = computed<number>(() => {
+  if (!events.value) return 0;
+
+  const rawNextEvent = events.value.findIndex(
+    (event: Event) => new Date(event.end_time) > new Date(Date.now()),
+  );
+  return rawNextEvent === -1 ? events.value.length : rawNextEvent;
+});
+
+function loadPastEvents() {
+  const newEarlier = earlierValue?.value + 10;
+  router.push({ path: "/events/", query: { earlier: newEarlier } });
+}
+
+const earlierValue = computed(() => Number(route.query?.earlier ?? 0));
+
+const isEventsListEmpty = computed(() => {
+  return Object.keys(eventsWithFormattedDate?.value || {}).length === 0;
+});
+
+const eventsWithFormattedDate = computed(() => {
+  if (!events.value) return [];
+
+  const current_events = events.value?.slice(
+    Math.max(0, nextEventIndex?.value - earlierValue?.value),
+  );
+  const fileredGlobal = current_events?.filter(
+    (event: Event) => showGlobal.value || event.level === "ORG",
+  );
+  const events2 = fileredGlobal?.map((event: Event) => {
+    return {
+      ...event,
+      // Necessary to display the date in the update modal
+      is_past_event: event.end_time < new Date().toISOString(),
+      start_time_object: formatDateToObject(event.start_time),
+      end_time_object: formatDateToObject(event.end_time),
+    };
+  });
+  return groupBy(
+    events2,
+    (
+      event: Event & {
+        start_time_object: FormattedDate;
+        end_time_object: FormattedDate;
+      },
+    ) => event.start_time_object.groupDate,
+  );
+});
+</script>
+
 <template>
   <BoxLoader :show="!!eventsWithFormattedDate">
     <div class="mx-auto space-y-6 max-w-screen-2xl">
@@ -106,91 +194,3 @@
     </div>
   </BoxLoader>
 </template>
-
-<script setup lang="ts">
-import { ButtonNormal, ButtonToggle } from "lorga-ui";
-import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
-import { EyeIcon, CalendarIcon, HomeIcon } from "@heroicons/vue/20/solid";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import { computed, ref } from "vue";
-import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
-import { useRoute, useRouter } from "vue-router";
-import EventsCreateEvent from "@/features/events/actions/CreateEvent.vue";
-import EventsUpdateEvent from "@/features/events/actions/UpdateEvent.vue";
-import EventsDeleteEvent from "@/features/events/actions/DeleteEvent.vue";
-import EventsGetCalendarLink from "@/features/events/actions/GetCalendarLink.vue";
-import { useUserStore } from "@/store/user";
-import { useEvents, Event } from "../api/useEvents";
-
-const showGlobal = ref(true);
-const router = useRouter();
-const route = useRoute();
-const userStore = useUserStore();
-
-// eslint-disable-next-line no-unused-vars
-function groupBy<T>(items: T[], getKey: (element: T) => string) {
-  if (!items) return null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const itemsGroupedByKey = items.reduce(function (results: any, item: T) {
-    const currentKey = getKey(item);
-    if (!results[currentKey]) {
-      results[currentKey] = [];
-    }
-    results[currentKey].push(item);
-    return results;
-  }, {});
-  return itemsGroupedByKey;
-}
-
-const { events, query } = useEvents();
-
-const nextEventIndex = computed<number>(() => {
-  if (!events.value) return 0;
-
-  const rawNextEvent = events.value.findIndex(
-    (event: Event) => new Date(event.end_time) > new Date(Date.now()),
-  );
-  return rawNextEvent === -1 ? events.value.length : rawNextEvent;
-});
-
-function loadPastEvents() {
-  const newEarlier = earlierValue?.value + 10;
-  router.push({ path: "/events/", query: { earlier: newEarlier } });
-}
-
-const earlierValue = computed(() => Number(route.query?.earlier ?? 0));
-
-const isEventsListEmpty = computed(() => {
-  return Object.keys(eventsWithFormattedDate?.value || {}).length === 0;
-});
-
-const eventsWithFormattedDate = computed(() => {
-  if (!events.value) return [];
-
-  const current_events = events.value?.slice(
-    Math.max(0, nextEventIndex?.value - earlierValue?.value),
-  );
-  const fileredGlobal = current_events?.filter(
-    (event: Event) => showGlobal.value || event.level === "ORG",
-  );
-  const events2 = fileredGlobal?.map((event: Event) => {
-    return {
-      ...event,
-      // Necessary to display the date in the update modal
-      is_past_event: event.end_time < new Date().toISOString(),
-      start_time_object: formatDateToObject(event.start_time),
-      end_time_object: formatDateToObject(event.end_time),
-    };
-  });
-  return groupBy(
-    events2,
-    (
-      event: Event & {
-        start_time_object: FormattedDate;
-        end_time_object: FormattedDate;
-      },
-    ) => event.start_time_object.groupDate,
-  );
-});
-</script>

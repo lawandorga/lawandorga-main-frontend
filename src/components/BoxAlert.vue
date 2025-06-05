@@ -1,3 +1,14 @@
+<script lang="ts">
+export default {
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+  },
+};
+</script>
+
 <template>
   <div
     class="px-4 py-2 rounded"
@@ -11,14 +22,3 @@
     <slot />
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  props: {
-    type: {
-      type: String,
-      required: true,
-    },
-  },
-};
-</script>

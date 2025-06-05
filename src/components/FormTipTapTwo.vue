@@ -1,27 +1,3 @@
-<template>
-  <div v-if="editor" class="break-words border-2 border-gray-800 rounded-xl">
-    <slot></slot>
-    <MenuBar
-      class="sticky top-[-26px] bg-white z-10 flex items-center p-2 border-gray-800 print:hidden"
-      :class="{
-        'border-y-2': $slots.default,
-        'border-b-2 rounded-t-xl': !$slots.default,
-      }"
-      :editor="editor"
-    />
-
-    <EditorContent ref="tiptap" :editor="editor" class="break-words" />
-    <div
-      class="flex items-center justify-between px-2 py-1 text-gray-800 border-t-2 border-gray-800 print:hidden"
-    >
-      <div class="space-x-4"></div>
-      <div class="text-sm">
-        {{ editor.storage.characterCount.characters() }} characters
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
@@ -77,6 +53,30 @@ function editorUpdated(value: string) {
   emit("update:modelValue", value);
 }
 </script>
+
+<template>
+  <div v-if="editor" class="break-words border-2 border-gray-800 rounded-xl">
+    <slot></slot>
+    <MenuBar
+      class="sticky top-[-26px] bg-white z-10 flex items-center p-2 border-gray-800 print:hidden"
+      :class="{
+        'border-y-2': $slots.default,
+        'border-b-2 rounded-t-xl': !$slots.default,
+      }"
+      :editor="editor"
+    />
+
+    <EditorContent ref="tiptap" :editor="editor" class="break-words" />
+    <div
+      class="flex items-center justify-between px-2 py-1 text-gray-800 border-t-2 border-gray-800 print:hidden"
+    >
+      <div class="space-x-4"></div>
+      <div class="text-sm">
+        {{ editor.storage.characterCount.characters() }} characters
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="css">
 /* give a remote user a caret */

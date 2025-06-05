@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { useUserStore } from "@/store/user";
+import { UserIcon } from "@heroicons/vue/20/solid";
+import { getCookie } from "@/utils/cookie";
+import NavigationDropdownCloser from "./NavigationDropdownCloser.vue";
+
+const userStore = useUserStore();
+
+const backendLogoutUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/logout/`;
+const mfaSetupUrl = `${import.meta.env.VITE_AUTH_URL}/auth/mfa/status/`;
+const csrfCookie = getCookie("csrftoken");
+</script>
+
 <template>
   <Menu ref="menu" v-slot="{ close }" as="div" class="relative ml-3">
     <NavigationDropdownCloser :close="close" />
@@ -76,17 +90,3 @@
     </transition>
   </Menu>
 </template>
-
-<script lang="ts" setup>
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { useUserStore } from "@/store/user";
-import { UserIcon } from "@heroicons/vue/20/solid";
-import { getCookie } from "@/utils/cookie";
-import NavigationDropdownCloser from "./NavigationDropdownCloser.vue";
-
-const userStore = useUserStore();
-
-const backendLogoutUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/logout/`;
-const mfaSetupUrl = `${import.meta.env.VITE_AUTH_URL}/auth/mfa/status/`;
-const csrfCookie = getCookie("csrftoken");
-</script>

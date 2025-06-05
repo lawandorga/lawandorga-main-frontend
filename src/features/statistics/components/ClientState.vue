@@ -1,7 +1,3 @@
-<template>
-  <PieChart :chart-data="chartData" />
-</template>
-
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { PieChart } from "vue-chart-3";
@@ -34,3 +30,7 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <PieChart :chart-data="chartData" />
+</template>

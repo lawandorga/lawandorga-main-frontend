@@ -1,12 +1,3 @@
-<template>
-  <router-link
-    class="font-semibold underline text-formcolor hover:text-opacity-75"
-    :to="to"
-  >
-    <slot />
-  </router-link>
-</template>
-
 <script lang="ts">
 export default {
   props: {
@@ -17,3 +8,12 @@ export default {
   },
 };
 </script>
+
+<template>
+  <router-link
+    class="font-semibold underline text-formcolor hover:text-opacity-75"
+    :to="to"
+  >
+    <slot />
+  </router-link>
+</template>

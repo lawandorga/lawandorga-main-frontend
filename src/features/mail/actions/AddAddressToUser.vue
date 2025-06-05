@@ -1,16 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="addAddressModalOpen = true">
-    Add Address
-    <ModalCreate
-      v-model="addAddressModalOpen"
-      :request="request"
-      :fields="addressFields"
-      :data="{ user_uuid: userUuid, action: 'mail/create_address' }"
-      @change="changed($event)"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ModalCreate, types, ButtonNormal } from "lorga-ui";
@@ -68,3 +55,16 @@ const request = (data: Record<string, any>) => {
   return addAddress(newData);
 };
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="addAddressModalOpen = true">
+    Add Address
+    <ModalCreate
+      v-model="addAddressModalOpen"
+      :request="request"
+      :fields="addressFields"
+      :data="{ user_uuid: userUuid, action: 'mail/create_address' }"
+      @change="changed($event)"
+    />
+  </ButtonNormal>
+</template>

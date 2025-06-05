@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import RedBadge from "@/components/RedBadge.vue";
+import { VNode } from "vue";
+
+defineProps<{
+  buttons: VNode[];
+  name: string;
+  isFirst?: boolean;
+  isSelected: boolean;
+  badge?: string;
+}>();
+</script>
+
 <template>
   <div
     class="relative block w-full transition bg-gray-100 border-t"
@@ -21,16 +34,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import RedBadge from "@/components/RedBadge.vue";
-import { VNode } from "vue";
-
-defineProps<{
-  buttons: VNode[];
-  name: string;
-  isFirst?: boolean;
-  isSelected: boolean;
-  badge?: string;
-}>();
-</script>

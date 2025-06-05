@@ -1,20 +1,3 @@
-<template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    {{ text }}
-    <ModalUpdate
-      v-model="commandModalOpen"
-      title="Change Token"
-      :fields="fields"
-      :request="commandRequest"
-      :data="{
-        uuid: recordUuid,
-        token: recordToken,
-        action: 'records/change_token',
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
@@ -37,3 +20,20 @@ const fields: types.FormField[] = [
 
 const { commandRequest, commandModalOpen } = useCmd(query);
 </script>
+
+<template>
+  <ButtonNormal kind="action" @click="commandModalOpen = true">
+    {{ text }}
+    <ModalUpdate
+      v-model="commandModalOpen"
+      title="Change Token"
+      :fields="fields"
+      :request="commandRequest"
+      :data="{
+        uuid: recordUuid,
+        token: recordToken,
+        action: 'records/change_token',
+      }"
+    />
+  </ButtonNormal>
+</template>

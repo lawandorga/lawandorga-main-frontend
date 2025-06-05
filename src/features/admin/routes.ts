@@ -32,16 +32,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/features/admin/views/AdminCollabTemplates.vue"),
   },
   {
-    path: "/admin/collab/letterhead/:uuid",
-    name: "admin-collab-letterhead",
-    component: () => import("@/features/admin/views/AdminCollabLetterhead.vue"),
-  },
-  {
-    path: "/admin/collab/footer/:uuid",
-    name: "admin-collab-footer",
-    component: () => import("@/features/admin/views/AdminCollabFooter.vue"),
-  },
-  {
     path: "/admin/collab/template/:uuid",
     name: "admin-collab-edit-template",
     component: () => import("@/features/admin/views/AdminCollabTemplate.vue"),

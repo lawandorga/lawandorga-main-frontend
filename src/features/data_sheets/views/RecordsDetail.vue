@@ -1,7 +1,3 @@
-<template>
-  <BoxLoader />
-</template>
-
 <script setup lang="ts">
 import BoxLoader from "@/components/BoxLoader.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -25,3 +21,7 @@ request().then((r) => {
   });
 });
 </script>
+
+<template>
+  <BoxLoader />
+</template>
