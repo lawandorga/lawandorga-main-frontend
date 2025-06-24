@@ -1,5 +1,4 @@
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
 import { RouteParams } from "vue-router";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 
@@ -8,24 +7,10 @@ interface LocationAsName {
   params?: RouteParams;
 }
 
-export default defineComponent({
-  components: {
-    ChevronLeftIcon,
-  },
-  props: {
-    pages: {
-      type: Array as PropType<{ name: string; to: LocationAsName }[]>,
-      default: () => [],
-    },
-    base: {
-      type: Object as PropType<LocationAsName>,
-      required: true,
-    },
-  },
-  setup() {
-    return {};
-  },
-});
+defineProps<{
+  pages?: { name: string; to: LocationAsName }[];
+  base: LocationAsName;
+}>();
 </script>
 
 <template>

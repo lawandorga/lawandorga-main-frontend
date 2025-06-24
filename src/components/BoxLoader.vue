@@ -1,18 +1,14 @@
-<script lang="ts">
+<script setup lang="ts">
 import { CircleLoader } from "lorga-ui";
-import { defineComponent } from "vue";
 
-export default defineComponent({
-  components: {
-    CircleLoader,
+withDefaults(
+  defineProps<{
+    show?: boolean;
+  }>(),
+  {
+    show: false,
   },
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
-  },
-});
+);
 </script>
 
 <template>
