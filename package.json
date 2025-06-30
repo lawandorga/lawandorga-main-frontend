@@ -20,7 +20,7 @@
     "@tailwindcss/line-clamp": "==0.4.*",
     "@tailwindcss/typography": "==0.5.*",
     "@tiptap/extension-bullet-list": "==2.12.*",
-    "@tiptap/extension-character-count": "==2.14.*",
+    "@tiptap/extension-character-count": "==2.23.*",
     "@tiptap/extension-highlight": "==2.11.*",
     "@tiptap/extension-link": "==2.22.*",
     "@tiptap/extension-list-item": "==2.11.*",
