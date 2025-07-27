@@ -5,7 +5,7 @@ type VoidFn = () => void;
 
 export default function useCommand<
   /* eslint-disable no-unused-vars, @typescript-eslint/no-explicit-any */
-  RFn extends (...args: any[]) => Promise<void>,
+  RFn extends (...args: any[]) => Promise<void | unknown>,
   /* eslint-enable */
 >(
   requestFunc: RFn,
