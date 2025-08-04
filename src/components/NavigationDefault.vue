@@ -5,7 +5,7 @@ import { getRegisterUrl } from "@/utils/login";
 <template>
   <div class="bg-formcolor print:hidden">
     <div
-      class="flex items-center justify-between shrink-0 h-16 px-4 border-b border-white border-opacity-20"
+      class="flex items-center justify-between shrink-0 h-16 px-4 border-b border-black/20"
     >
       <div class="flex space-x-3">
         <router-link

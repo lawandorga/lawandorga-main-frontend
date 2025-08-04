@@ -16,11 +16,11 @@ const inside = computed(() => {
 
 <template>
   <div
-    class="relative z-10 flex shrink-0 h-16 border-b border-white shadow bg-formcolor border-opacity-20 print:hidden"
+    class="relative z-10 flex shrink-0 h-16 border-b shadow bg-formcolor border-black/20 print:hidden"
   >
     <div
       type="button"
-      class="flex items-center justify-center px-4 text-gray-200 border-r border-white cursor-pointer border-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
+      class="flex items-center justify-center px-4 text-gray-200 border-r cursor-pointer border-black/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
       @click="setOpen(true)"
     >
       <span class="sr-only">Open sidebar</span>

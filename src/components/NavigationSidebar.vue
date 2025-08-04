@@ -30,7 +30,7 @@ const expandClicked = () => {
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
       <div class="flex flex-col flex-grow overflow-y-auto bg-formcolor">
         <div
-          class="flex items-center shrink-0 h-16 border-b border-white border-opacity-20"
+          class="flex items-center shrink-0 h-16 border-b border-black/20"
           :class="{ 'border-r': !expanded }"
         >
           <button
@@ -68,7 +68,7 @@ const expandClicked = () => {
         </div>
         <div
           v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white border-opacity-20"
+          class="px-4 py-3 text-white border-b border-black/20"
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
