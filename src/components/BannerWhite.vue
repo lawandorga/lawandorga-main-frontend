@@ -26,7 +26,7 @@ const emit = defineEmits(["close"]);
             </p>
           </div>
           <div
-            class="flex-shrink-0 order-3 w-full mt-2 sm:order-2 sm:mt-0 sm:w-auto"
+            class="shrink-0 order-3 w-full mt-2 sm:order-2 sm:mt-0 sm:w-auto"
           >
             <router-link
               :to="to"
@@ -36,7 +36,7 @@ const emit = defineEmits(["close"]);
               {{ button }}
             </router-link>
           </div>
-          <div class="flex-shrink-0 order-2 sm:order-3 sm:ml-2">
+          <div class="shrink-0 order-2 sm:order-3 sm:ml-2">
             <button
               v-if="close"
               type="button"

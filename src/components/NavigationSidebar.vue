@@ -26,11 +26,11 @@ const expandClicked = () => {
 </script>
 
 <template>
-  <div class="hidden md:flex md:flex-shrink-0 print:hidden">
+  <div class="hidden md:flex md:shrink-0 print:hidden">
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
       <div class="flex flex-col flex-grow overflow-y-auto bg-formcolor">
         <div
-          class="flex items-center flex-shrink-0 h-16 border-b border-white border-opacity-20"
+          class="flex items-center shrink-0 h-16 border-b border-white border-opacity-20"
           :class="{ 'border-r': !expanded }"
         >
           <button
@@ -120,7 +120,7 @@ const expandClicked = () => {
                 <div class="flex items-center">
                   <component
                     :is="item.icon"
-                    class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
+                    class="shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
                     :class="{ 'mr-3': expanded }"
                   />
                   <span
