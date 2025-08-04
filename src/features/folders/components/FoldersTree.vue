@@ -66,7 +66,7 @@ const { properties } = useFolderProperties(folders);
       :style="{ paddingLeft: `${depth * 18}px` }"
     >
       <button
-        class="w-5 text-gray-900 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75"
+        class="w-5 text-gray-900 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-600"
         @click="openOrCloseFolder(item.folder.uuid)"
       >
         <ChevronUpIcon
