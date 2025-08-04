@@ -152,7 +152,7 @@ const folderSelected = (uuid: string | undefined) => {
         <div class="flex items-center space-x-3">
           <button
             v-if="i.folder"
-            class="underline text-formcolor hover:text-opacity-75"
+            class="underline text-formcolor hover:text-black/75"
             @click="folderSelected(i.folder.uuid)"
           >
             {{ i.folder.name }}

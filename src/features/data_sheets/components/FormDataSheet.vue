@@ -157,7 +157,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           <ButtonNormal
             v-if="field.uuid in entries"
             kind="action"
-            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            class="font-medium text-gray-700 rounded hover:text-black/75 focus:outline-none"
             @click="downloadFile(field.uuid)"
           >
             Download
@@ -165,7 +165,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           <ButtonNormal
             v-if="field.name in entries"
             kind="delete"
-            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            class="font-medium text-gray-700 rounded hover:text-black/75 focus:outline-none"
             @click="change(field, '')"
           >
             Delete
