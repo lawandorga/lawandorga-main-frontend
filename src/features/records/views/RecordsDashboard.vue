@@ -5,7 +5,7 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
 import { useUserStore } from "@/store/user";
-import CreateRecordAndFolder from "@/features/records/actions/CreateRecordAndFolder.vue";
+import CreateRecordInFolder from "@/features/records/actions/CreateRecordInFolder.vue";
 import TabControls from "@/components/TabControls.vue";
 import SettingsViews from "../components/SettingsViews.vue";
 import CreateDeletion from "../actions/CreateDeletion.vue";
@@ -151,7 +151,7 @@ const userStore = useUserStore();
             @click="generalSearch = $event"
           >
             <template #head-action>
-              <CreateRecordAndFolder :query="queryRecords" />
+              <CreateRecordInFolder :query="queryRecords" />
             </template>
             <template #action="{ record }">
               <div class="flex items-center justify-end space-x-3">

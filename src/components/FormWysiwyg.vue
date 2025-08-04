@@ -60,8 +60,11 @@ const editor = useEditor({
 const setEditorContent = (value: string) => {
   if (!value && value !== "") return;
   if (!editor.value) return;
-  editor.value.commands.setContent(value, false, {
-    preserveWhitespace: true,
+  editor.value.commands.setContent(value, {
+    errorOnInvalidContent: false,
+    parseOptions: {
+      preserveWhitespace: "full",
+    },
   });
   isSet.value = true;
 };

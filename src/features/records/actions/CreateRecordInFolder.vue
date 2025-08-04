@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import useCommand from "@/composables/useCommand";
-import { ButtonNormal, ModalForm, types } from "lorga-ui";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
 import useClient from "@/api/client";
 import { useTemplates } from "@/features/data_sheets/api/useTemplates";
+import { useRootFolders } from "@/features/folders/api/useRootFolders";
 
 // props
 const props = defineProps<{
@@ -25,8 +26,16 @@ const request = client.postAndReturn<
 const { commandRequest, commandModalOpen } = useCommand(request, query.value);
 
 const { templates: availableTemplates, query: getTemplates } = useTemplates();
-watch(commandModalOpen, () => {
-  getTemplates();
+const {
+  rootFolders,
+  query: getRootFolders,
+  recordsFolderUuid,
+} = useRootFolders();
+watch(commandModalOpen, (newValue) => {
+  if (newValue) {
+    getTemplates();
+    getRootFolders();
+  }
 });
 
 // fields
@@ -44,6 +53,16 @@ const fields = computed<types.FormField[]>(() => [
     required: false,
     options: availableTemplates.value || [],
   },
+  {
+    label: "Folder",
+    type: "select",
+    name: "folder_uuid",
+    required: true,
+    options: rootFolders.value.map((folder) => ({
+      name: folder.name,
+      value: folder.uuid,
+    })),
+  },
 ]);
 
 // created
@@ -56,6 +75,10 @@ const recordCreated = (data: { folder_uuid: string; record_uuid: string }) => {
   });
 };
 
+const data = computed(() => ({
+  folder_uuid: recordsFolderUuid.value,
+}));
+
 // expose
 defineExpose({
   commandModalOpen,
@@ -65,12 +88,13 @@ defineExpose({
 <template>
   <ButtonNormal kind="secondary" @click="commandModalOpen = true">
     Create Record
-    <ModalForm
+    <ModalCreate
       v-model="commandModalOpen"
       title="Create Record"
       :fields="fields"
       :request="commandRequest"
       submit="Create"
+      :data="data"
       @success="recordCreated($event)"
     />
   </ButtonNormal>
