@@ -33,7 +33,7 @@
     "@tiptap/vue-3": "==3.0.*",
     "@types/jest": "==29.5.*",
     "@types/lodash": "==4.17.*",
-    "@types/node": "==24.0.*",
+    "@types/node": "==24.1.*",
     "@types/uuid": "==10.0.*",
     "@typescript-eslint/eslint-plugin": "==8.32.*",
     "@typescript-eslint/parser": "==8.27.*",
