@@ -28,7 +28,7 @@ export interface Content {
 
 export interface Access {
   name: string;
-  uuid: string | null;
+  uuid: string;
   source: string;
   actions: string[];
 }

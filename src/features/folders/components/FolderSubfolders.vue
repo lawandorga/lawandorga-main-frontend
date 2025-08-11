@@ -18,13 +18,7 @@ defineProps<{
     :stats="['This folder has the following subfolders']"
     nopadding
   >
-    <TableGenerator
-      :head="[
-        { name: 'Folder', key: 'name' },
-        { name: '', key: 'action' },
-      ]"
-      :data="folders"
-    >
+    <TableGenerator :head="[{ name: 'Folder', key: 'name' }]" :data="folders">
       <template #name="{ i }">
         <ButtonLink
           :to="{
