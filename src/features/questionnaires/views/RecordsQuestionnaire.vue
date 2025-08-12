@@ -48,14 +48,14 @@ const sendAnswer = computed(() => (data: Record<string, string>) => {
               >
                 <div class="flex items-center flex-1 w-0">
                   <PaperClipIcon
-                    class="flex-shrink-0 w-5 h-5 text-gray-400"
+                    class="shrink-0 w-5 h-5 text-gray-400"
                     aria-hidden="true"
                   />
                   <span class="flex-1 w-0 ml-2 truncate">
                     {{ file.name }}
                   </span>
                 </div>
-                <div class="flex-shrink-0 ml-4">
+                <div class="shrink-0 ml-4">
                   <TemplateFileDownload
                     :template-file-id="file.id"
                     :file-name="file.name"
