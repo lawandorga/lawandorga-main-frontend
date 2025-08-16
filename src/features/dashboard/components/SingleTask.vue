@@ -140,7 +140,7 @@ watch(newAssigneeId, () => {
             {{ task.title }}
           </h3>
           <ChevronUpDownIcon
-            class="flex-grow-0 flex-shrink-0 w-6 h-6 rotate-45 relative"
+            class="grow-0 shrink-0 w-6 h-6 rotate-45 relative"
           />
         </div>
       </button>
@@ -148,7 +148,7 @@ watch(newAssigneeId, () => {
         v-if="task.page_url"
         class="flex text-sm text-gray-700 break-words whitespace-pre-line"
       >
-        <FolderOpenIcon class="w-6 h-6 flex-grow-0 flex-shrink-0" />
+        <FolderOpenIcon class="w-6 h-6 grow-0 shrink-0" />
         <a :href="task.page_url" class="ml-2 underline">
           {{ task.page_url }}
         </a>
@@ -188,7 +188,7 @@ watch(newAssigneeId, () => {
   </article>
   <ModalFree
     v-model="commandModalOpen"
-    width="max-w-screen-md"
+    width="max-w-(--breakpoint-md)"
     title="Update Task"
   >
     <TableTable>

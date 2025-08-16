@@ -13,7 +13,7 @@ useGet(request, permissions);
 </script>
 
 <template>
-  <div class="mx-auto space-y-6 max-w-screen-2xl">
+  <div class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'help-dashboard' }"

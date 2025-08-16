@@ -115,7 +115,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
         :key="field.name"
         :class="{
           hidden: field.type === 'hidden',
-          'border-green-500 border px-2 pb-2 pt-2 rounded bg-gradient-to-t from-green-100 to-transparent print:hidden':
+          'border-green-500 border px-2 pb-2 pt-2 rounded bg-linear-to-t from-green-100 to-transparent print:hidden':
             field.kind === 'Statistic',
         }"
       >
