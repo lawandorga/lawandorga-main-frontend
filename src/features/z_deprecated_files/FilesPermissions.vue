@@ -4,7 +4,7 @@
   </ButtonBreadcrumbs>
   <ModalFree
     v-model="generalPermissionsModalOpen"
-    width="max-w-screen-xl"
+    width="max-w-(--breakpoint-xl)"
     title="General Permission"
   >
     <p class="mb-10 text-gray-600">

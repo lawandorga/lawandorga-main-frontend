@@ -88,7 +88,7 @@ export default defineComponent({
                 </button>
               </div>
             </TransitionChild>
-            <div class="flex items-center flex-shrink-0 h-16 px-4 bg-formcolor">
+            <div class="flex items-center shrink-0 h-16 px-4 bg-formcolor">
               <router-link to="/" class="flex items-center space-x-2">
                 <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
                 <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
@@ -112,7 +112,7 @@ export default defineComponent({
                   >
                     <component
                       :is="item.icon"
-                      class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                      class="shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                     />
                     {{ item.label }}
                   </component>
@@ -121,7 +121,7 @@ export default defineComponent({
             </div>
           </div>
         </TransitionChild>
-        <div class="flex-shrink-0 w-14" aria-hidden="true">
+        <div class="shrink-0 w-14" aria-hidden="true">
           <!-- Dummy element to force sidebar to shrink to fit close icon -->
         </div>
       </HeadlessDialog>

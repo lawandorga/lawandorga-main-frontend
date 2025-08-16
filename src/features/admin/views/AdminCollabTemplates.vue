@@ -11,7 +11,7 @@ const { templates, query } = useCollabTemplates();
 </script>
 
 <template>
-  <div class="max-w-screen-lg mx-auto space-y-6">
+  <div class="max-w-(--breakpoint-lg) mx-auto space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'admin-dashboard' }"

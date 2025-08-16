@@ -66,7 +66,7 @@ overwrite(
 );
 overwrite(
   "table.tdAction",
-  "md:sticky right-0 gap-5 flex items-center md:!border-l-0",
+  "md:sticky right-0 gap-5 flex items-center md:border-l-0!",
 );
 overwrite(
   "button.primary.size",

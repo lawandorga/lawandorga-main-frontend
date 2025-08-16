@@ -52,7 +52,7 @@ const { page } = toRefs(props);
           </thead>
           <tbody>
             <tr>
-              <th scope="row" class="!align-middle">Server</th>
+              <th scope="row" class="align-middle!">Server</th>
               <td>mail.law-orga.de</td>
               <td>mail.law-orga.de</td>
             </tr>
