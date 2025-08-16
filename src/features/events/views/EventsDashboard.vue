@@ -88,7 +88,7 @@ const eventsWithFormattedDate = computed(() => {
 
 <template>
   <BoxLoader :show="!!eventsWithFormattedDate">
-    <div class="mx-auto space-y-6 max-w-screen-2xl">
+    <div class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'events-dashboard' }"
@@ -143,7 +143,7 @@ const eventsWithFormattedDate = computed(() => {
               />
               <div class="flex flex-col gap-2 pt-5 grow">
                 <div class="flex flex-row items-center gap-6">
-                  <h2 class="flex-grow text-xl font-medium">
+                  <h2 class="grow text-xl font-medium">
                     {{ event.name }}
                   </h2>
                   <EventsUpdateEvent

@@ -53,7 +53,7 @@ export default defineComponent({
       </DisclosureButton>
       <button
         type="button"
-        class="flex items-baseline justify-between flex-grow-0 ml-4 text-lg hover:underline"
+        class="flex items-baseline justify-between grow-0 ml-4 text-lg hover:underline"
         @click="$emit('clicked', item.id)"
       >
         <span>{{ item.name || "---" }}</span>

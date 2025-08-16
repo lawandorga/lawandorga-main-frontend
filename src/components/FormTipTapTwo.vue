@@ -81,6 +81,8 @@ function editorUpdated(value: string) {
 </template>
 
 <style lang="css">
+@reference "tailwindcss";
+
 /* give a remote user a caret */
 .collaboration-cursor__caret {
   position: relative;
@@ -114,7 +116,7 @@ function editorUpdated(value: string) {
 }
 .selectedCell:after {
   z-index: 2;
-  @apply absolute inset-0 bg-gray-600 bg-opacity-10 pointer-events-none;
+  @apply absolute inset-0 bg-gray-600/10 pointer-events-none;
   content: "";
 }
 

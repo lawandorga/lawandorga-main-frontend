@@ -15,7 +15,7 @@ const { profiles, query } = useProfiles();
 
 <template>
   <BoxLoader show>
-    <div class="max-w-screen-xl mx-auto space-y-6">
+    <div class="max-w-(--breakpoint-xl) mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
