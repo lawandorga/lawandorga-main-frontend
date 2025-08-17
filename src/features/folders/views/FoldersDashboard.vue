@@ -21,7 +21,10 @@ const tabChanged = (key: string) => {
 
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
+    <div
+      v-if="userStore.loaded"
+      class="mx-auto space-y-6 max-w-(--breakpoint-2xl)"
+    >
       <BreadcrumbsBar :base="{ name: 'folders-dashboard' }">
         <FolderIcon class="w-6 h-6" />
       </BreadcrumbsBar>
