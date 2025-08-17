@@ -46,7 +46,7 @@ export default defineComponent({
               .run(),
           isActive: () =>
             this.editor.isActive("highlight", { color: "#ffff99" }),
-          class: "border-yellow-200",
+          class: "border-yellow-200!",
         },
         {
           icon: "mark-pen-line",
@@ -61,7 +61,7 @@ export default defineComponent({
             this.editor.isActive("highlight", {
               color: "#fecddf",
             }),
-          class: "border-red-200",
+          class: "border-red-200!",
         },
         {
           icon: "mark-pen-line",
@@ -76,7 +76,7 @@ export default defineComponent({
             this.editor.isActive("highlight", {
               color: "#b3e8ff",
             }),
-          class: "border-blue-200",
+          class: "border-blue-200!",
         },
         {
           icon: "mark-pen-line",
@@ -91,7 +91,7 @@ export default defineComponent({
             this.editor.isActive("highlight", {
               color: "#b3ffbe",
             }),
-          class: "border-green-200",
+          class: "border-green-200!",
         },
         {
           icon: "format-clear",
