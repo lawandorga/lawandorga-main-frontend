@@ -101,7 +101,7 @@ defineExpose({
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div class="fixed inset-0 bg-gray-800 bg-opacity-40" />
+          <div class="fixed inset-0 bg-gray-800/40" />
         </TransitionChild>
         <div class="fixed inset-0 overflow-y-auto">
           <div class="flex items-center justify-center min-h-full">
