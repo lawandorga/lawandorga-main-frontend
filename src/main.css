@@ -1,8 +1,6 @@
 @import "lorga-ui/style.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 .has-tooltip:hover .tooltip,
 .has-tooltip:focus .tooltip {

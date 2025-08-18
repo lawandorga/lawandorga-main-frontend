@@ -24,7 +24,7 @@ defineProps<{
         <p class="text-base font-medium text-formcolor">
           {{ name }}
         </p>
-        <div v-show="isSelected" class="flex flex-shrink-0 ml-2 space-x-3">
+        <div v-show="isSelected" class="flex shrink-0 ml-2 space-x-3">
           <component :is="button" v-for="button in buttons" :key="button" />
         </div>
         <RedBadge v-if="badge">
