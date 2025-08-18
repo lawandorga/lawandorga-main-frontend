@@ -26,8 +26,6 @@ jobs:
   upload:
     name: Upload Docker Image
     runs-on: ubuntu-22.04
-    env:
-      SCW_DOCKER_REGISTRY: secrets.SCW_DOCKER_REGISTRY
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,14 +37,14 @@ jobs:
           path: dist
 
       - name: Build The Docker Container
-        run: docker build -t $SCW_DOCKER_REGISTRY/${{ inputs.image }}:${{ inputs.version }} .
+        run: docker build -t ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }}:${{ inputs.version }} .
 
       - name: Login to docker
         uses: docker/login-action@v3
         with:
-          registry: $SCW_DOCKER_REGISTRY
+          registry: ${{ secrets.SCW_DOCKER_REGISTRY }}
           username: ${{ secrets.SCW_TOKEN }}
           password: ${{ secrets.SCW_TOKEN }}
 
       - name: Push The Docker Container
-        run: docker push $SCW_DOCKER_REGISTRY/${{ inputs.image }}:${{ inputs.version }}
+        run: docker push ${{ secrets.SCW_DOCKER_REGISTRY }}/${{ inputs.image }}:${{ inputs.version }}
