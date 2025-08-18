@@ -27,8 +27,8 @@ jobs:
 
       - name: Setup AWS Credentials
         run: |
-          aws configure set aws_access_key_id ${{ secrets.scw_access_key }} --profile lawandorga
-          aws configure set aws_secret_access_key ${{ secrets.scw_secret_key }} --profile lawandorga
+          aws configure set aws_access_key_id $TF_VAR_scw_access_key --profile lawandorga
+          aws configure set aws_secret_access_key $TF_VAR_scw_secret_key --profile lawandorga
 
       - name: Set Up Terraform
         uses: hashicorp/setup-terraform@v3
