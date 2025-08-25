@@ -80,7 +80,7 @@ const { properties } = useFolderProperties(folders);
       </button>
       <div class="flex items-center">
         <FolderIcon
-          class="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
+          class="shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
         />
         <span class="ml-1.5 truncate mr-3">{{ item.folder.name }}</span>
         <div

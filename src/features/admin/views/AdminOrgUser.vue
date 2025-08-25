@@ -19,7 +19,7 @@ const { query, permissions, user } = useProfileData(route.params.id as string);
 
 <template>
   <BoxLoader :show="!!user">
-    <div v-if="user" class="max-w-screen-lg mx-auto space-y-6">
+    <div v-if="user" class="max-w-(--breakpoint-lg) mx-auto space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"

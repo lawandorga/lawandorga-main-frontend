@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div class="mx-auto space-y-6 max-w-screen-2xl">
+    <div class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
       <BreadcrumbsBar
         v-if="!!folder"
         :base="{ name: 'files-dashboard' }"

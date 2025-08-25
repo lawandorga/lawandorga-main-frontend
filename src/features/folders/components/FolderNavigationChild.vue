@@ -25,7 +25,7 @@ defineProps<{
       <p class="text-sm font-medium truncate text-formcolor">
         {{ name }}
       </p>
-      <div v-if="showType" class="flex flex-shrink-0 ml-2">
+      <div v-if="showType" class="flex shrink-0 ml-2">
         <p
           class="inline-flex px-2 text-xs font-semibold leading-5 rounded-full text-sky-800 bg-sky-100"
         >

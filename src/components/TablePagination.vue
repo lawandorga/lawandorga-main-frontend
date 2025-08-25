@@ -57,7 +57,7 @@ export default defineComponent({
 
 <template>
   <TableRow>
-    <TableData :colspan="colspan" class="md:!pr-0">
+    <TableData :colspan="colspan" class="md:pr-0!">
       <div class="flex items-center justify-between flex-1">
         <div>
           <p class="text-sm text-gray-700">

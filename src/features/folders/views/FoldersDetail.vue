@@ -80,7 +80,7 @@ const getNumberOfUnreadMails = () => {
     </h1>
     <div
       v-if="userStore.loaded && !!folder"
-      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-screen-2xl print:block print:max-w-none"
+      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-(--breakpoint-2xl) print:block print:max-w-none"
     >
       <BreadcrumbsBar
         class="col-span-12"

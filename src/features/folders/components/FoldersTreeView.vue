@@ -154,16 +154,12 @@ const selectedItem = computed<FolderItem | null>(() => {
       </div>
     </div>
   </div>
-  <FoldersCreateFolder
-    ref="foldersActions"
-    class="hidden"
-    :query="query"
-    :parent="parent"
-  />
-  <FoldersAddContent
-    ref="contentActions"
-    class="hidden"
-    :query="query"
-    :folder-uuid="parent ? parent : undefined"
-  />
+  <div class="hidden">
+    <FoldersCreateFolder ref="foldersActions" :query="query" :parent="parent" />
+    <FoldersAddContent
+      ref="contentActions"
+      :query="query"
+      :folder-uuid="parent ? parent : undefined"
+    />
+  </div>
 </template>

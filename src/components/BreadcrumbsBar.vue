@@ -31,7 +31,7 @@ defineProps<{
             :to="base"
             class="flex items-center pl-6 pr-4 text-gray-400 hover:text-gray-500"
           >
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
               <slot />
             </div>
             <span class="sr-only">Start</span>
@@ -40,7 +40,7 @@ defineProps<{
         <li v-for="page in pages" :key="page.name" class="flex h-11">
           <div class="flex">
             <svg
-              class="flex-shrink-0 w-6 h-full text-gray-200"
+              class="shrink-0 w-6 h-full text-gray-200"
               viewBox="0 0 24 44"
               preserveAspectRatio="none"
               fill="currentColor"
