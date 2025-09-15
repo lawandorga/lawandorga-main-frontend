@@ -66,7 +66,7 @@ const { properties } = useFolderProperties(folders);
       :style="{ paddingLeft: `${depth * 18}px` }"
     >
       <button
-        class="w-5 text-gray-900 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75"
+        class="w-5 text-gray-900 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-600"
         @click="openOrCloseFolder(item.folder.uuid)"
       >
         <ChevronUpIcon
@@ -80,7 +80,7 @@ const { properties } = useFolderProperties(folders);
       </button>
       <div class="flex items-center">
         <FolderIcon
-          class="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
+          class="shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
         />
         <span class="ml-1.5 truncate mr-3">{{ item.folder.name }}</span>
         <div
