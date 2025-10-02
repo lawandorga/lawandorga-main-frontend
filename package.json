@@ -36,7 +36,7 @@
     "@types/node": "==24.3.*",
     "@types/uuid": "==10.0.*",
     "@typescript-eslint/eslint-plugin": "==8.32.*",
-    "@typescript-eslint/parser": "==8.27.*",
+    "@typescript-eslint/parser": "==8.45.*",
     "@vitejs/plugin-vue": "==6.0.*",
     "@vue/eslint-config-prettier": "==10.2.*",
     "@vue/test-utils": "==2.4.*",
