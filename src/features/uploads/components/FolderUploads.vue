@@ -6,7 +6,8 @@ import { Ref, ref, toRefs, watch } from "vue";
 import useClient from "@/api/client";
 import UploadsDisableLink from "@/features/uploads/actions/DisableUpdateLink.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
-import UploadsDownloadFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
+import DownloadUploadedFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
+import DeleteUploadedFile from "@/features/uploads/actions/DeleteUploadedFile.vue";
 import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
 import { useLink } from "../api/useLink";
 
@@ -83,13 +84,16 @@ watch(
             <ButtonNormal kind="action" @click="selectedFile = file.uuid">
               Show
             </ButtonNormal>
-            <UploadsDownloadFile
+            <DownloadUploadedFile
               :link-uuid="selectedId"
               :file-uuid="file.uuid"
               :name="file.name"
-            >
-              Download
-            </UploadsDownloadFile>
+            ></DownloadUploadedFile>
+            <DeleteUploadedFile
+              :file-uuid="file.uuid"
+              :name="file.name"
+              :query="query"
+            ></DeleteUploadedFile>
           </template>
         </TableGenerator>
         <div v-else-if="link.disabled">

@@ -8,7 +8,7 @@ export interface UploadLink {
   link: string;
   created: string;
   disabled: boolean;
-  files: { uuid: string; name: string }[];
+  files: { uuid: string; name: string; created: string }[];
 }
 
 export function useLink(
