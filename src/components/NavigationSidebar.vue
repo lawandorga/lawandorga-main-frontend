@@ -26,15 +26,15 @@ const expandClicked = () => {
 </script>
 
 <template>
-  <div class="hidden md:flex md:flex-shrink-0 print:hidden">
+  <div class="hidden md:flex md:shrink-0 print:hidden">
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
-      <div class="flex flex-col flex-grow overflow-y-auto bg-formcolor">
+      <div class="flex flex-col overflow-y-auto grow bg-formcolor">
         <div
-          class="flex items-center flex-shrink-0 h-16 border-b border-white border-opacity-20"
+          class="flex items-center h-16 border-b shrink-0 border-white/20"
           :class="{ 'border-r': !expanded }"
         >
           <button
-            class="flex items-center justify-center w-10 h-10 border border-transparent rounded focus:outline-none hover:bg-gray-50/10"
+            class="flex items-center justify-center w-10 h-10 border border-transparent rounded cursor-pointer focus:outline-none hover:bg-gray-50/10"
             :class="{ 'mx-auto': !expanded, 'ml-2 mr-2': expanded }"
             @click="expandClicked()"
           >
@@ -68,7 +68,7 @@ const expandClicked = () => {
         </div>
         <div
           v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white border-opacity-20"
+          class="px-4 py-3 text-white border-b border-white/20"
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
@@ -79,7 +79,7 @@ const expandClicked = () => {
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
-        <div class="flex flex-col justify-between flex-grow bg-white">
+        <div class="flex flex-col justify-between bg-white grow">
           <nav
             class="flex-1 pb-2 bg-white"
             :class="{
@@ -109,10 +109,10 @@ const expandClicked = () => {
                 :is="item.is"
                 v-else
                 v-bind="item.attrs"
-                active-class="text-gray-700 !bg-gray-100 hover:bg-gray-100"
+                active-class="text-gray-700 bg-gray-100! hover:bg-gray-100"
                 class="relative flex items-center justify-between py-2 pl-2 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
                 :class="{
-                  '!pb-[1.375rem]': !expanded && item.is === 'a',
+                  'pb-5.5!': !expanded && item.is === 'a',
                   'w-10 pr-2 mx-auto': !expanded,
                   'pr-3': expanded,
                 }"
@@ -120,7 +120,7 @@ const expandClicked = () => {
                 <div class="flex items-center">
                   <component
                     :is="item.icon"
-                    class="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
+                    class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-gray-500"
                     :class="{ 'mr-3': expanded }"
                   />
                   <span
@@ -136,7 +136,7 @@ const expandClicked = () => {
                 <RedBadge
                   v-if="item.notifications && item.notifications > 0"
                   :additional-classes="
-                    expanded ? '' : 'absolute top-1 right-1 !w-4 !h-4 !text-xs'
+                    expanded ? '' : 'absolute top-1 right-1 w-4! h-4! text-xs!'
                   "
                 >
                   {{ item.notifications }}

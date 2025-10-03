@@ -269,13 +269,13 @@ const passwordForgottenLink = `${
                   (item) => item.type === group.type,
                 )"
                 :key="sponsor.name"
-                class="block lg:max-w-[17rem] p-3"
+                class="block lg:max-w-68 p-3"
               >
                 <figure>
                   <img
                     :src="sponsor.image"
                     :alt="sponsor.name"
-                    class="mx-auto w-auto max-h-[5rem] rounded-md overflow-hidden border-2 border-gray-300 shadow"
+                    class="mx-auto w-auto max-h-20 rounded-md overflow-hidden border-2 border-gray-300 shadow"
                     :class="[sponsor.class]"
                   />
                   <figcaption class="mt-2 text-sm text-center text-gray-500">

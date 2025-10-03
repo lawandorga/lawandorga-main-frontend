@@ -61,7 +61,7 @@ watch([defaultTab, tabs], updateTab, { flush: "post" });
         <TabComponent v-else v-slot="{ selected }" as="template">
           <button
             :class="[
-              'py-2.5 pr-3 text-lg font-semibold',
+              'py-2.5 pr-3 text-lg font-semibold cursor-pointer',
               selected ? 'border-b-2 border-solid' : '',
               tab.highlighted
                 ? ' text-formcolor border-formcolor'

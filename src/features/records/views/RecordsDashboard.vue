@@ -56,7 +56,10 @@ const userStore = useUserStore();
 
 <template>
   <BoxLoader :show="!!userStore.loaded">
-    <div v-if="userStore.loaded" class="mx-auto space-y-6 max-w-screen-2xl">
+    <div
+      v-if="userStore.loaded"
+      class="mx-auto space-y-6 max-w-(--breakpoint-2xl)"
+    >
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <RectangleStackIcon class="w-6 h-6" />
         <template #buttons>
@@ -83,7 +86,7 @@ const userStore = useUserStore();
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
           <div
-            class="flex flex-wrap items-end gap-3 px-4 py-3 mb-5 border-2 rounded-lg shadow-sm bg-gray-50"
+            class="flex flex-wrap items-end gap-3 px-4 py-3 mb-5 border-2 border-gray-200 rounded-lg shadow-sm bg-gray-50"
           >
             <FormInput
               :model-value="tokenSearch"

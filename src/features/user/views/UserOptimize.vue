@@ -15,7 +15,9 @@ runAll();
 
 <template>
   <BoxLoader show>
-    <div class="max-w-3xl px-5 py-4 mx-auto bg-white border rounded shadow">
+    <div
+      class="max-w-3xl px-5 py-4 mx-auto bg-white border border-gray-200 rounded shadow"
+    >
       <h1 class="text-xl font-medium text-gray-800">Optimization</h1>
       <div class="mt-2 prose max-w-none">
         <p>

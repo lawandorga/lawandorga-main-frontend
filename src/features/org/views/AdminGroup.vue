@@ -19,7 +19,7 @@ const { members, permissions, query, group } = useGroup(
 
 <template>
   <BoxLoader :show="!!group">
-    <div v-if="!!group" class="max-w-screen-lg mx-auto space-y-6">
+    <div v-if="!!group" class="max-w-(--breakpoint-lg) mx-auto space-y-6">
       <BreadcrumbsBar
         v-if="group"
         :base="{ name: 'admin-dashboard' }"
