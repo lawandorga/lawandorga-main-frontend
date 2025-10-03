@@ -6,6 +6,7 @@ export interface OrgUserSmall {
   id: number;
   user_id: number;
   phone_number: string | null;
+  group_names: string[];
   name: string;
   email: string;
   accepted: boolean;

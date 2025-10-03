@@ -28,6 +28,7 @@ const { profiles, query } = useProfiles();
           { name: 'Name', key: 'name' },
           { name: 'E-Mail', key: 'email' },
           { name: 'Phone', key: 'phone_number' },
+          { name: 'Groups', fn: (i) => i.group_names.join(', ') },
           { name: 'Last Login', key: 'last_login_month' },
           { name: '', key: 'action' },
         ]"
