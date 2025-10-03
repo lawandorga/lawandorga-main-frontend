@@ -72,12 +72,14 @@ const selectedItem = computed<FolderItem | null>(() => {
 <template>
   <div
     v-if="!!foldersActions && !!contentActions"
-    class="bg-white divide-y-2 rounded shadow"
+    class="bg-white divide-y-2 divide-gray-100 rounded shadow"
   >
     <div class="px-3 py-2">
       <FoldersCreateRootFolder :query="query" />
     </div>
-    <div class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x">
+    <div
+      class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x xl:divide-gray-300"
+    >
       <div class="w-full px-6 py-4">
         <FoldersTree
           :folders="folderItems"

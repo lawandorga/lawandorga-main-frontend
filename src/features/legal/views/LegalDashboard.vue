@@ -36,7 +36,7 @@ const accept = (lr: LegalRequirement) => {
 
       <div class="mt-10 space-y-10">
         <div v-for="lr in legalRequirements" :key="lr.title">
-          <div class="bg-white border rounded shadow">
+          <div class="bg-white border border-gray-200 rounded shadow">
             <div class="px-6 pt-5">
               <Disclosure
                 v-slot="{ open }"
@@ -65,8 +65,8 @@ const accept = (lr: LegalRequirement) => {
               v-if="lr.events_of_user.length || !lr.accepted_of_user"
               class="mt-5"
             >
-              <div class="border-t"></div>
-              <div class="divide-y">
+              <div class="border-t border-gray-200"></div>
+              <div class="divide-y divide-gray-200">
                 <div v-for="event in lr.events_of_user" :key="event.created">
                   <div class="px-6 py-2">
                     <p>

@@ -28,13 +28,13 @@ const expandClicked = () => {
 <template>
   <div class="hidden md:flex md:shrink-0 print:hidden">
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
-      <div class="flex flex-col grow overflow-y-auto bg-formcolor">
+      <div class="flex flex-col overflow-y-auto grow bg-formcolor">
         <div
-          class="flex items-center shrink-0 h-16 border-b border-white border-opacity-20"
+          class="flex items-center h-16 border-b shrink-0 border-white/20"
           :class="{ 'border-r': !expanded }"
         >
           <button
-            class="flex items-center justify-center w-10 h-10 border border-transparent rounded focus:outline-none hover:bg-gray-50/10"
+            class="flex items-center justify-center w-10 h-10 border border-transparent rounded cursor-pointer focus:outline-none hover:bg-gray-50/10"
             :class="{ 'mx-auto': !expanded, 'ml-2 mr-2': expanded }"
             @click="expandClicked()"
           >
@@ -68,7 +68,7 @@ const expandClicked = () => {
         </div>
         <div
           v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white border-opacity-20"
+          class="px-4 py-3 text-white border-b border-white/20"
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
@@ -79,7 +79,7 @@ const expandClicked = () => {
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
-        <div class="flex flex-col justify-between grow bg-white">
+        <div class="flex flex-col justify-between bg-white grow">
           <nav
             class="flex-1 pb-2 bg-white"
             :class="{
@@ -120,7 +120,7 @@ const expandClicked = () => {
                 <div class="flex items-center">
                   <component
                     :is="item.icon"
-                    class="shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
+                    class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-gray-500"
                     :class="{ 'mr-3': expanded }"
                   />
                   <span

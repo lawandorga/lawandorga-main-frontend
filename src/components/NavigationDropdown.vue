@@ -17,7 +17,7 @@ const csrfCookie = getCookie("csrftoken");
     <NavigationDropdownCloser :close="close" />
     <div>
       <MenuButton
-        class="flex text-sm bg-gray-100 rounded-full focus:outline-none ring-gray-100 ring-2 hover:ring-gray-200 focus:ring-gray-200 focus:ring-2"
+        class="flex text-sm bg-gray-100 rounded-full cursor-pointer focus:outline-none ring-gray-100 ring-2 hover:ring-gray-200 focus:ring-gray-200 focus:ring-2"
       >
         <span class="sr-only">Open user menu</span>
         <div class="relative overflow-hidden rounded-full h-7 w-7">
@@ -36,7 +36,7 @@ const csrfCookie = getCookie("csrftoken");
       leave-to-class="transform scale-95 opacity-0"
     >
       <MenuItems
-        class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none"
       >
         <MenuItem v-if="userStore.user">
           <RouterLink
