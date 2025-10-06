@@ -274,7 +274,11 @@ const formatDate = (date: string) =>
               class="col-start-6 ml-auto rotate-180"
             />
           </button>
-          <MailContent v-if="expandedMails.includes(mail.uuid)" :mail="mail" />
+          <MailContent
+            v-if="expandedMails.includes(mail.uuid)"
+            :mail="mail"
+            :query="query"
+          />
           <MailAttachment
             v-if="!!mail.mail_attachments.length"
             :attachments="mail.mail_attachments"
