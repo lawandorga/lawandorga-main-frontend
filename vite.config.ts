@@ -7,12 +7,12 @@ import tailwindcss from "@tailwindcss/vite";
 // sets localhost as default instead of 127.0.0.1
 dns.setDefaultResultOrder("verbatim");
 
-// const vitestConfig = {
-//   test: {
-//     globals: true,
-//     environment: "jsdom",
-//   },
-// };
+const vitestConfig = {
+  test: {
+    globals: true,
+    environment: "jsdom",
+  },
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,4 +29,5 @@ export default defineConfig({
       "@": resolve(__dirname, "src"),
     },
   },
+  ...vitestConfig,
 });
