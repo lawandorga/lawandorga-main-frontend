@@ -17,7 +17,7 @@ export function useLink(
 ) {
   const client = useClient();
 
-  const link = ref<UploadLink | null>(null);
+  const link = ref<UploadLink>();
   const loading = ref(false);
 
   const request = client.get<UploadLink>(`api/uploads/query/{}/`, selectedId);
@@ -25,7 +25,8 @@ export function useLink(
   const linkQuery = useQuery(request, link);
 
   const query = () => {
-    if (link.value && selectedId.value !== link.value.uuid) link.value = null;
+    if (link.value && selectedId.value !== link.value.uuid)
+      link.value = undefined;
     if (selectedType.value === "UPLOAD" && selectedId.value) {
       loading.value = true;
       linkQuery().then(() => {
@@ -34,9 +35,14 @@ export function useLink(
     }
   };
 
+  const reset = () => {
+    link.value = undefined;
+  };
+
   return {
     query,
     link,
     loading,
+    reset,
   };
 }

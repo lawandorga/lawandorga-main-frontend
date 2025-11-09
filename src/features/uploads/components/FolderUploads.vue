@@ -4,17 +4,19 @@ import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import { Ref, ref, toRefs, watch } from "vue";
 import useClient from "@/api/client";
-import UploadsDisableLink from "@/features/uploads/actions/DisableUpdateLink.vue";
+import UploadsDisableLink from "@/features/uploads/actions/DisableUploadLink.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
 import DownloadUploadedFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
 import DeleteUploadedFile from "@/features/uploads/actions/DeleteUploadedFile.vue";
 import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
 import { useLink } from "../api/useLink";
+import DeleteUploadLink from "../actions/DeleteUploadLink.vue";
 
 const props = defineProps<{
   selectedId: number | string | null;
   selectedType: string;
   folderUuid: string;
+  query: () => void;
 }>();
 const { selectedId, selectedType } = toRefs(props);
 
@@ -33,19 +35,24 @@ watch([selectedId, selectedType], () => {
   selectedFile.value = null;
 });
 
-const { link, query, loading } = useLink(selectedId, selectedType);
+const {
+  link,
+  query: queryLink,
+  loading,
+  reset,
+} = useLink(selectedId, selectedType);
 
 watch(
   selectedId,
   () => {
-    query();
+    queryLink();
   },
   { immediate: true },
 );
 </script>
 
 <template>
-  <div v-if="link">
+  <div v-if="link && selectedType === 'UPLOAD'">
     <BoxHeadingStats
       :title="link.name"
       :show="selectedId === link.uuid && selectedType === 'UPLOAD'"
@@ -59,6 +66,12 @@ watch(
         <UploadsDisableLink
           v-if="!link.disabled"
           :link-uuid="link.uuid"
+          :query="queryLink"
+        />
+        <DeleteUploadLink
+          v-else
+          :link-uuid="link.uuid"
+          :reset="reset"
           :query="query"
         />
       </template>
@@ -92,7 +105,7 @@ watch(
             <DeleteUploadedFile
               :file-uuid="file.uuid"
               :name="file.name"
-              :query="query"
+              :query="queryLink"
             ></DeleteUploadedFile>
           </template>
         </TableGenerator>
