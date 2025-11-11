@@ -3,13 +3,16 @@ import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FilesDownloadFile from "@/features/files/actions/DownloadFile.vue";
 import { CircleLoader } from "lorga-ui";
 import { formatDate } from "@/utils/date";
-import { toRefs } from "vue";
+import { toRefs, watch } from "vue";
 import FilesDeleteFile from "@/features/files/actions/DeleteFile.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
 import useClient from "@/api/client";
 import { useFile } from "../api/useFile";
+import { Content } from "@/features/folders/api/useFolder";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps<{
+  folderContent: Content[];
   selectedId: string | number | null;
   selectedType: string;
   query: () => void;
@@ -22,6 +25,30 @@ const downloadFile = (id: number | string) => {
 };
 
 const { file, loading } = useFile(selectedId, selectedType);
+
+const route = useRoute();
+const router = useRouter();
+
+watch(
+  [selectedId, selectedType],
+  () => {
+    if (selectedType.value === "FILE" && !selectedId.value) {
+      const found = props.folderContent.find((c) => c.repository === "FILE");
+      if (found) {
+        router.push({
+          name: "folders-detail",
+          params: { uuid: route.params.uuid },
+          query: {
+            ...router.currentRoute.value.query,
+            selectedId: found.uuid,
+            selectedType: "FILE",
+          },
+        });
+      }
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>

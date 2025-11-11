@@ -155,6 +155,7 @@ const getNumberOfUnreadMails = () => {
         />
 
         <FolderFile
+          :folder-content="folder.content"
           :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
