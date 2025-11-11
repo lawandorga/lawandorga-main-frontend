@@ -64,14 +64,7 @@ const updateGrouping = (value: boolean) => {
   userStore.updateSetting("recordGrouping", value);
 };
 
-// mails
-const { mailQuery, mails } = useMailImports(folderUuid);
-
-const getNumberOfUnreadMails = () => {
-  const count = mails.value?.filter((mail) => !mail.is_read).length;
-  if (!count) return "";
-  return count.toString();
-};
+const { mailQuery, mails, numberOfUnreadMails } = useMailImports(folderUuid);
 </script>
 
 <template>
@@ -121,7 +114,7 @@ const getNumberOfUnreadMails = () => {
           :grouping="grouping"
           :selected-id="selectedId"
           :selected-type="selectedType"
-          :number-of-unread-mails="getNumberOfUnreadMails()"
+          :number-of-unread-mails="numberOfUnreadMails"
           @selected="select($event.id, $event.type)"
           @grouping="updateGrouping($event)"
         />

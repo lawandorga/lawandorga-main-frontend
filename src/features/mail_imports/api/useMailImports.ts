@@ -1,6 +1,6 @@
 import useClient from "@/api/client";
 import useGet from "@/composables/useGet";
-import { Ref, ref } from "vue";
+import { computed, Ref, ref } from "vue";
 
 export type MailAttachment = {
   name: string;
@@ -29,8 +29,15 @@ export function useMailImports(folderUuid: Ref<string>) {
   );
   const mailQuery = useGet(mailRequest, mails);
 
+  const numberOfUnreadMails = computed(() => {
+    const count = mails.value?.filter((mail) => !mail.is_read).length;
+    if (!count) return "";
+    return count.toString();
+  });
+
   return {
     mailQuery,
     mails,
+    numberOfUnreadMails,
   };
 }
