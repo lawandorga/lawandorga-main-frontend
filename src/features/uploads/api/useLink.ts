@@ -35,14 +35,9 @@ export function useLink(
     }
   };
 
-  const reset = () => {
-    link.value = undefined;
-  };
-
   return {
     query,
     link,
     loading,
-    reset,
   };
 }

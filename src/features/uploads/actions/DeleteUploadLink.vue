@@ -5,26 +5,24 @@ import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps<{
   linkUuid: string;
-  reset: () => void;
   query: () => void;
 }>();
 
 const router = useRouter();
 const route = useRoute();
 
-const queryRedirect = () => {
+const queryAndRedirect = () => {
   props.query();
-  props.reset();
   router.push({
     name: "folders-detail",
     params: { uuid: route.params.uuid },
     query: {
-      selectedType: "FOLDER",
+      selectedType: "UPLOAD",
     },
   });
 };
 
-const { commandModalOpen, commandRequest } = useCmd(queryRedirect);
+const { commandModalOpen, commandRequest } = useCmd(queryAndRedirect);
 </script>
 
 <template>

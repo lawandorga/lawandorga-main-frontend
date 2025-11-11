@@ -14,6 +14,8 @@ import DownloadPdf from "../actions/DownloadPdf.vue";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
 import CollabEditTemplate from "../actions/EditTemplate.vue";
 import CollabRemoveTemplate from "../actions/RemoveTemplate.vue";
+import { useRoute, useRouter } from "vue-router";
+import { Content } from "@/features/folders/api/useFolder";
 
 export interface History {
   user: string;
@@ -32,11 +34,36 @@ interface Collab {
 }
 
 const props = defineProps<{
+  folderContent: Content[];
   selectedId: string | number | null;
   selectedType: string;
   query: () => void;
 }>();
 const { selectedId, selectedType, query } = toRefs(props);
+
+const router = useRouter();
+const route = useRoute();
+
+watch(
+  [selectedId, selectedType],
+  () => {
+    if (selectedType.value === "COLLAB" && !selectedId.value) {
+      const found = props.folderContent.find((c) => c.repository === "COLLAB");
+      if (found) {
+        router.push({
+          name: "folders-detail",
+          params: { uuid: route.params.uuid },
+          query: {
+            ...router.currentRoute.value.query,
+            selectedId: found.uuid,
+            selectedType: "COLLAB",
+          },
+        });
+      }
+    }
+  },
+  { immediate: true },
+);
 
 const client = useClient();
 const request = client.get("api/collab/query/{}/", selectedId);

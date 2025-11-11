@@ -4,14 +4,14 @@ import { computed, ref, watch } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import FolderMessages from "@/features/messages/components/FolderMessages.vue";
 import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
 import FolderFile from "@/features/files/components/FolderFile.vue";
 import FolderAccess from "@/features/folders/components/FolderAccess.vue";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
-import FolderUploads from "@/features/uploads/components/FolderUploads.vue";
+import FolderUploadLinks from "@/features/uploads/components/FolderUploadLinks.vue";
 import FolderNavigationContent from "@/features/folders/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/features/folders/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/features/folders/components/FolderSelf.vue";
@@ -24,30 +24,31 @@ import { useMailImports } from "@/features/mail_imports/api/useMailImports";
 import { useFolder } from "../api/useFolder";
 
 const route = useRoute();
+const router = useRouter();
 const folderUuid = computed(() => route.params.uuid as string);
 
 const { folder, query, record, userAccess, groupAccess } =
   useFolder(folderUuid);
 
-// selected
-const id: string | null = (route.query.selectedId as string) || null;
-const type: string = (route.query.selectedType as string) || "FOLDER";
-const selectedId = ref<number | string | null>(id);
-const selectedType = ref<string>(type);
-const select = (id: number | string | null, type: string) => {
-  selectedType.value = type;
-  selectedId.value = id;
-  if (id === null && type === "RECORD") {
-    //special case select first record
-    const first = folder.value?.content.filter(
-      (i) => i.repository === "RECORD",
-    )[0];
-    if (first) {
-      selectedId.value = first.uuid;
-      route.query.selectedId = selectedId.value;
-    }
-  }
+const select = async (id: number | string | null, type: string) => {
+  await router.push({
+    name: "folders-detail",
+    params: { uuid: folderUuid.value },
+    query: {
+      ...route.query,
+      selectedId: id,
+      selectedType: type,
+    },
+  });
 };
+
+const selectedType = computed(() => {
+  return (route.query.selectedType as string) || "FOLDER";
+});
+
+const selectedId = computed(() => {
+  return route.query.selectedId as string | null;
+});
 
 // user settings
 const userStore = useUserStore();
@@ -128,6 +129,7 @@ const getNumberOfUnreadMails = () => {
 
       <div class="col-span-12 lg:col-span-8">
         <FolderDataSheet
+          :folder-content="folder.content"
           :query="query"
           :selected-id="selectedId"
           :selected-type="selectedType"
@@ -173,7 +175,8 @@ const getNumberOfUnreadMails = () => {
           :query="query"
         />
 
-        <FolderUploads
+        <FolderUploadLinks
+          :folder-content="folder.content"
           :selected-id="selectedId"
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"
@@ -194,6 +197,7 @@ const getNumberOfUnreadMails = () => {
         />
 
         <FolderCollab
+          :folder-content="folder.content"
           :selected-id="selectedId"
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"

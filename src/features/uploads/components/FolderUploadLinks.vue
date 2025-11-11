@@ -11,8 +11,11 @@ import DeleteUploadedFile from "@/features/uploads/actions/DeleteUploadedFile.vu
 import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
 import { useLink } from "../api/useLink";
 import DeleteUploadLink from "../actions/DeleteUploadLink.vue";
+import { useRoute, useRouter } from "vue-router";
+import { Content } from "@/features/folders/api/useFolder";
 
 const props = defineProps<{
+  folderContent: Content[];
   selectedId: number | string | null;
   selectedType: string;
   folderUuid: string;
@@ -21,6 +24,30 @@ const props = defineProps<{
 const { selectedId, selectedType } = toRefs(props);
 
 const client = useClient();
+
+const router = useRouter();
+const route = useRoute();
+
+watch(
+  [selectedId, selectedType],
+  () => {
+    if (selectedType.value === "UPLOAD" && !selectedId.value) {
+      const found = props.folderContent.find((c) => c.repository === "UPLOAD");
+      if (found) {
+        router.push({
+          name: "folders-detail",
+          params: { uuid: route.params.uuid },
+          query: {
+            ...router.currentRoute.value.query,
+            selectedId: found.uuid,
+            selectedType: "UPLOAD",
+          },
+        });
+      }
+    }
+  },
+  { immediate: true },
+);
 
 const selectedFile = ref<string | null>(null);
 const fileDownload = (uuid: string | number) => {
@@ -35,12 +62,7 @@ watch([selectedId, selectedType], () => {
   selectedFile.value = null;
 });
 
-const {
-  link,
-  query: queryLink,
-  loading,
-  reset,
-} = useLink(selectedId, selectedType);
+const { link, query: queryLink, loading } = useLink(selectedId, selectedType);
 
 watch(
   selectedId,
@@ -68,12 +90,7 @@ watch(
           :link-uuid="link.uuid"
           :query="queryLink"
         />
-        <DeleteUploadLink
-          v-else
-          :link-uuid="link.uuid"
-          :reset="reset"
-          :query="query"
-        />
+        <DeleteUploadLink v-else :link-uuid="link.uuid" :query="query" />
       </template>
       <div>
         <p v-if="!link.disabled && !link.files.length">
