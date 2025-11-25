@@ -1,7 +1,6 @@
 ### Short Description
 
 <!-- Describe this PR in one or two sentences. -->
-<!-- Make sure to correctly set PR labels if necessary: `Native`/`Web` for native/web only PRs and `maintenance` for non-user-facing changes. -->
 
 ### Proposed Changes
 
@@ -24,15 +23,4 @@
 <!-- List all issues which should be closed when this PR is merged. -->
 
 Fixes: #
-
----
-
-<!--
-DOR:
-- [Release notes](https://github.com/digitalfabrik/integreat-app/blob/main/docs/contributing.md#release-notes) have been added for user visible changes
-- Linting: `yarn lint`
-- Typescript: `yarn ts:check`
-- Prettier: `yarn prettier`
-- Unit tests: `yarn test`
--->
 
