@@ -143,41 +143,37 @@ defineExpose({
         </div>
       </Dialog>
     </TransitionRoot>
-    <FilesUploadFile
-      ref="filesUploadFile"
-      class="hidden"
-      :query="query"
-      :folder-uuid="folderUuid"
-    />
-    <FilesUploadMultipleFiles
-      ref="filesUploadMultipleFiles"
-      class="hidden"
-      :query="query"
-      :folder-uuid="folderUuid"
-    />
-    <QuestionnairesPublishQuestionnaire
-      ref="questionnairesPublishQuestionnaire"
-      class="hidden"
-      :folder-uuid="folderUuid"
-      :query="query"
-    />
-    <CreateDataSheet
-      ref="createDataSheet"
-      class="hidden"
-      :folder-uuid="folderUuid"
-      :query="query"
-    />
-    <UploadsCreateLink
-      ref="uploadsCreateLink"
-      class="hidden"
-      :folder-uuid="folderUuid"
-      :query="query"
-    />
-    <CollabCreate
-      ref="collabCreate"
-      class="hidden"
-      :folder-uuid="folderUuid"
-      :query="query"
-    />
+    <div class="hidden">
+      <FilesUploadFile
+        ref="filesUploadFile"
+        :query="query"
+        :folder-uuid="folderUuid"
+      />
+      <FilesUploadMultipleFiles
+        ref="filesUploadMultipleFiles"
+        :query="query"
+        :folder-uuid="folderUuid"
+      />
+      <QuestionnairesPublishQuestionnaire
+        ref="questionnairesPublishQuestionnaire"
+        :folder-uuid="folderUuid"
+        :query="query"
+      />
+      <CreateDataSheet
+        ref="createDataSheet"
+        :folder-uuid="folderUuid"
+        :query="query"
+      />
+      <UploadsCreateLink
+        ref="uploadsCreateLink"
+        :folder-uuid="folderUuid"
+        :query="query"
+      />
+      <CollabCreate
+        ref="collabCreate"
+        :folder-uuid="folderUuid"
+        :query="query"
+      />
+    </div>
   </ButtonNormal>
 </template>
