@@ -80,7 +80,7 @@ export function handleFileTooBigError(
 
   if (error.response && error.response.status === 413) {
     const newError: types.ICommandError = {
-      title: "The file is too big",
+      title: "The file is too big. Maximum allowed size is 100 MB.",
       paramErrors: {},
       generalErrors: [],
     };

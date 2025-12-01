@@ -6,6 +6,9 @@ import { inject, InjectionKey, provide, Ref, unref } from "vue";
 
 const clientKey = Symbol() as InjectionKey<Client>;
 
+const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
+const FILE_TOO_BIG_ERROR = "FILE_TOO_BIG";
+
 type CallerInstance = AxiosInstance;
 type UrlParamType =
   | string
@@ -113,6 +116,11 @@ class Client {
       } else if (v === null) {
         v = "||NULL||";
       }
+      if (v instanceof File) {
+        if (v.size > MAX_FILE_SIZE) {
+          throw new Error(FILE_TOO_BIG_ERROR);
+        }
+      }
       formData.append(key, v);
     }
     return formData;
@@ -131,18 +139,22 @@ class Client {
     ...params: UrlParamType[]
   ): (data?: D) => Promise<void> {
     return (data?: D) => {
-      return this.caller
-        .post(
-          this.buildUrl(
-            `${url}?action=${this.getAction(data)}`,
-            data,
-            ...params,
-          ),
-          this._data(data),
-        )
-        .then(() => {
-          // ignore
-        });
+      const _url = this.buildUrl(
+        `${url}?action=${this.getAction(data)}`,
+        data,
+        ...params,
+      );
+      let _data: FormData;
+      try {
+        _data = this._data(data);
+      } catch (e: unknown) {
+        if (e instanceof Error && e.message.includes(FILE_TOO_BIG_ERROR))
+          return Promise.reject({ response: { status: 413 } });
+        return Promise.reject(e);
+      }
+      return this.caller.post(_url, _data).then(() => {
+        // ignore
+      });
     };
   }
 
