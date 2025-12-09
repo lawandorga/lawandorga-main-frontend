@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { Bars3CenterLeftIcon } from "@heroicons/vue/24/outline";
-import useNavigationItems from "@/composables/useNavigationItems";
+import useNavigationItems, {
+  NavigationItem,
+} from "@/composables/useNavigationItems";
 import { useUserStore } from "@/store/user";
 import { ref, watch } from "vue";
+import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import LogoWhite from "./LogoWhite.vue";
 import { CircleLoader } from "lorga-ui";
 import { storeToRefs } from "pinia";
@@ -11,6 +14,8 @@ import RedBadge from "./RedBadge.vue";
 const { navigationItems } = useNavigationItems();
 const userStore = useUserStore();
 const { loaded } = storeToRefs(userStore);
+const route = useRoute();
+const router = useRouter();
 
 const expanded = ref(userStore.getSetting("navigationExpanded", true));
 
@@ -22,6 +27,21 @@ const expandClicked = () => {
   expanded.value = !expanded.value;
   userStore.updateSetting("navigationExpanded", expanded.value);
   return undefined;
+};
+
+const resolveRouteToPath = (to: string | RouteLocationRaw) => {
+  if (typeof to === "string") return to;
+  return router.resolve(to).path;
+};
+
+const isNavigationItemActive = (item: NavigationItem): boolean => {
+  if (item.is !== "router-link" || !item.attrs?.to) {
+    return false;
+  }
+
+  const itemPath = resolveRouteToPath(item.attrs.to);
+  const currentPath = route.path;
+  return currentPath.startsWith(itemPath);
 };
 </script>
 
@@ -109,9 +129,10 @@ const expandClicked = () => {
                 :is="item.is"
                 v-else
                 v-bind="item.attrs"
-                active-class="text-gray-700 bg-gray-100! hover:bg-gray-100"
                 class="relative flex items-center justify-between py-2 pl-2 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
                 :class="{
+                  'text-gray-700 bg-gray-100! hover:bg-gray-100':
+                    isNavigationItemActive(item),
                   'pb-5.5!': !expanded && item.is === 'a',
                   'w-10 pr-2 mx-auto': !expanded,
                   'pr-3': expanded,

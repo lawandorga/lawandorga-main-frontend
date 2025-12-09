@@ -16,7 +16,7 @@ import {
 import { useUserStore } from "@/store/user";
 import { RouteLocationRaw } from "vue-router";
 
-type NavigationItem = {
+export type NavigationItem = {
   label?: string;
   icon?: Component;
   attrs?: {
