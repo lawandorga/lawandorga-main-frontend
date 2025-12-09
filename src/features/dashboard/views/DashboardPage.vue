@@ -46,7 +46,7 @@ const { members } = useMembers();
         <Squares2X2Icon class="w-6 h-6" />
       </BreadcrumbsBar>
       <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
-      <div class="bg-white p-6 rounded shadow">
+      <div class="p-6 bg-white rounded shadow">
         <p>Dear Law&amp;Orga user,</p>
         <br />
         <p>
@@ -55,13 +55,11 @@ const { members } = useMembers();
           easier. Therefore we would ask you to fill out the following survey to
           learn a little more about your habits using Law&amp;Orga.
         </p>
-        <div class="py-4">
-          <div class="flex justify-center">
-            <img width="150" src="../../../assets/qrcodelawandorga.png" />
-          </div>
-          <p class="text-center py-4">or Link:</p>
+        <div class="flex flex-col items-center py-4">
+          <img width="150" src="../../../assets/qrcodelawandorga.png" />
+          <p class="py-4">or Link:</p>
           <a
-            class="font-medium text-formcolor flex justify-center"
+            class="font-medium text-formcolor"
             href="https://studentische-umfragen.uni-hamburg.de/index.php/711644?lang=en"
             target="_blank"
           >
