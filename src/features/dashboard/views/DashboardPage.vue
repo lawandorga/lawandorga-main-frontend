@@ -46,6 +46,34 @@ const { members } = useMembers();
         <Squares2X2Icon class="w-6 h-6" />
       </BreadcrumbsBar>
       <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
+      <div class="p-6 bg-white rounded shadow">
+        <p>Dear Law&amp;Orga user,</p>
+        <br />
+        <p>
+          thank you for the valuable work you do! We highly appreciate the
+          support you give in your spare time and we would like to make it
+          easier. Therefore we would ask you to fill out the following survey to
+          learn a little more about your habits using Law&amp;Orga.
+        </p>
+        <div class="flex flex-col items-center py-4">
+          <img width="150" src="../../../assets/qrcodelawandorga.png" />
+          <p class="py-4">or Link:</p>
+          <a
+            class="font-medium text-formcolor"
+            href="https://studentische-umfragen.uni-hamburg.de/index.php/711644?lang=en"
+            target="_blank"
+          >
+            https://studentische-umfragen.uni-hamburg.de/index.php/711644?lang=en
+          </a>
+        </div>
+        <p>Thank you so much and have a great end of the year!</p>
+        <p>
+          <br />
+          The developers of Law&amp;Orga,
+          <br />
+          Daniel, Leandra and Johannes
+        </p>
+      </div>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <OrgNotes />
         <div v-if="records?.length">
