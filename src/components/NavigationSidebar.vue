@@ -29,9 +29,9 @@ const expandClicked = () => {
   return undefined;
 };
 
-const resolveRouteToPath = (to: string | RouteLocationRaw) => {
-  if (typeof to === "string") return to;
-  return router.resolve(to).path;
+const resolveRouteToPath = (route: string | RouteLocationRaw) => {
+  if (typeof route === "string") return route;
+  return router.resolve(route).path;
 };
 
 const isNavigationItemActive = (item: NavigationItem): boolean => {
