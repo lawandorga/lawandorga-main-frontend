@@ -63,7 +63,8 @@ const updateFields = computed<types.FormField[]>(() => {
   if (
     fieldKind.value.includes("State") ||
     fieldKind.value.includes("Select") ||
-    fieldKind.value.includes("Multiple")
+    fieldKind.value.includes("Multiple") ||
+    fieldKind.value.includes("Statistic")
   ) {
     fields.push({
       label: "Options",
