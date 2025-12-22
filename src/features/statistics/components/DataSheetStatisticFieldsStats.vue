@@ -43,11 +43,11 @@ const charts = computed(() => {
           :title="c.chart"
           class="relative col-span-12 lg:col-span-6"
         >
-          <div class="absolute z-20 w-32 top-3 right-5">
-            <FormSelect v-model="year" :options="formYears" label="" required />
-          </div>
           <CircleLoader v-if="stats === undefined" />
           <PieChart :chart-data="c.data" />
+          <div class="absolute w-32 top-3 right-5">
+            <FormSelect v-model="year" :options="formYears" label="" required />
+          </div>
         </StatisticChartWrapper>
       </template>
     </div>
