@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import StatisticChartWrapper from "@/features/statistics/components/ChartWrapper.vue";
 import { ref, computed } from "vue";
-import { BarChart, PieChart } from "vue-chart-3";
+import { PieChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 import getColors from "@/utils/getColors";
 import { CircleLoader, FormSelect } from "lorga-ui";
