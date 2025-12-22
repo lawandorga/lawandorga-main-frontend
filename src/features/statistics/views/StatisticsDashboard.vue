@@ -26,7 +26,10 @@ import DataSheetStatisticFieldsStats from "../components/DataSheetStatisticField
   </div>
   <div class="grid grid-cols-12 gap-4 mt-6">
     <DataSheetStatisticFieldsStats />
-    <StatisticChartWrapper title="Created Records" class="col-span-12">
+    <StatisticChartWrapper
+      title="Created Records"
+      class="col-span-12 bg-gray-100!"
+    >
       <CreatedRecords />
     </StatisticChartWrapper>
     <StatisticChartWrapper
