@@ -1,6 +1,5 @@
 import { computed, Ref, ref } from "vue";
 import { useFormYears } from "../composables/useFormYears";
-import useGet2 from "@/composables/useGet2";
 import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
 
