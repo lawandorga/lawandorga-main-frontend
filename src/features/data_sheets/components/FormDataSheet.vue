@@ -188,9 +188,8 @@ function handleError(field: SheetField, error: types.ICommandError) {
         </p>
       </div>
       <div class="text-sm text-green-800 print:hidden">
-        Green fields are statistic fields that are used by Law&Orga internally
-        to help us and you. It is in no way required to fill out these fields.
-        But it would help us a lot.
+        Green fields are statistic fields that will automatically show up in the
+        Statistics Dashboard.
       </div>
     </div>
   </form>
