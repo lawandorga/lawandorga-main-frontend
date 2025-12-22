@@ -34,7 +34,7 @@ const charts = computed(() => {
 
 <template>
   <StatisticChartWrapper
-    title="Statistic Field Stats"
+    title="Data Sheet Statistic Field Stats"
     class="col-span-12 bg-gray-100!"
   >
     <div class="grid grid-cols-12 col-span-12 gap-4">

@@ -3,11 +3,6 @@ export interface RecordState {
   amount: number;
 }
 
-export interface RecordClientValueCount {
-  value: string;
-  count: number;
-}
-
 export interface TagCount {
   tag: string;
   count: number;

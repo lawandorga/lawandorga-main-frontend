@@ -1,5 +1,4 @@
 import {
-  RecordClientValueCount,
   RecordState,
   RecordTagStats,
   UserAction,
@@ -17,34 +16,6 @@ class StatisticService {
   getRecordStates() {
     return axios
       .get<RecordState[]>("statistics/individual/record_states/")
-      .then((response) => response.data);
-  }
-
-  getRecordClientSex() {
-    return axios
-      .get<RecordClientValueCount[]>("statistics/individual/record_client_sex/")
-      .then((response) => response.data);
-  }
-
-  getRecordClientNationality() {
-    return axios
-      .get<
-        RecordClientValueCount[]
-      >("statistics/individual/record_client_nationality/")
-      .then((response) => response.data);
-  }
-
-  getRecordClientState() {
-    return axios
-      .get<
-        RecordClientValueCount[]
-      >("statistics/individual/record_client_state/")
-      .then((response) => response.data);
-  }
-
-  getRecordClientAge() {
-    return axios
-      .get<RecordClientValueCount[]>("statistics/individual/record_client_age/")
       .then((response) => response.data);
   }
 
