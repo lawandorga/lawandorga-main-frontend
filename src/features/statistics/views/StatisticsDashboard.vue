@@ -11,6 +11,7 @@ import StatisticClientState from "@/features/statistics/components/ClientState.v
 import StatisticActiveUsers from "@/features/statistics/components/ActiveUsers.vue";
 import StatisticRecordsCreatedAndClosed from "@/features/statistics/components/RecordsCreatedAndClosed.vue";
 import CreatedRecords from "../components/CreatedRecords.vue";
+import DataSheetStatisticFieldsStats from "../components/DataSheetStatisticFieldsStats.vue";
 </script>
 
 <template>
@@ -24,6 +25,7 @@ import CreatedRecords from "../components/CreatedRecords.vue";
     </BreadcrumbsBar>
   </div>
   <div class="grid grid-cols-12 gap-4 mt-6">
+    <DataSheetStatisticFieldsStats />
     <StatisticChartWrapper title="Created Records" class="col-span-12">
       <CreatedRecords />
     </StatisticChartWrapper>
