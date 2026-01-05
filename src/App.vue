@@ -91,8 +91,8 @@ overwrite(
 overwrite("button.outline.size", "rounded p-2 font-semibold");
 
 if (!getCookie("csrftoken")) {
-  const { pathname, search, hash } = window.location;
-  const redirectEncoded = encodeURIComponent(pathname + search + hash);
+  const redirect = window.location.href;
+  const redirectEncoded = encodeURIComponent(redirect);
   const backend = import.meta.env.VITE_AUTH_URL;
   const cookieSetLink = `${backend}/redirect/?next=${redirectEncoded}`;
   window.location.assign(cookieSetLink);
