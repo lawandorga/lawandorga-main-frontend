@@ -136,6 +136,11 @@ const passwordForgottenLink = `${
                 <ButtonNormal :href="getLoginUrl()">
                   To the login page
                 </ButtonNormal>
+                <p class="font-medium text-red-700">
+                  There will be minor maintenance work between 5.1.25 22:00 and
+                  6.1.25 12:00 German Time. Which can include some disruptions
+                  like being logged out automatically and having to login again.
+                </p>
                 <div class="pt-6 space-x-4 text-right">
                   <a
                     :href="getRegisterUrl()"
@@ -269,13 +274,13 @@ const passwordForgottenLink = `${
                   (item) => item.type === group.type,
                 )"
                 :key="sponsor.name"
-                class="block lg:max-w-68 p-3"
+                class="block p-3 lg:max-w-68"
               >
                 <figure>
                   <img
                     :src="sponsor.image"
                     :alt="sponsor.name"
-                    class="mx-auto w-auto max-h-20 rounded-md overflow-hidden border-2 border-gray-300 shadow"
+                    class="w-auto mx-auto overflow-hidden border-2 border-gray-300 rounded-md shadow max-h-20"
                     :class="[sponsor.class]"
                   />
                   <figcaption class="mt-2 text-sm text-center text-gray-500">
