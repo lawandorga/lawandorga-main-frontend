@@ -29,6 +29,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
         group_id: groupId,
         action: 'org/remove_member_from_group',
       }"
+      submit="Remove"
     >
       <slot>
         Are you sure you want to remove '{{ memberName }}' from this group?

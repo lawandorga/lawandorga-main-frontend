@@ -46,6 +46,7 @@ watch(commandModalOpen, (newValue) => {
         action: 'org/add_member_to_group',
         group_id: groupId,
       }"
+      submit="Add"
     />
   </ButtonNormal>
 </template>
