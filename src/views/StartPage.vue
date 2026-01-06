@@ -136,11 +136,6 @@ const passwordForgottenLink = `${
                 <ButtonNormal :href="getLoginUrl()">
                   To the login page
                 </ButtonNormal>
-                <p class="font-medium text-red-700">
-                  There will be minor maintenance work between 5.1.25 22:00 and
-                  6.1.25 12:00 German Time. Which can include some disruptions
-                  like being logged out automatically and having to login again.
-                </p>
                 <div class="pt-6 space-x-4 text-right">
                   <a
                     :href="getRegisterUrl()"

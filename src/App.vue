@@ -11,21 +11,8 @@
           :set-open="setMenuOpen"
         />
 
-        <div
-          v-if="false"
-          class="px-5 py-2 font-bold text-center text-orange-900 bg-orange-300"
-        >
-          Law&Orga will be updated today 16:00 - 19:00 (Berlin Time). During
-          this time, you will not be able to login and you will be logged out
-          automatically at 16:00.
-          <br />
-          Please let us know if you need to access Law&Orga during this time at
-          it@law-orga.de to reschedule.
-        </div>
-
         <NavigationDefault v-if="!userStore.isAuthenticated" />
 
-        <!-- Main Panel -->
         <main
           class="relative flex-1 px-6 py-6 overflow-x-hidden overflow-y-auto focus:outline-none print:p-0"
         >
