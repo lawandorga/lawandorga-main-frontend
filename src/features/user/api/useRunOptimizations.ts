@@ -10,33 +10,15 @@ export function useRunOptimizations() {
   const client = useClient();
 
   const apps: Apps = {
-    Groups: () =>
+    Encryption: () =>
       client
-        .post("api/command/")({ action: "org/optimize_groups" })
+        .post("api/command/")({ action: "encryption/optimize" })
         .catch((e) => {
           return Promise.reject(e);
         }),
     Records: () =>
       client
         .post("api/command/")({ action: "data_sheets/optimize" })
-        .catch((e) => {
-          return Promise.reject(e);
-        }),
-    Folders: () =>
-      client
-        .post("api/command/")({ action: "folders/optimize" })
-        .catch((e) => {
-          return Promise.reject(e);
-        }),
-    Messages: () =>
-      client
-        .post("api/command/")({ action: "messages/optimize" })
-        .catch((e) => {
-          return Promise.reject(e);
-        }),
-    Questionnaires: () =>
-      client
-        .post("api/command/")({ action: "questionnaires/optimize" })
         .catch((e) => {
           return Promise.reject(e);
         }),
