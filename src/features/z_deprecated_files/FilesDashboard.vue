@@ -13,6 +13,7 @@
       >
         <FolderOpenIcon class="w-6 h-6" />
         <template #buttons>
+          <MigrateFiles />
           <FilesHelp />
           <FilesPermissions />
         </template>
@@ -269,6 +270,7 @@ import FilesPermissions from "@/features/z_deprecated_files/FilesPermissions.vue
 import FilesHelp from "@/features/z_deprecated_files/FilesHelp.vue";
 import { useUserStore } from "@/store/user";
 import { useErrorHandling } from "@/api/errors";
+import MigrateFiles from "./MigrateFiles.vue";
 
 export default defineComponent({
   components: {
@@ -286,6 +288,7 @@ export default defineComponent({
     BoxLoader,
     ModalFree,
     FormGenerator,
+    MigrateFiles,
   },
   setup() {
     // general
