@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 interface LegalRequirementEvent {
@@ -23,9 +22,7 @@ export interface LegalRequirement {
 export function useLegalRequirements() {
   const legalRequirements = ref<LegalRequirement[] | null>(null);
 
-  const client = useClient();
-  const request = client.get("api/legal/legal_requirements/");
-  const query = useGet(request, legalRequirements);
+  const query = useGet2("api/legal/legal_requirements/", legalRequirements);
 
   return {
     legalRequirements,

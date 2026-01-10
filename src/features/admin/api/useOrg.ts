@@ -1,6 +1,5 @@
 import { ref } from "vue";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
+import useGet2 from "@/composables/useGet2";
 
 interface Org {
   id: number;
@@ -18,9 +17,7 @@ interface Org {
 export function useOrg() {
   const org = ref<Org>();
 
-  const client = useClient();
-  const request = client.get("/api/org/query/org/");
-  const query = useGet(request, org);
+  const query = useGet2("/api/org/query/org/", org);
 
   return {
     org,

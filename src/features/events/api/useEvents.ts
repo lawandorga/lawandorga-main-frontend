@@ -1,6 +1,5 @@
 import { ref } from "vue";
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 
 interface Rlc {
   id: number;
@@ -18,11 +17,8 @@ export interface Event {
 }
 
 export function useEvents() {
-  const client = useClient();
-  const request = client.get("api/events/");
-
   const events = ref<Event[] | null>(null);
-  const query = useGet(request, events);
+  const query = useGet2("api/events/", events);
 
   return {
     events,

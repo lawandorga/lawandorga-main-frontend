@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import useGet from "@/composables/useGet";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
 import ActionsUserUnlockSelf from "@/features/users/actions/UnlockSelf.vue";
-import useClient from "@/api/client";
 import TestKeys from "@/features/users/actions/TestKeys.vue";
 import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
+import useGet2 from "@/composables/useGet2";
 
 interface Key {
   id: number;
@@ -23,9 +22,7 @@ const userStore = useUserStore();
 
 const keys = ref<Key[]>();
 
-const client = useClient();
-const request = client.get("api/auth/keys/");
-const query = useGet(request, keys);
+const query = useGet2("api/auth/keys/", keys);
 </script>
 
 <template>

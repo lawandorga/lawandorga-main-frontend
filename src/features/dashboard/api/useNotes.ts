@@ -1,6 +1,5 @@
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
 import { ref } from "vue";
+import useGet2 from "@/composables/useGet2";
 
 export interface DashboardNote {
   id: number;
@@ -11,10 +10,9 @@ export interface DashboardNote {
 }
 
 export function useNotes() {
-  const client = useClient();
   const notes = ref<DashboardNote[] | null>(null);
 
-  const notesQuery = useGet(client.get("api/org/query/notes/"), notes);
+  const notesQuery = useGet2("api/org/query/notes/", notes);
 
   return {
     notesQuery,

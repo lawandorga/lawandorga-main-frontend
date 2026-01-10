@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 export interface LoginPage {
@@ -23,13 +22,9 @@ export interface RoadmapItem {
 }
 
 export function useLoginPage() {
-  const client = useClient();
-
   const page = ref<LoginPage | null>(null);
 
-  const request = client.get("api/internal/pages/index/");
-
-  useGet(request, page);
+  useGet2("api/internal/pages/index/", page);
 
   return {
     page,

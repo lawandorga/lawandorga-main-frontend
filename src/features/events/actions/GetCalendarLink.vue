@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { Ref, ref } from "vue";
-import useGet from "@/composables/useGet";
 import useCmd from "@/composables/useCmd";
-import useClient from "@/api/client";
+import useGet2 from "@/composables/useGet2";
 
 interface CalendarIcsInfo {
   id: number;
@@ -16,10 +15,7 @@ const modalOpen = ref(false);
 const calendarIcsInfo = ref(null) as Ref<CalendarIcsInfo | null>;
 const copyButtonState = ref(false);
 
-const client = useClient();
-const request = client.get("api/events/ics_url/");
-
-const query = useGet(request, calendarIcsInfo);
+const query = useGet2("api/events/ics_url/", calendarIcsInfo);
 
 const { commandRequest: resetRequest } = useCmd(query);
 

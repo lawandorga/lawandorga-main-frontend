@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { computed, ref } from "vue";
 
 export interface MailAddress {
@@ -29,12 +28,8 @@ export interface MailUser {
 }
 
 export function useGetGroupPage(uuid: string) {
-  const client = useClient();
-
-  const request = client.get(`api/mail/query/page/group/${uuid}/`);
-
   const page = ref<MailGroupPage>();
-  const query = useGet(request, page);
+  const query = useGet2(`api/mail/query/page/group/${uuid}/`, page);
 
   // available domains
   const availableDomains = computed<MailDomain[]>(() => {

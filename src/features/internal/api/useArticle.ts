@@ -1,6 +1,5 @@
 import { ref } from "vue";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
+import useGet2 from "@/composables/useGet2";
 
 export interface Article {
   id: number;
@@ -12,10 +11,8 @@ export interface Article {
 }
 
 export function useArticle(id: string) {
-  const client = useClient();
-  const request = client.get(`api/internal/pages/article/${id}/`);
   const article = ref<Article | null>(null);
-  useGet(request, article);
+  useGet2(`api/internal/pages/article/${id}/`, article);
 
   return {
     article,

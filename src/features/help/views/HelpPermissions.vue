@@ -3,13 +3,11 @@ import { ref } from "vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { LifebuoyIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
+import useGet2 from "@/composables/useGet2";
 
-const client = useClient();
-const request = client.get("/api/permissions/query/permissions/");
 const permissions = ref();
-useGet(request, permissions);
+
+useGet2("/api/permissions/query/permissions/", permissions);
 </script>
 
 <template>
@@ -30,7 +28,7 @@ useGet(request, permissions);
       :data="permissions"
     >
       <template #description="slotProps">
-        <div class="max-w-lg break-words whitespace-pre-line">
+        <div class="max-w-lg whitespace-pre-line wrap-break-word">
           {{ slotProps.description }}
         </div>
       </template>

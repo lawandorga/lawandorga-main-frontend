@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 export interface TomsPage {
@@ -8,11 +7,9 @@ export interface TomsPage {
 }
 
 export function useTomsPage() {
-  const client = useClient();
-  const request = client.get("api/internal/pages/toms/");
   const page = ref<TomsPage | null>(null);
 
-  useGet(request, page);
+  useGet2("api/internal/pages/toms/", page);
 
   return {
     page,

@@ -1,6 +1,5 @@
-import useClient from "@/api/client";
 import { ref } from "vue";
-import useGet from "./useGet";
+import useGet2 from "./useGet2";
 
 export interface Permission {
   id: number;
@@ -10,10 +9,8 @@ export interface Permission {
 }
 
 export function usePermissions() {
-  const client = useClient();
-  const request = client.get("/api/permissions/query/permissions/");
   const permissions = ref<Permission[]>();
-  useGet(request, permissions);
+  useGet2("/api/permissions/query/permissions/", permissions);
 
   return { permissions };
 }

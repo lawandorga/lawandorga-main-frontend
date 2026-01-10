@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import ChatCreateMatrixUser from "@/features/matrix_chat/actions/CreateMatrixUser.vue";
-import useClient from "@/api/client";
 import BoxLoader from "@/components/BoxLoader.vue";
-import useGet from "@/composables/useGet";
 import { useUserStore } from "@/store/user";
 import { CircleLoader } from "lorga-ui";
 import { ref } from "vue";
+import useGet2 from "@/composables/useGet2";
 
 interface ChatPage {
   matrix_user: null | { _group: string; matrix_id: string };
@@ -13,11 +12,9 @@ interface ChatPage {
 
 const userStore = useUserStore();
 
-const client = useClient();
-const request = client.get("api/auth/query/page/chat/");
 const page = ref<ChatPage>();
 
-const query = useGet(request, page);
+const query = useGet2("api/auth/query/page/chat/", page);
 </script>
 
 <template>

@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { ref } from "vue";
 
 export interface ImprintPage {
@@ -8,13 +7,9 @@ export interface ImprintPage {
 }
 
 export function useImprintPage() {
-  const client = useClient();
-
-  const request = client.get("api/internal/pages/imprint/");
-
   const article = ref<ImprintPage | null>(null);
 
-  useGet(request, article);
+  useGet2("api/internal/pages/imprint/", article);
 
   return {
     article,

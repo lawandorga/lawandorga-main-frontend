@@ -1,6 +1,5 @@
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
 import { computed, ref, Ref } from "vue";
+import useGet2 from "@/composables/useGet2";
 
 export interface OrgUserSmall {
   id: number;
@@ -19,9 +18,7 @@ export interface OrgUserSmall {
 export function useProfiles() {
   const profiles = ref(null) as Ref<OrgUserSmall[] | null>;
 
-  const client = useClient();
-  const request = client.get("api/auth/org_users/");
-  const query = useGet(request, profiles);
+  const query = useGet2("api/auth/org_users/", profiles);
 
   const formProfiles = computed(() => {
     if (!profiles.value) return [];

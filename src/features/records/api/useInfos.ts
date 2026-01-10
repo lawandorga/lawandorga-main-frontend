@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { computed, ref } from "vue";
 
 interface Deletion {
@@ -40,11 +39,8 @@ interface InfosData {
 }
 
 export function useInfos() {
-  const client = useClient();
-  const request = client.get("/api/records/query/infos/");
-
   const data = ref<InfosData>();
-  const query = useGet(request, data);
+  const query = useGet2("/api/records/query/infos/", data);
 
   const deletionRequests = computed<Deletion[]>(() => {
     if (!data.value) return [];

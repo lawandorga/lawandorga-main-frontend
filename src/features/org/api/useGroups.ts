@@ -1,6 +1,5 @@
 import { Ref, ref } from "vue";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
+import useGet2 from "@/composables/useGet2";
 
 interface Group {
   id: number;
@@ -15,10 +14,7 @@ interface Group {
 export function useGroups() {
   const groups = ref(null) as Ref<Group[] | null>;
 
-  const client = useClient();
-  const request = client.get("api/org/query/groups/");
-
-  const query = useGet(request, groups);
+  const query = useGet2("api/org/query/groups/", groups);
 
   return {
     query,

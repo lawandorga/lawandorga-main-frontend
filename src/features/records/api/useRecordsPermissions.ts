@@ -1,6 +1,5 @@
 import { ref } from "vue";
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 
 export interface HasPermission {
   id: number;
@@ -15,10 +14,7 @@ export interface HasPermission {
 export function useRecordsPermissions() {
   const permissions = ref<HasPermission[] | null>(null);
 
-  const request = useClient().get(
-    "api/permissions/query/has_permissions/record/",
-  );
-  useGet(request, permissions);
+  useGet2("api/permissions/query/has_permissions/record/", permissions);
 
   return {
     permissions,

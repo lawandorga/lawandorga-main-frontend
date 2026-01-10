@@ -54,14 +54,13 @@
 import { ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import { TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
 import ButtonLink from "@/components/ButtonLink.vue";
 import TemplateCreate from "@/features/questionnaires/actions/CreateTemplate.vue";
 import TemplateUpdate from "@/features/questionnaires/actions/UpdateTemplate.vue";
 import TemplateDelete from "@/features/questionnaires/actions/DeleteTemplate.vue";
-import useClient from "@/api/client";
+import useGet2 from "@/composables/useGet2";
 
 interface QuestionnaireTemplate {
   id: string;
@@ -71,6 +70,5 @@ interface QuestionnaireTemplate {
 
 const templates = ref<QuestionnaireTemplate>();
 
-const request = useClient().get("api/questionnaires/query/templates/");
-const query = useGet(request, templates);
+const query = useGet2("api/questionnaires/query/templates/", templates);
 </script>

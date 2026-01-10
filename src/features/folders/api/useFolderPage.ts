@@ -1,5 +1,4 @@
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import { computed, ref } from "vue";
 
 export interface TreeFolder {
@@ -61,10 +60,8 @@ export interface FolderPage {
 }
 
 export function useFolderPage() {
-  const client = useClient();
-  const request = client.get<FolderPage>("api/folders/query/");
   const page = ref<FolderPage>();
-  const query = useGet(request, page);
+  const query = useGet2("api/folders/query/", page);
 
   const availableGroups = computed(() => {
     if (!page.value) return [];
