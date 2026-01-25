@@ -4,7 +4,7 @@ import useNavigationItems, {
   NavigationItem,
 } from "@/composables/useNavigationItems";
 import { useUserStore } from "@/store/user";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import LogoWhite from "./LogoWhite.vue";
 import { CircleLoader } from "lorga-ui";
@@ -43,6 +43,13 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
   const currentPath = route.path;
   return currentPath.startsWith(itemPath);
 };
+
+// Compute initial from the last word of the user's name
+const lastNameInitial = computed(() => {
+  const fullName = userStore.user?.name || "";
+  const lastWord = fullName.split(" ").slice(-1)[0] || "";
+  return lastWord.charAt(0).toUpperCase();
+});
 </script>
 
 <template>
@@ -88,7 +95,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
         </div>
         <div
           v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white/20"
+          class="px-4 py-3 text-white border-b border-white/20 bg-lorgablue"
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
@@ -99,7 +106,16 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
+        <!-- Collapsed account initial field -->
+        <div
+          v-show="!expanded"
+          class="flex items-center justify-center h-14 border-b border-white/20 bg-lorgablue text-white font-bold text-lg"
+        >
+          {{ lastNameInitial }}
+        </div>
+
         <div class="flex flex-col justify-between bg-white grow">
+          <!-- Navigation items container with consistent spacing -->
           <nav
             class="flex-1 pb-2 bg-white"
             :class="{
