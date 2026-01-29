@@ -47,7 +47,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
 const lastNameInitial = computed(() => {
   const fullName = userStore.user?.name || "";
   const lastName = fullName.split(" ").slice(-1)[0] || "";
-  return lastWord.charAt(0).toUpperCase();
+  return lastName.charAt(0).toUpperCase();
 });
 </script>
 
@@ -73,7 +73,7 @@ const lastNameInitial = computed(() => {
         >
           <router-link
             :to="{ name: 'start' }"
-            class="flex items-center h-10 px-4 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
+            class="flex items-center h-10 px-2 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
           >
             <div class="-ml-2">
               <LogoWhite />
@@ -107,7 +107,7 @@ const lastNameInitial = computed(() => {
 
         <div
           v-show="!expanded"
-          class="flex items-center justify-center h-14 border-b border-white/20 bg-lorgablue text-white font-bold text-lg"
+          class="px-4 py-3 flex items-center justify-center border-b border-white/20 bg-lorgablue text-white font-bold text-lg"
         >
           {{ lastNameInitial }}
         </div>
@@ -118,7 +118,7 @@ const lastNameInitial = computed(() => {
             class="flex-1 pb-2 bg-white"
             :class="{
               'space-y-3 pt-3': !expanded,
-              'space-y-1 px-2 pt-2': expanded,
+              'space-y-1 px-2 pt-3': expanded,
             }"
           >
             <template v-for="item in navigationItems" :key="item.label">
