@@ -47,7 +47,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
 // Compute initial from the last word of the user's name
 const lastNameInitial = computed(() => {
   const fullName = userStore.user?.name || "";
-  const lastWord = fullName.split(" ").slice(-1)[0] || "";
+  const lastName = fullName.split(" ").slice(-1)[0] || "";
   return lastWord.charAt(0).toUpperCase();
 });
 </script>
