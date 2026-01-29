@@ -94,7 +94,7 @@ const lastNameInitial = computed(() => {
         </div>
         <div
           v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white/20 bg-lorgablue"
+          class="px-4 py-3 text-white border-b border-white/20 "
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
