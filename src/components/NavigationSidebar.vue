@@ -44,7 +44,6 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
   return currentPath.startsWith(itemPath);
 };
 
-// Compute initial from the last word of the user's name
 const lastNameInitial = computed(() => {
   const fullName = userStore.user?.name || "";
   const lastName = fullName.split(" ").slice(-1)[0] || "";
@@ -106,7 +105,6 @@ const lastNameInitial = computed(() => {
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
-        <!-- Collapsed account initial field -->
         <div
           v-show="!expanded"
           class="flex items-center justify-center h-14 border-b border-white/20 bg-lorgablue text-white font-bold text-lg"
@@ -115,7 +113,7 @@ const lastNameInitial = computed(() => {
         </div>
 
         <div class="flex flex-col justify-between bg-white grow">
-          <!-- Navigation items container with consistent spacing -->
+         
           <nav
             class="flex-1 pb-2 bg-white"
             :class="{
