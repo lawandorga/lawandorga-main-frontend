@@ -4,7 +4,7 @@ import useNavigationItems, {
   NavigationItem,
 } from "@/composables/useNavigationItems";
 import { useUserStore } from "@/store/user";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import LogoWhite from "./LogoWhite.vue";
 import { CircleLoader } from "lorga-ui";
@@ -43,6 +43,12 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
   const currentPath = route.path;
   return currentPath.startsWith(itemPath);
 };
+
+const lastNameInitial = computed(() => {
+  const fullName = userStore.user?.name || "";
+  const lastName = fullName.split(" ").slice(-1)[0] || "";
+  return lastName.charAt(0).toUpperCase();
+});
 </script>
 
 <template>
@@ -67,7 +73,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
         >
           <router-link
             :to="{ name: 'start' }"
-            class="flex items-center h-10 px-4 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
+            class="flex items-center h-10 px-2 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
           >
             <div class="-ml-2">
               <LogoWhite />
@@ -88,7 +94,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
         </div>
         <div
           v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white/20"
+          class="px-4 py-3 text-white border-b border-white/20 "
         >
           <div v-show="userStore.loaded">
             <div class="truncate">
@@ -99,12 +105,20 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
+        <div
+          v-show="!expanded"
+          class="px-4 py-3 flex items-center justify-center border-b border-white/20 bg-lorgablue text-white font-bold text-lg"
+        >
+          {{ lastNameInitial }}
+        </div>
+
         <div class="flex flex-col justify-between bg-white grow">
+         
           <nav
             class="flex-1 pb-2 bg-white"
             :class="{
               'space-y-3 pt-3': !expanded,
-              'space-y-1 px-2 pt-2': expanded,
+              'space-y-1 px-2 pt-3': expanded,
             }"
           >
             <template v-for="item in navigationItems" :key="item.label">
