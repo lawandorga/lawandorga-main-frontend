@@ -3,12 +3,7 @@ import { EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import CharacterCount from "@tiptap/extension-character-count";
-import {
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@tiptap/extension-table";
+import { TableKit } from "@tiptap/extension-table";
 import MenuBar from "./FormMenuBar.vue";
 import { toRefs } from "vue";
 
@@ -36,12 +31,11 @@ const editor = useEditor({
     CharacterCount.configure({
       limit: 10000,
     }),
-    Table.configure({
-      resizable: true,
+    TableKit.configure({
+      table: {
+        resizable: true,
+      },
     }),
-    TableRow,
-    TableCell,
-    TableHeader,
   ],
 });
 
