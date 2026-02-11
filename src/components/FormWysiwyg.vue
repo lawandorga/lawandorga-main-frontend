@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { EditorContent, useEditor } from "@tiptap/vue-3";
-import { StarterKit } from "@tiptap/starter-kit";
+import StarterKit from "@tiptap/starter-kit";
 import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
-import { Link } from "@tiptap/extension-link";
+import Link from "@tiptap/extension-link";
 import { FormHelptext, FormLabel } from "lorga-ui";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
 
