@@ -136,17 +136,17 @@ watch(newAssigneeId, () => {
     <div>
       <button class="w-full" @click="commandModalOpen = true">
         <div class="flex justify-between">
-          <h3 class="text-left mb-2 font-semibold text-formcolor">
+          <h3 class="mb-2 font-semibold text-left text-formcolor">
             {{ task.title }}
           </h3>
           <ChevronUpDownIcon
-            class="grow-0 shrink-0 w-6 h-6 rotate-45 relative"
+            class="relative w-6 h-6 rotate-45 grow-0 shrink-0"
           />
         </div>
       </button>
       <p
         v-if="task.page_url"
-        class="flex text-sm text-gray-700 break-words whitespace-pre-line"
+        class="flex text-sm text-gray-700 whitespace-pre-line wrap-break-word"
       >
         <FolderOpenIcon class="w-6 h-6 grow-0 shrink-0" />
         <a :href="task.page_url" class="ml-2 underline">
@@ -154,7 +154,7 @@ watch(newAssigneeId, () => {
         </a>
       </p>
       <p
-        class="text-sm mt-2 text-gray-700 break-words whitespace-pre-line font-semibold"
+        class="mt-2 text-sm font-semibold text-gray-700 whitespace-pre-line wrap-break-word"
       >
         {{ task.description }}
       </p>
@@ -162,7 +162,7 @@ watch(newAssigneeId, () => {
     <div class="flex pt-2 mt-4 border-t-2">
       <p
         v-if="task.deadline"
-        class="text-sm text-gray-500 font-semibold flex gap-1 items-center"
+        class="flex items-center gap-1 text-sm font-semibold text-gray-500"
         :class="{
           'text-red-500':
             task.deadline &&
@@ -178,7 +178,7 @@ watch(newAssigneeId, () => {
       </p>
       <div class="ml-auto">
         <a
-          class="block cursor-pointer font-semibold"
+          class="block font-semibold cursor-pointer"
           @click="task.is_done ? markAsUndone() : markAsDone()"
         >
           {{ task.is_done ? "Mark as not done" : "Mark as done" }}
@@ -290,7 +290,7 @@ watch(newAssigneeId, () => {
                 v-if="editingDescription"
                 v-model="newDescription"
                 rows="4"
-                class="w-full p-2 border text-gray-700 border-solid rounded"
+                class="w-full p-2 text-gray-700 border border-solid rounded"
               ></textarea>
               <span v-else class="text-gray-700">
                 {{ newDescription }}

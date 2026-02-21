@@ -27,7 +27,7 @@ const { notes, notesQuery } = useNotes();
         </h3>
         <!-- eslint-disable vue/no-v-html -->
         <p
-          class="text-sm prose-sm prose text-gray-700 break-words whitespace-pre-line"
+          class="text-sm prose-sm prose text-gray-700 whitespace-pre-line wrap-break-word"
           v-html="note.note"
         ></p>
         <!-- eslint-enable vue/no-v-html -->
