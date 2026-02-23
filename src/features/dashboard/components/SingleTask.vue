@@ -9,6 +9,7 @@ import {
 import { ButtonNormal } from "lorga-ui";
 import { formatDate } from "@/utils/date";
 import EditTask from "@/features/dashboard/actions/EditTask.vue";
+import DeleteTask from "../actions/DeleteTask.vue";
 
 const props = defineProps<{
   task: Task;
@@ -53,7 +54,8 @@ const markAsUndone = () => {
         <h3 class="mb-2 font-semibold text-left text-formcolor">
           {{ task.title }}
         </h3>
-        <EditTask :task="task" :query="query" />
+        <EditTask v-if="!task.is_done" :task="task" :query="query" />
+        <DeleteTask v-if="task.is_done" :task="task" :query="query" />
       </div>
       <p
         v-if="task.page_url"
