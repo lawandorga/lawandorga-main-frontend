@@ -20,13 +20,9 @@ import { computed } from "vue";
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
-import { useTaskStore } from "@/features/dashboard/api/useTasks";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-
-const createdTaskStore = useTaskStore();
-const { assignedTasksQuery, createdTasksQuery } = createdTaskStore;
 
 const { formProfiles } = useProfiles();
 
@@ -53,8 +49,5 @@ const taskFields = computed<types.FormField[]>(() => [
   },
 ]);
 
-const { commandModalOpen, commandRequest } = useCmd(
-  assignedTasksQuery,
-  createdTasksQuery,
-);
+const { commandModalOpen, commandRequest } = useCmd();
 </script>

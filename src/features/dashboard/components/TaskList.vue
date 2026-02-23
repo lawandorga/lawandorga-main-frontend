@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { Task, useTaskStore } from "../api/useTasks";
+import { Task, useTasks } from "../api/useTasks";
 import TabControls from "@/components/TabControls.vue";
 import { computed } from "vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
-const taskStore = useTaskStore();
-const { assignedTasks, createdTasks } = storeToRefs(taskStore);
+
+const { assignedTasks, createdTasks, assignedTasksQuery, createdTasksQuery } =
+  useTasks();
 
 const assignedOpenTasks = computed<Task[]>(
   () => assignedTasks.value?.filter((task: Task) => !task.is_done) ?? [],
@@ -63,6 +63,12 @@ const completedTasks = computed<Task[]>(() => {
               v-for="task in sortTasks(assignedOpenTasks)"
               :key="task.uuid"
               :task="task"
+              :query="
+                () => {
+                  assignedTasksQuery();
+                  createdTasksQuery();
+                }
+              "
             />
           </div>
           <div v-else class="col-span-3 pt-4 text-gray-500">
@@ -82,6 +88,12 @@ const completedTasks = computed<Task[]>(() => {
               v-for="task in sortTasks(createdOpenTasks)"
               :key="task.uuid"
               :task="task"
+              :query="
+                () => {
+                  assignedTasksQuery();
+                  createdTasksQuery();
+                }
+              "
             />
           </div>
           <div v-else class="col-span-3 pt-4 text-gray-500">
@@ -101,6 +113,12 @@ const completedTasks = computed<Task[]>(() => {
               v-for="task in completedTasks"
               :key="task.uuid"
               :task="task"
+              :query="
+                () => {
+                  assignedTasksQuery();
+                  createdTasksQuery();
+                }
+              "
             />
           </div>
           <div v-else class="col-span-3 pt-4 text-gray-500">
