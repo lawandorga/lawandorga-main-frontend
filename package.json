@@ -47,7 +47,7 @@
     "eslint-config-prettier": "==10.1.*",
     "eslint-plugin-prettier": "==5.5.*",
     "eslint-plugin-vue": "==10.5.*",
-    "jsdom": "==27.*",
+    "jsdom": "==28.*",
     "lodash": "==4.17.*",
     "lorga-ui": "^2.0.5",
     "pinia": "==3.0.*",
