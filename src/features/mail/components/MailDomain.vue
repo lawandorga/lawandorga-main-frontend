@@ -38,7 +38,9 @@ defineProps<{
           following records:
         </p>
         <table>
-          <caption>Required DNS-Record Settings</caption>
+          <caption>
+            Required DNS-Record Settings
+          </caption>
           <thead>
             <tr>
               <th>Type</th>
