@@ -23,7 +23,7 @@
     "@tiptap/extension-bullet-list": "==3.19.*",
     "@tiptap/extension-character-count": "==3.20.*",
     "@tiptap/extension-highlight": "==3.19.*",
-    "@tiptap/extension-link": "==3.19.*",
+    "@tiptap/extension-link": "==3.20.*",
     "@tiptap/extension-list-item": "==3.19.*",
     "@tiptap/extension-ordered-list": "==3.19.*",
     "@tiptap/extension-table": "==3.19.*",
