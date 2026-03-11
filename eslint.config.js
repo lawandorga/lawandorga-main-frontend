@@ -1,20 +1,13 @@
 import globals from "globals";
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import path from "path";
-import { fileURLToPath } from "url";
 import typescriptParser from "@typescript-eslint/parser";
+import typescriptPlugin from "@typescript-eslint/eslint-plugin";
 import vueParser from "vue-eslint-parser";
 import vuePlugin from "eslint-plugin-vue";
-
-const baseDir = path.dirname(fileURLToPath(import.meta.url));
-const eslintrc = new FlatCompat({
-  baseDirectory: baseDir,
-  resolvePluginsRelativeTo: baseDir,
-  recommendedConfig: js.configs.recommended,
-});
+import prettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default [
+  js.configs.recommended,
   {
     languageOptions: {
       ecmaVersion: 2023,
@@ -25,13 +18,15 @@ export default [
         parser: typescriptParser,
       },
     },
+    plugins: {
+      "@typescript-eslint": typescriptPlugin,
+    },
+    rules: {
+      ...typescriptPlugin.configs.recommended.rules,
+    },
   },
-  ...eslintrc.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-  ),
   ...vuePlugin.configs["flat/essential"],
+  prettierRecommended,
   {
     rules: {
       "no-unused-vars": "warn",
