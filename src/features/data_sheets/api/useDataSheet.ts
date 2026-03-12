@@ -18,6 +18,7 @@ export type SheetField = {
   kind: string;
   label: string;
   name: string;
+  is_required: boolean;
   options?: ({ name: string; id: number } | string)[];
   type: string;
 };
