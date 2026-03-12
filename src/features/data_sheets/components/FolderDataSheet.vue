@@ -72,6 +72,7 @@ const emptyRequiredFields = computed(() => {
 });
 
 const showNavigationWarning = ref(false);
+// eslint-disable-next-line no-unused-vars
 let resolveNavigationGuard: ((confirmed: boolean) => void) | null = null;
 
 const askToConfirmLeaving = (): Promise<boolean> =>
