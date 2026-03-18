@@ -1,14 +1,19 @@
 <script lang="ts" setup>
 import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
 import { formatDate } from "@/utils/date";
-import { toRefs, watch } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FormDataSheet from "./FormDataSheet.vue";
-import { CircleLoader } from "lorga-ui";
+import { ButtonNormal, CircleLoader, ModalFree } from "lorga-ui";
 import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
 import { useDataSheet } from "../api/useDataSheet";
 import { Content } from "@/features/folders/api/useFolder";
-import { useRoute, useRouter } from "vue-router";
+import {
+  onBeforeRouteLeave,
+  onBeforeRouteUpdate,
+  useRoute,
+  useRouter,
+} from "vue-router";
 
 const props = defineProps<{
   folderContent: Content[];
@@ -49,6 +54,61 @@ const allQuery = () => {
   query.value();
   recordsQuery();
 };
+
+const emptyRequiredFields = computed(() => {
+  const currentRecord = record.value;
+  if (!currentRecord) return [];
+
+  return currentRecord.fields.filter((field) => {
+    if (!field.is_required) return false;
+    const value = currentRecord.entries[field.uuid];
+    return (
+      value === undefined ||
+      value === null ||
+      value === "" ||
+      (Array.isArray(value) && value.length === 0)
+    );
+  });
+});
+
+const showNavigationWarning = ref(false);
+// eslint-disable-next-line no-unused-vars
+let resolveNavigationGuard: ((confirmed: boolean) => void) | null = null;
+
+const askToConfirmLeaving = (): Promise<boolean> =>
+  new Promise((resolve) => {
+    showNavigationWarning.value = true;
+    resolveNavigationGuard = resolve;
+  });
+
+const confirmLeaving = (confirmed: boolean) => {
+  resolveNavigationGuard?.(confirmed);
+  resolveNavigationGuard = null;
+  showNavigationWarning.value = false;
+};
+
+// Also handle modal closed via X or backdrop click
+watch(showNavigationWarning, (value) => {
+  if (!value) confirmLeaving(false);
+});
+
+onBeforeRouteUpdate(async (to, from) => {
+  const fromRecordId = from.query.selectedId;
+  const toRecordId = to.query.selectedId;
+  if (
+    fromRecordId &&
+    fromRecordId !== toRecordId &&
+    emptyRequiredFields.value.length > 0
+  ) {
+    return (await askToConfirmLeaving()) ? undefined : false;
+  }
+});
+
+onBeforeRouteLeave(async () => {
+  if (record.value && emptyRequiredFields.value.length > 0) {
+    return (await askToConfirmLeaving()) ? undefined : false;
+  }
+});
 </script>
 
 <template>
@@ -79,4 +139,23 @@ const allQuery = () => {
     </BoxHeadingStats>
   </template>
   <CircleLoader v-else-if="selectedType === 'RECORD' && selectedId !== null" />
+
+  <ModalFree v-model="showNavigationWarning" title="Required fields missing">
+    <p class="mb-3 text-sm text-gray-700">
+      The following fields are still empty:
+    </p>
+    <ul class="pl-5 mb-5 text-sm text-gray-900 list-disc">
+      <li v-for="field in emptyRequiredFields" :key="field.uuid">
+        {{ field.name }}
+      </li>
+    </ul>
+    <div class="flex items-center justify-end gap-3">
+      <ButtonNormal kind="primary" @click="confirmLeaving(false)">
+        Back to record
+      </ButtonNormal>
+      <ButtonNormal kind="delete" @click="confirmLeaving(true)">
+        Leave anyway
+      </ButtonNormal>
+    </div>
+  </ModalFree>
 </template>

@@ -19,8 +19,10 @@ interface Field {
   uuid: string;
   order: number;
   kind: string;
-  share_keys: boolean | null;
-  group_id: number | null;
+  share_keys: boolean | undefined;
+  group_id: number | undefined;
+  is_required: boolean;
+  options?: string[] | number[];
 }
 
 interface Template {
@@ -67,6 +69,7 @@ const helpModalOpen = ref(false);
           <ButtonBreadcrumbs @click="helpModalOpen = true">
             Show Help
           </ButtonBreadcrumbs>
+          <CreateField :query="query" :template-id="template.id" />
         </template>
       </BreadcrumbsBar>
       <TableGenerator
@@ -74,14 +77,15 @@ const helpModalOpen = ref(false);
           { name: 'Field', key: 'name' },
           { name: 'Order', key: 'order' },
           { name: 'Kind', key: 'kind' },
-          { name: 'Type', key: 'type' },
+          { name: 'Type', key: 'field_type' },
           { name: 'Encrypted', key: 'encrypted' },
+          { name: 'Required', key: 'is_required' },
           { name: '', key: 'action' },
         ]"
         :data="template.fields"
       >
-        <template #head-action>
-          <CreateField :query="query" :template-id="template.id" />
+        <template #is_required="{ i }">
+          {{ i.is_required ? "Yes" : "No" }}
         </template>
         <template #action="{ i }">
           <UpdateField
@@ -91,8 +95,9 @@ const helpModalOpen = ref(false);
             :field-group="i.group_id"
             :field-options="i.options"
             :field-order="i.order"
+            :field-is-required="i.is_required"
             :field-share-keys="i.share_keys"
-            :field-type="i.type"
+            :field-type="i.field_type"
             :field-kind="i.kind"
           />
           <DeleteField
