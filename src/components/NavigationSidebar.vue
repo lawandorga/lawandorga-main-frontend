@@ -4,7 +4,7 @@ import useNavigationItems, {
   NavigationItem,
 } from "@/composables/useNavigationItems";
 import { useUserStore } from "@/store/user";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import LogoWhite from "./LogoWhite.vue";
 import { CircleLoader } from "lorga-ui";
@@ -43,16 +43,21 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
   const currentPath = route.path;
   return currentPath.startsWith(itemPath);
 };
+
+const lastNameInitial = computed(() => {
+  const fullName = userStore.user?.name || "";
+  const lastName = fullName.split(" ").slice(-1)[0] || "";
+  return lastName.charAt(0).toUpperCase();
+});
 </script>
 
 <template>
   <div class="hidden md:flex md:shrink-0 print:hidden">
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
       <div class="flex flex-col overflow-y-auto grow bg-formcolor">
-        <div
-          class="flex items-center h-16 border-b shrink-0 border-white/20"
-          :class="{ 'border-r': !expanded }"
-        >
+
+        <!-- Row 1: Hamburger — fixed h-16 on both sides -->
+        <div class="flex items-center h-16 border-b shrink-0 border-white/20">
           <button
             class="flex items-center justify-center w-10 h-10 border border-transparent rounded cursor-pointer focus:outline-none hover:bg-gray-50/10"
             :class="{ 'mx-auto': !expanded, 'ml-2 mr-2': expanded }"
@@ -61,42 +66,39 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
             <Bars3CenterLeftIcon class="w-6 h-6 text-white" />
           </button>
         </div>
-        <div
-          v-show="expanded"
-          class="flex items-center px-4 py-1 border-b h-14 border-white/20"
-        >
+
+        <!-- Row 2: Logo — fixed h-14 on both sides -->
+        <div class="flex items-center h-14 border-b shrink-0 border-white/20"
+          :class="{ 'px-4': expanded }">
           <router-link
             :to="{ name: 'start' }"
-            class="flex items-center h-10 px-4 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
+            class="flex items-center h-10 px-2 rounded hover:bg-gray-50/10"
+            :class="{ 'mx-auto': !expanded, '-ml-2 space-x-2': expanded }"
           >
-            <div class="-ml-2">
+            <div :class="{ '-ml-2': expanded }">
               <LogoWhite />
             </div>
-            <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
+            <h1 v-show="expanded" class="text-2xl font-bold text-white">Law&Orga</h1>
           </router-link>
         </div>
-        <div
-          v-show="!expanded"
-          class="flex items-center border-b h-14 border-white/20"
-        >
-          <router-link
-            :to="{ name: 'start' }"
-            class="flex items-center justify-center w-10 h-10 mx-auto rounded hover:bg-gray-50/10"
-          >
-            <LogoWhite />
-          </router-link>
-        </div>
-        <div
-          v-show="expanded"
-          class="px-4 py-3 text-white border-b border-white/20"
-        >
-          <div v-show="userStore.loaded">
-            <div class="truncate">
-              {{ userStore.org?.name }}: {{ userStore.user?.name }}
+
+        <!-- Row 3: User info — fixed h-16 on both sides -->
+        <div class="flex items-center h-16 border-b shrink-0 border-white/20"
+          :class="{ 'px-4': expanded, 'justify-center': !expanded }">
+          <template v-if="expanded">
+            <div v-show="userStore.loaded" class="w-full overflow-hidden">
+              <div class="truncate text-white">
+                {{ userStore.org?.name }}: {{ userStore.user?.name }}
+              </div>
+              <div class="truncate text-white text-sm">{{ userStore.user?.email }}</div>
             </div>
-            <div class="truncate">{{ userStore.user?.email }}</div>
-          </div>
-          <CircleLoader v-show="!userStore.loaded" class="text-white" />
+            <CircleLoader v-show="!userStore.loaded" class="text-white" />
+          </template>
+          <template v-else>
+            <div class="flex items-center justify-center w-10 h-10 rounded bg-lorgablue text-white font-bold text-lg">
+              {{ lastNameInitial }}
+            </div>
+          </template>
         </div>
 
         <div class="flex flex-col justify-between bg-white grow">
@@ -104,13 +106,12 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
             class="flex-1 pb-2 bg-white"
             :class="{
               'space-y-3 pt-3': !expanded,
-              'space-y-1 px-2 pt-2': expanded,
+              'space-y-1 px-2 pt-3': expanded,
             }"
           >
             <template v-for="item in navigationItems" :key="item.label">
               <div v-if="item.divider">
                 <div
-                  class=""
                   :class="{
                     'w-full py-4': expanded,
                     'w-10 py-0.5 mx-auto': !expanded,
@@ -131,8 +132,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
                 v-bind="item.attrs"
                 class="relative flex items-center justify-between py-2 pl-2 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
                 :class="{
-                  'text-gray-700 bg-gray-100! hover:bg-gray-100':
-                    isNavigationItemActive(item),
+                  'text-gray-700 bg-gray-100! hover:bg-gray-100': isNavigationItemActive(item),
                   'pb-5.5!': !expanded && item.is === 'a',
                   'w-10 pr-2 mx-auto': !expanded,
                   'pr-3': expanded,
@@ -171,11 +171,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           >
             <figure class="mb-3">
               <figcaption class="mb-1 text-gray-500">A project of</figcaption>
-              <a
-                href="https://rlc-deutschland.de/"
-                rel="noopener"
-                target="_blank"
-              >
+              <a href="https://rlc-deutschland.de/" rel="noopener" target="_blank">
                 <img
                   src="/rlcd.png"
                   alt="RLC Deutschland"
@@ -185,11 +181,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
             </figure>
             <figure>
               <figcaption class="mb-1 text-gray-500">supported by</figcaption>
-              <a
-                href="https://www.cms-stiftung.de/"
-                rel="noopener"
-                target="_blank"
-              >
+              <a href="https://www.cms-stiftung.de/" rel="noopener" target="_blank">
                 <img
                   src="/sponsor-cms.jpg"
                   alt="CMS Stiftung"
