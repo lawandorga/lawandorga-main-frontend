@@ -77,12 +77,10 @@ router.onError((error, to) => {
   }
 });
 
-router.beforeEach((to, _, next) => {
+router.beforeEach((to) => {
   const store = useUserStore();
   if (store.isAuthenticated && store.locked && to.name !== "user-keys") {
-    next({ name: "user-keys" });
-  } else {
-    next();
+    return { name: "user-keys" };
   }
 });
 
