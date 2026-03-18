@@ -150,7 +150,7 @@ onBeforeRouteLeave(async () => {
       </li>
     </ul>
     <div class="flex items-center justify-end gap-3">
-      <ButtonNormal kind="secondary" @click="confirmLeaving(false)">
+      <ButtonNormal kind="primary" @click="confirmLeaving(false)">
         Back to record
       </ButtonNormal>
       <ButtonNormal kind="delete" @click="confirmLeaving(true)">
