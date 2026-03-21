@@ -27,7 +27,7 @@ const markAsDone = () => {
     title: task.value.title,
     description: task.value.description,
     assignee_ids: task.value.assignee_ids,
-    is_done: true,
+    progress: 100,
     deadline: task.value.deadline,
   });
 };
@@ -39,9 +39,23 @@ const markAsUndone = () => {
     title: task.value.title,
     description: task.value.description,
     assignee_ids: task.value.assignee_ids,
-    is_done: false,
+    progress: 0,
     deadline: task.value.deadline,
   });
+};
+
+const priorityLabel: Record<string, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+  urgent: "Urgent",
+};
+
+const priorityColor: Record<string, string> = {
+  low: "text-gray-500",
+  medium: "text-blue-500",
+  high: "text-orange-500",
+  urgent: "text-red-600",
 };
 </script>
 
@@ -74,6 +88,24 @@ const markAsUndone = () => {
       <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
         Assignees: {{ task.assignee_names.join(", ") }}
       </p>
+      <div class="flex items-center gap-3 mt-2">
+        <p
+          class="text-sm font-semibold"
+          :class="priorityColor[task.priority] || 'text-gray-500'"
+        >
+          {{ priorityLabel[task.priority] || task.priority }}
+        </p>
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <div class="w-24 h-2 bg-gray-200 rounded-full">
+            <div
+              class="h-2 rounded-full"
+              :class="task.progress === 100 ? 'bg-green-500' : 'bg-formcolor'"
+              :style="{ width: task.progress + '%' }"
+            />
+          </div>
+          <span>{{ task.progress }}%</span>
+        </div>
+      </div>
     </div>
     <div class="flex pt-2 mt-4 border-t-2">
       <p

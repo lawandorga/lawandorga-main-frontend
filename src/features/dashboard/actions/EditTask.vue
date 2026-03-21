@@ -39,6 +39,28 @@ const taskFields = computed<types.FormField[]>(() => [
     type: "multiple",
     options: formProfiles.value,
   },
+  {
+    label: "Priority",
+    name: "priority",
+    required: true,
+    type: "select",
+    options: [
+      { name: "Low", value: "low" },
+      { name: "Medium", value: "medium" },
+      { name: "High", value: "high" },
+      { name: "Urgent", value: "urgent" },
+    ],
+  },
+  {
+    label: "Progress",
+    name: "progress",
+    required: true,
+    type: "slider",
+    min: 0,
+    max: 100,
+    step: 5,
+    unit: "%",
+  },
 ]);
 
 const { commandModalOpen, commandRequest } = useCmd(props.query);
@@ -58,8 +80,10 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
         task_id: task.uuid,
         title: task.title,
         description: task.description,
-        deadline: task.deadline.slice(0, 16) || undefined,
+        deadline: task.deadline ? task.deadline.slice(0, 16) : undefined,
         assignee_ids: task.assignee_ids,
+        priority: task.priority,
+        progress: task.progress,
       }"
     >
       <template #custom>Created by: {{ task.creator_name }}</template>

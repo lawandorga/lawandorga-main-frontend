@@ -11,6 +11,8 @@ export interface Task {
   assignee_names: string[];
   creator_name: string;
   deadline: string;
+  progress: number;
+  priority: string;
   is_done: boolean;
   created_at: string;
   updated_at: string;
