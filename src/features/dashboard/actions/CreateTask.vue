@@ -10,6 +10,8 @@
       :data="{
         action: 'tasks/create_task',
         page_url: route.fullPath,
+        priority: 'medium',
+        progress: 0,
       }"
     />
   </ButtonNormal>
@@ -47,6 +49,28 @@ const taskFields = computed<types.FormField[]>(() => [
     required: true,
     type: "multiple",
     options: formProfiles.value,
+  },
+  {
+    label: "Priority",
+    name: "priority",
+    required: true,
+    type: "select",
+    options: [
+      { name: "Low", value: "low" },
+      { name: "Medium", value: "medium" },
+      { name: "High", value: "high" },
+      { name: "Urgent", value: "urgent" },
+    ],
+  },
+  {
+    label: "Progress",
+    name: "progress",
+    required: true,
+    type: "slider",
+    min: 0,
+    max: 100,
+    step: 5,
+    unit: "%",
   },
   {
     label: "Tags",
