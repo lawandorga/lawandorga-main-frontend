@@ -61,6 +61,16 @@ const taskFields = computed<types.FormField[]>(() => [
     step: 5,
     unit: "%",
   },
+  {
+    name: "comments_display",
+    type: "slot",
+  },
+  {
+    label: "Add Comment",
+    name: "comment",
+    required: false,
+    type: "textarea",
+  },
 ]);
 
 const { commandModalOpen, commandRequest } = useCmd(props.query);
@@ -84,9 +94,25 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
         assignee_ids: task.assignee_ids,
         priority: task.priority,
         progress: task.progress,
+        comment: '',
       }"
     >
       <template #custom>Created by: {{ task.creator_name }}</template>
+      <template #comments_display>
+        <div v-if="task.comments && task.comments.length" class="mb-2">
+          <h4 class="text-sm font-semibold text-gray-700 mb-2">Comments</h4>
+          <div class="space-y-2 max-h-48 overflow-y-auto">
+            <div
+              v-for="(c, index) in task.comments"
+              :key="index"
+              class="text-sm border-l-2 border-gray-300 pl-3 py-1"
+            >
+              <span class="font-semibold text-gray-600">{{ c.email }}</span>
+              <p class="text-gray-700 mt-0.5">{{ c.comment }}</p>
+            </div>
+          </div>
+        </div>
+      </template>
     </ModalUpdate>
   </ButtonNormal>
 </template>

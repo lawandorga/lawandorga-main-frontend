@@ -3,6 +3,11 @@ import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 
+export interface TaskComment {
+  email: string;
+  comment: string;
+}
+
 export interface Task {
   uuid: number;
   title: string;
@@ -14,6 +19,7 @@ export interface Task {
   progress: number;
   priority: string;
   is_done: boolean;
+  comments: TaskComment[];
   created_at: string;
   updated_at: string;
   page_url: string;
