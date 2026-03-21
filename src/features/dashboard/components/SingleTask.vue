@@ -26,7 +26,7 @@ const markAsDone = () => {
     task_id: task.value.uuid,
     title: task.value.title,
     description: task.value.description,
-    assignee_id: task.value.assignee_id,
+    assignee_ids: task.value.assignee_ids,
     is_done: true,
     deadline: task.value.deadline,
   });
@@ -38,7 +38,7 @@ const markAsUndone = () => {
     task_id: task.value.uuid,
     title: task.value.title,
     description: task.value.description,
-    assignee_id: task.value.assignee_id,
+    assignee_ids: task.value.assignee_ids,
     is_done: false,
     deadline: task.value.deadline,
   });
@@ -70,6 +70,9 @@ const markAsUndone = () => {
         class="mt-2 text-sm font-semibold text-gray-700 whitespace-pre-line wrap-break-word"
       >
         {{ task.description }}
+      </p>
+      <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
+        Assignees: {{ task.assignee_names.join(", ") }}
       </p>
     </div>
     <div class="flex pt-2 mt-4 border-t-2">

@@ -1,12 +1,14 @@
 import useGet2 from "@/composables/useGet2";
-import { ref } from "vue";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
 
 export interface Task {
   uuid: number;
   title: string;
   description: string;
-  assignee_id: number;
-  assignee_name: string;
+  assignee_ids: number[];
+  assignee_names: string[];
   creator_name: string;
   deadline: string;
   is_done: boolean;
@@ -16,16 +18,48 @@ export interface Task {
 }
 
 export function useTasks() {
-  const assignedTasks = ref<Task[] | null>(null);
-  const createdTasks = ref<Task[] | null>(null);
+  const tasks = ref<Task[] | null>(null);
 
-  const assignedTasksQuery = useGet2(`api/tasks/query/own/`, assignedTasks);
-  const createdTasksQuery = useGet2(`api/tasks/query/created/`, createdTasks);
+  const query = useGet2(`api/tasks/query/`, tasks);
+
+  const { user } = storeToRefs(useUserStore());
+
+  const assignedTasks = computed(() => {
+    if (!tasks.value) return [];
+    const userId = user.value?.id;
+    if (!userId) return [];
+    return tasks.value.filter((task) => task.assignee_ids.includes(userId));
+  });
+
+  const createdTasks = computed(() => {
+    if (!tasks.value) return [];
+    const userName = user.value?.name;
+    if (!userName) return [];
+    return tasks.value.filter((task) => task.creator_name === userName);
+  });
+
+  const assignedOpenTasks = computed(() => {
+    if (!assignedTasks.value) return [];
+    return assignedTasks.value.filter((task) => !task.is_done);
+  });
+
+  const createdOpenTasks = computed(() => {
+    if (!createdTasks.value) return [];
+    return createdTasks.value.filter((task) => !task.is_done);
+  });
+
+  const completedTasks = computed(() => {
+    if (!tasks.value) return [];
+    return tasks.value.filter((task) => task.is_done);
+  });
 
   return {
+    tasks,
     assignedTasks,
     createdTasks,
-    assignedTasksQuery,
-    createdTasksQuery,
+    assignedOpenTasks,
+    createdOpenTasks,
+    completedTasks,
+    query,
   };
 }

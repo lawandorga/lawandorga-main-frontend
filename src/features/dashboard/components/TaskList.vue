@@ -1,38 +1,15 @@
 <script setup lang="ts">
 import { Task, useTasks } from "../api/useTasks";
 import TabControls from "@/components/TabControls.vue";
-import { computed } from "vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 
-const { assignedTasks, createdTasks, assignedTasksQuery, createdTasksQuery } =
+const { completedTasks, assignedOpenTasks, createdOpenTasks, query } =
   useTasks();
-
-const assignedOpenTasks = computed<Task[]>(
-  () => assignedTasks.value?.filter((task: Task) => !task.is_done) ?? [],
-);
-
-const createdOpenTasks = computed<Task[]>(
-  () => createdTasks.value?.filter((task: Task) => !task.is_done) ?? [],
-);
 
 const sortTasks = (tasks: Task[]) =>
   tasks.sort((task, nextTask) =>
     task.updated_at > nextTask.updated_at ? -1 : 1,
   );
-
-/* If the user assigns a task to themself, it's in both lists. Therefore it shows up twice in the completed tasks, which we don't want. This code filters out the duplicates. */
-const completedTasks = computed<Task[]>(() => {
-  const allTasks = [
-    ...(assignedTasks.value?.filter((task: Task) => task.is_done) ?? []),
-    ...(createdTasks.value?.filter((task: Task) => task.is_done) ?? []),
-  ];
-
-  const uniqueTasks = Array.from(
-    new Map(allTasks.map((task) => [task.uuid, task])).values(),
-  );
-
-  return sortTasks(uniqueTasks);
-});
 </script>
 
 <template>
@@ -63,12 +40,7 @@ const completedTasks = computed<Task[]>(() => {
               v-for="task in sortTasks(assignedOpenTasks)"
               :key="task.uuid"
               :task="task"
-              :query="
-                () => {
-                  assignedTasksQuery();
-                  createdTasksQuery();
-                }
-              "
+              :query="query"
             />
           </div>
           <div v-else class="col-span-3 pt-4 text-gray-500">
@@ -88,12 +60,7 @@ const completedTasks = computed<Task[]>(() => {
               v-for="task in sortTasks(createdOpenTasks)"
               :key="task.uuid"
               :task="task"
-              :query="
-                () => {
-                  assignedTasksQuery();
-                  createdTasksQuery();
-                }
-              "
+              :query="query"
             />
           </div>
           <div v-else class="col-span-3 pt-4 text-gray-500">
@@ -106,19 +73,14 @@ const completedTasks = computed<Task[]>(() => {
           class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
         >
           <div
-            v-if="completedTasks && completedTasks.length"
+            v-if="completedTasks"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
           >
             <SingleTask
               v-for="task in completedTasks"
               :key="task.uuid"
               :task="task"
-              :query="
-                () => {
-                  assignedTasksQuery();
-                  createdTasksQuery();
-                }
-              "
+              :query="query"
             />
           </div>
           <div v-else class="col-span-3 pt-4 text-gray-500">

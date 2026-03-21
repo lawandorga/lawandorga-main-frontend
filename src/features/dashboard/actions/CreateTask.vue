@@ -41,10 +41,10 @@ const taskFields = computed<types.FormField[]>(() => [
     type: "datetime-local",
   },
   {
-    label: "Assignee",
-    name: "assignee_id",
+    label: "Assignees",
+    name: "assignee_ids",
     required: true,
-    type: "searchselect",
+    type: "multiple",
     options: formProfiles.value,
   },
 ]);

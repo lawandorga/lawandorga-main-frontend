@@ -33,10 +33,10 @@ const taskFields = computed<types.FormField[]>(() => [
     type: "datetime-local",
   },
   {
-    label: "Assignee",
-    name: "assignee_id",
+    label: "Assignees",
+    name: "assignee_ids",
     required: true,
-    type: "select",
+    type: "multiple",
     options: formProfiles.value,
   },
 ]);
@@ -58,8 +58,8 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
         task_id: task.uuid,
         title: task.title,
         description: task.description,
-        deadline: task.deadline || undefined,
-        assignee_id: task.assignee_id,
+        deadline: task.deadline.slice(0, 16) || undefined,
+        assignee_ids: task.assignee_ids,
       }"
     >
       <template #custom>Created by: {{ task.creator_name }}</template>
