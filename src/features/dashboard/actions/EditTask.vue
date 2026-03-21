@@ -62,6 +62,12 @@ const taskFields = computed<types.FormField[]>(() => [
     unit: "%",
   },
   {
+    label: "Tags",
+    name: "tags",
+    required: false,
+    type: "list",
+  },
+  {
     name: "comments_display",
     type: "slot",
   },
@@ -94,6 +100,7 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
         assignee_ids: task.assignee_ids,
         priority: task.priority,
         progress: task.progress,
+        tags: task.tags_as_list,
         comment: '',
       }"
     >

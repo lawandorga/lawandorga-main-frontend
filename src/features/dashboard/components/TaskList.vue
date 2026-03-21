@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { watch } from "vue";
 import { Task, useTasks } from "../api/useTasks";
+import { useTasksChanged } from "../api/useTasksChanged";
 import TabControls from "@/components/TabControls.vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 
 const { completedTasks, assignedOpenTasks, createdOpenTasks, query } =
   useTasks();
+
+const { tasksChanged } = useTasksChanged();
+watch(tasksChanged, () => query());
 
 const sortTasks = (tasks: Task[]) =>
   tasks.sort((task, nextTask) =>

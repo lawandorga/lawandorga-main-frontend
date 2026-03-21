@@ -20,6 +20,7 @@ export interface Task {
   priority: string;
   is_done: boolean;
   comments: TaskComment[];
+  tags_as_list: string[];
   created_at: string;
   updated_at: string;
   page_url: string;

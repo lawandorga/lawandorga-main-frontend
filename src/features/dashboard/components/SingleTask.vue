@@ -88,6 +88,15 @@ const priorityColor: Record<string, string> = {
       <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
         Assignees: {{ task.assignee_names.join(", ") }}
       </p>
+      <div v-if="task.tags_as_list.length" class="flex flex-wrap gap-1 mt-2">
+        <span
+          v-for="tag in task.tags_as_list"
+          :key="tag"
+          class="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-full"
+        >
+          {{ tag }}
+        </span>
+      </div>
       <div class="flex items-center gap-3 mt-2">
         <p
           class="text-sm font-semibold"

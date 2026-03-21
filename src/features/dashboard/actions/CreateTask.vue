@@ -19,6 +19,7 @@
 import { computed } from "vue";
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
+import { notifyTasksChanged } from "@/features/dashboard/api/useTasksChanged";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { useRoute } from "vue-router";
 
@@ -47,7 +48,13 @@ const taskFields = computed<types.FormField[]>(() => [
     type: "multiple",
     options: formProfiles.value,
   },
+  {
+    label: "Tags",
+    name: "tags",
+    required: false,
+    type: "list",
+  },
 ]);
 
-const { commandModalOpen, commandRequest } = useCmd();
+const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
 </script>
