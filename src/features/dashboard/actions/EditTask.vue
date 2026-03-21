@@ -96,7 +96,7 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
         task_id: task.uuid,
         title: task.title,
         description: task.description,
-        deadline: task.deadline ? task.deadline.slice(0, 16) : undefined,
+        deadline: task.deadline ? task.deadline.slice(0, 16) : null,
         assignee_ids: task.assignee_ids,
         priority: task.priority,
         progress: task.progress,
@@ -107,12 +107,12 @@ const { commandModalOpen, commandRequest } = useCmd(props.query);
       <template #custom>Created by: {{ task.creator_name }}</template>
       <template #comments_display>
         <div v-if="task.comments && task.comments.length" class="mb-2">
-          <h4 class="text-sm font-semibold text-gray-700 mb-2">Comments</h4>
-          <div class="space-y-2 max-h-48 overflow-y-auto">
+          <h4 class="mb-2 text-sm font-semibold text-gray-700">Comments</h4>
+          <div class="space-y-2 overflow-y-auto max-h-48">
             <div
               v-for="(c, index) in task.comments"
               :key="index"
-              class="text-sm border-l-2 border-gray-300 pl-3 py-1"
+              class="py-1 pl-3 text-sm border-l-2 border-gray-300"
             >
               <span class="font-semibold text-gray-600">{{ c.email }}</span>
               <p class="text-gray-700 mt-0.5">{{ c.comment }}</p>

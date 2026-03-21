@@ -203,7 +203,7 @@ const { members } = useMembers();
                   {{ article.title }}
                 </h3>
                 <p
-                  class="text-sm text-gray-700 break-words whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+                  class="text-sm text-gray-700 wrap-break-word whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
                 >
                   {{ article.description }}
                 </p>
