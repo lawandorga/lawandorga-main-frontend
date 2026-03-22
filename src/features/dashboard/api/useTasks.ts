@@ -5,6 +5,8 @@ import { computed, ref } from "vue";
 
 export interface TaskComment {
   email: string;
+  name: string;
+  date: string;
   comment: string;
 }
 
