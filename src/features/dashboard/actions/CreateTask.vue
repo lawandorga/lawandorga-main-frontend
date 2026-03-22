@@ -30,6 +30,7 @@ const route = useRoute();
 const { formProfiles } = useProfiles();
 
 const taskFields = computed<types.FormField[]>(() => [
+  { label: "Location", name: "page_url", type: "text" },
   { label: "Title", name: "title", required: true, type: "text" },
   {
     label: "Description",
