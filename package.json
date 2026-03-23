@@ -52,7 +52,7 @@
     "pinia": "==3.0.*",
     "postcss": "==8.5.*",
     "prettier": "==3.6.*",
-    "remixicon": "==4.6.*",
+    "remixicon": "==4.9.*",
     "tailwindcss": "==4.*",
     "typescript": "==5.9.*",
     "uuid": "==13.*",
