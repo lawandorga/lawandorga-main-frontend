@@ -14,6 +14,7 @@ import { useArticles } from "../api/useArticles";
 import { useMembers } from "../api/useMembers";
 import TaskList from "../components/TaskList.vue";
 import OrgNotes from "../components/OrgNotes.vue";
+import SurveyPill from "../components/SurveyPill.vue";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -46,6 +47,7 @@ const { members } = useMembers();
         <Squares2X2Icon class="w-6 h-6" />
       </BreadcrumbsBar>
       <h1 class="text-4xl font-bold text-gray-700">Welcome {{ user?.name }}</h1>
+      <SurveyPill />
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <OrgNotes />
         <div v-if="records?.length">
