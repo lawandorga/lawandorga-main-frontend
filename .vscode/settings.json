@@ -1,12 +1,8 @@
 {
-  "eslint.validate": [
-    "vue",
-    "javascript",
-    "typescript"
-  ],
+  "eslint.validate": ["vue", "javascript", "typescript"],
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll.eslint": "explicit"
   },
   "editor.quickSuggestions": {
     "other": true,
@@ -14,7 +10,7 @@
     "strings": true
   },
   "[tf]": {
-    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.defaultFormatter": "hashicorp.terraform"
   },
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
@@ -22,7 +18,5 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "css.customData": [
-    ".vscode/tailwind.json"
-  ]
+  "css.customData": [".vscode/tailwind.json"]
 }
