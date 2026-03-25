@@ -96,7 +96,7 @@ function copyLink() {
         </svg>
       </a>
 
-      <p class="text-xs text-center text-gray-400">
+      <p class="text-xs text-center text-gray-500">
         Or scan the QR code with your phone
       </p>
     </div>
