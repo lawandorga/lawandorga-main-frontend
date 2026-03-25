@@ -22,7 +22,7 @@ function copyLink() {
 <template>
   <button
     type="button"
-    class="survey-pill inline-flex items-center rounded-full cursor-pointer overflow-hidden transition-[background-color,border-color,box-shadow] duration-200 border border-formcolor bg-formcolor hover:bg-blue-700 hover:border-blue-700"
+    class="survey-pill rounded-full cursor-pointer overflow-hidden transition-[background-color,border-color,box-shadow] duration-200 border border-formcolor bg-formcolor hover:bg-blue-700 hover:border-blue-700"
     aria-haspopup="dialog"
     :aria-expanded="open"
     @click="open = true"
