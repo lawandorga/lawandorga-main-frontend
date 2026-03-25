@@ -72,7 +72,7 @@ function copyLink() {
       </div>
 
       <a
-        :href="SURVEY_URL"
+        href="https://www.umfrageonline.com/c/law-orga-umfrage-alle-user"
         target="_blank"
         rel="noopener noreferrer"
         class="flex items-center justify-center gap-1.5 w-full py-2.5 bg-formcolor text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors no-underline"
