@@ -1,6 +1,8 @@
 import useGet2 from "@/composables/useGet2";
 import type { OrgUser } from "@/features/admin/api/useProfileData";
-import { ref } from "vue";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
 
 interface Article {
   id: number;
@@ -14,7 +16,16 @@ export function useArticles() {
   const articles = ref<Article[] | null>();
   useGet2("/api/internal/articles/dashboard/", articles);
 
+  const { user } = storeToRefs(useUserStore());
+
+  const filteredArticles = computed(() => {
+    if (!articles.value || !user.value) return null;
+    return articles.value.filter((a) =>
+      a.recipients.some((r) => r.id === user.value!.id),
+    );
+  });
+
   return {
-    articles,
+    articles: filteredArticles,
   };
 }
