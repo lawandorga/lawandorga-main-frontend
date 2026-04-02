@@ -56,8 +56,8 @@ const lastNameInitial = computed(() => {
     <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
       <div class="flex flex-col overflow-y-auto grow bg-formcolor">
 
-        <!-- Row 1: Hamburger — fixed h-16 on both sides -->
-        <div class="flex items-center h-16 border-b shrink-0 border-white/20">
+       
+        <div class="flex items-center h-20 border-b shrink-0 border-white/20">
           <button
             class="flex items-center justify-center w-10 h-10 border border-transparent rounded cursor-pointer focus:outline-none hover:bg-gray-50/10"
             :class="{ 'mx-auto': !expanded, 'ml-2 mr-2': expanded }"
@@ -67,7 +67,7 @@ const lastNameInitial = computed(() => {
           </button>
         </div>
 
-        <!-- Row 2: Logo — fixed h-14 on both sides -->
+       
         <div class="flex items-center h-14 border-b shrink-0 border-white/20"
           :class="{ 'px-4': expanded }">
           <router-link
@@ -82,7 +82,6 @@ const lastNameInitial = computed(() => {
           </router-link>
         </div>
 
-        <!-- Row 3: User info — fixed h-16 on both sides -->
         <div class="flex items-center h-16 border-b shrink-0 border-white/20"
           :class="{ 'px-4': expanded, 'justify-center': !expanded }">
           <template v-if="expanded">
