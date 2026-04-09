@@ -32,6 +32,10 @@ export default [
       "no-unused-vars": "warn",
       "vue/require-default-prop": "off",
       "vue/component-name-in-template-casing": ["error", "PascalCase"],
+      "vue/no-undef-components": [
+        "error",
+        { ignorePatterns: ["router-link", "router-view", "RouterLink", "RouterView"] },
+      ],
     },
   },
 ];
