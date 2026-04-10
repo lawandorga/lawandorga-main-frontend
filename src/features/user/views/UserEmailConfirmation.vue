@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import useClient from "@/api/client";
 import { getRawLoginUrl } from "@/utils/login";
+import { CircleLoader } from "lorga-ui";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
