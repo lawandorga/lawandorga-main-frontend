@@ -20,8 +20,8 @@ export function useArticles() {
 
   const filteredArticles = computed(() => {
     if (!articles.value || !user.value) return null;
-    return articles.value.filter((a) =>
-      a.recipients.some((r) => r.id === user.value!.id),
+    return articles.value.filter((article) =>
+      article.recipients.some((recipient) => recipient.id === user.value!.id),
     );
   });
 
