@@ -4,7 +4,8 @@ import { types } from "lorga-ui";
 import { AxiosError } from "axios";
 import { Router, useRouter } from "vue-router";
 import { getLoginUrl } from "@/utils/login";
-import { ICommandError } from "lorga-ui/dist/types/types";
+
+type ICommandError = types.ICommandError;
 
 interface Context {
   error: AxiosError;
