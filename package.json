@@ -54,7 +54,7 @@
     "prettier": "==3.6.*",
     "remixicon": "==4.6.*",
     "tailwindcss": "==4.*",
-    "typescript": "==5.9.*",
+    "typescript": "==6.0.*",
     "uuid": "==13.*",
     "vite": "==8.0.*",
     "vitest": "==4.1.*",
