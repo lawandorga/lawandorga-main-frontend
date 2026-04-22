@@ -1,10 +1,8 @@
 import { Ref, computed, ref, watch } from "vue";
 import useGet from "@/composables/useGet";
 import useClient from "@/api/client";
-import {
-  QueryParams,
-  SetQueryParam,
-} from "lorga-ui/dist/types/components/PaginationBar.vue";
+type QueryParams = { [key: string]: number | string | string[] | null | boolean | undefined };
+type SetQueryParam = (key: string, value: QueryParams[string]) => QueryParams;
 
 export interface Record {
   token: string;
