@@ -34,7 +34,7 @@
     "@types/lodash": "==4.17.*",
     "@types/node": "==25.5.*",
     "@types/uuid": "==11.0.*",
-    "@typescript-eslint/eslint-plugin": "==8.57.*",
+    "@typescript-eslint/eslint-plugin": "==8.59.*",
     "@typescript-eslint/parser": "==8.58.*",
     "@vitejs/plugin-vue": "==6.0.*",
     "@vue/eslint-config-prettier": "==10.2.*",
