@@ -23,7 +23,7 @@ type: Bug
 
 ### Related Issues
 
-<!-- Link all related issues which are e.g. CMS issues or otherwise related, blocking, duplicating issues, ... -->
+<!-- Link all related issues which are e.g. backend issues or otherwise related, blocking, duplicating issues, ... -->
 
 ### Additional Information
 
