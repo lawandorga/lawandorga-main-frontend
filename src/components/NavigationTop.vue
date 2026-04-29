@@ -5,6 +5,12 @@ import NavigationDropdown from "./NavigationDropdown.vue";
 import { useRoute } from "vue-router";
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { Squares2X2Icon } from "@heroicons/vue/24/outline";
+import { useUserStore } from "@/store/user";
+import { storeToRefs } from "pinia";
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();
 
@@ -16,7 +22,7 @@ const inside = computed(() => {
 
 <template>
   <div
-    class="relative z-10 flex h-16 border-b shadow shrink-0 border-white/20 bg-formcolor print:hidden"
+    class="relative z-10 flex h-16 px-8 py-4 border-b shadow shrink-0 border-white/20 bg-white print:hidden"
   >
     <button
       type="button"
@@ -28,13 +34,23 @@ const inside = computed(() => {
     </button>
     <div class="flex justify-between flex-1 px-4">
       <div class="flex items-center flex-1">
+        <BreadcrumbsBar
+          class="lg:col-span-2 mr-4"
+          :base="{ name: 'dashboard' }"
+          :pages="[]"
+        >
+          <Squares2X2Icon class="w-6 h-6" />
+        </BreadcrumbsBar>
+        <h1 class="text-2xl font-bold text-gray-700">
+          Welcome {{ user?.name }}
+        </h1>
         <div v-show="!inside" class="flex space-x-3">
           <router-link
             :to="{ name: 'index' }"
             class="flex items-center space-x-2"
           >
             <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
-            <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
+            <h1 class="text-2xl font-bold text-primary">Law&Orga</h1>
           </router-link>
           <div class="w-px h-8 bg-white"></div>
           <img
