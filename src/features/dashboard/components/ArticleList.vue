@@ -27,7 +27,7 @@ const { articles } = useArticles();
           <p
             class="text-sm text-gray-700 wrap-break-word whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
           >
-            {{ article.description }}
+            {{ article.preview }}
           </p>
         </div>
         <router-link

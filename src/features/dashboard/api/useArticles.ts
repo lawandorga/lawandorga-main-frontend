@@ -4,7 +4,7 @@ import { ref } from "vue";
 interface Article {
   id: number;
   title: string;
-  description: string;
+  preview: string;
   date: Date;
 }
 
