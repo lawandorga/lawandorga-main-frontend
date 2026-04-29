@@ -1,5 +1,6 @@
 <template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    <PlusIcon class="w-6 h-6 mr-2"></PlusIcon>
     Create Task
     <ModalCreate
       v-model="commandModalOpen"
@@ -18,13 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed } from "vue";
-import { useRoute } from "vue-router";
-
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
 import { notifyTasksChanged } from "@/features/dashboard/api/useTasksChanged";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
+import { useRoute } from "vue-router";
+import { PlusIcon } from "@heroicons/vue/24/outline";
 
 const route = useRoute();
 
