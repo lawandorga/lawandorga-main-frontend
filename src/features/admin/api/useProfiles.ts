@@ -1,6 +1,9 @@
 import { computed, ref, Ref } from "vue";
 import useGet2 from "@/composables/useGet2";
 
+export type ActivityState = "green" | "yellow" | "orange" | "red";
+
+
 export interface OrgUserSmall {
   id: number;
   user_id: number;
@@ -13,6 +16,7 @@ export interface OrgUserSmall {
   locked: boolean;
   is_active: boolean;
   qualifications: string[];
+  activity_state: ActivityState;
 }
 
 export function useProfiles() {
