@@ -3,7 +3,6 @@ import useGet2 from "@/composables/useGet2";
 
 export type ActivityState = "green" | "yellow" | "orange" | "red";
 
-
 export interface OrgUserSmall {
   id: number;
   user_id: number;

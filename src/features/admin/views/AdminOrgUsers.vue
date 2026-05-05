@@ -20,35 +20,35 @@ const activityFilter = ref<FilterOption>("all");
 
 const filterOptions = [
   {
-    label: "Alle",
+    label: "All",
     value: "all" as FilterOption,
     activeClasses: "bg-gray-800 text-white border-gray-800",
     inactiveClasses:
       "bg-white text-gray-700 border-gray-300 hover:border-gray-500",
   },
   {
-    label: "Aktiv (3 Mo.)",
+    label: "Active (3 mo.)",
     value: "green" as FilterOption,
     activeClasses: "bg-green-100 text-green-800 border-green-500",
     inactiveClasses:
       "bg-white text-green-800 border-green-200 hover:border-green-400",
   },
   {
-    label: "Aktiv (6 Mo.)",
+    label: "Active (6 mo.)",
     value: "yellow" as FilterOption,
     activeClasses: "bg-yellow-100 text-yellow-800 border-yellow-500",
     inactiveClasses:
       "bg-white text-yellow-800 border-yellow-200 hover:border-yellow-400",
   },
   {
-    label: "Eingeloggt (6 Mo.)",
+    label: "Logged in (6 mo.)",
     value: "orange" as FilterOption,
     activeClasses: "bg-orange-100 text-orange-800 border-orange-500",
     inactiveClasses:
       "bg-white text-orange-800 border-orange-200 hover:border-orange-400",
   },
   {
-    label: "Inaktiv (12+ Mo.)",
+    label: "Inactive (12+ mo.)",
     value: "red" as FilterOption,
     activeClasses: "bg-red-100 text-red-800 border-red-500",
     inactiveClasses:
@@ -106,7 +106,7 @@ function getSortValue(
           id="activity-filter-label"
           class="text-sm font-medium text-gray-700"
         >
-          Aktivität:
+          Activity:
         </span>
         <div class="flex flex-wrap gap-1">
           <button
@@ -128,6 +128,7 @@ function getSortValue(
       </div>
 
       <TableSortable
+        v-if="filteredProfiles?.length !== 0"
         sort-key="activity_state"
         sort-order="ASC"
         :get-value-func="getSortValue"
@@ -137,7 +138,7 @@ function getSortValue(
           { name: 'Phone', key: 'phone_number' },
           { name: 'Groups', key: 'group_names' },
           { name: 'Last Login', key: 'last_login_month', sortable: true },
-          { name: 'Aktivität', key: 'activity_state', sortable: true },
+          { name: 'Activity', key: 'activity_state', sortable: true },
           { name: '', key: 'action' },
         ]"
         :data="filteredProfiles"
@@ -198,6 +199,9 @@ function getSortValue(
           />
         </template>
       </TableSortable>
+      <div v-else class="py-10 text-sm text-center text-gray-500">
+        No users match the selected activity filter.
+      </div>
     </div>
   </BoxLoader>
 </template>
