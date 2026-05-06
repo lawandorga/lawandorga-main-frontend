@@ -3,7 +3,7 @@ import { getRegisterUrl } from "@/utils/login";
 </script>
 
 <template>
-  <div class="bg-formcolor print:hidden">
+  <div class="w-full bg-formcolor print:hidden">
     <div
       class="flex h-16 shrink-0 items-center justify-between border-b border-white/20 px-4"
     >

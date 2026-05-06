@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
 import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
@@ -13,25 +14,23 @@ const { notes, notesQuery } = useNotes();
     <template #action>
       <CreateNote :query="notesQuery" />
     </template>
-    <div>
-      <div v-if="!notes?.length" class="px-6 py-4 text-gray-500 w-full">
-        No notes yet. Use the button above to create your first note.
-      </div>
+    <div class="px-6 py-4">
+      <BoxLoader :show="!!notes"></BoxLoader>
       <div
-        v-else
-        class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 3xl:grid-cols-3 px-6 py-4"
+        v-if="notes?.length"
+        class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 3xl:grid-cols-3"
       >
         <article
           v-for="note in notes"
           :key="note.id"
-          class="px-6 pt-4 pb-4 bg-white border border-border border-gray-200 rounded-lg p-4 hover:border-primary/20 hover:shadow-md transition-all duration-200"
+          class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg hover:border-primary/20 hover:shadow-md"
           :class="{ 'lg:col-span-2': note.is_wide }"
         >
           <div class="flex justify-between">
             <h3 class="mb-2 font-medium text-gray-700">
               {{ note.title }}
             </h3>
-            <div>
+            <div class="gap-2">
               <UpdateNote
                 :query="notesQuery"
                 :note-id="note.id"
@@ -54,6 +53,10 @@ const { notes, notesQuery } = useNotes();
           ></p>
           <!-- eslint-enable vue/no-v-html -->
         </article>
+      </div>
+
+      <div v-else class="w-full text-gray-500">
+        No notes yet. Use the button above to create your first note.
       </div>
     </div>
   </BoxSection>

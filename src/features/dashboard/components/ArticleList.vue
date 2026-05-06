@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import { useArticles } from "../api/useArticles";
-import { ButtonNormal } from "lorga-ui";
 import { CalendarIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
 const { articles } = useArticles();
 </script>
 
 <template>
   <BoxSection title="News from Law&Orga" :length="articles?.length">
-    <div>
+    <div class="px-6 py-4">
+      <BoxLoader :show="!!articles"></BoxLoader>
       <div
         v-if="articles?.length"
         class="grid grid-cols-1 gap-6 px-6 py-4 mt-2 lg:grid-cols-3"
@@ -37,10 +38,7 @@ const { articles } = useArticles();
           <router-link
             :to="{ name: 'internal-article', params: { id: article.id } }"
             class="mt-2"
-          >
-            <ButtonNormal kind="action"
-              >Read more <ArrowRightIcon class="w-4 h-4 ml-2 text-gray-400"
-            /></ButtonNormal>
+            >Read more <ArrowRightIcon class="w-4 h-4 ml-2 text-gray-400" />
           </router-link>
         </article>
       </div>

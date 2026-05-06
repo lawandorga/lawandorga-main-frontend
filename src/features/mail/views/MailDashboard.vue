@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import TabControls from "@/components/TabControls.vue";
-import MailCreateMailUser from "@/features/mail/actions/CreateMailUser.vue";
-import MailDomain from "@/features/mail/components/MailDomain.vue";
-import MailGroups from "@/features/mail/components/MailGroups.vue";
-import MailUserRole from "@/features/mail/components/MailUserRole.vue";
-import MailUsers from "@/features/mail/components/MailUsers.vue";
-import MailWebmail from "@/features/mail/components/MailWebmail.vue";
+import { EnvelopeIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/store/user";
-
+import TabControls from "@/components/TabControls.vue";
+import MailUserRole from "@/features/mail/components/MailUserRole.vue";
+import MailDomain from "@/features/mail/components/MailDomain.vue";
+import MailUsers from "@/features/mail/components/MailUsers.vue";
+import MailGroups from "@/features/mail/components/MailGroups.vue";
+import MailWebmail from "@/features/mail/components/MailWebmail.vue";
+import MailCreateMailUser from "@/features/mail/actions/CreateMailUser.vue";
 import { useGetDashboardPage } from "../api/useGetDashboardPage";
 
 const userStore = useUserStore();
@@ -20,17 +18,17 @@ const { page, query, user, addresses, domain, users } = useGetDashboardPage();
 
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div v-if="userStore.loaded" class="mx-auto max-w-3xl">
+    <div v-if="userStore.loaded">
       <BreadcrumbsBar
         :base="{ name: 'mail-dashboard' }"
         :pages="[]"
         class="mb-6"
       >
-        <EnvelopeIcon class="h-6 w-6" />
+        <EnvelopeIcon class="w-6 h-6" />
       </BreadcrumbsBar>
       <template v-if="page != null">
         <template v-if="page.noMailAccount">
-          <div class="mt-10 rounded bg-white px-6 py-5 shadow">
+          <div class="px-6 py-5 mt-10 bg-white rounded shadow">
             <h1 class="text-lg font-bold text-gray-800">Mail User Role</h1>
             <div class="mt-5">
               <div class="prose">

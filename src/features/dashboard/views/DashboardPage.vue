@@ -11,17 +11,17 @@ import ChangedRecordsList from "../components/ChangedRecordsList.vue";
 </script>
 
 <template>
-  <div class="max-w-5xl mx-auto space-y-6">
+  <div class="space-y-6">
     <SurveyPill />
     <NotesList />
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <RecordsList />
-      <ChangedRecordsList />
-      <MembersList />
-    </div>
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <QuestionnaireList />
       <FollowUpList />
+    </div>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <ChangedRecordsList />
+      <MembersList />
     </div>
     <ArticleList />
     <TaskList />

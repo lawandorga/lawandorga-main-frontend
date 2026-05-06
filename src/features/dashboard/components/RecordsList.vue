@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import { useRecords } from "../api/useRecords";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
@@ -8,6 +9,9 @@ const { records } = useRecords();
 
 <template>
   <BoxSection title="Active Data Sheets" :length="records?.length">
+    <div class="px-4 py-2">
+      <BoxLoader :show="!!records"></BoxLoader>
+    </div>
     <div v-if="records?.length" class="pb-2">
       <ul class="p-1 mt-2 space-y-1 bg-white rounded">
         <li v-for="sheet in records" :key="sheet.uuid" class="block">
@@ -30,7 +34,7 @@ const { records } = useRecords();
         </li>
       </ul>
     </div>
-    <div v-else class="px-6 py-4 text-gray-500 w-full">
+    <div v-else class="w-full px-6 py-4 text-gray-500">
       No active data sheets.
     </div>
   </BoxSection>
