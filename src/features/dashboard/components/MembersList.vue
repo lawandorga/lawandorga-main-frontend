@@ -29,7 +29,7 @@ const { members } = useMembers();
       </ul>
     </div>
     <div v-else class="px-6 py-4 text-gray-500 w-full">
-      No new members in no groups.
+      No new members without groups.
     </div>
   </BoxSection>
 </template>

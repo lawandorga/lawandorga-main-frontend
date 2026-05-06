@@ -16,12 +16,12 @@ import ChangedRecordsList from "../components/ChangedRecordsList.vue";
     <NotesList />
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <RecordsList />
-      <ChangedRecordsList />
-      <MembersList />
-    </div>
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <QuestionnaireList />
       <FollowUpList />
+    </div>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <ChangedRecordsList />
+      <MembersList />
     </div>
     <ArticleList />
     <TaskList />
