@@ -5,6 +5,8 @@
     "dev": "vite",
     "build": "npm run build:production",
     "build:production": "vite build",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "serve": "vite preview",
     "lint": "eslint ./src",
     "fix": "eslint --fix ./src",
@@ -63,6 +65,9 @@
     "vue-eslint-parser": "^10.4.0",
     "vue-router": "==5.0.*",
     "vue-tsc": "==3.2.*"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.48.0"
   },
   "browserslist": [
     "> 1%",
