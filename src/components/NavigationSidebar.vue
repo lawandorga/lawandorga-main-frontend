@@ -91,17 +91,17 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           class="px-4 py-3 text-white border-b border-white/20"
         >
           <div v-show="userStore.loaded">
-            <div class="truncate text-sm">
+            <div class="text-sm truncate">
               {{ userStore.org?.name }}: {{ userStore.user?.name }}
             </div>
-            <div class="truncate text-xs">{{ userStore.user?.email }}</div>
+            <div class="text-xs truncate">{{ userStore.user?.email }}</div>
           </div>
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
         <div class="flex flex-col justify-between bg-primary grow">
           <nav
-            class="flex-1 pb-2 bg-primary border-b border-white/20"
+            class="flex-1 pb-2 border-b bg-primary border-white/20"
             :class="{
               'space-y-3 pt-3': !expanded,
               'space-y-1 px-2 pt-2': expanded,
@@ -119,8 +119,8 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
                   <div
                     class="w-full border-t"
                     :class="{
-                      'border-gray-100': expanded,
-                      'border-gray-300': !expanded,
+                      'border-white/10': expanded,
+                      'border-white/70': !expanded,
                     }"
                   ></div>
                 </div>
@@ -131,7 +131,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
                 v-bind="item.attrs"
                 class="relative flex items-center justify-between py-2 pl-2 text-sm font-medium rounded-md group text-white/70 hover:bg-white/10 hover:text-white"
                 :class="{
-                  'text-gray-700 bg-white/15! hover:bg-gray-100':
+                  'text-gray-700 bg-white/10 hover:bg-white/10':
                     isNavigationItemActive(item),
                   'pb-5.5!': !expanded && item.is === 'a',
                   'w-10 pr-2 mx-auto': !expanded,
@@ -169,11 +169,12 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
             v-show="expanded"
             class="flex flex-col items-start justify-center p-4"
           >
-            <h2 class="uppercase text-white/50 mb-3 text-xs">External Links</h2>
+            <span class="mb-3 text-xs uppercase text-white/50"
+              >External Links</span
+            >
             <figure class="mb-3">
-              <figcaption class="mb-1 text-gray-500">A project of</figcaption>
+              <figcaption class="mb-1 text-white/50">A project of</figcaption>
               <a
-                class="bg-white"
                 href="https://rlc-deutschland.de/"
                 rel="noopener"
                 target="_blank"
@@ -181,12 +182,12 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
                 <img
                   src="/rlcd.png"
                   alt="RLC Deutschland"
-                  class="h-auto px-2 py-2 overflow-hidden border-2 border-gray-200 bg-white rounded-md shadow w-36"
+                  class="h-auto px-2 py-2 overflow-hidden bg-white border-2 border-gray-200 rounded-md shadow w-36"
                 />
               </a>
             </figure>
             <figure>
-              <figcaption class="mb-1 text-gray-500">supported by</figcaption>
+              <figcaption class="mb-1 text-white/50">Supported by</figcaption>
               <a
                 href="https://www.cms-stiftung.de/"
                 rel="noopener"

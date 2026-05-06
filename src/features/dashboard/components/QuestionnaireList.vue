@@ -9,9 +9,6 @@ const { questionnaires } = useQuestionnaires();
 <template>
   <BoxSection title="Questionnaires" :length="questionnaires?.length">
     <div v-if="questionnaires?.length">
-      <h2 class="mt-8 text-lg font-medium leading-6 text-gray-700">
-        Questionnaires
-      </h2>
       <ul class="p-1 mt-2 space-y-1 bg-white rounded">
         <li
           v-for="questionnaire in questionnaires"

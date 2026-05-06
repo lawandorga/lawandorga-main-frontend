@@ -1,23 +1,3 @@
-<template>
-  <ButtonNormal kind="primary" @click="commandModalOpen = true">
-    <PlusIcon class="w-6 h-6 mr-2"></PlusIcon>
-    Create Task
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Create Task"
-      :fields="taskFields"
-      submit="Create"
-      :request="commandRequest"
-      :data="{
-        action: 'tasks/create_task',
-        page_url: route.fullPath,
-        priority: 'medium',
-        progress: 0,
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { computed } from "vue";
 import useCmd from "@/composables/useCmd";
@@ -85,3 +65,23 @@ const taskFields = computed<types.FormField[]>(() => [
 
 const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
 </script>
+
+<template>
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    <PlusIcon class="w-6 h-6 mr-2"></PlusIcon>
+    Create Task
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Create Task"
+      :fields="taskFields"
+      submit="Create"
+      :request="commandRequest"
+      :data="{
+        action: 'tasks/create_task',
+        page_url: route.fullPath,
+        priority: 'medium',
+        progress: 0,
+      }"
+    />
+  </ButtonNormal>
+</template>

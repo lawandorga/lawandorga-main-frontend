@@ -11,35 +11,36 @@ const open = ref(true);
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-md">
+  <div class="bg-white shadow-md rounded-xl">
     <div
-      class="flex justify-between border-b-2 px-6 py-4 border-gray-200"
+      class="flex justify-between px-6 py-4"
       :class="{ 'border-b-0': !open }"
     >
-      <div class="flex gap-2 justify-center items-center">
-        <h2 class="items-baseline text-lg font-medium leading-6 text-gray-700">
+      <button
+        type="button"
+        :aria-expanded="open"
+        class="flex items-center justify-center gap-2 text-gray-400 transition-colors hover:text-gray-600 hover:cursor-pointer"
+        @click="open = !open"
+      >
+        <h2 class="text-lg font-medium leading-6 text-gray-700 text-start">
           {{ title }}
         </h2>
         <span
+          v-if="length !== undefined"
           class="rounded-md px-2 py-0.5 font-medium bg-gray-200 text-gray-800"
           >{{ length }}
         </span>
-        <button
-          type="button"
-          class="text-gray-400 hover:text-gray-600 transition-colors"
-          @click="open = !open"
-        >
-          <ChevronDownIcon
-            class="size-5 transition-transform duration-200"
-            :class="{ '-rotate-180': !open }"
-          />
-        </button>
-      </div>
+        <ChevronDownIcon
+          aria-hidden="true"
+          class="transition-transform duration-200 size-5"
+          :class="{ '-rotate-180': !open }"
+        />
+      </button>
       <div class="flex items-center gap-2">
         <slot name="action" />
       </div>
     </div>
-    <div v-show="open">
+    <div class="border-t-2 border-gray-200" v-show="open">
       <slot />
     </div>
   </div>

@@ -22,7 +22,7 @@ const inside = computed(() => {
 
 <template>
   <div
-    class="relative z-10 flex h-16 px-8 py-4 border-b shadow shrink-0 border-white/20 bg-white print:hidden"
+    class="relative z-10 flex h-16 px-6 py-2 bg-white border-b shadow shrink-0 border-white/20 print:hidden"
   >
     <button
       type="button"
@@ -32,18 +32,20 @@ const inside = computed(() => {
       <span class="sr-only">Open sidebar</span>
       <Bars3BottomLeftIcon class="w-6 h-6" aria-hidden="true" />
     </button>
-    <div class="flex justify-between flex-1 px-4">
+    <div class="flex justify-between flex-1">
       <div class="flex items-center flex-1">
         <BreadcrumbsBar
-          class="lg:col-span-2 mr-4"
+          class="hidden mr-4 md:block"
           :base="{ name: 'dashboard' }"
           :pages="[]"
         >
           <Squares2X2Icon class="w-6 h-6" />
         </BreadcrumbsBar>
-        <h1 class="text-2xl font-bold text-gray-700">
+        <span
+          class="hidden text-lg font-bold text-gray-700 lg:text-2xl md:block"
+        >
           Welcome {{ user?.name }}
-        </h1>
+        </span>
         <div v-show="!inside" class="flex space-x-3">
           <router-link
             :to="{ name: 'index' }"
@@ -52,7 +54,6 @@ const inside = computed(() => {
             <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
             <h1 class="text-2xl font-bold text-primary">Law&Orga</h1>
           </router-link>
-          <div class="w-px h-8 bg-white"></div>
           <img
             src="/sponsor-cms.jpg"
             alt="CMS Stiftung"

@@ -15,7 +15,11 @@ const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
 
 <template>
-  <ButtonNormal kind="delete" @click="commandModalOpen = true" class="pl-2">
+  <ButtonNormal
+    kind="delete"
+    aria-label="Delete Note"
+    @click="commandModalOpen = true"
+  >
     <TrashIcon class="w-4 h-4 stroke-2" />
     <ModalDelete
       v-model="commandModalOpen"
