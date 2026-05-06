@@ -7,6 +7,7 @@ import helpRoutes from "@/features/help/routes";
 import internalRoutes from "@/features/internal/routes";
 import legalRoutes from "@/features/legal/routes";
 import eventsRoutes from "@/features/events/routes";
+import calendarRoutes from "@/features/calendar/routes";
 import mailRoutes from "@/features/mail/routes";
 import DashboardPage from "@/features/dashboard/views/DashboardPage.vue";
 import ErrorPage from "@/views/ErrorPage.vue";
@@ -49,6 +50,7 @@ const routes: Array<RouteRecordRaw> = [
   ...internalRoutes,
   ...legalRoutes,
   ...eventsRoutes,
+  ...calendarRoutes,
   ...mailRoutes,
   ...uploadsRoutes,
   ...chatRoutes,

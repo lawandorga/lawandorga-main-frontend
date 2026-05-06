@@ -137,6 +137,15 @@ export default function useNavigationItems() {
         permissions: [],
       });
 
+    if (store.user?.email === "dummy@law-orga.de")
+      items1.push({
+        label: "Calendar (WIP)",
+        icon: CalendarDaysIcon,
+        is: "router-link",
+        attrs: { to: { name: "calendar-dashboard" } },
+        permissions: [],
+      });
+
     if (store.org?.links.length) {
       items1.push({ divider: true });
       store.org?.links.forEach((l) => {
