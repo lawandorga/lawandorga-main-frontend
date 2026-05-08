@@ -101,7 +101,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
 
         <div class="flex flex-col justify-between bg-primary grow">
           <nav
-            class="flex-1 pb-2 border-b bg-primary border-white/20"
+            class="flex-1 pb-2 bg-primary border-white/20"
             :class="{
               'space-y-3 pt-3': !expanded,
               'space-y-1 px-2 pt-2': expanded,
@@ -112,17 +112,21 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
                 <div
                   class=""
                   :class="{
-                    'w-full py-4': expanded,
+                    'w-full mt-4': expanded,
                     'w-10 py-0.5 mx-auto': !expanded,
                   }"
                 >
                   <div
-                    class="w-full border-t"
+                    class="w-full pt-2 border-t"
                     :class="{
-                      'border-white/10': expanded,
-                      'border-white/70': !expanded,
+                      'border-white/20': expanded,
+                      'border-white/50': !expanded,
                     }"
-                  ></div>
+                  >
+                    <span class="block px-2 text-xs uppercase text-white/50"
+                      >External Links</span
+                    >
+                  </div>
                 </div>
               </div>
               <component
@@ -169,8 +173,8 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
             v-show="expanded"
             class="flex flex-col items-start justify-center p-4"
           >
-            <span class="mb-3 text-xs uppercase text-white/50"
-              >External Links</span
+            <span class="block py-2 text-xs uppercase text-white/50"
+              >Sponsors</span
             >
             <figure class="mb-3">
               <figcaption class="mb-1 text-white/50">A project of</figcaption>
