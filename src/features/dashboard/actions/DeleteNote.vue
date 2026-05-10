@@ -2,6 +2,7 @@
 import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
+import { TrashIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps<{
   query: () => void;
@@ -14,8 +15,12 @@ const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
 
 <template>
-  <ButtonNormal kind="delete" @click="commandModalOpen = true">
-    Delete
+  <ButtonNormal
+    kind="delete"
+    aria-label="Delete Note"
+    @click="commandModalOpen = true"
+  >
+    <TrashIcon class="w-4 h-4 stroke-2" />
     <ModalDelete
       v-model="commandModalOpen"
       :request="commandRequest"

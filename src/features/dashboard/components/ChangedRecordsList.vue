@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import BoxSection from "@/components/BoxSection.vue";
-import { useQuestionnaires } from "../api/useQuestionnaires";
+import { useChangedRecords } from "../api/useChangedRecords";
+const { changedRecords } = useChangedRecords();
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
-
-const { questionnaires } = useQuestionnaires();
+import { formatDate } from "@/utils/date";
 </script>
 
 <template>
-  <BoxSection title="Questionnaires" :length="questionnaires?.length">
-    <div v-if="questionnaires?.length">
+  <BoxSection
+    title="Records updated in the last 10 days"
+    :length="changedRecords?.length"
+  >
+    <div v-if="changedRecords?.length">
       <ul class="p-1 mt-2 space-y-1 bg-white rounded">
-        <li
-          v-for="questionnaire in questionnaires"
-          :key="questionnaire.name"
-          class="block"
-        >
+        <li v-for="record in changedRecords" :key="record.uuid" class="block">
           <router-link
             :to="{
               name: 'folders-detail',
-              params: { uuid: questionnaire.folder_uuid },
+              params: { uuid: record.folder_uuid },
             }"
             class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
           >
-            {{ questionnaire.name }}
+            {{ record.identifier }}
+            ({{ formatDate(record.updated) }})
             <div
               class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
             >
@@ -33,7 +33,7 @@ const { questionnaires } = useQuestionnaires();
       </ul>
     </div>
     <div v-else class="px-6 py-4 text-gray-500 w-full">
-      No questionnaires found.
+      No changed records found.
     </div>
   </BoxSection>
 </template>

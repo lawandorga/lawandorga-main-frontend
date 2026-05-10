@@ -9,7 +9,7 @@ import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import LogoWhite from "./LogoWhite.vue";
 import { CircleLoader } from "lorga-ui";
 import { storeToRefs } from "pinia";
-import RedBadge from "./RedBadge.vue";
+import NavigationSidebarItem from "./NavigationSidebarItem.vue";
 
 const { navigationItems } = useNavigationItems();
 const userStore = useUserStore();
@@ -17,10 +17,12 @@ const { loaded } = storeToRefs(userStore);
 const route = useRoute();
 const router = useRouter();
 
-const expanded = ref(userStore.getSetting("navigationExpanded", true));
+const expanded = ref(
+  userStore.getSetting("navigationExpanded", true) as boolean,
+);
 
 watch(loaded, () => {
-  expanded.value = userStore.getSetting("navigationExpanded", true);
+  expanded.value = userStore.getSetting("navigationExpanded", true) as boolean;
 });
 
 const expandClicked = () => {
@@ -62,28 +64,24 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           </button>
         </div>
         <div
-          v-show="expanded"
-          class="flex items-center px-4 py-1 border-b h-14 border-white/20"
+          class="flex items-center h-14 border-white/20"
+          :class="{ 'px-4': expanded, 'border-b': !expanded }"
         >
           <router-link
             :to="{ name: 'start' }"
-            class="flex items-center h-10 px-4 -ml-2 space-x-2 rounded hover:bg-gray-50/10"
+            class="flex items-center rounded hover:bg-gray-50/10"
+            :class="
+              expanded
+                ? 'h-10 px-4 -ml-2 space-x-2'
+                : 'justify-center w-10 h-10 mx-auto'
+            "
           >
-            <div class="-ml-2">
+            <div :class="{ '-ml-2': expanded }">
               <LogoWhite />
             </div>
-            <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
-          </router-link>
-        </div>
-        <div
-          v-show="!expanded"
-          class="flex items-center border-b h-14 border-white/20"
-        >
-          <router-link
-            :to="{ name: 'start' }"
-            class="flex items-center justify-center w-10 h-10 mx-auto rounded hover:bg-gray-50/10"
-          >
-            <LogoWhite />
+            <h1 v-show="expanded" class="text-2xl font-bold text-white">
+              Law&Orga
+            </h1>
           </router-link>
         </div>
         <div
@@ -91,86 +89,39 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           class="px-4 py-3 text-white border-b border-white/20"
         >
           <div v-show="userStore.loaded">
-            <div class="truncate">
+            <div class="text-sm truncate">
               {{ userStore.org?.name }}: {{ userStore.user?.name }}
             </div>
-            <div class="truncate">{{ userStore.user?.email }}</div>
+            <div class="text-xs truncate">{{ userStore.user?.email }}</div>
           </div>
           <CircleLoader v-show="!userStore.loaded" class="text-white" />
         </div>
 
-        <div class="flex flex-col justify-between bg-white grow">
+        <div class="flex flex-col justify-between bg-primary grow">
           <nav
-            class="flex-1 pb-2 bg-white"
+            class="flex-1 pb-2 bg-primary border-white/20"
             :class="{
               'space-y-3 pt-3': !expanded,
               'space-y-1 px-2 pt-2': expanded,
             }"
           >
-            <template v-for="item in navigationItems" :key="item.label">
-              <div v-if="item.divider">
-                <div
-                  class=""
-                  :class="{
-                    'w-full py-4': expanded,
-                    'w-10 py-0.5 mx-auto': !expanded,
-                  }"
-                >
-                  <div
-                    class="w-full border-t"
-                    :class="{
-                      'border-gray-100': expanded,
-                      'border-gray-300': !expanded,
-                    }"
-                  ></div>
-                </div>
-              </div>
-              <component
-                :is="item.is"
-                v-else
-                v-bind="item.attrs"
-                class="relative flex items-center justify-between py-2 pl-2 text-sm font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900"
-                :class="{
-                  'text-gray-700 bg-gray-100! hover:bg-gray-100':
-                    isNavigationItemActive(item),
-                  'pb-5.5!': !expanded && item.is === 'a',
-                  'w-10 pr-2 mx-auto': !expanded,
-                  'pr-3': expanded,
-                }"
-              >
-                <div class="flex items-center">
-                  <component
-                    :is="item.icon"
-                    class="w-6 h-6 text-gray-400 shrink-0 group-hover:text-gray-500"
-                    :class="{ 'mr-3': expanded }"
-                  />
-                  <span
-                    v-show="expanded || item.is === 'a'"
-                    :class="{
-                      'text-xs absolute block bold top-8 truncate left-0 right-0 text-center text-gray-500':
-                        !expanded,
-                    }"
-                  >
-                    {{ item.label }}
-                  </span>
-                </div>
-                <RedBadge
-                  v-if="item.notifications && item.notifications > 0"
-                  :additional-classes="
-                    expanded ? '' : 'absolute top-1 right-1 w-4! h-4! text-xs!'
-                  "
-                >
-                  {{ item.notifications }}
-                </RedBadge>
-              </component>
-            </template>
+            <NavigationSidebarItem
+              v-for="item in navigationItems"
+              :key="item.label"
+              :item="item"
+              :expanded="expanded"
+              :active="isNavigationItemActive(item)"
+            />
           </nav>
           <div
             v-show="expanded"
-            class="flex flex-col items-start justify-center px-4 pb-4"
+            class="flex flex-col items-start justify-center p-4"
           >
+            <span class="block py-2 text-xs uppercase text-white/50"
+              >Sponsors</span
+            >
             <figure class="mb-3">
-              <figcaption class="mb-1 text-gray-500">A project of</figcaption>
+              <figcaption class="mb-1 text-white/50">A project of</figcaption>
               <a
                 href="https://rlc-deutschland.de/"
                 rel="noopener"
@@ -179,12 +130,12 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
                 <img
                   src="/rlcd.png"
                   alt="RLC Deutschland"
-                  class="h-auto px-2 py-2 overflow-hidden border-2 border-gray-200 rounded-md shadow w-36"
+                  class="h-auto px-2 py-2 overflow-hidden bg-white border-2 border-gray-200 rounded-md shadow w-36"
                 />
               </a>
             </figure>
             <figure>
-              <figcaption class="mb-1 text-gray-500">supported by</figcaption>
+              <figcaption class="mb-1 text-white/50">Supported by</figcaption>
               <a
                 href="https://www.cms-stiftung.de/"
                 rel="noopener"

@@ -1,28 +1,26 @@
 <script setup lang="ts">
 import BoxSection from "@/components/BoxSection.vue";
-import { useQuestionnaires } from "../api/useQuestionnaires";
+import { useRecords } from "../api/useRecords";
 import { ChevronRightIcon } from "@heroicons/vue/20/solid";
 
-const { questionnaires } = useQuestionnaires();
+const { records } = useRecords();
 </script>
 
 <template>
-  <BoxSection title="Questionnaires" :length="questionnaires?.length">
-    <div v-if="questionnaires?.length">
+  <BoxSection title="Active Data Sheets" :length="records?.length">
+    <div v-if="records?.length" class="pb-2">
       <ul class="p-1 mt-2 space-y-1 bg-white rounded">
-        <li
-          v-for="questionnaire in questionnaires"
-          :key="questionnaire.name"
-          class="block"
-        >
+        <li v-for="sheet in records" :key="sheet.uuid" class="block">
           <router-link
             :to="{
               name: 'folders-detail',
-              params: { uuid: questionnaire.folder_uuid },
+              params: { uuid: sheet.folder_uuid },
+              query: { selectedType: 'RECORD', selectedId: sheet.uuid },
             }"
             class="relative block w-full px-4 py-2 text-left text-gray-700 transition rounded-sm group hover:text-gray-900 hover:bg-gray-100"
           >
-            {{ questionnaire.name }}
+            {{ sheet.identifier }}
+            ({{ sheet.state }})
             <div
               class="absolute top-0 bottom-0 right-0 flex items-center justify-center transition opacity-0 group-hover:opacity-100"
             >
@@ -33,7 +31,7 @@ const { questionnaires } = useQuestionnaires();
       </ul>
     </div>
     <div v-else class="px-6 py-4 text-gray-500 w-full">
-      No questionnaires found.
+      No active data sheets.
     </div>
   </BoxSection>
 </template>
