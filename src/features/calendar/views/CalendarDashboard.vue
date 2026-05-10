@@ -11,18 +11,13 @@ import type {
 } from "@fullcalendar/core";
 import enGBLocale from "@fullcalendar/core/locales/en-gb";
 import { computed, ref } from "vue";
-import { ModalFree } from "lorga-ui";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import {
-  CalendarDaysIcon,
-  DocumentTextIcon,
-  MapPinIcon,
-  UserIcon,
-} from "@heroicons/vue/24/outline";
+import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import {
   useCalendarEvents,
   type CalendarEvent,
 } from "../api/useCalendarEvents";
+import CalendarEventDetail from "../components/CalendarEventDetail.vue";
 
 const CALENDAR_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin];
 
@@ -48,21 +43,6 @@ const getEventTypeMeta = (eventType: CalendarEvent["event_type"]) =>
 const eventTypeColor = (eventType: CalendarEvent["event_type"]): string =>
   getEventTypeMeta(eventType).color;
 
-const formatEventType = (eventType: CalendarEvent["event_type"]): string =>
-  getEventTypeMeta(eventType).label;
-
-const formatTime = (value: string): string =>
-  new Date(value).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-const formatTimeRange = (event: CalendarEvent): string => {
-  const startTime = formatTime(event.start_time);
-  if (!event.end_time) return startTime;
-  return `${startTime} - ${formatTime(event.end_time)}`;
-};
-
 const formatWeekday = (date: Date): string =>
   date.toLocaleString("en-GB", { weekday: "short" }).slice(0, 2).toUpperCase();
 
@@ -87,23 +67,6 @@ const onEventClick = (props: EventClickArg) => {
     .calendarEvent as CalendarEvent;
   detailOpen.value = true;
 };
-
-const selectedEventColor = computed(() =>
-  eventTypeColor(selectedEvent.value!.event_type),
-);
-
-const formattedEventDate = computed(() =>
-  new Date(selectedEvent.value!.start_time).toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }),
-);
-
-const formattedEventTime = computed(() =>
-  formatTimeRange(selectedEvent.value!),
-);
 
 const isoWeekNumber = (date: Date): number => {
   const millisecondsPerDay = 86400000;
@@ -147,7 +110,7 @@ const gridViewDayHeader = (props: DayHeaderContentArg) => {
   dayHeaderElement.className = "calendar-day-header";
 
   const weekdayElement = document.createElement("span");
-  weekdayElement.className = "calendar-day-header__abbr";
+  weekdayElement.className = "calendar-day-header__title";
   weekdayElement.textContent = formatWeekday(props.date);
 
   const dayNumberElement = document.createElement("div");
@@ -165,10 +128,6 @@ const dayHeaderContent = (props: DayHeaderContentArg) => {
   if (props.view.type === "listMonth") return listViewDayHeader(props.date);
   return gridViewDayHeader(props);
 };
-
-const monthViewEventContent = (titleElement: HTMLDivElement) => ({
-  domNodes: [titleElement],
-});
 
 const listViewEventContent = (
   event: CalendarEvent,
@@ -210,8 +169,7 @@ const eventContent = (props: EventContentArg) => {
   titleElement.className = "calendar-event__title";
   titleElement.textContent = event.title;
 
-  if (props.view.type === "dayGridMonth")
-    return monthViewEventContent(titleElement);
+  if (props.view.type === "dayGridMonth") return { domNodes: [titleElement] };
   if (props.view.type === "listMonth")
     return listViewEventContent(event, titleElement);
   return gridViewEventContent(event, titleElement);
@@ -247,14 +205,13 @@ const calendarBaseOptions: CalendarOptions = {
         return `${month} ${monthStart.getFullYear()}`;
       },
     },
-    dayGridMonth: {},
   },
   locale: enGBLocale,
   firstDay: 1,
-  // nav h-16 (64) + main py-6×2 (48) + breadcrumbs h-11 (44) + gap space-y-6 (24) + card p-4×2 (32) = 212px
-  height: "calc(100vh - 212px)",
+  height: "100%",
   nowIndicator: true,
   eventDisplay: "block",
+  expandRows: true,
   editable: false,
   allDaySlot: false,
   scrollTime: "07:00:00",
@@ -271,12 +228,16 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 </script>
 
 <template>
-  <div class="calendar-page mx-auto space-y-6 max-w-(--breakpoint-2xl)">
+  <div
+    class="calendar-page flex flex-col h-full gap-6 mx-auto max-w-(--breakpoint-2xl)"
+  >
     <BreadcrumbsBar :base="{ name: 'calendar-dashboard' }" :pages="[]">
       <CalendarDaysIcon class="w-6 h-6" />
     </BreadcrumbsBar>
 
-    <div class="relative p-4 bg-white rounded-lg shadow isolate calendar-shell">
+    <div
+      class="relative flex-1 min-h-0 p-4 bg-white rounded-lg shadow isolate calendar-shell"
+    >
       <div
         v-if="isCalendarLoading"
         class="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/70"
@@ -286,143 +247,128 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       <FullCalendar :options="calendarOptions" />
     </div>
 
-    <ModalFree
-      v-model="detailOpen"
-      :title="selectedEvent?.title ?? ''"
-      width="max-w-lg"
-    >
-      <template v-if="selectedEvent">
-        <div class="flex flex-wrap gap-2 mb-5">
-          <span
-            class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
-            :style="{
-              backgroundColor: `${selectedEventColor}${TINT_ALPHA}`,
-              color: selectedEventColor,
-            }"
-          >
-            <span
-              class="inline-block w-1.5 h-1.5 rounded-full shrink-0"
-              :style="{
-                backgroundColor: selectedEventColor,
-              }"
-            />
-            {{ formatEventType(selectedEvent.event_type) }}
-          </span>
-          <span
-            v-if="selectedEvent.guest_user_ids.length > 0"
-            class="inline-flex items-center text-xs font-medium px-2.5 py-1 rounded-full border border-gray-300 text-gray-600"
-          >
-            Shared
-          </span>
-        </div>
-
-        <dl class="space-y-3 text-sm">
-          <div class="flex items-start gap-3">
-            <dt class="shrink-0">
-              <CalendarDaysIcon
-                class="w-4 h-4 text-gray-400 mt-0.5"
-                aria-hidden="true"
-              />
-              <span class="sr-only">Date</span>
-            </dt>
-            <div>
-              <dd class="text-gray-900">{{ formattedEventDate }}</dd>
-              <dd class="text-gray-500">{{ formattedEventTime }}</dd>
-            </div>
-          </div>
-          <div v-if="selectedEvent.location" class="flex items-center gap-3">
-            <dt class="shrink-0">
-              <MapPinIcon class="w-4 h-4 text-gray-400" aria-hidden="true" />
-              <span class="sr-only">Location</span>
-            </dt>
-            <dd class="text-gray-900">{{ selectedEvent.location }}</dd>
-          </div>
-          <div v-if="selectedEvent.description" class="flex items-start gap-3">
-            <dt class="shrink-0">
-              <DocumentTextIcon
-                class="w-4 h-4 text-gray-400 mt-0.5"
-                aria-hidden="true"
-              />
-              <span class="sr-only">Description</span>
-            </dt>
-            <dd class="text-gray-900 whitespace-pre-wrap">
-              {{ selectedEvent.description }}
-            </dd>
-          </div>
-          <div class="flex items-center gap-3">
-            <dt class="shrink-0">
-              <UserIcon class="w-4 h-4 text-gray-400" aria-hidden="true" />
-              <span class="sr-only">Creator</span>
-            </dt>
-            <dd class="text-gray-900">{{ selectedEvent.creator_name }}</dd>
-          </div>
-        </dl>
-
-        <div class="flex gap-3 pt-4 mt-6 border-t border-gray-100">
-          <button
-            type="button"
-            class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-            @click="detailOpen = false"
-          >
-            Close
-          </button>
-          <button
-            type="button"
-            class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-formcolor rounded-lg hover:bg-(--color-formcolor-hover)"
-          >
-            Edit
-          </button>
-        </div>
-      </template>
-    </ModalFree>
+    <CalendarEventDetail v-model="detailOpen" :event="selectedEvent" />
   </div>
 </template>
 
 <style scoped>
-.calendar-page {
-  --color-formcolor-hover: #005068;
-}
-
 .calendar-shell {
-  min-height: calc(100vh - 212px);
   --fc-today-bg-color: rgba(0, 60, 77, 0.07);
   --fc-neutral-bg-color: #f7f7f4;
   --fc-list-event-hover-bg-color: white;
+
+  --color-formcolor-hover: #005068;
+  --color-muted: #9ca3af;
+  --color-subtle-bg: #fafaf8;
+  --color-button-border: #e2e2de;
 }
 
+/* Toolbar */
+:deep(.fc-toolbar-chunk) {
+  display: flex;
+  align-items: center;
+}
+
+:deep(.fc-toolbar-title) {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-formcolor);
+  white-space: nowrap;
+}
+
+:deep(.fc) {
+  .fc-button-primary {
+    background-color: var(--fc-neutral-bg-color);
+    border-color: var(--color-button-border);
+    color: #374151;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+
+    &:not(:disabled):hover {
+      background-color: var(--color-button-border);
+      border-color: var(--color-button-border);
+      color: #374151;
+    }
+
+    &.fc-button-active {
+      background-color: var(--color-formcolor);
+      border-color: var(--color-formcolor);
+      color: #fff;
+      font-weight: 500;
+      z-index: 2;
+
+      &:not(:disabled):hover {
+        background-color: var(--color-formcolor-hover);
+        border-color: var(--color-formcolor-hover);
+        color: #fff;
+      }
+    }
+  }
+
+  .fc-button:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+/* Week / Day view */
 :deep(.calendar-day-header) {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   padding: 6px 0;
+
+  .calendar-day-header__title {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
+
+  .calendar-day-header__date {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--color-formcolor);
+
+    &.calendar-day-header__date--today {
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--color-formcolor);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 
-:deep(.calendar-day-header__abbr) {
+:deep(.fc-day-sat),
+:deep(.fc-day-sun) {
+  background-color: var(--color-subtle-bg);
+}
+
+:deep(.fc-timegrid-slot-label-cushion) {
   font-size: 10px;
-  font-weight: 500;
-  color: #9ca3af;
-  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  padding-right: 6px;
 }
 
-:deep(.calendar-day-header__date) {
-  font-size: 17px;
-  font-weight: 300;
-  color: var(--color-formcolor);
-  line-height: 1;
+:deep(.fc-v-event),
+:deep(.fc-h-event) {
+  border: none;
+  border-left: 3px solid var(--fc-event-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-:deep(.calendar-day-header__date--today) {
-  font-size: 14px;
-  font-weight: 500;
-  background: var(--color-formcolor);
-  color: #fff;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+:deep(.fc-v-event:hover),
+:deep(.fc-h-event:hover) {
+  filter: brightness(0.93);
 }
 
 :deep(.calendar-event__title) {
@@ -440,57 +386,16 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   text-overflow: ellipsis;
 }
 
-:deep(.fc-toolbar-chunk) {
-  display: flex;
-  align-items: center;
-}
-
-:deep(.fc-toolbar-title) {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-formcolor);
-  white-space: nowrap;
-}
-
-:deep(.fc .fc-button-primary) {
-  background-color: var(--fc-neutral-bg-color);
-  border-color: #e2e2de;
-  color: #374151;
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-:deep(.fc .fc-button-primary:not(:disabled):hover) {
-  background-color: #e2e2de;
-  border-color: #e2e2de;
-  color: #374151;
-  box-shadow: none;
-}
-
-:deep(.fc-day-sat),
-:deep(.fc-day-sun) {
-  background-color: #fafaf8;
-}
-
-/* Slot time labels: small, muted */
-:deep(.fc-timegrid-slot-label-cushion) {
-  font-size: 10px;
-  color: #9ca3af;
-  padding-right: 6px;
-}
-
-/* Month view: weekday-only column headers */
+/* Month view */
 :deep(.calendar-month-header__weekday) {
   display: block;
   font-size: 11px;
   font-weight: 500;
-  color: #9ca3af;
+  color: var(--color-muted);
   letter-spacing: 0.05em;
   padding: 6px 0;
 }
 
-/* Month view: left-align day numbers */
 :deep(.fc-daygrid-day-top) {
   flex-direction: row;
 }
@@ -502,7 +407,6 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   padding: 4px 8px;
 }
 
-/* Month view: today's day number circle */
 :deep(.fc-day-today .fc-daygrid-day-number) {
   background: var(--color-formcolor);
   color: #fff;
@@ -516,36 +420,20 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   margin: 4px 8px;
 }
 
-/* Month view: out-of-month days */
 :deep(.fc-day-other) {
-  background-color: #fafaf8;
+  background-color: var(--color-subtle-bg);
+
+  .fc-daygrid-day-number {
+    color: #d1d5db;
+  }
 }
 
-:deep(.fc-day-other .fc-daygrid-day-number) {
-  color: #d1d5db;
-}
-
-/* Month view: compact event sizing */
 :deep(.fc-daygrid-event) {
   font-size: 11px;
   padding: 1px 2px;
 }
 
-/* Event cards: light tint background with left accent border */
-:deep(.fc-v-event),
-:deep(.fc-h-event) {
-  border: none;
-  border-left: 3px solid var(--fc-event-border-color);
-  border-radius: 4px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-:deep(.fc-v-event:hover),
-:deep(.fc-h-event:hover) {
-  filter: brightness(0.93);
-}
-
+/* List view */
 :deep(.fc-list-day th) {
   text-align: left;
 }
@@ -559,20 +447,5 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 
 :deep(.fc-list-event) {
   cursor: pointer;
-}
-
-/* Active view button gets the brand colour */
-:deep(.fc .fc-button-primary.fc-button-active) {
-  background-color: var(--color-formcolor);
-  border-color: var(--color-formcolor);
-  color: #fff;
-  font-weight: 500;
-}
-
-:deep(.fc .fc-button-primary.fc-button-active:not(:disabled):hover) {
-  background-color: var(--color-formcolor-hover);
-  border-color: var(--color-formcolor-hover);
-  color: #fff;
-  box-shadow: none;
 }
 </style>
