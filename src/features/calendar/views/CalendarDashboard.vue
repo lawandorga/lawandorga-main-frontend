@@ -174,29 +174,13 @@ const listViewEventContent = (
   event: CalendarEvent,
   titleElement: HTMLDivElement,
 ) => {
-  const color = eventTypeColor(event.event_type);
-
-  const dotElement = document.createElement("span");
-  dotElement.className = "calendar-list-event__dot";
-  dotElement.style.backgroundColor = color;
-
-  const titleRow = document.createElement("div");
-  titleRow.className = "calendar-list-event__title-row";
-  titleRow.append(dotElement, titleElement);
-
-  const metaParts = [formatTimeRange(event), event.creator_name];
-  if (event.location) metaParts.push(event.location);
+  const metaParts = event.location
+    ? [event.location, event.creator_name]
+    : [event.creator_name];
   const metaElement = document.createElement("div");
   metaElement.className = "calendar-event__meta";
   metaElement.textContent = metaParts.join(" · ");
-
-  const pillElement = document.createElement("span");
-  pillElement.className = "calendar-list-event__pill";
-  pillElement.style.backgroundColor = `${color}${TINT_ALPHA}`;
-  pillElement.style.color = color;
-  pillElement.textContent = formatEventType(event.event_type);
-
-  return { domNodes: [titleRow, metaElement, pillElement] };
+  return { domNodes: [titleElement, metaElement] };
 };
 
 const gridViewEventContent = (
@@ -295,7 +279,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     <div class="relative p-4 bg-white rounded-lg shadow isolate calendar-shell">
       <div
         v-if="isCalendarLoading"
-        class="absolute inset-0 flex items-center justify-center bg-white/70 rounded-lg z-10"
+        class="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/70"
       >
         <span class="text-sm text-gray-400">Loading…</span>
       </div>
@@ -562,27 +546,8 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   filter: brightness(0.93);
 }
 
-/* List view: .fc-scroller-liquid fills its parent (liquid = fills parent height),
-   so background and padding here cover the full area including below the last event */
-:deep(.fc-list .fc-scroller-liquid) {
-  background-color: var(--fc-neutral-bg-color);
-  padding: 0 12px;
-  box-sizing: border-box;
-}
-
-:deep(.fc-list-table) {
-  border-collapse: separate;
-  border-spacing: 0 4px;
-  background-color: var(--fc-neutral-bg-color);
-}
-
-/* List view: day header left-aligned, blends into gray background */
 :deep(.fc-list-day th) {
   text-align: left;
-}
-
-:deep(.fc-list-day-cushion) {
-  padding: 10px 4px 4px;
 }
 
 :deep(.calendar-list-day-header) {
@@ -592,48 +557,8 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   letter-spacing: 0.05em;
 }
 
-/* List view: event rows as white cards */
 :deep(.fc-list-event) {
   cursor: pointer;
-}
-
-:deep(.fc-list-event-time),
-:deep(.fc-list-event-graphic) {
-  display: none;
-}
-
-:deep(.fc-list-event-title) {
-  background: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px !important;
-}
-
-:deep(.fc-list-event:hover .fc-list-event-title) {
-  box-shadow: 0 0 0 1.5px var(--color-formcolor);
-}
-
-/* List event: colored dot before title */
-:deep(.calendar-list-event__title-row) {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-:deep(.calendar-list-event__dot) {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-:deep(.calendar-list-event__pill) {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  margin-top: 6px;
 }
 
 /* Active view button gets the brand colour */
