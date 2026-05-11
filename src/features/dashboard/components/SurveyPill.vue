@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { ModalFree } from "lorga-ui";
+import { ref } from "vue";
+
 import SurveyIcon from "./SurveyIcon.vue";
 import SurveyQrCode from "./SurveyQrCode.vue";
 
@@ -22,15 +23,15 @@ function copyLink() {
 <template>
   <button
     type="button"
-    class="survey-pill rounded-full cursor-pointer overflow-hidden transition-[background-color,border-color,box-shadow] duration-200 border border-formcolor bg-formcolor hover:bg-blue-700 hover:border-blue-700"
+    class="survey-pill border-formcolor bg-formcolor cursor-pointer overflow-hidden rounded-full border transition-[background-color,border-color,box-shadow] duration-200 hover:border-blue-700 hover:bg-blue-700"
     aria-haspopup="dialog"
     :aria-expanded="open"
     @click="open = true"
   >
-    <div class="flex items-center gap-2.5 py-1.25 pl-1.25 pr-3.5">
-      <SurveyIcon :size="36" class="shrink-0 text-formcolor" />
+    <div class="flex items-center gap-2.5 py-1.25 pr-3.5 pl-1.25">
+      <SurveyIcon :size="36" class="text-formcolor shrink-0" />
       <div class="flex flex-col gap-px text-left">
-        <span class="text-xs font-bold tracking-wider uppercase text-white/60">
+        <span class="text-xs font-bold tracking-wider text-white/60 uppercase">
           User Survey
         </span>
         <span class="text-xs leading-snug text-white">
@@ -44,25 +45,25 @@ function copyLink() {
     <div class="flex flex-col items-center gap-4 py-1">
       <SurveyIcon :size="56" class="text-formcolor" />
 
-      <div class="bg-blue-50 border border-blue-100 rounded-xl p-3.5">
+      <div class="rounded-xl border border-blue-100 bg-blue-50 p-3.5">
         <SurveyQrCode :size="160" />
       </div>
 
       <div
-        class="flex items-center w-full gap-2 px-3 py-2 border border-blue-100 rounded-lg bg-blue-50"
+        class="flex w-full items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2"
       >
         <span
-          class="flex-1 overflow-hidden font-mono text-xs text-formcolor text-ellipsis whitespace-nowrap"
+          class="text-formcolor flex-1 overflow-hidden font-mono text-xs text-ellipsis whitespace-nowrap"
         >
           {{ SURVEY_URL }}
         </span>
         <button
           type="button"
-          class="px-2 py-1 text-xs font-semibold transition-colors border rounded whitespace-nowrap"
+          class="rounded border px-2 py-1 text-xs font-semibold whitespace-nowrap transition-colors"
           :class="
             copied
-              ? 'bg-formcolor text-white border-formcolor'
-              : 'text-formcolor border-blue-200 bg-white hover:bg-formcolor hover:text-white'
+              ? 'bg-formcolor border-formcolor text-white'
+              : 'text-formcolor hover:bg-formcolor border-blue-200 bg-white hover:text-white'
           "
           :aria-label="copied ? 'Link copied to clipboard' : 'Copy survey link'"
           @click="copyLink"
@@ -75,7 +76,7 @@ function copyLink() {
         href="https://www.umfrageonline.com/c/law-orga-umfrage-alle-user"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center justify-center gap-1.5 w-full py-2.5 bg-formcolor text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors no-underline"
+        class="bg-formcolor flex w-full items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-blue-700"
       >
         Open Survey
         <span class="sr-only">, opens in new tab</span>
@@ -96,7 +97,7 @@ function copyLink() {
         </svg>
       </a>
 
-      <p class="text-xs text-center text-gray-500">
+      <p class="text-center text-xs text-gray-500">
         Or scan the QR code with your phone
       </p>
     </div>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import useCommand from "@/composables/useCommand";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { computed, toRefs, watch } from "vue";
+
 import useClient from "@/api/client";
+import useCommand from "@/composables/useCommand";
+
 import { useTemplates } from "../api/useTemplates";
 
 // props

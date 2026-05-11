@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { useArticles } from "../api/useArticles";
 import { ButtonNormal } from "lorga-ui";
+
+import { useArticles } from "../api/useArticles";
 const { articles } = useArticles();
 </script>
 
 <template>
   <div v-if="articles?.length" class="lg:col-span-2 xl:col-span-3">
-    <div class="flex justify-between mt-8">
-      <h2 class="items-baseline text-lg font-medium leading-6 text-gray-700">
+    <div class="mt-8 flex justify-between">
+      <h2 class="items-baseline text-lg leading-6 font-medium text-gray-700">
         News from Law&Orga
       </h2>
     </div>
-    <div class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3">
+    <div class="mt-2 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
       <article
         v-for="article in articles"
         :key="article.id"
-        class="flex flex-col justify-between px-6 pt-4 pb-4 bg-white rounded shadow"
+        class="flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
       >
-        <p class="text-sm text-gray-500 text-end">
+        <p class="text-end text-sm text-gray-500">
           {{ new Date(article.date).toLocaleDateString() }}
         </p>
         <div>
@@ -25,7 +26,7 @@ const { articles } = useArticles();
             {{ article.title }}
           </h3>
           <p
-            class="text-sm text-gray-700 wrap-break-word whitespace-pre-line [&>a]:font-medium [&>a]:text-formcolor"
+            class="[&>a]:text-formcolor text-sm wrap-break-word whitespace-pre-line text-gray-700 [&>a]:font-medium"
           >
             {{ article.preview }}
           </p>

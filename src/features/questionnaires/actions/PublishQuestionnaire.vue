@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
+
 import useClient from "@/api/client";
-import useQuery from "@/composables/useQuery";
 import useCmd from "@/composables/useCmd";
+import useQuery from "@/composables/useQuery";
 
 export interface QuestionnaireTemplate {
   id: number;

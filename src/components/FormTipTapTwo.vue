@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { EditorContent, useEditor } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
 import CharacterCount from "@tiptap/extension-character-count";
+import Highlight from "@tiptap/extension-highlight";
 import { TableKit } from "@tiptap/extension-table";
-import MenuBar from "./FormMenuBar.vue";
+import StarterKit from "@tiptap/starter-kit";
+import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { toRefs } from "vue";
+
+import MenuBar from "./FormMenuBar.vue";
 
 const props = defineProps<{
   room: string;
@@ -51,20 +52,20 @@ function editorUpdated(value: string) {
 </script>
 
 <template>
-  <div v-if="editor" class="break-words border-2 border-gray-800 rounded-xl">
+  <div v-if="editor" class="rounded-xl border-2 border-gray-800 break-words">
     <slot></slot>
     <MenuBar
-      class="sticky top-[-26px] bg-white z-10 flex items-center p-2 border-gray-800 print:hidden"
+      class="sticky top-[-26px] z-10 flex items-center border-gray-800 bg-white p-2 print:hidden"
       :class="{
         'border-y-2': $slots.default,
-        'border-b-2 rounded-t-xl': !$slots.default,
+        'rounded-t-xl border-b-2': !$slots.default,
       }"
       :editor="editor"
     />
 
     <EditorContent ref="tiptap" :editor="editor" class="break-words" />
     <div
-      class="flex items-center justify-between px-2 py-1 text-gray-800 border-t-2 border-gray-800 print:hidden"
+      class="flex items-center justify-between border-t-2 border-gray-800 px-2 py-1 text-gray-800 print:hidden"
     >
       <div class="space-x-4"></div>
       <div class="text-sm">
@@ -110,7 +111,7 @@ function editorUpdated(value: string) {
 }
 .selectedCell:after {
   z-index: 2;
-  @apply absolute inset-0 bg-gray-600/10 pointer-events-none;
+  @apply pointer-events-none absolute inset-0 bg-gray-600/10;
   content: "";
 }
 

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ButtonNormal, ModalDelete } from "lorga-ui";
-import useCmd from "@/composables/useCmd";
 import { useRoute, useRouter } from "vue-router";
+
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   linkUuid: string;

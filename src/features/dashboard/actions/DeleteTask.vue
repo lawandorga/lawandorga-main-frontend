@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
-import { Task } from "@/features/dashboard/api/useTasks";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
+import { Task } from "@/features/dashboard/api/useTasks";
 
 const props = defineProps<{
   query: () => void;

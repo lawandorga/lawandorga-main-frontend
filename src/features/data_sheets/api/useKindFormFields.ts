@@ -1,6 +1,7 @@
+import { types } from "lorga-ui";
 import { computed, watch } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import { types } from "lorga-ui";
+
 import { useGroups } from "@/features/org/api/useGroups";
 
 const baseFields: types.FormField[] = [

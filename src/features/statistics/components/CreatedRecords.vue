@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { TableGenerator } from "lorga-ui";
+
 import { useCreatedRecords } from "../api/useCreatedRecords";
 
 const { data } = useCreatedRecords();

@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
+    <div class="mx-auto max-w-(--breakpoint-2xl) space-y-6">
       <BreadcrumbsBar
         v-if="!!folder"
         :base="{ name: 'files-dashboard' }"
@@ -11,7 +11,7 @@
           }))
         "
       >
-        <FolderOpenIcon class="w-6 h-6" />
+        <FolderOpenIcon class="h-6 w-6" />
         <template #buttons>
           <MigrateFiles />
           <FilesHelp />
@@ -46,11 +46,11 @@
         <template #type="{ item: slotProps }">
           <FolderIcon
             v-if="slotProps.type === 'FOLDER'"
-            class="w-5 h-5 text-gray-500"
+            class="h-5 w-5 text-gray-500"
           />
           <DocumentIcon
             v-if="slotProps.type === 'FILE'"
-            class="w-5 h-5 text-gray-500"
+            class="h-5 w-5 text-gray-500"
           />
         </template>
         <template #name="{ item: slotProps }">
@@ -237,14 +237,8 @@
 </template>
 
 <script lang="ts">
-import {
-  FilesFolder,
-  FilesFile,
-  FilesPermission,
-  FilesPossiblePermission,
-} from "@/features/z_deprecated_files/types";
-import { defineComponent, Ref, ref, watch } from "vue";
-import FilesService from "./files_service";
+import { FolderIcon, DocumentIcon } from "@heroicons/vue/20/solid";
+import { FolderOpenIcon } from "@heroicons/vue/24/outline";
 import {
   TableGenerator,
   TableSortable,
@@ -253,23 +247,31 @@ import {
   FormGenerator,
   ModalDelete,
 } from "lorga-ui";
-import BoxLoader from "@/components/BoxLoader.vue";
+import { defineComponent, Ref, ref, watch } from "vue";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
-import CoreService from "@/features/z_deprecated_files/core";
+
+import { useErrorHandling } from "@/api/errors";
+import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { FolderOpenIcon } from "@heroicons/vue/24/outline";
-import { FolderIcon, DocumentIcon } from "@heroicons/vue/20/solid";
-import { formatDate } from "@/utils/date";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useCreate from "@/composables/useCreate";
-import useUpdate from "@/composables/useUpdate";
 import useDelete from "@/composables/useDelete";
 import useGet from "@/composables/useGet";
-import { DjangoModel } from "@/types_deprecated/shared";
-import FilesPermissions from "@/features/z_deprecated_files/FilesPermissions.vue";
+import useUpdate from "@/composables/useUpdate";
+import CoreService from "@/features/z_deprecated_files/core";
 import FilesHelp from "@/features/z_deprecated_files/FilesHelp.vue";
+import FilesPermissions from "@/features/z_deprecated_files/FilesPermissions.vue";
+import {
+  FilesFolder,
+  FilesFile,
+  FilesPermission,
+  FilesPossiblePermission,
+} from "@/features/z_deprecated_files/types";
 import { useUserStore } from "@/store/user";
-import { useErrorHandling } from "@/api/errors";
+import { DjangoModel } from "@/types_deprecated/shared";
+import { formatDate } from "@/utils/date";
+
+import FilesService from "./files_service";
 import MigrateFiles from "./MigrateFiles.vue";
 
 export default defineComponent({

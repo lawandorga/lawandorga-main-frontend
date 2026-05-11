@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { TableGenerator } from "lorga-ui";
+
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FoldersRevokeAccessUserSimple from "@/features/folders/actions/RevokeAccessFromUserSimple.vue";
+
 import FoldersRevokeAccessGroupSimple from "../actions/RevokeAccessFromGroupSimple.vue";
 import { Access } from "../api/useFolderPage";
 

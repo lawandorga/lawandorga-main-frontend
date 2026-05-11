@@ -1,21 +1,23 @@
 <script lang="ts" setup>
-import { formatDate } from "@/utils/date";
+import { CheckIcon } from "@heroicons/vue/24/outline";
+import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery from "@/composables/useQuery";
-import { CircleLoader } from "lorga-ui";
-import { CheckIcon } from "@heroicons/vue/24/outline";
-import useClient from "@/api/client";
-import CollabChangeName from "../actions/ChangeName.vue";
-import CollabForm from "./CollabForm.vue";
-import CollabShowHistory from "../actions/ShowHistory.vue";
-import CollabAddTemplate from "../actions/AddTemplate.vue";
-import DownloadPdf from "../actions/DownloadPdf.vue";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
+import { Content } from "@/features/folders/api/useFolder";
+import { formatDate } from "@/utils/date";
+
+import CollabAddTemplate from "../actions/AddTemplate.vue";
+import CollabChangeName from "../actions/ChangeName.vue";
+import DownloadPdf from "../actions/DownloadPdf.vue";
 import CollabEditTemplate from "../actions/EditTemplate.vue";
 import CollabRemoveTemplate from "../actions/RemoveTemplate.vue";
-import { useRoute, useRouter } from "vue-router";
-import { Content } from "@/features/folders/api/useFolder";
+import CollabShowHistory from "../actions/ShowHistory.vue";
+import CollabForm from "./CollabForm.vue";
 
 export interface History {
   user: string;
@@ -107,9 +109,9 @@ const allQuery = () => {
         :password="collab.password"
       />
       <template v-if="!!collab.template">
-        <div class="flex items-center mt-6">
-          <CheckIcon class="w-6 h-6" />
-          <span class="ml-4 font-semibold text-formcolor">
+        <div class="mt-6 flex items-center">
+          <CheckIcon class="h-6 w-6" />
+          <span class="text-formcolor ml-4 font-semibold">
             Template
             <i class="font-bold">{{ collab.template.name }}</i>
             applied

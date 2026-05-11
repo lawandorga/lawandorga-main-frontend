@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FormGenerator, types } from "lorga-ui";
 import { ref, toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{

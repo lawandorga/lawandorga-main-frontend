@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ButtonNormal, ButtonToggle } from "lorga-ui";
-import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import { EyeIcon, CalendarIcon, HomeIcon } from "@heroicons/vue/20/solid";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
+import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal, ButtonToggle } from "lorga-ui";
 import { computed, ref } from "vue";
-import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 import { useRoute, useRouter } from "vue-router";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import EventsCreateEvent from "@/features/events/actions/CreateEvent.vue";
-import EventsUpdateEvent from "@/features/events/actions/UpdateEvent.vue";
 import EventsDeleteEvent from "@/features/events/actions/DeleteEvent.vue";
 import EventsGetCalendarLink from "@/features/events/actions/GetCalendarLink.vue";
+import EventsUpdateEvent from "@/features/events/actions/UpdateEvent.vue";
 import { useUserStore } from "@/store/user";
+import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
+
 import { useEvents, Event } from "../api/useEvents";
 
 const showGlobal = ref(true);
@@ -88,13 +90,13 @@ const eventsWithFormattedDate = computed(() => {
 
 <template>
   <BoxLoader :show="!!eventsWithFormattedDate">
-    <div class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
+    <div class="mx-auto max-w-(--breakpoint-2xl) space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'events-dashboard' }"
         :pages="[]"
       >
-        <CalendarDaysIcon class="w-6 h-6" />
+        <CalendarDaysIcon class="h-6 w-6" />
         <template #buttons>
           <EventsGetCalendarLink />
           <EventsCreateEvent :query="query" />
@@ -109,16 +111,16 @@ const eventsWithFormattedDate = computed(() => {
       <div v-if="eventsWithFormattedDate" class="grid grid-cols-1 gap-4">
         <h2
           v-if="isEventsListEmpty"
-          class="text-xl font-medium text-center text-formcolor"
+          class="text-formcolor text-center text-xl font-medium"
         >
           No event matches the filter criteria.
         </h2>
         <div
           v-for="day in eventsWithFormattedDate"
           :key="day[0].start_time_object.groupDate"
-          class="relative flex flex-row gap-8 p-6 pt-0 bg-white rounded-lg shadow flex-nowrap"
+          class="relative flex flex-row flex-nowrap gap-8 rounded-lg bg-white p-6 pt-0 shadow"
         >
-          <div class="flex flex-col items-center flex-none pt-6 font-light">
+          <div class="flex flex-none flex-col items-center pt-6 font-light">
             <h3 class="text-base">
               {{ day[0].start_time_object.shortMonth }}
             </h3>
@@ -129,10 +131,10 @@ const eventsWithFormattedDate = computed(() => {
               {{ day[0].start_time_object.year }}
             </h3>
           </div>
-          <div class="flex flex-col w-full gap-6 overflow-hidden">
+          <div class="flex w-full flex-col gap-6 overflow-hidden">
             <div v-for="(event, index) in day" :key="index">
               <div
-                class="w-full h-1"
+                class="h-1 w-full"
                 :class="{
                   'bg-formcolor': event.level === 'ORG' && !event.is_past_event,
                   'bg-blue-500': event.level === 'META' && !event.is_past_event,
@@ -141,7 +143,7 @@ const eventsWithFormattedDate = computed(() => {
                   'bg-gray-300': event.is_past_event,
                 }"
               />
-              <div class="flex flex-col gap-2 pt-5 grow">
+              <div class="flex grow flex-col gap-2 pt-5">
                 <div class="flex flex-row items-center gap-6">
                   <h2 class="grow text-xl font-medium">
                     {{ event.name }}
@@ -161,20 +163,20 @@ const eventsWithFormattedDate = computed(() => {
                 </div>
                 <div class="flex items-center gap-6">
                   <div class="flex items-center gap-2">
-                    <CalendarIcon class="w-5 h-5 text-gray-600" />
+                    <CalendarIcon class="h-5 w-5 text-gray-600" />
                     <div class="text-gray-600">
                       {{ formatDate(event.start_time) }} –
                       {{ formatDate(event.end_time) }}
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <EyeIcon class="w-5 h-5 text-gray-500" />
+                    <EyeIcon class="h-5 w-5 text-gray-500" />
                     <div class="text-gray-600">
                       {{ event.level }}
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <HomeIcon class="w-5 h-5 text-gray-500" />
+                    <HomeIcon class="h-5 w-5 text-gray-500" />
                     <div class="text-gray-600">
                       {{ event.org.name }}
                     </div>

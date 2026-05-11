@@ -1,10 +1,11 @@
 <script lang="ts">
+import { Chart, registerables } from "chart.js";
 import { defineComponent, ref, computed } from "vue";
 import { BarChart } from "vue-chart-3";
-import { Chart, registerables } from "chart.js";
-import getColors from "@/utils/getColors";
+
 import StatisticService from "@/features/statistics/statistic";
 import { UserAction } from "@/features/statistics/types";
+import getColors from "@/utils/getColors";
 
 Chart.register(...registerables);
 

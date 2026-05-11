@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import {
+  CheckCircleIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
+import { ButtonNormal } from "lorga-ui";
+import { ref, toRefs } from "vue";
+
 import ToolTip from "@/components/ToolTip.vue";
 import {
   DisplayedFieldsObject,
   PossibleDisplayedFields,
   Sorting,
 } from "@/features/mail_imports/types";
-import { ButtonNormal } from "lorga-ui";
-import { ref, toRefs } from "vue";
-import {
-  CheckCircleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/outline";
 
 // props
 const props = defineProps<{
@@ -54,13 +55,13 @@ const saveSettings = () => {
 </script>
 
 <template>
-  <div class="flex gap-2 mb-3 font-semibold text-zinc-500">
+  <div class="mb-3 flex gap-2 font-semibold text-zinc-500">
     <h3>Shown Information Fields</h3>
     <ToolTip
       text="At least one information field must be selected"
       tool-tip-id="at-least-one-field"
     >
-      <InformationCircleIcon class="w-5 h-5" />
+      <InformationCircleIcon class="h-5 w-5" />
     </ToolTip>
   </div>
   <div class="flex flex-col gap-3">
@@ -81,10 +82,10 @@ const saveSettings = () => {
       <label for="date">Date</label>
     </span>
   </div>
-  <div class="flex gap-2 mt-4 mb-3 font-semibold text-zinc-500">
+  <div class="mt-4 mb-3 flex gap-2 font-semibold text-zinc-500">
     <h3>Sorting</h3>
     <ToolTip text="Pinned mails are always shown at the top">
-      <InformationCircleIcon class="w-5 h-5" />
+      <InformationCircleIcon class="h-5 w-5" />
     </ToolTip>
   </div>
   <div class="flex flex-col gap-3">
@@ -99,11 +100,11 @@ const saveSettings = () => {
   </div>
   <div class="flex justify-end gap-3">
     <ButtonNormal kind="secondary" @click="closeOverlay">
-      <XMarkIcon class="w-6 h-6 mr-2" />
+      <XMarkIcon class="mr-2 h-6 w-6" />
       <span class="pr-1">Close</span>
     </ButtonNormal>
     <ButtonNormal kind="primary" @click="saveSettings">
-      <CheckCircleIcon class="w-6 h-6 mr-2" />
+      <CheckCircleIcon class="mr-2 h-6 w-6" />
       <span class="pr-1">Save</span>
     </ButtonNormal>
   </div>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { PencilIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
-import { PencilIcon } from "@heroicons/vue/24/outline";
+
 import useCmd from "@/composables/useCmd";
+
 import { Letterhead } from "../api/useLetterhead";
 
 const props = defineProps<{
@@ -62,7 +64,7 @@ const fields = computed<types.FormField[]>(() => [
 
 <template>
   <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    <PencilIcon class="w-4 h-4 mr-2" />
+    <PencilIcon class="mr-2 h-4 w-4" />
     Edit Letterhead
     <ModalUpdate
       v-model="commandModalOpen"

@@ -9,7 +9,7 @@ const { additionalClasses } = toRefs(props);
 
 <template>
   <div
-    class="flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 bg-red-200 rounded-full"
+    class="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-sm font-bold text-red-800"
     :class="additionalClasses"
   >
     <slot />

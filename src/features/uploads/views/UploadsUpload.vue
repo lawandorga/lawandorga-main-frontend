@@ -1,5 +1,5 @@
 <template>
-  <div v-if="link" class="max-w-2xl px-6 py-5 mx-auto bg-white shadow">
+  <div v-if="link" class="mx-auto max-w-2xl bg-white px-6 py-5 shadow">
     <h2 class="mb-3 text-2xl font-bold">Upload: {{ link.name }}</h2>
 
     <div v-if="link.disabled" class="mt-10">
@@ -31,9 +31,11 @@
 
 <script lang="ts" setup>
 import { ButtonNormal, CircleLoader, FormGenerator, types } from "lorga-ui";
-import { useRoute } from "vue-router";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
+
 import useCmd from "@/composables/useCmd";
+
 import { usePublicLink } from "../api/usePublicLink";
 
 const route = useRoute();

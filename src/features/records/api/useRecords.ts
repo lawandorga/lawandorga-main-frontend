@@ -1,7 +1,10 @@
 import { Ref, computed, ref, watch } from "vue";
-import useGet from "@/composables/useGet";
+
 import useClient from "@/api/client";
-type QueryParams = { [key: string]: number | string | string[] | null | boolean | undefined };
+import useGet from "@/composables/useGet";
+type QueryParams = {
+  [key: string]: number | string | string[] | null | boolean | undefined;
+};
 type SetQueryParam = (key: string, value: QueryParams[string]) => QueryParams;
 
 export interface Record {

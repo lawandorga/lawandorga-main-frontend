@@ -1,6 +1,7 @@
+import { computed, ref } from "vue";
+
 import useClient from "@/api/client";
 import useGet from "@/composables/useGet";
-import { computed, ref } from "vue";
 
 export interface MailDomain {
   uuid: string;

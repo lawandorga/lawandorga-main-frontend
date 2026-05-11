@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { toRefs, computed } from "vue";
 import { TableGenerator } from "lorga-ui";
+import { toRefs, computed } from "vue";
+
 import ButtonLink from "@/components/ButtonLink.vue";
+
 import { Record } from "../api/useRecords";
 
 const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
@@ -90,7 +92,7 @@ const head = computed<{ name: string; key: string; sortable: boolean }[]>(
             </li>
           </ul>
 
-          <div v-else class="max-w-xs text-left whitespace-normal line-clamp-3">
+          <div v-else class="line-clamp-3 max-w-xs text-left whitespace-normal">
             <button
               type="button"
               class="hover:underline"

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { TableGenerator } from "lorga-ui";
+
 import ButtonLink from "@/components/ButtonLink.vue";
+
 import { MailUser } from "../api/useGetDashboardPage";
 
 defineProps<{

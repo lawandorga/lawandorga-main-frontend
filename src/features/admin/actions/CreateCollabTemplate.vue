@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
-import { computed, ref, toRefs } from "vue";
-import useCmd from "@/composables/useCmd";
 import { v4 as uuidv4 } from "uuid";
+import { computed, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
+
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
+
 import { Access } from "../api/useFolderPage";
 
 const props = defineProps<{

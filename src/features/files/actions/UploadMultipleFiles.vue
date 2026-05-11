@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import axios, { AxiosProgressEvent } from "axios";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs, ref, computed } from "vue";
+
 import useCommand from "@/composables/useCommand";
-import axios, { AxiosProgressEvent } from "axios";
 
 // props
 const props = defineProps<{

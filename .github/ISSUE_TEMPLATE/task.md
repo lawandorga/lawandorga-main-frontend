@@ -24,4 +24,3 @@ type: Task
 ### Additional Information
 
 <!-- Add any other context (e.g. logs, screenshots, environment, related issues etc.) about the problem here. -->
-

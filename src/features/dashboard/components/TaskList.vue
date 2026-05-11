@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { watch } from "vue";
-import { Task, useTasks } from "../api/useTasks";
-import { useTasksChanged } from "../api/useTasksChanged";
+
 import TabControls from "@/components/TabControls.vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
+
+import { Task, useTasks } from "../api/useTasks";
+import { useTasksChanged } from "../api/useTasksChanged";
 
 const { completedTasks, assignedOpenTasks, createdOpenTasks, query } =
   useTasks();
@@ -19,8 +21,8 @@ const sortTasks = (tasks: Task[]) =>
 
 <template>
   <div class="lg:col-span-2 xl:col-span-3">
-    <div class="flex justify-between mt-8 mb-4">
-      <h2 class="items-baseline text-lg font-semibold leading-6 text-gray-700">
+    <div class="mt-8 mb-4 flex justify-between">
+      <h2 class="items-baseline text-lg leading-6 font-semibold text-gray-700">
         Tasks
       </h2>
     </div>
@@ -35,7 +37,7 @@ const sortTasks = (tasks: Task[]) =>
     >
       <template #owntasks>
         <div
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
+          class="-mx-[50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
         >
           <div
             v-if="assignedOpenTasks && assignedOpenTasks.length"
@@ -55,7 +57,7 @@ const sortTasks = (tasks: Task[]) =>
       </template>
       <template #createdtasks>
         <div
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
+          class="-mx-[50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
         >
           <div
             v-if="createdOpenTasks && createdOpenTasks.length"
@@ -75,7 +77,7 @@ const sortTasks = (tasks: Task[]) =>
       </template>
       <template #completedtasks>
         <div
-          class="lg:col-span-2 xl:col-span-3 -mx-[50vw] bg-gray-300 px-[50vw] min-h-40"
+          class="-mx-[50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
         >
           <div
             v-if="completedTasks"

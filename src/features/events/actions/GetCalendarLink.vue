@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { Ref, ref } from "vue";
+
 import useCmd from "@/composables/useCmd";
 import useGet2 from "@/composables/useGet2";
 
@@ -37,7 +38,7 @@ async function resetLink() {
     Get Calendar Link
     <ModalFree v-model="modalOpen" title="Calendar Link" width="max-w-3xl">
       <div class="flex flex-row flex-wrap items-baseline justify-between">
-        <p class="shrink max-w">{{ calendarIcsInfo?.calendar_url }}</p>
+        <p class="max-w shrink">{{ calendarIcsInfo?.calendar_url }}</p>
         <ButtonNormal kind="primary" @click="copyLink">
           <span v-if="copyButtonState">Copied!</span>
           <span v-else>Copy</span>

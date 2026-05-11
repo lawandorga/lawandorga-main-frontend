@@ -1,7 +1,8 @@
-import useGet2 from "@/composables/useGet2";
-import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
+
+import useGet2 from "@/composables/useGet2";
+import { useUserStore } from "@/store/user";
 
 export interface TaskComment {
   email: string;

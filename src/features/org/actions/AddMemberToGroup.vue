@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
-import useCmd from "@/composables/useCmd";
+
 import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
 import useQuery from "@/composables/useQuery";
 
 const props = defineProps<{ groupId: number; query: () => void }>();

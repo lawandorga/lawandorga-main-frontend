@@ -1,10 +1,10 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@import 'lorga-ui/theme.css';
-@import 'lorga-ui/style.css';
-@source '../node_modules/lorga-ui/dist/es.js';
+@import "lorga-ui/theme.css";
+@import "lorga-ui/style.css";
+@source "../node_modules/lorga-ui/dist/es.js";
 
-@plugin '@tailwindcss/typography';
+@plugin "@tailwindcss/typography";
 
 .has-tooltip:hover .tooltip,
 .has-tooltip:focus .tooltip {
@@ -15,7 +15,8 @@ button:disabled {
   background: rgba(209, 213, 219, 1);
   padding: 10px 16px;
   border-radius: 8px;
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1))
+    drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
   color: rgba(75, 85, 99, 1);
   font-size: 16px;
   font-weight: 600;

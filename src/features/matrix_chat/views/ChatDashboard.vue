@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import ChatCreateMatrixUser from "@/features/matrix_chat/actions/CreateMatrixUser.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import { useUserStore } from "@/store/user";
 import { CircleLoader } from "lorga-ui";
 import { ref } from "vue";
+
+import BoxLoader from "@/components/BoxLoader.vue";
 import useGet2 from "@/composables/useGet2";
+import ChatCreateMatrixUser from "@/features/matrix_chat/actions/CreateMatrixUser.vue";
+import { useUserStore } from "@/store/user";
 
 interface ChatPage {
   matrix_user: null | { _group: string; matrix_id: string };
@@ -19,7 +20,7 @@ const query = useGet2("api/auth/query/page/chat/", page);
 
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div class="px-6 py-5 bg-white rounded shadow">
+    <div class="rounded bg-white px-6 py-5 shadow">
       <div class="prose prose-h1:text-2xl">
         <template v-if="page && !page.matrix_user">
           <h1>Opt-in for the Law&Orga Matrix Chat</h1>

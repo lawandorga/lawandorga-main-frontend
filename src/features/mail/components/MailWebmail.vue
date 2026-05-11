@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="px-6 py-5 bg-white rounded shadow">
+  <div class="rounded bg-white px-6 py-5 shadow">
     <div
       class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg max-w-none"
     >

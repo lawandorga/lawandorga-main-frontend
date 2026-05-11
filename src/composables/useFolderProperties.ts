@@ -1,5 +1,6 @@
-import { Content, FolderItem } from "@/features/folders/api/useFolderPage";
 import { computed, Ref } from "vue";
+
+import { Content, FolderItem } from "@/features/folders/api/useFolderPage";
 
 export function useFolderProperties(
   folders: Ref<(FolderItem | Content)[] | null>,

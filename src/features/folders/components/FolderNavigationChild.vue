@@ -12,7 +12,7 @@ defineProps<{
   <div
     class="relative block w-full px-4 sm:px-6"
     :class="{
-      'py-4 px-6 sm:px-8': !small,
+      'px-6 py-4 sm:px-8': !small,
       'py-3': small,
     }"
   >
@@ -22,12 +22,12 @@ defineProps<{
     ></div>
 
     <div class="flex items-center justify-between">
-      <p class="text-sm font-medium truncate text-formcolor">
+      <p class="text-formcolor truncate text-sm font-medium">
         {{ name }}
       </p>
-      <div v-if="showType" class="flex shrink-0 ml-2">
+      <div v-if="showType" class="ml-2 flex shrink-0">
         <p
-          class="inline-flex px-2 text-xs font-semibold leading-5 rounded-full text-sky-800 bg-sky-100"
+          class="inline-flex rounded-full bg-sky-100 px-2 text-xs leading-5 font-semibold text-sky-800"
         >
           {{ type }}
         </p>

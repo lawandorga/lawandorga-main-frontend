@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="!!template">
-    <div v-if="template" class="max-w-2xl mx-auto space-y-6">
+    <div v-if="template" class="mx-auto max-w-2xl space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -15,7 +15,7 @@
           },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
       <TableGenerator
         :head="[
@@ -72,19 +72,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet2 from "@/composables/useGet2";
-import TemplateFileDelete from "../actions/DeleteTemplateFile.vue";
-import TemplateFileCreate from "../actions/CreateTemplateFile.vue";
-import TemplateFieldUpdate from "../actions/UpdateTemplateField.vue";
-import TemplateFieldDelete from "../actions/DeleteTemplateField.vue";
+
 import TemplateFieldCreate from "../actions/CreateTemplateField.vue";
+import TemplateFileCreate from "../actions/CreateTemplateFile.vue";
+import TemplateFieldDelete from "../actions/DeleteTemplateField.vue";
+import TemplateFileDelete from "../actions/DeleteTemplateFile.vue";
 import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
+import TemplateFieldUpdate from "../actions/UpdateTemplateField.vue";
 
 interface TextField {
   id: number;
