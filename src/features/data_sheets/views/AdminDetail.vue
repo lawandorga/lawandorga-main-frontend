@@ -2,12 +2,11 @@
 import { ref } from "vue";
 import BoxLoader from "@/components/BoxLoader.vue";
 import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
-import { ModalFree, TableGenerator } from "lorga-ui";
+import { TableGenerator } from "lorga-ui";
 import useGet from "@/composables/useGet";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
+import { CogIcon, InformationCircleIcon } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import useClient from "@/api/client";
 import CreateField from "../actions/CreateField.vue";
 import UpdateField from "../actions/UpdateField.vue";
@@ -31,11 +30,9 @@ interface Template {
   fields: Field[];
 }
 
-// other
 const route = useRoute();
 const client = useClient();
 
-// template
 const retrieve = client.get(
   "api/data_sheets/query/templates/{}/",
   route.params.id as string,
@@ -43,9 +40,6 @@ const retrieve = client.get(
 
 const template = ref<Template>();
 const query = useGet(retrieve, template);
-
-// help
-const helpModalOpen = ref(false);
 </script>
 
 <template>
@@ -66,9 +60,6 @@ const helpModalOpen = ref(false);
       >
         <CogIcon class="w-6 h-6" />
         <template #buttons>
-          <ButtonBreadcrumbs @click="helpModalOpen = true">
-            Show Help
-          </ButtonBreadcrumbs>
           <CreateField :query="query" :template-id="template.id" />
         </template>
       </BreadcrumbsBar>
@@ -84,75 +75,68 @@ const helpModalOpen = ref(false);
         ]"
         :data="template.fields"
       >
-        <template #is_required="{ i }">
-          {{ i.is_required ? "Yes" : "No" }}
+        <template #head-encrypted>
+          <span class="inline-flex items-center gap-1 group" tabindex="0">
+            Encrypted
+            <span
+              style="anchor-name: --encrypted-btn"
+              class="text-gray-400 cursor-help"
+            >
+              <InformationCircleIcon
+                class="w-4 h-4 shrink-0"
+                aria-hidden="true"
+              />
+            </span>
+            <div
+              role="tooltip"
+              style="
+                position: fixed;
+                position-anchor: --encrypted-btn;
+                top: anchor(bottom);
+                left: anchor(left);
+                margin-top: 4px;
+                width: 18rem;
+                white-space: normal;
+              "
+              class="z-50 hidden p-3 space-y-2 text-xs font-normal text-white bg-gray-800 rounded shadow-lg group-hover:block group-focus-within:block"
+            >
+              <p class="font-semibold">Normal field</p>
+              <p>
+                Not encrypted. Can be shown and searched in the records table.
+                Readable by anyone with record access.
+              </p>
+              <p class="font-semibold">Encrypted field</p>
+              <p>
+                Encrypted at the database level. Only users with the correct
+                encryption keys can read it. Cannot be shown in the records
+                table.
+              </p>
+            </div>
+          </span>
         </template>
-        <template #action="{ i }">
+        <template #is_required="{ is_required }">
+          {{ is_required ? "Yes" : "No" }}
+        </template>
+        <template #action="{ i: field }">
           <UpdateField
             :query="query"
-            :field-name="i.name"
-            :field-uuid="i.uuid"
-            :field-group="i.group_id"
-            :field-options="i.options"
-            :field-order="i.order"
-            :field-is-required="i.is_required"
-            :field-share-keys="i.share_keys"
-            :field-type="i.field_type"
-            :field-kind="i.kind"
+            :field-name="field.name"
+            :field-uuid="field.uuid"
+            :field-group="field.group_id"
+            :field-options="field.options"
+            :field-order="field.order"
+            :field-is-required="field.is_required"
+            :field-share-keys="field.share_keys"
+            :field-type="field.field_type"
+            :field-kind="field.kind"
           />
           <DeleteField
             :query="query"
-            :field-uuid="i.uuid"
-            :field-name="i.name"
+            :field-uuid="field.uuid"
+            :field-name="field.name"
           />
         </template>
       </TableGenerator>
     </div>
-    <!-- help -->
-    <ModalFree v-model="helpModalOpen" width="max-w-xl" title="Help">
-      <article class="prose">
-        <p>
-          Here is a short explanation of the difference between encrypted and
-          normal fieds.
-        </p>
-        <h3 class="text-base">Normal fields</h3>
-        <p>
-          Normal fields are not encrypted at all, which means that everybody who
-          can access the database can read the information in those fields.
-          Access to the database is limited to two Law&amp;Orga employees.
-        </p>
-        <p>
-          Users who do not have access to the record can not read its normal
-          fields. That means only users who have access to the record can also
-          access its normal fields.
-        </p>
-        <p>
-          Normal fields can be shown in the records table. That means that the
-          records may be filtered or searched by that field.
-        </p>
-        <p>
-          You should use normal fields for less sensitive information which you
-          want to show within the records table.
-        </p>
-        <h3 class="text-base">Encrypted fields</h3>
-        <p>
-          Encrypted fields are encrypted at the database level which means that
-          only users whith the proper encryption keys can decrypt the data
-          within those fields. Nobody from Law&amp;Orga has access to the
-          content in those fields.
-        </p>
-        <p>
-          Users need to have the encryption keys of the record to decrypt and
-          read encrypted fields.
-        </p>
-        <p>
-          Encrypted fields can not be shown in the records table, because it
-          would take too long to decrypt those fields on every record.
-          Furthermore not every user within the LC might have encryption keys
-          for every record.
-        </p>
-        <p>You should use encrypted fields for sensitive information.</p>
-      </article>
-    </ModalFree>
   </BoxLoader>
 </template>

@@ -17,7 +17,6 @@ const props = defineProps<{ record: Sheet; query: () => void }>();
 const { record } = toRefs(props);
 
 const entries = ref<Sheet["entries"]>({});
-const nonFieldErrors = ref<string[]>([]);
 const errors = ref<{ [key: string]: string[] }>({});
 
 const fields = computed(() => {
@@ -46,11 +45,11 @@ function getAttrs(uuid: string) {
 
 function change(field: SheetField, value: SheetValue) {
   errors.value = {};
-  const entries_include = Object.keys(entries.value).includes(field.uuid);
+  const entryExists = Object.keys(entries.value).includes(field.uuid);
   if (field.type === "file") {
     createFileEntry(field, value);
-  } else if (entries_include && !value) {
-    deleteEntry(field);
+  } else if (!value) {
+    if (entryExists) deleteEntry(field);
   } else {
     createOrUpdateEntry(field, value);
   }
@@ -64,7 +63,7 @@ function createFileEntry(field: SheetField, value: SheetValue) {
   formData.append("record_id", record.value.id.toString());
   formData.append("file", value as File);
   formData.append("action", "data_sheets/create_file_entry");
-  commandRequest(formData).catch((e) => handleError(field, e));
+  commandRequest(formData).catch((error) => handleError(field, error));
   record.value.entries[field.uuid] = (value as File).name;
 }
 
@@ -75,7 +74,7 @@ function createOrUpdateEntry(field: SheetField, value: SheetValue) {
     value: value,
     action: "data_sheets/create_or_update_entry",
   };
-  commandRequest(data).catch((e) => handleError(field, e));
+  commandRequest(data).catch((error) => handleError(field, error));
   record.value.entries[field.uuid] = value;
 }
 
@@ -85,7 +84,7 @@ function deleteEntry(field: SheetField) {
     record_id: record.value.id,
     action: "data_sheets/delete_entry",
   };
-  commandRequest(data).catch((e) => handleError(field, e));
+  commandRequest(data).catch((error) => handleError(field, error));
   delete record.value.entries[field.uuid];
 }
 
@@ -99,17 +98,8 @@ function handleError(field: SheetField, error: types.ICommandError) {
 </script>
 
 <template>
-  <form ref="form" novalidate @submit.prevent="">
+  <form novalidate @submit.prevent="">
     <div class="grid grid-cols-1 gap-4">
-      <div v-if="nonFieldErrors && nonFieldErrors.length">
-        <p
-          v-for="(error, index) in nonFieldErrors"
-          :key="index"
-          class="mt-2 text-sm leading-tight text-red-700"
-        >
-          {{ error }}
-        </p>
-      </div>
       <div
         v-for="field in fields"
         :key="field.name"
@@ -124,7 +114,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
-          required
+          :required="field.is_required"
           @change:model-value="change(field, $event)"
         />
         <FormSelect
@@ -132,7 +122,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
-          required
+          :required="field.is_required"
           :options="field.options"
           @update:model-value="change(field, $event)"
         />
@@ -141,7 +131,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
-          required
+          :required="field.is_required"
           :options="field.options"
           @update:model-value="change(field, $event)"
         />
@@ -151,7 +141,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :name="field.name"
-          required
+          :required="field.is_required"
           @update:model-value="change(field, $event)"
         >
           <ButtonNormal
@@ -163,7 +153,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
             Download
           </ButtonNormal>
           <ButtonNormal
-            v-if="field.name in entries"
+            v-if="field.uuid in entries"
             kind="delete"
             class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
             @click="change(field, '')"
@@ -177,7 +167,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           v-bind="getAttrs(field.uuid)"
           :label="field.label"
           :type="field.type"
-          required
+          :required="field.is_required"
           @change:model-value="change(field, $event)"
         />
         <p
