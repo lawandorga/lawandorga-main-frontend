@@ -2,6 +2,7 @@
 import MailAddDomain from "@/features/mail/actions/AddDomain.vue";
 import MailChangeDomain from "@/features/mail/actions/ChangeDomain.vue";
 import MailCheckDomain from "@/features/mail/actions/CheckDomain.vue";
+
 import { MailDomain } from "../api/useGetDashboardPage";
 
 defineProps<{
@@ -11,9 +12,9 @@ defineProps<{
 </script>
 
 <template>
-  <div class="px-6 py-5 bg-white rounded shadow">
+  <div class="rounded bg-white px-6 py-5 shadow">
     <div
-      class="prose prose-th:align-middle max-w-none prose-h1:text-2xl prose-h2:text-lg"
+      class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg max-w-none"
     >
       <h1>Domain Settings</h1>
       <p>

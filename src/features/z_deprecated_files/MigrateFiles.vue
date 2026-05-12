@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
+
 import useCmd from "@/composables/useCmd";
 import { useUserStore } from "@/store/user";
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
 
 const { commandModalOpen, commandRequest } = useCmd();
 

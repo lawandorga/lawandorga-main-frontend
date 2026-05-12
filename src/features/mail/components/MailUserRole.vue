@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { TableGenerator } from "lorga-ui";
+import { toRefs } from "vue";
+
 import MailAddAddress from "@/features/mail/actions/AddAddressToUser.vue";
 import MailDeleteAddress from "@/features/mail/actions/DeleteUserAddress.vue";
 import MailRegeneratePassword from "@/features/mail/actions/RegeneratePassword.vue";
 import MailSetDefaultAddress from "@/features/mail/actions/SetDefaultUserAddress.vue";
-import { TableGenerator } from "lorga-ui";
-import { toRefs } from "vue";
+
 import {
   MailAddress,
   MailDashboardPage,
@@ -23,7 +25,7 @@ const { page } = toRefs(props);
 
 <template>
   <template v-if="!!user">
-    <div class="px-6 py-5 bg-white rounded shadow">
+    <div class="rounded bg-white px-6 py-5 shadow">
       <div
         class="prose prose-th:align-middle prose-h1:text-2xl prose-h2:text-lg max-w-none"
       >

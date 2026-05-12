@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { computed } from "vue";
 import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
-import NavigationDropdown from "./NavigationDropdown.vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
+
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
+
+import NavigationDropdown from "./NavigationDropdown.vue";
 
 // eslint-disable-next-line no-unused-vars
 defineProps<{ setOpen: (open: boolean) => void }>();
@@ -16,35 +18,35 @@ const inside = computed(() => {
 
 <template>
   <div
-    class="relative z-10 flex h-16 border-b shadow shrink-0 border-white/20 bg-formcolor print:hidden"
+    class="bg-formcolor relative z-10 flex h-16 shrink-0 border-b border-white/20 shadow print:hidden"
   >
     <button
       type="button"
-      class="flex items-center justify-center px-4 text-gray-200 border-r cursor-pointer border-white/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
+      class="flex cursor-pointer items-center justify-center border-r border-white/20 px-4 text-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none focus:ring-inset md:hidden"
       @click="setOpen(true)"
     >
       <span class="sr-only">Open sidebar</span>
-      <Bars3BottomLeftIcon class="w-6 h-6" aria-hidden="true" />
+      <Bars3BottomLeftIcon class="h-6 w-6" aria-hidden="true" />
     </button>
-    <div class="flex justify-between flex-1 px-4">
-      <div class="flex items-center flex-1">
+    <div class="flex flex-1 justify-between px-4">
+      <div class="flex flex-1 items-center">
         <div v-show="!inside" class="flex space-x-3">
           <router-link
             :to="{ name: 'index' }"
             class="flex items-center space-x-2"
           >
-            <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
+            <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
             <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
           </router-link>
-          <div class="w-px h-8 bg-white"></div>
+          <div class="h-8 w-px bg-white"></div>
           <img
             src="/sponsor-cms.jpg"
             alt="CMS Stiftung"
-            class="w-auto h-8 overflow-hidden rounded"
+            class="h-8 w-auto overflow-hidden rounded"
           />
         </div>
       </div>
-      <div class="flex items-center ml-4 md:ml-6">
+      <div class="ml-4 flex items-center md:ml-6">
         <CreateTask />
         <NavigationDropdown />
       </div>

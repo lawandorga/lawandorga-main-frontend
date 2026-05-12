@@ -1,27 +1,29 @@
 <script lang="ts" setup>
-import FolderDataSheet from "@/features/data_sheets/components/FolderDataSheet.vue";
-import { computed, ref, watch } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
 import { FolderIcon } from "@heroicons/vue/24/outline";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { storeToRefs } from "pinia";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import FolderMessages from "@/features/messages/components/FolderMessages.vue";
-import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import FolderCollab from "@/features/collab/components/FolderCollab.vue";
+import FolderDataSheet from "@/features/data_sheets/components/FolderDataSheet.vue";
 import FolderFile from "@/features/files/components/FolderFile.vue";
 import FolderAccess from "@/features/folders/components/FolderAccess.vue";
-import { useUserStore } from "@/store/user";
-import { storeToRefs } from "pinia";
-import FolderUploadLinks from "@/features/uploads/components/FolderUploadLinks.vue";
 import FolderNavigationContent from "@/features/folders/components/FolderNavigationContent.vue";
 import FolderNavigationSelf from "@/features/folders/components/FolderNavigationSelf.vue";
 import FolderSelf from "@/features/folders/components/FolderSelf.vue";
-import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
 import FolderSubfolder from "@/features/folders/components/FolderSubfolder.vue";
-import FolderCollab from "@/features/collab/components/FolderCollab.vue";
-import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
-import FolderSubfolders from "../components/FolderSubfolders.vue";
 import { useMailImports } from "@/features/mail_imports/api/useMailImports";
+import FolderMailImports from "@/features/mail_imports/views/FolderMailImports.vue";
+import FolderMessages from "@/features/messages/components/FolderMessages.vue";
+import FolderQuestionnaire from "@/features/questionnaires/components/FolderQuestionnaire.vue";
+import FolderTimeline from "@/features/timeline/components/FolderTimeline.vue";
+import FolderUploadLinks from "@/features/uploads/components/FolderUploadLinks.vue";
+import { useUserStore } from "@/store/user";
+
 import { useFolder } from "../api/useFolder";
+import FolderSubfolders from "../components/FolderSubfolders.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -74,7 +76,7 @@ const { mailQuery, mails, numberOfUnreadMails } = useMailImports(folderUuid);
     </h1>
     <div
       v-if="userStore.loaded && !!folder"
-      class="grid w-full grid-cols-12 gap-6 mx-auto max-w-(--breakpoint-2xl) print:block print:max-w-none"
+      class="mx-auto grid w-full max-w-(--breakpoint-2xl) grid-cols-12 gap-6 print:block print:max-w-none"
     >
       <BreadcrumbsBar
         class="col-span-12"
@@ -93,7 +95,7 @@ const { mailQuery, mails, numberOfUnreadMails } = useMailImports(folderUuid);
           },
         ]"
       >
-        <FolderIcon class="w-6 h-6" />
+        <FolderIcon class="h-6 w-6" />
       </BreadcrumbsBar>
       <div class="col-span-12 space-y-6 lg:col-span-4 print:hidden">
         <FolderNavigationSelf

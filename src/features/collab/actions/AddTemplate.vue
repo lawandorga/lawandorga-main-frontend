@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import {
   ButtonNormal,
   ModalFree,
@@ -9,10 +10,11 @@ import {
   TableBody,
   TableData,
 } from "lorga-ui";
-import { PlusCircleIcon } from "@heroicons/vue/24/outline";
 import { ref, toRefs } from "vue";
-import useCollabTemplates from "@/features/admin/api/useCollabTemplates";
+
 import useCmd from "@/composables/useCmd";
+import useCollabTemplates from "@/features/admin/api/useCollabTemplates";
+
 import TemplatePreview from "../components/TemplatePreview.vue";
 
 const props = defineProps<{
@@ -30,7 +32,7 @@ const selectedTemplateId = ref<string>("");
 
 <template>
   <ButtonNormal kind="secondary" class="mt-6" @click="commandModalOpen = true">
-    <PlusCircleIcon class="w-5 h-5 mr-2" />
+    <PlusCircleIcon class="mr-2 h-5 w-5" />
     Add Template
   </ButtonNormal>
   <ModalFree v-model="commandModalOpen" title="Add Template" width="max-w-4xl">
@@ -66,7 +68,7 @@ const selectedTemplateId = ref<string>("");
       </TableBody>
     </TableTable>
     <ButtonNormal
-      class="flex justify-end mt-4"
+      class="mt-4 flex justify-end"
       @click="
         () => {
           commandRequest({

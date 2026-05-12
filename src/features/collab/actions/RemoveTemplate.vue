@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
 
@@ -16,7 +17,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 <template>
   <ButtonNormal kind="secondary" class="mt-6" @click="commandModalOpen = true">
-    <XCircleIcon class="w-5 h-5 mr-2" />
+    <XCircleIcon class="mr-2 h-5 w-5" />
     Remove Template
   </ButtonNormal>
   <ModalConfirm

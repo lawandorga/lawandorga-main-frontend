@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent } from "vue";
 import { ButtonNormal, CircleLoader } from "lorga-ui";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   components: {

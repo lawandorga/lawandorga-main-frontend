@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{

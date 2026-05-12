@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import FilesDownloadFile from "@/features/files/actions/DownloadFile.vue";
 import { CircleLoader } from "lorga-ui";
-import { formatDate } from "@/utils/date";
 import { toRefs, watch } from "vue";
-import FilesDeleteFile from "@/features/files/actions/DeleteFile.vue";
-import FileDisplay from "@/components/FileDisplay.vue";
-import useClient from "@/api/client";
-import { useFile } from "../api/useFile";
-import { Content } from "@/features/folders/api/useFolder";
 import { useRoute, useRouter } from "vue-router";
+
+import useClient from "@/api/client";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import FileDisplay from "@/components/FileDisplay.vue";
+import FilesDeleteFile from "@/features/files/actions/DeleteFile.vue";
+import FilesDownloadFile from "@/features/files/actions/DownloadFile.vue";
+import { Content } from "@/features/folders/api/useFolder";
+import { formatDate } from "@/utils/date";
+
+import { useFile } from "../api/useFile";
 
 const props = defineProps<{
   folderContent: Content[];
@@ -63,7 +65,7 @@ watch(
           :name="file.name"
           :file-uuid="file.uuid"
           :query="query"
-          class="ml-4 mr-3"
+          class="mr-3 ml-4"
         />
         <FilesDeleteFile
           :file-uuid="file.uuid"

@@ -1,5 +1,6 @@
-import useGet2 from "@/composables/useGet2";
 import { computed, ref } from "vue";
+
+import useGet2 from "@/composables/useGet2";
 
 export interface TreeFolder {
   name: string;

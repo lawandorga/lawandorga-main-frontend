@@ -1,15 +1,15 @@
 {
-    "short_name": "Law&Orga",
-    "name": "Law&Orga",
-    "description": "Law&Orga ist ein kostenfreies Akten- und Organisationsverwaltungssystem, welches speziell auf die Bedürfnisse einer (R)LC angepasst ist.",
-    "icons": [
-      {
-        "src": "/logo.png",
-        "type": "image/png",
-        "sizes": "256x256"
-      }
-    ],
-    "start_url": "/?source=pwa",
-    "display": "standalone",
-    "scope": "/"
-  }
+  "short_name": "Law&Orga",
+  "name": "Law&Orga",
+  "description": "Law&Orga ist ein kostenfreies Akten- und Organisationsverwaltungssystem, welches speziell auf die Bedürfnisse einer (R)LC angepasst ist.",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "scope": "/"
+}

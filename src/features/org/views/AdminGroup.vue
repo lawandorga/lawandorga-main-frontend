@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator, ButtonNormal } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator, ButtonNormal } from "lorga-ui";
 import { useRoute } from "vue-router";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import GroupsAddMember from "@/features/org/actions/AddMemberToGroup.vue";
 import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
 import GroupAddPermission from "@/features/permissions/actions/AddPermissionToGroup.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
+
 import { useGroup } from "../api/useGroup";
 
 const route = useRoute();
@@ -19,7 +21,7 @@ const { members, permissions, query, group } = useGroup(
 
 <template>
   <BoxLoader :show="!!group">
-    <div v-if="!!group" class="max-w-(--breakpoint-lg) mx-auto space-y-6">
+    <div v-if="!!group" class="mx-auto max-w-(--breakpoint-lg) space-y-6">
       <BreadcrumbsBar
         v-if="group"
         :base="{ name: 'admin-dashboard' }"
@@ -34,9 +36,9 @@ const { members, permissions, query, group } = useGroup(
           },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
-      <div class="px-5 py-4 bg-white rounded shadow">
+      <div class="rounded bg-white px-5 py-4 shadow">
         <h2 class="mb-4 text-lg font-bold">
           {{ group.name }}
         </h2>

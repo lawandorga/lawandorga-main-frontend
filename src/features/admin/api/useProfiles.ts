@@ -1,4 +1,5 @@
 import { computed, ref, Ref } from "vue";
+
 import useGet2 from "@/composables/useGet2";
 
 export type ActivityState = "green" | "yellow" | "orange" | "red";

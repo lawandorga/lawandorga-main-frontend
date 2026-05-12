@@ -17,7 +17,7 @@ const config: Record<ActivityState, { label: string; classes: string }> = {
 <template>
   <span
     :class="[
-      'inline-flex items-center px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap',
+      'inline-flex items-center rounded-full px-2 py-1 text-xs font-medium whitespace-nowrap',
       config[state].classes,
     ]"
   >

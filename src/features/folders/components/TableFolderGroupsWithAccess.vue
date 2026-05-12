@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { TableGenerator } from "lorga-ui";
+
 import FoldersGrantAccessGroup from "../actions/GrantGroupAccessToFolder.vue";
 import FoldersRevokeAccessGroup from "../actions/RevokeAccessFromGroup.vue";
 import { FolderGroup, FolderItem } from "../api/useFolderPage";

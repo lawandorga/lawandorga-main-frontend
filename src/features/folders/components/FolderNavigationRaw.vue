@@ -18,9 +18,10 @@ export interface ContentGroupItem {
 
 import { ButtonToggle } from "lorga-ui";
 import { VNode } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
 import FolderNavigationChild from "@/features/folders/components/FolderNavigationChild.vue";
 import FolderNavigationGroup from "@/features/folders/components/FolderNavigationGroup.vue";
-import { useRoute, useRouter } from "vue-router";
 
 defineProps<{
   grouping: boolean;
@@ -47,12 +48,12 @@ const selected = (type: string, id: string | number | null) => {
 
 <template>
   <div
-    class="sticky top-0 overflow-hidden bg-white rounded shadow print:hidden"
+    class="sticky top-0 overflow-hidden rounded bg-white shadow print:hidden"
   >
     <ul class="">
       <li
         v-if="!grouping"
-        class="flex flex-wrap px-4 py-3 gap-x-5 gap-y-1 sm:px-6 bg-gray-50"
+        class="flex flex-wrap gap-x-5 gap-y-1 bg-gray-50 px-4 py-3 sm:px-6"
       >
         <component
           :is="button"
@@ -84,7 +85,7 @@ const selected = (type: string, id: string | number | null) => {
           v-show="
             (!grouping || selectedType === item.type) && item.children.length
           "
-          class="border-t border-gray-200 divide-y divide-gray-200"
+          class="divide-y divide-gray-200 border-t border-gray-200"
         >
           <button
             v-for="child in item.children"
@@ -105,7 +106,7 @@ const selected = (type: string, id: string | number | null) => {
 
       <li
         v-if="!hideGroupingControl"
-        class="px-4 py-3 space-x-5 bg-gray-100 border-t-4 border-gray-200 sm:px-6"
+        class="space-x-5 border-t-4 border-gray-200 bg-gray-100 px-4 py-3 sm:px-6"
       >
         <ButtonToggle
           :model-value="grouping"

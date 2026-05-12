@@ -6,6 +6,7 @@ import {
   LifebuoyIcon,
 } from "@heroicons/vue/24/outline";
 import { defineComponent, ref, computed } from "vue";
+
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet2 from "@/composables/useGet2";
 
@@ -77,28 +78,28 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="max-w-5xl mx-auto space-y-6">
+  <div class="mx-auto max-w-5xl space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'help-dashboard' }"
       :pages="[]"
     >
-      <LifebuoyIcon class="w-6 h-6" />
+      <LifebuoyIcon class="h-6 w-6" />
     </BreadcrumbsBar>
     <div
-      class="bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
+      class="divide-y divide-gray-200 rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0"
     >
       <div
         v-for="item in items"
         :key="item.title"
-        class="relative p-6 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500"
+        class="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-inset"
         :class="[item.class]"
       >
         <div v-if="item.title">
           <span
-            class="inline-flex p-3 text-gray-700 rounded-lg bg-gray-50 ring-4 ring-white"
+            class="inline-flex rounded-lg bg-gray-50 p-3 text-gray-700 ring-4 ring-white"
           >
-            <component :is="item.icon" class="w-6 h-6 text-gray-600" />
+            <component :is="item.icon" class="h-6 w-6 text-gray-600" />
           </span>
         </div>
         <div v-if="item.title" class="mt-8">
@@ -119,11 +120,11 @@ export default defineComponent({
         </div>
         <span
           v-if="item.title"
-          class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+          class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
           aria-hidden="true"
         >
           <svg
-            class="w-6 h-6"
+            class="h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 24 24"

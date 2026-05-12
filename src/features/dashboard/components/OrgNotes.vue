@@ -9,17 +9,17 @@ const { notes, notesQuery } = useNotes();
 
 <template>
   <div class="lg:col-span-2 xl:col-span-3">
-    <div class="flex justify-between mt-8">
-      <h2 class="items-baseline text-lg font-medium leading-6 text-gray-700">
+    <div class="mt-8 flex justify-between">
+      <h2 class="items-baseline text-lg leading-6 font-medium text-gray-700">
         Notes from your LC
       </h2>
       <CreateNote :query="notesQuery" />
     </div>
-    <div class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 xl:grid-cols-3">
+    <div class="mt-2 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
       <article
         v-for="note in notes"
         :key="note.id"
-        class="px-6 pt-4 pb-4 bg-white rounded shadow"
+        class="rounded bg-white px-6 pt-4 pb-4 shadow"
         :class="{ 'lg:col-span-2': note.is_wide }"
       >
         <h3 class="mb-2 font-medium text-gray-700">
@@ -27,11 +27,11 @@ const { notes, notesQuery } = useNotes();
         </h3>
         <!-- eslint-disable vue/no-v-html -->
         <p
-          class="text-sm prose-sm prose text-gray-700 whitespace-pre-line wrap-break-word"
+          class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
           v-html="note.note"
         ></p>
         <!-- eslint-enable vue/no-v-html -->
-        <div class="flex justify-end gap-3 mt-2 space-x-3">
+        <div class="mt-2 flex justify-end gap-3 space-x-3">
           <UpdateNote
             :query="notesQuery"
             :note-id="note.id"

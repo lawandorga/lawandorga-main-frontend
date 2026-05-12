@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
+
 import { formatDate } from "@/utils/date";
+
 import { useArticle } from "../api/useArticle";
 
 const route = useRoute();
@@ -9,14 +11,14 @@ const { article } = useArticle(route.params.id as string);
 
 <template>
   <section
-    class="px-8 py-4 mx-auto bg-white border-b border-gray-100 max-w-7xl"
+    class="mx-auto max-w-7xl border-b border-gray-100 bg-white px-8 py-4"
   >
-    <button class="text-lg font-medium text-formcolor" @click="$router.back()">
+    <button class="text-formcolor text-lg font-medium" @click="$router.back()">
       &#x21b5; Back
     </button>
   </section>
-  <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
-    <article v-if="article" class="mx-auto prose prose-lg">
+  <section class="mx-auto max-w-7xl bg-white px-8 py-12">
+    <article v-if="article" class="prose prose-lg mx-auto">
       <em>{{ formatDate(article.date) }}</em>
       <h1>{{ article.title }}</h1>
       <p class="lead">{{ article.description }}</p>

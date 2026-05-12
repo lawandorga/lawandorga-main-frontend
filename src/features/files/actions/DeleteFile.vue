@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ModalDelete, ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 
 // emits

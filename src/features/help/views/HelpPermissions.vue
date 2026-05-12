@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { LifebuoyIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator } from "lorga-ui";
+import { ref } from "vue";
+
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet2 from "@/composables/useGet2";
 
 const permissions = ref();
@@ -11,13 +12,13 @@ useGet2("/api/permissions/query/permissions/", permissions);
 </script>
 
 <template>
-  <div class="mx-auto space-y-6 max-w-(--breakpoint-2xl)">
+  <div class="mx-auto max-w-(--breakpoint-2xl) space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'help-dashboard' }"
       :pages="[{ name: 'Permissions', to: { name: 'help-permissions' } }]"
     >
-      <LifebuoyIcon class="w-6 h-6" />
+      <LifebuoyIcon class="h-6 w-6" />
     </BreadcrumbsBar>
     <TableGenerator
       :head="[
@@ -28,7 +29,7 @@ useGet2("/api/permissions/query/permissions/", permissions);
       :data="permissions"
     >
       <template #description="slotProps">
-        <div class="max-w-lg whitespace-pre-line wrap-break-word">
+        <div class="max-w-lg wrap-break-word whitespace-pre-line">
           {{ slotProps.description }}
         </div>
       </template>

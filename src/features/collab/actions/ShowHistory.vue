@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { formatDate } from "@/utils/date";
 import { ButtonNormal, ModalFree } from "lorga-ui";
 import { ref } from "vue";
+
 import { History } from "@/features/collab/components/FolderCollab.vue";
+import { formatDate } from "@/utils/date";
 
 defineProps<{
   history: History[];
@@ -27,7 +28,7 @@ const versionSelected = (item: History) => {
       <li v-for="item in history" :key="item.time">
         <button
           type="button"
-          class="w-full px-3 py-2 font-medium text-left text-gray-700 bg-gray-100 border-2 border-gray-300 rounded hover:bg-gray-200"
+          class="w-full rounded border-2 border-gray-300 bg-gray-100 px-3 py-2 text-left font-medium text-gray-700 hover:bg-gray-200"
           @click="versionSelected(item)"
         >
           {{ formatDate(item.time) }}
@@ -44,7 +45,7 @@ const versionSelected = (item: History) => {
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div class="prose" v-html="selectedVersion.text" />
     <hr class="my-2" />
-    <div class="text-sm font-medium text-right text-gray-600 uppercase">
+    <div class="text-right text-sm font-medium text-gray-600 uppercase">
       Saved by: {{ selectedVersion.user }}
     </div>
   </ModalFree>

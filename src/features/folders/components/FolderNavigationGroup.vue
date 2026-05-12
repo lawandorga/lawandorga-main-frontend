@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import RedBadge from "@/components/RedBadge.vue";
 import { VNode } from "vue";
+
+import RedBadge from "@/components/RedBadge.vue";
 
 defineProps<{
   buttons: VNode[];
@@ -13,7 +14,7 @@ defineProps<{
 
 <template>
   <div
-    class="relative block w-full transition bg-gray-100 border-t border-gray-200"
+    class="relative block w-full border-t border-gray-200 bg-gray-100 transition"
     :class="{
       'bg-white!': isSelected,
       'border-t-0': isFirst,
@@ -21,12 +22,12 @@ defineProps<{
   >
     <div class="px-4 py-4 sm:px-6">
       <div class="flex flex-wrap items-center justify-between">
-        <p class="text-base font-medium text-formcolor">
+        <p class="text-formcolor text-base font-medium">
           {{ name }}
         </p>
         <div
           v-show="isSelected"
-          class="flex ml-2 space-x-3 shrink-0"
+          class="ml-2 flex shrink-0 space-x-3"
           @click.stop
         >
           <component :is="button" v-for="button in buttons" :key="button" />

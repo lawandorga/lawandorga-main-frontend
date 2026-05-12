@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { isDataUrlDisplayable } from "@/utils/download";
 import { CircleLoader } from "lorga-ui";
 import { computed, toRefs, ref, watch } from "vue";
+
+import { isDataUrlDisplayable } from "@/utils/download";
 
 const props = defineProps<{
   selected: string | number | null;
@@ -50,7 +51,7 @@ const content = computed<string>(() => {
   <CircleLoader v-if="loading" />
   <div
     v-else-if="content.includes('data:application/pdf')"
-    class="flex h-full aspect-square"
+    class="flex aspect-square h-full"
   >
     <iframe
       class="w-full max-w-full"
@@ -60,11 +61,11 @@ const content = computed<string>(() => {
   </div>
   <div
     v-else-if="content.includes('data:image')"
-    class="flex h-full aspect-square"
+    class="flex aspect-square h-full"
   >
     <img class="w-full max-w-full" :src="content" alt="File Content" />
   </div>
-  <div v-else class="flex h-full aspect-square">
+  <div v-else class="flex aspect-square h-full">
     <object class="w-full max-w-full" :data="content" frameborder="0">
       <span class="sr-only">File Content</span>
     </object>

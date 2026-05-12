@@ -1,6 +1,7 @@
+import { ref, Ref, unref } from "vue";
+
 import { useErrorHandling } from "@/api/errors";
 import { Reffed } from "@/types_deprecated/shared";
-import { ref, Ref, unref } from "vue";
 
 export default function useUpdate<
   /* eslint-disable @typescript-eslint/no-explicit-any, no-unused-vars */

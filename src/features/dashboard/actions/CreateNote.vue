@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import FormWysiwyg from "@/components/FormWysiwyg.vue";
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
+
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);

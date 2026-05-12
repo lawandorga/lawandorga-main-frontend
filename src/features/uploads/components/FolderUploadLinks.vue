@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { ButtonNormal, CircleLoader, TableGenerator } from "lorga-ui";
-import { formatDate } from "@/utils/date";
 import { Ref, ref, toRefs, watch } from "vue";
-import useClient from "@/api/client";
-import UploadsDisableLink from "@/features/uploads/actions/DisableUploadLink.vue";
-import FileDisplay from "@/components/FileDisplay.vue";
-import DownloadUploadedFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
-import DeleteUploadedFile from "@/features/uploads/actions/DeleteUploadedFile.vue";
-import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
-import { useLink } from "../api/useLink";
-import DeleteUploadLink from "../actions/DeleteUploadLink.vue";
 import { useRoute, useRouter } from "vue-router";
+
+import useClient from "@/api/client";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import FileDisplay from "@/components/FileDisplay.vue";
 import { Content } from "@/features/folders/api/useFolder";
+import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
+import DeleteUploadedFile from "@/features/uploads/actions/DeleteUploadedFile.vue";
+import UploadsDisableLink from "@/features/uploads/actions/DisableUploadLink.vue";
+import DownloadUploadedFile from "@/features/uploads/actions/DownloadUploadedFile.vue";
+import { formatDate } from "@/utils/date";
+
+import DeleteUploadLink from "../actions/DeleteUploadLink.vue";
+import { useLink } from "../api/useLink";
 
 const props = defineProps<{
   folderContent: Content[];
@@ -129,7 +131,7 @@ watch(
         <div v-else-if="link.disabled">
           The link is disabled and no files have been uploaded.
         </div>
-        <div v-show="selectedFile" class="px-4 py-4 mt-8 bg-gray-100">
+        <div v-show="selectedFile" class="mt-8 bg-gray-100 px-4 py-4">
           <FileDisplay :request="fileDownload" :selected="selectedFile" />
         </div>
       </div>

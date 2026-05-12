@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { DisplayedFieldsObject, Sorting } from "@/features/mail_imports/types";
-import { ButtonNormal, ModalFree } from "lorga-ui";
-import { ref, toRefs, computed } from "vue";
 import {
   AdjustmentsHorizontalIcon,
   ChevronDownIcon,
@@ -12,13 +8,19 @@ import {
   StarIcon as StarOutlineIcons,
 } from "@heroicons/vue/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/vue/24/solid";
-import CopyCCAdressFromFolder from "../actions/CopyCCAdressFromFolder.vue";
-import MailContent from "../components/MailContent.vue";
-import SettingsOverlay from "../components/SettingsOverlay.vue";
+import { ButtonNormal, ModalFree } from "lorga-ui";
+import { ref, toRefs, computed } from "vue";
+
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import useCmd from "@/composables/useCmd";
+import { DisplayedFieldsObject, Sorting } from "@/features/mail_imports/types";
+
+import CopyCCAdressFromFolder from "../actions/CopyCCAdressFromFolder.vue";
 import { ImportedMail } from "../api/useMailImports";
 import MailAttachment from "../components/MailAttachment.vue";
+import MailContent from "../components/MailContent.vue";
+import SettingsOverlay from "../components/SettingsOverlay.vue";
 
 // props
 const props = defineProps<{
@@ -173,10 +175,10 @@ const formatDate = (date: string) =>
             v-model="searchQuery"
             type="search"
             placeholder="Search in mails"
-            class="p-3 rounded-full bg-neutral-100"
+            class="rounded-full bg-neutral-100 p-3"
           />
           <MagnifyingGlassIcon
-            class="absolute w-5 h-5 right-3 top-3.5 pointer-events-none"
+            class="pointer-events-none absolute top-3.5 right-3 h-5 w-5"
           />
         </div>
       </template>
@@ -188,7 +190,7 @@ const formatDate = (date: string) =>
       >
         <input
           id="toggleAllMails"
-          class="self-center w-4 h-4 col-start-1 justify-self-center"
+          class="col-start-1 h-4 w-4 self-center justify-self-center"
           type="checkbox"
           @input="toggleAllCheckedMails"
         />
@@ -198,12 +200,12 @@ const formatDate = (date: string) =>
           class="col-start-2"
         >
           <button @click="() => markAsUnread(checkedMails)">
-            <EnvelopeIcon class="w-5 h-5" />
+            <EnvelopeIcon class="h-5 w-5" />
           </button>
         </ToolTip>
         <ToolTip v-else text="Mark as read" class="col-start-2">
           <button @click="() => markAsRead(checkedMails)">
-            <EnvelopeOpenIcon class="w-5 h-5" />
+            <EnvelopeOpenIcon class="h-5 w-5" />
           </button>
         </ToolTip>
         <span
@@ -220,14 +222,14 @@ const formatDate = (date: string) =>
         </span>
         <ToolTip class="col-start-6" text="Edit display">
           <button @click="settingsOpen = true">
-            <AdjustmentsHorizontalIcon class="w-5 h-5" />
+            <AdjustmentsHorizontalIcon class="h-5 w-5" />
           </button>
         </ToolTip>
-        <div class="w-auto h-px col-span-6 col-start-1 bg-neutral-300" />
+        <div class="col-span-6 col-start-1 h-px w-auto bg-neutral-300" />
         <template v-for="(mail, index) in sortedMails" :key="mail.uuid">
           <input
             :checked="checkedMails.includes(mail.uuid)"
-            class="self-center w-4 h-4 col-start-1 justify-self-center"
+            class="col-start-1 h-4 w-4 self-center justify-self-center"
             type="checkbox"
             @input="() => toggleCheckedMail(mail.uuid)"
           />
@@ -235,15 +237,15 @@ const formatDate = (date: string) =>
             class="col-start-2"
             @click="() => toggleMailPinned(mail.uuid)"
           >
-            <StarSolidIcon v-if="mail.is_pinned" class="w-5 h-5 col-start-2" />
+            <StarSolidIcon v-if="mail.is_pinned" class="col-start-2 h-5 w-5" />
             <ToolTip v-if="!mail.is_pinned" text="E-Mail anpinnen">
-              <StarOutlineIcons class="w-5 h-5" />
+              <StarOutlineIcons class="h-5 w-5" />
             </ToolTip>
           </button>
           <button class="contents" @click="() => toggleMailExpanded(mail.uuid)">
             <span
               v-if="fieldsShown.subject"
-              :class="`col-span-1 overflow-hidden text-left whitespace-nowrap text-ellipsis ${
+              :class="`col-span-1 overflow-hidden text-left text-ellipsis whitespace-nowrap ${
                 mail.is_read ? '' : 'font-bold'
               }`"
             >
@@ -259,7 +261,7 @@ const formatDate = (date: string) =>
             </span>
             <span
               v-if="fieldsShown.sending_datetime"
-              :class="`col-start-5 text-right  ${
+              :class="`col-start-5 text-right ${
                 mail.is_read ? '' : 'font-semibold'
               }`"
             >
@@ -285,7 +287,7 @@ const formatDate = (date: string) =>
           />
           <div
             v-if="index !== mails.length - 1"
-            class="w-auto h-px col-span-6 col-start-1 bg-neutral-300"
+            class="col-span-6 col-start-1 h-px w-auto bg-neutral-300"
           />
         </template>
         <div

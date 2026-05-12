@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
+
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   query: () => void;

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { ChartBarIcon } from "@heroicons/vue/24/outline";
-import StatisticRecordStates from "@/features/statistics/components/RecordStates.vue";
-import StatisticChartWrapper from "@/features/statistics/components/ChartWrapper.vue";
-import StatisticRecordTags from "@/features/statistics/components/RecordTags.vue";
+
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import StatisticActiveUsers from "@/features/statistics/components/ActiveUsers.vue";
+import StatisticChartWrapper from "@/features/statistics/components/ChartWrapper.vue";
 import StatisticRecordsCreatedAndClosed from "@/features/statistics/components/RecordsCreatedAndClosed.vue";
+import StatisticRecordStates from "@/features/statistics/components/RecordStates.vue";
+import StatisticRecordTags from "@/features/statistics/components/RecordTags.vue";
+
 import CreatedRecords from "../components/CreatedRecords.vue";
 import DataSheetStatisticFieldsStats from "../components/DataSheetStatisticFieldsStats.vue";
 </script>
@@ -17,10 +19,10 @@ import DataSheetStatisticFieldsStats from "../components/DataSheetStatisticField
       :base="{ name: 'dashboard' }"
       :pages="[]"
     >
-      <ChartBarIcon class="w-6 h-6" />
+      <ChartBarIcon class="h-6 w-6" />
     </BreadcrumbsBar>
   </div>
-  <div class="grid grid-cols-12 gap-4 mt-6">
+  <div class="mt-6 grid grid-cols-12 gap-4">
     <StatisticChartWrapper
       title="Most Active Users In The Last 30 Days"
       class="col-span-12"

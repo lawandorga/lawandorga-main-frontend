@@ -1,8 +1,8 @@
 {
-    "IndexDocument": {
-        "Suffix": "index.html"
-    },
-    "ErrorDocument": {
-        "Key": "index.html"
-    }
+  "IndexDocument": {
+    "Suffix": "index.html"
+  },
+  "ErrorDocument": {
+    "Key": "index.html"
+  }
 }

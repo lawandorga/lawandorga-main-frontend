@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import useClient from "@/api/client";
-import { getRawLoginUrl } from "@/utils/login";
 import { CircleLoader } from "lorga-ui";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+
+import useClient from "@/api/client";
+import { getRawLoginUrl } from "@/utils/login";
 
 const success = ref(false);
 const loading = ref(true);
@@ -23,7 +24,7 @@ request()
 </script>
 
 <template>
-  <div class="max-w-2xl px-4 pt-4 pb-6 mx-auto mt-12 bg-white shadow">
+  <div class="mx-auto mt-12 max-w-2xl bg-white px-4 pt-4 pb-6 shadow">
     <h2 class="mb-4 text-2xl font-medium">E-Mail Confirmation</h2>
     <div v-if="loading" class="text-lg">
       <p>One Moment please, we are checking the confirmation link.</p>

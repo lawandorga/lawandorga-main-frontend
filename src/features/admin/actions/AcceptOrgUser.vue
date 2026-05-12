@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { toRefs } from "vue";
 import { ModalConfirm, ButtonNormal } from "lorga-ui";
+import { toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
