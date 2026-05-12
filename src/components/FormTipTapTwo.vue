@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import CharacterCount from "@tiptap/extension-character-count";
 import Highlight from "@tiptap/extension-highlight";
 import { TableKit } from "@tiptap/extension-table";
+import { CharacterCount } from "@tiptap/extensions/character-count";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { toRefs } from "vue";
