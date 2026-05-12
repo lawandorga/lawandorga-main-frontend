@@ -15,12 +15,12 @@ const getPreviewLink = (data: Record<string, unknown>): string | undefined => {
 <template>
   <a
     v-if="getPreviewLink(data)"
-    class="flex items-center gap-2 font-medium text-formcolor"
+    class="text-formcolor flex items-center gap-2 font-medium"
     target="_blank"
     rel="noopener noreferrer"
     :href="getPreviewLink(data)"
   >
-    <ArrowTopRightOnSquareIcon class="w-4 h-4 stroke-2" />
+    <ArrowTopRightOnSquareIcon class="h-4 w-4 stroke-2" />
     Preview Template
   </a>
 </template>

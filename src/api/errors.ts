@@ -1,8 +1,9 @@
+import { AxiosError } from "axios";
+import { types } from "lorga-ui";
+import { Router, useRouter } from "vue-router";
+
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
-import { types } from "lorga-ui";
-import { AxiosError } from "axios";
-import { Router, useRouter } from "vue-router";
 import { getLoginUrl } from "@/utils/login";
 
 type ICommandError = types.ICommandError;

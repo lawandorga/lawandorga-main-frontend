@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
+
 import { MailDomain } from "../api/useGetGroupPage";
 
 const props = defineProps<{

@@ -12,7 +12,7 @@ defineProps<{
     <dt class="shrink-0">
       <component
         :is="icon"
-        class="w-4 h-4 text-gray-400 mt-0.5"
+        class="mt-0.5 h-4 w-4 text-gray-400"
         aria-hidden="true"
       />
       <span class="sr-only">{{ label }}</span>

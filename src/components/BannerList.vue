@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { useUserStore } from "@/store/user";
 import { ref } from "vue";
-import BannerWhite from "./BannerWhite.vue";
 import { RouteLocationRaw } from "vue-router";
+
 import { useRunOptimizations } from "@/features/user/api/useRunOptimizations";
+import { useUserStore } from "@/store/user";
+
+import BannerWhite from "./BannerWhite.vue";
 
 interface Banner {
   text: string;

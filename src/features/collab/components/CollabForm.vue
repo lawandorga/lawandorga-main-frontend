@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import FormTipTapTwo from "@/components/FormTipTapTwo.vue";
-import { ref, toRefs, watch } from "vue";
 import { debounce } from "lodash";
+import { ref, toRefs, watch } from "vue";
+
+import FormTipTapTwo from "@/components/FormTipTapTwo.vue";
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{

@@ -1,10 +1,9 @@
-import globals from "globals";
 import js from "@eslint/js";
-import typescriptParser from "@typescript-eslint/parser";
 import typescriptPlugin from "@typescript-eslint/eslint-plugin";
-import vueParser from "vue-eslint-parser";
+import typescriptParser from "@typescript-eslint/parser";
 import vuePlugin from "eslint-plugin-vue";
-import prettierRecommended from "eslint-plugin-prettier/recommended";
+import globals from "globals";
+import vueParser from "vue-eslint-parser";
 
 export default [
   js.configs.recommended,
@@ -26,7 +25,6 @@ export default [
     },
   },
   ...vuePlugin.configs["flat/essential"],
-  prettierRecommended,
   {
     rules: {
       "no-unused-vars": "warn",
@@ -34,7 +32,14 @@ export default [
       "vue/component-name-in-template-casing": ["error", "PascalCase"],
       "vue/no-undef-components": [
         "error",
-        { ignorePatterns: ["router-link", "router-view", "RouterLink", "RouterView"] },
+        {
+          ignorePatterns: [
+            "router-link",
+            "router-view",
+            "RouterLink",
+            "RouterView",
+          ],
+        },
       ],
     },
   },

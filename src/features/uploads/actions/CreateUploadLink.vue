@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 
 // props

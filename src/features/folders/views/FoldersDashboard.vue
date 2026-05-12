@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { FolderIcon } from "@heroicons/vue/24/outline";
+
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { useUserStore } from "@/store/user";
-import { FolderIcon } from "@heroicons/vue/24/outline";
 import TabControls from "@/components/TabControls.vue";
 import FoldersTableView from "@/features/folders/components/FoldersTableView.vue";
 import FoldersTreeView from "@/features/folders/components/FoldersTreeView.vue";
+import { useUserStore } from "@/store/user";
+
 import { useFolderPage } from "../api/useFolderPage";
 
 const userStore = useUserStore();
@@ -23,10 +25,10 @@ const tabChanged = (key: string) => {
   <BoxLoader :show="userStore.loaded">
     <div
       v-if="userStore.loaded"
-      class="mx-auto space-y-6 max-w-(--breakpoint-2xl)"
+      class="mx-auto max-w-(--breakpoint-2xl) space-y-6"
     >
       <BreadcrumbsBar :base="{ name: 'folders-dashboard' }">
-        <FolderIcon class="w-6 h-6" />
+        <FolderIcon class="h-6 w-6" />
       </BreadcrumbsBar>
 
       <TabControls
@@ -56,7 +58,7 @@ const tabChanged = (key: string) => {
         </template>
       </TabControls>
     </div>
-    <div class="inline-block px-3 py-2 mt-10 border shadow-sm bg-gray-50">
+    <div class="mt-10 inline-block border bg-gray-50 px-3 py-2 shadow-sm">
       <h2 class="font-medium text-gray-600">Folder properties:</h2>
       <ul class="text-sm text-gray-600">
         <li>

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
-import { formatDate } from "@/utils/date";
-import useQuery from "@/composables/useQuery";
+import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { Ref, ref, toRefs, watch } from "vue";
-import { useAlertStore } from "@/store/alert";
-import QuestionnaireFileDownload from "../actions/DownloadQuestionnaireFile.vue";
-import QuestionnaireDelete from "../actions/DeleteQuestionnaire.vue";
+
 import useClient from "@/api/client";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import useQuery from "@/composables/useQuery";
+import { useAlertStore } from "@/store/alert";
+import { formatDate } from "@/utils/date";
+
+import QuestionnaireDelete from "../actions/DeleteQuestionnaire.vue";
+import QuestionnaireFileDownload from "../actions/DownloadQuestionnaireFile.vue";
 
 interface QuestionnaireField {
   id: number;
@@ -123,7 +125,7 @@ const copyLink = (recordQuestionnaire: Questionnaire) => {
           </dt>
           <dd
             v-if="answer.field.type === 'TEXTAREA'"
-            class="mt-1 text-sm text-gray-900 break-words"
+            class="mt-1 text-sm break-words text-gray-900"
           >
             {{ answer.data }}
           </dd>
@@ -132,21 +134,21 @@ const copyLink = (recordQuestionnaire: Questionnaire) => {
             class="mt-1 text-sm text-gray-900"
           >
             <div
-              class="border border-gray-200 divide-y divide-gray-200 rounded-md"
+              class="divide-y divide-gray-200 rounded-md border border-gray-200"
             >
               <div
-                class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
+                class="flex items-center justify-between py-3 pr-4 pl-3 text-sm"
               >
-                <div class="flex items-center flex-1 w-0">
+                <div class="flex w-0 flex-1 items-center">
                   <PaperClipIcon
-                    class="shrink-0 w-5 h-5 text-gray-400"
+                    class="h-5 w-5 shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  <span class="flex-1 w-0 ml-2 truncate">
+                  <span class="ml-2 w-0 flex-1 truncate">
                     {{ answer.data ? answer.data.split("/").at(-1) : "Error" }}
                   </span>
                 </div>
-                <div class="shrink-0 ml-4">
+                <div class="ml-4 shrink-0">
                   <QuestionnaireFileDownload
                     :questionnaire-file-id="answer.id"
                     :file-name="answer.data"

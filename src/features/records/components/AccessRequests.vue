@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { TableGenerator } from "lorga-ui";
+
 import { formatDate } from "@/utils/date";
-import { AccessRequest } from "../types/accessRequest";
+
 import DeclineAccessRequest from "../actions/DeclineAccessRequest.vue";
 import GrantAccessRequest from "../actions/GrantAccessRequest.vue";
+import { AccessRequest } from "../types/accessRequest";
 
 defineProps<{
   accessRequests: AccessRequest[];
@@ -37,7 +39,7 @@ defineProps<{
       <span v-if="slotProps.state === 'gr'">Accepted</span>
     </template>
     <template #explanation="slotProps">
-      <div class="w-40 whitespace-normal line-clamp-3">
+      <div class="line-clamp-3 w-40 whitespace-normal">
         <abbr class="underline-dotted" :title="slotProps.explanation">
           {{ slotProps.explanation }}
         </abbr>

@@ -1,15 +1,17 @@
 <script lang="ts" setup>
+import { EnvelopeIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import { useRoute } from "vue-router";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import MailGroupAddAddress from "@/features/mail/actions/AddAddressToGroup.vue";
 import MailGroupAddMember from "@/features/mail/actions/AddMemberToGroup.vue";
 import MailGroupDeleteAddress from "@/features/mail/actions/DeleteGroupAddress.vue";
 import MailGroupRemoveMember from "@/features/mail/actions/RemoveMemberFromGroup.vue";
 import MailSetDefaultGroupAddress from "@/features/mail/actions/SetDefaultGroupAddress.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";
-import { EnvelopeIcon } from "@heroicons/vue/24/outline";
-import { TableGenerator } from "lorga-ui";
-import { useRoute } from "vue-router";
+
 import { type MailAddress, useGetGroupPage } from "../api/useGetGroupPage";
 
 const userStore = useUserStore();
@@ -22,7 +24,7 @@ const { page, query, availableDomains, members, addresses } =
 
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div v-if="userStore.loaded" class="max-w-3xl mx-auto space-y-8">
+    <div v-if="userStore.loaded" class="mx-auto max-w-3xl space-y-8">
       <BreadcrumbsBar
         :base="{ name: 'mail-dashboard' }"
         :pages="[
@@ -33,7 +35,7 @@ const { page, query, availableDomains, members, addresses } =
         ]"
         class="mb-6"
       >
-        <EnvelopeIcon class="w-6 h-6" />
+        <EnvelopeIcon class="h-6 w-6" />
       </BreadcrumbsBar>
       <TableGenerator
         :head="[

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ButtonNormal, ModalCreate } from "lorga-ui";
-import { formFileFields } from "@/features/questionnaires/fields/template_file";
+
 import useCmd from "@/composables/useCmd";
+import { formFileFields } from "@/features/questionnaires/fields/template_file";
 
 const props = defineProps<{
   query: () => void;

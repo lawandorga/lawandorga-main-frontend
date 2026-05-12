@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { TableGenerator } from "lorga-ui";
+
 import { useRecordsPermissions } from "../api/useRecordsPermissions";
 
 const { permissions } = useRecordsPermissions();

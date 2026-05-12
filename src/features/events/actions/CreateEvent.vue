@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
 import { FormGenerator, ModalFree, types, ButtonNormal } from "lorga-ui";
+import { ref, toRefs } from "vue";
+
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
 

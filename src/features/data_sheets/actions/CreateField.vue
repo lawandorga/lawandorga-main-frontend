@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, toRefs } from "vue";
 import { ModalFree, FormGenerator, ButtonNormal, types } from "lorga-ui";
+import { computed, ref, toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 import { useKindFormFields } from "@/features/data_sheets/api/useKindFormFields";
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+printf "\nformat:\n" && npm run format
 printf "\nlint:\n" && npm run lint
 printf "\n\n"
 printf "typescript:\n" && npm run tscheck

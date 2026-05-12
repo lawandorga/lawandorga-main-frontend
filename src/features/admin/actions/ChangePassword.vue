@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
-import { useUserStore } from "@/store/user";
 import { ButtonNormal, ModalForm, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
+import { useUserStore } from "@/store/user";
 
 const props = defineProps<{
   query: () => void;

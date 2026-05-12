@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { ModalFree } from "lorga-ui";
 import {
   CalendarDaysIcon,
   DocumentTextIcon,
   MapPinIcon,
   UserIcon,
 } from "@heroicons/vue/24/outline";
+import { ModalFree } from "lorga-ui";
+import { computed } from "vue";
+
 import type { CalendarEvent } from "../api/useCalendarEvents";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 
@@ -80,22 +81,22 @@ const formattedTime = computed(() => {
     @update:model-value="emit('update:modelValue', $event)"
   >
     <template v-if="event">
-      <div class="flex gap-2 mb-5">
+      <div class="mb-5 flex gap-2">
         <span
-          class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
+          class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           :style="{
             backgroundColor: `${eventColor}20`,
             color: eventColor,
           }"
         >
           <span
-            class="w-1.5 h-1.5 rounded-full shrink-0"
+            class="h-1.5 w-1.5 shrink-0 rounded-full"
             :style="{ backgroundColor: eventColor }"
           />
           {{ eventTypeMeta.label }}
         </span>
         <span
-          class="text-xs font-medium px-2.5 py-1 rounded-full"
+          class="rounded-full px-2.5 py-1 text-xs font-medium"
           :style="sourceMeta.style"
         >
           {{ sourceMeta.label }}
@@ -121,7 +122,7 @@ const formattedTime = computed(() => {
           label="Description"
           :icon="DocumentTextIcon"
         >
-          <dd class="text-gray-900 whitespace-pre-wrap">
+          <dd class="whitespace-pre-wrap text-gray-900">
             {{ event.description }}
           </dd>
         </CalendarDetailRow>
@@ -130,17 +131,17 @@ const formattedTime = computed(() => {
         </CalendarDetailRow>
       </dl>
 
-      <div class="flex gap-3 mt-5">
+      <div class="mt-5 flex gap-3">
         <button
           type="button"
-          class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+          class="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
           @click="emit('update:modelValue', false)"
         >
           Close
         </button>
         <button
           type="button"
-          class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-formcolor rounded-lg hover:bg-(--color-formcolor-hover)"
+          class="bg-formcolor flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold text-white hover:bg-(--color-formcolor-hover)"
         >
           Edit
         </button>

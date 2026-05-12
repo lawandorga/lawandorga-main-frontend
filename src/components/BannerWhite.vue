@@ -14,37 +14,37 @@ const emit = defineEmits(["close"]);
 
 <template>
   <div class="fixed inset-x-0 bottom-0 pb-2 sm:pb-5">
-    <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <div class="p-2 rounded-lg shadow-lg bg-formcolor sm:p-3">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="bg-formcolor rounded-lg p-2 shadow-lg sm:p-3">
         <div class="flex flex-wrap items-center justify-between">
-          <div class="flex items-center flex-1 w-0">
-            <span class="flex p-2 bg-blue-800 rounded-lg">
-              <MegaphoneIcon class="w-6 h-6 text-blue-100" aria-hidden="true" />
+          <div class="flex w-0 flex-1 items-center">
+            <span class="flex rounded-lg bg-blue-800 p-2">
+              <MegaphoneIcon class="h-6 w-6 text-blue-100" aria-hidden="true" />
             </span>
-            <p class="ml-3 font-medium text-blue-100 truncate">
+            <p class="ml-3 truncate font-medium text-blue-100">
               {{ text }}
             </p>
           </div>
           <div
-            class="shrink-0 order-3 w-full mt-2 sm:order-2 sm:mt-0 sm:w-auto"
+            class="order-3 mt-2 w-full shrink-0 sm:order-2 sm:mt-0 sm:w-auto"
           >
             <router-link
               :to="to"
-              class="flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-transparent rounded-md shadow-sm hover:bg-indigo-50"
+              class="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-blue-700 shadow-sm hover:bg-indigo-50"
               @click="emit('close')"
             >
               {{ button }}
             </router-link>
           </div>
-          <div class="shrink-0 order-2 sm:order-3 sm:ml-2">
+          <div class="order-2 shrink-0 sm:order-3 sm:ml-2">
             <button
               v-if="close"
               type="button"
-              class="flex p-2 -mr-1 rounded-md hover:bg-blue-500/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              class="-mr-1 flex rounded-md p-2 hover:bg-blue-500/10 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
               @click="emit('close')"
             >
               <span class="sr-only">Dismiss</span>
-              <XMarkIcon class="w-6 h-6 text-white" aria-hidden="true" />
+              <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
             </button>
           </div>
         </div>

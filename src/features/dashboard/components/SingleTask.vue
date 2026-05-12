@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { toRefs } from "vue";
-import { Task } from "../api/useTasks";
-import useCmd from "@/composables/useCmd";
 import {
   ExclamationCircleIcon,
   FolderOpenIcon,
 } from "@heroicons/vue/24/outline";
 import { ButtonNormal } from "lorga-ui";
-import { formatDate } from "@/utils/date";
+import { toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
 import EditTask from "@/features/dashboard/actions/EditTask.vue";
+import { formatDate } from "@/utils/date";
+
 import DeleteTask from "../actions/DeleteTask.vue";
+import { Task } from "../api/useTasks";
 
 const props = defineProps<{
   task: Task;
@@ -61,11 +63,11 @@ const priorityColor: Record<string, string> = {
 
 <template>
   <article
-    class="flex flex-col justify-between px-6 pt-4 pb-4 bg-white rounded shadow"
+    class="flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
   >
     <div>
       <div class="flex items-start justify-between gap-3">
-        <h3 class="mb-2 font-semibold text-left text-formcolor">
+        <h3 class="text-formcolor mb-2 text-left font-semibold">
           {{ task.title }}
         </h3>
         <EditTask v-if="!task.is_done" :task="task" :query="query" />
@@ -73,31 +75,31 @@ const priorityColor: Record<string, string> = {
       </div>
       <p
         v-if="task.page_url"
-        class="flex text-sm text-gray-700 whitespace-pre-line wrap-break-word"
+        class="flex text-sm wrap-break-word whitespace-pre-line text-gray-700"
       >
-        <FolderOpenIcon class="w-6 h-6 grow-0 shrink-0" />
+        <FolderOpenIcon class="h-6 w-6 shrink-0 grow-0" />
         <a :href="task.page_url" class="ml-2 underline">
           {{ task.page_url }}
         </a>
       </p>
       <p
-        class="mt-2 text-sm font-semibold text-gray-700 whitespace-pre-line wrap-break-word"
+        class="mt-2 text-sm font-semibold wrap-break-word whitespace-pre-line text-gray-700"
       >
         {{ task.description }}
       </p>
       <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
         Assignees: {{ task.assignee_names.join(", ") }}
       </p>
-      <div v-if="task.tags_as_list.length" class="flex flex-wrap gap-1 mt-2">
+      <div v-if="task.tags_as_list.length" class="mt-2 flex flex-wrap gap-1">
         <span
           v-for="tag in task.tags_as_list"
           :key="tag"
-          class="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-full"
+          class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
         >
           {{ tag }}
         </span>
       </div>
-      <div class="flex items-center gap-3 mt-2">
+      <div class="mt-2 flex items-center gap-3">
         <p
           class="text-sm font-semibold"
           :class="priorityColor[task.priority] || 'text-gray-500'"
@@ -105,7 +107,7 @@ const priorityColor: Record<string, string> = {
           {{ priorityLabel[task.priority] || task.priority }}
         </p>
         <div class="flex items-center gap-2 text-sm text-gray-500">
-          <div class="w-24 h-2 bg-gray-200 rounded-full">
+          <div class="h-2 w-24 rounded-full bg-gray-200">
             <div
               class="h-2 rounded-full"
               :class="task.progress === 100 ? 'bg-green-500' : 'bg-formcolor'"
@@ -116,7 +118,7 @@ const priorityColor: Record<string, string> = {
         </div>
       </div>
     </div>
-    <div class="flex pt-2 mt-4 border-t-2">
+    <div class="mt-4 flex border-t-2 pt-2">
       <p
         v-if="task.deadline"
         class="flex items-center gap-1 text-sm font-semibold text-gray-500"

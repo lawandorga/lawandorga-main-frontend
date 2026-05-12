@@ -1,11 +1,13 @@
+import axios from "axios";
+
+import { downloadFileRequest } from "@/utils/download";
+
 import {
   FilesFolder,
   FilesPermission,
   FilesFile,
   FilesPossiblePermission,
 } from "./types";
-import { downloadFileRequest } from "@/utils/download";
-import axios from "axios";
 
 class FilesService {
   // permissions

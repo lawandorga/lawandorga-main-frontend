@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
 import {
   CheckIcon,
   ExclamationTriangleIcon,
   PauseIcon,
 } from "@heroicons/vue/20/solid";
 import { CircleLoader } from "lorga-ui";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+
 import { useRunOptimizations } from "../api/useRunOptimizations";
 
 const { status, runAll } = useRunOptimizations();
@@ -16,10 +18,10 @@ runAll();
 <template>
   <BoxLoader show>
     <div
-      class="max-w-3xl px-5 py-4 mx-auto bg-white border border-gray-200 rounded shadow"
+      class="mx-auto max-w-3xl rounded border border-gray-200 bg-white px-5 py-4 shadow"
     >
       <h1 class="text-xl font-medium text-gray-800">Optimization</h1>
-      <div class="mt-2 prose max-w-none">
+      <div class="prose mt-2 max-w-none">
         <p>
           Law&Orga is running some checks and trying to fix possible errors.
           <br />
@@ -46,7 +48,7 @@ runAll();
           class="[&>div]:flex [&>div]:items-center [&>div]:space-x-1 [&>div]:leading-none"
         >
           <div v-if="status[key] == 'waiting'">
-            <PauseIcon class="w-5 h-5 text-gray-600" />
+            <PauseIcon class="h-5 w-5 text-gray-600" />
             <span class="text-lg font-medium text-gray-800">
               {{ key }} optimization is waiting.
             </span>
@@ -58,13 +60,13 @@ runAll();
             </span>
           </div>
           <div v-if="status[key] == 'error'">
-            <ExclamationTriangleIcon class="w-5 h-5 text-gray-600" />
+            <ExclamationTriangleIcon class="h-5 w-5 text-gray-600" />
             <span class="text-lg font-medium text-gray-800">
               {{ key }} optimization encountered an error.
             </span>
           </div>
           <div v-if="status[key] == 'success'">
-            <CheckIcon class="w-5 h-5 text-gray-600" />
+            <CheckIcon class="h-5 w-5 text-gray-600" />
             <span class="text-lg font-medium text-gray-800">
               {{ key }} optimization finished successfully.
             </span>

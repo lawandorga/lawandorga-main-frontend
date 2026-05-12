@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { PencilIcon } from "@heroicons/vue/24/outline";
 import { ModalForm, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
-import { PencilIcon } from "@heroicons/vue/24/outline";
+
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
@@ -25,7 +26,7 @@ const fields = computed<types.FormField[]>(() => [
 
 <template>
   <button class="flex" @click="commandModalOpen = true">
-    <PencilIcon class="w-4 h-4 stroke-2" />
+    <PencilIcon class="h-4 w-4 stroke-2" />
     <ModalForm
       v-model="commandModalOpen"
       title="Change Template Name"

@@ -7,10 +7,10 @@ const emit = defineEmits(["click"]);
 <template>
   <button
     type="button"
-    class="bg-white p-0.5 border-2 border-transparent rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 hover:border-gray-100 focus:outline-none focus:ring-0"
+    class="rounded-md border-2 border-transparent bg-white p-0.5 text-gray-400 hover:border-gray-100 hover:bg-gray-100 hover:text-gray-500 focus:ring-0 focus:outline-none"
     @click="emit('click')"
   >
     <span class="sr-only">Close</span>
-    <XMarkIcon class="w-6 h-6" aria-hidden="true" />
+    <XMarkIcon class="h-6 w-6" aria-hidden="true" />
   </button>
 </template>

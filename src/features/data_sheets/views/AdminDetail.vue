@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
-import { ModalFree, TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import { ModalFree, TableGenerator } from "lorga-ui";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+
 import useClient from "@/api/client";
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import useGet from "@/composables/useGet";
+import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
+
 import CreateField from "../actions/CreateField.vue";
 import UpdateField from "../actions/UpdateField.vue";
 
@@ -50,7 +52,7 @@ const helpModalOpen = ref(false);
 
 <template>
   <BoxLoader :show="!!template">
-    <div v-if="template" class="max-w-5xl mx-auto space-y-6">
+    <div v-if="template" class="mx-auto max-w-5xl space-y-6">
       <BreadcrumbsBar
         :base="{ name: 'admin-dashboard' }"
         :pages="[
@@ -64,7 +66,7 @@ const helpModalOpen = ref(false);
           },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
         <template #buttons>
           <ButtonBreadcrumbs @click="helpModalOpen = true">
             Show Help

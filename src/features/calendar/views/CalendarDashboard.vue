@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import FullCalendar from "@fullcalendar/vue3";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
 import type {
   CalendarOptions,
   DayHeaderContentArg,
@@ -10,9 +6,15 @@ import type {
   EventContentArg,
 } from "@fullcalendar/core";
 import enGBLocale from "@fullcalendar/core/locales/en-gb";
-import { computed, ref } from "vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import listPlugin from "@fullcalendar/list";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import FullCalendar from "@fullcalendar/vue3";
 import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
+import { computed, ref } from "vue";
+
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+
 import {
   useCalendarEvents,
   type CalendarEvent,
@@ -229,14 +231,14 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 
 <template>
   <div
-    class="calendar-page flex flex-col h-full gap-6 mx-auto max-w-(--breakpoint-2xl)"
+    class="calendar-page mx-auto flex h-full max-w-(--breakpoint-2xl) flex-col gap-6"
   >
     <BreadcrumbsBar :base="{ name: 'calendar-dashboard' }" :pages="[]">
-      <CalendarDaysIcon class="w-6 h-6" />
+      <CalendarDaysIcon class="h-6 w-6" />
     </BreadcrumbsBar>
 
     <div
-      class="relative flex-1 min-h-0 p-4 bg-white rounded-lg shadow isolate calendar-shell"
+      class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-4 shadow"
     >
       <div
         v-if="isCalendarLoading"

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
 import remixiconUrl from "remixicon/fonts/remixicon.symbol.svg";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   props: {
@@ -38,17 +38,17 @@ export default defineComponent({
 
 <template>
   <button
-    class="w-7 h-7 rounded-md p-1 mr-1.5 border-2 border-transparent"
+    class="mr-1.5 h-7 w-7 rounded-md border-2 border-transparent p-1"
     type="button"
     :class="{
-      'text-white bg-gray-900 border-transparent!': active,
+      'border-transparent! bg-gray-900 text-white': active,
       'text-gray-900': !active,
     }"
     :title="title"
     tabindex="-1"
     @click.prevent="action"
   >
-    <svg class="w-full h-full fill-current remix">
+    <svg class="remix h-full w-full fill-current">
       <use :xlink:href="`${remixiconUrl}#ri-${icon}`" />
     </svg>
   </button>

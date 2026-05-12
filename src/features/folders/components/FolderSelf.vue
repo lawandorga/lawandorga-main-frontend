@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { computed, toRefs } from "vue";
+
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
-import { computed, toRefs } from "vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
+
 import { Content, FolderDetail } from "../api/useFolder";
 
 const props = defineProps<{

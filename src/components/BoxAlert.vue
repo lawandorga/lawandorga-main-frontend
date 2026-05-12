@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div
-    class="px-4 py-2 rounded"
+    class="rounded px-4 py-2"
     :class="{
       'bg-blue-200 text-blue-800': type === 'info',
       'bg-green-200 text-green-800': type === 'success',

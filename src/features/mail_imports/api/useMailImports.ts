@@ -1,6 +1,7 @@
+import { computed, Ref, ref } from "vue";
+
 import useClient from "@/api/client";
 import useGet from "@/composables/useGet";
-import { computed, Ref, ref } from "vue";
 
 export type MailAttachment = {
   name: string;

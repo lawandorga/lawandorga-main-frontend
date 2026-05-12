@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, no-unused-vars */
 
-import { blobToDataURL, downloadFileRequest } from "@/utils/download";
 import axios, { AxiosInstance } from "axios";
 import { inject, InjectionKey, provide, Ref, unref } from "vue";
+
+import { blobToDataURL, downloadFileRequest } from "@/utils/download";
 
 const clientKey = Symbol() as InjectionKey<Client>;
 

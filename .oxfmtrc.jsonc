@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "sortImports": true,
+  "sortTailwindcss": true,
+  "trailingComma": "all",
+  "ignorePatterns": [
+    // Whitelist entries
+    "*",
+    "!.vscode",
+    "!.vscode/**",
+    "!.github",
+    "!.github/**",
+    "!src",
+    "!src/**",
+    "!src/**/*",
+    "!public",
+    "!public/**",
+    "!*.{html,js,json,jsonc,ts}",
+  ],
+}

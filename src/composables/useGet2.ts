@@ -1,6 +1,8 @@
 import { Ref } from "vue";
-import useQuery from "./useQuery";
+
 import useClient from "@/api/client";
+
+import useQuery from "./useQuery";
 
 function useGet2<Type>(
   url: string,

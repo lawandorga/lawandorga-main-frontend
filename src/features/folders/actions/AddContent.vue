@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
 import {
   Dialog,
   DialogPanel,
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
+import { ButtonNormal } from "lorga-ui";
+import { computed, ref } from "vue";
+
+import CollabCreate from "@/features/collab/actions/CreateCollab.vue";
+import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
 import FilesUploadFile from "@/features/files/actions/UploadFile.vue";
 import FilesUploadMultipleFiles from "@/features/files/actions/UploadMultipleFiles.vue";
 import QuestionnairesPublishQuestionnaire from "@/features/questionnaires/actions/PublishQuestionnaire.vue";
-import CreateDataSheet from "@/features/data_sheets/actions/CreateDataSheet.vue";
-import { ButtonNormal } from "lorga-ui";
 import UploadsCreateLink from "@/features/uploads/actions/CreateUploadLink.vue";
-import CollabCreate from "@/features/collab/actions/CreateCollab.vue";
 
 defineProps<{ query: () => void; folderUuid?: string }>();
 
@@ -104,7 +105,7 @@ defineExpose({
           <div class="fixed inset-0 bg-gray-800/40" />
         </TransitionChild>
         <div class="fixed inset-0 overflow-y-auto">
-          <div class="flex items-center justify-center min-h-full">
+          <div class="flex min-h-full items-center justify-center">
             <TransitionChild
               as="template"
               enter="duration-300 ease-out"
@@ -116,7 +117,7 @@ defineExpose({
             >
               <DialogPanel class="w-72">
                 <div
-                  class="w-full bg-white divide-y divide-gray-100 rounded-md shadow-lg focus:outline-none"
+                  class="w-full divide-y divide-gray-100 rounded-md bg-white shadow-lg focus:outline-none"
                 >
                   <div
                     v-for="item in addContentOptions"

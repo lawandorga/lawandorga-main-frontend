@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { formatDate } from "@/utils/date";
-import { ref, toRefs, watch } from "vue";
-import MessagesSendMessage from "@/features/messages/actions/SendMessage.vue";
-import useQuery from "@/composables/useQuery";
 import { CircleLoader } from "lorga-ui";
-import DeleteMessage from "../actions/DeleteMessage.vue";
+import { ref, toRefs, watch } from "vue";
+
 import useClient from "@/api/client";
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import useQuery from "@/composables/useQuery";
+import MessagesSendMessage from "@/features/messages/actions/SendMessage.vue";
+import { formatDate } from "@/utils/date";
+
+import DeleteMessage from "../actions/DeleteMessage.vue";
 
 interface Message {
   id: number;
@@ -56,7 +58,7 @@ update();
         <li v-for="message in messages" :key="message.message">
           <div class="w-full">
             <div
-              class="flex flex-col-reverse items-baseline justify-between w-full md:flex-row"
+              class="flex w-full flex-col-reverse items-baseline justify-between md:flex-row"
             >
               <b>{{ message.sender_name }}:</b>
               <i class="text-sm tracking-tight">

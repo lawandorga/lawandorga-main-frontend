@@ -1,10 +1,11 @@
-import { createApp } from "vue";
-import { setupDefaultAxios } from "./api";
-import App from "./App.vue";
-import "./main.css";
-import router from "./router";
 import axios from "axios";
 import { createPinia } from "pinia";
+import { createApp } from "vue";
+
+import "./main.css";
+import { setupDefaultAxios } from "./api";
+import App from "./App.vue";
+import router from "./router";
 import { useUserStore } from "./store/user";
 
 // vue

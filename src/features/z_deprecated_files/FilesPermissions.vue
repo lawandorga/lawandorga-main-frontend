@@ -23,10 +23,11 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, ref } from "vue";
 import { ModalFree, TableGenerator } from "lorga-ui";
-import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
+import { watch, ref } from "vue";
+
 import useClient from "@/api/client";
+import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 import useQuery from "@/composables/useQuery";
 
 export interface HasPermission {

@@ -1,7 +1,7 @@
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { TableData, TableRow } from "lorga-ui";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/20/solid";
+import { TableData, TableRow } from "lorga-ui";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   components: {
@@ -58,7 +58,7 @@ export default defineComponent({
 <template>
   <TableRow>
     <TableData :colspan="colspan" class="md:pr-0!">
-      <div class="flex items-center justify-between flex-1">
+      <div class="flex flex-1 items-center justify-between">
         <div>
           <p class="text-sm text-gray-700">
             Showing
@@ -87,11 +87,11 @@ export default defineComponent({
           >
             <button
               type="button"
-              class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
+              class="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
               @click="previousPage()"
             >
               <span class="sr-only">Previous</span>
-              <ChevronLeftIcon class="w-5 h-5" aria-hidden="true" />
+              <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
             </button>
             <button
               v-for="pageNumber in pages.slice(
@@ -100,11 +100,11 @@ export default defineComponent({
               )"
               :key="pageNumber"
               type="button"
-              class="relative inline-flex items-center px-4 py-2 text-sm font-medium border hover:bg-gray-50"
+              class="relative inline-flex items-center border px-4 py-2 text-sm font-medium hover:bg-gray-50"
               :class="{
-                'z-10 bg-blue-50 border-blue-500 text-blue-600':
+                'z-10 border-blue-500 bg-blue-50 text-blue-600':
                   pageNumber === current,
-                'bg-white border-gray-300 text-gray-500':
+                'border-gray-300 bg-white text-gray-500':
                   pageNumber !== current,
               }"
               @click="setPage(pageNumber)"
@@ -113,11 +113,11 @@ export default defineComponent({
             </button>
             <button
               type="button"
-              class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
+              class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
               @click="nextPage()"
             >
               <span class="sr-only">Next</span>
-              <ChevronRightIcon class="w-5 h-5" aria-hidden="true" />
+              <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
             </button>
           </nav>
         </div>

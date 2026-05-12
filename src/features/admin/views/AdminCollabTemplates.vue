@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import useCollabTemplates from "../api/useCollabTemplates";
 import { TableGenerator } from "lorga-ui";
+
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import ButtonLink from "@/components/ButtonLink.vue";
+
 import CreateCollabTemplate from "../actions/CreateCollabTemplate.vue";
 import DeleteCollabTemplate from "../actions/DeleteCollabTemplate.vue";
-import ButtonLink from "@/components/ButtonLink.vue";
+import useCollabTemplates from "../api/useCollabTemplates";
 
 const { templates, query } = useCollabTemplates();
 </script>
 
 <template>
-  <div class="max-w-(--breakpoint-lg) mx-auto space-y-6">
+  <div class="mx-auto max-w-(--breakpoint-lg) space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'admin-dashboard' }"
@@ -19,7 +21,7 @@ const { templates, query } = useCollabTemplates();
         { name: 'Collab Templates', to: { name: 'admin-collab-templates' } },
       ]"
     >
-      <CogIcon class="w-6 h-6" />
+      <CogIcon class="h-6 w-6" />
       <template #buttons>
         <CreateCollabTemplate :query="query" />
       </template>

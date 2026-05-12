@@ -1,4 +1,3 @@
-import { type Component, computed } from "vue";
 import {
   RectangleStackIcon,
   FolderOpenIcon,
@@ -13,8 +12,10 @@ import {
   EnvelopeIcon,
   ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/store/user";
+import { type Component, computed } from "vue";
 import { RouteLocationRaw } from "vue-router";
+
+import { useUserStore } from "@/store/user";
 
 export type NavigationItem = {
   label?: string;

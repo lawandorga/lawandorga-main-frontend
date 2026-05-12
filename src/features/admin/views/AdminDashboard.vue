@@ -10,9 +10,10 @@ import {
   HomeModernIcon,
 } from "@heroicons/vue/24/outline";
 import { type Component, computed } from "vue";
+import { RouteLocationRaw } from "vue-router";
+
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { useUserStore } from "@/store/user";
-import { RouteLocationRaw } from "vue-router";
 
 const store = useUserStore();
 
@@ -102,16 +103,16 @@ const items = computed<AdminItem[]>(() => {
 </script>
 
 <template>
-  <div class="max-w-5xl mx-auto space-y-6">
+  <div class="mx-auto max-w-5xl space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'admin-dashboard' }"
       :pages="[]"
     >
-      <CogIcon class="w-6 h-6" />
+      <CogIcon class="h-6 w-6" />
     </BreadcrumbsBar>
     <div
-      class="bg-gray-200 divide-y divide-gray-200 rounded-lg shadow sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
+      class="divide-y divide-gray-200 rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0"
     >
       <template
         v-for="item in items"
@@ -124,18 +125,18 @@ const items = computed<AdminItem[]>(() => {
         ></div>
         <div
           v-else
-          class="relative p-6 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-gray-500"
+          class="group relative bg-white p-6 focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-inset"
           :class="[item.class]"
         >
           <div class="relative">
             <span
-              class="inline-flex p-3 text-gray-700 rounded-lg bg-gray-50 ring-4 ring-white"
+              class="inline-flex rounded-lg bg-gray-50 p-3 text-gray-700 ring-4 ring-white"
             >
-              <Component :is="item.icon" class="w-6 h-6 text-gray-600" />
+              <Component :is="item.icon" class="h-6 w-6 text-gray-600" />
             </span>
             <div
               v-if="item.notifications && item.notifications > 0"
-              class="absolute top-0 left-0 flex items-center justify-center w-6 h-6 text-sm font-bold text-red-800 transform translate-x-8 -translate-y-1 bg-red-200 rounded-full"
+              class="absolute top-0 left-0 flex h-6 w-6 translate-x-8 -translate-y-1 transform items-center justify-center rounded-full bg-red-200 text-sm font-bold text-red-800"
             >
               {{ item.notifications }}
             </div>
@@ -153,11 +154,11 @@ const items = computed<AdminItem[]>(() => {
             </p>
           </div>
           <span
-            class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+            class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
             aria-hidden="true"
           >
             <svg
-              class="w-6 h-6"
+              class="h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 24 24"

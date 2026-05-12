@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
-import useGet2 from "@/composables/useGet2";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, ref, toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
+import useGet2 from "@/composables/useGet2";
 
 const qualifications = ref<string[]>([]);
 useGet2("api/auth/org_users/qualifications/", qualifications);

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
 import { FormGenerator, ButtonNormal, ModalFree, types } from "lorga-ui";
+import { ref, toRefs } from "vue";
+
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
-import { useUserStore } from "@/store/user";
 import useCmd from "@/composables/useCmd";
+import { useUserStore } from "@/store/user";
+
 import { Event } from "../api/useEvents";
 
 const props = defineProps<{ query: () => void; event: Event }>();

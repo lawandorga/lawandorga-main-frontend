@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ query: () => void; deletionUuid: string }>();
