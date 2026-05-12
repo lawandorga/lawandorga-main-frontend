@@ -1,6 +1,6 @@
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-2xl mx-auto space-y-6">
+    <div class="mx-auto max-w-2xl space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -8,7 +8,7 @@
           { name: 'Questionnaires', to: { name: 'questionnaires-admin-list' } },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
       <TableGenerator
         :head="[
@@ -51,16 +51,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import { ref } from "vue";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import TemplateCreate from "@/features/questionnaires/actions/CreateTemplate.vue";
-import TemplateUpdate from "@/features/questionnaires/actions/UpdateTemplate.vue";
-import TemplateDelete from "@/features/questionnaires/actions/DeleteTemplate.vue";
 import useGet2 from "@/composables/useGet2";
+import TemplateCreate from "@/features/questionnaires/actions/CreateTemplate.vue";
+import TemplateDelete from "@/features/questionnaires/actions/DeleteTemplate.vue";
+import TemplateUpdate from "@/features/questionnaires/actions/UpdateTemplate.vue";
 
 interface QuestionnaireTemplate {
   id: string;

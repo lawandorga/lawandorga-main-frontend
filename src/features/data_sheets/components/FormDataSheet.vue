@@ -9,8 +9,10 @@ import {
   types,
 } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
-import useCmd from "@/composables/useCmd";
+
 import useClient from "@/api/client";
+import useCmd from "@/composables/useCmd";
+
 import { Sheet, SheetField, SheetValue } from "../api/useDataSheet";
 
 const props = defineProps<{ record: Sheet; query: () => void }>();
@@ -105,7 +107,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
         :key="field.name"
         :class="{
           hidden: field.type === 'hidden',
-          'border-green-500 border px-2 pb-2 pt-2 rounded bg-linear-to-t from-green-100 to-transparent print:hidden':
+          'rounded border border-green-500 bg-linear-to-t from-green-100 to-transparent px-2 pt-2 pb-2 print:hidden':
             field.kind === 'Statistic',
         }"
       >
@@ -147,7 +149,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           <ButtonNormal
             v-if="field.uuid in entries"
             kind="action"
-            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            class="hover:text-opacity-75 rounded font-medium text-gray-700 focus:outline-none"
             @click="downloadFile(field.uuid)"
           >
             Download
@@ -155,7 +157,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
           <ButtonNormal
             v-if="field.uuid in entries"
             kind="delete"
-            class="font-medium text-gray-700 rounded hover:text-opacity-75 focus:outline-none"
+            class="hover:text-opacity-75 rounded font-medium text-gray-700 focus:outline-none"
             @click="change(field, '')"
           >
             Delete
@@ -172,7 +174,7 @@ function handleError(field: SheetField, error: types.ICommandError) {
         />
         <p
           v-if="errors[field.name]"
-          class="text-red-700 text-sm leading-tight ml-1.5 mt-1"
+          class="mt-1 ml-1.5 text-sm leading-tight text-red-700"
         >
           {{ errors[field.name][0] }}
         </p>

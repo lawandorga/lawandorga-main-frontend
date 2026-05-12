@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import RecordsCreateTemplate from "@/features/data_sheets/actions/CreateTemplate.vue";
-import RecordsUpdateTemplate from "@/features/data_sheets/actions/UpdateTemplate.vue";
 import RecordsDeleteTemplate from "@/features/data_sheets/actions/DeleteTemplate.vue";
+import RecordsUpdateTemplate from "@/features/data_sheets/actions/UpdateTemplate.vue";
+
 import { useTemplates } from "../api/useTemplates";
 
 const { templates, query } = useTemplates();
@@ -15,13 +17,13 @@ query();
 
 <template>
   <BoxLoader :show="true">
-    <div class="max-w-2xl mx-auto space-y-6">
+    <div class="mx-auto max-w-2xl space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[{ name: 'Templates', to: { name: 'admin-templates' } }]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
       <div class="flex justify-end">
         <RecordsCreateTemplate />

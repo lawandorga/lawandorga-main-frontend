@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import { TableGenerator } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/store/user";
-import ActionsUserUnlockSelf from "@/features/users/actions/UnlockSelf.vue";
-import TestKeys from "@/features/users/actions/TestKeys.vue";
-import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
+import { TableGenerator } from "lorga-ui";
+import { ref } from "vue";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useGet2 from "@/composables/useGet2";
+import GroupsRemoveMember from "@/features/org/actions/RemoveMemberFromGroup.vue";
+import TestKeys from "@/features/users/actions/TestKeys.vue";
+import ActionsUserUnlockSelf from "@/features/users/actions/UnlockSelf.vue";
+import { useUserStore } from "@/store/user";
 
 interface Key {
   id: number;
@@ -27,7 +28,7 @@ const query = useGet2("api/auth/keys/", keys);
 
 <template>
   <BoxLoader :show="userStore.loaded" class="pb-64">
-    <div class="max-w-2xl mx-auto space-y-6">
+    <div class="mx-auto max-w-2xl space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -43,12 +44,12 @@ const query = useGet2("api/auth/keys/", keys);
           { name: 'Keys', to: { name: 'user-keys' } },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
 
       <div
         v-if="userStore.user?.locked"
-        class="max-w-lg px-6 py-5 bg-white rounded shadow"
+        class="max-w-lg rounded bg-white px-6 py-5 shadow"
       >
         <div class="prose">
           <h2 class="mb-2 text-xl font-bold text-gray-800">
@@ -91,7 +92,7 @@ const query = useGet2("api/auth/keys/", keys);
         <template #correct="{ v }">
           <div
             :class="{ 'bg-green-500': v, 'bg-red-500': !v }"
-            class="w-5 h-5 rounded-full"
+            class="h-5 w-5 rounded-full"
           ></div>
         </template>
         <template #action="slotProps">

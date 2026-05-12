@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
-import { TableGenerator } from "lorga-ui";
-import useGet from "@/composables/useGet";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon, InformationCircleIcon } from "@heroicons/vue/24/outline";
+import { TableGenerator } from "lorga-ui";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
+
 import useClient from "@/api/client";
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import useGet from "@/composables/useGet";
+import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
+
 import CreateField from "../actions/CreateField.vue";
 import UpdateField from "../actions/UpdateField.vue";
 
@@ -44,7 +46,7 @@ const query = useGet(retrieve, template);
 
 <template>
   <BoxLoader :show="!!template">
-    <div v-if="template" class="max-w-5xl mx-auto space-y-6">
+    <div v-if="template" class="mx-auto max-w-5xl space-y-6">
       <BreadcrumbsBar
         :base="{ name: 'admin-dashboard' }"
         :pages="[
@@ -58,7 +60,7 @@ const query = useGet(retrieve, template);
           },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
         <template #buttons>
           <CreateField :query="query" :template-id="template.id" />
         </template>
@@ -76,14 +78,14 @@ const query = useGet(retrieve, template);
         :data="template.fields"
       >
         <template #head-encrypted>
-          <span class="inline-flex items-center gap-1 group" tabindex="0">
+          <span class="group inline-flex items-center gap-1" tabindex="0">
             Encrypted
             <span
               style="anchor-name: --encrypted-btn"
-              class="text-gray-400 cursor-help"
+              class="cursor-help text-gray-400"
             >
               <InformationCircleIcon
-                class="w-4 h-4 shrink-0"
+                class="h-4 w-4 shrink-0"
                 aria-hidden="true"
               />
             </span>
@@ -98,7 +100,7 @@ const query = useGet(retrieve, template);
                 width: 18rem;
                 white-space: normal;
               "
-              class="z-50 hidden p-3 space-y-2 text-xs font-normal text-white bg-gray-800 rounded shadow-lg group-hover:block group-focus-within:block"
+              class="z-50 hidden space-y-2 rounded bg-gray-800 p-3 text-xs font-normal text-white shadow-lg group-focus-within:block group-hover:block"
             >
               <p class="font-semibold">Normal field</p>
               <p>

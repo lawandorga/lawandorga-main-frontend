@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { TableGenerator } from "lorga-ui";
+
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
+
 import { Subfolder } from "../api/useFolder";
 
 defineProps<{

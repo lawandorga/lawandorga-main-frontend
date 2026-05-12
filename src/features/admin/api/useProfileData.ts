@@ -1,6 +1,7 @@
 import { ref, computed } from "vue";
-import useGet from "@/composables/useGet";
+
 import useClient from "@/api/client";
+import useGet from "@/composables/useGet";
 
 export interface OrgUser {
   id: number;

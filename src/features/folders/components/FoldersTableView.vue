@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { ChevronRightIcon } from "@heroicons/vue/20/solid";
+import { FolderIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal, TableGenerator } from "lorga-ui";
+import { computed, ref, toRefs } from "vue";
+
+import { useFolderProperties } from "@/composables/useFolderProperties";
 import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
 import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
 import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
@@ -6,16 +12,8 @@ import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder
 import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
 import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
 import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
-import { useFolderProperties } from "@/composables/useFolderProperties";
 import { useUserStore } from "@/store/user";
-import { ChevronRightIcon } from "@heroicons/vue/20/solid";
-import { FolderIcon } from "@heroicons/vue/24/outline";
-import { ButtonNormal, TableGenerator } from "lorga-ui";
-import { computed, ref, toRefs } from "vue";
-import FolderProperty from "./FolderProperty.vue";
-import FoldersBadge from "./FoldersBadge.vue";
-import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
-import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+
 import {
   Content,
   Folder,
@@ -23,6 +21,10 @@ import {
   FolderItem,
   FolderPerson,
 } from "../api/useFolderPage";
+import FolderProperty from "./FolderProperty.vue";
+import FoldersBadge from "./FoldersBadge.vue";
+import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+import TableFolderPersonsWithAccess from "./TableFolderPersonsWithAccess.vue";
 
 const props = defineProps<{
   query: () => void;
@@ -95,17 +97,17 @@ const folderSelected = (uuid: string | undefined) => {
 
 <template>
   <div class="space-y-5">
-    <div class="flex items-center px-5 py-2 bg-white rounded shadow">
+    <div class="flex items-center rounded bg-white px-5 py-2 shadow">
       <button
-        class="flex items-center h-6 transition hover:underline group"
+        class="group flex h-6 items-center transition hover:underline"
         @click="folderSelected(undefined)"
       >
-        <FolderIcon class="w-5 h-5 text-gray-600 group-hover:text-gray-800" />
+        <FolderIcon class="h-5 w-5 text-gray-600 group-hover:text-gray-800" />
       </button>
       <template v-if="path">
         <template v-for="item in path" :key="item.folder.uuid">
           <div class="mx-2">
-            <ChevronRightIcon class="w-5 h-5 text-gray-400" />
+            <ChevronRightIcon class="h-5 w-5 text-gray-400" />
           </div>
           <button
             class="text-gray-700 transition hover:underline"
@@ -152,7 +154,7 @@ const folderSelected = (uuid: string | undefined) => {
         <div class="flex items-center space-x-3">
           <button
             v-if="i.folder"
-            class="underline text-formcolor hover:text-opacity-75"
+            class="text-formcolor hover:text-opacity-75 underline"
             @click="folderSelected(i.folder.uuid)"
           >
             {{ i.folder.name }}

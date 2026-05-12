@@ -32,8 +32,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import { ModalFree } from "lorga-ui";
+import { defineComponent } from "vue";
+
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
 
 export default defineComponent({

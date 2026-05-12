@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import BoxLoader from "@/components/BoxLoader.vue";
 import { useRoute, useRouter } from "vue-router";
+
 import useClient from "@/api/client";
+import BoxLoader from "@/components/BoxLoader.vue";
 
 // router
 const router = useRouter();

@@ -11,7 +11,7 @@ export default {
 
 <template>
   <router-link
-    class="font-semibold underline text-formcolor hover:text-opacity-75"
+    class="text-formcolor hover:text-opacity-75 font-semibold underline"
     :to="to"
   >
     <slot />

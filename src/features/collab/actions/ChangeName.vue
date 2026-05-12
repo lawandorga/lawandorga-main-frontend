@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalUpdate } from "lorga-ui";
 import { toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{ name: string; uuid: string; query: () => void }>();
 const { query } = toRefs(props);

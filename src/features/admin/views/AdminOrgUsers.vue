@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import ActivityBadge from "@/components/ActivityBadge.vue";
-import { TableSortable } from "lorga-ui";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon } from "@heroicons/vue/24/outline";
+import { TableSortable } from "lorga-ui";
+import { computed, ref } from "vue";
+
+import ActivityBadge from "@/components/ActivityBadge.vue";
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
-import UsersDeleteUser from "@/features/admin/actions/DeleteUser.vue";
-import UsersActivateDeactivateUser from "@/features/admin/actions/ActivateDeactivateUser.vue";
 import UsersAcceptUser from "@/features/admin/actions/AcceptOrgUser.vue";
+import UsersActivateDeactivateUser from "@/features/admin/actions/ActivateDeactivateUser.vue";
+import UsersDeleteUser from "@/features/admin/actions/DeleteUser.vue";
 import UsersUnlockUser from "@/features/admin/actions/UnlockUser.vue";
+
 import { useProfiles, type ActivityState } from "../api/useProfiles";
 
 const { profiles, query } = useProfiles();
@@ -88,13 +90,13 @@ function getSortValue(
 
 <template>
   <BoxLoader show>
-    <div class="max-w-(--breakpoint-xl) mx-auto space-y-6">
+    <div class="mx-auto max-w-(--breakpoint-xl) space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[{ name: 'Profiles', to: { name: 'admin-profiles' } }]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
 
       <div
@@ -115,7 +117,7 @@ function getSortValue(
             type="button"
             :aria-pressed="activityFilter === option.value"
             :class="[
-              'px-3 py-1 text-sm rounded-full border transition-colors',
+              'rounded-full border px-3 py-1 text-sm transition-colors',
               activityFilter === option.value
                 ? option.activeClasses
                 : option.inactiveClasses,
@@ -163,7 +165,7 @@ function getSortValue(
               :key="qualification"
             >
               <span
-                class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full"
+                class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
               >
                 {{ qualification }}
               </span>
@@ -199,7 +201,7 @@ function getSortValue(
           />
         </template>
       </TableSortable>
-      <div v-else class="py-10 text-sm text-center text-gray-500">
+      <div v-else class="py-10 text-center text-sm text-gray-500">
         No users match the selected activity filter.
       </div>
     </div>

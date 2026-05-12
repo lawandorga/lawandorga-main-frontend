@@ -1,6 +1,7 @@
 import { computed, Ref, ref } from "vue";
-import useGet from "@/composables/useGet";
+
 import useClient from "@/api/client";
+import useGet from "@/composables/useGet";
 
 interface GroupMember {
   id: number;

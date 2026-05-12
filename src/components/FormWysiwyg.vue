@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { EditorContent, useEditor } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
 import Link from "@tiptap/extension-link";
+import StarterKit from "@tiptap/starter-kit";
+import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { FormHelptext, FormLabel } from "lorga-ui";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
+
+import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
 
 const props = defineProps({
   label: {
@@ -81,9 +82,9 @@ watch(modelValue, (newValue) => {
   <label class="block" :for="id">
     <FormLabel :required="required" :label="label" />
   </label>
-  <div v-if="editor" class="break-words border border-gray-300 rounded-md">
+  <div v-if="editor" class="rounded-md border border-gray-300 break-words">
     <MenuBarSimple
-      class="sticky top-[-26px] z-10 flex items-center p-2 border-b border-gray-300 print:hidden"
+      class="sticky top-[-26px] z-10 flex items-center border-b border-gray-300 p-2 print:hidden"
       :editor="editor"
     />
     <EditorContent :editor="editor" />

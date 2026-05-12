@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { computed } from "vue";
-import { FormGenerator } from "lorga-ui";
-import { useRoute } from "vue-router";
 import { PaperClipIcon } from "@heroicons/vue/24/outline";
-import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
+import { FormGenerator } from "lorga-ui";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
 import useCmd from "@/composables/useCmd";
+
+import TemplateFileDownload from "../actions/DownloadTemplateFile.vue";
 import { useQuestionnaireToFillOut } from "../api/useQuestionnaireToFillOut";
 
 const route = useRoute();
@@ -24,7 +26,7 @@ const sendAnswer = computed(() => (data: Record<string, string>) => {
 </script>
 
 <template>
-  <div class="max-w-2xl px-6 py-5 mx-auto bg-white shadow">
+  <div class="mx-auto max-w-2xl bg-white px-6 py-5 shadow">
     <template v-if="error">
       <div class="">{{ error }}</div>
     </template>
@@ -42,20 +44,20 @@ const sendAnswer = computed(() => (data: Record<string, string>) => {
         <h3 class="mb-1 text-gray-700">Files to download or fill out:</h3>
         <ul class="space-y-2">
           <li v-for="file in questionnaire.template.files" :key="file.id">
-            <div class="border border-gray-200 rounded-md">
+            <div class="rounded-md border border-gray-200">
               <div
-                class="flex items-center justify-between py-2 pl-2 pr-3 text-sm"
+                class="flex items-center justify-between py-2 pr-3 pl-2 text-sm"
               >
-                <div class="flex items-center flex-1 w-0">
+                <div class="flex w-0 flex-1 items-center">
                   <PaperClipIcon
-                    class="shrink-0 w-5 h-5 text-gray-400"
+                    class="h-5 w-5 shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  <span class="flex-1 w-0 ml-2 truncate">
+                  <span class="ml-2 w-0 flex-1 truncate">
                     {{ file.name }}
                   </span>
                 </div>
-                <div class="shrink-0 ml-4">
+                <div class="ml-4 shrink-0">
                   <TemplateFileDownload
                     :template-file-id="file.id"
                     :file-name="file.name"

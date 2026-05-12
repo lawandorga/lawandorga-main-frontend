@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import { computed, toRefs } from "vue";
 import { CircleLoader } from "lorga-ui";
+import { computed, toRefs } from "vue";
+
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+
 import { FolderDetail } from "../api/useFolder";
 
 const props = defineProps<{

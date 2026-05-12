@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { mailRegeneratePassword } from "@/features/mail/mail";
 import { ButtonNormal, ModalConfirm } from "lorga-ui";
 import { ref, watch } from "vue";
+
+import { mailRegeneratePassword } from "@/features/mail/mail";
 
 const regeneratePasswordModalOpen = ref(false);
 const password = ref("");

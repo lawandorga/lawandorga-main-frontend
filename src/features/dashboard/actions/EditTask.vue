@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { ButtonNormal, types, ModalFree, FormGenerator } from "lorga-ui";
+import { computed, toRefs } from "vue";
+
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
 import { Task } from "@/features/dashboard/api/useTasks";
 import { formatDate } from "@/utils/date";
-import { ButtonNormal, types, ModalFree, FormGenerator } from "lorga-ui";
-import { computed, toRefs } from "vue";
 
 const props = defineProps<{
   task: Task;
@@ -125,7 +126,7 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
               <div
                 v-for="(c, index) in task.comments"
                 :key="index"
-                class="py-1 pl-3 text-sm border-l-2 border-gray-300"
+                class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
               >
                 <div class="flex items-baseline justify-between gap-3">
                   <span class="font-semibold text-gray-600">{{
@@ -135,7 +136,7 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
                     formatDate(c.date)
                   }}</span>
                 </div>
-                <p class="text-gray-700 mt-0.5">{{ c.comment }}</p>
+                <p class="mt-0.5 text-gray-700">{{ c.comment }}</p>
               </div>
             </div>
           </div>

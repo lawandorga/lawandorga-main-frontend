@@ -1,30 +1,32 @@
 <script lang="ts" setup>
+import { CogIcon } from "@heroicons/vue/24/outline";
+
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import { useOrg } from "../api/useOrg";
+
 import UpdateOrg from "../actions/UpdateOrg.vue";
+import { useOrg } from "../api/useOrg";
 
 const { query, org } = useOrg();
 </script>
 
 <template>
   <BoxLoader :show="!!org">
-    <div class="max-w-(--breakpoint-lg) mx-auto space-y-6">
+    <div class="mx-auto max-w-(--breakpoint-lg) space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
         :pages="[{ name: 'Org', to: { name: 'admin-org' } }]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
 
       <div class="grid grid-cols-2 gap-y-6">
         <div
           v-if="org"
-          class="max-w-lg px-6 py-5 bg-white rounded-lg shadow-md"
+          class="max-w-lg rounded-lg bg-white px-6 py-5 shadow-md"
         >
-          <div class="flex items-center justify-between pb-4 border-b">
+          <div class="flex items-center justify-between border-b pb-4">
             <h2 class="text-2xl font-semibold text-gray-800">{{ org.name }}</h2>
             <div class="flex items-center space-x-4">
               <UpdateOrg

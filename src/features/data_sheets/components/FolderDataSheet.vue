@@ -1,19 +1,21 @@
 <script lang="ts" setup>
-import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
-import { formatDate } from "@/utils/date";
-import { computed, ref, toRefs, watch } from "vue";
-import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import FormDataSheet from "./FormDataSheet.vue";
 import { ButtonNormal, CircleLoader, ModalFree } from "lorga-ui";
-import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
-import { useDataSheet } from "../api/useDataSheet";
-import { Content } from "@/features/folders/api/useFolder";
+import { computed, ref, toRefs, watch } from "vue";
 import {
   onBeforeRouteLeave,
   onBeforeRouteUpdate,
   useRoute,
   useRouter,
 } from "vue-router";
+
+import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import { Content } from "@/features/folders/api/useFolder";
+import { formatDate } from "@/utils/date";
+
+import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
+import DeleteDataSheet from "../actions/DeleteDataSheet.vue";
+import { useDataSheet } from "../api/useDataSheet";
+import FormDataSheet from "./FormDataSheet.vue";
 
 const props = defineProps<{
   folderContent: Content[];
@@ -144,7 +146,7 @@ onBeforeRouteLeave(async () => {
     <p class="mb-3 text-sm text-gray-700">
       The following fields are still empty:
     </p>
-    <ul class="pl-5 mb-5 text-sm text-gray-900 list-disc">
+    <ul class="mb-5 list-disc pl-5 text-sm text-gray-900">
       <li v-for="field in emptyRequiredFields" :key="field.uuid">
         {{ field.name }}
       </li>

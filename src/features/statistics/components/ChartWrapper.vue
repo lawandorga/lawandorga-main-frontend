@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="p-4 bg-white rounded-lg shadow">
+  <div class="rounded-lg bg-white p-4 shadow">
     <h2 class="text-2xl font-bold">{{ title }}</h2>
     <div class="mt-4">
       <slot />

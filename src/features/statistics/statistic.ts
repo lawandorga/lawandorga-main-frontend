@@ -1,10 +1,11 @@
+import axios from "axios";
+
 import {
   RecordState,
   RecordTagStats,
   UserAction,
   TagCount,
 } from "@/features/statistics/types";
-import axios from "axios";
 
 class StatisticService {
   getUserActionsMonth() {

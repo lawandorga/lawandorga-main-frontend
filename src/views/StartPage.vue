@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import { ButtonNormal } from "lorga-ui";
-import { formatDate } from "@/utils/date";
-import { useUserStore } from "@/store/user";
 import { computed } from "vue";
-import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
+
 import {
   useLoginPage,
   LoginPage,
   RoadmapItem,
 } from "@/features/internal/api/useLoginPage";
+import { useUserStore } from "@/store/user";
+import { formatDate } from "@/utils/date";
+import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
 
 const getLoginUrl = () => {
   const loginUrl = getRawLoginUrl();
@@ -83,7 +84,7 @@ const passwordForgottenLink = `${
 
 <template>
   <main class="divide-y divide-gray-100">
-    <section class="px-8 py-8 mx-auto bg-formcolor max-w-7xl">
+    <section class="bg-formcolor mx-auto max-w-7xl px-8 py-8">
       <div class="max-w-7xl">
         <div class="grid gap-6 lg:grid-cols-2">
           <div class="">
@@ -96,15 +97,15 @@ const passwordForgottenLink = `${
                     <img
                       src="/logo.svg"
                       alt="Law&Orga Logo"
-                      class="w-16 h-16"
+                      class="h-16 w-16"
                     />
                     <span class="md:block">Law&Orga</span>
                   </div>
-                  <div class="bg-gray-200 w-0.5 h-16"></div>
+                  <div class="h-16 w-0.5 bg-gray-200"></div>
                   <img
                     src="/sponsor-cms.jpg"
                     alt="CMS Stiftung"
-                    class="w-40 h-auto overflow-hidden rounded"
+                    class="h-auto w-40 overflow-hidden rounded"
                   />
                 </div>
               </h1>
@@ -129,14 +130,14 @@ const passwordForgottenLink = `${
             </div>
           </div>
           <div class="flex flex-col justify-center">
-            <div class="p-6 bg-white rounded-sm shadow-sm">
+            <div class="rounded-sm bg-white p-6 shadow-sm">
               <h2 class="mb-8 text-2xl font-bold">Login</h2>
               <p v-if="false">We're running updates. We'll be back shortly!</p>
               <div v-else-if="!userStore.isAuthenticated">
                 <ButtonNormal :href="getLoginUrl()">
                   To the login page
                 </ButtonNormal>
-                <div class="pt-6 space-x-4 text-right">
+                <div class="space-x-4 pt-6 text-right">
                   <a
                     :href="getRegisterUrl()"
                     class="inline-block hover:underline"
@@ -162,9 +163,9 @@ const passwordForgottenLink = `${
         </div>
       </div>
     </section>
-    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
+    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
       <div
-        class="relative max-w-lg mx-auto divide-y-2 divide-gray-200 lg:max-w-7xl"
+        class="relative mx-auto max-w-lg divide-y-2 divide-gray-200 lg:max-w-7xl"
       >
         <!-- eslint-disable vue/no-v-html -->
         <article
@@ -175,8 +176,8 @@ const passwordForgottenLink = `${
       </div>
     </section>
 
-    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
-      <div class="relative max-w-lg mx-auto lg:max-w-7xl">
+    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
+      <div class="relative mx-auto max-w-lg lg:max-w-7xl">
         <div>
           <h2
             class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
@@ -191,19 +192,19 @@ const passwordForgottenLink = `${
             </p>
             <router-link
               :to="{ name: 'internal-article', params: { id: article.id } }"
-              class="block mt-2"
+              class="mt-2 block"
             >
               <p class="text-xl font-semibold text-gray-900">
                 {{ article.title }}
               </p>
-              <p class="mt-3 text-base text-gray-500 line-clamp-3">
+              <p class="mt-3 line-clamp-3 text-base text-gray-500">
                 {{ article.description }}
               </p>
             </router-link>
             <div class="mt-3">
               <router-link
                 :to="{ name: 'internal-article', params: { id: article.id } }"
-                class="text-base font-semibold text-formcolor"
+                class="text-formcolor text-base font-semibold"
               >
                 Read full article
               </router-link>
@@ -212,8 +213,8 @@ const passwordForgottenLink = `${
         </div>
       </div>
     </section>
-    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
-      <div class="relative max-w-lg mx-auto lg:max-w-7xl">
+    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
+      <div class="relative mx-auto max-w-lg lg:max-w-7xl">
         <div>
           <h2
             class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
@@ -244,8 +245,8 @@ const passwordForgottenLink = `${
         </div>
       </div>
     </section>
-    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
-      <div class="relative max-w-lg mx-auto lg:max-w-7xl">
+    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
+      <div class="relative mx-auto max-w-lg lg:max-w-7xl">
         <div class="mb-6">
           <h2
             class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
@@ -253,7 +254,7 @@ const passwordForgottenLink = `${
             Sponsors
           </h2>
         </div>
-        <div class="flex flex-wrap justify-start -mx-6 -my-2">
+        <div class="-mx-6 -my-2 flex flex-wrap justify-start">
           <div
             v-for="group in sponsorGroups"
             :key="group.name"
@@ -263,7 +264,7 @@ const passwordForgottenLink = `${
             <h3 class="mb-4 text-xl font-bold tracking-tight text-gray-900">
               {{ group.name }}
             </h3>
-            <ul class="flex flex-wrap justify-start -m-3">
+            <ul class="-m-3 flex flex-wrap justify-start">
               <li
                 v-for="sponsor in sponsors.filter(
                   (item) => item.type === group.type,
@@ -275,10 +276,10 @@ const passwordForgottenLink = `${
                   <img
                     :src="sponsor.image"
                     :alt="sponsor.name"
-                    class="w-auto mx-auto overflow-hidden border-2 border-gray-300 rounded-md shadow max-h-20"
+                    class="mx-auto max-h-20 w-auto overflow-hidden rounded-md border-2 border-gray-300 shadow"
                     :class="[sponsor.class]"
                   />
-                  <figcaption class="mt-2 text-sm text-center text-gray-500">
+                  <figcaption class="mt-2 text-center text-sm text-gray-500">
                     {{ sponsor.name }}
                   </figcaption>
                 </figure>
@@ -288,7 +289,7 @@ const passwordForgottenLink = `${
         </div>
       </div>
     </section>
-    <section class="px-8 py-12 mx-auto bg-white max-w-7xl">
+    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
       <div class="space-x-4 text-right">
         <a href="https://github.com/lawandorga" rel="noopener" target="_blank">
           Open Source Code

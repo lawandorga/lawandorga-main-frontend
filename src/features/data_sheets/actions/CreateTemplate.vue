@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { useRouter } from "vue-router";
+
+import useCmd from "@/composables/useCmd";
 
 const { commandRequest, commandModalOpen } = useCmd();
 

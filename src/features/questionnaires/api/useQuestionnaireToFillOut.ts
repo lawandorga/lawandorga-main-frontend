@@ -1,7 +1,8 @@
-import { computed, ref } from "vue";
-import useGet from "@/composables/useGet";
-import useClient from "@/api/client";
 import { types } from "lorga-ui";
+import { computed, ref } from "vue";
+
+import useClient from "@/api/client";
+import useGet from "@/composables/useGet";
 
 export type Questionnaire = {
   id: number;

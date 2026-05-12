@@ -1,18 +1,20 @@
 <script setup lang="ts">
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/vue/20/solid";
+import { CircleLoader } from "lorga-ui";
+import { ref, toRefs, watch } from "vue";
+
 import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery from "@/composables/useQuery";
-import { CircleLoader } from "lorga-ui";
-import { ref, toRefs, watch } from "vue";
-import TimelineEventCreate from "../actions/CreateTimelineEvent.vue";
-import TimelineEventDelete from "../actions/DeleteTimelineEvent.vue";
 import { formatDate } from "@/utils/date";
-import TimelineEventUpdate from "../actions/UpdateTimelineEvent.vue";
+
 import FollowUpCreate from "../actions/CreateFollowUp.vue";
-import FollowUpUpdate from "../actions/UpdateFollowUp.vue";
+import TimelineEventCreate from "../actions/CreateTimelineEvent.vue";
 import FollowUpDelete from "../actions/DeleteFollowUp.vue";
+import TimelineEventDelete from "../actions/DeleteTimelineEvent.vue";
 import FollowUpSetDone from "../actions/SetFollowUpToDone.vue";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/vue/20/solid";
+import FollowUpUpdate from "../actions/UpdateFollowUp.vue";
+import TimelineEventUpdate from "../actions/UpdateTimelineEvent.vue";
 
 const props = defineProps<{
   query: () => void;
@@ -91,22 +93,22 @@ const getItemTypeText = (type: string) => {
               <div class="relative pb-8">
                 <span
                   v-if="itemIdx !== timeline.length - 1"
-                  class="absolute left-1.5 top-4 -ml-px h-full w-0.5 bg-gray-200"
+                  class="absolute top-4 left-1.5 -ml-px h-full w-0.5 bg-gray-200"
                   aria-hidden="true"
                 />
                 <div class="relative flex space-x-3">
                   <div>
                     <span
-                      class="flex items-center justify-center w-3 h-3 bg-gray-300 rounded-full ring-8 ring-white"
+                      class="flex h-3 w-3 items-center justify-center rounded-full bg-gray-300 ring-8 ring-white"
                     ></span>
                   </div>
                   <div
-                    class="flex justify-between flex-1 min-w-0 -mt-1 space-x-4"
+                    class="-mt-1 flex min-w-0 flex-1 justify-between space-x-4"
                   >
                     <div>
                       <div class="flex items-center space-x-2">
                         <span
-                          class="inline-block bg-gray-500 rounded text-gray-50 px-2 py-0.5 text-xs"
+                          class="inline-block rounded bg-gray-500 px-2 py-0.5 text-xs text-gray-50"
                         >
                           {{ getItemTypeText(item.type) }}
                         </span>
@@ -115,21 +117,21 @@ const getItemTypeText = (type: string) => {
                         </p>
                         <CheckCircleIcon
                           v-if="item.type === 'follow_up' && item.is_done"
-                          class="inline-block w-5 h-5 text-green-600"
+                          class="inline-block h-5 w-5 text-green-600"
                         />
                         <XCircleIcon
                           v-else-if="item.type === 'follow_up'"
-                          class="inline-block w-5 h-5 text-red-600"
+                          class="inline-block h-5 w-5 text-red-600"
                         />
                       </div>
-                      <div class="flex justify-between w-full">
+                      <div class="flex w-full justify-between">
                         <p class="block max-w-xl text-sm text-gray-700">
                           {{ item.text }}
                         </p>
                       </div>
                     </div>
                     <div
-                      class="text-sm text-right text-gray-500 whitespace-nowrap"
+                      class="text-right text-sm whitespace-nowrap text-gray-500"
                     >
                       <time :datetime="item.time">
                         {{ formatDate(item.time) }}

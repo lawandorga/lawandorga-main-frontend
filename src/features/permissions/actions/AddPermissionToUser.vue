@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
-import { usePermissions } from "@/composables/usePermissions";
+
 import useCmd from "@/composables/useCmd";
+import { usePermissions } from "@/composables/usePermissions";
 
 const props = defineProps<{ query: () => void; userId: number }>();
 const { query, userId } = toRefs(props);

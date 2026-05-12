@@ -12,9 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import useCmd from "@/composables/useCmd";
 import { ButtonNormal, ModalDelete } from "lorga-ui";
 import { toRefs } from "vue";
+
+import useCmd from "@/composables/useCmd";
 
 const props = defineProps<{
   title: string;

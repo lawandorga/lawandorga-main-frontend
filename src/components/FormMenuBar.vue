@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import MenuItem from "./FormMenuItem.vue";
 
 export default defineComponent({
@@ -242,7 +243,7 @@ export default defineComponent({
       <div
         v-if="item.type === 'divider'"
         :key="`divider${index}`"
-        class="mx-3 divider"
+        class="divider mx-3"
       />
       <MenuItem v-else :key="index" v-bind="item" />
     </template>

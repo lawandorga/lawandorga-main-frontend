@@ -1,6 +1,7 @@
-import useGet from "@/composables/useGet";
-import { ref, computed } from "vue";
 import axios from "axios";
+import { ref, computed } from "vue";
+
+import useGet from "@/composables/useGet";
 
 export interface AvailableMailDomain {
   uuid: string;

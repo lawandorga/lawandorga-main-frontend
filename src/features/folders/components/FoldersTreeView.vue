@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
 import { computed, ref, toRefs } from "vue";
-import FoldersTree from "@/features/folders/components/FoldersTree.vue";
+
 import ButtonClose from "@/components/ButtonClose.vue";
-import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
+import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
 import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
-import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
+import FoldersCreateFolder from "@/features/folders/actions/CreateFolder.vue";
+import FoldersCreateRootFolder from "@/features/folders/actions/CreateRootFolder.vue";
 import FoldersDeleteFolder from "@/features/folders/actions/DeleteFolder.vue";
 import FoldersMoveFolder from "@/features/folders/actions/MoveFolder.vue";
+import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritance.vue";
+import FoldersTree from "@/features/folders/components/FoldersTree.vue";
 import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
-import FoldersAddContent from "@/features/folders/actions/AddContent.vue";
-import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
+
 import {
   Folder,
   FolderGroup,
   FolderItem,
   FolderPerson,
 } from "../api/useFolderPage";
+import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
 
 const props = defineProps<{
   availablePersons: FolderPerson[];
@@ -72,13 +74,13 @@ const selectedItem = computed<FolderItem | null>(() => {
 <template>
   <div
     v-if="!!foldersActions && !!contentActions"
-    class="bg-white divide-y-2 divide-gray-100 rounded shadow"
+    class="divide-y-2 divide-gray-100 rounded bg-white shadow"
   >
     <div class="px-3 py-2">
       <FoldersCreateRootFolder :query="query" />
     </div>
     <div
-      class="flex flex-col divide-y xl:divide-y-0 xl:flex-row xl:divide-x xl:divide-gray-300"
+      class="flex flex-col divide-y xl:flex-row xl:divide-x xl:divide-y-0 xl:divide-gray-300"
     >
       <div class="w-full px-6 py-4">
         <FoldersTree
@@ -95,16 +97,16 @@ const selectedItem = computed<FolderItem | null>(() => {
           @show-meta-clicked="selected = $event"
         />
       </div>
-      <div v-if="selectedItem" class="w-full px-6 py-4 xl:max-w-xl bg-gray-50">
+      <div v-if="selectedItem" class="w-full bg-gray-50 px-6 py-4 xl:max-w-xl">
         <div class="sticky top-0">
           <div class="flex justify-between">
-            <h2 class="text-lg font-medium text-gray-800 truncate">
+            <h2 class="truncate text-lg font-medium text-gray-800">
               {{ selectedItem.folder.name }}
             </h2>
             <ButtonClose @click="selected = null" />
           </div>
 
-          <div class="flex mt-2 space-x-3">
+          <div class="mt-2 flex space-x-3">
             <FoldersChangeName
               :folder-uuid="selectedItem.folder.uuid"
               :folder-name="selectedItem.folder.name"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Editor } from "@tiptap/vue-3";
 import { ref } from "vue";
+
 import MenuItem from "./FormMenuItem.vue";
 
 const props = defineProps<{
@@ -91,7 +92,7 @@ const items = ref([
       <div
         v-if="item.type === 'divider'"
         :key="`divider${index}`"
-        class="mx-3 divider"
+        class="divider mx-3"
       />
       <MenuItem v-else :key="index" v-bind="item" />
     </template>

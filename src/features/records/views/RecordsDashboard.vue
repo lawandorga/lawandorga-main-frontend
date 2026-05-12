@@ -1,22 +1,24 @@
 <script lang="ts" setup>
-import RecordsTableV3 from "@/features/records/components/RecordsTableV3.vue";
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { RectangleStackIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
-import { useUserStore } from "@/store/user";
-import CreateRecordInFolder from "@/features/records/actions/CreateRecordInFolder.vue";
-import TabControls from "@/components/TabControls.vue";
-import SettingsViews from "../components/SettingsViews.vue";
-import CreateDeletion from "../actions/CreateDeletion.vue";
-import DeletionRequests from "../components/DeletionRequests.vue";
-import AccessRequests from "../components/AccessRequests.vue";
-import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
-import RecordsPermissions from "@/components/RecordsPermissions.vue";
-import { useRecords } from "../api/useRecords";
-import { useInfos } from "../api/useInfos";
 import { ButtonNormal, FormInput, FormSelect, PaginationBar } from "lorga-ui";
 import { ref } from "vue";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import RecordsPermissions from "@/components/RecordsPermissions.vue";
+import TabControls from "@/components/TabControls.vue";
+import CreateRecordInFolder from "@/features/records/actions/CreateRecordInFolder.vue";
+import RecordsPermissionsTable from "@/features/records/components/RecordsPermissionsTable.vue";
+import RecordsTableV3 from "@/features/records/components/RecordsTableV3.vue";
+import { useUserStore } from "@/store/user";
+
+import CreateAccessRequest from "../actions/CreateAccessRequest.vue";
+import CreateDeletion from "../actions/CreateDeletion.vue";
+import { useInfos } from "../api/useInfos";
+import { useRecords } from "../api/useRecords";
+import AccessRequests from "../components/AccessRequests.vue";
+import DeletionRequests from "../components/DeletionRequests.vue";
+import SettingsViews from "../components/SettingsViews.vue";
 
 const tokenSearch = ref("");
 const yearSearch = ref("");
@@ -58,10 +60,10 @@ const userStore = useUserStore();
   <BoxLoader :show="!!userStore.loaded">
     <div
       v-if="userStore.loaded"
-      class="mx-auto space-y-6 max-w-(--breakpoint-2xl)"
+      class="mx-auto max-w-(--breakpoint-2xl) space-y-6"
     >
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
-        <RectangleStackIcon class="w-6 h-6" />
+        <RectangleStackIcon class="h-6 w-6" />
         <template #buttons>
           <RecordsPermissions />
         </template>
@@ -86,7 +88,7 @@ const userStore = useUserStore();
       >
         <template v-for="view in views" :key="view.uuid" #[view.name]>
           <div
-            class="flex flex-wrap items-end gap-3 px-4 py-3 mb-5 border-2 border-gray-200 rounded-lg shadow-sm bg-gray-50"
+            class="mb-5 flex flex-wrap items-end gap-3 rounded-lg border-2 border-gray-200 bg-gray-50 px-4 py-3 shadow-sm"
           >
             <FormInput
               :model-value="tokenSearch"
@@ -128,7 +130,7 @@ const userStore = useUserStore();
             />
             <div class="flex items-center">
               <ButtonNormal kind="action" class="" @click="resetSearch">
-                <XMarkIcon class="w-6 h-6" />
+                <XMarkIcon class="h-6 w-6" />
                 <span>Reset Search</span>
               </ButtonNormal>
             </div>

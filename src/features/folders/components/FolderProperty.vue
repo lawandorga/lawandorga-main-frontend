@@ -5,7 +5,7 @@ defineProps<{ property?: string }>();
 <template>
   <div
     v-if="property"
-    class="px-1 py-0 text-xs font-medium leading-tight tracking-wide text-gray-800 uppercase rounded shadow whitespace-nowrap ring-1 ring-gray-700"
+    class="rounded px-1 py-0 text-xs leading-tight font-medium tracking-wide whitespace-nowrap text-gray-800 uppercase shadow ring-1 ring-gray-700"
   >
     {{ property }}
   </div>

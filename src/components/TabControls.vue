@@ -61,11 +61,11 @@ watch([defaultTab, tabs], updateTab, { flush: "post" });
         <TabComponent v-else v-slot="{ selected }" as="template">
           <button
             :class="[
-              'py-2.5 pr-3 text-lg font-semibold cursor-pointer',
+              'cursor-pointer py-2.5 pr-3 text-lg font-semibold',
               selected ? 'border-b-2 border-solid' : '',
               tab.highlighted
-                ? ' text-formcolor border-formcolor'
-                : 'text-gray-600 border-gray-600',
+                ? 'text-formcolor border-formcolor'
+                : 'border-gray-600 text-gray-600',
             ]"
             type="button"
           >
@@ -85,7 +85,7 @@ watch([defaultTab, tabs], updateTab, { flush: "post" });
         <TabPanel
           v-if="!Object.keys(tab).includes('spacer')"
           :class="[
-            'rounded focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-gray-200 focus:ring-gray-300',
+            'rounded focus:ring-2 focus:ring-gray-300 focus:ring-offset-4 focus:ring-offset-gray-200 focus:outline-none',
           ]"
         >
           <slot :name="tab.key" />

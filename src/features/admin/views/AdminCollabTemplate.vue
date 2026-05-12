@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import { CogIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { useRoute, useRouter } from "vue-router";
-import useTemplate from "../api/useTemplate";
-import EditCollabName from "../actions/EditCollabName.vue";
-import EditCollabDescription from "../actions/EditCollabDescription.vue";
-import DinA4Layout from "../components/DinA4Layout.vue";
 import { ButtonNormal } from "lorga-ui";
-import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
-import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
-import EditCollabLetterhead from "../actions/EditCollabLetterhead.vue";
-import EditCollabFooter from "../actions/EditCollabFooter.vue";
 import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+
+import CreateCollabFooter from "../actions/CreateCollabFooter.vue";
+import CreateCollabLetterhead from "../actions/CreateCollabLetterhead.vue";
+import EditCollabDescription from "../actions/EditCollabDescription.vue";
+import EditCollabFooter from "../actions/EditCollabFooter.vue";
+import EditCollabLetterhead from "../actions/EditCollabLetterhead.vue";
+import EditCollabName from "../actions/EditCollabName.vue";
+import useTemplate from "../api/useTemplate";
+import DinA4Layout from "../components/DinA4Layout.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -21,7 +23,7 @@ const { template, query } = useTemplate(uuid.value);
 </script>
 
 <template>
-  <div class="max-w-(--breakpoint-lg) mx-auto space-y-6">
+  <div class="mx-auto max-w-(--breakpoint-lg) space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'admin-dashboard' }"
@@ -33,17 +35,17 @@ const { template, query } = useTemplate(uuid.value);
         },
       ]"
     >
-      <CogIcon class="w-6 h-6" />
+      <CogIcon class="h-6 w-6" />
     </BreadcrumbsBar>
     <div class="flex gap-7">
-      <div class="w-2/3 bg-white rounded-md shadow">
+      <div class="w-2/3 rounded-md bg-white shadow">
         <div
-          class="flex items-center h-16 gap-2 pl-10 text-lg font-semibold bg-gray-50 rounded-t-md text-zinc-700"
+          class="flex h-16 items-center gap-2 rounded-t-md bg-gray-50 pl-10 text-lg font-semibold text-zinc-700"
         >
           {{ template?.name }} (Preview)
           <EditCollabName :query="query" :uuid="uuid" :name="template?.name" />
         </div>
-        <div class="flex gap-8 mt-4 ml-14 mr-11 mb-7">
+        <div class="mt-4 mr-11 mb-7 ml-14 flex gap-8">
           <DinA4Layout class="w-3/5">
             <template v-if="!!template?.letterhead" #header>
               <div class="w-2/5">
@@ -58,7 +60,7 @@ const { template, query } = useTemplate(uuid.value);
                   <img
                     :src="template.letterhead.logo_base64"
                     alt="Logo"
-                    class="h-10 ml-auto"
+                    class="ml-auto h-10"
                   />
                   {{ template.letterhead.text_right }}
                 </p>
@@ -97,13 +99,13 @@ const { template, query } = useTemplate(uuid.value);
           class="mb-4 ml-14"
           @click="router.back()"
         >
-          <XMarkIcon class="w-6 h-6 mr-2" />
+          <XMarkIcon class="mr-2 h-6 w-6" />
           Close
         </ButtonNormal>
       </div>
-      <div class="w-1/3 bg-white rounded-md shadow h-fit">
+      <div class="h-fit w-1/3 rounded-md bg-white shadow">
         <div
-          class="flex items-center h-16 gap-2 pl-5 text-lg font-semibold bg-gray-50 rounded-t-md text-zinc-700"
+          class="flex h-16 items-center gap-2 rounded-t-md bg-gray-50 pl-5 text-lg font-semibold text-zinc-700"
         >
           Description
           <EditCollabDescription

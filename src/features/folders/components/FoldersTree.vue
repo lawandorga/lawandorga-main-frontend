@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { useFolderProperties } from "@/composables/useFolderProperties";
-import { useUserStore } from "@/store/user";
 import { FolderIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal } from "lorga-ui";
 import { ref, toRefs } from "vue";
 import { useRoute } from "vue-router";
-import FoldersBadge from "./FoldersBadge.vue";
+
+import { useFolderProperties } from "@/composables/useFolderProperties";
+import { useUserStore } from "@/store/user";
+
 import { FolderItem } from "../api/useFolderPage";
+import FoldersBadge from "./FoldersBadge.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -62,11 +64,11 @@ const { properties } = useFolderProperties(folders);
 <template>
   <template v-for="item in folders" :key="item.folder.uuid">
     <div
-      class="flex w-full leading-snug rounded-sm h-7 even:bg-gray-100 odd:bg-white"
+      class="flex h-7 w-full rounded-sm leading-snug odd:bg-white even:bg-gray-100"
       :style="{ paddingLeft: `${depth * 18}px` }"
     >
       <button
-        class="w-5 text-gray-900 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75"
+        class="focus-visible:ring-opacity-75 w-5 rounded-lg text-gray-900 focus:outline-none focus-visible:ring focus-visible:ring-gray-500"
         @click="openOrCloseFolder(item.folder.uuid)"
       >
         <ChevronUpIcon
@@ -75,17 +77,17 @@ const { properties } = useFolderProperties(folders);
               ? 'rotate-180 transform'
               : 'rotate-90'
           "
-          class="w-5 h-5 text-gray-500"
+          class="h-5 w-5 text-gray-500"
         />
       </button>
       <div class="flex items-center">
         <FolderIcon
-          class="shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-600"
+          class="h-5 w-5 shrink-0 text-gray-500 group-hover:text-gray-600"
         />
-        <span class="ml-1.5 truncate mr-3">{{ item.folder.name }}</span>
+        <span class="mr-3 ml-1.5 truncate">{{ item.folder.name }}</span>
         <div
           v-if="properties[item.folder.uuid]"
-          class="px-1 py-0 text-xs font-medium leading-tight tracking-wide text-gray-800 uppercase rounded shadow whitespace-nowrap ring-1 ring-gray-700"
+          class="rounded px-1 py-0 text-xs leading-tight font-medium tracking-wide whitespace-nowrap text-gray-800 uppercase shadow ring-1 ring-gray-700"
         >
           {{ properties[item.folder.uuid] }}
         </div>
@@ -102,7 +104,7 @@ const { properties } = useFolderProperties(folders);
           </ButtonNormal>
         </div>
       </div>
-      <div class="flex items-center pr-2 ml-auto space-x-3 whitespace-nowrap">
+      <div class="ml-auto flex items-center space-x-3 pr-2 whitespace-nowrap">
         <ButtonNormal
           kind="action"
           @click="emit('showMetaClicked', item.folder.uuid)"
@@ -129,11 +131,11 @@ const { properties } = useFolderProperties(folders);
           (item) => item.repository !== 'RECORDS_RECORD',
         )"
         :key="content.name"
-        class="even:bg-gray-100 odd:bg-white"
+        class="odd:bg-white even:bg-gray-100"
       >
         <div class="flex items-center">
           <div :style="{ width: `${(depth + 1) * 18}px` }"></div>
-          <div class="block w-5 h-5"></div>
+          <div class="block h-5 w-5"></div>
           <FoldersBadge :text="content.repository" />
           <div class="ml-2 text-sm leading-normal">
             {{ content.name }}

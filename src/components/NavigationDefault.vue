@@ -5,24 +5,24 @@ import { getRegisterUrl } from "@/utils/login";
 <template>
   <div class="bg-formcolor print:hidden">
     <div
-      class="flex items-center justify-between h-16 px-4 border-b shrink-0 border-white/20"
+      class="flex h-16 shrink-0 items-center justify-between border-b border-white/20 px-4"
     >
       <div class="flex space-x-3">
         <router-link
           :to="{ name: 'index' }"
           class="flex items-center space-x-2"
         >
-          <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
+          <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
           <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
         </router-link>
-        <div class="w-px h-8 bg-white"></div>
+        <div class="h-8 w-px bg-white"></div>
         <img
           src="/sponsor-cms.jpg"
           alt="CMS Stiftung"
-          class="w-auto h-8 overflow-hidden rounded"
+          class="h-8 w-auto overflow-hidden rounded"
         />
       </div>
-      <div class="hidden pr-8 space-x-8 sm:block">
+      <div class="hidden space-x-8 pr-8 sm:block">
         <router-link
           class="text-lg font-medium text-white hover:underline"
           :to="{ name: 'records-upload' }"

@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import BoxLoader from "@/components/BoxLoader.vue";
+import { CogIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator, ButtonNormal } from "lorga-ui";
 import { useRoute } from "vue-router";
+
+import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { CogIcon } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/store/user";
 import UsersChangePassword from "@/features/admin/actions/ChangePassword.vue";
 import UserAddPermission from "@/features/permissions/actions/AddPermissionToUser.vue";
 import RemovePermission from "@/features/permissions/actions/RemovePermission.vue";
 import UserUpdateInformation from "@/features/users/actions/UpdateUserInformation.vue";
+import { useUserStore } from "@/store/user";
+
 import { useProfileData } from "../api/useProfileData";
 
 const route = useRoute();
@@ -19,7 +21,7 @@ const { query, permissions, user } = useProfileData(route.params.id as string);
 
 <template>
   <BoxLoader :show="!!user">
-    <div v-if="user" class="max-w-(--breakpoint-lg) mx-auto space-y-6">
+    <div v-if="user" class="mx-auto max-w-(--breakpoint-lg) space-y-6">
       <BreadcrumbsBar
         class="lg:col-span-2"
         :base="{ name: 'admin-dashboard' }"
@@ -31,10 +33,10 @@ const { query, permissions, user } = useProfileData(route.params.id as string);
           },
         ]"
       >
-        <CogIcon class="w-6 h-6" />
+        <CogIcon class="h-6 w-6" />
       </BreadcrumbsBar>
       <div class="grid grid-cols-2 gap-y-6">
-        <div v-if="user" class="max-w-lg px-6 py-5 bg-white rounded shadow">
+        <div v-if="user" class="max-w-lg rounded bg-white px-6 py-5 shadow">
           <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold">{{ user.name }}</h2>
             <div class="flex items-center space-x-4">
@@ -78,7 +80,7 @@ const { query, permissions, user } = useProfileData(route.params.id as string);
                 </span>
               </p>
             </div>
-            <h3 class="block mt-4 text-lg font-semibold">
+            <h3 class="mt-4 block text-lg font-semibold">
               Additional Information
             </h3>
             <p v-if="user.speciality_of_study_display" class="text-sm">

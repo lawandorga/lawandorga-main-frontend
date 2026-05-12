@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { useUserStore } from "@/store/user";
 import { UserIcon } from "@heroicons/vue/20/solid";
+
+import { useUserStore } from "@/store/user";
 import { getCookie } from "@/utils/cookie";
+
 import NavigationDropdownCloser from "./NavigationDropdownCloser.vue";
 
 const userStore = useUserStore();
@@ -17,12 +19,12 @@ const csrfCookie = getCookie("csrftoken");
     <NavigationDropdownCloser :close="close" />
     <div>
       <MenuButton
-        class="flex text-sm bg-gray-100 rounded-full cursor-pointer focus:outline-none ring-gray-100 ring-2 hover:ring-gray-200 focus:ring-gray-200 focus:ring-2"
+        class="flex cursor-pointer rounded-full bg-gray-100 text-sm ring-2 ring-gray-100 hover:ring-gray-200 focus:ring-2 focus:ring-gray-200 focus:outline-none"
       >
         <span class="sr-only">Open user menu</span>
-        <div class="relative overflow-hidden rounded-full h-7 w-7">
+        <div class="relative h-7 w-7 overflow-hidden rounded-full">
           <UserIcon
-            class="transform scale-110 w-full h-full text-blue-700 absolute -bottom-0.5 left-0 right-0"
+            class="absolute right-0 -bottom-0.5 left-0 h-full w-full scale-110 transform text-blue-700"
           />
         </div>
       </MenuButton>
@@ -36,12 +38,12 @@ const csrfCookie = getCookie("csrftoken");
       leave-to-class="transform scale-95 opacity-0"
     >
       <MenuItems
-        class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none"
+        class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
       >
         <MenuItem v-if="userStore.user">
           <RouterLink
             :to="{ name: 'admin-profile', params: { id: userStore.user.id } }"
-            class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            class="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Profile
           </RouterLink>
@@ -49,7 +51,7 @@ const csrfCookie = getCookie("csrftoken");
         <MenuItem v-if="userStore.user">
           <RouterLink
             :to="{ name: 'user-optimize' }"
-            class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            class="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Optimize
           </RouterLink>
@@ -57,7 +59,7 @@ const csrfCookie = getCookie("csrftoken");
         <MenuItem v-if="userStore.user">
           <a
             :href="mfaSetupUrl"
-            class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            class="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             rel="noopener"
           >
             Multi-factor Authentication
@@ -66,7 +68,7 @@ const csrfCookie = getCookie("csrftoken");
         <MenuItem v-if="userStore.user">
           <RouterLink
             :to="{ name: 'user-keys' }"
-            class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+            class="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Keys
           </RouterLink>
@@ -80,7 +82,7 @@ const csrfCookie = getCookie("csrftoken");
             />
             <button
               type="submit"
-              class="block w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer hover:bg-gray-100"
+              class="block w-full cursor-pointer px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
             >
               Logout
             </button>
