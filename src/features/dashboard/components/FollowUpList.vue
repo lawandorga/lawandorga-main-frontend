@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import { useFollowUps } from "../api/useFollowUps";
 import { formatDate } from "@/utils/date";
@@ -9,6 +10,9 @@ const { followUps } = useFollowUps();
 
 <template>
   <BoxSection title="Follow Ups" :length="followUps?.length">
+    <div class="px-4 py-2">
+      <BoxLoader :show="!!followUps"></BoxLoader>
+    </div>
     <div v-if="followUps?.length">
       <ul class="p-1 mt-2 space-y-1 bg-white rounded">
         <li
@@ -34,7 +38,7 @@ const { followUps } = useFollowUps();
         </li>
       </ul>
     </div>
-    <div v-else class="px-6 py-4 text-gray-500 w-full">
+    <div v-else class="w-full px-6 py-4 text-gray-500">
       No follow-ups found.
     </div>
   </BoxSection>

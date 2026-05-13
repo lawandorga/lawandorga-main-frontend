@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import { useArticles } from "../api/useArticles";
 import { CalendarIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
@@ -7,7 +8,8 @@ const { articles } = useArticles();
 
 <template>
   <BoxSection title="News from Law&Orga" :length="articles?.length">
-    <div>
+    <div class="px-6 py-4">
+      <BoxLoader :show="!!articles"></BoxLoader>
       <div
         v-if="articles?.length"
         class="grid grid-cols-1 gap-6 px-6 py-4 mt-2 lg:grid-cols-3"
