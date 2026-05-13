@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
 import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
@@ -13,13 +14,11 @@ const { notes, notesQuery } = useNotes();
     <template #action>
       <CreateNote :query="notesQuery" />
     </template>
-    <div>
-      <div v-if="!notes?.length" class="w-full px-6 py-4 text-gray-500">
-        No notes yet. Use the button above to create your first note.
-      </div>
+    <div class="px-6 py-4">
+      <BoxLoader :show="!!notes"></BoxLoader>
       <div
-        v-else
-        class="grid grid-cols-1 gap-6 px-6 py-4 mt-2 lg:grid-cols-2 3xl:grid-cols-3"
+        v-if="notes?.length"
+        class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 3xl:grid-cols-3"
       >
         <article
           v-for="note in notes"
@@ -54,6 +53,10 @@ const { notes, notesQuery } = useNotes();
           ></p>
           <!-- eslint-enable vue/no-v-html -->
         </article>
+      </div>
+
+      <div v-else class="w-full text-gray-500">
+        No notes yet. Use the button above to create your first note.
       </div>
     </div>
   </BoxSection>
