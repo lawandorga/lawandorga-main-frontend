@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import BoxSection from "@/components/BoxSection.vue";
 import { useArticles } from "../api/useArticles";
-import { ButtonNormal } from "lorga-ui";
 import { CalendarIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
 const { articles } = useArticles();
 </script>
@@ -37,10 +36,7 @@ const { articles } = useArticles();
           <router-link
             :to="{ name: 'internal-article', params: { id: article.id } }"
             class="mt-2"
-          >
-            <ButtonNormal kind="action"
-              >Read more <ArrowRightIcon class="w-4 h-4 ml-2 text-gray-400"
-            /></ButtonNormal>
+            >Read more <ArrowRightIcon class="w-4 h-4 ml-2 text-gray-400" />
           </router-link>
         </article>
       </div>
