@@ -4,7 +4,7 @@ import useClient from "@/api/client";
 import { useUserStore } from "@/store/user";
 
 export interface Apps {
-  [key: string]: () => Promise<void>;
+  [key: string]: () => Promise<unknown>;
 }
 
 export function useRunOptimizations() {
@@ -35,8 +35,8 @@ export function useRunOptimizations() {
     [key: keyof Apps]: "optimizing" | "error" | "success" | "waiting";
   }>({});
 
-  const funcs = computed<{ [key: keyof Apps]: () => Promise<void> }>(() => {
-    const d: { [key: keyof Apps]: () => Promise<void> } = {};
+  const funcs = computed<{ [key: keyof Apps]: () => Promise<unknown> }>(() => {
+    const d: { [key: keyof Apps]: () => Promise<unknown> } = {};
     Object.keys(apps).forEach((key) => {
       status.value[key] = "waiting";
       d[key] = () => {
@@ -54,7 +54,7 @@ export function useRunOptimizations() {
   });
 
   const runAll = () => {
-    Object.values(funcs.value).reduce(
+    Object.values(funcs.value).reduce<Promise<unknown>>(
       (prev, cur) => prev.then(cur),
       Promise.resolve(),
     );

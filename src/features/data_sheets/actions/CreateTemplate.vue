@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
-import { toRefs } from "vue";
+import { useRouter } from "vue-router";
 
 import useCmd from "@/composables/useCmd";
 
-const props = defineProps<{ query: () => void }>();
-const { query } = toRefs(props);
+const { commandRequest, commandModalOpen } = useCmd();
 
 const createFields: types.FormField[] = [
   {
@@ -16,17 +15,25 @@ const createFields: types.FormField[] = [
   },
 ];
 
-const { commandRequest, commandModalOpen } = useCmd(query);
+const router = useRouter();
+
+const createAndRedirect = async (data: Record<string, unknown>) => {
+  const result = await commandRequest(data);
+  await router.push({
+    name: "admin-template",
+    params: { id: result.id.toString() },
+  });
+};
 </script>
 
 <template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
     Create Template
     <ModalCreate
       v-model="commandModalOpen"
       title="Create Template"
       :fields="createFields"
-      :request="commandRequest"
+      :request="createAndRedirect"
       :data="{
         action: 'data_sheets/create_template',
       }"

@@ -24,6 +24,9 @@ query();
         :pages="[{ name: 'Templates', to: { name: 'admin-templates' } }]"
       >
         <CogIcon class="h-6 w-6" />
+        <template #buttons>
+          <RecordsCreateTemplate />
+        </template>
       </BreadcrumbsBar>
       <TableGenerator
         :head="[
@@ -32,31 +35,28 @@ query();
         ]"
         :data="templates"
       >
-        <template #head-action>
-          <RecordsCreateTemplate :query="query" />
-        </template>
-        <template #name="slotProps">
+        <template #name="{ id, name }">
           <ButtonLink
             class="underline"
             :to="{
               name: 'admin-template',
-              params: { id: slotProps.id },
+              params: { id },
             }"
           >
-            {{ slotProps.name }}
+            {{ name }}
           </ButtonLink>
         </template>
-        <template #action="slotProps">
+        <template #action="{ id, name, show }">
           <RecordsUpdateTemplate
             :query="query"
-            :template-id="slotProps.id"
-            :template-name="slotProps.name"
-            :template-show="slotProps.show"
+            :template-id="id"
+            :template-name="name"
+            :template-show="show"
           />
           <RecordsDeleteTemplate
             :query="query"
-            :template-id="slotProps.id"
-            :template-name="slotProps.name"
+            :template-id="id"
+            :template-name="name"
           />
         </template>
       </TableGenerator>

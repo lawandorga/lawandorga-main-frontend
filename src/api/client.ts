@@ -77,7 +77,7 @@ class Client {
   ): (data?: D) => Promise<R> {
     return (data?: D) => {
       const builtUrl = this.buildUrl(url, data, ...params);
-      return this.caller.get(builtUrl).then((r) => r.data);
+      return this.caller.get(builtUrl).then((response) => response.data);
     };
   }
 
@@ -138,7 +138,7 @@ class Client {
   post<D extends Record<string, any>>(
     url: string,
     ...params: UrlParamType[]
-  ): (data?: D) => Promise<void> {
+  ): (data?: D) => Promise<unknown> {
     return (data?: D) => {
       const _url = this.buildUrl(
         `${url}?action=${this.getAction(data)}`,
@@ -153,9 +153,7 @@ class Client {
           return Promise.reject({ response: { status: 413 } });
         return Promise.reject(e);
       }
-      return this.caller.post(_url, _data).then(() => {
-        // ignore
-      });
+      return this.caller.post(_url, _data).then((response) => response.data);
     };
   }
 
@@ -166,7 +164,7 @@ class Client {
     return (data?: D) =>
       this.caller
         .post(this.buildUrl(url, data, ...params), this._data(data))
-        .then((r) => r.data);
+        .then((response) => response.data);
   }
 }
 
