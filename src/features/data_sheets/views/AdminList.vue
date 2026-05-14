@@ -24,10 +24,10 @@ query();
         :pages="[{ name: 'Templates', to: { name: 'admin-templates' } }]"
       >
         <CogIcon class="h-6 w-6" />
+        <template #buttons>
+          <RecordsCreateTemplate />
+        </template>
       </BreadcrumbsBar>
-      <div class="flex justify-end">
-        <RecordsCreateTemplate />
-      </div>
       <TableGenerator
         :head="[
           { name: 'Name', key: 'name' },
