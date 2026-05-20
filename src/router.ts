@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import adminRoutes from "@/features/admin/routes";
+import calendarRoutes from "@/features/calendar/routes";
 import DashboardPage from "@/features/dashboard/views/DashboardPage.vue";
 import dataSheetsRoutes from "@/features/data_sheets/routes";
 import eventsRoutes from "@/features/events/routes";
@@ -50,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
   ...internalRoutes,
   ...legalRoutes,
   ...eventsRoutes,
+  ...calendarRoutes,
   ...mailRoutes,
   ...uploadsRoutes,
   ...chatRoutes,
