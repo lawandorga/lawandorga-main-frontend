@@ -49,7 +49,7 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
 
 <template>
   <div class="hidden md:flex md:shrink-0 print:hidden">
-    <div class="flex flex-col" :class="{ 'w-64': expanded, 'w-14': !expanded }">
+    <div class="flex flex-col z-11" :class="{ 'w-64': expanded, 'w-14': !expanded }">
       <div class="flex flex-col overflow-y-auto grow bg-formcolor">
         <div
           class="flex items-center h-16 border-b shrink-0 border-white/20"
