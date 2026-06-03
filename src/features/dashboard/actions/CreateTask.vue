@@ -1,26 +1,8 @@
-<template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
-    Create Task
-    <ModalCreate
-      v-model="commandModalOpen"
-      title="Create Task"
-      :fields="taskFields"
-      submit="Create"
-      :request="commandRequest"
-      :data="{
-        action: 'tasks/create_task',
-        page_url: route.fullPath,
-        priority: 'medium',
-        progress: 0,
-      }"
-    />
-  </ButtonNormal>
-</template>
-
 <script setup lang="ts">
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
 
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
@@ -34,10 +16,8 @@ const taskFields = computed<types.FormField[]>(() => [
   { label: "Location", name: "page_url", type: "text" },
   { label: "Title", name: "title", required: true, type: "text" },
   {
-    label: "Description",
     name: "description",
-    required: false,
-    type: "textarea",
+    type: "slot",
   },
   {
     label: "Deadline",
@@ -84,3 +64,27 @@ const taskFields = computed<types.FormField[]>(() => [
 
 const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
 </script>
+
+<template>
+  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+    Create Task
+    <ModalCreate
+      v-model="commandModalOpen"
+      title="Create Task"
+      :fields="taskFields"
+      submit="Create"
+      :request="commandRequest"
+      :data="{
+        action: 'tasks/create_task',
+        page_url: route.fullPath,
+        priority: 'medium',
+        progress: 0,
+      }"
+    >
+      <template #description="{ data }">
+        <FormWysiwyg v-model="data.description" label="Description" />
+      </template>
+    </ModalCreate>
+  </ButtonNormal>
+</template>
+
