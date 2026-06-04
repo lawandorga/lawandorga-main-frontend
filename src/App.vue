@@ -6,7 +6,7 @@
       <NavigationSidebar v-if="userStore.isAuthenticated && inside" />
 
       <div
-        class="flex flex-col items-center flex-1 w-0 overflow-x-hidden print:block"
+        class="flex flex-col flex-1 w-0 overflow-x-hidden overflow-y-auto print:block"
       >
         <NavigationTop
           v-if="userStore.isAuthenticated"
@@ -16,7 +16,7 @@
         <NavigationDefault v-if="!userStore.isAuthenticated" />
 
         <main
-          class="relative flex-1 w-full max-w-5xl mx-6 mt-22 focus:outline-none print:p-0"
+          class="relative flex-1 w-full max-w-5xl px-6 py-6 mx-auto focus:outline-none print:p-0"
         >
           <router-view></router-view>
         </main>
