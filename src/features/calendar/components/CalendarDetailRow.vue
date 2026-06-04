@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex gap-3">
+  <dl class="flex gap-3">
     <dt class="shrink-0">
       <component
         :is="icon"
@@ -18,5 +18,5 @@ defineProps<{
       <span class="sr-only">{{ label }}</span>
     </dt>
     <slot />
-  </div>
+  </dl>
 </template>
