@@ -19,11 +19,14 @@ import {
   useCalendarEvents,
   type CalendarEvent,
 } from "../api/useCalendarEvents";
+import CreateEvent from "../actions/CreateEvent.vue";
 import CalendarEventDetail from "../components/CalendarEventDetail.vue";
 
 const CALENDAR_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin];
 
-const { calendarEvents } = useCalendarEvents();
+const { calendarEvents, query } = useCalendarEvents();
+
+const createEventModal = ref<{ open: () => void } | null>(null);
 
 const selectedEvent = ref<CalendarEvent | null>(null);
 const detailOpen = ref(false);
@@ -182,7 +185,7 @@ const calendarBaseOptions: CalendarOptions = {
   initialView: "timeGridWeek",
   headerToolbar: {
     left: "prev today next title",
-    center: "",
+    center: "createEvent",
     right: "timeGridWeek,dayGridMonth,listMonth,timeGridDay",
   },
   buttonText: {
@@ -207,6 +210,14 @@ const calendarBaseOptions: CalendarOptions = {
         return `${month} ${monthStart.getFullYear()}`;
       },
     },
+  },
+  customButtons: {
+    createEvent: {
+      text: 'Create Event',
+      click: () => {
+        createEventModal.value?.open();
+      },
+    }
   },
   locale: enGBLocale,
   firstDay: 1,
@@ -234,11 +245,11 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     class="calendar-page mx-auto flex h-full max-w-(--breakpoint-2xl) flex-col gap-6"
   >
     <BreadcrumbsBar :base="{ name: 'calendar-dashboard' }" :pages="[]">
-      <CalendarDaysIcon class="h-6 w-6" />
+      <CalendarDaysIcon class="w-6 h-6" />
     </BreadcrumbsBar>
 
     <div
-      class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-4 shadow"
+      class="relative flex-1 min-h-0 p-4 bg-white rounded-lg shadow calendar-shell isolate"
     >
       <div
         v-if="isCalendarLoading"
@@ -248,6 +259,8 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       </div>
       <FullCalendar :options="calendarOptions" />
     </div>
+
+    <CreateEvent ref="createEventModal" :query="query" />
 
     <CalendarEventDetail v-model="detailOpen" :event="selectedEvent" />
   </div>
