@@ -141,7 +141,7 @@ const formattedTime = computed(() => {
         </button>
         <button
           type="button"
-          class="bg-formcolor flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold text-white hover:bg-formcolor/90"
+          class="bg-formcolor hover:bg-formcolor/90 flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold text-white"
         >
           Edit
         </button>
