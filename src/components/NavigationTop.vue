@@ -22,9 +22,9 @@ const inside = computed(() => {
 
 <template>
   <div
-    class="fixed z-10 flex w-full h-16 px-6 py-2 bg-white border-b shadow shrink-0 border-white/20 print:hidden"
+    class="sticky top-0 z-10 flex w-full h-16 bg-white border-b shadow shrink-0 border-white/20 print:hidden"
   >
-    <div class="w-full max-w-5xl m-auto">
+    <div class="flex items-center w-full max-w-5xl px-6 mx-auto">
       <button
         type="button"
         class="flex items-center justify-center px-4 text-gray-200 border-r cursor-pointer border-white/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
