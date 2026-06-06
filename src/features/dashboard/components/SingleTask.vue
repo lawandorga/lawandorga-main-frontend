@@ -63,8 +63,13 @@ const priorityColor: Record<string, string> = {
 
 <template>
   <article
-    class="flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
+    class="relative flex flex-col justify-between rounded bg-white px-6 pt-7 pb-4 shadow"
   >
+    <span
+      v-if="task.is_new"
+      class="bg-formcolor absolute top-0 right-3 px-2 py-1 text-sm text-white"
+      >New</span
+    >
     <div>
       <div class="flex items-start justify-between gap-3">
         <h3 class="text-formcolor mb-2 text-left font-semibold">

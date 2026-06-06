@@ -19,12 +19,19 @@ const { notes, notesQuery } = useNotes();
       <article
         v-for="note in notes"
         :key="note.id"
-        class="rounded bg-white px-6 pt-4 pb-4 shadow"
+        class="relative rounded bg-white px-6 pt-7 pb-4 shadow"
         :class="{ 'lg:col-span-2': note.is_wide }"
       >
-        <h3 class="mb-2 font-medium text-gray-700">
-          {{ note.title }}
-        </h3>
+        <span
+          v-if="note.is_new"
+          class="bg-formcolor absolute top-0 right-3 px-2 py-1 text-sm text-white"
+          >New</span
+        >
+        <div class="flex justify-between">
+          <h3 class="my-2 font-medium text-gray-700">
+            {{ note.title }}
+          </h3>
+        </div>
         <!-- eslint-disable vue/no-v-html -->
         <p
           class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
