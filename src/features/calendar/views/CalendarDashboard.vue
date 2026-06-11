@@ -15,11 +15,11 @@ import { computed, ref } from "vue";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 
+import CreateEvent from "../actions/CreateEvent.vue";
 import {
   useCalendarEvents,
   type CalendarEvent,
 } from "../api/useCalendarEvents";
-import CreateEvent from "../actions/CreateEvent.vue";
 import CalendarEventDetail from "../components/CalendarEventDetail.vue";
 
 const CALENDAR_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin];
@@ -213,11 +213,11 @@ const calendarBaseOptions: CalendarOptions = {
   },
   customButtons: {
     createEvent: {
-      text: 'Create Event',
+      text: "Create Event",
       click: () => {
         createEventModal.value?.open();
       },
-    }
+    },
   },
   locale: enGBLocale,
   firstDay: 1,
@@ -245,11 +245,11 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     class="calendar-page mx-auto flex h-full max-w-(--breakpoint-2xl) flex-col gap-6"
   >
     <BreadcrumbsBar :base="{ name: 'calendar-dashboard' }" :pages="[]">
-      <CalendarDaysIcon class="w-6 h-6" />
+      <CalendarDaysIcon class="h-6 w-6" />
     </BreadcrumbsBar>
 
     <div
-      class="relative flex-1 min-h-0 p-4 bg-white rounded-lg shadow calendar-shell isolate"
+      class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-4 shadow"
     >
       <div
         v-if="isCalendarLoading"
