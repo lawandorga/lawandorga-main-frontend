@@ -84,9 +84,8 @@ const priorityColor: Record<string, string> = {
       </p>
       <p
         class="mt-2 text-sm font-semibold wrap-break-word whitespace-pre-line text-gray-700"
-      >
-        {{ task.description }}
-      </p>
+        v-html="task.description"
+      />
       <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
         Assignees: {{ task.assignee_names.join(", ") }}
       </p>
