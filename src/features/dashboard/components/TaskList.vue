@@ -37,7 +37,7 @@ const sortTasks = (tasks: Task[]) =>
     >
       <template #owntasks>
         <div
-          class="-mx-[50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
+          class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
         >
           <div
             v-if="assignedOpenTasks && assignedOpenTasks.length"
@@ -57,7 +57,7 @@ const sortTasks = (tasks: Task[]) =>
       </template>
       <template #createdtasks>
         <div
-          class="-mx-[50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
+          class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
         >
           <div
             v-if="createdOpenTasks && createdOpenTasks.length"
@@ -77,7 +77,7 @@ const sortTasks = (tasks: Task[]) =>
       </template>
       <template #completedtasks>
         <div
-          class="-mx-[50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
+          class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
         >
           <div
             v-if="completedTasks"
