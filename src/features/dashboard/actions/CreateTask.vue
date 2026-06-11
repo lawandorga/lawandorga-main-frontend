@@ -2,8 +2,8 @@
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import FormWysiwyg from "@/components/FormWysiwyg.vue";
 
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
 import { notifyTasksChanged } from "@/features/dashboard/api/useTasksChanged";
@@ -87,4 +87,3 @@ const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
     </ModalCreate>
   </ButtonNormal>
 </template>
-
