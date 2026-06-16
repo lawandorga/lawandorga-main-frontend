@@ -27,14 +27,14 @@
     "@pinia/testing": "==1.0.*",
     "@tailwindcss/typography": "==0.5.*",
     "@tailwindcss/vite": "==4.*",
-    "@tiptap/extension-bullet-list": "^3.26.0",
-    "@tiptap/extension-highlight": "^3.26.0",
-    "@tiptap/extension-link": "^3.26.0",
-    "@tiptap/extension-ordered-list": "^3.26.0",
-    "@tiptap/extension-table": "^3.26.0",
-    "@tiptap/extensions": "^3.26.0",
-    "@tiptap/starter-kit": "^3.26.0",
-    "@tiptap/vue-3": "^3.26.0",
+    "@tiptap/extension-bullet-list": "^3.26.1",
+    "@tiptap/extension-highlight": "^3.26.1",
+    "@tiptap/extension-link": "^3.26.1",
+    "@tiptap/extension-ordered-list": "^3.26.1",
+    "@tiptap/extension-table": "^3.26.1",
+    "@tiptap/extensions": "^3.26.1",
+    "@tiptap/starter-kit": "^3.26.1",
+    "@tiptap/vue-3": "^3.26.1",
     "@types/jest": "==30.0.*",
     "@types/lodash": "==4.17.*",
     "@types/node": "==25.9.*",
@@ -45,7 +45,7 @@
     "@vue/eslint-config-prettier": "==10.2.*",
     "@vue/test-utils": "==2.4.*",
     "autoprefixer": "==10.5.*",
-    "axios": "==1.17.*",
+    "axios": "==1.18.*",
     "eslint": "==10.*",
     "eslint-config-prettier": "==10.1.*",
     "eslint-plugin-prettier": "==5.5.*",
@@ -70,7 +70,7 @@
     "vue-tsc": "==3.3.*"
   },
   "devDependencies": {
-    "oxfmt": "^0.54.0"
+    "oxfmt": "^0.55.0"
   },
   "browserslist": [
     "> 1%",
