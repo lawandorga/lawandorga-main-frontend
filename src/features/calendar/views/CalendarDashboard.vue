@@ -24,48 +24,15 @@ import CalendarEventDetail from "../components/CalendarEventDetail.vue";
 
 const CALENDAR_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin];
 
-const { calendarEvents, query } = useCalendarEvents();
+const { isLoading, fullCalendarEvents, query } = useCalendarEvents();
 
 const createEventModal = ref<{ open: () => void } | null>(null);
 
 const selectedEvent = ref<CalendarEvent | null>(null);
 const detailOpen = ref(false);
-const isCalendarLoading = computed(() => calendarEvents.value === undefined);
-
-const EVENT_TYPE_META = {
-  APPOINTMENT: { label: "Appointment", color: "#2563eb" },
-  TASK: { label: "Task", color: "#16a34a" },
-  MEETING: { label: "Meeting", color: "#7c3aed" },
-  DEADLINE: { label: "Deadline", color: "#dc2626" },
-  EXTERNAL: { label: "External", color: "#d97706" },
-} as const;
-
-const TINT_ALPHA = "20"; // 12.5% opacity
-
-const getEventTypeMeta = (eventType: CalendarEvent["event_type"]) =>
-  EVENT_TYPE_META[eventType];
-
-const eventTypeColor = (eventType: CalendarEvent["event_type"]): string =>
-  getEventTypeMeta(eventType).color;
 
 const formatWeekday = (date: Date): string =>
   date.toLocaleString("en-GB", { weekday: "short" }).slice(0, 2).toUpperCase();
-
-const fullCalendarEvents = computed(() => {
-  return (calendarEvents.value ?? []).map((event) => {
-    const color = eventTypeColor(event.event_type);
-    return {
-      id: event.uuid,
-      title: event.title,
-      start: event.start_time,
-      end: event.end_time ?? undefined,
-      backgroundColor: `${color}${TINT_ALPHA}`,
-      borderColor: color, // TODO: calendar source color in the future
-      textColor: color,
-      extendedProps: { calendarEvent: event },
-    };
-  });
-});
 
 const onEventClick = (props: EventClickArg) => {
   selectedEvent.value = props.event.extendedProps
@@ -252,7 +219,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-4 shadow"
     >
       <div
-        v-if="isCalendarLoading"
+        v-if="isLoading"
         class="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/70"
       >
         <span class="text-sm text-gray-400">Loading…</span>
@@ -262,7 +229,11 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 
     <CreateEvent ref="createEventModal" :query="query" />
 
-    <CalendarEventDetail v-model="detailOpen" :event="selectedEvent" />
+    <CalendarEventDetail
+      v-model="detailOpen"
+      :event="selectedEvent"
+      :query="query"
+    />
   </div>
 </template>
 

@@ -75,7 +75,13 @@ defineExpose({
     title="Create Event"
     :fields="fields"
     :request="request"
-    :data="{ action: 'calendar/create_event', event_type: 'MEETING' }"
+    :data="{
+      action: 'calendar/create_event',
+      event_type: 'MEETING',
+      start_time: new Date().toISOString().slice(0, 14) + '00',
+      end_time:
+        new Date(Date.now() + 3600000).toISOString().slice(0, 14) + '00',
+    }"
     submit="Create"
   />
 </template>

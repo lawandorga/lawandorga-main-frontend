@@ -5,38 +5,44 @@ import {
   MapPinIcon,
   UserIcon,
 } from "@heroicons/vue/24/outline";
-import { ModalFree } from "lorga-ui";
-import { computed } from "vue";
+import { ButtonNormal, ModalFree } from "lorga-ui";
+import { computed, ref } from "vue";
 
+import { useUserStore } from "@/store/user";
+import { formatDate } from "@/utils/date.js";
+
+import DeleteEvent from "../actions/DeleteEvent.vue";
+import UpdateEvent from "../actions/UpdateEvent.vue";
 import type { CalendarEvent } from "../api/useCalendarEvents";
+import { EVENT_SOURCE_META, EVENT_TYPE_META } from "../constants.js";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 
 const props = defineProps<{
   modelValue: boolean;
   event: CalendarEvent | null;
+  query: () => void;
 }>();
 
 const emit = defineEmits<{
   "update:modelValue": [value: boolean];
 }>();
 
-const EVENT_SOURCE_META = {
-  PERSONAL: { label: "Personal", color: "#003c4d" },
-  SHARED: { label: "Shared", color: "#5a3e8a" },
-  ORGANIZATION: { label: "Organization", color: "#0f6e56" },
-} as const;
-
-const EVENT_TYPE_META = {
-  APPOINTMENT: { label: "Appointment", color: "#2563eb" },
-  TASK: { label: "Task", color: "#16a34a" },
-  MEETING: { label: "Meeting", color: "#7c3aed" },
-  DEADLINE: { label: "Deadline", color: "#dc2626" },
-  EXTERNAL: { label: "External", color: "#d97706" },
-} as const;
-
 const eventTypeMeta = computed(() => EVENT_TYPE_META[props.event!.event_type]);
 
 const eventColor = computed(() => eventTypeMeta.value.color);
+
+const userStore = useUserStore();
+
+const canEdit = computed(
+  () => !!props.event && userStore.user?.id === props.event.creator_id,
+);
+
+const canDelete = computed(
+  () => !!props.event && userStore.user?.id === props.event.creator_id,
+);
+
+const updateOpenSignal = ref(0);
+const deleteOpenSignal = ref(0);
 
 const sourceMeta = computed(() => {
   // TODO: use actual source
@@ -51,27 +57,34 @@ const sourceMeta = computed(() => {
   };
 });
 
-const formatTime = (value: string): string =>
-  new Date(value).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-const formattedDate = computed(() =>
-  new Date(props.event!.start_time).toLocaleDateString("en-GB", {
+const formattedDate = computed(() => {
+  if (!props.event) return "";
+  const weekday = new Date(props.event.start_time).toLocaleDateString("en-GB", {
     weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }),
-);
+  });
+  return `${weekday}, ${formatDate(props.event.start_time, true)}`;
+});
 
 const formattedTime = computed(() => {
-  const event = props.event!;
-  const start = formatTime(event.start_time);
-  if (!event.end_time) return start;
-  return `${start} - ${formatTime(event.end_time)}`;
+  if (!props.event) return "";
+  const start = formatDate(props.event.start_time, false, true);
+  if (!props.event.end_time) return start;
+  return `${start} - ${formatDate(props.event.end_time, false, true)}`;
 });
+
+const closeDetail = () => {
+  emit("update:modelValue", false);
+};
+
+const openUpdateModal = () => {
+  updateOpenSignal.value += 1;
+  closeDetail();
+};
+
+const openDeleteModal = () => {
+  deleteOpenSignal.value += 1;
+  closeDetail();
+};
 </script>
 
 <template>
@@ -81,7 +94,7 @@ const formattedTime = computed(() => {
     @update:model-value="emit('update:modelValue', $event)"
   >
     <template v-if="event">
-      <div class="mb-5 flex gap-2">
+      <div class="flex gap-2 mb-5">
         <span
           class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           :style="{
@@ -122,7 +135,7 @@ const formattedTime = computed(() => {
           label="Description"
           :icon="DocumentTextIcon"
         >
-          <dd class="whitespace-pre-wrap text-gray-900">
+          <dd class="text-gray-900 whitespace-pre-wrap">
             {{ event.description }}
           </dd>
         </CalendarDetailRow>
@@ -131,21 +144,40 @@ const formattedTime = computed(() => {
         </CalendarDetailRow>
       </dl>
 
-      <div class="mt-5 flex gap-3">
-        <button
-          type="button"
-          class="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-          @click="emit('update:modelValue', false)"
-        >
-          Close
-        </button>
-        <button
-          type="button"
-          class="bg-formcolor hover:bg-formcolor/90 flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold text-white"
-        >
+      <div
+        class="flex justify-between gap-3 px-5 py-2 mt-5 bg-gray-100 rounded-sm"
+      >
+        <ButtonNormal v-if="canEdit" kind="action" @click="openUpdateModal">
           Edit
-        </button>
+        </ButtonNormal>
+        <ButtonNormal v-if="canDelete" kind="delete" @click="openDeleteModal">
+          Delete
+        </ButtonNormal>
       </div>
     </template>
   </ModalFree>
+
+  <template v-if="event">
+    <UpdateEvent
+      :query="query"
+      :event-uuid="event.uuid"
+      :event-title="event.title"
+      :event-type="event.event_type"
+      :start-time="event.start_time"
+      :end-time="event.end_time"
+      :location="event.location"
+      :description="event.description"
+      :recurrence-rule="event.recurrence_rule"
+      :recurrence-until="event.recurrence_until"
+      :creator-id="event.creator_id"
+      :open-signal="updateOpenSignal"
+    />
+    <DeleteEvent
+      :query="query"
+      :event-uuid="event.uuid"
+      :event-name="event.title"
+      :creator-id="event.creator_id"
+      :open-signal="deleteOpenSignal"
+    />
+  </template>
 </template>
