@@ -4,6 +4,9 @@ import { toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
 
+import CalendarTypePicker from "../components/CalendarTypePicker.vue";
+import CalendarWhenFields from "../components/CalendarWhenFields.vue";
+
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
 
@@ -17,29 +20,12 @@ const fields: types.FormField[] = [
     required: true,
   },
   {
-    label: "Type",
     name: "event_type",
-    type: "select",
-    required: true,
-    options: [
-      { name: "Appointment", value: "APPOINTMENT" },
-      { name: "Task", value: "TASK" },
-      { name: "Meeting", value: "MEETING" },
-      { name: "Deadline", value: "DEADLINE" },
-      { name: "External", value: "EXTERNAL" },
-    ],
+    type: "slot",
   },
   {
-    label: "Start time",
-    name: "start_time",
-    type: "datetime-local",
-    required: true,
-  },
-  {
-    label: "End time",
-    name: "end_time",
-    type: "datetime-local",
-    required: false,
+    name: "when",
+    type: "slot",
   },
   {
     label: "Location",
@@ -77,11 +63,27 @@ defineExpose({
     :request="request"
     :data="{
       action: 'calendar/create_event',
-      event_type: 'MEETING',
+      event_type: 'APPOINTMENT',
+      is_all_day: false,
       start_time: new Date().toISOString().slice(0, 14) + '00',
       end_time:
         new Date(Date.now() + 3600000).toISOString().slice(0, 14) + '00',
+      recurrence_rule: '',
+      recurrence_until: '',
     }"
     submit="Create"
-  />
+  >
+    <template #event_type="{ data }">
+      <CalendarTypePicker v-model="data.event_type" />
+    </template>
+    <template #when="{ data }">
+      <CalendarWhenFields
+        v-model:is-all-day="data.is_all_day"
+        v-model:start="data.start_time"
+        v-model:end="data.end_time"
+        v-model:recurrence-rule="data.recurrence_rule"
+        v-model:recurrence-until="data.recurrence_until"
+      />
+    </template>
+  </ModalCreate>
 </template>

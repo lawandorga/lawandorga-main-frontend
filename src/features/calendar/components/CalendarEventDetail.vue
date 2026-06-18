@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  ArrowPathIcon,
   CalendarDaysIcon,
   DocumentTextIcon,
   MapPinIcon,
@@ -14,7 +15,12 @@ import { formatDate } from "@/utils/date.js";
 import DeleteEvent from "../actions/DeleteEvent.vue";
 import UpdateEvent from "../actions/UpdateEvent.vue";
 import type { CalendarEvent } from "../api/useCalendarEvents";
-import { EVENT_SOURCE_META, EVENT_TYPE_META } from "../constants.js";
+import {
+  EVENT_SOURCE_META,
+  EVENT_TYPE_META,
+  RECURRENCE_FREQUENCIES,
+  TYPE_TINT_ALPHA,
+} from "../constants.js";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 
 const props = defineProps<{
@@ -65,8 +71,21 @@ const formattedDate = computed(() => {
   return `${weekday}, ${formatDate(props.event.start_time, true)}`;
 });
 
+const recurrenceLabel = computed(() => {
+  if (!props.event) return "";
+  const frequency = RECURRENCE_FREQUENCIES.find(
+    (option) => option.rule === props.event!.recurrence_rule,
+  );
+  if (!frequency) return "";
+  if (props.event.recurrence_until) {
+    return `${frequency.label}, until ${formatDate(props.event.recurrence_until, true)}`;
+  }
+  return frequency.label;
+});
+
 const formattedTime = computed(() => {
   if (!props.event) return "";
+  if (props.event.is_all_day) return "All day";
   const start = formatDate(props.event.start_time, false, true);
   if (!props.event.end_time) return start;
   return `${start} - ${formatDate(props.event.end_time, false, true)}`;
@@ -98,7 +117,7 @@ const openDeleteModal = () => {
         <span
           class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           :style="{
-            backgroundColor: `${eventColor}20`,
+            backgroundColor: `${eventColor}${TYPE_TINT_ALPHA}`,
             color: eventColor,
           }"
         >
@@ -139,6 +158,13 @@ const openDeleteModal = () => {
             {{ event.description }}
           </dd>
         </CalendarDetailRow>
+        <CalendarDetailRow
+          v-if="recurrenceLabel"
+          label="Repeats"
+          :icon="ArrowPathIcon"
+        >
+          <dd class="text-gray-900">{{ recurrenceLabel }}</dd>
+        </CalendarDetailRow>
         <CalendarDetailRow label="Creator" :icon="UserIcon">
           <dd class="text-gray-900">{{ event.creator_name }}</dd>
         </CalendarDetailRow>
@@ -147,11 +173,16 @@ const openDeleteModal = () => {
       <div
         class="mt-5 flex justify-between gap-3 rounded-sm bg-gray-100 px-5 py-2"
       >
-        <ButtonNormal v-if="canEdit" kind="action" @click="openUpdateModal">
-          Edit
-        </ButtonNormal>
-        <ButtonNormal v-if="canDelete" kind="delete" @click="openDeleteModal">
+        <ButtonNormal
+          v-if="canDelete"
+          kind="delete"
+          class="mr-auto"
+          @click="openDeleteModal"
+        >
           Delete
+        </ButtonNormal>
+        <ButtonNormal v-if="canEdit" kind="secondary" @click="openUpdateModal">
+          Edit
         </ButtonNormal>
       </div>
     </template>
@@ -165,6 +196,7 @@ const openDeleteModal = () => {
       :event-type="event.event_type"
       :start-time="event.start_time"
       :end-time="event.end_time"
+      :is-all-day="event.is_all_day"
       :location="event.location"
       :description="event.description"
       :recurrence-rule="event.recurrence_rule"

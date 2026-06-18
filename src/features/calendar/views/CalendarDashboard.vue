@@ -8,6 +8,7 @@ import type {
 import enGBLocale from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
+import rrulePlugin from "@fullcalendar/rrule";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import FullCalendar from "@fullcalendar/vue3";
 import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
@@ -22,7 +23,12 @@ import {
 } from "../api/useCalendarEvents";
 import CalendarEventDetail from "../components/CalendarEventDetail.vue";
 
-const CALENDAR_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin];
+const CALENDAR_PLUGINS = [
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  rrulePlugin,
+];
 
 const { isLoading, fullCalendarEvents, query } = useCalendarEvents();
 
@@ -152,8 +158,8 @@ const calendarBaseOptions: CalendarOptions = {
   initialView: "timeGridWeek",
   headerToolbar: {
     left: "prev today next title",
-    center: "createEvent",
-    right: "timeGridWeek,dayGridMonth,listMonth,timeGridDay",
+    center: "",
+    right: "timeGridWeek,dayGridMonth,listMonth,timeGridDay createEvent",
   },
   buttonText: {
     today: "Today",
@@ -193,7 +199,8 @@ const calendarBaseOptions: CalendarOptions = {
   eventDisplay: "block",
   expandRows: true,
   editable: false,
-  allDaySlot: false,
+  allDaySlot: true,
+  allDayText: "All day",
   scrollTime: "07:00:00",
   slotLabelFormat: { hour: "numeric", minute: "2-digit", hour12: false },
   dayHeaderContent,
@@ -292,6 +299,19 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     }
   }
 
+  .fc-createEvent-button.fc-button-primary {
+    background-color: var(--color-formcolor);
+    border-color: var(--color-formcolor);
+    color: #fff;
+    font-weight: 500;
+
+    &:hover {
+      background-color: var(--color-formcolor-hover);
+      border-color: var(--color-formcolor-hover);
+      color: #fff;
+    }
+  }
+
   .fc-button:focus:not(:focus-visible) {
     box-shadow: none;
     outline: none;
@@ -339,6 +359,15 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 
 :deep(.fc-timegrid-slot-label-cushion) {
   font-size: 10px;
+  color: var(--color-muted);
+  padding-right: 6px;
+}
+
+:deep(.fc-timegrid-axis-cushion) {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--color-muted);
   padding-right: 6px;
 }
