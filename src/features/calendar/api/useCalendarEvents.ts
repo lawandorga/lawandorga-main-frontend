@@ -1,6 +1,8 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import useGet2 from "@/composables/useGet2";
+
+import { EVENT_TYPE_META } from "../constants";
 
 export interface CalendarEvent {
   uuid: string;
@@ -20,12 +22,37 @@ export interface CalendarEvent {
   updated: string;
 }
 
+const TINT_ALPHA = "20"; // 12.5% opacity
+
+const getEventTypeColor = (eventType: CalendarEvent["event_type"]): string =>
+  EVENT_TYPE_META[eventType].color;
+
 export function useCalendarEvents() {
   const calendarEvents = ref<CalendarEvent[] | undefined>(undefined);
   const query = useGet2("api/calendar/query/events/", calendarEvents);
 
+  const fullCalendarEvents = computed(() => {
+    return (calendarEvents.value ?? []).map((event) => {
+      const color = getEventTypeColor(event.event_type);
+      return {
+        id: event.uuid,
+        title: event.title,
+        start: event.start_time,
+        end: event.end_time ?? undefined,
+        backgroundColor: `${color}${TINT_ALPHA}`,
+        borderColor: color, // TODO: calendar source color in the future
+        textColor: color,
+        extendedProps: { calendarEvent: event },
+      };
+    });
+  });
+
+  const isLoading = computed(() => calendarEvents.value === undefined);
+
   return {
+    fullCalendarEvents,
     calendarEvents,
+    isLoading,
     query,
   };
 }

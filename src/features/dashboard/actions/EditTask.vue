@@ -128,7 +128,7 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
               <div
                 v-for="(c, index) in task.comments"
                 :key="index"
-                class="py-1 pl-3 text-sm border-l-2 border-gray-300"
+                class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
               >
                 <div class="flex items-baseline justify-between gap-3">
                   <span class="font-semibold text-gray-600">{{
