@@ -122,11 +122,7 @@ const {
           role="status"
           class="py-6 text-center text-sm text-gray-500"
         >
-          {{
-            members && members.length > 0
-              ? "No members match the selected activity filter."
-              : "This group has no members yet."
-          }}
+          No members match the selected activity filter.
         </p>
       </div>
     </div>

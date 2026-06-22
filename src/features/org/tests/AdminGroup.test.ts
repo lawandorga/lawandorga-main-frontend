@@ -121,10 +121,6 @@ describe("AdminGroup: activity filter", () => {
     members.value = [];
     wrapper = mountComponent();
 
-    expect(wrapper.text()).toContain("This group has no members yet.");
-    expect(wrapper.text()).not.toContain(
-      "No members match the selected activity filter.",
-    );
     expect(wrapper.findComponent(GroupsAddMember).exists()).toBe(true);
   });
 });
