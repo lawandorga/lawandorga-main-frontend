@@ -18,9 +18,9 @@ jobs:
       artifact: ${{ github.event.repository.name }}
       version: ${{ github.sha }}
 
-  eslint:
-    name: ESLint
-    uses: ./.github/workflows/commit-stage--run-eslint-on-code.yml
+  verify:
+    name: Verify
+    uses: ./.github/workflows/commit-stage--verify-code.yml
 
   analyze:
     name: Analyze
