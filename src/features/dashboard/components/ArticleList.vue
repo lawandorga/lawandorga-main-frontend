@@ -17,7 +17,7 @@ const { articles } = useArticles();
         <article
           v-for="article in articles"
           :key="article.id"
-          class="flex flex-col justify-between px-6 pt-4 pb-4 bg-white border border-gray-200 rounded hover:border-primary/20 hover:shadow-md"
+          class="flex flex-col justify-between px-6 py-4 bg-white border border-gray-200 rounded hover:border-formcolor/20 hover:shadow-md"
         >
           <div class="flex items-center mb-2 text-sm text-gray-500">
             <CalendarIcon class="w-5 h-5 mr-1"></CalendarIcon>

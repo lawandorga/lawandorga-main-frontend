@@ -23,14 +23,14 @@ const { notes, notesQuery } = useNotes();
         <article
           v-for="note in notes"
           :key="note.id"
-          class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg hover:border-primary/20 hover:shadow-md"
+          class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg hover:border-formcolor/20 hover:shadow-md"
           :class="{ 'lg:col-span-2': note.is_wide }"
         >
           <div class="flex justify-between">
             <h3 class="mb-2 font-medium text-gray-700">
               {{ note.title }}
             </h3>
-            <div class="gap-2">
+            <div class="flex gap-6">
               <UpdateNote
                 :query="notesQuery"
                 :note-id="note.id"

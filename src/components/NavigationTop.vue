@@ -53,7 +53,7 @@ const inside = computed(() => {
               class="flex items-center space-x-2"
             >
               <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
-              <h1 class="text-2xl font-bold text-primary">Law&Orga</h1>
+              <h1 class="text-2xl font-bold text-formcolor">Law&Orga</h1>
             </router-link>
             <img
               src="/sponsor-cms.jpg"

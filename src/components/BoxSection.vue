@@ -4,7 +4,7 @@ import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 
 defineProps<{
   title: string;
-  length?: number;
+  numberOfItems?: number;
 }>();
 
 const open = ref(true);
@@ -22,13 +22,13 @@ const open = ref(true);
         class="flex items-center justify-center gap-2 text-gray-400 transition-colors hover:text-gray-600 hover:cursor-pointer"
         @click="open = !open"
       >
-        <h2 class="text-lg font-medium leading-6 text-gray-700 text-start">
+        <h2 class="text-lg font-medium leading-6 text-gray-700">
           {{ title }}
         </h2>
         <span
-          v-if="length !== undefined"
+          v-if="numberOfItems !== undefined"
           class="rounded-md px-2 py-0.5 font-medium bg-gray-200 text-gray-800"
-          >{{ length }}
+          >{{ numberOfItems }}
         </span>
         <ChevronDownIcon
           aria-hidden="true"

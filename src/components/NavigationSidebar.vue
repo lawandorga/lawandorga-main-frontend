@@ -99,9 +99,9 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
         <CircleLoader v-show="!userStore.loaded" class="text-white" />
       </div>
 
-      <div class="flex flex-col justify-between bg-primary grow">
+      <div class="flex flex-col justify-between grow">
         <nav
-          class="flex-1 pb-2 bg-primary border-white/20"
+          class="flex-1 pb-2 border-white/20"
           :class="{
             'space-y-3 pt-3': !expanded,
             'space-y-1 px-2 pt-2': expanded,
@@ -119,8 +119,8 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           v-show="expanded"
           class="flex flex-col items-start justify-center p-4"
         >
-          <span class="block py-2 text-xs uppercase text-white/50"
-            >Sponsors</span
+          <div class="py-2 text-xs uppercase text-white/50"
+            >Sponsors</div
           >
           <figure class="mb-3">
             <figcaption class="mb-1 text-white/50">A project of</figcaption>

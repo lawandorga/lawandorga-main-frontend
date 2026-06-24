@@ -36,7 +36,7 @@ defineProps<{
     v-bind="item.attrs"
     class="relative flex items-center justify-between py-2 pl-2 text-sm font-medium rounded-md group text-white/70 hover:bg-white/10 hover:text-white"
     :class="{
-      'text-gray-700 bg-white/10 hover:bg-white/10': active,
+      'bg-white/10': active,
       'pb-5.5!': !expanded && item.is === 'a',
       'w-10 pr-2 mx-auto': !expanded,
       'pr-3': expanded,
@@ -48,15 +48,15 @@ defineProps<{
         class="w-6 h-6 text-white/60 shrink-0 group-hover:text-white"
         :class="{ 'mr-3': expanded }"
       />
-      <span
+      <div
         v-show="expanded || item.is === 'a'"
         :class="{
-          'text-xs absolute block bold top-8 truncate left-0 right-0 text-center text-gray-500':
+          'text-xs absolute font-bold top-8 truncate left-0 right-0 text-center text-gray-500':
             !expanded,
         }"
       >
         {{ item.label }}
-      </span>
+      </div>
     </div>
     <RedBadge
       v-if="item.notifications && item.notifications > 0"
