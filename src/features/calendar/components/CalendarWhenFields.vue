@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { FormInput } from "lorga-ui";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 
-import { RECURRENCE_FREQUENCIES } from "../constants";
+import { type EventType, RECURRENCE_FREQUENCIES } from "../constants";
 
 const props = defineProps<{
   isAllDay: boolean;
@@ -10,6 +10,7 @@ const props = defineProps<{
   end: string;
   recurrenceRule: string;
   recurrenceUntil: string;
+  eventType: EventType;
 }>();
 
 const emit = defineEmits<{
@@ -87,6 +88,18 @@ const recurrenceUntil = computed<string>({
 });
 
 const isRecurring = computed(() => !!props.recurrenceRule);
+
+const isDeadline = computed<boolean>(() => props.eventType === "DEADLINE");
+
+watch(
+  isDeadline,
+  (deadline) => {
+    if (!deadline) return;
+    if (!props.isAllDay) allDay.value = true;
+    if (props.end) emit("update:end", "");
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -96,10 +109,11 @@ const isRecurring = computed(() => !!props.recurrenceRule);
         v-model="startDate"
         name="start_time"
         type="date"
-        label="Start date"
+        :label="isDeadline ? 'Date' : 'Start date'"
         required
       />
       <FormInput
+        v-if="!isDeadline"
         v-model="endDate"
         name="end_time"
         type="date"
@@ -124,12 +138,15 @@ const isRecurring = computed(() => !!props.recurrenceRule);
 
     <div class="flex items-center justify-between gap-3">
       <label
-        class="flex cursor-pointer items-center gap-2 text-sm font-medium text-gray-700 select-none"
+        class="flex items-center gap-2 text-sm font-medium text-gray-700 select-none"
+        :class="isDeadline ? 'cursor-not-allowed' : 'cursor-pointer'"
+        :title="isDeadline ? 'Deadlines are always all-day events.' : undefined"
       >
         <input
           v-model="allDay"
           type="checkbox"
-          class="size-4"
+          class="size-4 disabled:opacity-60"
+          :disabled="isDeadline"
           style="accent-color: var(--color-formcolor)"
         />
         All day

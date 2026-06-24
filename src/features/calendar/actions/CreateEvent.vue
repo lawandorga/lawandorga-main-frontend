@@ -83,6 +83,7 @@ defineExpose({
         v-model:end="data.end_time"
         v-model:recurrence-rule="data.recurrence_rule"
         v-model:recurrence-until="data.recurrence_until"
+        :event-type="data.event_type"
       />
     </template>
   </ModalCreate>

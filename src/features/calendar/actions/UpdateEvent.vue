@@ -8,12 +8,13 @@ import { toLocalDateTimeInput } from "@/utils/date";
 
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
 import CalendarWhenFields from "../components/CalendarWhenFields.vue";
+import type { EventType } from "../constants";
 
 const props = defineProps<{
   query: () => void;
   eventUuid: string;
   eventTitle: string;
-  eventType: "APPOINTMENT" | "TASK" | "MEETING" | "DEADLINE" | "EXTERNAL";
+  eventType: EventType;
   startTime: string;
   endTime: string | null;
   isAllDay: boolean;
@@ -117,6 +118,7 @@ watch(openSignal, (next, prev) => {
         v-model:end="data.end_time"
         v-model:recurrence-rule="data.recurrence_rule"
         v-model:recurrence-until="data.recurrence_until"
+        :event-type="data.event_type"
       />
     </template>
   </ModalUpdate>

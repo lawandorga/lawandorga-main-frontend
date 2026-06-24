@@ -150,6 +150,7 @@ const eventContent = (props: EventContentArg) => {
   if (props.view.type === "dayGridMonth") return { domNodes: [titleElement] };
   if (props.view.type === "listMonth")
     return listViewEventContent(event, titleElement);
+  if (props.event.allDay) return { domNodes: [titleElement] };
   return gridViewEventContent(event, titleElement);
 };
 
