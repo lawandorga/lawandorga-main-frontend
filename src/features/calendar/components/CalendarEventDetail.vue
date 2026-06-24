@@ -170,9 +170,7 @@ const openDeleteModal = () => {
         </CalendarDetailRow>
       </dl>
 
-      <div
-        class="mt-5 flex justify-between gap-3 rounded-sm bg-gray-100 px-5 py-2"
-      >
+      <div class="mt-5 flex items-center justify-between gap-3">
         <ButtonNormal
           v-if="canDelete"
           kind="delete"
