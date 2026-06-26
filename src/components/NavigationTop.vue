@@ -28,7 +28,7 @@ const inside = computed(() => {
     <div class="mx-auto flex w-full max-w-5xl items-center px-6">
       <button
         type="button"
-        class="flex cursor-pointer items-center justify-center border-r border-white/20 px-4 text-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none focus:ring-inset md:hidden"
+        class="flex cursor-pointer items-center justify-center border-r border-formcolor/20 px-4 text-gray-200 focus:outline-none md:hidden"
         @click="setOpen(true)"
       >
         <span class="sr-only">Open sidebar</span>

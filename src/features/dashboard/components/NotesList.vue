@@ -47,7 +47,7 @@ const { notes, notesQuery } = useNotes();
           </div>
           <!-- eslint-disable vue/no-v-html -->
           <p
-            class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
+            class="text-sm wrap-break-word whitespace-pre-line text-gray-700"
             v-html="note.note"
           ></p>
           <!-- eslint-enable vue/no-v-html -->

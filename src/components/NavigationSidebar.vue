@@ -74,7 +74,7 @@ const lastNameInitial = computed(() => {
         </button>
       </div>
       <div
-        class="flex h-14 items-center border-white/20"
+        class="flex h-14 items-center"
         :class="{ 'px-4': expanded, 'border-b': !expanded }"
       >
         <router-link

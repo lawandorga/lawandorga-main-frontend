@@ -13,7 +13,7 @@ const { articles } = useArticles();
     <BoxLoader :show="!!articles" class="px-6 py-4">
       <div
         v-if="articles?.length"
-        class="mt-2 grid grid-cols-1 gap-6 px-6 py-4 lg:grid-cols-3"
+        class="grid grid-cols-1 gap-4 lg:grid-cols-3"
       >
         <article
           v-for="article in articles"
@@ -38,7 +38,7 @@ const { articles } = useArticles();
           </div>
           <router-link
             :to="{ name: 'internal-article', params: { id: article.id } }"
-            class="text-formcolor dark:hover:bg-accent/50 inline-flex self-start items-center gap-1.5 px-2.5 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none"
+            class="text-formcolor hover:bg-gray-200/50 inline-flex self-start items-center gap-1.5 px-2.5 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none"
             >Read more <ArrowRightIcon class="ml-2 h-3 w-3 text-gray-400" />
           </router-link>
         </article>
