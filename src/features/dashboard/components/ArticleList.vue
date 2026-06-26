@@ -8,8 +8,7 @@ const { articles } = useArticles();
 
 <template>
   <BoxSection title="News from Law&Orga" :length="articles?.length">
-    <div class="px-6 py-4">
-      <BoxLoader :show="!!articles"></BoxLoader>
+    <BoxLoader :show="!!articles" class="px-6 py-4">
       <div
         v-if="articles?.length"
         class="grid grid-cols-1 gap-6 px-6 py-4 mt-2 lg:grid-cols-3"
@@ -46,6 +45,6 @@ const { articles } = useArticles();
       <div v-else class="w-full px-6 py-4 text-gray-500">
         No articles at the moment.
       </div>
-    </div>
+    </BoxLoader>
   </BoxSection>
 </template>

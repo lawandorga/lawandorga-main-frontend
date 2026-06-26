@@ -12,11 +12,9 @@ import { formatDate } from "@/utils/date";
     title="Records updated in the last 10 days"
     :length="changedRecords?.length"
   >
-    <div class="px-4 py-2">
-      <BoxLoader :show="!!changedRecords"></BoxLoader>
-    </div>
-    <div v-if="changedRecords?.length">
-      <ul class="p-1 mt-2 space-y-1 bg-white rounded">
+    <BoxLoader :show="!!changedRecords" class="px-4 py-2">
+      <div v-if="changedRecords?.length">
+      <ul class="mt-2 space-y-1 bg-white rounded">
         <li v-for="record in changedRecords" :key="record.uuid" class="block">
           <router-link
             :to="{
@@ -36,8 +34,9 @@ import { formatDate } from "@/utils/date";
         </li>
       </ul>
     </div>
-    <div v-else class="w-full px-6 py-4 text-gray-500">
-      No changed records found.
-    </div>
+      <div v-else class="w-full px-6 py-4 text-gray-500">
+        No changed records found.
+      </div>
+    </BoxLoader>
   </BoxSection>
 </template>

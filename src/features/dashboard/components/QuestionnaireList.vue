@@ -9,11 +9,9 @@ const { questionnaires } = useQuestionnaires();
 
 <template>
   <BoxSection title="Questionnaires" :length="questionnaires?.length">
-    <div class="px-4 py-2">
-      <BoxLoader :show="!!questionnaires"></BoxLoader>
-    </div>
-    <div v-if="questionnaires?.length">
-      <ul class="p-1 mt-2 space-y-1 bg-white rounded">
+    <BoxLoader :show="!!questionnaires" class="px-4 py-2">
+      <div v-if="questionnaires?.length">
+      <ul class="mt-2 space-y-1 bg-white rounded">
         <li
           v-for="questionnaire in questionnaires"
           :key="questionnaire.name"
@@ -36,8 +34,9 @@ const { questionnaires } = useQuestionnaires();
         </li>
       </ul>
     </div>
-    <div v-else class="w-full px-6 py-4 text-gray-500">
-      No questionnaires found.
-    </div>
+      <div v-else class="w-full px-6 py-4 text-gray-500">
+        No questionnaires found.
+      </div>
+    </BoxLoader>
   </BoxSection>
 </template>

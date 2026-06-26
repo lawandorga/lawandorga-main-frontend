@@ -9,11 +9,9 @@ const { members } = useMembers();
 
 <template>
   <BoxSection title="New Members in no groups" :length="members?.length">
-    <div class="px-4 py-2">
-      <BoxLoader :show="!!members"></BoxLoader>
-    </div>
-    <div v-if="members?.length" class="pb-2">
-      <ul class="p-1 mt-2 space-y-1 bg-white rounded">
+    <BoxLoader :show="!!members" class="px-4 py-2">
+      <div v-if="members?.length">
+      <ul class="mt-2 space-y-1 bg-white rounded">
         <li v-for="member in members" :key="member.id" class="block">
           <router-link
             :to="{
@@ -32,8 +30,9 @@ const { members } = useMembers();
         </li>
       </ul>
     </div>
-    <div v-else class="w-full px-6 py-4 text-gray-500">
-      No new members without groups.
-    </div>
+      <div v-else class="w-full px-6 py-4 text-gray-500">
+        No new members without groups.
+      </div>
+    </BoxLoader>
   </BoxSection>
 </template>

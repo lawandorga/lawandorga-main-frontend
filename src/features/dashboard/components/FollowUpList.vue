@@ -10,11 +10,9 @@ const { followUps } = useFollowUps();
 
 <template>
   <BoxSection title="Follow Ups" :length="followUps?.length">
-    <div class="px-4 py-2">
-      <BoxLoader :show="!!followUps"></BoxLoader>
-    </div>
-    <div v-if="followUps?.length">
-      <ul class="p-1 mt-2 space-y-1 bg-white rounded">
+    <BoxLoader :show="!!followUps" class="px-4 py-2">
+      <div v-if="followUps?.length">
+      <ul class="mt-2 space-y-1 bg-white rounded">
         <li
           v-for="followUp in followUps"
           :key="followUp.folder_uuid"
@@ -38,8 +36,9 @@ const { followUps } = useFollowUps();
         </li>
       </ul>
     </div>
-    <div v-else class="w-full px-6 py-4 text-gray-500">
-      No follow-ups found.
-    </div>
+      <div v-else class="w-full px-6 py-4 text-gray-500">
+        No follow-ups found.
+      </div>
+    </BoxLoader>
   </BoxSection>
 </template>

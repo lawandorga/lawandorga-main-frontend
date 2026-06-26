@@ -14,8 +14,7 @@ const { notes, notesQuery } = useNotes();
     <template #action>
       <CreateNote :query="notesQuery" />
     </template>
-    <div class="px-6 py-4">
-      <BoxLoader :show="!!notes"></BoxLoader>
+    <BoxLoader :show="!!notes" class="px-6 py-4">
       <div
         v-if="notes?.length"
         class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 3xl:grid-cols-3"
@@ -58,6 +57,6 @@ const { notes, notesQuery } = useNotes();
       <div v-else class="w-full text-gray-500">
         No notes yet. Use the button above to create your first note.
       </div>
-    </div>
+    </BoxLoader>
   </BoxSection>
 </template>
