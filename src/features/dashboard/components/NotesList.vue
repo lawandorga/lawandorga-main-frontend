@@ -17,12 +17,12 @@ const { notes, notesQuery } = useNotes();
     <BoxLoader :show="!!notes" class="px-6 py-4">
       <div
         v-if="notes?.length"
-        class="grid grid-cols-1 gap-6 mt-2 lg:grid-cols-2 3xl:grid-cols-3"
+        class="3xl:grid-cols-3 mt-2 grid grid-cols-1 gap-6 lg:grid-cols-2"
       >
         <article
           v-for="note in notes"
           :key="note.id"
-          class="p-4 transition-all duration-200 bg-white border border-gray-200 rounded-lg hover:border-formcolor/20 hover:shadow-md"
+          class="hover:border-formcolor/20 rounded-lg border border-gray-200 bg-white p-4 transition-all duration-200 hover:shadow-md"
           :class="{ 'lg:col-span-2': note.is_wide }"
         >
           <div class="flex justify-between">
@@ -47,7 +47,7 @@ const { notes, notesQuery } = useNotes();
           </div>
           <!-- eslint-disable vue/no-v-html -->
           <p
-            class="text-sm prose-sm prose text-gray-700 whitespace-pre-line wrap-break-word"
+            class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
             v-html="note.note"
           ></p>
           <!-- eslint-enable vue/no-v-html -->

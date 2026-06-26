@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { PencilIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
-import { PencilIcon } from "@heroicons/vue/24/outline";
 
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
@@ -46,7 +46,7 @@ const { commandModalOpen, commandRequest } = useCmd(query);
     @click="commandModalOpen = true"
     aria-label="Update Note"
   >
-    <PencilIcon class="w-4 h-4 stroke-2" />
+    <PencilIcon class="h-4 w-4 stroke-2" />
     <ModalUpdate
       v-model="commandModalOpen"
       :request="commandRequest"

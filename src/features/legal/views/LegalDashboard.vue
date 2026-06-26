@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import BoxLoader from "@/components/BoxLoader.vue";
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { ScaleIcon } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/store/user";
-import { ButtonNormal } from "lorga-ui";
-import { formatDate } from "@/utils/date";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { ChevronUpIcon } from "@heroicons/vue/20/solid";
+import { ScaleIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal } from "lorga-ui";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useCmd from "@/composables/useCmd";
+import { useUserStore } from "@/store/user";
+import { formatDate } from "@/utils/date";
+
 import {
   useLegalRequirements,
   LegalRequirement,
@@ -31,19 +33,19 @@ const accept = (lr: LegalRequirement) => {
   <BoxLoader :show="userStore.loaded">
     <div v-if="userStore.loaded" class="space-y-6">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
-        <ScaleIcon class="w-6 h-6" />
+        <ScaleIcon class="h-6 w-6" />
       </BreadcrumbsBar>
 
       <div class="mt-10 space-y-10">
         <div v-for="lr in legalRequirements" :key="lr.title">
-          <div class="bg-white border border-gray-200 rounded shadow">
+          <div class="rounded border border-gray-200 bg-white shadow">
             <div class="px-6 pt-5">
               <Disclosure
                 v-slot="{ open }"
                 :default-open="!lr.accepted_of_user"
               >
                 <DisclosureButton
-                  class="flex items-center justify-between w-full"
+                  class="flex w-full items-center justify-between"
                 >
                   <div class="prose-sm prose max-w-none">
                     <h1 class="">
@@ -52,7 +54,7 @@ const accept = (lr: LegalRequirement) => {
                   </div>
                   <ChevronUpIcon
                     :class="open ? 'rotate-180 transform' : ''"
-                    class="w-5 h-5 text-gray-700"
+                    class="h-5 w-5 text-gray-700"
                   />
                 </DisclosureButton>
                 <DisclosurePanel class="prose-sm prose max-w-none">

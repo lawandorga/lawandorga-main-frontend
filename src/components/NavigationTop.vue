@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { computed } from "vue";
 import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
-import NavigationDropdown from "./NavigationDropdown.vue";
+import { Squares2X2Icon } from "@heroicons/vue/24/outline";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
-import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { Squares2X2Icon } from "@heroicons/vue/24/outline";
+import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 import { useUserStore } from "@/store/user";
-import { storeToRefs } from "pinia";
+
+import NavigationDropdown from "./NavigationDropdown.vue";
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 // eslint-disable-next-line no-unused-vars
@@ -22,29 +23,30 @@ const inside = computed(() => {
 
 <template>
   <div
-    class="sticky top-0 z-10 flex w-full h-16 bg-white border-b shadow shrink-0 border-white/20 print:hidden"
+    class="sticky top-0 z-10 flex h-16 w-full shrink-0 border-b border-white/20 bg-white shadow print:hidden"
   >
-    <div class="flex items-center w-full max-w-5xl px-6 mx-auto">
+    <div class="mx-auto flex w-full max-w-5xl items-center px-6">
       <button
         type="button"
-        class="flex items-center justify-center px-4 text-gray-200 border-r cursor-pointer border-white/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500 md:hidden"
+        class="flex cursor-pointer items-center justify-center border-r border-white/20 px-4 text-gray-200 focus:ring-2 focus:ring-gray-500 focus:outline-none focus:ring-inset md:hidden"
         @click="setOpen(true)"
       >
         <span class="sr-only">Open sidebar</span>
-        <Bars3BottomLeftIcon class="w-6 h-6" aria-hidden="true" />
+        <Bars3BottomLeftIcon class="h-6 w-6" aria-hidden="true" />
       </button>
-      <div class="flex justify-between flex-1">
-        <div class="flex items-center flex-1">
+      <div class="flex flex-1 justify-between">
+        <div class="flex flex-1 items-center">
           <BreadcrumbsBar
             v-show="inside"
-            class="hidden mr-4 md:block"
+            class="mr-4 hidden md:block"
             :base="{ name: 'dashboard' }"
             :pages="[]"
           >
-            <Squares2X2Icon class="w-6 h-6" />
+            <Squares2X2Icon class="h-6 w-6" />
           </BreadcrumbsBar>
           <span
-            class="hidden text-lg font-bold text-gray-700 lg:text-2xl md:block" v-show="inside"
+            class="hidden text-lg font-bold text-gray-700 md:block lg:text-2xl"
+            v-show="inside"
           >
             Welcome {{ user?.name }}
           </span>
@@ -53,17 +55,17 @@ const inside = computed(() => {
               :to="{ name: 'index' }"
               class="flex items-center space-x-2"
             >
-              <img src="/logo.png" alt="Law&Orga" class="w-auto h-8" />
-              <h1 class="text-2xl font-bold text-formcolor">Law&Orga</h1>
+              <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
+              <h1 class="text-formcolor text-2xl font-bold">Law&Orga</h1>
             </router-link>
             <img
               src="/sponsor-cms.jpg"
               alt="CMS Stiftung"
-              class="w-auto h-8 overflow-hidden rounded"
+              class="h-8 w-auto overflow-hidden rounded"
             />
           </div>
         </div>
-        <div class="flex items-center ml-4 md:ml-6">
+        <div class="ml-4 flex items-center md:ml-6">
           <CreateTask v-show="inside" />
           <NavigationDropdown />
         </div>

@@ -6,7 +6,7 @@
       <NavigationSidebar v-if="userStore.isAuthenticated && inside" />
 
       <div
-        class="flex flex-col flex-1 w-0 overflow-x-hidden overflow-y-auto print:block"
+        class="flex w-0 flex-1 flex-col overflow-x-hidden overflow-y-auto print:block"
       >
         <NavigationTop
           v-if="userStore.isAuthenticated"
@@ -16,7 +16,7 @@
         <NavigationDefault v-if="!userStore.isAuthenticated" />
 
         <main
-          class="relative flex-1 w-full max-w-5xl px-6 py-6 mx-auto focus:outline-none print:p-0"
+          class="relative mx-auto w-full max-w-5xl flex-1 px-6 py-6 focus:outline-none print:p-0"
         >
           <router-view></router-view>
         </main>
@@ -31,16 +31,18 @@
 </template>
 
 <script lang="ts" setup>
-import NavigationDefault from "@/components/NavigationDefault.vue";
-import { ref, computed } from "vue";
 import { AlertList, useConfig } from "lorga-ui";
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
+
+import NavigationDefault from "@/components/NavigationDefault.vue";
+
+import BannerList from "./components/BannerList.vue";
+import NavigationMobile from "./components/NavigationMobile.vue";
 import NavigationSidebar from "./components/NavigationSidebar.vue";
 import NavigationTop from "./components/NavigationTop.vue";
-import NavigationMobile from "./components/NavigationMobile.vue";
-import { useRoute } from "vue-router";
-import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
-import BannerList from "./components/BannerList.vue";
+import { useUserStore } from "./store/user";
 import { getCookie } from "./utils/cookie";
 
 const { overwrite } = useConfig();
