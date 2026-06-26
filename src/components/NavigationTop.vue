@@ -36,14 +36,6 @@ const inside = computed(() => {
       </button>
       <div class="flex flex-1 justify-between">
         <div class="flex flex-1 items-center">
-          <BreadcrumbsBar
-            v-show="inside"
-            class="mr-4 hidden md:block"
-            :base="{ name: 'dashboard' }"
-            :pages="[]"
-          >
-            <Squares2X2Icon class="h-6 w-6" />
-          </BreadcrumbsBar>
           <span
             class="hidden text-lg font-bold text-gray-700 md:block lg:text-2xl"
             v-show="inside"
