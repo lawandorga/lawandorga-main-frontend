@@ -19,7 +19,7 @@ const open = ref(true);
       <button
         type="button"
         :aria-expanded="open"
-        class="flex items-center justify-center gap-2 text-gray-400 transition-colors hover:cursor-pointer hover:text-gray-600"
+        class="flex items-center gap-2 text-gray-400 transition-colors hover:cursor-pointer hover:text-gray-600"
         @click="open = !open"
       >
         <h2 class="text-lg leading-6 font-medium text-gray-700">
