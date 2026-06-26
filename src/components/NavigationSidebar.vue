@@ -20,11 +20,11 @@ const route = useRoute();
 const router = useRouter();
 
 const expanded = ref(
-  userStore.getSetting("navigationExpanded", true) as boolean,
+  !!userStore.getSetting("navigationExpanded", true),
 );
 
 watch(loaded, () => {
-  expanded.value = userStore.getSetting("navigationExpanded", true) as boolean;
+  expanded.value = !!userStore.getSetting("navigationExpanded", true);
 });
 
 const expandClicked = () => {
