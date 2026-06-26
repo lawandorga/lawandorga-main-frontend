@@ -2,7 +2,7 @@
 import { Bars3CenterLeftIcon } from "@heroicons/vue/24/outline";
 import { CircleLoader } from "lorga-ui";
 import { storeToRefs } from "pinia";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 
 import useNavigationItems, {
@@ -47,6 +47,12 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
   const currentPath = route.path;
   return currentPath.startsWith(itemPath);
 };
+
+const lastNameInitial = computed(() => {
+  const fullName = userStore.user?.name || "";
+  const lastName = fullName.split(" ").slice(-1)[0] || "";
+  return lastName.charAt(0).toUpperCase();
+});
 </script>
 
 <template>
@@ -99,6 +105,9 @@ const isNavigationItemActive = (item: NavigationItem): boolean => {
           <div class="truncate text-xs">{{ userStore.user?.email }}</div>
         </div>
         <CircleLoader v-show="!userStore.loaded" class="text-white" />
+      </div>
+      <div v-show="!expanded" class="bg-lorgablue flex h-10 w-10 items-center justify-center rounded text-lg font-bold text-white">
+            {{ lastNameInitial }}
       </div>
 
       <div class="flex grow flex-col justify-between">
