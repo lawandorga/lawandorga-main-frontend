@@ -106,8 +106,8 @@ const lastNameInitial = computed(() => {
         </div>
         <CircleLoader v-show="!userStore.loaded" class="text-white" />
       </div>
-      <div v-show="!expanded" class="bg-lorgablue flex h-10 w-10 items-center justify-center rounded text-lg font-bold text-white">
-            {{ lastNameInitial }}
+      <div v-show="!expanded" class="bg-lorgablue flex h-10 w-10 items-center justify-center rounded text-lg font-bold text-white w-full">
+        {{ lastNameInitial }}
       </div>
 
       <div class="flex grow flex-col justify-between">
