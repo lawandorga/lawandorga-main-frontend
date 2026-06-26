@@ -36,6 +36,7 @@ const inside = computed(() => {
       <div class="flex justify-between flex-1">
         <div class="flex items-center flex-1">
           <BreadcrumbsBar
+            v-show="inside"
             class="hidden mr-4 md:block"
             :base="{ name: 'dashboard' }"
             :pages="[]"
@@ -43,7 +44,7 @@ const inside = computed(() => {
             <Squares2X2Icon class="w-6 h-6" />
           </BreadcrumbsBar>
           <span
-            class="hidden text-lg font-bold text-gray-700 lg:text-2xl md:block"
+            class="hidden text-lg font-bold text-gray-700 lg:text-2xl md:block" v-show="inside"
           >
             Welcome {{ user?.name }}
           </span>
@@ -63,7 +64,7 @@ const inside = computed(() => {
           </div>
         </div>
         <div class="flex items-center ml-4 md:ml-6">
-          <CreateTask />
+          <CreateTask v-show="inside" />
           <NavigationDropdown />
         </div>
       </div>
