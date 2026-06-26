@@ -14,7 +14,6 @@ const open = ref(true);
   <div class="rounded-xl bg-white shadow-md">
     <div
       class="flex justify-between px-6 py-4"
-      :class="{ 'border-b-0': !open }"
     >
       <button
         type="button"
