@@ -1,10 +1,10 @@
-name: Commit Stage - Check Code With ESLint
+name: Commit Stage - Verify Code
 
 on: workflow_call
 
 jobs:
-  lint:
-    name: Lint
+  verify:
+    name: Verify
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -19,5 +19,14 @@ jobs:
       - name: Install Packages
         run: npm ci --force
 
+      - name: Run Format Check
+        run: npm run format:check
+
       - name: Run Lint
         run: npm run lint
+
+      - name: Run TS Check
+        run: npm run tscheck
+
+      - name: Run Tests
+        run: npm run test
