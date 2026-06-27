@@ -23,6 +23,7 @@ import { computed, ref } from "vue";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useCmd from "@/composables/useCmd";
+import { useAlertStore } from "@/store/alert";
 import { addDays, toLocalDateTimeInput } from "@/utils/date";
 
 import CreateEvent from "../actions/CreateEvent.vue";
@@ -43,6 +44,8 @@ const CALENDAR_PLUGINS = [
 const { isLoading, fullCalendarEvents, query } = useCalendarEvents();
 
 const { commandRequest: updateEventRequest } = useCmd(query);
+
+const alertStore = useAlertStore();
 
 const createEventModal = ref<InstanceType<typeof CreateEvent> | null>(null);
 
@@ -82,7 +85,9 @@ const persistEventTimes = (event: EventApi, revert: () => void) => {
     is_all_day: event.allDay,
     start_time: toLocalDateTimeInput(event.start.toISOString()),
     end_time: end ? toLocalDateTimeInput(end.toISOString()) : null,
-  }).catch(revert);
+  })
+    .then(() => alertStore.showSuccess("Event updated"))
+    .catch(revert);
 };
 
 const onEventDrop = (drop: EventDropArg) =>

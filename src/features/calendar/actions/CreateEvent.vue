@@ -73,8 +73,8 @@ const request = (data: Record<string, unknown>) => {
   return commandRequest(normalized);
 };
 
-// lorga-ui re-clones :data into the form only when the object reference
-// changes, so open() assigns a fresh object here instead of mutating it
+// lorga-ui re-clones :data into the form only when the object reference changes,
+// so open() assigns a fresh object here to reset the form on each opening
 const initialData = ref<Record<string, unknown>>(buildInitialData());
 
 defineExpose({
