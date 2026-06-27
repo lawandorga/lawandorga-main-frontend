@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import type {
   CalendarOptions,
+  DateSelectArg,
   DayHeaderContentArg,
   EventClickArg,
   EventContentArg,
 } from "@fullcalendar/core";
 import enGBLocale from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin, {
+  type DateClickArg,
+} from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import rrulePlugin from "@fullcalendar/rrule";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -15,6 +19,7 @@ import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import { computed, ref } from "vue";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
+import { addDays } from "@/utils/date";
 
 import CreateEvent from "../actions/CreateEvent.vue";
 import {
@@ -28,11 +33,12 @@ const CALENDAR_PLUGINS = [
   timeGridPlugin,
   listPlugin,
   rrulePlugin,
+  interactionPlugin,
 ];
 
 const { isLoading, fullCalendarEvents, query } = useCalendarEvents();
 
-const createEventModal = ref<{ open: () => void } | null>(null);
+const createEventModal = ref<InstanceType<typeof CreateEvent> | null>(null);
 
 const selectedEvent = ref<CalendarEvent | null>(null);
 const detailOpen = ref(false);
@@ -44,6 +50,20 @@ const onEventClick = (props: EventClickArg) => {
   selectedEvent.value = props.event.extendedProps
     .calendarEvent as CalendarEvent;
   detailOpen.value = true;
+};
+
+const onDateClick = (click: DateClickArg) => {
+  createEventModal.value?.open({ start: click.date, allDay: click.allDay });
+};
+
+const onDateSelect = (selection: DateSelectArg) => {
+  createEventModal.value?.open({
+    start: selection.start,
+    // An all-day selection's end is exclusive in FullCalendar, we want to show the last day the user selected
+    end: selection.allDay ? addDays(selection.end, -1) : selection.end,
+    allDay: selection.allDay,
+  });
+  selection.view.calendar.unselect();
 };
 
 const isoWeekNumber = (date: Date): number => {
@@ -141,7 +161,12 @@ const gridViewEventContent = (
 };
 
 const eventContent = (props: EventContentArg) => {
-  const event = props.event.extendedProps.calendarEvent as CalendarEvent;
+  const event = props.event.extendedProps.calendarEvent as
+    | CalendarEvent
+    | undefined;
+
+  // The drag-to-create preview has no event yet, so just show an empty div
+  if (!event) return { domNodes: [] };
 
   const titleElement = document.createElement("div");
   titleElement.className = "calendar-event__title";
@@ -200,6 +225,10 @@ const calendarBaseOptions: CalendarOptions = {
   eventDisplay: "block",
   expandRows: true,
   editable: false,
+  selectable: true,
+  selectMirror: true,
+  // 5px threshold between a click and a drag event
+  selectMinDistance: 5,
   allDaySlot: true,
   allDayText: "All day",
   scrollTime: "07:00:00",
@@ -207,6 +236,8 @@ const calendarBaseOptions: CalendarOptions = {
   dayHeaderContent,
   eventContent,
   eventClick: onEventClick,
+  dateClick: onDateClick,
+  select: onDateSelect,
 };
 
 const calendarOptions = computed<CalendarOptions>(() => ({

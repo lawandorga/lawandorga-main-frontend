@@ -63,12 +63,25 @@ const sourceMeta = computed(() => {
   };
 });
 
-const formattedDate = computed(() => {
-  if (!props.event) return "";
-  const weekday = new Date(props.event.start_time).toLocaleDateString("en-GB", {
+const toWeekdayDate = (value: string): string => {
+  const weekday = new Date(value).toLocaleDateString("en-GB", {
     weekday: "long",
   });
-  return `${weekday}, ${formatDate(props.event.start_time, true)}`;
+  return `${weekday}, ${formatDate(value, true)}`;
+};
+
+const formattedDate = computed(() => {
+  if (!props.event) return "";
+  const { start_time, end_time, is_all_day } = props.event;
+  const startLabel = toWeekdayDate(start_time);
+  if (
+    is_all_day &&
+    end_time &&
+    formatDate(start_time, true) !== formatDate(end_time, true)
+  ) {
+    return `${startLabel} - ${toWeekdayDate(end_time)}`;
+  }
+  return startLabel;
 });
 
 const recurrenceLabel = computed(() => {

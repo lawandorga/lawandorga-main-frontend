@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ModalCreate, types } from "lorga-ui";
-import { toRefs } from "vue";
+import { ref, toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
+import { toLocalDateTimeInput } from "@/utils/date";
 
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
 import CalendarWhenFields from "../components/CalendarWhenFields.vue";
@@ -11,6 +12,30 @@ const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query);
+
+const DEFAULT_DURATION_MS = 30 * 60 * 1000;
+
+interface EventTimePrefill {
+  start: Date;
+  end?: Date;
+  allDay?: boolean;
+}
+
+const buildInitialData = (prefill?: EventTimePrefill) => {
+  const start = prefill?.start ?? new Date();
+  const defaultEnd = new Date(start.getTime() + DEFAULT_DURATION_MS);
+  const end = prefill?.end ?? (prefill?.allDay ? null : defaultEnd);
+
+  return {
+    action: "calendar/create_event",
+    event_type: "APPOINTMENT",
+    is_all_day: prefill?.allDay ?? false,
+    start_time: toLocalDateTimeInput(start.toISOString()),
+    end_time: end ? toLocalDateTimeInput(end.toISOString()) : "",
+    recurrence_rule: "",
+    recurrence_until: "",
+  };
+};
 
 const fields: types.FormField[] = [
   {
@@ -48,8 +73,13 @@ const request = (data: Record<string, unknown>) => {
   return commandRequest(normalized);
 };
 
+// lorga-ui re-clones :data into the form only when the object reference
+// changes, so open() assigns a fresh object here instead of mutating it
+const initialData = ref<Record<string, unknown>>(buildInitialData());
+
 defineExpose({
-  open: () => {
+  open: (prefill?: EventTimePrefill) => {
+    initialData.value = buildInitialData(prefill);
     commandModalOpen.value = true;
   },
 });
@@ -61,16 +91,7 @@ defineExpose({
     title="Create Event"
     :fields="fields"
     :request="request"
-    :data="{
-      action: 'calendar/create_event',
-      event_type: 'APPOINTMENT',
-      is_all_day: false,
-      start_time: new Date().toISOString().slice(0, 14) + '00',
-      end_time:
-        new Date(Date.now() + 3600000).toISOString().slice(0, 14) + '00',
-      recurrence_rule: '',
-      recurrence_until: '',
-    }"
+    :data="initialData"
     submit="Create"
   >
     <template #event_type="{ data }">

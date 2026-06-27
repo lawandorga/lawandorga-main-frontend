@@ -51,6 +51,17 @@ export const formatDateToObject = (dateString: string): FormattedDate => {
   };
 };
 
+export const addDays = (date: Date, days: number): Date => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+export const dateWithTimeOf = (date: string, dateTime: string): string => {
+  const timeOfDay = dateTime.split("T")[1]; // e.g. "06:30:00Z", "08:30:00+02:00"
+  return timeOfDay ? `${date}T${timeOfDay}` : date;
+};
+
 export const toLocalDateTimeInput = (value: string): string => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
