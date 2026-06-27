@@ -101,12 +101,18 @@ const buildTimedEvent = (
   };
 };
 
-export const toFullCalendarEvent = (event: CalendarEvent): EventInput => {
+export const toFullCalendarEvent = (
+  event: CalendarEvent,
+  currentUserId?: number,
+): EventInput => {
   const color = getEventTypeColor(event.event_type);
+  const isEditable =
+    event.creator_id === currentUserId && event.recurrence_rule === "";
   const baseEvent: EventInput = {
     id: event.uuid,
     title: event.title,
     allDay: event.is_all_day,
+    editable: isEditable,
     backgroundColor: `${color}${TYPE_TINT_ALPHA}`,
     borderColor: color, // TODO: calendar source color in the future
     textColor: color,

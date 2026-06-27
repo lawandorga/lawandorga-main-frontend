@@ -3,13 +3,16 @@ import type {
   CalendarOptions,
   DateSelectArg,
   DayHeaderContentArg,
+  EventApi,
   EventClickArg,
   EventContentArg,
+  EventDropArg,
 } from "@fullcalendar/core";
 import enGBLocale from "@fullcalendar/core/locales/en-gb";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, {
   type DateClickArg,
+  type EventResizeDoneArg,
 } from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import rrulePlugin from "@fullcalendar/rrule";
@@ -19,7 +22,8 @@ import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import { computed, ref } from "vue";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import { addDays } from "@/utils/date";
+import useCmd from "@/composables/useCmd";
+import { addDays, toLocalDateTimeInput } from "@/utils/date";
 
 import CreateEvent from "../actions/CreateEvent.vue";
 import {
@@ -37,6 +41,8 @@ const CALENDAR_PLUGINS = [
 ];
 
 const { isLoading, fullCalendarEvents, query } = useCalendarEvents();
+
+const { commandRequest: updateEventRequest } = useCmd(query);
 
 const createEventModal = ref<InstanceType<typeof CreateEvent> | null>(null);
 
@@ -65,6 +71,25 @@ const onDateSelect = (selection: DateSelectArg) => {
   });
   selection.view.calendar.unselect();
 };
+
+const persistEventTimes = (event: EventApi, revert: () => void) => {
+  if (!event.start) return;
+  // FullCalendar's end date is exclusive, we want inclusive ones
+  const end = event.allDay && event.end ? addDays(event.end, -1) : event.end;
+  updateEventRequest({
+    action: "calendar/update_event",
+    event_uuid: event.id,
+    is_all_day: event.allDay,
+    start_time: toLocalDateTimeInput(event.start.toISOString()),
+    end_time: end ? toLocalDateTimeInput(end.toISOString()) : null,
+  }).catch(revert);
+};
+
+const onEventDrop = (drop: EventDropArg) =>
+  persistEventTimes(drop.event, drop.revert);
+
+const onEventResize = (resize: EventResizeDoneArg) =>
+  persistEventTimes(resize.event, resize.revert);
 
 const isoWeekNumber = (date: Date): number => {
   const millisecondsPerDay = 86400000;
@@ -238,6 +263,8 @@ const calendarBaseOptions: CalendarOptions = {
   eventClick: onEventClick,
   dateClick: onDateClick,
   select: onDateSelect,
+  eventDrop: onEventDrop,
+  eventResize: onEventResize,
 };
 
 const calendarOptions = computed<CalendarOptions>(() => ({

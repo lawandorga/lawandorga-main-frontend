@@ -24,6 +24,24 @@ const makeEvent = (overrides: Partial<CalendarEvent> = {}): CalendarEvent => ({
 });
 
 describe("toFullCalendarEvent", () => {
+  it("makes the creator's own non-recurring events editable", () => {
+    const result = toFullCalendarEvent(makeEvent({ creator_id: 7 }), 7);
+    expect(result.editable).toBe(true);
+  });
+
+  it("keeps other users' events non-editable", () => {
+    const result = toFullCalendarEvent(makeEvent({ creator_id: 7 }), 99);
+    expect(result.editable).toBe(false);
+  });
+
+  it("keeps recurring events non-editable even for the creator", () => {
+    const result = toFullCalendarEvent(
+      makeEvent({ creator_id: 7, recurrence_rule: "FREQ=WEEKLY" }),
+      7,
+    );
+    expect(result.editable).toBe(false);
+  });
+
   it("maps a one-off event to start/end without an rrule", () => {
     const result = toFullCalendarEvent(makeEvent());
 
