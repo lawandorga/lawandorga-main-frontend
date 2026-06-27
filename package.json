@@ -1,6 +1,7 @@
 {
   "name": "lawandorga-frontend",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run build:production",
@@ -20,6 +21,7 @@
     "@fullcalendar/daygrid": "^6.1.21",
     "@fullcalendar/interaction": "^6.1.21",
     "@fullcalendar/list": "^6.1.21",
+    "@fullcalendar/rrule": "^6.1.21",
     "@fullcalendar/timegrid": "^6.1.21",
     "@fullcalendar/vue3": "^6.1.21",
     "@headlessui/vue": "==1.7.*",
@@ -58,6 +60,7 @@
     "postcss": "==8.5.*",
     "prettier": "==3.8.*",
     "remixicon": "==4.9.*",
+    "rrule": "^2.8.1",
     "tailwindcss": "==4.*",
     "typescript": "==6.0.*",
     "uuid": "==14.*",
@@ -76,6 +79,5 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "type": "module"
+  ]
 }
