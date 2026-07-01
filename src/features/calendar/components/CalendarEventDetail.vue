@@ -5,10 +5,13 @@ import {
   DocumentTextIcon,
   MapPinIcon,
   UserIcon,
+  UserGroupIcon,
 } from "@heroicons/vue/24/outline";
 import { ButtonNormal, ModalFree } from "lorga-ui";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
+import { useProfiles } from "@/features/admin/api/useProfiles";
+import { useGroups } from "@/features/org/api/useGroups";
 import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/date.js";
 
@@ -38,6 +41,8 @@ const eventTypeMeta = computed(() => EVENT_TYPE_META[props.event!.event_type]);
 const eventColor = computed(() => eventTypeMeta.value.color);
 
 const userStore = useUserStore();
+const { profiles, query: queryProfiles } = useProfiles();
+const { groups, query: queryGroups } = useGroups();
 
 const canEdit = computed(
   () => !!props.event && userStore.user?.id === props.event.creator_id,
@@ -104,6 +109,76 @@ const openDeleteModal = () => {
   deleteOpenSignal.value += 1;
   closeDetail();
 };
+
+watch(
+  () => props.modelValue,
+  (isOpen) => {
+    if (!isOpen) return;
+    queryProfiles();
+    queryGroups();
+  },
+);
+
+const userNameById = computed(() => {
+  const map = new Map<number, string>();
+  for (const profile of profiles.value || []) {
+    map.set(profile.id, profile.name);
+  }
+  return map;
+});
+
+const groupNameById = computed(() => {
+  const map = new Map<number, string>();
+  for (const group of groups.value || []) {
+    map.set(group.id, group.name);
+  }
+  return map;
+});
+
+const visibleTo = computed(() => {
+  const orgTargets: string[] = [];
+  const groupTargets: string[] = [];
+  const userTargets: string[] = [];
+
+  for (const target of props.event?.grant_targets || []) {
+    const [rawType, rawId] = target.split(":");
+    const id = Number(rawId);
+
+    if (rawType === "org") {
+      orgTargets.push(userStore.org?.name || "Organization");
+      continue;
+    }
+
+    if (rawType === "group") {
+      const groupName = groupNameById.value.get(id);
+      groupTargets.push(groupName || `Group #${rawId}`);
+      continue;
+    }
+
+    if (rawType === "user") {
+      const userName = userNameById.value.get(id);
+      userTargets.push(userName || `User #${rawId}`);
+    }
+  }
+
+  return {
+    orgs: Array.from(new Set(orgTargets)),
+    groups: Array.from(new Set(groupTargets)),
+    users: Array.from(new Set(userTargets)),
+  };
+});
+
+const invitedUsers = computed(() =>
+  Array.from(new Set(props.event?.guest_user_names || [])),
+);
+
+const hasVisibilityDetails = computed(
+  () =>
+    visibleTo.value.orgs.length > 0 ||
+    visibleTo.value.groups.length > 0 ||
+    visibleTo.value.users.length > 0 ||
+    invitedUsers.value.length > 0,
+);
 </script>
 
 <template>
@@ -113,7 +188,7 @@ const openDeleteModal = () => {
     @update:model-value="emit('update:modelValue', $event)"
   >
     <template v-if="event">
-      <div class="mb-5 flex gap-2">
+      <div class="flex gap-2 mb-5">
         <span
           class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           :style="{
@@ -154,7 +229,7 @@ const openDeleteModal = () => {
           label="Description"
           :icon="DocumentTextIcon"
         >
-          <dd class="whitespace-pre-wrap text-gray-900">
+          <dd class="text-gray-900 whitespace-pre-wrap">
             {{ event.description }}
           </dd>
         </CalendarDetailRow>
@@ -168,10 +243,27 @@ const openDeleteModal = () => {
         <CalendarDetailRow label="Creator" :icon="UserIcon">
           <dd class="text-gray-900">{{ event.creator_name }}</dd>
         </CalendarDetailRow>
+        <CalendarDetailRow
+          v-if="hasVisibilityDetails"
+          label="Visible To"
+          :icon="UserGroupIcon"
+        >
+          <div class="space-y-1">
+            <dd v-if="visibleTo.orgs.length" class="text-gray-900">
+              Org: {{ visibleTo.orgs.join(", ") }}
+            </dd>
+            <dd v-if="visibleTo.groups.length" class="text-gray-900">
+              Groups: {{ visibleTo.groups.join(", ") }}
+            </dd>
+            <dd v-if="visibleTo.users.length" class="text-gray-900">
+              Users: {{ visibleTo.users.join(", ") }}
+            </dd>
+          </div>
+        </CalendarDetailRow>
       </dl>
 
       <div
-        class="mt-5 flex justify-between gap-3 rounded-sm bg-gray-100 px-5 py-2"
+        class="flex justify-between gap-3 px-5 py-2 mt-5 bg-gray-100 rounded-sm"
       >
         <ButtonNormal
           v-if="canDelete"
@@ -181,7 +273,7 @@ const openDeleteModal = () => {
         >
           Delete
         </ButtonNormal>
-        <ButtonNormal v-if="canEdit" kind="secondary" @click="openUpdateModal">
+        <ButtonNormal v-if="canEdit" kind="action" @click="openUpdateModal">
           Edit
         </ButtonNormal>
       </div>
@@ -201,6 +293,7 @@ const openDeleteModal = () => {
       :description="event.description"
       :recurrence-rule="event.recurrence_rule"
       :recurrence-until="event.recurrence_until"
+      :grant-targets="event.grant_targets"
       :creator-id="event.creator_id"
       :open-signal="updateOpenSignal"
     />

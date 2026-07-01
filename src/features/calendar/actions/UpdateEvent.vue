@@ -8,6 +8,7 @@ import { toLocalDateTimeInput } from "@/utils/date";
 
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
 import CalendarWhenFields from "../components/CalendarWhenFields.vue";
+import useShareTargetOptions from "../composables/useShareTargetOptions";
 
 const props = defineProps<{
   query: () => void;
@@ -22,6 +23,7 @@ const props = defineProps<{
   recurrenceRule: string;
   recurrenceUntil: string | null;
   creatorId: number;
+  grantTargets: string[];
   openSignal?: number;
 }>();
 const {
@@ -33,15 +35,17 @@ const {
   endTime,
   location,
   description,
+  grantTargets,
   creatorId,
   openSignal,
 } = toRefs(props);
 
 const userStore = useUserStore();
+const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
 
 const canEdit = computed(() => userStore.user?.id === creatorId.value);
 
-const fields: types.FormField[] = [
+const fields = computed<types.FormField[]>(() => [
   {
     label: "Title",
     name: "title",
@@ -57,6 +61,14 @@ const fields: types.FormField[] = [
     type: "slot",
   },
   {
+    label: "Visible To",
+    name: "grant_targets",
+    type: "multiple",
+    required: false,
+    options: shareTargetOptions.value,
+    helptext: "Search and select users, groups, or the whole org.",
+  },
+  {
     label: "Location",
     name: "location",
     type: "text",
@@ -68,7 +80,7 @@ const fields: types.FormField[] = [
     type: "textarea",
     required: false,
   },
-];
+]);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
@@ -81,6 +93,7 @@ const request = (data: Record<string, unknown>) => {
 
 watch(openSignal, (next, prev) => {
   if (next !== undefined && next !== prev && canEdit.value) {
+    loadShareTargetOptions();
     commandModalOpen.value = true;
   }
 });
@@ -101,6 +114,7 @@ watch(openSignal, (next, prev) => {
       is_all_day: isAllDay,
       recurrence_rule: recurrenceRule,
       recurrence_until: recurrenceUntil ?? '',
+      grant_targets: grantTargets,
       location,
       description,
       action: 'calendar/update_event',

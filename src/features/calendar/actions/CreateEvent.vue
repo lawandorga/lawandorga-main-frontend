@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { ModalCreate, types } from "lorga-ui";
-import { toRefs } from "vue";
+import { computed, toRefs, watch } from "vue";
 
 import useCmd from "@/composables/useCmd";
+import { toLocalDateTimeInput } from "@/utils/date";
 
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
 import CalendarWhenFields from "../components/CalendarWhenFields.vue";
+import useShareTargetOptions from "../composables/useShareTargetOptions";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query);
+const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
 
-const fields: types.FormField[] = [
+const fields = computed<types.FormField[]>(() => [
   {
     label: "Title",
     name: "title",
@@ -28,6 +31,14 @@ const fields: types.FormField[] = [
     type: "slot",
   },
   {
+    label: "Visible To",
+    name: "grant_targets",
+    type: "multiple",
+    required: false,
+    options: shareTargetOptions.value,
+    helptext: "Search and select users, groups, or the whole org.",
+  },
+  {
     label: "Location",
     name: "location",
     type: "text",
@@ -39,7 +50,12 @@ const fields: types.FormField[] = [
     type: "textarea",
     required: false,
   },
-];
+]);
+
+watch(commandModalOpen, (isOpen) => {
+  if (!isOpen) return;
+  loadShareTargetOptions();
+});
 
 const request = (data: Record<string, unknown>) => {
   const normalized: Record<string, unknown> = { ...data };
@@ -53,6 +69,10 @@ defineExpose({
     commandModalOpen.value = true;
   },
 });
+
+const nextFullHour = new Date();
+nextFullHour.setHours(nextFullHour.getHours() + 1, 0, 0, 0);
+const plusOneHour = new Date(nextFullHour.getTime() + 3600000);
 </script>
 
 <template>
@@ -65,11 +85,11 @@ defineExpose({
       action: 'calendar/create_event',
       event_type: 'APPOINTMENT',
       is_all_day: false,
-      start_time: new Date().toISOString().slice(0, 14) + '00',
-      end_time:
-        new Date(Date.now() + 3600000).toISOString().slice(0, 14) + '00',
+      start_time: toLocalDateTimeInput(nextFullHour.toISOString()),
+      end_time: toLocalDateTimeInput(plusOneHour.toISOString()),
       recurrence_rule: '',
       recurrence_until: '',
+      grant_targets: [],
     }"
     submit="Create"
   >
