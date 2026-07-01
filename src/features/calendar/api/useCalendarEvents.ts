@@ -19,6 +19,7 @@ export interface CalendarEvent {
   location: string;
   recurrence_rule: string;
   recurrence_until: string | null;
+  grant_targets: string[];
   guest_user_ids: number[];
   guest_user_names: string[];
   created: string;

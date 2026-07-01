@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ModalCreate, types } from "lorga-ui";
-import { ref, toRefs } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 
 import useCmd from "@/composables/useCmd";
 import { toLocalDateTimeInput } from "@/utils/date";
 
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
 import CalendarWhenFields from "../components/CalendarWhenFields.vue";
+import useShareTargetOptions from "../composables/useShareTargetOptions";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query);
+const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
 
 const DEFAULT_DURATION_MS = 30 * 60 * 1000;
 
@@ -34,10 +36,11 @@ const buildInitialData = (prefill?: EventTimePrefill) => {
     end_time: end ? toLocalDateTimeInput(end.toISOString()) : "",
     recurrence_rule: "",
     recurrence_until: "",
+    grant_targets: [],
   };
 };
 
-const fields: types.FormField[] = [
+const fields = computed<types.FormField[]>(() => [
   {
     label: "Title",
     name: "title",
@@ -53,6 +56,14 @@ const fields: types.FormField[] = [
     type: "slot",
   },
   {
+    label: "Visible To",
+    name: "grant_targets",
+    type: "multiple",
+    required: false,
+    options: shareTargetOptions.value,
+    helptext: "Search and select users, groups, or the whole org.",
+  },
+  {
     label: "Location",
     name: "location",
     type: "text",
@@ -64,7 +75,12 @@ const fields: types.FormField[] = [
     type: "textarea",
     required: false,
   },
-];
+]);
+
+watch(commandModalOpen, (isOpen) => {
+  if (!isOpen) return;
+  loadShareTargetOptions();
+});
 
 const request = (data: Record<string, unknown>) => {
   const normalized: Record<string, unknown> = { ...data };

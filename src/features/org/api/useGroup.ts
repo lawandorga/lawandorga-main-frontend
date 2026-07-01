@@ -2,11 +2,14 @@ import { computed, Ref, ref } from "vue";
 
 import useClient from "@/api/client";
 import useGet from "@/composables/useGet";
+import type { ActivityState } from "@/features/admin/api/useProfiles";
 
 interface GroupMember {
   id: number;
   name: string;
   email: string;
+  last_login_month: string | null;
+  activity_state: ActivityState;
 }
 
 interface GroupPermission {
