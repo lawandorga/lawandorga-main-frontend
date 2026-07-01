@@ -34,7 +34,7 @@ describe("toFullCalendarEvent", () => {
     expect(result.editable).toBe(false);
   });
 
-  it("keeps recurring events non-editable even for the creator", () => {
+  it("keeps recurring events non-editable by drag-and-drop even for the creator", () => {
     const result = toFullCalendarEvent(
       makeEvent({ creator_id: 7, recurrence_rule: "FREQ=WEEKLY" }),
       7,
