@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 
 import useGet2 from "@/composables/useGet2";
+import { useUserStore } from "@/store/user";
 
 import type { EventType } from "../constants";
 import { toFullCalendarEvent } from "./toFullCalendarEvent";
@@ -26,11 +27,14 @@ export interface CalendarEvent {
 }
 
 export function useCalendarEvents() {
+  const userStore = useUserStore();
   const calendarEvents = ref<CalendarEvent[] | undefined>(undefined);
   const query = useGet2("api/calendar/query/events/", calendarEvents);
 
   const fullCalendarEvents = computed(() =>
-    (calendarEvents.value ?? []).map(toFullCalendarEvent),
+    (calendarEvents.value ?? []).map((event) =>
+      toFullCalendarEvent(event, userStore.user?.id),
+    ),
   );
 
   const isLoading = computed(() => calendarEvents.value === undefined);
