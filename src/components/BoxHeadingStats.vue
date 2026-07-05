@@ -16,7 +16,9 @@ defineProps<{
             {{ title }}
           </h3>
 
-          <div class="relative flex flex-nowrap space-x-3 print:hidden">
+          <div
+            class="relative flex flex-nowrap items-center space-x-3 print:hidden"
+          >
             <slot name="buttons" />
           </div>
         </div>
