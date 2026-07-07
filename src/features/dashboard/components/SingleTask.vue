@@ -75,8 +75,18 @@ const priorityColor: Record<string, string> = {
         <h3 class="text-formcolor mb-2 text-left font-semibold">
           {{ task.title }}
         </h3>
-        <EditTask class="relative top-5" v-if="!task.is_done" :task="task" :query="query" />
-        <DeleteTask class="relative top-5" v-if="task.is_done" :task="task" :query="query" />
+        <EditTask
+          class="relative top-5"
+          v-if="!task.is_done"
+          :task="task"
+          :query="query"
+        />
+        <DeleteTask
+          class="relative top-5"
+          v-if="task.is_done"
+          :task="task"
+          :query="query"
+        />
       </div>
       <p
         v-if="task.page_url"
