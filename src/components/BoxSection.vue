@@ -12,13 +12,11 @@ const open = ref(true);
 
 <template>
   <div class="rounded-xl bg-white shadow-md">
-    <div
-      class="flex justify-between px-6 py-4"
-    >
+    <div class="flex justify-between px-6 py-4">
       <button
         type="button"
         :aria-expanded="open"
-        class="flex items-center gap-2 text-gray-400 transition-colors cursor-pointer"
+        class="flex cursor-pointer items-center gap-2 text-gray-400 transition-colors"
         @click="open = !open"
       >
         <h2 class="text-lg leading-6 font-medium text-gray-700">

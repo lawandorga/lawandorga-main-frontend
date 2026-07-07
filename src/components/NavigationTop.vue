@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
-import { Squares2X2Icon } from "@heroicons/vue/24/outline";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
-import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 import { useUserStore } from "@/store/user";
 
@@ -28,7 +26,7 @@ const inside = computed(() => {
     <div class="mx-auto flex w-full max-w-5xl items-center px-6">
       <button
         type="button"
-        class="flex cursor-pointer items-center justify-center border-r border-formcolor/20 px-4 text-gray-200 focus:outline-none md:hidden"
+        class="border-formcolor/20 flex cursor-pointer items-center justify-center border-r px-4 text-gray-200 focus:outline-none md:hidden"
         @click="setOpen(true)"
       >
         <span class="sr-only">Open sidebar</span>

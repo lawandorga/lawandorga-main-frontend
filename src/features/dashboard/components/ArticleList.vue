@@ -27,18 +27,16 @@ const { articles } = useArticles();
             </span>
           </div>
           <div class="mb-4">
-            <h3 class="mb-3 font-medium text-[18px]">
+            <h3 class="mb-3 text-[18px] font-medium">
               {{ article.title }}
             </h3>
-            <p
-              class="text-sm wrap-break-word whitespace-pre-line text-muted"
-            >
+            <p class="text-muted text-sm wrap-break-word whitespace-pre-line">
               {{ article.preview }}
             </p>
           </div>
           <router-link
             :to="{ name: 'internal-article', params: { id: article.id } }"
-            class="text-formcolor hover:bg-gray-200/50 inline-flex self-start items-center gap-1.5 px-2.5 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none"
+            class="text-formcolor inline-flex items-center gap-1.5 self-start rounded-md px-2.5 text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-gray-200/50"
             >Read more <ArrowRightIcon class="ml-2 h-3 w-3 text-gray-400" />
           </router-link>
         </article>

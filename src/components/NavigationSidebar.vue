@@ -19,9 +19,7 @@ const { loaded } = storeToRefs(userStore);
 const route = useRoute();
 const router = useRouter();
 
-const expanded = ref(
-  !!userStore.getSetting("navigationExpanded", true),
-);
+const expanded = ref(!!userStore.getSetting("navigationExpanded", true));
 
 watch(loaded, () => {
   expanded.value = !!userStore.getSetting("navigationExpanded", true);
@@ -106,7 +104,10 @@ const lastNameInitial = computed(() => {
         </div>
         <CircleLoader v-show="!userStore.loaded" class="text-white" />
       </div>
-      <div v-show="!expanded" class="bg-lorgablue flex h-10 w-10 items-center justify-center rounded text-lg font-bold text-white w-full">
+      <div
+        v-show="!expanded"
+        class="bg-lorgablue flex h-10 w-10 w-full items-center justify-center rounded text-lg font-bold text-white"
+      >
         {{ lastNameInitial }}
       </div>
 
