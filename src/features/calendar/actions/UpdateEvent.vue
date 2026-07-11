@@ -6,45 +6,23 @@ import useCmd from "@/composables/useCmd";
 import { useUserStore } from "@/store/user";
 import { toLocalDateTimeInput } from "@/utils/date";
 
+import type { CalendarEvent } from "../api/useCalendarEvents";
+import CalendarReminders from "../components/CalendarReminders.vue";
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
 import CalendarWhenFields from "../components/CalendarWhenFields.vue";
 import useShareTargetOptions from "../composables/useShareTargetOptions";
-import type { EventType } from "../constants";
 
 const props = defineProps<{
   query: () => void;
-  eventUuid: string;
-  eventTitle: string;
-  eventType: EventType;
-  startTime: string;
-  endTime: string | null;
-  isAllDay: boolean;
-  location: string;
-  description: string;
-  recurrenceRule: string;
-  recurrenceUntil: string | null;
-  creatorId: number;
-  grantTargets: string[];
+  event: CalendarEvent;
   openSignal?: number;
 }>();
-const {
-  query,
-  eventUuid,
-  eventTitle,
-  eventType,
-  startTime,
-  endTime,
-  location,
-  description,
-  grantTargets,
-  creatorId,
-  openSignal,
-} = toRefs(props);
+const { query, event, openSignal } = toRefs(props);
 
 const userStore = useUserStore();
 const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
 
-const canEdit = computed(() => userStore.user?.id === creatorId.value);
+const canEdit = computed(() => userStore.user?.id === event.value.creator_id);
 
 const fields = computed<types.FormField[]>(() => [
   {
@@ -81,6 +59,10 @@ const fields = computed<types.FormField[]>(() => [
     type: "textarea",
     required: false,
   },
+  {
+    name: "reminder",
+    type: "slot",
+  },
 ]);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
@@ -107,17 +89,17 @@ watch(openSignal, (next, prev) => {
     title="Edit Event"
     :request="request"
     :data="{
-      event_uuid: eventUuid,
-      title: eventTitle,
-      event_type: eventType,
-      start_time: toLocalDateTimeInput(startTime),
-      end_time: endTime ? toLocalDateTimeInput(endTime) : '',
-      is_all_day: isAllDay,
-      recurrence_rule: recurrenceRule,
-      recurrence_until: recurrenceUntil ?? '',
-      grant_targets: grantTargets,
-      location,
-      description,
+      event_uuid: event.uuid,
+      title: event.title,
+      event_type: event.event_type,
+      start_time: toLocalDateTimeInput(event.start_time),
+      end_time: event.end_time ? toLocalDateTimeInput(event.end_time) : '',
+      is_all_day: event.is_all_day,
+      recurrence_rule: event.recurrence_rule,
+      recurrence_until: event.recurrence_until ?? '',
+      grant_targets: event.grant_targets,
+      location: event.location,
+      description: event.description,
       action: 'calendar/update_event',
     }"
     submit="Update"
@@ -134,6 +116,9 @@ watch(openSignal, (next, prev) => {
         v-model:recurrence-until="data.recurrence_until"
         :event-type="data.event_type"
       />
+    </template>
+    <template #reminder>
+      <CalendarReminders :event="event" :query="query" />
     </template>
   </ModalUpdate>
 </template>

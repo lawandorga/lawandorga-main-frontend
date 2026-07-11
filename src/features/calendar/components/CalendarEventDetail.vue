@@ -299,18 +299,7 @@ const hasVisibilityDetails = computed(
   <template v-if="event">
     <UpdateEvent
       :query="query"
-      :event-uuid="event.uuid"
-      :event-title="event.title"
-      :event-type="event.event_type"
-      :start-time="event.start_time"
-      :end-time="event.end_time"
-      :is-all-day="event.is_all_day"
-      :location="event.location"
-      :description="event.description"
-      :recurrence-rule="event.recurrence_rule"
-      :recurrence-until="event.recurrence_until"
-      :grant-targets="event.grant_targets"
-      :creator-id="event.creator_id"
+      :event="event"
       :open-signal="updateOpenSignal"
     />
     <DeleteEvent
