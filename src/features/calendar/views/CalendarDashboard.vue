@@ -19,7 +19,8 @@ import rrulePlugin from "@fullcalendar/rrule";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import FullCalendar from "@fullcalendar/vue3";
 import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useCmd from "@/composables/useCmd";
@@ -41,7 +42,8 @@ const CALENDAR_PLUGINS = [
   interactionPlugin,
 ];
 
-const { isLoading, fullCalendarEvents, query } = useCalendarEvents();
+const { isLoading, fullCalendarEvents, calendarEvents, query } =
+  useCalendarEvents();
 
 const { commandRequest: updateEventRequest } = useCmd(query);
 
@@ -49,15 +51,48 @@ const alertStore = useAlertStore();
 
 const createEventModal = ref<InstanceType<typeof CreateEvent> | null>(null);
 
-const selectedEvent = ref<CalendarEvent | null>(null);
+const selectedEventUuid = ref<string | null>(null);
+const selectedEvent = computed<CalendarEvent | null>(
+  () =>
+    (calendarEvents.value ?? []).find(
+      (event) => event.uuid === selectedEventUuid.value,
+    ) ?? null,
+);
 const detailOpen = ref(false);
+
+const route = useRoute();
+const router = useRouter();
+
+const openEventFromRoute = (eventUuid: unknown) => {
+  if (typeof eventUuid !== "string") return;
+
+  const matchingEvent = (calendarEvents.value ?? []).find(
+    (event) => event.uuid === eventUuid,
+  );
+  if (!matchingEvent) return;
+
+  selectedEventUuid.value = eventUuid;
+  detailOpen.value = true;
+
+  const remainingQuery = { ...route.query };
+  delete remainingQuery.event;
+  void router.replace({ query: remainingQuery });
+};
+
+watch(
+  [() => route.query.event, calendarEvents],
+  ([eventUuid]) => {
+    openEventFromRoute(eventUuid);
+  },
+  { immediate: true },
+);
 
 const formatWeekday = (date: Date): string =>
   date.toLocaleString("en-GB", { weekday: "short" }).slice(0, 2).toUpperCase();
 
 const onEventClick = (props: EventClickArg) => {
-  selectedEvent.value = props.event.extendedProps
-    .calendarEvent as CalendarEvent;
+  const clickedEvent = props.event.extendedProps.calendarEvent as CalendarEvent;
+  selectedEventUuid.value = clickedEvent.uuid;
   detailOpen.value = true;
 };
 

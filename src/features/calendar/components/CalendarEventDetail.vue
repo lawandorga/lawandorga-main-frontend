@@ -25,6 +25,7 @@ import {
   TYPE_TINT_ALPHA,
 } from "../constants.js";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
+import CalendarReminders from "./CalendarReminders.vue";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -274,6 +275,10 @@ const hasVisibilityDetails = computed(
           </div>
         </CalendarDetailRow>
       </dl>
+
+      <div class="mt-5 border-t border-gray-100 pt-5">
+        <CalendarReminders :event="event" :query="query" />
+      </div>
 
       <div class="mt-5 flex items-center justify-between gap-3">
         <ButtonNormal

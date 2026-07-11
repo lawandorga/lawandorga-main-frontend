@@ -19,6 +19,7 @@ const makeEvent = (overrides: Partial<CalendarEvent> = {}): CalendarEvent => ({
   grant_targets: [],
   guest_user_ids: [],
   guest_user_names: [],
+  own_reminders: [],
   created: "2026-03-01T00:00:00+01:00",
   updated: "2026-03-01T00:00:00+01:00",
   ...overrides,
