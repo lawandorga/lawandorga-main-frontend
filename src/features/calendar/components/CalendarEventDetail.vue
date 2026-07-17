@@ -242,7 +242,7 @@ const hasVisibilityDetails = computed(
     @update:model-value="emit('update:modelValue', $event)"
   >
     <template v-if="event">
-      <div class="flex gap-2 mb-5">
+      <div class="mb-5 flex gap-2">
         <span
           class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           :style="{
@@ -283,7 +283,7 @@ const hasVisibilityDetails = computed(
           label="Description"
           :icon="DocumentTextIcon"
         >
-          <dd class="text-gray-900 whitespace-pre-wrap">
+          <dd class="whitespace-pre-wrap text-gray-900">
             {{ event.description }}
           </dd>
         </CalendarDetailRow>
@@ -316,7 +316,7 @@ const hasVisibilityDetails = computed(
         </CalendarDetailRow>
       </dl>
 
-      <div class="flex items-center justify-between gap-3 mt-5">
+      <div class="mt-5 flex items-center justify-between gap-3">
         <ButtonNormal
           v-if="canDelete"
           kind="delete"
