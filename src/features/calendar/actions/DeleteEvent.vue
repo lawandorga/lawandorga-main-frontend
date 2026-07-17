@@ -1,27 +1,21 @@
 <script setup lang="ts">
 import { ModalDelete } from "lorga-ui";
-import { computed, toRefs, watch } from "vue";
+import { toRefs, watch } from "vue";
 
 import useCmd from "@/composables/useCmd";
-import { useUserStore } from "@/store/user";
 
 const props = defineProps<{
   query: () => void;
   eventUuid: string;
   eventName: string;
-  creatorId: number;
   openSignal?: number;
 }>();
-const { query, eventUuid, eventName, creatorId, openSignal } = toRefs(props);
-
-const userStore = useUserStore();
-
-const canDelete = computed(() => userStore.user?.id === creatorId.value);
+const { query, eventUuid, eventName, openSignal } = toRefs(props);
 
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
 watch(openSignal, (next, prev) => {
-  if (next !== undefined && next !== prev && canDelete.value) {
+  if (next !== undefined && next !== prev) {
     commandModalOpen.value = true;
   }
 });

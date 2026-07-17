@@ -36,7 +36,8 @@ const buildInitialData = (prefill?: EventTimePrefill) => {
     end_time: end ? toLocalDateTimeInput(end.toISOString()) : "",
     recurrence_rule: "",
     recurrence_until: "",
-    grant_targets: [],
+    view_grant_targets: [],
+    edit_grant_targets: [],
   };
 };
 
@@ -56,8 +57,16 @@ const fields = computed<types.FormField[]>(() => [
     type: "slot",
   },
   {
-    label: "Visible To",
-    name: "grant_targets",
+    label: "View Access",
+    name: "view_grant_targets",
+    type: "multiple",
+    required: false,
+    options: shareTargetOptions.value,
+    helptext: "Search and select users, groups, or the whole org.",
+  },
+  {
+    label: "Edit Access",
+    name: "edit_grant_targets",
     type: "multiple",
     required: false,
     options: shareTargetOptions.value,

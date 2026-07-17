@@ -44,13 +44,28 @@ const userStore = useUserStore();
 const { profiles, query: queryProfiles } = useProfiles();
 const { groups, query: queryGroups } = useGroups();
 
-const canEdit = computed(
-  () => !!props.event && userStore.user?.id === props.event.creator_id,
-);
+const hasEditPermission = computed(() => {
+  if (!props.event) return false;
 
-const canDelete = computed(
-  () => !!props.event && userStore.user?.id === props.event.creator_id,
-);
+  const userId = userStore.user?.id;
+  const orgId = userStore.org?.id;
+  if (!userId || !orgId) return false;
+
+  if (props.event.creator_id === userId) return true;
+
+  const editTargets = new Set(props.event.edit_grant_targets || []);
+  if (editTargets.has(`user:${userId}`)) return true;
+  if (editTargets.has(`org:${orgId}`)) return true;
+
+  return (groups.value || []).some(
+    (group) =>
+      editTargets.has(`group:${group.id}`) && group.members.includes(userId),
+  );
+});
+
+const canEdit = computed(() => hasEditPermission.value);
+
+const canDelete = computed(() => hasEditPermission.value);
 
 const updateOpenSignal = ref(0);
 const deleteOpenSignal = ref(0);
@@ -148,12 +163,12 @@ const groupNameById = computed(() => {
   return map;
 });
 
-const visibleTo = computed(() => {
+const toGrantTargetLabels = (targets: string[]) => {
   const orgTargets: string[] = [];
   const groupTargets: string[] = [];
   const userTargets: string[] = [];
 
-  for (const target of props.event?.grant_targets || []) {
+  for (const target of targets) {
     const [rawType, rawId] = target.split(":");
     const id = Number(rawId);
 
@@ -179,6 +194,32 @@ const visibleTo = computed(() => {
     groups: Array.from(new Set(groupTargets)),
     users: Array.from(new Set(userTargets)),
   };
+};
+
+const viewVisibleTo = computed(() =>
+  toGrantTargetLabels(props.event?.view_grant_targets || []),
+);
+
+const editVisibleTo = computed(() =>
+  toGrantTargetLabels(props.event?.edit_grant_targets || []),
+);
+
+const visibleTo = computed(() => {
+  const orgs = Array.from(
+    new Set([...viewVisibleTo.value.orgs, ...editVisibleTo.value.orgs]),
+  );
+  const groups = Array.from(
+    new Set([...viewVisibleTo.value.groups, ...editVisibleTo.value.groups]),
+  );
+  const users = Array.from(
+    new Set([...viewVisibleTo.value.users, ...editVisibleTo.value.users]),
+  );
+
+  return {
+    orgs,
+    groups,
+    users,
+  };
 });
 
 const invitedUsers = computed(() =>
@@ -201,7 +242,7 @@ const hasVisibilityDetails = computed(
     @update:model-value="emit('update:modelValue', $event)"
   >
     <template v-if="event">
-      <div class="mb-5 flex gap-2">
+      <div class="flex gap-2 mb-5">
         <span
           class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           :style="{
@@ -242,7 +283,7 @@ const hasVisibilityDetails = computed(
           label="Description"
           :icon="DocumentTextIcon"
         >
-          <dd class="whitespace-pre-wrap text-gray-900">
+          <dd class="text-gray-900 whitespace-pre-wrap">
             {{ event.description }}
           </dd>
         </CalendarDetailRow>
@@ -275,7 +316,7 @@ const hasVisibilityDetails = computed(
         </CalendarDetailRow>
       </dl>
 
-      <div class="mt-5 flex items-center justify-between gap-3">
+      <div class="flex items-center justify-between gap-3 mt-5">
         <ButtonNormal
           v-if="canDelete"
           kind="delete"
@@ -304,15 +345,14 @@ const hasVisibilityDetails = computed(
       :description="event.description"
       :recurrence-rule="event.recurrence_rule"
       :recurrence-until="event.recurrence_until"
-      :grant-targets="event.grant_targets"
-      :creator-id="event.creator_id"
+      :view-grant-targets="event.view_grant_targets"
+      :edit-grant-targets="event.edit_grant_targets"
       :open-signal="updateOpenSignal"
     />
     <DeleteEvent
       :query="query"
       :event-uuid="event.uuid"
       :event-name="event.title"
-      :creator-id="event.creator_id"
       :open-signal="deleteOpenSignal"
     />
   </template>

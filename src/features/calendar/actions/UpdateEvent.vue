@@ -3,7 +3,6 @@ import { ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs, watch } from "vue";
 
 import useCmd from "@/composables/useCmd";
-import { useUserStore } from "@/store/user";
 import { toLocalDateTimeInput } from "@/utils/date";
 
 import CalendarTypePicker from "../components/CalendarTypePicker.vue";
@@ -23,8 +22,8 @@ const props = defineProps<{
   description: string;
   recurrenceRule: string;
   recurrenceUntil: string | null;
-  creatorId: number;
-  grantTargets: string[];
+  viewGrantTargets: string[];
+  editGrantTargets: string[];
   openSignal?: number;
 }>();
 const {
@@ -36,15 +35,11 @@ const {
   endTime,
   location,
   description,
-  grantTargets,
-  creatorId,
+  viewGrantTargets,
+  editGrantTargets,
   openSignal,
 } = toRefs(props);
-
-const userStore = useUserStore();
 const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
-
-const canEdit = computed(() => userStore.user?.id === creatorId.value);
 
 const fields = computed<types.FormField[]>(() => [
   {
@@ -62,8 +57,16 @@ const fields = computed<types.FormField[]>(() => [
     type: "slot",
   },
   {
-    label: "Visible To",
-    name: "grant_targets",
+    label: "View Access",
+    name: "view_grant_targets",
+    type: "multiple",
+    required: false,
+    options: shareTargetOptions.value,
+    helptext: "Search and select users, groups, or the whole org.",
+  },
+  {
+    label: "Edit Access",
+    name: "edit_grant_targets",
     type: "multiple",
     required: false,
     options: shareTargetOptions.value,
@@ -93,7 +96,7 @@ const request = (data: Record<string, unknown>) => {
 };
 
 watch(openSignal, (next, prev) => {
-  if (next !== undefined && next !== prev && canEdit.value) {
+  if (next !== undefined && next !== prev) {
     loadShareTargetOptions();
     commandModalOpen.value = true;
   }
@@ -115,7 +118,8 @@ watch(openSignal, (next, prev) => {
       is_all_day: isAllDay,
       recurrence_rule: recurrenceRule,
       recurrence_until: recurrenceUntil ?? '',
-      grant_targets: grantTargets,
+      view_grant_targets: viewGrantTargets,
+      edit_grant_targets: editGrantTargets,
       location,
       description,
       action: 'calendar/update_event',
