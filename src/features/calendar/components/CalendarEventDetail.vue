@@ -24,6 +24,7 @@ import {
   RECURRENCE_FREQUENCIES,
   TYPE_TINT_ALPHA,
 } from "../constants.js";
+import { getEventAccessKind } from "../utils/eventAccess";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 
 const props = defineProps<{
@@ -71,8 +72,8 @@ const updateOpenSignal = ref(0);
 const deleteOpenSignal = ref(0);
 
 const sourceMeta = computed(() => {
-  // TODO: use actual source
-  const meta = EVENT_SOURCE_META.PERSONAL;
+  const source = props.event ? getEventAccessKind(props.event) : "PERSONAL";
+  const meta = EVENT_SOURCE_META[source];
   return {
     label: meta.label,
     style: {

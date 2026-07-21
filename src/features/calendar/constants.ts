@@ -4,6 +4,8 @@ export const EVENT_SOURCE_META = {
   ORGANIZATION: { label: "Organization", color: "#0f6e56" },
 } as const;
 
+export type EventSource = keyof typeof EVENT_SOURCE_META;
+
 export const EVENT_TYPE_META = {
   APPOINTMENT: { label: "Appointment", color: "#2563eb" },
   TASK: { label: "Task", color: "#16a34a" },
