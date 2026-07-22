@@ -3,6 +3,7 @@ import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
+import NotificationBell from "@/features/calendar/components/NotificationBell.vue";
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 
 import NavigationDropdown from "./NavigationDropdown.vue";
@@ -46,8 +47,9 @@ const inside = computed(() => {
           />
         </div>
       </div>
-      <div class="ml-4 flex items-center md:ml-6">
+      <div class="ml-4 flex items-center gap-3 md:ml-6">
         <CreateTask />
+        <NotificationBell />
         <NavigationDropdown />
       </div>
     </div>

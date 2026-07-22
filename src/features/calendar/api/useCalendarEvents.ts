@@ -3,8 +3,14 @@ import { computed, ref } from "vue";
 import useGet2 from "@/composables/useGet2";
 import { useUserStore } from "@/store/user";
 
-import type { EventType } from "../constants";
+import type { EventType, ReminderMethod } from "../constants";
 import { toFullCalendarEvent } from "./toFullCalendarEvent";
+
+export interface CalendarEventReminder {
+  uuid: string;
+  minutes_before: number;
+  method: ReminderMethod;
+}
 
 export interface CalendarEvent {
   uuid: string;
@@ -23,6 +29,7 @@ export interface CalendarEvent {
   edit_grant_targets: string[];
   guest_user_ids: number[];
   guest_user_names: string[];
+  own_reminders: CalendarEventReminder[];
   created: string;
   updated: string;
 }
