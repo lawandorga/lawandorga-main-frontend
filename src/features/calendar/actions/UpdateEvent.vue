@@ -3,7 +3,6 @@ import { ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs, watch } from "vue";
 
 import useCmd from "@/composables/useCmd";
-import { useUserStore } from "@/store/user";
 import { toLocalDateTimeInput } from "@/utils/date";
 
 import type { CalendarEvent } from "../api/useCalendarEvents";
@@ -19,11 +18,7 @@ const props = defineProps<{
 }>();
 const { query, event, openSignal } = toRefs(props);
 
-const userStore = useUserStore();
 const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
-
-const canEdit = computed(() => userStore.user?.id === event.value.creator_id);
-
 const fields = computed<types.FormField[]>(() => [
   {
     label: "Title",
@@ -40,8 +35,16 @@ const fields = computed<types.FormField[]>(() => [
     type: "slot",
   },
   {
-    label: "Visible To",
-    name: "grant_targets",
+    label: "View Access",
+    name: "view_grant_targets",
+    type: "multiple",
+    required: false,
+    options: shareTargetOptions.value,
+    helptext: "Search and select users, groups, or the whole org.",
+  },
+  {
+    label: "Edit Access",
+    name: "edit_grant_targets",
     type: "multiple",
     required: false,
     options: shareTargetOptions.value,
@@ -75,7 +78,7 @@ const request = (data: Record<string, unknown>) => {
 };
 
 watch(openSignal, (next, prev) => {
-  if (next !== undefined && next !== prev && canEdit.value) {
+  if (next !== undefined && next !== prev) {
     loadShareTargetOptions();
     commandModalOpen.value = true;
   }
@@ -97,7 +100,8 @@ watch(openSignal, (next, prev) => {
       is_all_day: event.is_all_day,
       recurrence_rule: event.recurrence_rule,
       recurrence_until: event.recurrence_until ?? '',
-      grant_targets: event.grant_targets,
+      view_grant_targets: event.view_grant_targets,
+      edit_grant_targets: event.edit_grant_targets,
       location: event.location,
       description: event.description,
       action: 'calendar/update_event',

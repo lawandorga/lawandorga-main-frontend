@@ -33,6 +33,14 @@ import {
   type CalendarEvent,
 } from "../api/useCalendarEvents";
 import CalendarEventDetail from "../components/CalendarEventDetail.vue";
+import CalendarFiltersPanel from "../components/CalendarFiltersPanel.vue";
+import {
+  EVENT_SOURCE_META,
+  EVENT_TYPE_META,
+  type EventSource,
+  type EventType,
+} from "../constants";
+import { getEventAccessKind } from "../utils/eventAccess";
 
 const CALENDAR_PLUGINS = [
   dayGridPlugin,
@@ -85,6 +93,33 @@ watch(
     openEventFromRoute(eventUuid);
   },
   { immediate: true },
+);
+
+const eventTypeFilterKeys = Object.keys(EVENT_TYPE_META) as EventType[];
+const accessFilterKeys = Object.keys(EVENT_SOURCE_META) as EventSource[];
+
+const selectedEventTypes = ref<Set<EventType>>(new Set(eventTypeFilterKeys));
+const selectedAccessKinds = ref<Set<EventSource>>(new Set(accessFilterKeys));
+
+const filteredFullCalendarEvents = computed(() =>
+  fullCalendarEvents.value.filter((fullCalendarEvent) => {
+    const event = fullCalendarEvent.extendedProps?.calendarEvent as
+      | CalendarEvent
+      | undefined;
+
+    if (!event) return true;
+
+    return (
+      selectedEventTypes.value.has(event.event_type) &&
+      selectedAccessKinds.value.has(getEventAccessKind(event))
+    );
+  }),
+);
+
+const totalEventsCount = computed(() => (calendarEvents.value ?? []).length);
+
+const filteredEventsCount = computed(
+  () => filteredFullCalendarEvents.value.length,
 );
 
 const formatWeekday = (date: Date): string =>
@@ -309,7 +344,7 @@ const calendarBaseOptions: CalendarOptions = {
 
 const calendarOptions = computed<CalendarOptions>(() => ({
   ...calendarBaseOptions,
-  events: fullCalendarEvents.value,
+  events: filteredFullCalendarEvents.value,
 }));
 </script>
 
@@ -322,7 +357,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     </BreadcrumbsBar>
 
     <div
-      class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-4 shadow"
+      class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-3 shadow lg:p-4"
     >
       <div
         v-if="isLoading"
@@ -330,7 +365,38 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       >
         <span class="text-sm text-gray-400">Loading…</span>
       </div>
-      <FullCalendar :options="calendarOptions" />
+
+      <div
+        class="calendar-layout flex h-full min-h-0 flex-col gap-3 lg:flex-row"
+      >
+        <CalendarFiltersPanel
+          :calendar-events="calendarEvents ?? []"
+          :total-events-count="totalEventsCount"
+          :filtered-events-count="filteredEventsCount"
+          :event-type-filter-keys="eventTypeFilterKeys"
+          :access-filter-keys="accessFilterKeys"
+          :selected-event-types="selectedEventTypes"
+          :selected-access-kinds="selectedAccessKinds"
+          @update:selected-event-types="selectedEventTypes = $event"
+          @update:selected-access-kinds="selectedAccessKinds = $event"
+        />
+
+        <div
+          class="relative min-h-155 min-w-0 flex-1 rounded-[14px] border border-slate-200 bg-white p-1.5 lg:min-h-0"
+        >
+          <FullCalendar :options="calendarOptions" />
+
+          <div
+            v-if="!isLoading && filteredEventsCount === 0"
+            class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1 text-center text-gray-500"
+          >
+            <p class="text-[15px] font-semibold text-slate-700">
+              No events match these filters
+            </p>
+            <p class="text-xs">Try turning on more event or access kinds.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <CreateEvent ref="createEventModal" :query="query" />
@@ -369,6 +435,8 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 }
 
 :deep(.fc) {
+  height: 100%;
+
   .fc-button-primary {
     background-color: var(--fc-neutral-bg-color);
     border-color: var(--color-button-border);

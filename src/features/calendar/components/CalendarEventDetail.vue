@@ -24,6 +24,7 @@ import {
   RECURRENCE_FREQUENCIES,
   TYPE_TINT_ALPHA,
 } from "../constants.js";
+import { getEventAccessKind } from "../utils/eventAccess";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 import CalendarReminders from "./CalendarReminders.vue";
 
@@ -45,20 +46,35 @@ const userStore = useUserStore();
 const { profiles, query: queryProfiles } = useProfiles();
 const { groups, query: queryGroups } = useGroups();
 
-const canEdit = computed(
-  () => !!props.event && userStore.user?.id === props.event.creator_id,
-);
+const hasEditPermission = computed(() => {
+  if (!props.event) return false;
 
-const canDelete = computed(
-  () => !!props.event && userStore.user?.id === props.event.creator_id,
-);
+  const userId = userStore.user?.id;
+  const orgId = userStore.org?.id;
+  if (!userId || !orgId) return false;
+
+  if (props.event.creator_id === userId) return true;
+
+  const editTargets = new Set(props.event.edit_grant_targets || []);
+  if (editTargets.has(`user:${userId}`)) return true;
+  if (editTargets.has(`org:${orgId}`)) return true;
+
+  return (groups.value || []).some(
+    (group) =>
+      editTargets.has(`group:${group.id}`) && group.members.includes(userId),
+  );
+});
+
+const canEdit = computed(() => hasEditPermission.value);
+
+const canDelete = computed(() => hasEditPermission.value);
 
 const updateOpenSignal = ref(0);
 const deleteOpenSignal = ref(0);
 
 const sourceMeta = computed(() => {
-  // TODO: use actual source
-  const meta = EVENT_SOURCE_META.PERSONAL;
+  const source = props.event ? getEventAccessKind(props.event) : "PERSONAL";
+  const meta = EVENT_SOURCE_META[source];
   return {
     label: meta.label,
     style: {
@@ -149,12 +165,12 @@ const groupNameById = computed(() => {
   return map;
 });
 
-const visibleTo = computed(() => {
+const toGrantTargetLabels = (targets: string[]) => {
   const orgTargets: string[] = [];
   const groupTargets: string[] = [];
   const userTargets: string[] = [];
 
-  for (const target of props.event?.grant_targets || []) {
+  for (const target of targets) {
     const [rawType, rawId] = target.split(":");
     const id = Number(rawId);
 
@@ -179,6 +195,32 @@ const visibleTo = computed(() => {
     orgs: Array.from(new Set(orgTargets)),
     groups: Array.from(new Set(groupTargets)),
     users: Array.from(new Set(userTargets)),
+  };
+};
+
+const viewVisibleTo = computed(() =>
+  toGrantTargetLabels(props.event?.view_grant_targets || []),
+);
+
+const editVisibleTo = computed(() =>
+  toGrantTargetLabels(props.event?.edit_grant_targets || []),
+);
+
+const visibleTo = computed(() => {
+  const orgs = Array.from(
+    new Set([...viewVisibleTo.value.orgs, ...editVisibleTo.value.orgs]),
+  );
+  const groups = Array.from(
+    new Set([...viewVisibleTo.value.groups, ...editVisibleTo.value.groups]),
+  );
+  const users = Array.from(
+    new Set([...viewVisibleTo.value.users, ...editVisibleTo.value.users]),
+  );
+
+  return {
+    orgs,
+    groups,
+    users,
   };
 });
 
@@ -306,7 +348,6 @@ const hasVisibilityDetails = computed(
       :query="query"
       :event-uuid="event.uuid"
       :event-name="event.title"
-      :creator-id="event.creator_id"
       :open-signal="deleteOpenSignal"
     />
   </template>
