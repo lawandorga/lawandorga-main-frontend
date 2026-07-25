@@ -27,7 +27,11 @@ import {
   TYPE_TINT_ALPHA,
 } from "../constants.js";
 import { getEventAccessKind } from "../utils/eventAccess";
-import { findOverride, resolveOccurrence } from "../utils/occurrences";
+import {
+  findOverride,
+  isRecurring,
+  resolveOccurrence,
+} from "../utils/occurrences";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 import CalendarReminders from "./CalendarReminders.vue";
 import EventScopeModal from "./EventScopeModal.vue";
@@ -76,27 +80,20 @@ const canDelete = computed(() => hasEditPermission.value);
 
 const updateEventRef = ref<InstanceType<typeof UpdateEvent> | null>(null);
 const deleteEventRef = ref<InstanceType<typeof DeleteEvent> | null>(null);
-const updateOccurrenceRef =
-  ref<InstanceType<typeof UpdateOccurrence> | null>(null);
-const cancelOccurrenceRef =
-  ref<InstanceType<typeof CancelOccurrence> | null>(null);
+const updateOccurrenceRef = ref<InstanceType<typeof UpdateOccurrence> | null>(
+  null,
+);
+const cancelOccurrenceRef = ref<InstanceType<typeof CancelOccurrence> | null>(
+  null,
+);
 
 const occurrence = computed(() => {
   if (!props.event || !props.originalStart) return null;
-  if (props.event.recurrence_rule === "") return null;
-  const override = findOverride(props.event, props.originalStart);
+  if (!isRecurring(props.event)) return null;
   return resolveOccurrence(
     props.event,
-    override ?? {
-      uuid: "",
-      original_start: props.originalStart,
-      cancelled: false,
-      start_time: null,
-      end_time: null,
-      title: null,
-      description: null,
-      location: null,
-    },
+    props.originalStart,
+    findOverride(props.event, props.originalStart),
   );
 });
 
@@ -178,67 +175,53 @@ const closeDetail = () => {
   emit("update:modelValue", false);
 };
 
-const openUpdateModal = () => {
-  updateEventRef.value?.open();
+const openModal = (modal: { open: () => void } | null) => {
+  modal?.open();
   closeDetail();
 };
 
-const openDeleteModal = () => {
-  deleteEventRef.value?.open();
-  closeDetail();
-};
+const SCOPE_ACTIONS = {
+  edit: {
+    title: "Edit repeating event",
+    question:
+      "Do you want to edit only this event or all events in this series?",
+    this: () => openModal(updateOccurrenceRef.value),
+    all: () => openModal(updateEventRef.value),
+  },
+  delete: {
+    title: "Delete repeating event",
+    question:
+      "Do you want to delete only this event or all events in this series?",
+    this: () => openModal(cancelOccurrenceRef.value),
+    all: () => openModal(deleteEventRef.value),
+  },
+} as const;
 
-const openUpdateOccurrenceModal = () => {
-  updateOccurrenceRef.value?.open();
-  closeDetail();
-};
-
-const openCancelOccurrenceModal = () => {
-  cancelOccurrenceRef.value?.open();
-  closeDetail();
-};
+type ScopeAction = keyof typeof SCOPE_ACTIONS;
 
 const scopeModalOpen = ref(false);
-const pendingAction = ref<"edit" | "delete" | null>(null);
+const pendingAction = ref<ScopeAction>("edit");
 
-const scopeTitle = computed(() =>
-  pendingAction.value === "delete"
-    ? "Delete repeating event"
-    : "Edit repeating event",
-);
-const scopeQuestion = computed(() =>
-  pendingAction.value === "delete"
-    ? "Do you want to delete only this event or all events in this series?"
-    : "Do you want to edit only this event or all events in this series?",
+const scopeTitle = computed(() => SCOPE_ACTIONS[pendingAction.value].title);
+const scopeQuestion = computed(
+  () => SCOPE_ACTIONS[pendingAction.value].question,
 );
 
-const onEdit = () => {
-  if (occurrence.value) {
-    pendingAction.value = "edit";
-    scopeModalOpen.value = true;
-  } else {
-    openUpdateModal();
+const askScope = (action: ScopeAction) => {
+  if (!occurrence.value) {
+    SCOPE_ACTIONS[action].all();
+    return;
   }
+  pendingAction.value = action;
+  scopeModalOpen.value = true;
 };
 
-const onDelete = () => {
-  if (occurrence.value) {
-    pendingAction.value = "delete";
-    scopeModalOpen.value = true;
-  } else {
-    openDeleteModal();
-  }
-};
+const onEdit = () => askScope("edit");
+
+const onDelete = () => askScope("delete");
 
 const onScopeSelect = (scope: "this" | "all") => {
-  if (pendingAction.value === "edit") {
-    if (scope === "this") openUpdateOccurrenceModal();
-    else openUpdateModal();
-  } else {
-    if (scope === "this") openCancelOccurrenceModal();
-    else openDeleteModal();
-  }
-  pendingAction.value = null;
+  SCOPE_ACTIONS[pendingAction.value][scope]();
 };
 
 watch(
@@ -447,19 +430,13 @@ const hasVisibilityDetails = computed(
         ref="updateOccurrenceRef"
         :query="query"
         :event-uuid="event.uuid"
-        :original-start="occurrence.originalStart"
-        :start-time="occurrence.start"
-        :end-time="occurrence.end"
-        :occurrence-title="occurrence.title"
-        :location="occurrence.location"
-        :description="occurrence.description"
+        :occurrence="occurrence"
       />
       <CancelOccurrence
         ref="cancelOccurrenceRef"
         :query="query"
         :event-uuid="event.uuid"
-        :occurrence-name="`${occurrence.title} (${formatDate(occurrence.start, true)})`"
-        :original-start="occurrence.originalStart"
+        :occurrence="occurrence"
       />
     </template>
     <EventScopeModal

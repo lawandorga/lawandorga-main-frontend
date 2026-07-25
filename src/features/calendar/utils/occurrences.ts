@@ -10,10 +10,12 @@ export interface ResolvedOccurrence {
   title: string;
   description: string;
   location: string;
-  cancelled: boolean;
 }
 
 const toMilliseconds = (value: string): number => new Date(value).getTime();
+
+export const isRecurring = (event: CalendarEvent): boolean =>
+  event.recurrence_rule !== "";
 
 export const seriesTimesShiftedByOccurrenceMove = (params: {
   originalStart: string;
@@ -41,23 +43,23 @@ export const seriesTimesShiftedByOccurrenceMove = (params: {
 
 export const resolveOccurrence = (
   event: CalendarEvent,
-  override: OccurrenceOverride,
+  originalStart: string,
+  override?: OccurrenceOverride,
 ): ResolvedOccurrence => {
-  const start = override.start_time ?? override.original_start;
-  let end = override.end_time;
+  const start = override?.start_time ?? originalStart;
+  let end = override?.end_time ?? null;
   if (end === null && event.end_time !== null) {
     const durationMilliseconds =
       toMilliseconds(event.end_time) - toMilliseconds(event.start_time);
     end = new Date(toMilliseconds(start) + durationMilliseconds).toISOString();
   }
   return {
-    originalStart: override.original_start,
+    originalStart,
     start,
     end,
-    title: override.title ?? event.title,
-    description: override.description ?? event.description,
-    location: override.location ?? event.location,
-    cancelled: override.cancelled,
+    title: override?.title ?? event.title,
+    description: override?.description ?? event.description,
+    location: override?.location ?? event.location,
   };
 };
 

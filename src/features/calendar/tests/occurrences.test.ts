@@ -63,11 +63,12 @@ describe("findOverride", () => {
   });
 });
 
+const SECOND_SLOT = "2026-03-22T10:00:00+01:00";
+
 describe("resolveOccurrence", () => {
-  it("inherits every null field from the series", () => {
+  it("inherits every field from the series when there is no override", () => {
     const event = makeEvent();
-    const blankOverride = makeOverride();
-    const resolved = resolveOccurrence(event, blankOverride);
+    const resolved = resolveOccurrence(event, SECOND_SLOT);
 
     expect(resolved.title).toBe("Hearing");
     expect(resolved.description).toBe("Series description");
@@ -83,6 +84,7 @@ describe("resolveOccurrence", () => {
     const event = makeEvent();
     const resolved = resolveOccurrence(
       event,
+      SECOND_SLOT,
       makeOverride({
         start_time: "2026-03-23T15:00:00+01:00",
         title: "Hearing (moved)",
@@ -103,6 +105,7 @@ describe("resolveOccurrence", () => {
     const event = makeEvent();
     const resolved = resolveOccurrence(
       event,
+      SECOND_SLOT,
       makeOverride({ end_time: "2026-03-22T13:00:00+01:00" }),
     );
 
@@ -112,7 +115,6 @@ describe("resolveOccurrence", () => {
 
 describe("seriesTimesShiftedByOccurrenceMove", () => {
   it("shifts the series start by the occurrence's move delta, keeping duration", () => {
-    // occurrence at the 2nd slot moved +1 day +2h; series should shift the same
     const result = seriesTimesShiftedByOccurrenceMove({
       originalStart: "2026-03-22T10:00:00+01:00",
       seriesStart: "2026-03-15T10:00:00+01:00",
@@ -129,7 +131,6 @@ describe("seriesTimesShiftedByOccurrenceMove", () => {
   });
 
   it("adopts a resized occurrence's new duration with no start delta", () => {
-    // start unchanged, end extended by 1h -> whole series becomes 2h long
     const result = seriesTimesShiftedByOccurrenceMove({
       originalStart: "2026-03-22T10:00:00+01:00",
       seriesStart: "2026-03-15T10:00:00+01:00",

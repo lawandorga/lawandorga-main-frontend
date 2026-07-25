@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 const { query, eventUuid, eventName } = toRefs(props);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 
 defineExpose({
   open: () => {

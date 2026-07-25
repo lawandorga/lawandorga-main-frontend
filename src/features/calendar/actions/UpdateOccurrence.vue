@@ -5,19 +5,16 @@ import { ref, toRefs } from "vue";
 import useCmd from "@/composables/useCmd";
 import { toLocalDateTimeInput } from "@/utils/date";
 
+import type { ResolvedOccurrence } from "../utils/occurrences";
+
 const props = defineProps<{
   query: () => void;
   eventUuid: string;
-  originalStart: string;
-  startTime: string;
-  endTime: string | null;
-  occurrenceTitle: string;
-  location: string;
-  description: string;
+  occurrence: ResolvedOccurrence;
 }>();
 const { query } = toRefs(props);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 
 const fields: types.FormField[] = [
   { label: "Title", name: "title", type: "text", required: true },
@@ -46,16 +43,17 @@ const request = (data: Record<string, unknown>) => {
 const buildInitialData = (): Record<string, unknown> => ({
   action: "calendar/update_event_occurrence",
   event_uuid: props.eventUuid,
-  original_start: props.originalStart,
-  title: props.occurrenceTitle,
-  start_time: toLocalDateTimeInput(props.startTime),
-  end_time: props.endTime ? toLocalDateTimeInput(props.endTime) : "",
-  location: props.location,
-  description: props.description,
+  original_start: props.occurrence.originalStart,
+  title: props.occurrence.title,
+  start_time: toLocalDateTimeInput(props.occurrence.start),
+  end_time: props.occurrence.end
+    ? toLocalDateTimeInput(props.occurrence.end)
+    : "",
+  location: props.occurrence.location,
+  description: props.occurrence.description,
 });
 
-// lorga-ui re-clones :data into the form only when the object reference changes,
-// so open() assigns a fresh object here to reset the form on each opening
+// lorga-ui re-clones :data only when the object reference changes, so open() assigns a fresh object
 const initialData = ref<Record<string, unknown>>(buildInitialData());
 
 defineExpose({

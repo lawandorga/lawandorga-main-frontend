@@ -67,7 +67,7 @@ const fields = computed<types.FormField[]>(() => [
   },
 ]);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 
 const request = (data: Record<string, unknown>) => {
   const normalized: Record<string, unknown> = { ...data };
@@ -94,8 +94,7 @@ const buildInitialData = (): Record<string, unknown> => ({
   action: "calendar/update_event",
 });
 
-// lorga-ui re-clones :data into the form only when the object reference changes,
-// so open() assigns a fresh object here to reset the form on each opening
+// lorga-ui re-clones :data only when the object reference changes, so open() assigns a fresh object
 const initialData = ref<Record<string, unknown>>(buildInitialData());
 
 defineExpose({

@@ -12,6 +12,7 @@ import ReminderListEditor, {
 } from "../components/ReminderListEditor.vue";
 import useShareTargetOptions from "../composables/useShareTargetOptions";
 import { DEFAULT_REMINDER, type ReminderSettings } from "../constants";
+import { toReminderKey } from "../utils/reminders";
 
 const props = defineProps<{ query: () => void }>();
 const { query } = toRefs(props);
@@ -26,22 +27,18 @@ const reminderRows = computed<ReminderRow[]>(() =>
 );
 
 const addReminderDraft = () => {
-  reminderDrafts.value = [...reminderDrafts.value, { ...DEFAULT_REMINDER }];
+  reminderDrafts.value.push({ ...DEFAULT_REMINDER });
 };
 
 const updateReminderDraft = (
   key: string | number,
   patch: Partial<ReminderSettings>,
 ) => {
-  reminderDrafts.value = reminderDrafts.value.map((draft, index) =>
-    index === key ? { ...draft, ...patch } : draft,
-  );
+  Object.assign(reminderDrafts.value[Number(key)], patch);
 };
 
 const removeReminderDraft = (key: string | number) => {
-  reminderDrafts.value = reminderDrafts.value.filter(
-    (_, index) => index !== key,
-  );
+  reminderDrafts.value.splice(Number(key), 1);
 };
 
 const DEFAULT_DURATION_MS = 30 * 60 * 1000;
@@ -56,8 +53,6 @@ const buildInitialData = (prefill?: EventTimePrefill) => {
   const start = prefill?.start ?? new Date();
   const defaultEnd = new Date(start.getTime() + DEFAULT_DURATION_MS);
   const end = prefill?.end ?? (prefill?.allDay ? null : defaultEnd);
-
-  reminderDrafts.value = [];
 
   return {
     action: "calendar/create_event",
@@ -132,20 +127,18 @@ const request = (data: Record<string, unknown>) => {
   if (normalized.recurrence_until === "") normalized.recurrence_until = null;
 
   if (reminderDrafts.value.length > 0) {
-    normalized.reminders = reminderDrafts.value.map(
-      (draft) => `${draft.method}:${draft.minutes_before}`,
-    );
+    normalized.reminders = reminderDrafts.value.map(toReminderKey);
   }
 
   return commandRequest(normalized);
 };
 
-// lorga-ui re-clones :data into the form only when the object reference changes,
-// so open() assigns a fresh object here to reset the form on each opening
+// lorga-ui re-clones :data only when the object reference changes, so open() assigns a fresh object
 const initialData = ref<Record<string, unknown>>(buildInitialData());
 
 defineExpose({
   open: (prefill?: EventTimePrefill) => {
+    reminderDrafts.value = [];
     initialData.value = buildInitialData(prefill);
     commandModalOpen.value = true;
   },

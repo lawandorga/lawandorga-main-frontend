@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import { ModalDelete } from "lorga-ui";
-import { toRefs } from "vue";
+import { computed, toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
+import { formatDate } from "@/utils/date";
+
+import type { ResolvedOccurrence } from "../utils/occurrences";
 
 const props = defineProps<{
   query: () => void;
   eventUuid: string;
-  occurrenceName: string;
-  originalStart: string;
+  occurrence: ResolvedOccurrence;
 }>();
-const { query, occurrenceName } = toRefs(props);
+const { query } = toRefs(props);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
+
+const occurrenceName = computed(
+  () =>
+    `${props.occurrence.title} (${formatDate(props.occurrence.start, true)})`,
+);
 
 defineExpose({
   open: () => {
@@ -30,7 +37,7 @@ defineExpose({
     :data="{
       action: 'calendar/cancel_event_occurrence',
       event_uuid: eventUuid,
-      original_start: originalStart,
+      original_start: occurrence.originalStart,
     }"
   />
 </template>

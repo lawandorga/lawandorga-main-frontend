@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { occurrenceToFullCalendarEvent } from "../api/toFullCalendarEvent";
+import { occurrenceToFullCalendarEvent } from "../api/occurrenceToFullCalendarEvent";
 import type {
   CalendarEvent,
   CalendarOccurrence,

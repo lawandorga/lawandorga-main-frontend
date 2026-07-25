@@ -1,9 +1,23 @@
-import type { EventInput } from "@fullcalendar/core";
+import type { EventApi, EventInput } from "@fullcalendar/core";
 
 import { addDays } from "@/utils/date";
 
 import { EVENT_TYPE_META, TYPE_TINT_ALPHA } from "../constants";
 import type { CalendarEvent, CalendarOccurrence } from "./useCalendarEvents";
+
+export interface OccurrenceProps {
+  eventUuid: string;
+  originalStart: string;
+}
+
+export const readOccurrenceProps = (
+  event: EventApi,
+): OccurrenceProps | null => {
+  const { eventUuid, originalStart } = event.extendedProps;
+  if (typeof eventUuid !== "string" || typeof originalStart !== "string")
+    return null;
+  return { eventUuid, originalStart };
+};
 
 // FullCalendar's all-day end is exclusive, the ranges from the backend inclusive
 const toExclusiveAllDayEnd = (endTime: string): string =>
@@ -33,6 +47,6 @@ export const occurrenceToFullCalendarEvent = (
     extendedProps: {
       eventUuid: occurrence.event_uuid,
       originalStart: occurrence.original_start,
-    },
+    } satisfies OccurrenceProps,
   };
 };

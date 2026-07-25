@@ -1,7 +1,8 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch, type Ref } from "vue";
 
 import useClient from "@/api/client";
 import useGet2 from "@/composables/useGet2";
+import useQuery from "@/composables/useQuery";
 
 import type { EventType, ReminderMethod } from "../constants";
 
@@ -68,17 +69,28 @@ export function useCalendarEvents() {
   };
 }
 
-export function useCalendarOccurrences() {
+export interface OccurrenceRange {
+  from: string;
+  to: string;
+}
+
+export function useCalendarOccurrences(range: Ref<OccurrenceRange | null>) {
   const client = useClient();
+  const occurrences = ref<CalendarOccurrence[]>([]);
 
   // the endpoint expands the series for the range, applies overrides, and omits
   // cancelled occurrences
-  const fetchOccurrences = (fromIso: string, toIso: string) =>
-    client.get<CalendarOccurrence[]>(
-      `api/calendar/query/occurrences/?from_dt=${encodeURIComponent(
-        fromIso,
-      )}&to_dt=${encodeURIComponent(toIso)}`,
-    )();
+  const request = client.get<CalendarOccurrence[]>(
+    "api/calendar/query/occurrences/?from_dt={}&to_dt={}",
+    computed(() => encodeURIComponent(range.value?.from ?? "")),
+    computed(() => encodeURIComponent(range.value?.to ?? "")),
+  );
+  const requestOccurrences = useQuery(request, occurrences);
 
-  return { fetchOccurrences };
+  const query = () =>
+    range.value === null ? Promise.resolve() : requestOccurrences();
+
+  watch(range, query);
+
+  return { occurrences, query };
 }
