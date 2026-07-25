@@ -121,7 +121,7 @@ const fields = computed<types.FormField[]>(() => [
   },
 ]);
 
-watch(commandModalOpen, (isOpen) => {
+watch(commandModalOpen, (isOpen: boolean) => {
   if (!isOpen) return;
   loadShareTargetOptions();
 });
@@ -131,8 +131,7 @@ const request = (data: Record<string, unknown>) => {
   if (normalized.end_time === "") normalized.end_time = null;
   if (normalized.recurrence_until === "") normalized.recurrence_until = null;
 
-  const isRecurring = normalized.recurrence_rule !== "";
-  if (!isRecurring && reminderDrafts.value.length > 0) {
+  if (reminderDrafts.value.length > 0) {
     normalized.reminders = reminderDrafts.value.map(
       (draft) => `${draft.method}:${draft.minutes_before}`,
     );
@@ -175,17 +174,13 @@ defineExpose({
         :event-type="data.event_type"
       />
     </template>
-    <template #reminder="{ data }">
+    <template #reminder>
       <ReminderListEditor
-        v-if="data.recurrence_rule === ''"
         :reminders="reminderRows"
         @add="addReminderDraft"
         @update="updateReminderDraft"
         @remove="removeReminderDraft"
       />
-      <p v-else class="text-sm text-gray-500">
-        Reminders for repeating events are coming soon.
-      </p>
     </template>
   </ModalCreate>
 </template>

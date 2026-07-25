@@ -19,8 +19,6 @@ const props = defineProps<{
 
 const { commandRequest } = useCmd(() => props.query());
 
-const isRecurring = computed(() => props.event.recurrence_rule !== "");
-
 const reminderRows = computed<ReminderRow[]>(() =>
   [...props.event.own_reminders]
     .sort((a, b) => a.minutes_before - b.minutes_before)
@@ -89,16 +87,10 @@ const removeReminder = (key: string | number) => {
 </script>
 
 <template>
-  <div class="space-y-3">
-    <ReminderListEditor
-      :reminders="reminderRows"
-      :add-disabled="isRecurring"
-      @add="addReminder"
-      @update="updateReminder"
-      @remove="removeReminder"
-    />
-    <p v-if="isRecurring" class="text-sm text-gray-500">
-      Reminders for repeating events are coming soon.
-    </p>
-  </div>
+  <ReminderListEditor
+    :reminders="reminderRows"
+    @add="addReminder"
+    @update="updateReminder"
+    @remove="removeReminder"
+  />
 </template>

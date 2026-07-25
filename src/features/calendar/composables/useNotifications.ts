@@ -12,7 +12,7 @@ export interface CalendarNotification {
   created: string;
 }
 
-const POLL_INTERVAL_MS = 5000;
+const POLL_INTERVAL_MS = 30000;
 
 const sharedNotifications = ref<CalendarNotification[] | undefined>(undefined);
 
