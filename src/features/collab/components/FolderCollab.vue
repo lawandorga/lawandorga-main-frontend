@@ -13,6 +13,7 @@ import { formatDate } from "@/utils/date";
 
 import CollabAddTemplate from "../actions/AddTemplate.vue";
 import CollabChangeName from "../actions/ChangeName.vue";
+import CollabDelete from "../actions/DeleteCollab.vue";
 import DownloadPdf from "../actions/DownloadPdf.vue";
 import CollabEditTemplate from "../actions/EditTemplate.vue";
 import CollabRemoveTemplate from "../actions/RemoveTemplate.vue";
@@ -40,8 +41,9 @@ const props = defineProps<{
   selectedId: string | number | null;
   selectedType: string;
   query: () => void;
+  onDelete?: () => void;
 }>();
-const { selectedId, selectedType, query } = toRefs(props);
+const { selectedId, selectedType, query, onDelete } = toRefs(props);
 
 const router = useRouter();
 const route = useRoute();
@@ -101,6 +103,12 @@ const allQuery = () => {
           :uuid="collab.uuid"
           :query="allQuery"
           :name="collab.name"
+        />
+        <CollabDelete
+          :collab-uuid="collab.uuid"
+          :collab-name="collab.name"
+          :query="query"
+          :on-delete="onDelete"
         />
       </template>
       <CollabForm

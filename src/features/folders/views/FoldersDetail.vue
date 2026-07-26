@@ -198,6 +198,7 @@ const { mailQuery, mails, numberOfUnreadMails } = useMailImports(folderUuid);
           :selected-type="selectedType"
           :folder-uuid="folder.folder.uuid"
           :query="query"
+          :on-delete="() => select(null, 'COLLAB')"
         />
 
         <FolderSubfolder

@@ -40,7 +40,7 @@ const emit = defineEmits(["close"]);
             <button
               v-if="close"
               type="button"
-              class="-mr-1 flex rounded-md p-2 hover:bg-blue-500/10 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
+              class="-mr-1 flex cursor-pointer rounded-md p-2 hover:bg-blue-500/10 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
               @click="emit('close')"
             >
               <span class="sr-only">Dismiss</span>

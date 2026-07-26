@@ -63,15 +63,30 @@ const priorityColor: Record<string, string> = {
 
 <template>
   <article
-    class="flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
+    class="relative flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
   >
+    <span
+      v-if="task.is_new"
+      class="bg-formcolor absolute top-0 right-3 px-2 py-1 text-sm font-bold text-white"
+      >New</span
+    >
     <div>
       <div class="flex items-start justify-between gap-3">
         <h3 class="text-formcolor mb-2 text-left font-semibold">
           {{ task.title }}
         </h3>
-        <EditTask v-if="!task.is_done" :task="task" :query="query" />
-        <DeleteTask v-if="task.is_done" :task="task" :query="query" />
+        <EditTask
+          class="relative top-5"
+          v-if="!task.is_done"
+          :task="task"
+          :query="query"
+        />
+        <DeleteTask
+          class="relative top-5"
+          v-if="task.is_done"
+          :task="task"
+          :query="query"
+        />
       </div>
       <p
         v-if="task.page_url"
@@ -84,9 +99,8 @@ const priorityColor: Record<string, string> = {
       </p>
       <p
         class="mt-2 text-sm font-semibold wrap-break-word whitespace-pre-line text-gray-700"
-      >
-        {{ task.description }}
-      </p>
+        v-html="task.description"
+      />
       <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
         Assignees: {{ task.assignee_names.join(", ") }}
       </p>

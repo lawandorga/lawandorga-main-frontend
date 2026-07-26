@@ -26,8 +26,13 @@ const { notes, notesQuery } = useNotes();
           :class="{ 'lg:col-span-2': note.is_wide }"
         >
           <div class="flex justify-between">
-            <h3 class="mb-2 font-medium text-gray-700">
+            <h3 class="mb-2 flex items-center gap-2 font-medium text-gray-700">
               {{ note.title }}
+              <span
+                v-if="note.is_new"
+                class="bg-formcolor rounded-md px-2 py-0.5 text-xs font-bold text-white"
+                >New</span
+              >
             </h3>
             <div class="flex gap-6">
               <UpdateNote

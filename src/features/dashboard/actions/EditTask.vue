@@ -2,6 +2,7 @@
 import { ButtonNormal, types, ModalFree, FormGenerator } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
 import { Task } from "@/features/dashboard/api/useTasks";
@@ -23,10 +24,8 @@ const taskFields = computed<types.FormField[]>(() => [
   },
   { label: "Title", name: "title", required: true, type: "text" },
   {
-    label: "Description",
     name: "description",
-    required: false,
-    type: "textarea",
+    type: "slot",
   },
   {
     label: "Deadline",
@@ -97,6 +96,9 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
         }"
       >
         <template #custom>Created by: {{ task.creator_name }}</template>
+        <template #description="{ data }">
+          <FormWysiwyg v-model="data.description" label="Description" />
+        </template>
       </FormGenerator>
       <FormGenerator
         :request="commandRequestThatDoesNotCloseModal"

@@ -171,7 +171,9 @@ const formatDate = (date: string) =>
           <CopyCCAdressFromFolder
             :address="`${folderUuid}@folders.law-orga.de`"
           />
+          <label for="mailSearchInput" class="sr-only">Search in mails</label>
           <input
+            id="mailSearchInput"
             v-model="searchQuery"
             type="search"
             placeholder="Search in mails"
@@ -188,6 +190,9 @@ const formatDate = (date: string) =>
       <div
         class="grid grid-cols-[24px_24px_1fr_max-content_max-content_24px] gap-2"
       >
+        <label for="toggleAllMails" class="sr-only">
+          Select or unselect all mails
+        </label>
         <input
           id="toggleAllMails"
           class="col-start-1 h-4 w-4 self-center justify-self-center"
@@ -227,7 +232,11 @@ const formatDate = (date: string) =>
         </ToolTip>
         <div class="col-span-6 col-start-1 h-px w-auto bg-neutral-300" />
         <template v-for="(mail, index) in sortedMails" :key="mail.uuid">
+          <label :for="`mailCheckbox-${mail.uuid}`" class="sr-only">
+            Select Mail
+          </label>
           <input
+            :id="`mailCheckbox-${mail.uuid}`"
             :checked="checkedMails.includes(mail.uuid)"
             class="col-start-1 h-4 w-4 self-center justify-self-center"
             type="checkbox"

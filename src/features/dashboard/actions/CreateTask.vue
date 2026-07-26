@@ -4,6 +4,7 @@ import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
 import { useProfiles } from "@/features/admin/api/useProfiles";
 import { notifyTasksChanged } from "@/features/dashboard/api/useTasksChanged";
@@ -16,10 +17,8 @@ const taskFields = computed<types.FormField[]>(() => [
   { label: "Location", name: "page_url", type: "text" },
   { label: "Title", name: "title", required: true, type: "text" },
   {
-    label: "Description",
     name: "description",
-    required: false,
-    type: "textarea",
+    type: "slot",
   },
   {
     label: "Deadline",
@@ -83,6 +82,10 @@ const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
         priority: 'medium',
         progress: 0,
       }"
-    />
+    >
+      <template #description="{ data }">
+        <FormWysiwyg v-model="data.description" label="Description" />
+      </template>
+    </ModalCreate>
   </ButtonNormal>
 </template>

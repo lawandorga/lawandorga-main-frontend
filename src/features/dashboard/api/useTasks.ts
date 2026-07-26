@@ -27,6 +27,7 @@ export interface Task {
   created_at: string;
   updated_at: string;
   page_url: string;
+  is_new: boolean;
 }
 
 export function useTasks() {

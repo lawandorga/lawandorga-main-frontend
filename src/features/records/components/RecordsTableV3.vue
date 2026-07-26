@@ -3,10 +3,13 @@ import { TableGenerator } from "lorga-ui";
 import { toRefs, computed } from "vue";
 
 import ButtonLink from "@/components/ButtonLink.vue";
+import { formatDate } from "@/utils/date";
 
 import { Record } from "../api/useRecords";
 
-const dtRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+const utcIsoRegex =
+  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?(\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+
 const getEntryFromRecord = (r: Record, key: string): string | string[] => {
   const entry = r.attributes[key];
   if (entry !== undefined) {
@@ -18,9 +21,8 @@ const getEntryFromRecord = (r: Record, key: string): string | string[] => {
 const getDisplayValueFromRecord = (r: Record, key: string): string => {
   const entry = getEntryFromRecord(r, key);
   if (Array.isArray(entry)) return entry.join(", ");
-  if (dtRegex.test(entry)) {
-    const date = new Date(entry);
-    return date.toLocaleString("de-DE").replace(",", "");
+  if (utcIsoRegex.test(entry)) {
+    return formatDate(entry);
   }
   return entry;
 };

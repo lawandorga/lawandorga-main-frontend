@@ -2,7 +2,11 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
 import useClient from "@/api/client";
-import useCmd from "@/composables/useCmd";
+import {
+  loadSettingsFromStorage,
+  saveSettingsToStorage,
+  clearSettingsStorage,
+} from "@/composables/useLocalStorage";
 
 interface OrgUser {
   id: number;
@@ -34,7 +38,7 @@ interface BadgeInformation {
   record?: number;
 }
 
-type Settings = Record<string, string | boolean>;
+type Settings = Record<string, string | boolean | number | string[]>;
 
 interface Link {
   id: string;
@@ -80,13 +84,13 @@ export const useUserStore = defineStore("user", () => {
     return badges.value["record"] || 0;
   });
 
-  const settings = ref<Settings>();
+  const settings = ref<Settings | undefined>(loadSettingsFromStorage());
 
   const setData = (data: DataResponse) => {
     org.value = data.org;
     user.value = data.user;
     badges.value = data.badges;
-    settings.value = data.settings;
+    settings.value = { ...data.settings, ...loadSettingsFromStorage() };
     permissions.value = data.permissions;
   };
 
@@ -101,29 +105,13 @@ export const useUserStore = defineStore("user", () => {
       });
   };
 
-  const updatePossible = ref(true);
-
-  const { commandRequest } = useCmd();
-
-  const updateSettingRequest = () => {
-    if (updatePossible.value) {
-      updatePossible.value = false;
-      commandRequest({
-        action: "auth/update_frontend_settings",
-        data: "||JSON||".concat(JSON.stringify(settings.value || {})),
-      }).then(() => (updatePossible.value = true));
-    } else {
-      setTimeout(() => updateSettingRequest(), 500);
-    }
-  };
-
   const updateSetting = (
     key: string,
     value: string | boolean | number | string[],
   ) => {
     const newSettings = Object.assign({}, settings.value, { [key]: value });
     settings.value = newSettings;
-    updateSettingRequest();
+    saveSettingsToStorage(newSettings);
   };
 
   const getSetting = <T = string | boolean | number | string[]>(
@@ -156,6 +144,7 @@ export const useUserStore = defineStore("user", () => {
     badges.value = undefined;
     settings.value = undefined;
     permissions.value = undefined;
+    clearSettingsStorage();
   };
 
   return {

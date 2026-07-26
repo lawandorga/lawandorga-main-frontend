@@ -8,6 +8,7 @@ export interface DashboardNote {
   note: string;
   order: number;
   is_wide: boolean;
+  is_new: boolean;
 }
 
 export function useNotes() {

@@ -14,22 +14,15 @@ export function createObjectURL(data: Blob): string {
 export function downloadFile(
   response: AxiosResponse<Blob>,
   name: string,
-  openedWindow: Window | null,
 ): void {
-  const filename: string = name;
   const objectUrl = createObjectURL(response.data);
-
-  if (name.split(".").pop() === "pdf" && openedWindow) {
-    openedWindow.location = objectUrl;
-  } else {
-    if (openedWindow) openedWindow.close();
-    const downloadLink = document.createElement("a");
-    downloadLink.setAttribute("target", "_blank");
-    downloadLink.href = objectUrl;
-    downloadLink.setAttribute("download", filename);
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-  }
+  const downloadLink = document.createElement("a");
+  downloadLink.href = objectUrl;
+  downloadLink.setAttribute("download", name);
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  window.setTimeout(() => window.URL?.revokeObjectURL(objectUrl), 0);
 }
 
 export function downloadFileRequest(
@@ -37,19 +30,11 @@ export function downloadFileRequest(
   url: string,
   fileName: string,
 ): Promise<void> {
-  const openedWindow = window.open();
-  if (openedWindow?.document)
-    openedWindow.document.body.innerHTML =
-      "One moment please. File is being downloaded...";
   return axios
     .get<Blob>(url, {
       responseType: "blob",
     })
-    .then((response) => downloadFile(response, fileName, openedWindow))
-    .catch((e) => {
-      openedWindow?.close();
-      throw e;
-    });
+    .then((response) => downloadFile(response, fileName));
 }
 
 export function getMimetypeFromDataUrl(url: string) {
