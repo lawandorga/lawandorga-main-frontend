@@ -3,7 +3,7 @@
     <div class="flex h-screen overflow-hidden print:h-auto print:overflow-auto">
       <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
-      <NavigationSidebar v-if="userStore.isAuthenticated && inside" />
+      <NavigationSidebar v-if="userStore.isAuthenticated && isInsideApp" />
 
       <div
         class="flex w-0 flex-1 flex-col overflow-x-hidden overflow-y-auto print:block"
@@ -15,9 +15,7 @@
 
         <NavigationDefault v-if="!userStore.isAuthenticated" />
 
-        <main
-          class="relative mx-auto w-full max-w-5xl flex-1 px-6 py-6 focus:outline-none print:p-0"
-        >
+        <main class="relative flex-1 px-6 py-6 focus:outline-none print:p-0">
           <router-view></router-view>
         </main>
       </div>
@@ -77,9 +75,9 @@ overwrite(
 );
 overwrite(
   "button.outline.color",
-  "outline-zinc-400 outline-1 outline shadow-md text-zinc-600",
+  "border border-formcolor text-formcolor bg-white shadow-sm hover:bg-formcolor/5 focus:ring-2 focus:ring-offset-2 focus:ring-formcolor",
 );
-overwrite("button.outline.size", "rounded p-2 font-semibold");
+overwrite("button.outline.size", "px-4 py-2 text-sm font-medium rounded-xl");
 
 if (!getCookie("csrftoken")) {
   const redirect = window.location.href;
@@ -97,7 +95,7 @@ const menuOpen = ref(false);
 
 const userStore = useUserStore();
 
-const inside = computed<boolean>(() => {
+const isInsideApp = computed<boolean>(() => {
   return route.name !== "start";
 });
 

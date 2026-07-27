@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { TableSortable } from "lorga-ui";
+import { computed, onMounted } from "vue";
 
 import ActivityBadge from "@/components/ActivityBadge.vue";
 import ActivityFilter from "@/components/ActivityFilter.vue";
@@ -19,6 +20,12 @@ import UsersUnlockUser from "@/features/admin/actions/UnlockUser.vue";
 import { useProfiles } from "../api/useProfiles";
 
 const { profiles, query } = useProfiles();
+
+const isShowingCachedProfiles = computed(() => !!profiles.value);
+
+onMounted(() => {
+  if (isShowingCachedProfiles.value) query();
+});
 
 const {
   activityFilter,

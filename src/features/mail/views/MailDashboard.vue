@@ -20,7 +20,7 @@ const { page, query, user, addresses, domain, users } = useGetDashboardPage();
 
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div v-if="userStore.loaded">
+    <div v-if="userStore.loaded" class="mx-auto max-w-3xl">
       <BreadcrumbsBar
         :base="{ name: 'mail-dashboard' }"
         :pages="[]"

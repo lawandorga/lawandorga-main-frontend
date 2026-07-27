@@ -1,24 +1,29 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
 import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
 import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
 import UpdateNote from "@/features/dashboard/actions/UpdateNote.vue";
 import { useNotes } from "@/features/dashboard/api/useNotes";
+import { useUserStore } from "@/store/user";
 
+const userStore = useUserStore();
 const { notes, notesQuery } = useNotes();
+
+const canManageNotes = computed(() =>
+  userStore.hasPermission("dashboard__manage_notes"),
+);
 </script>
 
 <template>
-  <BoxSection title="Notes from your LC" :length="notes?.length">
-    <template #action>
+  <BoxSection title="Notes from your LC" :number-of-items="notes?.length">
+    <template v-if="canManageNotes" #action>
       <CreateNote :query="notesQuery" />
     </template>
     <BoxLoader :show="!!notes" class="px-6 py-4">
-      <div
-        v-if="notes?.length"
-        class="3xl:grid-cols-3 mt-2 grid grid-cols-1 gap-6 lg:grid-cols-2"
-      >
+      <div v-if="notes?.length" class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <article
           v-for="note in notes"
           :key="note.id"
@@ -34,7 +39,7 @@ const { notes, notesQuery } = useNotes();
                 >New</span
               >
             </h3>
-            <div class="flex gap-6">
+            <div v-if="canManageNotes" class="flex gap-6">
               <UpdateNote
                 :query="notesQuery"
                 :note-id="note.id"
@@ -52,16 +57,14 @@ const { notes, notesQuery } = useNotes();
           </div>
           <!-- eslint-disable vue/no-v-html -->
           <p
-            class="text-sm wrap-break-word whitespace-pre-line text-gray-700"
+            class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
             v-html="note.note"
           ></p>
           <!-- eslint-enable vue/no-v-html -->
         </article>
       </div>
 
-      <div v-else class="w-full text-gray-500">
-        No notes yet. Use the button above to create your first note.
-      </div>
+      <div v-else class="text-gray-500">No notes yet.</div>
     </BoxLoader>
   </BoxSection>
 </template>

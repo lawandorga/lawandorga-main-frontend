@@ -43,8 +43,8 @@ const { commandModalOpen, commandRequest } = useCmd(query);
 <template>
   <ButtonNormal
     kind="action"
-    @click="commandModalOpen = true"
     aria-label="Update Note"
+    @click="commandModalOpen = true"
   >
     <PencilIcon class="h-4 w-4 stroke-2" />
     <ModalUpdate

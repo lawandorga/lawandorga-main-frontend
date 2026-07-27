@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ModalCreate, types } from "lorga-ui";
+import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
-import ButtonOutline from "@/components/ButtonOutline.vue";
 import FormWysiwyg from "@/components/FormWysiwyg.vue";
 import useCmd from "@/composables/useCmd";
 
@@ -28,7 +27,7 @@ const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
 
 <template>
-  <ButtonOutline @click="commandModalOpen = true">
+  <ButtonNormal kind="outline" @click="commandModalOpen = true">
     Create Note
     <ModalCreate
       v-model="commandModalOpen"
@@ -45,5 +44,5 @@ const { commandModalOpen, commandRequest } = useCmd(query);
         <FormWysiwyg v-model="data.note" required label="Description" />
       </template>
     </ModalCreate>
-  </ButtonOutline>
+  </ButtonNormal>
 </template>

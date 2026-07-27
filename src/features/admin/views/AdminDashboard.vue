@@ -103,7 +103,7 @@ const items = computed<AdminItem[]>(() => {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="mx-auto max-w-5xl space-y-6">
     <BreadcrumbsBar
       class="lg:col-span-2"
       :base="{ name: 'admin-dashboard' }"

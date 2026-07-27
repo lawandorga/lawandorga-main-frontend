@@ -31,7 +31,7 @@ const accept = (lr: LegalRequirement) => {
 
 <template>
   <BoxLoader :show="userStore.loaded">
-    <div v-if="userStore.loaded" class="space-y-6">
+    <div v-if="userStore.loaded" class="mx-auto max-w-3xl space-y-6">
       <BreadcrumbsBar :base="{ name: 'records-dashboard' }" :pages="[]">
         <ScaleIcon class="h-6 w-6" />
       </BreadcrumbsBar>

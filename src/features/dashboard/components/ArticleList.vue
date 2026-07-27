@@ -3,13 +3,14 @@ import { CalendarIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
 
 import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
+import { formatDate } from "@/utils/date";
 
 import { useArticles } from "../api/useArticles";
 const { articles } = useArticles();
 </script>
 
 <template>
-  <BoxSection title="News from Law&Orga" :length="articles?.length">
+  <BoxSection title="News from Law&Orga" :number-of-items="articles?.length">
     <BoxLoader :show="!!articles" class="px-6 py-4">
       <div
         v-if="articles?.length"
@@ -22,12 +23,10 @@ const { articles } = useArticles();
         >
           <div class="mb-2 flex items-center text-xs text-gray-500">
             <CalendarIcon class="mr-1 h-3 w-3"></CalendarIcon>
-            <span>
-              {{ new Date(article.date).toLocaleDateString() }}
-            </span>
+            <span>{{ formatDate(article.date, true) }}</span>
           </div>
           <div class="mb-4">
-            <h3 class="mb-3 text-[18px] font-medium">
+            <h3 class="mb-3 text-lg font-medium">
               {{ article.title }}
             </h3>
             <p class="text-muted text-sm wrap-break-word whitespace-pre-line">
@@ -42,9 +41,7 @@ const { articles } = useArticles();
         </article>
       </div>
 
-      <div v-else class="w-full px-6 py-4 text-gray-500">
-        No articles at the moment.
-      </div>
+      <div v-else class="text-gray-500">No articles at the moment.</div>
     </BoxLoader>
   </BoxSection>
 </template>
