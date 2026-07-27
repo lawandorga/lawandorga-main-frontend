@@ -19,22 +19,24 @@ export interface OrgUserSmall {
   activity_state: ActivityState;
 }
 
+const profiles = ref(null) as Ref<OrgUserSmall[] | null>;
+
+const formProfiles = computed(() => {
+  if (!profiles.value) return [];
+  return profiles.value.map((profile) => ({
+    name: profile.name,
+    value: profile.id,
+  }));
+});
+
+let profilesQuery: (() => void) | null = null;
+
 export function useProfiles() {
-  const profiles = ref(null) as Ref<OrgUserSmall[] | null>;
-
-  const query = useGet2("api/auth/org_users/", profiles);
-
-  const formProfiles = computed(() => {
-    if (!profiles.value) return [];
-    return profiles.value.map((profile) => ({
-      name: profile.name,
-      value: profile.id,
-    }));
-  });
+  if (!profilesQuery) profilesQuery = useGet2("api/auth/org_users/", profiles);
 
   return {
     profiles,
     formProfiles,
-    query,
+    query: profilesQuery,
   };
 }

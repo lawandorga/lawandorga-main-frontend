@@ -1,43 +1,47 @@
 <script setup lang="ts">
-import { ButtonNormal } from "lorga-ui";
+import { CalendarIcon, ArrowRightIcon } from "@heroicons/vue/24/outline";
+
+import BoxLoader from "@/components/BoxLoader.vue";
+import BoxSection from "@/components/BoxSection.vue";
+import { formatDate } from "@/utils/date";
 
 import { useArticles } from "../api/useArticles";
 const { articles } = useArticles();
 </script>
 
 <template>
-  <div v-if="articles?.length" class="lg:col-span-2 xl:col-span-3">
-    <div class="mt-8 flex justify-between">
-      <h2 class="items-baseline text-lg leading-6 font-medium text-gray-700">
-        News from Law&Orga
-      </h2>
-    </div>
-    <div class="mt-2 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-      <article
-        v-for="article in articles"
-        :key="article.id"
-        class="flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
+  <BoxSection title="News from Law&Orga" :number-of-items="articles?.length">
+    <BoxLoader :show="!!articles" class="px-6 py-4">
+      <div
+        v-if="articles?.length"
+        class="grid grid-cols-1 gap-4 lg:grid-cols-3"
       >
-        <p class="text-end text-sm text-gray-500">
-          {{ new Date(article.date).toLocaleDateString() }}
-        </p>
-        <div>
-          <h3 class="mb-2 font-medium text-gray-700">
-            {{ article.title }}
-          </h3>
-          <p
-            class="[&>a]:text-formcolor text-sm wrap-break-word whitespace-pre-line text-gray-700 [&>a]:font-medium"
-          >
-            {{ article.preview }}
-          </p>
-        </div>
-        <router-link
-          :to="{ name: 'internal-article', params: { id: article.id } }"
-          class="ml-auto"
+        <article
+          v-for="article in articles"
+          :key="article.id"
+          class="hover:border-formcolor/20 flex flex-col justify-between rounded border border-gray-200 bg-white px-6 py-4 hover:shadow-md"
         >
-          <ButtonNormal kind="action">Read more</ButtonNormal>
-        </router-link>
-      </article>
-    </div>
-  </div>
+          <div class="mb-2 flex items-center text-xs text-gray-500">
+            <CalendarIcon class="mr-1 h-3 w-3"></CalendarIcon>
+            <span>{{ formatDate(article.date, true) }}</span>
+          </div>
+          <div class="mb-4">
+            <h3 class="mb-3 text-lg font-medium">
+              {{ article.title }}
+            </h3>
+            <p class="text-muted text-sm wrap-break-word whitespace-pre-line">
+              {{ article.preview }}
+            </p>
+          </div>
+          <router-link
+            :to="{ name: 'internal-article', params: { id: article.id } }"
+            class="text-formcolor inline-flex items-center gap-1.5 self-start rounded-md px-2.5 text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-gray-200/50"
+            >Read more <ArrowRightIcon class="ml-2 h-3 w-3 text-gray-400" />
+          </router-link>
+        </article>
+      </div>
+
+      <div v-else class="text-gray-500">No articles at the moment.</div>
+    </BoxLoader>
+  </BoxSection>
 </template>

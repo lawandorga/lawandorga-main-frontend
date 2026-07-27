@@ -27,7 +27,7 @@ const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
 
 <template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+  <ButtonNormal kind="outline" @click="commandModalOpen = true">
     Create Note
     <ModalCreate
       v-model="commandModalOpen"

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" setup>
 import {
   Dialog as HeadlessDialog,
   DialogOverlay,
@@ -6,36 +6,19 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
-import { defineComponent } from "vue";
 
 import useNavigationItems from "@/composables/useNavigationItems";
 
-export default defineComponent({
-  components: {
-    XMarkIcon,
-    HeadlessDialog,
-    DialogOverlay,
-    TransitionChild,
-    TransitionRoot,
-  },
-  props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
-    setOpen: {
-      type: Function,
-      required: true,
-    },
-  },
-  setup() {
-    const { navigationItems } = useNavigationItems();
+import NavigationMobileItem from "./NavigationMobileItem.vue";
 
-    return {
-      sidebarItems: navigationItems,
-    };
-  },
-});
+defineProps<{
+  open: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setOpen: (open: boolean) => void;
+}>();
+
+const { navigationItems, externalLinks, isNavigationItemActive } =
+  useNavigationItems();
 </script>
 
 <template>
@@ -55,7 +38,7 @@ export default defineComponent({
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <DialogOverlay class="bg-opacity-75 fixed inset-0 bg-gray-600" />
+          <DialogOverlay class="fixed inset-0 bg-gray-600/75" />
         </TransitionChild>
         <TransitionChild
           as="template"
@@ -67,7 +50,7 @@ export default defineComponent({
           leave-to="-translate-x-full"
         >
           <div
-            class="relative flex w-full max-w-xs flex-1 flex-col bg-white pb-4"
+            class="bg-formcolor relative flex w-full max-w-xs flex-1 flex-col pb-4"
           >
             <TransitionChild
               as="template"
@@ -89,37 +72,41 @@ export default defineComponent({
                 </button>
               </div>
             </TransitionChild>
-            <div class="bg-formcolor flex h-16 shrink-0 items-center px-4">
+            <div
+              class="flex h-16 shrink-0 items-center border-b border-white/20 px-4"
+            >
               <router-link to="/" class="flex items-center space-x-2">
                 <img src="/logo.png" alt="Law&Orga" class="h-8 w-auto" />
                 <h1 class="text-2xl font-bold text-white">Law&Orga</h1>
               </router-link>
             </div>
-            <div class="h-0 flex-1 overflow-y-auto">
-              <nav class="space-y-1 px-2 py-2">
-                <template v-for="item in sidebarItems" :key="item.label">
-                  <div v-if="item.divider">
-                    <div class="w-full py-4">
-                      <div class="w-full border-t border-gray-100"></div>
-                    </div>
-                  </div>
-                  <component
-                    :is="item.is"
-                    v-else
-                    v-bind="item.attrs"
-                    to-active="bg-gray-100 hover:bg-gray-100 text-gray-700"
-                    class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                    @click="setOpen(false)"
-                  >
-                    <component
-                      :is="item.icon"
-                      class="mr-4 h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-500"
-                    />
-                    {{ item.label }}
-                  </component>
-                </template>
-              </nav>
-            </div>
+            <nav
+              aria-label="Main"
+              class="h-0 flex-1 space-y-1 overflow-y-auto px-2 py-2"
+            >
+              <NavigationMobileItem
+                v-for="item in navigationItems"
+                :key="item.label"
+                :item="item"
+                :active="isNavigationItemActive(item)"
+                @click="setOpen(false)"
+              />
+            </nav>
+            <nav
+              v-if="externalLinks.length"
+              aria-label="External links"
+              class="shrink-0 space-y-1 border-t border-white/20 px-2 py-2"
+            >
+              <span class="block px-2 text-xs text-white/50 uppercase">
+                External Links
+              </span>
+              <NavigationMobileItem
+                v-for="link in externalLinks"
+                :key="link.label"
+                :item="link"
+                @click="setOpen(false)"
+              />
+            </nav>
           </div>
         </TransitionChild>
         <div class="w-14 shrink-0" aria-hidden="true">

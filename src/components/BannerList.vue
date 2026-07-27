@@ -5,7 +5,7 @@ import { RouteLocationRaw } from "vue-router";
 import { useRunOptimizations } from "@/features/user/api/useRunOptimizations";
 import { useUserStore } from "@/store/user";
 
-import BannerWhite from "./BannerWhite.vue";
+import BannerAction from "./BannerAction.vue";
 
 interface Banner {
   text: string;
@@ -54,7 +54,7 @@ if (isOptimizationDue) {
     leave-to-class="opacity-0"
     leave-active-class="transition duration-150"
   >
-    <BannerWhite
+    <BannerAction
       v-if="banner"
       :text="banner.text"
       :to="banner.to"

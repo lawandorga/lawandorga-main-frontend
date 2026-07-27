@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PencilIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { toRefs } from "vue";
 
@@ -40,8 +41,12 @@ const { commandModalOpen, commandRequest } = useCmd(query);
 </script>
 
 <template>
-  <ButtonNormal kind="action" @click="commandModalOpen = true">
-    Update
+  <ButtonNormal
+    kind="action"
+    aria-label="Update Note"
+    @click="commandModalOpen = true"
+  >
+    <PencilIcon class="h-4 w-4 stroke-2" />
     <ModalUpdate
       v-model="commandModalOpen"
       :request="commandRequest"
