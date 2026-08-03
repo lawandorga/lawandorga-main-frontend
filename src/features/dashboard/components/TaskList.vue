@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { watch } from "vue";
 
+import BoxLoader from "@/components/BoxLoader.vue";
+import BoxSection from "@/components/BoxSection.vue";
 import TabControls from "@/components/TabControls.vue";
 import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 
@@ -20,69 +22,73 @@ const sortTasks = (tasks: Task[]) =>
 </script>
 
 <template>
-  <div>
-    <div class="mt-8 mb-4 flex justify-between">
-      <h2 class="items-baseline text-lg leading-6 font-semibold text-gray-700">
-        Tasks
-      </h2>
-    </div>
-  </div>
-  <div>
-    <TabControls
-      :tabs="[
-        { name: 'My Tasks', key: 'owntasks', highlighted: true },
-        { name: 'Created Tasks', key: 'createdtasks', highlighted: true },
-        { name: 'Completed Tasks', key: 'completedtasks' },
-      ]"
-    >
-      <template #owntasks>
-        <div class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw]">
-          <div
-            v-if="assignedOpenTasks && assignedOpenTasks.length"
-            class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
-          >
-            <SingleTask
-              v-for="task in sortTasks(assignedOpenTasks)"
-              :key="task.uuid"
-              :task="task"
-              :query="query"
-            />
-          </div>
-          <div v-else class="pt-4 text-gray-500">No tasks assigned to you.</div>
-        </div>
-      </template>
-      <template #createdtasks>
-        <div class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw]">
-          <div
-            v-if="createdOpenTasks && createdOpenTasks.length"
-            class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
-          >
-            <SingleTask
-              v-for="task in sortTasks(createdOpenTasks)"
-              :key="task.uuid"
-              :task="task"
-              :query="query"
-            />
-          </div>
-          <div v-else class="pt-4 text-gray-500">No tasks created by you.</div>
-        </div>
-      </template>
-      <template #completedtasks>
-        <div class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw]">
-          <div
-            v-if="completedTasks"
-            class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
-          >
-            <SingleTask
-              v-for="task in completedTasks"
-              :key="task.uuid"
-              :task="task"
-              :query="query"
-            />
-          </div>
-          <div v-else class="pt-4 text-gray-500">No completed tasks.</div>
-        </div>
-      </template>
-    </TabControls>
-  </div>
+  <BoxSection
+    title="Tasks"
+    :number-of-items="sortTasks(assignedOpenTasks)?.length"
+  >
+    <BoxLoader :show="!!sortTasks(assignedOpenTasks)" class="px-6 py-4">
+      <div>
+        <TabControls
+          :tabs="[
+            { name: 'My Tasks', key: 'owntasks' },
+            { name: 'Created Tasks', key: 'createdtasks' },
+            { name: 'Completed Tasks', key: 'completedtasks' },
+          ]"
+        >
+          <template #owntasks>
+            <div class="mx-[-50vw] min-h-40 px-[50vw]">
+              <div
+                v-if="assignedOpenTasks && assignedOpenTasks.length"
+                class="grid gap-6 py-8 2xl:grid-cols-2"
+              >
+                <SingleTask
+                  v-for="task in sortTasks(assignedOpenTasks)"
+                  :key="task.uuid"
+                  :task="task"
+                  :query="query"
+                />
+              </div>
+              <div v-else class="pt-4 text-gray-500">
+                No tasks assigned to you.
+              </div>
+            </div>
+          </template>
+          <template #createdtasks>
+            <div class="bg-gray mx-[-50vw] min-h-40 px-[50vw]">
+              <div
+                v-if="createdOpenTasks && createdOpenTasks.length"
+                class="grid gap-6 py-8 2xl:grid-cols-2"
+              >
+                <SingleTask
+                  v-for="task in sortTasks(createdOpenTasks)"
+                  :key="task.uuid"
+                  :task="task"
+                  :query="query"
+                />
+              </div>
+              <div v-else class="pt-4 text-gray-500">
+                No tasks created by you.
+              </div>
+            </div>
+          </template>
+          <template #completedtasks>
+            <div class="mx-[-50vw] min-h-40 px-[50vw]">
+              <div
+                v-if="completedTasks"
+                class="grid gap-6 py-8 2xl:grid-cols-2"
+              >
+                <SingleTask
+                  v-for="task in completedTasks"
+                  :key="task.uuid"
+                  :task="task"
+                  :query="query"
+                />
+              </div>
+              <div v-else class="pt-4 text-gray-500">No completed tasks.</div>
+            </div>
+          </template>
+        </TabControls>
+      </div>
+    </BoxLoader>
+  </BoxSection>
 </template>

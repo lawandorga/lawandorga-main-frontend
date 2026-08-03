@@ -2,12 +2,14 @@
 import {
   ExclamationCircleIcon,
   FolderOpenIcon,
+  CalendarIcon,
+  CheckCircleIcon,
 } from "@heroicons/vue/24/outline";
 import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
-import EditTask from "@/features/dashboard/actions/EditTask.vue";
+import UpdateTask from "@/features/dashboard/actions/UpdateTask.vue";
 import { formatDate } from "@/utils/date";
 
 import DeleteTask from "../actions/DeleteTask.vue";
@@ -54,16 +56,18 @@ const priorityLabel: Record<string, string> = {
 };
 
 const priorityColor: Record<string, string> = {
-  low: "text-gray-500",
-  medium: "text-blue-500",
-  high: "text-orange-500",
-  urgent: "text-red-600",
+  low: "rounded-md border border-blue-200 px-2 py-0.5 bg-blue-100 text-blue-800",
+  medium:
+    "rounded-md border border-yellow-200 px-2 py-0.5 bg-yellow-100 text-yellow-800",
+  high: "rounded-md border border-orange-200 px-2 py-0.5 bg-orange-100 text-orange-800",
+  urgent:
+    "rounded-md border border-red-200 px-2 py-0.5 bg-red-100 text-red-800",
 };
 </script>
 
 <template>
   <article
-    class="relative flex flex-col justify-between rounded bg-white px-6 pt-4 pb-4 shadow"
+    class="hover:border-formcolor/20 relative flex flex-col justify-between rounded rounded-lg border border-gray-200 bg-white p-5 px-6 pt-4 pb-4 shadow transition-all duration-200 hover:shadow-md"
   >
     <span
       v-if="task.is_new"
@@ -71,48 +75,67 @@ const priorityColor: Record<string, string> = {
       >New</span
     >
     <div>
-      <div class="flex items-start justify-between gap-3">
+      <div class="flex justify-between gap-3">
         <h3 class="text-formcolor mb-2 text-left font-semibold">
           {{ task.title }}
         </h3>
-        <EditTask
-          class="relative top-5"
-          v-if="!task.is_done"
-          :task="task"
-          :query="query"
-        />
-        <DeleteTask
-          class="relative top-5"
-          v-if="task.is_done"
-          :task="task"
-          :query="query"
-        />
+        <div class="flex items-center gap-2">
+          <UpdateTask
+            kind="outline"
+            v-if="!task.is_done"
+            :task="task"
+            :query="query"
+          />
+          <DeleteTask v-if="task.is_done" :task="task" :query="query" />
+          <ButtonNormal
+            kind="primary"
+            @click="task.is_done ? markAsUndone() : markAsDone()"
+          >
+            <CheckCircleIcon class="mr-1 h-4 w-4" v-if="!task.is_done" />
+            {{ task.is_done ? "Not done" : "Done" }}
+          </ButtonNormal>
+        </div>
       </div>
       <p
+        class="my-2 text-sm wrap-break-word whitespace-pre-line text-gray-700"
+        v-html="task.description"
+      />
+      <p
         v-if="task.page_url"
-        class="flex text-sm wrap-break-word whitespace-pre-line text-gray-700"
+        class="mt-2 flex text-xs wrap-break-word whitespace-pre-line text-gray-700"
       >
-        <FolderOpenIcon class="h-6 w-6 shrink-0 grow-0" />
-        <a :href="task.page_url" class="ml-2 underline">
+        <FolderOpenIcon class="h-4 w-4 shrink-0 grow-0" />
+        <a :href="task.page_url" class="ml-1 underline">
           {{ task.page_url }}
         </a>
       </p>
-      <p
-        class="mt-2 text-sm font-semibold wrap-break-word whitespace-pre-line text-gray-700"
-        v-html="task.description"
-      />
-      <p v-if="task.assignee_names.length" class="mt-2 text-sm text-gray-500">
-        Assignees: {{ task.assignee_names.join(", ") }}
-      </p>
-      <div v-if="task.tags_as_list.length" class="mt-2 flex flex-wrap gap-1">
-        <span
-          v-for="tag in task.tags_as_list"
-          :key="tag"
-          class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
-        >
-          {{ tag }}
-        </span>
+      <div class="my-2 flex justify-between">
+        <div>
+          <p class="text-xs">Assignees:</p>
+          <p
+            v-if="task.assignee_names.length"
+            class="mt-2 text-sm text-gray-500"
+          >
+            {{ task.assignee_names.join(", ") }}
+          </p>
+        </div>
+        <div class="basis-2/3">
+          <p class="text-xs">Progress:</p>
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <div class="h-2 w-full rounded-full bg-gray-200">
+              <div
+                class="h-2 rounded-full"
+                :class="task.progress === 100 ? 'bg-green-500' : 'bg-formcolor'"
+                :style="{ width: task.progress + '%' }"
+              />
+            </div>
+            <span>{{ task.progress }}%</span>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="mt-4 flex justify-between border-t-2 border-gray-200 pt-2">
       <div class="mt-2 flex items-center gap-3">
         <p
           class="text-sm font-semibold"
@@ -120,43 +143,26 @@ const priorityColor: Record<string, string> = {
         >
           {{ priorityLabel[task.priority] || task.priority }}
         </p>
-        <div class="flex items-center gap-2 text-sm text-gray-500">
-          <div class="h-2 w-24 rounded-full bg-gray-200">
-            <div
-              class="h-2 rounded-full"
-              :class="task.progress === 100 ? 'bg-green-500' : 'bg-formcolor'"
-              :style="{ width: task.progress + '%' }"
-            />
-          </div>
-          <span>{{ task.progress }}%</span>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4 flex border-t-2 pt-2">
-      <p
-        v-if="task.deadline"
-        class="flex items-center gap-1 text-sm font-semibold text-gray-500"
-        :class="{
-          'text-red-500':
-            task.deadline &&
-            new Date(task.deadline) < new Date() &&
-            !task.is_done,
-        }"
-      >
-        <ExclamationCircleIcon
-          v-if="new Date(task.deadline) < new Date() && !task.is_done"
-          class="w-4"
-        />
-        {{ formatDate(task.deadline, true) }}
-      </p>
-      <div class="ml-auto">
-        <ButtonNormal
-          kind="action"
-          class="mt-1"
-          @click="task.is_done ? markAsUndone() : markAsDone()"
+
+        <p
+          v-if="task.deadline"
+          class="flex items-center gap-1 text-sm font-semibold text-red-500"
         >
-          {{ task.is_done ? "Mark as not done" : "Mark as done" }}
-        </ButtonNormal>
+          <ExclamationCircleIcon v-if="!task.is_done" class="w-4" />
+          <CalendarIcon class="w-4" />
+          {{ formatDate(task.deadline, true) }}
+        </p>
+      </div>
+      <div>
+        <div v-if="task.tags_as_list.length" class="mt-2 flex flex-wrap gap-1">
+          <span
+            v-for="tag in task.tags_as_list"
+            :key="tag"
+            class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
+          >
+            {{ tag }}
+          </span>
+        </div>
       </div>
     </div>
   </article>
