@@ -6,6 +6,9 @@ import { FormHelptext, FormLabel } from "lorga-ui";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
 
 import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
+import FolderMention from "@/extensions/FolderMention";
+import createFolderMentionSuggestion from "@/extensions/folderMentionSuggestion";
+import { useFolderPage } from "@/features/folders/api/useFolderPage";
 
 const props = defineProps({
   label: {
@@ -39,6 +42,8 @@ const id = computed(() => `form-wysiwyg-${name.value}`);
 
 const emit = defineEmits(["update:modelValue"]);
 
+const { folderList } = useFolderPage();
+
 const editor = useEditor({
   editorProps: {
     attributes: {
@@ -51,6 +56,9 @@ const editor = useEditor({
     Link.configure({
       autolink: true,
       HTMLAttributes: { class: "underline text-formcolor" },
+    }),
+    FolderMention.configure({
+      suggestion: createFolderMentionSuggestion(() => folderList.value),
     }),
   ],
   onUpdate: () => {

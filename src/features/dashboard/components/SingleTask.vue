@@ -7,6 +7,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
+import { useRouter } from "vue-router";
 
 import NewBadge from "@/components/NewBadge.vue";
 import useCmd from "@/composables/useCmd";
@@ -24,6 +25,20 @@ const props = defineProps<{
 const { task } = toRefs(props);
 
 const { commandRequest } = useCmd(props.query);
+
+const router = useRouter();
+
+const onDescriptionClick = (event: MouseEvent) => {
+  const link = (event.target as HTMLElement).closest(
+    'a[data-type="folderMention"]',
+  );
+  if (!link) return;
+  event.preventDefault();
+  router.push({
+    name: "folders-detail",
+    params: { uuid: link.getAttribute("data-id") ?? "" },
+  });
+};
 
 const markAsDone = () => {
   commandRequest({
@@ -90,10 +105,13 @@ const priorityColor: Record<string, string> = {
           </div>
         </div>
       </div>
+      <!-- eslint-disable vue/no-v-html -->
       <p
         class="my-2 text-sm wrap-break-word whitespace-pre-line text-gray-700"
         v-html="task.description"
+        @click="onDescriptionClick"
       />
+      <!-- eslint-enable vue/no-v-html -->
       <p
         v-if="task.page_url"
         class="mt-2 flex text-xs wrap-break-word whitespace-pre-line text-gray-700"

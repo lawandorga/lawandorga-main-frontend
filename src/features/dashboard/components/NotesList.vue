@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CalendarIcon } from "@heroicons/vue/24/outline";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
@@ -14,10 +15,23 @@ import { formatDate } from "@/utils/date";
 
 const userStore = useUserStore();
 const { notes, notesQuery } = useNotes();
+const router = useRouter();
 
 const canManageNotes = computed(() =>
   userStore.hasPermission("dashboard__manage_notes"),
 );
+
+const onNoteClick = (event: MouseEvent) => {
+  const link = (event.target as HTMLElement).closest(
+    'a[data-type="folderMention"]',
+  );
+  if (!link) return;
+  event.preventDefault();
+  router.push({
+    name: "folders-detail",
+    params: { uuid: link.getAttribute("data-id") ?? "" },
+  });
+};
 </script>
 
 <template>
@@ -65,6 +79,7 @@ const canManageNotes = computed(() =>
           <p
             class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
             v-html="note.note"
+            @click="onNoteClick"
           ></p>
           <!-- eslint-enable vue/no-v-html -->
         </article>

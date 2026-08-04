@@ -84,7 +84,12 @@ const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
       }"
     >
       <template #description="{ data }">
-        <FormWysiwyg v-model="data.description" label="Description" />
+        <FormWysiwyg v-model="data.description" label="Description" /><i
+          class="text-sm text-gray-500"
+          >Hint: If you want to link to a folder you can hit #, type the
+          beginning of the folder and select the correct folder from the list of
+          suggestions.</i
+        >
       </template>
     </ModalCreate>
   </ButtonNormal>

@@ -42,6 +42,11 @@ const { commandModalOpen, commandRequest } = useCmd(query);
     >
       <template #custom="{ data }">
         <FormWysiwyg v-model="data.note" required label="Description" />
+        <i class="text-sm text-gray-500"
+          >Hint: If you want to link to a folder you can hit #, type the
+          beginning of the folder and select the correct folder from the list of
+          suggestions.</i
+        >
       </template>
     </ModalCreate>
   </ButtonNormal>
