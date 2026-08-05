@@ -8,6 +8,7 @@ import {
 import { ButtonNormal } from "lorga-ui";
 import { toRefs } from "vue";
 
+import NewBadge from "@/components/NewBadge.vue";
 import useCmd from "@/composables/useCmd";
 import UpdateTask from "@/features/dashboard/actions/UpdateTask.vue";
 import { formatDate } from "@/utils/date";
@@ -67,19 +68,15 @@ const priorityColor: Record<string, string> = {
 
 <template>
   <article
-    class="hover:border-formcolor/20 relative flex flex-col justify-between rounded rounded-lg border border-gray-200 bg-white p-5 px-6 pt-4 pb-4 shadow transition-all duration-200 hover:shadow-md"
+    class="hover:border-formcolor/20 relative flex flex-col justify-between rounded-lg border border-gray-200 bg-white px-6 py-4 shadow transition-all duration-200 hover:shadow-md"
   >
-    <span
-      v-if="task.is_new"
-      class="bg-formcolor absolute top-0 right-3 px-2 py-1 text-sm font-bold text-white"
-      >New</span
-    >
     <div>
-      <div class="flex justify-between gap-3">
+      <div class="grid grid-cols-2 justify-between gap-3">
         <h3 class="text-formcolor mb-2 text-left font-semibold">
           {{ task.title }}
+          <NewBadge v-if="task.is_new" />
         </h3>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center justify-end gap-2">
           <UpdateTask
             kind="outline"
             v-if="!task.is_done"
@@ -153,16 +150,14 @@ const priorityColor: Record<string, string> = {
           {{ formatDate(task.deadline, true) }}
         </p>
       </div>
-      <div>
-        <div v-if="task.tags_as_list.length" class="mt-2 flex flex-wrap gap-1">
-          <span
-            v-for="tag in task.tags_as_list"
-            :key="tag"
-            class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
-          >
-            {{ tag }}
-          </span>
-        </div>
+      <div v-if="task.tags_as_list.length" class="mt-2 flex flex-wrap gap-1">
+        <span
+          v-for="tag in task.tags_as_list"
+          :key="tag"
+          class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
+        >
+          {{ tag }}
+        </span>
       </div>
     </div>
   </article>

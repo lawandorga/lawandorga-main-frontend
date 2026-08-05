@@ -5,6 +5,7 @@ import useGet2 from "@/composables/useGet2";
 import { useUserStore } from "@/store/user";
 
 export interface TaskComment {
+  commentUuid: number;
   email: string;
   name: string;
   date: string;

@@ -80,86 +80,84 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
 <template>
   <ButtonNormal kind="outline" @click="commandModalOpen = true">
     Update
-    <ModalFree v-model="commandModalOpen" title="Update Task" width="max-w-3xl">
-      <TabControls
-        :tabs="[
-          { name: 'Update Task', key: 'update' },
-          { name: 'Comments', key: 'comments' },
-        ]"
-      >
-        <template #update>
-          <FormGenerator
-            :request="commandRequest"
-            :fields="taskFields"
-            :data="{
-              action: 'tasks/update_task',
-              task_id: task.uuid,
-              title: task.title,
-              description: task.description,
-              deadline: task.deadline ? task.deadline.slice(0, 16) : null,
-              assignee_ids: task.assignee_ids,
-              priority: task.priority,
-              progress: task.progress,
-              tags: task.tags_as_list,
-            }"
+  </ButtonNormal>
+  <ModalFree v-model="commandModalOpen" title="Update Task" width="max-w-3xl">
+    <TabControls
+      :tabs="[
+        { name: 'Update Task', key: 'update' },
+        { name: 'Comments', key: 'comments' },
+      ]"
+    >
+      <template #update>
+        <FormGenerator
+          :request="commandRequest"
+          :fields="taskFields"
+          :data="{
+            action: 'tasks/update_task',
+            task_id: task.uuid,
+            title: task.title,
+            description: task.description,
+            deadline: task.deadline ? task.deadline.slice(0, 16) : null,
+            assignee_ids: task.assignee_ids,
+            priority: task.priority,
+            progress: task.progress,
+            tags: task.tags_as_list,
+          }"
+        >
+          <template #custom
+            ><p class="mt-4">Created by: {{ task.creator_name }}</p></template
           >
-            <template #custom
-              ><p class="mt-4">Created by: {{ task.creator_name }}</p></template
-            >
-            <template #description="{ data }">
-              <FormWysiwyg v-model="data.description" label="Description" />
-            </template>
-          </FormGenerator>
-        </template>
-        <template #comments>
-          <FormGenerator
-            :request="commandRequestThatDoesNotCloseModal"
-            :fields="[
-              {
-                name: 'comments_display',
-                type: 'slot',
-              },
-              {
-                label: 'Add Comment',
-                name: 'comment',
-                required: false,
-                type: 'textarea',
-              },
-            ]"
-            :data="{
-              action: 'tasks/add_comment',
-              task_id: task.uuid,
-              comment: '',
-            }"
-            submit="Add Comment"
-          >
-            <template #comments_display>
-              <div v-if="task.comments && task.comments.length" class="mb-2">
-                <h4 class="mb-2 text-sm font-semibold text-gray-700">
-                  Comments
-                </h4>
-                <div class="space-y-2 overflow-y-auto">
-                  <div
-                    v-for="(c, index) in task.comments"
-                    :key="index"
-                    class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
-                  >
-                    <div class="flex items-baseline justify-between gap-3">
-                      <span class="font-semibold text-gray-600">{{
-                        c.name || c.email
-                      }}</span>
-                      <span v-if="c.date" class="text-xs text-gray-500">{{
-                        formatDate(c.date)
-                      }}</span>
-                    </div>
-                    <p class="mt-0.5 text-gray-700">{{ c.comment }}</p>
+          <template #description="{ data }">
+            <FormWysiwyg v-model="data.description" label="Description" />
+          </template>
+        </FormGenerator>
+      </template>
+      <template #comments>
+        <FormGenerator
+          :request="commandRequestThatDoesNotCloseModal"
+          :fields="[
+            {
+              name: 'comments_display',
+              type: 'slot',
+            },
+            {
+              label: 'Add Comment',
+              name: 'comment',
+              required: false,
+              type: 'textarea',
+            },
+          ]"
+          :data="{
+            action: 'tasks/add_comment',
+            task_id: task.uuid,
+            comment: '',
+          }"
+          submit="Add Comment"
+        >
+          <template #comments_display>
+            <div v-if="task.comments && task.comments.length" class="mb-2">
+              <h4 class="mb-2 text-sm font-semibold text-gray-700">Comments</h4>
+              <div class="space-y-2 overflow-y-auto">
+                <div
+                  v-for="comment in task.comments"
+                  :key="comment.commentUuid"
+                  class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
+                >
+                  <div class="flex items-baseline justify-between gap-3">
+                    <span class="font-semibold text-gray-600">{{
+                      comment.name || comment.email
+                    }}</span>
+                    <span v-if="comment.date" class="text-xs text-gray-500">{{
+                      formatDate(comment.date)
+                    }}</span>
                   </div>
+                  <p class="mt-0.5 text-gray-700">{{ comment.comment }}</p>
                 </div>
               </div>
-            </template>
-          </FormGenerator>
-        </template>
-      </TabControls>
-    </ModalFree>
-  </ButtonNormal>
+            </div>
+          </template>
+        </FormGenerator>
+      </template>
+    </TabControls>
+  </ModalFree>
 </template>
