@@ -83,6 +83,7 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
   </ButtonNormal>
   <ModalFree v-model="commandModalOpen" title="Update Task" width="max-w-3xl">
     <TabControls
+      :should-not-update-url="true"
       :tabs="[
         { name: 'Update Task', key: 'update' },
         { name: 'Comments', key: 'comments' },
