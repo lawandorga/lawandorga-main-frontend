@@ -26,6 +26,7 @@ import {
 } from "../constants.js";
 import { getEventAccessKind } from "../utils/eventAccess";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
+import CalendarReminders from "./CalendarReminders.vue";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -317,6 +318,10 @@ const hasVisibilityDetails = computed(
         </CalendarDetailRow>
       </dl>
 
+      <div class="mt-5 border-t border-gray-100 pt-5">
+        <CalendarReminders :event="event" :query="query" />
+      </div>
+
       <div class="mt-5 flex items-center justify-between gap-3">
         <ButtonNormal
           v-if="canDelete"
@@ -336,18 +341,7 @@ const hasVisibilityDetails = computed(
   <template v-if="event">
     <UpdateEvent
       :query="query"
-      :event-uuid="event.uuid"
-      :event-title="event.title"
-      :event-type="event.event_type"
-      :start-time="event.start_time"
-      :end-time="event.end_time"
-      :is-all-day="event.is_all_day"
-      :location="event.location"
-      :description="event.description"
-      :recurrence-rule="event.recurrence_rule"
-      :recurrence-until="event.recurrence_until"
-      :view-grant-targets="event.view_grant_targets"
-      :edit-grant-targets="event.edit_grant_targets"
+      :event="event"
       :open-signal="updateOpenSignal"
     />
     <DeleteEvent

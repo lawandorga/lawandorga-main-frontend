@@ -15,7 +15,7 @@ const csrfCookie = getCookie("csrftoken");
 </script>
 
 <template>
-  <Menu ref="menu" v-slot="{ close }" as="div" class="relative ml-3">
+  <Menu ref="menu" v-slot="{ close }" as="div" class="relative">
     <NavigationDropdownCloser :close="close" />
     <div>
       <MenuButton

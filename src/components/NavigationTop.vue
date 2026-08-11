@@ -3,6 +3,7 @@ import { Bars3BottomLeftIcon } from "@heroicons/vue/24/outline";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
+import NotificationBell from "@/features/calendar/components/NotificationBell.vue";
 import CreateTask from "@/features/dashboard/actions/CreateTask.vue";
 import { useUserStore } from "@/store/user";
 
@@ -50,6 +51,7 @@ const isInsideApp = computed(() => {
     </div>
     <div class="ml-auto flex items-center gap-4">
       <CreateTask v-if="isInsideApp" />
+      <NotificationBell v-if="isInsideApp" />
       <NavigationDropdown />
     </div>
   </div>

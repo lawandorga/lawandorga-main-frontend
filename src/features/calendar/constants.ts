@@ -24,3 +24,28 @@ export const RECURRENCE_FREQUENCIES = [
   { rule: "FREQ=MONTHLY", label: "Monthly", fullCalendarFreq: "monthly" },
   { rule: "FREQ=YEARLY", label: "Yearly", fullCalendarFreq: "yearly" },
 ] as const;
+
+export const REMINDER_OFFSET_OPTIONS = [
+  { minutes: 0, label: "At start of event" },
+  { minutes: 10, label: "10 minutes before" },
+  { minutes: 30, label: "30 minutes before" },
+  { minutes: 60, label: "1 hour before" },
+  { minutes: 1440, label: "1 day before" },
+] as const;
+
+export const REMINDER_METHOD_OPTIONS = [
+  { value: "EMAIL", label: "Email" },
+  { value: "IN_APP", label: "In-app" },
+] as const;
+
+export type ReminderMethod = (typeof REMINDER_METHOD_OPTIONS)[number]["value"];
+
+export interface ReminderSettings {
+  minutes_before: number;
+  method: ReminderMethod;
+}
+
+export const DEFAULT_REMINDER: ReminderSettings = {
+  minutes_before: 30,
+  method: "IN_APP",
+};
