@@ -35,10 +35,7 @@ const selectValue = (event: Event): string =>
         :key="reminder.key"
         class="flex items-center gap-2"
       >
-        <label
-          :for="`reminder-offset-${reminder.key}`"
-          class="sr-only"
-        >
+        <label :for="`reminder-offset-${reminder.key}`" class="sr-only">
           Reminder time
         </label>
         <select
@@ -59,10 +56,7 @@ const selectValue = (event: Event): string =>
             {{ option.label }}
           </option>
         </select>
-        <label
-          :for="`reminder-method-${reminder.key}`"
-          class="sr-only"
-        >
+        <label :for="`reminder-method-${reminder.key}`" class="sr-only">
           Reminder method
         </label>
         <select
