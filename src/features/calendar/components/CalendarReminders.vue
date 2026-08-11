@@ -4,12 +4,7 @@ import { computed, ref } from "vue";
 import useCmd from "@/composables/useCmd";
 
 import type { CalendarEvent } from "../api/useCalendarEvents";
-import {
-  DEFAULT_REMINDER,
-  REMINDER_METHOD_OPTIONS,
-  REMINDER_OFFSET_OPTIONS,
-  type ReminderSettings,
-} from "../constants";
+import { REMINDER_CANDIDATES, type ReminderSettings } from "../constants";
 import ReminderListEditor, { type ReminderRow } from "./ReminderListEditor.vue";
 
 const props = defineProps<{
@@ -31,31 +26,34 @@ const reminderRows = computed<ReminderRow[]>(() =>
     })),
 );
 
-const findFreeReminderSlot = (): ReminderSettings | null => {
-  const taken = new Set(
-    props.event.own_reminders.map(
-      (reminder) => `${reminder.method}:${reminder.minutes_before}`,
-    ),
-  );
-  const candidates: ReminderSettings[] = [
-    DEFAULT_REMINDER,
-    ...REMINDER_OFFSET_OPTIONS.flatMap((offset) =>
-      REMINDER_METHOD_OPTIONS.map((method) => ({
-        minutes_before: offset.minutes,
-        method: method.value,
-      })),
-    ),
-  ];
+const MINUTE_IN_MS = 60 * 1000;
+
+const slotKey = (slot: ReminderSettings): string =>
+  `${slot.method}:${slot.minutes_before}`;
+
+const nextFreeReminderSlot = computed<ReminderSettings | null>(() => {
+  const taken = new Set(props.event.own_reminders.map(slotKey));
+  const minutesUntilStart =
+    (new Date(props.event.start_time).getTime() - Date.now()) / MINUTE_IN_MS;
   return (
-    candidates.find(
+    REMINDER_CANDIDATES.find(
       (candidate) =>
-        !taken.has(`${candidate.method}:${candidate.minutes_before}`),
+        !taken.has(slotKey(candidate)) &&
+        candidate.minutes_before < minutesUntilStart,
     ) ?? null
   );
-};
+});
+
+const reminderNotice = computed(() => {
+  if (isRecurring.value)
+    return "Reminders for repeating events are coming soon.";
+  if (!nextFreeReminderSlot.value)
+    return "No reminder times are available for this event.";
+  return "";
+});
 
 const addReminder = () => {
-  const slot = findFreeReminderSlot();
+  const slot = nextFreeReminderSlot.value;
   if (!slot) return;
   commandRequest({
     action: "calendar/create_reminder",
@@ -65,7 +63,7 @@ const addReminder = () => {
   }).catch(() => undefined); // the command error handler already alerts
 };
 
-const shouldRemountEditor = ref(false);
+const editorRemountKey = ref(0);
 
 const updateReminder = (
   key: string | number,
@@ -76,7 +74,8 @@ const updateReminder = (
     reminder_uuid: key,
     ...patch,
   }).catch(() => {
-    shouldRemountEditor.value = !shouldRemountEditor.value;
+    // a rejected update leaves the dropdown on the value the user picked
+    editorRemountKey.value += 1;
   });
 };
 
@@ -91,14 +90,15 @@ const removeReminder = (key: string | number) => {
 <template>
   <div class="space-y-3">
     <ReminderListEditor
+      :key="editorRemountKey"
       :reminders="reminderRows"
-      :add-disabled="isRecurring"
+      :addingDisabled="!!reminderNotice"
       @add="addReminder"
       @update="updateReminder"
       @remove="removeReminder"
     />
-    <p v-if="isRecurring" class="text-sm text-gray-500">
-      Reminders for repeating events are coming soon.
+    <p v-if="reminderNotice" class="text-sm text-gray-500">
+      {{ reminderNotice }}
     </p>
   </div>
 </template>

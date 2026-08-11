@@ -49,3 +49,14 @@ export const DEFAULT_REMINDER: ReminderSettings = {
   minutes_before: 30,
   method: "IN_APP",
 };
+
+// ordered by preference: the first entry that is still free and not in the past wins
+export const REMINDER_CANDIDATES: ReminderSettings[] = [
+  DEFAULT_REMINDER,
+  ...REMINDER_OFFSET_OPTIONS.flatMap((offset) =>
+    REMINDER_METHOD_OPTIONS.map((method) => ({
+      minutes_before: offset.minutes,
+      method: method.value,
+    })),
+  ),
+];

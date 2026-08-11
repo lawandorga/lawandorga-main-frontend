@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { BellAlertIcon, TrashIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal } from "lorga-ui";
 
 import type { ReminderMethod, ReminderSettings } from "../constants";
 import { REMINDER_METHOD_OPTIONS, REMINDER_OFFSET_OPTIONS } from "../constants";
@@ -10,6 +11,7 @@ export interface ReminderRow extends ReminderSettings {
 
 defineProps<{
   reminders: ReminderRow[];
+  addingDisabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -88,12 +90,8 @@ const selectValue = (event: Event): string =>
       </li>
     </ul>
 
-    <button
-      type="button"
-      class="text-sm font-medium text-blue-600 hover:text-blue-800"
-      @click="emit('add')"
-    >
+    <ButtonNormal kind="action" :disabled="addingDisabled" @click="emit('add')">
       + Add reminder
-    </button>
+    </ButtonNormal>
   </div>
 </template>
