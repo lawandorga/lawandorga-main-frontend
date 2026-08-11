@@ -6,7 +6,7 @@ interface Article {
   id: number;
   title: string;
   preview: string;
-  date: Date;
+  date: string;
 }
 
 export function useArticles() {

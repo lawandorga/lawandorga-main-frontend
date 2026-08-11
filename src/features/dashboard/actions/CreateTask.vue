@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PlusIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
@@ -66,7 +67,8 @@ const { commandModalOpen, commandRequest } = useCmd(notifyTasksChanged);
 </script>
 
 <template>
-  <ButtonNormal kind="secondary" @click="commandModalOpen = true">
+  <ButtonNormal kind="primary" @click="commandModalOpen = true">
+    <PlusIcon class="mr-2 h-6 w-6"></PlusIcon>
     Create Task
     <ModalCreate
       v-model="commandModalOpen"

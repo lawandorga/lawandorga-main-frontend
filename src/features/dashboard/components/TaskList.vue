@@ -20,14 +20,14 @@ const sortTasks = (tasks: Task[]) =>
 </script>
 
 <template>
-  <div class="lg:col-span-2 xl:col-span-3">
+  <div>
     <div class="mt-8 mb-4 flex justify-between">
       <h2 class="items-baseline text-lg leading-6 font-semibold text-gray-700">
         Tasks
       </h2>
     </div>
   </div>
-  <div class="lg:col-span-2 xl:col-span-3">
+  <div>
     <TabControls
       :tabs="[
         { name: 'My Tasks', key: 'owntasks', highlighted: true },
@@ -36,9 +36,7 @@ const sortTasks = (tasks: Task[]) =>
       ]"
     >
       <template #owntasks>
-        <div
-          class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
-        >
+        <div class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw]">
           <div
             v-if="assignedOpenTasks && assignedOpenTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
@@ -50,15 +48,11 @@ const sortTasks = (tasks: Task[]) =>
               :query="query"
             />
           </div>
-          <div v-else class="col-span-3 pt-4 text-gray-500">
-            No tasks assigned to you.
-          </div>
+          <div v-else class="pt-4 text-gray-500">No tasks assigned to you.</div>
         </div>
       </template>
       <template #createdtasks>
-        <div
-          class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
-        >
+        <div class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw]">
           <div
             v-if="createdOpenTasks && createdOpenTasks.length"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
@@ -70,15 +64,11 @@ const sortTasks = (tasks: Task[]) =>
               :query="query"
             />
           </div>
-          <div v-else class="col-span-3 pt-4 text-gray-500">
-            No tasks created by you.
-          </div>
+          <div v-else class="pt-4 text-gray-500">No tasks created by you.</div>
         </div>
       </template>
       <template #completedtasks>
-        <div
-          class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw] lg:col-span-2 xl:col-span-3"
-        >
+        <div class="mx-[-50vw] min-h-40 bg-gray-300 px-[50vw]">
           <div
             v-if="completedTasks"
             class="grid gap-6 py-8 lg:grid-cols-2 xl:grid-cols-3"
@@ -90,9 +80,7 @@ const sortTasks = (tasks: Task[]) =>
               :query="query"
             />
           </div>
-          <div v-else class="col-span-3 pt-4 text-gray-500">
-            No completed tasks.
-          </div>
+          <div v-else class="pt-4 text-gray-500">No completed tasks.</div>
         </div>
       </template>
     </TabControls>
