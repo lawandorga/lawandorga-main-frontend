@@ -152,9 +152,10 @@ watch(
         All day
       </label>
 
-      <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
-        Repeat
+      <div class="flex items-center gap-2 text-sm font-medium text-gray-700">
+        <label for="recurrence-rule">Repeat</label>
         <select
+          id="recurrence-rule"
           v-model="recurrenceRule"
           class="focus:border-formcolor focus:ring-formcolor rounded-md border border-gray-300 py-1 pr-8 pl-2 text-sm text-gray-700"
         >
@@ -166,7 +167,7 @@ watch(
             {{ option.label }}
           </option>
         </select>
-      </label>
+      </div>
     </div>
 
     <FormInput

@@ -35,7 +35,14 @@ const selectValue = (event: Event): string =>
         :key="reminder.key"
         class="flex items-center gap-2"
       >
+        <label
+          :for="`reminder-offset-${reminder.key}`"
+          class="sr-only"
+        >
+          Reminder time
+        </label>
         <select
+          :id="`reminder-offset-${reminder.key}`"
           :value="reminder.minutes_before"
           class="focus:border-formcolor flex-1 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-700 focus:outline-none"
           @change="
@@ -52,7 +59,14 @@ const selectValue = (event: Event): string =>
             {{ option.label }}
           </option>
         </select>
+        <label
+          :for="`reminder-method-${reminder.key}`"
+          class="sr-only"
+        >
+          Reminder method
+        </label>
         <select
+          :id="`reminder-method-${reminder.key}`"
           :value="reminder.method"
           class="focus:border-formcolor rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-700 focus:outline-none"
           @change="
