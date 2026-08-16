@@ -25,7 +25,7 @@ const { commandRequest, commandModalOpen } = useCmd(query.value);
         label: 'Explanation',
         name: 'explanation',
         type: 'textarea',
-        required: false,
+        required: true,
       },
     ]"
     :data="{
