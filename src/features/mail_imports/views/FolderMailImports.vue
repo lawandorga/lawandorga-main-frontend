@@ -15,6 +15,7 @@ import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import useCmd from "@/composables/useCmd";
 import { DisplayedFieldsObject, Sorting } from "@/features/mail_imports/types";
+import { formatDate } from "@/utils/date.js";
 
 import CopyCCAdressFromFolder from "../actions/CopyCCAdressFromFolder.vue";
 import { ImportedMail } from "../api/useMailImports";
@@ -68,9 +69,9 @@ const sortedMails = computed(() => {
   return [...searchResults.value]
     .sort((mail, previousMail) => {
       if (sorting.value === "asc") {
-        return mail.sending_datetime > previousMail.sending_datetime ? -1 : 1;
-      } else {
         return mail.sending_datetime > previousMail.sending_datetime ? 1 : -1;
+      } else {
+        return mail.sending_datetime > previousMail.sending_datetime ? -1 : 1;
       }
     })
     .sort((mail) => (mail.is_pinned ? -1 : 1));
@@ -140,23 +141,6 @@ const toggleMailPinned = (uuid: string) => {
     mail_uuid: uuid,
   });
 };
-
-const dateFormatWithYear: Intl.DateTimeFormatOptions = {
-  day: "2-digit",
-  month: "long",
-  year: "2-digit",
-};
-const dateFormatWithoutYear: Intl.DateTimeFormatOptions = {
-  day: "2-digit",
-  month: "long",
-};
-const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString(
-    "de-DE",
-    new Date(date).getFullYear() !== new Date().getFullYear()
-      ? dateFormatWithYear
-      : dateFormatWithoutYear,
-  );
 </script>
 
 <template>
