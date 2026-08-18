@@ -74,7 +74,10 @@ const sortedMails = computed(() => {
         return mail.sending_datetime > previousMail.sending_datetime ? -1 : 1;
       }
     })
-    .sort((mail) => (mail.is_pinned ? -1 : 1));
+    .sort(
+      (mail, previousMail) =>
+        Number(previousMail.is_pinned) - Number(mail.is_pinned),
+    );
 });
 
 const checkedMails = ref<string[]>([]);
