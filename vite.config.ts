@@ -1,8 +1,9 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
 import dns from "dns";
+import { resolve } from "path";
+
 import tailwindcss from "@tailwindcss/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
 // sets localhost as default instead of 127.0.0.1
 dns.setDefaultResultOrder("verbatim");
@@ -27,7 +28,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
+      "@": resolve(import.meta.dirname, "src"),
     },
   },
   ...vitestConfig,
