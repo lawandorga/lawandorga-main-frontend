@@ -71,18 +71,13 @@ const priorityColor: Record<string, string> = {
     class="hover:border-formcolor/20 relative flex flex-col justify-between rounded-lg border border-gray-200 bg-white px-6 py-4 shadow transition-all duration-200 hover:shadow-md"
   >
     <div>
-      <div class="grid grid-cols-2 justify-between gap-3">
+      <div class="flex justify-between">
         <h3 class="text-formcolor mb-2 text-left font-semibold">
+          <NewBadge class="mr-1" v-if="task.is_new" />
           {{ task.title }}
-          <NewBadge v-if="task.is_new" />
         </h3>
         <div class="flex items-center justify-end gap-2">
-          <UpdateTask
-            kind="outline"
-            v-if="!task.is_done"
-            :task="task"
-            :query="query"
-          />
+          <UpdateTask v-if="!task.is_done" :task="task" :query="query" />
           <DeleteTask v-if="task.is_done" :task="task" :query="query" />
           <ButtonNormal
             kind="primary"
@@ -143,9 +138,18 @@ const priorityColor: Record<string, string> = {
 
         <p
           v-if="task.deadline"
-          class="flex items-center gap-1 text-sm font-semibold text-red-500"
+          class="flex items-center gap-1 text-sm font-semibold text-gray-500"
+          :class="{
+            'text-red-500':
+              task.deadline &&
+              new Date(task.deadline) < new Date() &&
+              !task.is_done,
+          }"
         >
-          <ExclamationCircleIcon v-if="!task.is_done" class="w-4" />
+          <ExclamationCircleIcon
+            v-if="new Date(task.deadline) < new Date() && !task.is_done"
+            class="w-4"
+          />
           <CalendarIcon class="w-4" />
           {{ formatDate(task.deadline, true) }}
         </p>

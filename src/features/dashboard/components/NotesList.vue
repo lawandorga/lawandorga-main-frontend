@@ -42,8 +42,8 @@ const canManageNotes = computed(() =>
           </div>
           <div class="flex justify-between">
             <h3 class="mb-2 flex items-center gap-2 font-medium text-gray-700">
+              <NewBadge class="mr-1" v-if="note.is_new" />
               {{ note.title }}
-              <NewBadge v-if="note.is_new" />
             </h3>
             <div v-if="canManageNotes" class="flex gap-6">
               <UpdateNote

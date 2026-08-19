@@ -9,7 +9,7 @@ import SingleTask from "@/features/dashboard/components/SingleTask.vue";
 import { Task, useTasks } from "../api/useTasks";
 import { useTasksChanged } from "../api/useTasksChanged";
 
-const { completedTasks, assignedOpenTasks, createdOpenTasks, query } =
+const { tasks, completedTasks, assignedOpenTasks, createdOpenTasks, query } =
   useTasks();
 
 const { tasksChanged } = useTasksChanged();
@@ -23,7 +23,7 @@ const sortTasks = (tasks: Task[]) =>
 
 <template>
   <BoxSection title="Tasks" :number-of-items="assignedOpenTasks?.length">
-    <BoxLoader :show="!!assignedOpenTasks" class="px-6 py-4">
+    <BoxLoader :show="!!tasks" class="px-6 py-4">
       <div>
         <TabControls
           :tabs="[

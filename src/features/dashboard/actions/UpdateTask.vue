@@ -83,7 +83,7 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
   </ButtonNormal>
   <ModalFree v-model="commandModalOpen" title="Update Task" width="max-w-3xl">
     <TabControls
-      :should-not-update-url="true"
+      should-not-update-url
       :tabs="[
         { name: 'Update Task', key: 'update' },
         { name: 'Comments', key: 'comments' },
@@ -141,9 +141,10 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
               <div class="space-y-2 overflow-y-auto">
                 <div
                   v-for="comment in task.comments"
-                  :key="comment.commentUuid"
+                  :key="comment.commentId"
                   class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
                 >
+                  {{ comment.commentId }}
                   <div class="flex items-baseline justify-between gap-3">
                     <span class="font-semibold text-gray-600">{{
                       comment.name || comment.email
