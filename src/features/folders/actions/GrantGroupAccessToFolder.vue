@@ -3,16 +3,18 @@ import { ButtonNormal, ModalUpdate, types } from "lorga-ui";
 import { computed, toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
-
-import { FolderGroup } from "../api/useFolderPage";
+import { useGroups } from "@/features/org/api/useGroups";
 
 const props = defineProps<{
   folderUuid: string;
   query: () => void;
-  availableGroups: FolderGroup[];
 }>();
 
-const { query, availableGroups } = toRefs(props);
+const { query } = toRefs(props);
+
+const { commandRequest, commandModalOpen } = useCmd(query.value);
+
+const { formGroups } = useGroups({ doQuery: commandModalOpen });
 
 const grantAccessFields = computed<types.FormField[]>(() => {
   return [
@@ -21,12 +23,10 @@ const grantAccessFields = computed<types.FormField[]>(() => {
       name: "group_uuid",
       type: "select",
       required: true,
-      options: availableGroups?.value ? availableGroups.value : [],
+      options: formGroups.value,
     },
-  ] as types.FormField[];
+  ];
 });
-
-const { commandRequest, commandModalOpen } = useCmd(query.value);
 </script>
 
 <template>

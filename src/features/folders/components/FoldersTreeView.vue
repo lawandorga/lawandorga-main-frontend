@@ -12,17 +12,11 @@ import FoldersToggleInheritance from "@/features/folders/actions/ToggleInheritan
 import FoldersTree from "@/features/folders/components/FoldersTree.vue";
 import TableFolderPersonsWithAccess from "@/features/folders/components/TableFolderPersonsWithAccess.vue";
 
-import {
-  Folder,
-  FolderGroup,
-  FolderItem,
-  FolderPerson,
-} from "../api/useFolderPage";
+import { Folder, FolderItem, FolderPerson } from "../api/useFolderPage";
 import TableFolderGroupsWithAccess from "./TableFolderGroupsWithAccess.vue";
 
 const props = defineProps<{
   availablePersons: FolderPerson[];
-  availableGroups: FolderGroup[];
   folderItems: FolderItem[];
   query: () => void;
 }>();
@@ -149,11 +143,7 @@ const selectedItem = computed<FolderItem | null>(() => {
           <h3 class="mt-4 mb-2 font-medium text-gray-800">
             Groups with access:
           </h3>
-          <TableFolderGroupsWithAccess
-            :query="query"
-            :available-groups="availableGroups"
-            :item="selectedItem"
-          />
+          <TableFolderGroupsWithAccess :query="query" :item="selectedItem" />
         </div>
       </div>
     </div>

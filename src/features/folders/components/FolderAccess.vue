@@ -2,6 +2,8 @@
 import { TableGenerator } from "lorga-ui";
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import FoldersGrantAccessGroup from "@/features/folders/actions/GrantGroupAccessToFolder.vue";
+import FoldersGrantAccess from "@/features/folders/actions/GrantUserAccessToFolder.vue";
 import FoldersRevokeAccessUserSimple from "@/features/folders/actions/RevokeAccessFromUserSimple.vue";
 
 import FoldersRevokeAccessGroupSimple from "../actions/RevokeAccessFromGroupSimple.vue";
@@ -31,6 +33,9 @@ defineProps<{
       ]"
       :data="access"
     >
+      <template #head-action>
+        <FoldersGrantAccess :folder-uuid="folderUuid" :query="query" />
+      </template>
       <template #action="{ i }">
         <FoldersRevokeAccessUserSimple
           v-if="i.actions.includes('REVOKE_ACCESS')"
@@ -48,6 +53,9 @@ defineProps<{
       ]"
       :data="groupAccess"
     >
+      <template #head-action>
+        <FoldersGrantAccessGroup :folder-uuid="folderUuid" :query="query" />
+      </template>
       <template #action="{ i }">
         <FoldersRevokeAccessGroupSimple
           v-if="i.actions.includes('REVOKE_ACCESS')"

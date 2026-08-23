@@ -55,7 +55,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       }`,
       type: "FOLDER",
       children: [
-        { name: "Users With Access", type: "ACCESS", id: "ACCESS" },
+        { name: "Access", type: "ACCESS", id: "ACCESS" },
         { name: "Subfolders", type: "SUBFOLDER", id: "SUBFOLDER" },
       ],
       buttons: [changeNameButton.value],

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { TableGenerator } from "lorga-ui";
 
-import FoldersGrantAccessGroup from "../actions/GrantGroupAccessToFolder.vue";
-import FoldersRevokeAccessGroup from "../actions/RevokeAccessFromGroup.vue";
-import { FolderGroup, FolderItem } from "../api/useFolderPage";
+import GrantGroupAccessToFolder from "../actions/GrantGroupAccessToFolder.vue";
+import RevokeAccessFromGroup from "../actions/RevokeAccessFromGroup.vue";
+import { FolderItem } from "../api/useFolderPage";
 
 defineProps<{
   query: () => void;
   item: FolderItem;
-  availableGroups: FolderGroup[];
 }>();
 </script>
 
@@ -22,14 +21,13 @@ defineProps<{
     ]"
   >
     <template #head-action>
-      <FoldersGrantAccessGroup
+      <GrantGroupAccessToFolder
         :folder-uuid="item.folder.uuid"
         :query="query"
-        :available-groups="availableGroups"
       />
     </template>
     <template #action="access">
-      <FoldersRevokeAccessGroup
+      <RevokeAccessFromGroup
         v-if="access.actions.includes('REVOKE_ACCESS')"
         :query="query"
         :groups="item.group_access"

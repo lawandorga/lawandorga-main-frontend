@@ -1,11 +1,12 @@
-import { computed, ref, Ref } from "vue";
+import { computed, ref, Ref, unref, watch } from "vue";
 
-import useGet2 from "@/composables/useGet2";
+import useQuery2 from "@/composables/useQuery2";
 
 export type ActivityState = "green" | "yellow" | "orange" | "red";
 
 export interface OrgUserSmall {
   id: number;
+  uuid: string;
   user_id: number;
   phone_number: string | null;
   group_names: string[];
@@ -19,24 +20,42 @@ export interface OrgUserSmall {
   activity_state: ActivityState;
 }
 
-const profiles = ref(null) as Ref<OrgUserSmall[] | null>;
+export function useProfiles({
+  doQuery = ref(true),
+}: { doQuery?: Ref<boolean> } = {}) {
+  const profiles = ref<OrgUserSmall[]>();
 
-const formProfiles = computed(() => {
-  if (!profiles.value) return [];
-  return profiles.value.map((profile) => ({
-    name: profile.name,
-    value: profile.id,
-  }));
-});
+  const formProfiles = computed(() => {
+    if (!profiles.value) return [];
+    return profiles.value.map((profile) => ({
+      name: profile.name,
+      value: profile.id,
+    }));
+  });
 
-let profilesQuery: (() => void) | null = null;
+  const formProfilesUuid = computed(() => {
+    if (!profiles.value) return [];
+    return profiles.value.map((profile) => ({
+      name: profile.name,
+      value: profile.uuid,
+    }));
+  });
 
-export function useProfiles() {
-  if (!profilesQuery) profilesQuery = useGet2("api/auth/org_users/", profiles);
+  const query = useQuery2("api/auth/org_users/", profiles);
+  watch(
+    doQuery,
+    () => {
+      if (doQuery.value) {
+        query();
+      }
+    },
+    { immediate: true },
+  );
 
   return {
     profiles,
     formProfiles,
-    query: profilesQuery,
+    formProfilesUuid,
+    query,
   };
 }
