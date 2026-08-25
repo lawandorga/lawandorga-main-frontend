@@ -152,7 +152,7 @@ const accessFilters = computed<FilterOption<EventSource>[]>(() =>
             'flex cursor-pointer items-center gap-2 rounded-md border px-2.5 py-1.5 text-left text-xs transition duration-200 ease-out hover:-translate-y-px',
             filter.selected
               ? 'border-formcolor bg-formcolor font-medium text-white shadow-[0_8px_22px_-20px_rgba(0,60,77,0.9)] hover:border-(--color-formcolor-hover) hover:bg-(--color-formcolor-hover)'
-              : 'border-(--color-button-border) bg-(--fc-neutral-bg-color) text-gray-700 hover:border-(--color-button-border) hover:bg-(--color-button-border)',
+              : 'border-(--color-button-border) bg-(--color-neutral-bg) text-gray-700 hover:border-(--color-button-border) hover:bg-(--color-button-border)',
           ]"
           @click="toggleEventType(filter.value)"
         >
@@ -186,7 +186,7 @@ const accessFilters = computed<FilterOption<EventSource>[]>(() =>
             'flex cursor-pointer items-center gap-2 rounded-md border px-2.5 py-1.5 text-left text-xs transition duration-200 ease-out hover:-translate-y-px',
             filter.selected
               ? 'border-formcolor bg-formcolor font-medium text-white shadow-[0_8px_22px_-20px_rgba(0,60,77,0.9)] hover:border-(--color-formcolor-hover) hover:bg-(--color-formcolor-hover)'
-              : 'border-(--color-button-border) bg-(--fc-neutral-bg-color) text-gray-700 hover:border-(--color-button-border) hover:bg-(--color-button-border)',
+              : 'border-(--color-button-border) bg-(--color-neutral-bg) text-gray-700 hover:border-(--color-button-border) hover:bg-(--color-button-border)',
           ]"
           @click="toggleAccessKind(filter.value)"
         >

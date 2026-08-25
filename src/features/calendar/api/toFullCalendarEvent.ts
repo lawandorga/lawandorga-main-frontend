@@ -1,4 +1,4 @@
-import type { EventInput } from "@fullcalendar/core";
+import type { EventInput } from "@fullcalendar/vue3";
 
 import { addDays, dateWithTimeOf } from "@/utils/date";
 
@@ -7,6 +7,7 @@ import {
   RECURRENCE_FREQUENCIES,
   TYPE_TINT_ALPHA,
 } from "../constants";
+import { getEventAccessKind } from "../utils/eventAccess";
 import type { CalendarEvent } from "./useCalendarEvents";
 
 const MILLISECONDS_PER_MINUTE = 60000;
@@ -113,10 +114,12 @@ export const toFullCalendarEvent = (
     title: event.title,
     allDay: event.is_all_day,
     editable: isEditable,
-    backgroundColor: `${color}${TYPE_TINT_ALPHA}`,
-    borderColor: color, // TODO: calendar source color in the future
-    textColor: color,
-    extendedProps: { calendarEvent: event },
+    color: `${color}${TYPE_TINT_ALPHA}`,
+    contrastColor: color,
+    extendedProps: {
+      calendarEvent: event,
+      eventSource: getEventAccessKind(event),
+    },
   };
 
   return event.is_all_day
