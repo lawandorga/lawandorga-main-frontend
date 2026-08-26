@@ -59,7 +59,7 @@
     "rrule": "^2.8.1",
     "tailwindcss": "==4.*",
     "temporal-polyfill": "^1.0.4",
-    "typescript": "==7.*",
+    "typescript": "==6.*",
     "uuid": "==14.*",
     "vite": "==8.2.*",
     "vitest": "==4.1.*",
