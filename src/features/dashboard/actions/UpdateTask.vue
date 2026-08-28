@@ -141,10 +141,9 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
               <div class="space-y-2 overflow-y-auto">
                 <div
                   v-for="comment in task.comments"
-                  :key="comment.commentId"
+                  :key="comment.comment_id"
                   class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
                 >
-                  {{ comment.commentId }}
                   <div class="flex items-baseline justify-between gap-3">
                     <span class="font-semibold text-gray-600">{{
                       comment.name || comment.email

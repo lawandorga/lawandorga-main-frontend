@@ -76,16 +76,18 @@ const priorityColor: Record<string, string> = {
           <NewBadge class="mr-1" v-if="task.is_new" />
           {{ task.title }}
         </h3>
-        <div class="flex items-center justify-end gap-2">
-          <UpdateTask v-if="!task.is_done" :task="task" :query="query" />
-          <DeleteTask v-if="task.is_done" :task="task" :query="query" />
-          <ButtonNormal
-            kind="primary"
-            @click="task.is_done ? markAsUndone() : markAsDone()"
-          >
-            <CheckCircleIcon class="mr-1 h-4 w-4" v-if="!task.is_done" />
-            {{ task.is_done ? "Not done" : "Done" }}
-          </ButtonNormal>
+        <div>
+          <div class="flex items-center justify-end gap-2">
+            <UpdateTask v-if="!task.is_done" :task="task" :query="query" />
+            <DeleteTask v-if="task.is_done" :task="task" :query="query" />
+            <ButtonNormal
+              kind="primary"
+              @click="task.is_done ? markAsUndone() : markAsDone()"
+            >
+              <CheckCircleIcon class="mr-1 h-4 w-4" v-if="!task.is_done" />
+              {{ task.is_done ? "Not done" : "Done" }}
+            </ButtonNormal>
+          </div>
         </div>
       </div>
       <p
@@ -102,12 +104,9 @@ const priorityColor: Record<string, string> = {
         </a>
       </p>
       <div class="my-2 flex justify-between">
-        <div>
+        <div v-if="task.assignee_names.length">
           <p class="text-xs">Assignees:</p>
-          <p
-            v-if="task.assignee_names.length"
-            class="mt-2 text-sm text-gray-500"
-          >
+          <p class="mt-2 text-sm text-gray-500">
             {{ task.assignee_names.join(", ") }}
           </p>
         </div>

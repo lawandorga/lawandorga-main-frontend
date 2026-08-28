@@ -48,15 +48,12 @@ const changeTab = (index: number) => {
 };
 
 const updateTabOnLoading = () => {
-  if (shouldNotUpdateUrl.value) {
-    return;
-  }
-
   internalTabs.value = [];
 
-  const routeValue = route.query.selected
-    ? parseInt(route.query.selected as string)
-    : undefined;
+  const routeValue =
+    !shouldNotUpdateUrl.value && route.query.selected
+      ? parseInt(route.query.selected as string)
+      : undefined;
   const defaultValue = defaultTab.value
     ? parseInt(defaultTab.value as string)
     : undefined;
