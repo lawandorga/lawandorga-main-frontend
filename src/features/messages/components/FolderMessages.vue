@@ -28,7 +28,9 @@ const messages = ref<Message[] | null>(null);
 
 const loading = ref(false);
 
-const url = useUrl("api/messages/query/{id}/", { pathParams: { id: folderUuid } });
+const url = useUrl("api/messages/query/{id}/", {
+  pathParams: { id: folderUuid },
+});
 
 const query = useQuery2(url, messages);
 

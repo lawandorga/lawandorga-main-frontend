@@ -100,11 +100,11 @@ const getItemTypeText = (type: string) => {
                 <div class="relative flex space-x-3">
                   <div>
                     <span
-                      class="flex items-center justify-center w-3 h-3 bg-gray-300 rounded-full ring-8 ring-white"
+                      class="flex h-3 w-3 items-center justify-center rounded-full bg-gray-300 ring-8 ring-white"
                     ></span>
                   </div>
                   <div
-                    class="flex justify-between flex-1 min-w-0 -mt-1 space-x-4"
+                    class="-mt-1 flex min-w-0 flex-1 justify-between space-x-4"
                   >
                     <div>
                       <div class="flex items-center space-x-2">
@@ -118,21 +118,21 @@ const getItemTypeText = (type: string) => {
                         </p>
                         <CheckCircleIcon
                           v-if="item.type === 'follow_up' && item.is_done"
-                          class="inline-block w-5 h-5 text-green-600"
+                          class="inline-block h-5 w-5 text-green-600"
                         />
                         <XCircleIcon
                           v-else-if="item.type === 'follow_up'"
-                          class="inline-block w-5 h-5 text-red-600"
+                          class="inline-block h-5 w-5 text-red-600"
                         />
                       </div>
-                      <div class="flex justify-between w-full">
+                      <div class="flex w-full justify-between">
                         <p class="block max-w-xl text-sm text-gray-700">
                           {{ item.text }}
                         </p>
                       </div>
                     </div>
                     <div
-                      class="text-sm text-right text-gray-500 whitespace-nowrap"
+                      class="text-right text-sm whitespace-nowrap text-gray-500"
                     >
                       <time :datetime="item.time">
                         {{ formatDate(item.time) }}

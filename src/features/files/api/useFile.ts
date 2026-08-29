@@ -17,7 +17,9 @@ export function useFile(
   const file = ref<null | File>(null);
   const loading = ref(false);
 
-  const url = useUrl("/api/files/v2/query/{id}/", { pathParams: { id: selectedId } });
+  const url = useUrl("/api/files/v2/query/{id}/", {
+    pathParams: { id: selectedId },
+  });
   const filesQuery = useQuery2(url, file);
 
   const query = () => {

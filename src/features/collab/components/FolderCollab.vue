@@ -69,7 +69,9 @@ watch(
   { immediate: true },
 );
 
-const url = useUrl("api/collab/query/{id}/", { pathParams: { id: selectedId } });
+const url = useUrl("api/collab/query/{id}/", {
+  pathParams: { id: selectedId },
+});
 const collab = ref<Collab>();
 const collabQuery = useQuery2(url, collab);
 

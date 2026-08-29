@@ -19,7 +19,9 @@ export function useLink(
   const link = ref<UploadLink>();
   const loading = ref(false);
 
-  const url = useUrl("api/uploads/query/{id}/", { pathParams: { id: selectedId } });
+  const url = useUrl("api/uploads/query/{id}/", {
+    pathParams: { id: selectedId },
+  });
 
   const linkQuery = useQuery2(url, link);
 

@@ -40,7 +40,9 @@ export function useDataSheet(
   selectedId: Ref<string | number | null>,
   selectedType: Ref<string>,
 ) {
-  const url = useUrl("api/data_sheets/query/{id}/", { pathParams: { id: selectedId } });
+  const url = useUrl("api/data_sheets/query/{id}/", {
+    pathParams: { id: selectedId },
+  });
   const record = ref<Sheet | null>(null);
   const recordsQuery = useQuery2(url, record);
 
