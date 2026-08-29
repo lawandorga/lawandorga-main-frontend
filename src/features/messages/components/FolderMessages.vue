@@ -2,9 +2,9 @@
 import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import { useUrl } from "@/composables/useUrl";
 import MessagesSendMessage from "@/features/messages/actions/SendMessage.vue";
 import { formatDate } from "@/utils/date";
 
@@ -28,10 +28,9 @@ const messages = ref<Message[] | null>(null);
 
 const loading = ref(false);
 
-const client = useClient();
-const request = client.get(`api/messages/query/${folderUuid.value}/`);
+const url = useUrl("api/messages/query/{id}/", { pathParams: { id: folderUuid } });
 
-const query = useQuery(request, messages);
+const query = useQuery2(url, messages);
 
 const update = () => {
   if (selectedType.value === "MESSAGES") {

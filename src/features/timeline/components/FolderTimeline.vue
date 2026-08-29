@@ -3,9 +3,9 @@ import { CheckCircleIcon, XCircleIcon } from "@heroicons/vue/20/solid";
 import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import { useUrl } from "@/composables/useUrl";
 import { formatDate } from "@/utils/date";
 
 import FollowUpCreate from "../actions/CreateFollowUp.vue";
@@ -36,9 +36,10 @@ interface TimelineEvent {
 const timeline = ref<null | TimelineEvent[]>(null);
 const loading = ref(false);
 
-const client = useClient();
-const request = client.get("/api/timeline/query/timeline/{}/", folderUuid);
-const timelineQuery = useQuery(request, timeline);
+const url = useUrl("/api/timeline/query/timeline/{id}/", {
+  pathParams: { id: folderUuid },
+});
+const timelineQuery = useQuery2(url, timeline);
 
 // get timeline
 const update = () => {
@@ -99,11 +100,11 @@ const getItemTypeText = (type: string) => {
                 <div class="relative flex space-x-3">
                   <div>
                     <span
-                      class="flex h-3 w-3 items-center justify-center rounded-full bg-gray-300 ring-8 ring-white"
+                      class="flex items-center justify-center w-3 h-3 bg-gray-300 rounded-full ring-8 ring-white"
                     ></span>
                   </div>
                   <div
-                    class="-mt-1 flex min-w-0 flex-1 justify-between space-x-4"
+                    class="flex justify-between flex-1 min-w-0 -mt-1 space-x-4"
                   >
                     <div>
                       <div class="flex items-center space-x-2">
@@ -117,21 +118,21 @@ const getItemTypeText = (type: string) => {
                         </p>
                         <CheckCircleIcon
                           v-if="item.type === 'follow_up' && item.is_done"
-                          class="inline-block h-5 w-5 text-green-600"
+                          class="inline-block w-5 h-5 text-green-600"
                         />
                         <XCircleIcon
                           v-else-if="item.type === 'follow_up'"
-                          class="inline-block h-5 w-5 text-red-600"
+                          class="inline-block w-5 h-5 text-red-600"
                         />
                       </div>
-                      <div class="flex w-full justify-between">
+                      <div class="flex justify-between w-full">
                         <p class="block max-w-xl text-sm text-gray-700">
                           {{ item.text }}
                         </p>
                       </div>
                     </div>
                     <div
-                      class="text-right text-sm whitespace-nowrap text-gray-500"
+                      class="text-sm text-right text-gray-500 whitespace-nowrap"
                     >
                       <time :datetime="item.time">
                         {{ formatDate(item.time) }}

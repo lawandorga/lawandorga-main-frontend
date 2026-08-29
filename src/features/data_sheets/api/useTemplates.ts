@@ -1,7 +1,6 @@
 import { ref } from "vue";
 
-import useClient from "@/api/client";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
 
 export interface RecordTemplate {
   id: number;
@@ -13,10 +12,8 @@ export interface RecordTemplate {
 }
 
 export function useTemplates() {
-  const client = useClient();
-  const request = client.get("api/data_sheets/query/templates/");
   const templates = ref<RecordTemplate[]>();
-  const query = useQuery(request, templates);
+  const query = useQuery2("api/data_sheets/query/templates/", templates);
 
   return {
     query,

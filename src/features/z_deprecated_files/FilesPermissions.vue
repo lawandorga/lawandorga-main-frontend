@@ -26,9 +26,8 @@
 import { ModalFree, TableGenerator } from "lorga-ui";
 import { watch, ref } from "vue";
 
-import useClient from "@/api/client";
 import ButtonBreadcrumbs from "@/components/ButtonBreadcrumbs.vue";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
 
 export interface HasPermission {
   id: number;
@@ -43,8 +42,10 @@ export interface HasPermission {
 const generalPermissionsModalOpen = ref(false);
 const permissions = ref<HasPermission[] | null>(null);
 
-const request = useClient().get("api/permissions/query/has_permissions/files/");
-const query = useQuery(request, permissions);
+const query = useQuery2(
+  "api/permissions/query/has_permissions/files/",
+  permissions,
+);
 
 watch(generalPermissionsModalOpen, (newValue) => {
   if (newValue === true && permissions.value === null) query();

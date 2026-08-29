@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal, CircleLoader } from "lorga-ui";
-import { Ref, ref, toRefs, watch } from "vue";
+import { ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import { useUrl } from "@/composables/useUrl";
 import { useAlertStore } from "@/store/alert";
 import { formatDate } from "@/utils/date";
 
@@ -57,14 +57,11 @@ const questionnaire = ref<Questionnaire | null>(null);
 
 const loading = ref(false);
 
-const client = useClient();
-const request = client.get(`/api/questionnaires/query/{}/`, selectedId);
+const url = useUrl("/api/questionnaires/query/{id}/", {
+  pathParams: { id: selectedId },
+});
 
-const questionnaireQuery = useQuery(
-  request,
-  questionnaire,
-  selectedId as Ref<string>,
-);
+const questionnaireQuery = useQuery2(url, questionnaire);
 
 const update = () => {
   if (questionnaire.value && selectedId.value !== questionnaire.value.uuid)

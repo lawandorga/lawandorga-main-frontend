@@ -1,7 +1,7 @@
 import { watch, ref, Ref } from "vue";
 
-import useClient from "@/api/client";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import { useUrl } from "@/composables/useUrl";
 
 export interface File {
   uuid: string;
@@ -17,10 +17,8 @@ export function useFile(
   const file = ref<null | File>(null);
   const loading = ref(false);
 
-  const client = useClient();
-
-  const request = client.get("/api/files/v2/query/{}/", selectedId);
-  const filesQuery = useQuery(request, file);
+  const url = useUrl("/api/files/v2/query/{id}/", { pathParams: { id: selectedId } });
+  const filesQuery = useQuery2(url, file);
 
   const query = () => {
     if (selectedType.value === "FILE" && selectedId.value) {

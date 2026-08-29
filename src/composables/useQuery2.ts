@@ -6,7 +6,7 @@ import { handleQueryError } from "@/api/errors";
 function useQuery2<Type>(
   url: string | Ref<string>,
   obj: Ref<Type | undefined>,
-): () => void {
+): () => Promise<void> {
   const client = useClient();
   const request = client.get2(isRef(url) ? url : ref(url));
 

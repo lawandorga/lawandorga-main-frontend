@@ -2,9 +2,8 @@
 import { ButtonNormal, ModalCreate, types } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import useCmd from "@/composables/useCmd";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
 
 export interface QuestionnaireTemplate {
   id: number;
@@ -18,14 +17,10 @@ export interface QuestionnaireTemplate {
 const props = defineProps<{ query: () => void; folderUuid?: string }>();
 const { query, folderUuid } = toRefs(props);
 
-const client = useClient();
-
 const { commandRequest, commandModalOpen } = useCmd(query.value);
 
-const getRequest = client.get("api/questionnaires/query/templates/");
-
 const templates = ref<QuestionnaireTemplate[]>([]);
-const getQuery = useQuery(getRequest, templates);
+const getQuery = useQuery2("api/questionnaires/query/templates/", templates);
 
 const fields = computed<types.FormField[]>(() => [
   {

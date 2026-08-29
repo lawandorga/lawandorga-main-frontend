@@ -4,9 +4,9 @@ import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import { useUrl } from "@/composables/useUrl";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
 import { Content } from "@/features/folders/api/useFolder";
 import { formatDate } from "@/utils/date";
@@ -69,10 +69,9 @@ watch(
   { immediate: true },
 );
 
-const client = useClient();
-const request = client.get("api/collab/query/{}/", selectedId);
+const url = useUrl("api/collab/query/{id}/", { pathParams: { id: selectedId } });
 const collab = ref<Collab>();
-const collabQuery = useQuery(request, collab);
+const collabQuery = useQuery2(url, collab);
 
 const update = () => {
   if (collab.value && selectedId.value !== collab.value.uuid)
