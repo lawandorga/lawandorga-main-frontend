@@ -1,6 +1,7 @@
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 
 import useGet2 from "./useGet2";
+import { useUrl } from "./useUrl";
 
 export interface Permission {
   id: number;
@@ -9,9 +10,20 @@ export interface Permission {
   recommended_for: string;
 }
 
-export function usePermissions() {
+export function usePermissions(
+  userId?: Ref<number | undefined>,
+  groupId?: Ref<number | undefined>,
+) {
   const permissions = ref<Permission[]>();
-  useGet2("/api/permissions/query/permissions/", permissions);
+
+  const url = useUrl("/api/permissions/query/permissions/", {
+    queryParams: {
+      user_id: userId,
+      group_id: groupId,
+    },
+  });
+
+  useGet2(url, permissions);
 
   return { permissions };
 }
