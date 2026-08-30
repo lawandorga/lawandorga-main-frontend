@@ -44,7 +44,9 @@ export interface FolderDetail {
 
 export function useFolder(folderUuid: Ref<string>) {
   const folder = ref<FolderDetail>();
-  const url = useUrl("/api/folders/query/{}/", { pathParams: { 0: folderUuid } });
+  const url = useUrl("/api/folders/query/{}/", {
+    pathParams: { 0: folderUuid },
+  });
   const query = useGet2(url, folder);
 
   const record = computed<Content | null>(() => {

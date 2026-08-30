@@ -23,10 +23,9 @@ export type ImportedMail = {
 
 export function useMailImports(folderUuid: Ref<string>) {
   const mails = ref<ImportedMail[]>();
-  const url = useUrl(
-    "api/mail_imports/query/folder_mails/{}/",
-    { pathParams: { 0: folderUuid } },
-  );
+  const url = useUrl("api/mail_imports/query/folder_mails/{}/", {
+    pathParams: { 0: folderUuid },
+  });
   const mailQuery = useGet2(url, mails);
 
   const numberOfUnreadMails = computed(() => {
