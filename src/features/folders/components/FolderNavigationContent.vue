@@ -13,13 +13,14 @@ import UploadsCreateLink from "@/features/uploads/actions/CreateUploadLink.vue";
 
 import FoldersAddContent from "../actions/AddContent.vue";
 import { FolderDetail } from "../api/useFolder";
+import { ContentItemId } from "../types";
 
 const props = defineProps<{
   folder: FolderDetail;
   query: () => void;
   grouping: boolean;
   selectedType: string;
-  selectedId: string | number | null;
+  selectedId: ContentItemId;
   numberOfUnreadMails?: string;
 }>();
 

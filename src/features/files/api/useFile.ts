@@ -2,6 +2,7 @@ import { watch, ref, Ref } from "vue";
 
 import useQuery2 from "@/composables/useQuery2";
 import useUrl from "@/composables/useUrl";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 
 export interface File {
   uuid: string;
@@ -11,8 +12,8 @@ export interface File {
 }
 
 export function useFile(
-  selectedId: Ref<string | number | null>,
-  selectedType: Ref<string>,
+  selectedId: Ref<ContentItemId>,
+  selectedType: Ref<ContentItemType>,
 ) {
   const file = ref<null | File>(null);
   const loading = ref(false);

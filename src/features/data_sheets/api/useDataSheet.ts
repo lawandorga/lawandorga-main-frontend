@@ -2,6 +2,7 @@ import { ref, Ref, watch } from "vue";
 
 import useQuery2 from "@/composables/useQuery2";
 import useUrl from "@/composables/useUrl";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 
 export type SheetValue =
   | string
@@ -37,8 +38,8 @@ export interface Sheet {
 }
 
 export function useDataSheet(
-  selectedId: Ref<string | number | null>,
-  selectedType: Ref<string>,
+  selectedId: Ref<ContentItemId>,
+  selectedType: Ref<ContentItemType>,
 ) {
   const url = useUrl("api/data_sheets/query/{id}/", {
     pathParams: { id: selectedId },

@@ -5,11 +5,12 @@ import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 
 import { Subfolder } from "../api/useFolder";
+import { ContentItemId, ContentItemType } from "../types";
 
 defineProps<{
-  selectedType: string;
+  selectedType: ContentItemType;
   folders: Subfolder[];
-  selectedId: string | null | number;
+  selectedId: ContentItemId;
 }>();
 </script>
 

@@ -7,6 +7,7 @@ import { useRoute, useRouter } from "vue-router";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { useCollab } from "@/features/collab/api/useCollab";
 import { Content } from "@/features/folders/api/useFolder";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import { formatDate } from "@/utils/date";
 
 import CollabAddTemplate from "../actions/AddTemplate.vue";
@@ -20,8 +21,8 @@ import CollabForm from "./CollabForm.vue";
 
 const props = defineProps<{
   folderContent: Content[];
-  selectedId: string | number | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   query: () => void;
   onDelete?: () => void;
 }>();

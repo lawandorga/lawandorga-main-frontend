@@ -8,12 +8,13 @@ import FoldersRevokeAccessUserSimple from "@/features/folders/actions/RevokeAcce
 
 import FoldersRevokeAccessGroupSimple from "../actions/RevokeAccessFromGroupSimple.vue";
 import { Access } from "../api/useFolderPage";
+import { ContentItemId, ContentItemType } from "../types";
 
 defineProps<{
-  selectedType: string;
+  selectedType: ContentItemType;
   access: Access[];
   groupAccess: Access[];
-  selectedId: string | null | number;
+  selectedId: ContentItemId;
   folderUuid: string;
   query: () => void;
 }>();

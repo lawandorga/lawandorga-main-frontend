@@ -5,6 +5,7 @@ import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 
 import { Content, FolderDetail } from "../api/useFolder";
+import { ContentItemId, ContentItemType } from "../types";
 import FolderNavigationRaw, {
   ContentGroupItem,
 } from "./FolderNavigationRaw.vue";
@@ -13,8 +14,8 @@ const props = defineProps<{
   folder: FolderDetail;
   query: () => void;
   grouping: boolean;
-  selectedType: string;
-  selectedId: string | number | null;
+  selectedType: ContentItemType;
+  selectedId: ContentItemId;
 }>();
 
 const { folder, query } = toRefs(props);

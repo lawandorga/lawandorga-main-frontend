@@ -9,14 +9,15 @@ import FileDisplay from "@/components/FileDisplay.vue";
 import FilesDeleteFile from "@/features/files/actions/DeleteFile.vue";
 import FilesDownloadFile from "@/features/files/actions/DownloadFile.vue";
 import { Content } from "@/features/folders/api/useFolder";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import { formatDate } from "@/utils/date";
 
 import { useFile } from "../api/useFile";
 
 const props = defineProps<{
   folderContent: Content[];
-  selectedId: string | number | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   query: () => void;
 }>();
 const { selectedId, selectedType } = toRefs(props);

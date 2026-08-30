@@ -4,6 +4,7 @@ import { ButtonNormal, CircleLoader } from "lorga-ui";
 import { toRefs } from "vue";
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import { useAlertStore } from "@/store/alert";
 import { formatDate } from "@/utils/date";
 
@@ -12,8 +13,8 @@ import QuestionnaireFileDownload from "../actions/DownloadQuestionnaireFile.vue"
 import { Questionnaire, useQuestionnaire } from "../api/useQuestionnaire.js";
 
 const props = defineProps<{
-  selectedId: number | string | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   query: () => void;
 }>();
 

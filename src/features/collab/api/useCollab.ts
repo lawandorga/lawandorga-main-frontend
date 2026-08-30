@@ -3,6 +3,7 @@ import { ref, Ref, watch } from "vue";
 import useQuery2 from "@/composables/useQuery2";
 import useUrl from "@/composables/useUrl";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 
 export interface History {
   user: string;
@@ -21,8 +22,8 @@ export interface Collab {
 }
 
 export function useCollab(
-  selectedId: Ref<string | number | null>,
-  selectedType: Ref<string>,
+  selectedId: Ref<ContentItemId>,
+  selectedType: Ref<ContentItemType>,
 ) {
   const url = useUrl("api/collab/query/{id}/", {
     pathParams: { id: selectedId },
