@@ -86,6 +86,8 @@ export default function useUrl(baseUrl: string, options: UseUrlOptions = {}) {
           } else {
             result = result.replace(`{${key}}`, String(resolved));
           }
+        } else {
+          return undefined;
         }
       }
     }

@@ -44,7 +44,7 @@ export function useDataSheet(
     pathParams: { id: selectedId },
   });
   const record = ref<Sheet | null>(null);
-  const recordsQuery = useQuery2(url, record);
+  const recordsQuery = useQuery2(url, record, { autoFetchOnUrlChange: false });
 
   const update = () => {
     if (record.value && selectedId.value !== record.value.uuid)

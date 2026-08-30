@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { CheckIcon } from "@heroicons/vue/24/outline";
 import { CircleLoader } from "lorga-ui";
-import { ref, toRefs, watch } from "vue";
+import { toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery2 from "@/composables/useQuery2";
-import useUrl from "@/composables/useUrl";
-import { CollabTemplate } from "@/features/admin/api/useTemplate";
+import { useCollab } from "@/features/collab/api/useCollab";
 import { Content } from "@/features/folders/api/useFolder";
 import { formatDate } from "@/utils/date";
 
@@ -19,22 +17,6 @@ import CollabEditTemplate from "../actions/EditTemplate.vue";
 import CollabRemoveTemplate from "../actions/RemoveTemplate.vue";
 import CollabShowHistory from "../actions/ShowHistory.vue";
 import CollabForm from "./CollabForm.vue";
-
-export interface History {
-  user: string;
-  time: string;
-  text: string;
-}
-
-interface Collab {
-  uuid: string;
-  name: string;
-  text: string;
-  created_at: string;
-  password: string;
-  history: History[];
-  template: CollabTemplate | null;
-}
 
 const props = defineProps<{
   folderContent: Content[];
@@ -69,20 +51,7 @@ watch(
   { immediate: true },
 );
 
-const url = useUrl("api/collab/query/{id}/", {
-  pathParams: { id: selectedId },
-});
-const collab = ref<Collab>();
-const collabQuery = useQuery2(url, collab);
-
-const update = () => {
-  if (collab.value && selectedId.value !== collab.value.uuid)
-    collab.value = undefined;
-  if (selectedType.value === "COLLAB" && selectedId.value) {
-    collabQuery();
-  }
-};
-watch(selectedId, update, { immediate: true });
+const { collab, collabQuery } = useCollab(selectedId, selectedType);
 
 const allQuery = () => {
   query.value();

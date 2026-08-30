@@ -20,7 +20,7 @@ export function useFile(
   const url = useUrl("/api/files/v2/query/{id}/", {
     pathParams: { id: selectedId },
   });
-  const filesQuery = useQuery2(url, file);
+  const filesQuery = useQuery2(url, file, { autoFetchOnUrlChange: false });
 
   const query = () => {
     if (selectedType.value === "FILE" && selectedId.value) {

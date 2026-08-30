@@ -23,14 +23,14 @@ export function useLink(
     pathParams: { id: selectedId },
   });
 
-  const linkQuery = useQuery2(url, link);
+  const linkQuery = useQuery2(url, link, { autoFetchOnUrlChange: false });
 
   const query = () => {
     if (link.value && selectedId.value !== link.value.uuid)
       link.value = undefined;
     if (selectedType.value === "UPLOAD" && selectedId.value) {
       loading.value = true;
-      linkQuery().then(() => {
+      linkQuery().finally(() => {
         loading.value = false;
       });
     }

@@ -81,9 +81,9 @@ class Client {
     };
   }
 
-  get2<R = any>(url: Ref<string>): () => Promise<R> {
+  get2<R = any>(url: Ref<string | undefined>): () => Promise<R> {
     return () => {
-      return this.caller.get(url.value).then((response) => response.data);
+      return this.caller.get(url.value ?? "").then((response) => response.data);
     };
   }
 
