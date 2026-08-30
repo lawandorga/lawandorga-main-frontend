@@ -81,7 +81,11 @@ export default function useUrl(baseUrl: string, options: UseUrlOptions = {}) {
       for (const [key, value] of Object.entries(options.pathParams)) {
         const resolved = unref(value);
         if (resolved !== undefined && resolved !== null) {
-          result = result.replace(`{${key}}`, String(resolved));
+          if (/^\d+$/.test(key)) {
+            result = result.replace(/\{\}/, String(resolved));
+          } else {
+            result = result.replace(`{${key}}`, String(resolved));
+          }
         }
       }
     }
