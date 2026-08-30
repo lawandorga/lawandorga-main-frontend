@@ -4,7 +4,7 @@ import { ref, toRefs, watch } from "vue";
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery2 from "@/composables/useQuery2";
-import { useUrl } from "@/composables/useUrl";
+import useUrl from "@/composables/useUrl";
 import MessagesSendMessage from "@/features/messages/actions/SendMessage.vue";
 import { formatDate } from "@/utils/date";
 

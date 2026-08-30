@@ -1,7 +1,7 @@
 import { computed, Ref, ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
+import useUrl from "@/composables/useUrl";
 
 import { useFormYears } from "../composables/useFormYears";
 
@@ -17,13 +17,10 @@ interface RecordsCreatedClosed {
 export function useCreatedAndClosed(year: Ref<number>) {
   const data = ref<RecordsCreatedClosed>();
 
-  const client = useClient();
-
-  const request = client.get(
-    "api/statistics/org/records_created_and_closed/?year={}",
-    year,
-  );
-  useGet(request, data, year);
+  const url = useUrl("api/statistics/org/records_created_and_closed/", {
+    queryParams: { year },
+  });
+  useGet2(url, data);
 
   const stats = computed(() => data.value?.data || []);
   const years = computed(() => data.value?.years);

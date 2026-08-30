@@ -2,7 +2,6 @@
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import useCmd from "@/composables/useCmd";
 import useQuery2 from "@/composables/useQuery2";
 

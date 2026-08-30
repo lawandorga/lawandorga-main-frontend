@@ -11,7 +11,9 @@ type UrlParamType =
 
 interface UseUrlOptions {
   pathParams?: Record<string, UrlParamType>;
-  queryParams?: Record<string, UrlParamType | null | undefined>;
+  queryParams?:
+    | Record<string, UrlParamType | null | undefined>
+    | Ref<Record<string, UrlParamType | null | undefined>>;
 }
 
 /**
@@ -66,7 +68,7 @@ interface UseUrlOptions {
  * // url.value = "/api/items/?page=1"
  * // When page.value = 2, url.value automatically updates to "/api/items/?page=2"
  */
-export function useUrl(baseUrl: string, options: UseUrlOptions = {}) {
+export default function useUrl(baseUrl: string, options: UseUrlOptions = {}) {
   const url = computed(() => {
     let result = baseUrl;
 
@@ -83,7 +85,8 @@ export function useUrl(baseUrl: string, options: UseUrlOptions = {}) {
     // Add query parameters
     if (options.queryParams) {
       const params = new URLSearchParams();
-      for (const [key, value] of Object.entries(options.queryParams)) {
+      const queryParamsObj = unref(options.queryParams);
+      for (const [key, value] of Object.entries(queryParamsObj)) {
         const resolved = unref(value);
         if (resolved !== undefined && resolved !== null) {
           params.append(key, String(resolved));

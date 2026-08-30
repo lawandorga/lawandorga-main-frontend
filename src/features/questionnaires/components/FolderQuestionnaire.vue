@@ -5,7 +5,7 @@ import { ref, toRefs, watch } from "vue";
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery2 from "@/composables/useQuery2";
-import { useUrl } from "@/composables/useUrl";
+import useUrl from "@/composables/useUrl";
 import { useAlertStore } from "@/store/alert";
 import { formatDate } from "@/utils/date";
 

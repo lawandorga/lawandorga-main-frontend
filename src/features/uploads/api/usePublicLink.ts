@@ -1,7 +1,6 @@
 import { ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 
 export interface UploadLink {
   uuid: string;
@@ -13,11 +12,8 @@ export interface UploadLink {
 }
 
 export function usePublicLink(uuid: string) {
-  const client = useClient();
-
   const link = ref<UploadLink>();
-  const request = client.get("api/uploads/query/{}/public/", uuid);
-  useGet(request, link);
+  useGet2(`api/uploads/query/${uuid}/public/`, link);
 
   return {
     link,

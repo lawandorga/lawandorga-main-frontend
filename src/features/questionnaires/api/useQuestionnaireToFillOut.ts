@@ -1,8 +1,7 @@
 import { types } from "lorga-ui";
 import { computed, ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 
 export type Questionnaire = {
   id: number;
@@ -33,12 +32,10 @@ export type Response = Questionnaire | Error;
 export function useQuestionnaireToFillOut(code: string) {
   const data = ref<Response>();
 
-  const client = useClient();
-  const request = client.get(
-    "api/questionnaires/query/fill_out_questionnaire/{}/",
-    code,
+  const query = useGet2(
+    `api/questionnaires/query/fill_out_questionnaire/${code}/`,
+    data,
   );
-  const query = useGet(request, data);
 
   const error = computed(() => {
     if (data.value && "error" in data.value) return data.value.error;

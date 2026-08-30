@@ -6,7 +6,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import useQuery2 from "@/composables/useQuery2";
-import { useUrl } from "@/composables/useUrl";
+import useUrl from "@/composables/useUrl";
 import { CollabTemplate } from "@/features/admin/api/useTemplate";
 import { Content } from "@/features/folders/api/useFolder";
 import { formatDate } from "@/utils/date";

@@ -1,7 +1,7 @@
 import { Ref, ref } from "vue";
 
 import useQuery2 from "@/composables/useQuery2";
-import { useUrl } from "@/composables/useUrl";
+import useUrl from "@/composables/useUrl";
 
 export interface UploadLink {
   uuid: string;
