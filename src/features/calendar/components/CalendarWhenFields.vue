@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FormInput } from "lorga-ui";
+import { FormSingleCheckbox, FormInput, FormSelect } from "lorga-ui";
 import { computed, watch } from "vue";
 
 import { type EventType, RECURRENCE_FREQUENCIES } from "../constants";
@@ -137,36 +137,26 @@ watch(
     </template>
 
     <div class="flex items-center justify-between gap-3">
-      <label
-        class="flex items-center gap-2 text-sm font-medium text-gray-700 select-none"
-        :class="isDeadline ? 'cursor-not-allowed' : 'cursor-pointer'"
-        :title="isDeadline ? 'Deadlines are always all-day events.' : undefined"
-      >
-        <input
-          v-model="allDay"
-          type="checkbox"
-          class="size-4 disabled:opacity-60"
-          :disabled="isDeadline"
-          style="accent-color: var(--color-formcolor)"
-        />
-        All day
-      </label>
+      <FormSingleCheckbox
+        v-if="!isDeadline"
+        label="All day"
+        name="allDay"
+        v-model="allDay"
+        class="disabled:opacity-60"
+        :disabled="isDeadline"
+        style="accent-color: var(--color-formcolor)"
+      />
 
       <div class="flex items-center gap-2 text-sm font-medium text-gray-700">
         <label for="recurrence-rule">Repeat</label>
-        <select
+        <FormSelect
           id="recurrence-rule"
           v-model="recurrenceRule"
-          class="focus:border-formcolor focus:ring-formcolor rounded-md border border-gray-300 py-1 pr-8 pl-2 text-sm text-gray-700"
+          :options="
+            RECURRENCE_OPTIONS.map((o) => ({ name: o.label, value: o.value }))
+          "
         >
-          <option
-            v-for="option in RECURRENCE_OPTIONS"
-            :key="option.value"
-            :value="option.value"
-          >
-            {{ option.label }}
-          </option>
-        </select>
+        </FormSelect>
       </div>
     </div>
 

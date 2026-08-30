@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { BellAlertIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import { ButtonNormal } from "lorga-ui";
+import { FormSelect } from "lorga-ui";
 
 import type { ReminderMethod, ReminderSettings } from "../constants";
 import { REMINDER_METHOD_OPTIONS, REMINDER_OFFSET_OPTIONS } from "../constants";
@@ -35,58 +36,53 @@ const selectValue = (event: Event): string =>
       <li
         v-for="reminder in reminders"
         :key="reminder.key"
-        class="flex items-center gap-2"
+        class="flex items-end gap-2"
       >
-        <label :for="`reminder-offset-${reminder.key}`" class="sr-only">
-          Reminder time
-        </label>
-        <select
+        <FormSelect
           :id="`reminder-offset-${reminder.key}`"
-          :value="reminder.minutes_before"
-          class="focus:border-formcolor flex-1 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-700 focus:outline-none"
+          class="w-full"
+          :model-value="reminder.minutes_before"
           @change="
             emit('update', reminder.key, {
               minutes_before: Number(selectValue($event)),
             })
           "
+          required
+          :options="
+            REMINDER_OFFSET_OPTIONS.map((option) => ({
+              value: option.minutes,
+              name: option.label,
+            }))
+          "
         >
-          <option
-            v-for="option in REMINDER_OFFSET_OPTIONS"
-            :key="option.minutes"
-            :value="option.minutes"
-          >
-            {{ option.label }}
-          </option>
-        </select>
-        <label :for="`reminder-method-${reminder.key}`" class="sr-only">
-          Reminder method
-        </label>
-        <select
+        </FormSelect>
+        <FormSelect
           :id="`reminder-method-${reminder.key}`"
-          :value="reminder.method"
-          class="focus:border-formcolor rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-700 focus:outline-none"
+          :model-value="reminder.method"
+          class="w-32"
           @change="
             emit('update', reminder.key, {
               method: selectValue($event) as ReminderMethod,
             })
           "
+          :options="
+            REMINDER_METHOD_OPTIONS.map((o) => ({
+              name: o.label,
+              value: o.value,
+            }))
+          "
         >
-          <option
-            v-for="option in REMINDER_METHOD_OPTIONS"
-            :key="option.value"
-            :value="option.value"
+        </FormSelect>
+        <div class="flex h-10 w-10 items-center justify-center">
+          <button
+            type="button"
+            class="text-gray-400 hover:text-red-600"
+            title="Remove reminder"
+            @click="emit('remove', reminder.key)"
           >
-            {{ option.label }}
-          </option>
-        </select>
-        <button
-          type="button"
-          class="text-gray-400 hover:text-red-600"
-          title="Remove reminder"
-          @click="emit('remove', reminder.key)"
-        >
-          <TrashIcon class="h-4 w-4" />
-        </button>
+            <TrashIcon class="h-4 w-4" />
+          </button>
+        </div>
       </li>
     </ul>
 
