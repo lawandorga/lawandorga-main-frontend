@@ -3,9 +3,13 @@ import { computed, Ref, unref } from "vue";
 type UrlParamType =
   | string
   | number
+  | boolean
+  | string[]
   | undefined
   | Ref<string>
   | Ref<number>
+  | Ref<boolean>
+  | Ref<string[]>
   | Ref<null>
   | Ref<undefined>;
 
