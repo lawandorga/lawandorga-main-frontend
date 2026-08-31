@@ -8,7 +8,7 @@ import { usePermissions } from "@/composables/usePermissions";
 const props = defineProps<{ query: () => void; userId: number }>();
 const { query, userId } = toRefs(props);
 
-const { permissions } = usePermissions();
+const { permissions } = usePermissions(userId);
 
 const permissionFields = computed<types.FormField[]>(() => [
   {

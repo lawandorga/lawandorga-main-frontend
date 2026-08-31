@@ -1,7 +1,8 @@
 import { watch, ref, Ref } from "vue";
 
-import useClient from "@/api/client";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import useUrl from "@/composables/useUrl";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 
 export interface File {
   uuid: string;
@@ -11,16 +12,16 @@ export interface File {
 }
 
 export function useFile(
-  selectedId: Ref<string | number | null>,
-  selectedType: Ref<string>,
+  selectedId: Ref<ContentItemId>,
+  selectedType: Ref<ContentItemType>,
 ) {
   const file = ref<null | File>(null);
   const loading = ref(false);
 
-  const client = useClient();
-
-  const request = client.get("/api/files/v2/query/{}/", selectedId);
-  const filesQuery = useQuery(request, file);
+  const url = useUrl("/api/files/v2/query/{id}/", {
+    pathParams: { id: selectedId },
+  });
+  const filesQuery = useQuery2(url, file, { autoFetchOnUrlChange: false });
 
   const query = () => {
     if (selectedType.value === "FILE" && selectedId.value) {

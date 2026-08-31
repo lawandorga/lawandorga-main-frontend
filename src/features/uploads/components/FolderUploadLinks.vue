@@ -7,6 +7,7 @@ import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import FileDisplay from "@/components/FileDisplay.vue";
 import { Content } from "@/features/folders/api/useFolder";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import UploadsCopyLink from "@/features/uploads/actions/CopyUploadLink.vue";
 import DeleteUploadedFile from "@/features/uploads/actions/DeleteUploadedFile.vue";
 import UploadsDisableLink from "@/features/uploads/actions/DisableUploadLink.vue";
@@ -18,8 +19,8 @@ import { useLink } from "../api/useLink";
 
 const props = defineProps<{
   folderContent: Content[];
-  selectedId: number | string | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   folderUuid: string;
   query: () => void;
 }>();

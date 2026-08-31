@@ -1,7 +1,7 @@
 import { Ref, computed, ref, watch } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
+import useUrl from "@/composables/useUrl";
 type QueryParams = {
   [key: string]: number | string | string[] | null | boolean | undefined;
 };
@@ -28,8 +28,6 @@ export function useRecords(
   generalSearch: Ref<string>,
   orderBy: Ref<string>,
 ) {
-  const client = useClient();
-
   const queryParams = ref<QueryParams>({
     offset: 0,
     limit: 10,
@@ -48,12 +46,11 @@ export function useRecords(
     };
   });
 
-  const request = client.get(
-    "/api/records/query/dashboard/?offset={offset}&limit={limit}&token={token}&year={year}&general={general}&order_by={order_by}",
-  );
-
   const data = ref<RecordsData>();
-  const query = useGet(request, data, queryParams);
+  const url = useUrl("/api/records/query/dashboard/", {
+    queryParams: queryParams,
+  });
+  const query = useGet2(url, data);
 
   const records = computed<Record[] | undefined>(() => {
     return data.value?.records;

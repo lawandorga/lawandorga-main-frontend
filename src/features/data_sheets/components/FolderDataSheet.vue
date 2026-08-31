@@ -10,6 +10,7 @@ import {
 
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 import { Content } from "@/features/folders/api/useFolder";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import { formatDate } from "@/utils/date";
 
 import DataSheetChangeName from "../actions/DataSheetChangeName.vue";
@@ -19,8 +20,8 @@ import FormDataSheet from "./FormDataSheet.vue";
 
 const props = defineProps<{
   folderContent: Content[];
-  selectedId: string | number | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   query: () => void;
   onDelete?: () => void;
 }>();

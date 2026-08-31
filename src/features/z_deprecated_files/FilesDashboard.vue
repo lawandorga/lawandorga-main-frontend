@@ -247,7 +247,7 @@ import {
   FormGenerator,
   ModalDelete,
 } from "lorga-ui";
-import { defineComponent, Ref, ref, watch } from "vue";
+import { defineComponent, Ref, ref, watch, computed } from "vue";
 import { onBeforeRouteUpdate, RouteLocation, useRoute } from "vue-router";
 
 import { useErrorHandling } from "@/api/errors";
@@ -256,8 +256,9 @@ import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import ButtonLink from "@/components/ButtonLink.vue";
 import useCreate from "@/composables/useCreate";
 import useDelete from "@/composables/useDelete";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import useUpdate from "@/composables/useUpdate";
+import useUrl from "@/composables/useUrl";
 import CoreService from "@/features/z_deprecated_files/core";
 import FilesHelp from "@/features/z_deprecated_files/FilesHelp.vue";
 import FilesPermissions from "@/features/z_deprecated_files/FilesPermissions.vue";
@@ -301,8 +302,16 @@ export default defineComponent({
     const items = ref<(FilesFolder | FilesFile)[] | null>(null);
     const folderPermissions = ref<FilesPermission[] | null>(null);
 
-    // files and folders
-    useGet(FilesService.getItems, items, folder);
+    // Build URL for fetching items when folder is available
+    const itemsUrl = computed(() => {
+      if (!folder.value) return "";
+      return useUrl(`files/folder/{folderId}/items/`, {
+        pathParams: { folderId: folder.value.id },
+      }).value;
+    });
+
+    // Fetch items
+    useGet2(itemsUrl, items);
 
     const { handleQueryError } = useErrorHandling();
 

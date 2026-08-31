@@ -5,6 +5,7 @@ import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 
 import { Content, FolderDetail } from "../api/useFolder";
+import { ContentItemId, ContentItemType } from "../types";
 import FolderNavigationRaw, {
   ContentGroupItem,
 } from "./FolderNavigationRaw.vue";
@@ -13,8 +14,8 @@ const props = defineProps<{
   folder: FolderDetail;
   query: () => void;
   grouping: boolean;
-  selectedType: string;
-  selectedId: string | number | null;
+  selectedType: ContentItemType;
+  selectedId: ContentItemId;
 }>();
 
 const { folder, query } = toRefs(props);
@@ -55,7 +56,7 @@ const groups = computed<ContentGroupItem[]>(() => {
       }`,
       type: "FOLDER",
       children: [
-        { name: "Users With Access", type: "ACCESS", id: "ACCESS" },
+        { name: "Access", type: "ACCESS", id: "ACCESS" },
         { name: "Subfolders", type: "SUBFOLDER", id: "SUBFOLDER" },
       ],
       buttons: [changeNameButton.value],

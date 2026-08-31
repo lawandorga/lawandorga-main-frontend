@@ -1,18 +1,34 @@
-import { Ref } from "vue";
+import { isRef, Ref, ref, watch } from "vue";
 
 import useClient from "@/api/client";
+import { handleQueryError } from "@/api/errors";
 
-import useQuery from "./useQuery";
+export interface UseQueryOptions {
+  autoFetchOnUrlChange?: boolean;
+}
 
 function useQuery2<Type>(
-  url: string,
+  url: string | Ref<string | undefined>,
   obj: Ref<Type | undefined>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...watching: Ref<any>[]
-): () => void {
+  options: UseQueryOptions = { autoFetchOnUrlChange: true },
+): () => Promise<void> {
   const client = useClient();
-  const request = client.get(url);
-  const query = useQuery(request, obj, ...watching);
+  const request = client.get2(isRef(url) ? url : ref(url));
+
+  const query = () => {
+    return request()
+      .then((newItem) => {
+        obj.value = newItem;
+      })
+      .catch(handleQueryError);
+  };
+
+  if (options.autoFetchOnUrlChange && isRef(url)) {
+    watch(url, () => {
+      console.log(url.value);
+      if (url.value) query();
+    });
+  }
 
   return query;
 }

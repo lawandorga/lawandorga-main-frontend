@@ -1,7 +1,6 @@
 import { computed, Ref, ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import type { ActivityState } from "@/features/admin/api/useProfiles";
 
 interface GroupMember {
@@ -26,12 +25,8 @@ interface GroupDetail {
 }
 
 export function useGroup(id: string) {
-  const client = useClient();
-
-  const request = client.get("api/org/query/group/{}/", id);
-
   const group = ref(null) as Ref<GroupDetail | null>;
-  const query = useGet(request, group);
+  const query = useGet2(`api/org/query/group/${id}/`, group);
 
   const members = computed<GroupMember[] | null>(() => {
     if (!group.value) return null;

@@ -1,7 +1,7 @@
 import { computed, Ref, ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
+import useUrl from "@/composables/useUrl";
 
 import { useFormYears } from "../composables/useFormYears";
 
@@ -17,12 +17,10 @@ interface DataSheetStatisticFieldStats {
 export function useDataSheetStatisticFieldStats(year: Ref<number | undefined>) {
   const data = ref<DataSheetStatisticFieldStats>();
 
-  const client = useClient();
-  const request = client.get(
-    "api/statistics/org/data_sheet_statistic_fields/?year={}",
-    year,
-  );
-  useGet(request, data, year);
+  const url = useUrl("api/statistics/org/data_sheet_statistic_fields/", {
+    queryParams: { year },
+  });
+  useGet2(url, data);
 
   const stats = computed<DataSheetStatisticFieldStats["stats"]>(
     () => data.value?.stats || {},

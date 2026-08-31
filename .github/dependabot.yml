@@ -13,3 +13,7 @@ updates:
       npm-dependencies:
         patterns:
           - "*"
+    ignore:
+      # @typescript-eslint 8 peers on typescript <6.1.0, so TS 7 fails to install
+      - dependency-name: "typescript"
+        versions: ["7.x"]

@@ -31,7 +31,7 @@ const openNotification = (
 <template>
   <Popover class="relative">
     <PopoverButton
-      class="relative flex cursor-pointer items-center rounded-full p-1 text-gray-200 hover:text-white focus:ring-2 focus:ring-gray-200 focus:outline-none"
+      class="relative flex cursor-pointer items-center rounded-full p-1 text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-gray-300 focus:outline-none"
     >
       <span class="sr-only">Notifications</span>
       <BellIcon class="h-6 w-6" aria-hidden="true" />

@@ -1,7 +1,8 @@
 import { ref, Ref, watch } from "vue";
 
-import useClient from "@/api/client";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import useUrl from "@/composables/useUrl";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 
 export type SheetValue =
   | string
@@ -37,13 +38,14 @@ export interface Sheet {
 }
 
 export function useDataSheet(
-  selectedId: Ref<string | number | null>,
-  selectedType: Ref<string>,
+  selectedId: Ref<ContentItemId>,
+  selectedType: Ref<ContentItemType>,
 ) {
-  const client = useClient();
-  const request = client.get("api/data_sheets/query/{}/", selectedId);
+  const url = useUrl("api/data_sheets/query/{id}/", {
+    pathParams: { id: selectedId },
+  });
   const record = ref<Sheet | null>(null);
-  const recordsQuery = useQuery(request, record);
+  const recordsQuery = useQuery2(url, record, { autoFetchOnUrlChange: false });
 
   const update = () => {
     if (record.value && selectedId.value !== record.value.uuid)

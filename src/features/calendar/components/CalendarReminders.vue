@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, toRefs } from "vue";
+import { computed, ref, toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
 
 import type { CalendarEvent } from "../api/useCalendarEvents";
 import { type ReminderSettings } from "../constants";
+import { isRecurring } from "../utils/occurrences";
 import { findFreeReminderSlot } from "../utils/reminders";
 import ReminderListEditor, { type ReminderRow } from "./ReminderListEditor.vue";
 
@@ -28,8 +29,29 @@ const reminderRows = computed<ReminderRow[]>(() =>
     })),
 );
 
+const MINUTE_IN_MS = 60 * 1000;
+
+const minutesUntilStart = computed(
+  () =>
+    (new Date(props.event.start_time).getTime() - Date.now()) / MINUTE_IN_MS,
+);
+
+const nextFreeReminderSlot = computed<ReminderSettings | null>(() =>
+  findFreeReminderSlot(
+    props.event.own_reminders,
+    // a series keeps producing occurrences, so its own start time is no cutoff
+    isRecurring(props.event) ? null : minutesUntilStart.value,
+  ),
+);
+
+const reminderNotice = computed(() =>
+  nextFreeReminderSlot.value
+    ? ""
+    : "No reminder times are available for this event.",
+);
+
 const addReminder = () => {
-  const slot = findFreeReminderSlot(props.event.own_reminders);
+  const slot = nextFreeReminderSlot.value;
   if (!slot) return;
   commandRequest({
     action: "calendar/create_reminder",
@@ -39,6 +61,8 @@ const addReminder = () => {
   }).catch(ignoreHandledError);
 };
 
+const editorRemountKey = ref(0);
+
 const updateReminder = (
   key: string | number,
   patch: Partial<ReminderSettings>,
@@ -47,7 +71,10 @@ const updateReminder = (
     action: "calendar/update_reminder",
     reminder_uuid: key,
     ...patch,
-  }).catch(ignoreHandledError);
+  }).catch(() => {
+    // a rejected update leaves the dropdown on the value the user picked
+    editorRemountKey.value += 1;
+  });
 };
 
 const removeReminder = (key: string | number) => {
@@ -59,10 +86,17 @@ const removeReminder = (key: string | number) => {
 </script>
 
 <template>
-  <ReminderListEditor
-    :reminders="reminderRows"
-    @add="addReminder"
-    @update="updateReminder"
-    @remove="removeReminder"
-  />
+  <div class="space-y-3">
+    <ReminderListEditor
+      :key="editorRemountKey"
+      :reminders="reminderRows"
+      :addingDisabled="!!reminderNotice"
+      @add="addReminder"
+      @update="updateReminder"
+      @remove="removeReminder"
+    />
+    <p v-if="reminderNotice" class="text-sm text-gray-500">
+      {{ reminderNotice }}
+    </p>
+  </div>
 </template>

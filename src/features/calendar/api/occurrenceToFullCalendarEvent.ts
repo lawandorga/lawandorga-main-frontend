@@ -1,13 +1,22 @@
-import type { EventApi, EventInput } from "@fullcalendar/core";
+import type { EventApi, EventInput } from "@fullcalendar/vue3";
 
 import { addDays } from "@/utils/date";
 
-import { EVENT_TYPE_META, TYPE_TINT_ALPHA } from "../constants";
+import {
+  EVENT_TYPE_META,
+  TYPE_TINT_ALPHA,
+  type EventSource,
+} from "../constants";
+import { getEventAccessKind } from "../utils/eventAccess";
 import type { CalendarEvent, CalendarOccurrence } from "./useCalendarEvents";
 
 export interface OccurrenceProps {
   eventUuid: string;
   originalStart: string;
+}
+
+interface OccurrenceExtendedProps extends OccurrenceProps {
+  eventSource: EventSource | undefined;
 }
 
 export const readOccurrenceProps = (
@@ -41,12 +50,12 @@ export const occurrenceToFullCalendarEvent = (
       : occurrence.end_time,
     allDay: occurrence.is_all_day,
     editable: isEditable,
-    backgroundColor: `${color}${TYPE_TINT_ALPHA}`,
-    borderColor: color,
-    textColor: color,
+    color: `${color}${TYPE_TINT_ALPHA}`,
+    contrastColor: color,
     extendedProps: {
       eventUuid: occurrence.event_uuid,
       originalStart: occurrence.original_start,
-    } satisfies OccurrenceProps,
+      eventSource: parentEvent ? getEventAccessKind(parentEvent) : undefined,
+    } satisfies OccurrenceExtendedProps,
   };
 };

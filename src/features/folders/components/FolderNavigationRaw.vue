@@ -1,5 +1,9 @@
 <script setup lang="ts">
-type ContentItemId = number | string | null;
+import { ButtonToggle } from "lorga-ui";
+import { VNode } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+import { ContentItemId } from "../types";
 
 export interface ContentItem {
   id: ContentItemId;
@@ -15,10 +19,6 @@ export interface ContentGroupItem {
   buttons: VNode[];
   badge?: string;
 }
-
-import { ButtonToggle } from "lorga-ui";
-import { VNode } from "vue";
-import { useRoute, useRouter } from "vue-router";
 
 import FolderNavigationChild from "@/features/folders/components/FolderNavigationChild.vue";
 import FolderNavigationGroup from "@/features/folders/components/FolderNavigationGroup.vue";

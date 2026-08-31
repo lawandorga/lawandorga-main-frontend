@@ -1,0 +1,164 @@
+<script setup lang="ts">
+import { ButtonNormal, types, ModalFree, FormGenerator } from "lorga-ui";
+import { computed, toRefs } from "vue";
+
+import FormWysiwyg from "@/components/FormWysiwyg.vue";
+import TabControls from "@/components/TabControls.vue";
+import useCmd from "@/composables/useCmd";
+import { useProfiles } from "@/features/admin/api/useProfiles";
+import { Task } from "@/features/dashboard/api/useTasks";
+import { formatDate } from "@/utils/date";
+
+const props = defineProps<{
+  task: Task;
+  query: () => void;
+}>();
+
+const { task } = toRefs(props);
+
+const { formProfiles } = useProfiles();
+
+const taskFields = computed<types.FormField[]>(() => [
+  {
+    name: "custom",
+    type: "slot",
+  },
+  { label: "Title", name: "title", required: true, type: "text" },
+  {
+    name: "description",
+    type: "slot",
+  },
+  {
+    label: "Deadline",
+    name: "deadline",
+    required: false,
+    type: "datetime-local",
+  },
+  {
+    label: "Assignees",
+    name: "assignee_ids",
+    required: true,
+    type: "multiple",
+    options: formProfiles.value,
+  },
+  {
+    label: "Priority",
+    name: "priority",
+    required: true,
+    type: "select",
+    options: [
+      { name: "Low", value: "low" },
+      { name: "Medium", value: "medium" },
+      { name: "High", value: "high" },
+      { name: "Urgent", value: "urgent" },
+    ],
+  },
+  {
+    label: "Progress",
+    name: "progress",
+    required: true,
+    type: "slider",
+    min: 0,
+    max: 100,
+    step: 5,
+    unit: "%",
+  },
+  {
+    label: "Tags",
+    name: "tags",
+    required: false,
+    type: "list",
+  },
+]);
+
+const { commandModalOpen, commandRequest } = useCmd(props.query);
+const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
+  props.query,
+);
+</script>
+
+<template>
+  <ButtonNormal kind="outline" @click="commandModalOpen = true">
+    Update
+  </ButtonNormal>
+  <ModalFree v-model="commandModalOpen" title="Update Task" width="max-w-3xl">
+    <TabControls
+      should-not-update-url
+      :tabs="[
+        { name: 'Update Task', key: 'update' },
+        { name: 'Comments', key: 'comments' },
+      ]"
+    >
+      <template #update>
+        <FormGenerator
+          :request="commandRequest"
+          :fields="taskFields"
+          :data="{
+            action: 'tasks/update_task',
+            task_id: task.uuid,
+            title: task.title,
+            description: task.description,
+            deadline: task.deadline ? task.deadline.slice(0, 16) : null,
+            assignee_ids: task.assignee_ids,
+            priority: task.priority,
+            progress: task.progress,
+            tags: task.tags_as_list,
+          }"
+        >
+          <template #custom
+            ><p class="mt-4">Created by: {{ task.creator_name }}</p></template
+          >
+          <template #description="{ data }">
+            <FormWysiwyg v-model="data.description" label="Description" />
+          </template>
+        </FormGenerator>
+      </template>
+      <template #comments>
+        <FormGenerator
+          :request="commandRequestThatDoesNotCloseModal"
+          :fields="[
+            {
+              name: 'comments_display',
+              type: 'slot',
+            },
+            {
+              label: 'Add Comment',
+              name: 'comment',
+              required: false,
+              type: 'textarea',
+            },
+          ]"
+          :data="{
+            action: 'tasks/add_comment',
+            task_id: task.uuid,
+            comment: '',
+          }"
+          submit="Add Comment"
+        >
+          <template #comments_display>
+            <div v-if="task.comments && task.comments.length" class="mb-2">
+              <h4 class="mb-2 text-sm font-semibold text-gray-700">Comments</h4>
+              <div class="space-y-2 overflow-y-auto">
+                <div
+                  v-for="comment in task.comments"
+                  :key="comment.comment_id"
+                  class="border-l-2 border-gray-300 py-1 pl-3 text-sm"
+                >
+                  <div class="flex items-baseline justify-between gap-3">
+                    <span class="font-semibold text-gray-600">{{
+                      comment.name || comment.email
+                    }}</span>
+                    <span v-if="comment.date" class="text-xs text-gray-500">{{
+                      formatDate(comment.date)
+                    }}</span>
+                  </div>
+                  <p class="mt-0.5 text-gray-700">{{ comment.comment }}</p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </FormGenerator>
+      </template>
+    </TabControls>
+  </ModalFree>
+</template>

@@ -1,7 +1,7 @@
 import { computed, Ref, ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
+import useUrl from "@/composables/useUrl";
 
 import { useFormYears } from "../composables/useFormYears";
 
@@ -13,12 +13,10 @@ interface Data {
 export function useRecordTags(year: Ref<number>) {
   const data = ref<Data>();
 
-  const client = useClient();
-  const request = client.get(
-    "api/statistics/individual/tag_stats/?year={}",
-    year,
-  );
-  useGet(request, data, year);
+  const url = useUrl("api/statistics/individual/tag_stats/", {
+    queryParams: { year },
+  });
+  useGet2(url, data);
 
   const stats = computed(() => data.value?.stats);
   const years = computed(() => data.value?.years);

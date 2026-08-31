@@ -1,18 +1,13 @@
 import { Ref } from "vue";
 
-import useClient from "@/api/client";
-
-import useQuery from "./useQuery";
+import useQuery2, { UseQueryOptions } from "./useQuery2";
 
 function useGet2<Type>(
-  url: string,
+  url: string | Ref<string | undefined>,
   obj: Ref<Type | undefined>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...watching: Ref<any>[]
+  options?: UseQueryOptions,
 ): () => void {
-  const client = useClient();
-  const request = client.get(url);
-  const query = useQuery(request, obj, ...watching);
+  const query = useQuery2(url, obj, options);
 
   query();
 

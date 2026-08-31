@@ -61,7 +61,7 @@ class Client {
     });
   }
 
-  private buildUrl<D extends Record<string, any>>(
+  buildUrl<D extends Record<string, any>>(
     url: string,
     data?: D,
     ...params: UrlParamType[]
@@ -78,6 +78,12 @@ class Client {
     return (data?: D) => {
       const builtUrl = this.buildUrl(url, data, ...params);
       return this.caller.get(builtUrl).then((response) => response.data);
+    };
+  }
+
+  get2<R = any>(url: Ref<string | undefined>): () => Promise<R> {
+    return () => {
+      return this.caller.get(url.value ?? "").then((response) => response.data);
     };
   }
 

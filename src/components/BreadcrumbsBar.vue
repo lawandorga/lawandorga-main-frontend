@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import { RouteParams } from "vue-router";
 
 interface LocationAsName {
@@ -19,12 +18,6 @@ defineProps<{
     aria-label="Breadcrumb"
   >
     <div class="flex items-center space-x-2">
-      <button
-        class="flex h-11 items-center rounded-md bg-gray-50 px-4 text-gray-400 shadow-sm hover:text-gray-500"
-        @click="$router.back()"
-      >
-        <ChevronLeftIcon class="h-6 w-6" />
-      </button>
       <ol class="flex rounded-md bg-gray-50 shadow-sm">
         <li class="flex h-11">
           <router-link

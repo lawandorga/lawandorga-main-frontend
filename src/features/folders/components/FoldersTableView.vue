@@ -17,7 +17,6 @@ import { useUserStore } from "@/store/user";
 import {
   Content,
   Folder,
-  FolderGroup,
   FolderItem,
   FolderPerson,
 } from "../api/useFolderPage";
@@ -31,7 +30,6 @@ const props = defineProps<{
   folderList: Folder[];
   folderItems: FolderItem[];
   availablePersons: FolderPerson[];
-  availableGroups: FolderGroup[];
 }>();
 const { folderItems } = toRefs(props);
 
@@ -236,7 +234,6 @@ const folderSelected = (uuid: string | undefined) => {
     <TableFolderGroupsWithAccess
       v-if="selected"
       :query="query"
-      :available-groups="availableGroups"
       :item="selected"
     />
   </div>

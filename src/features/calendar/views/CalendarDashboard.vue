@@ -1,26 +1,33 @@
 <script setup lang="ts">
-import type {
-  CalendarOptions,
-  DateSelectArg,
-  DayHeaderContentArg,
-  EventApi,
-  EventClickArg,
-  EventContentArg,
-  EventDropArg,
-  EventInput,
-} from "@fullcalendar/core";
-import enGBLocale from "@fullcalendar/core/locales/en-gb";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, {
-  type DateClickArg,
-  type EventResizeDoneArg,
-} from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import FullCalendar from "@fullcalendar/vue3";
+import FullCalendar, {
+  joinClassNames,
+  type ButtonInfo,
+  type CalendarOptions,
+  type ClassNameInput,
+  type DateClickInfo,
+  type DateSelectInfo,
+  type DayCellInfo,
+  type DayHeaderInfo,
+  type EventApi,
+  type EventClickInfo,
+  type EventDisplayInfo,
+  type EventDropInfo,
+  type EventInput,
+  type EventResizeDoneInfo,
+} from "@fullcalendar/vue3";
+import dayGridPlugin from "@fullcalendar/vue3/daygrid";
+import interactionPlugin from "@fullcalendar/vue3/interaction";
+import listPlugin from "@fullcalendar/vue3/list";
+import enGBLocale from "@fullcalendar/vue3/locales/en-gb";
+import classicThemePlugin from "@fullcalendar/vue3/themes/classic";
+import timeGridPlugin from "@fullcalendar/vue3/timegrid";
 import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
+import "@fullcalendar/vue3/skeleton.css";
+import "@fullcalendar/vue3/themes/classic/theme.css";
+import "@fullcalendar/vue3/themes/classic/palette.css";
 
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useCmd from "@/composables/useCmd";
@@ -54,7 +61,21 @@ import {
   seriesTimesShiftedByOccurrenceMove,
 } from "../utils/occurrences";
 
+const EVENT_SOURCE_ACCENT_CLASS: Record<EventSource, string> = {
+  PERSONAL: "calendar-event--source-personal",
+  SHARED: "calendar-event--source-shared",
+  ORGANIZATION: "calendar-event--source-organization",
+};
+
+const EVENT_SOURCE_ACCENT_VARIABLES = Object.fromEntries(
+  Object.entries(EVENT_SOURCE_META).map(([source, meta]) => [
+    `--calendar-accent-${source.toLowerCase()}`,
+    meta.color,
+  ]),
+);
+
 const CALENDAR_PLUGINS = [
+  classicThemePlugin,
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
@@ -162,10 +183,7 @@ const totalEventsCount = computed(() => (calendarEvents.value ?? []).length);
 
 const filteredEventsCount = computed(() => visibleEventUuids.value.size);
 
-const formatWeekday = (date: Date): string =>
-  date.toLocaleString("en-GB", { weekday: "short" }).slice(0, 2).toUpperCase();
-
-const onEventClick = (props: EventClickArg) => {
+const onEventClick = (props: EventClickInfo) => {
   const occurrenceProps = readOccurrenceProps(props.event);
   if (!occurrenceProps) return;
   selectedEventUuid.value = occurrenceProps.eventUuid;
@@ -173,11 +191,11 @@ const onEventClick = (props: EventClickArg) => {
   detailOpen.value = true;
 };
 
-const onDateClick = (click: DateClickArg) => {
+const onDateClick = (click: DateClickInfo) => {
   createEventModal.value?.open({ start: click.date, allDay: click.allDay });
 };
 
-const onDateSelect = (selection: DateSelectArg) => {
+const onDateSelect = (selection: DateSelectInfo) => {
   createEventModal.value?.open({
     start: selection.start,
     // An all-day selection's end is exclusive in FullCalendar, we want to show the last day the user selected
@@ -297,10 +315,10 @@ watch(rescheduleModalOpen, (open) => {
   }
 });
 
-const onEventDrop = (drop: EventDropArg) =>
+const onEventDrop = (drop: EventDropInfo) =>
   handleReschedule(drop.event, drop.revert);
 
-const onEventResize = (resize: EventResizeDoneArg) =>
+const onEventResize = (resize: EventResizeDoneInfo) =>
   handleReschedule(resize.event, resize.revert);
 
 const isoWeekNumber = (date: Date): number => {
@@ -317,95 +335,109 @@ const isoWeekNumber = (date: Date): number => {
   );
 };
 
-const monthViewDayHeader = (date: Date) => {
-  const weekdayElement = document.createElement("span");
-  weekdayElement.className = "calendar-month-header__weekday";
-  weekdayElement.textContent = date
-    .toLocaleString("en-GB", { weekday: "short" })
-    .toUpperCase();
-  return { domNodes: [weekdayElement] };
+const WEEKEND_DAYS_OF_WEEK = [0, 6];
+
+const weekendClass = (day: { dow: number }): ClassNameInput =>
+  WEEKEND_DAYS_OF_WEEK.includes(day.dow) && "calendar-weekend";
+
+const dayCellClass = (cell: DayCellInfo): ClassNameInput =>
+  joinClassNames(
+    weekendClass(cell),
+    cell.isOther && "calendar-day-cell--other",
+  );
+
+const dayNumberClass = (cell: DayCellInfo): ClassNameInput =>
+  joinClassNames(
+    "calendar-day-number",
+    cell.isToday && "calendar-day-number--today",
+    cell.isOther && "calendar-day-number--other",
+  );
+
+const buttonClass = (button: ButtonInfo): ClassNameInput =>
+  joinClassNames(
+    "calendar-button",
+    button.isSelected && "calendar-button--selected",
+  );
+
+const eventClass = (event: EventDisplayInfo): ClassNameInput =>
+  EVENT_SOURCE_ACCENT_CLASS[
+    event.event.extendedProps.eventSource as EventSource
+  ];
+
+const textElement = (tag: string, className: string, text: string) => {
+  const element = document.createElement(tag);
+  element.className = className;
+  element.textContent = text;
+  return element;
 };
 
-const listViewDayHeader = (date: Date) => {
-  const dateElement = document.createElement("span");
-  dateElement.className = "calendar-list-day-header";
-  dateElement.textContent = date
-    .toLocaleString("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })
-    .toUpperCase();
-  return { domNodes: [dateElement] };
-};
-
-const gridViewDayHeader = (props: DayHeaderContentArg) => {
+const gridViewDayHeader = (props: DayHeaderInfo) => {
   const dayHeaderElement = document.createElement("div");
   dayHeaderElement.className = "calendar-day-header";
 
-  const weekdayElement = document.createElement("span");
-  weekdayElement.className = "calendar-day-header__title";
-  weekdayElement.textContent = formatWeekday(props.date);
+  dayHeaderElement.append(
+    textElement(
+      "span",
+      "calendar-day-header__title",
+      props.date.toLocaleString("en-GB", { weekday: "short" }).toUpperCase(),
+    ),
+    textElement(
+      "div",
+      props.isToday
+        ? "calendar-day-header__date calendar-day-header__date--today"
+        : "calendar-day-header__date",
+      String(props.date.getDate()),
+    ),
+  );
 
-  const dayNumberElement = document.createElement("div");
-  dayNumberElement.className = props.isToday
-    ? "calendar-day-header__date calendar-day-header__date--today"
-    : "calendar-day-header__date";
-  dayNumberElement.textContent = String(props.date.getDate());
-
-  dayHeaderElement.append(weekdayElement, dayNumberElement);
   return { domNodes: [dayHeaderElement] };
 };
 
-const dayHeaderContent = (props: DayHeaderContentArg) => {
-  if (props.view.type === "dayGridMonth") return monthViewDayHeader(props.date);
-  if (props.view.type === "listMonth") return listViewDayHeader(props.date);
-  return gridViewDayHeader(props);
-};
+const dayHeaderContent = (props: DayHeaderInfo) =>
+  props.view.type === "dayGridMonth" ? true : gridViewDayHeader(props);
 
 const listViewEventContent = (
   event: CalendarEvent,
-  titleElement: HTMLDivElement,
+  titleElement: HTMLElement,
 ) => {
   const metaParts = event.location
     ? [event.location, event.creator_name]
     : [event.creator_name];
-  const metaElement = document.createElement("div");
-  metaElement.className = "calendar-event__meta";
-  metaElement.textContent = metaParts.join(" · ");
-  return { domNodes: [titleElement, metaElement] };
+  return {
+    domNodes: [
+      titleElement,
+      textElement("div", "calendar-event__meta", metaParts.join(" · ")),
+    ],
+  };
 };
 
 const gridViewEventContent = (
   event: CalendarEvent,
-  titleElement: HTMLDivElement,
+  titleElement: HTMLElement,
 ) => {
-  const creatorElement = document.createElement("div");
-  creatorElement.className = "calendar-event__meta";
-  creatorElement.textContent = event.creator_name;
-
-  const domNodes: HTMLElement[] = [titleElement, creatorElement];
+  const domNodes = [
+    titleElement,
+    textElement("div", "calendar-event__meta", event.creator_name),
+  ];
 
   if (event.location) {
-    const locationElement = document.createElement("div");
-    locationElement.className = "calendar-event__meta";
-    locationElement.textContent = event.location;
-    domNodes.push(locationElement);
+    domNodes.push(textElement("div", "calendar-event__meta", event.location));
   }
 
   return { domNodes };
 };
 
-const eventContent = (props: EventContentArg) => {
+const eventContent = (props: EventDisplayInfo) => {
   const occurrenceProps = readOccurrenceProps(props.event);
   // the drag-to-create preview has no event yet, so just show an empty div
   if (!occurrenceProps) return { domNodes: [] };
   const event = eventsByUuid.value.get(occurrenceProps.eventUuid);
 
-  const titleElement = document.createElement("div");
-  titleElement.className = "calendar-event__title";
-  titleElement.textContent = props.event.title;
+  const titleElement = textElement(
+    "div",
+    "calendar-event__title",
+    props.event.title,
+  );
 
   if (!event || props.view.type === "dayGridMonth")
     return { domNodes: [titleElement] };
@@ -423,12 +455,14 @@ const calendarBaseOptions: CalendarOptions = {
     center: "",
     right: "timeGridWeek,dayGridMonth,listMonth,timeGridDay createEvent",
   },
-  buttonText: {
-    today: "Today",
-    week: "Week",
-    month: "Month",
-    day: "Day",
-    list: "List",
+  buttons: {
+    createEvent: {
+      text: "Create Event",
+      class: "calendar-button--primary",
+      click: () => {
+        createEventModal.value?.open();
+      },
+    },
   },
   views: {
     timeGridWeek: {
@@ -438,20 +472,12 @@ const calendarBaseOptions: CalendarOptions = {
         return `CW ${isoWeekNumber(weekStart)} · ${month} ${weekStart.getFullYear()}`;
       },
     },
-    listMonth: {
-      titleFormat: (range) => {
-        const monthStart = range.start.marker;
-        const month = monthStart.toLocaleString("en-GB", { month: "long" });
-        return `${month} ${monthStart.getFullYear()}`;
-      },
+    dayGridMonth: {
+      dayHeaderFormat: { weekday: "short" },
+      dayHeaderInnerClass: "calendar-month-header__weekday",
     },
-  },
-  customButtons: {
-    createEvent: {
-      text: "Create Event",
-      click: () => {
-        createEventModal.value?.open();
-      },
+    listMonth: {
+      titleFormat: { month: "long", year: "numeric" },
     },
   },
   locale: enGBLocale,
@@ -468,7 +494,26 @@ const calendarBaseOptions: CalendarOptions = {
   allDaySlot: true,
   allDayText: "All day",
   scrollTime: "07:00:00",
-  slotLabelFormat: { hour: "numeric", minute: "2-digit", hour12: false },
+  slotHeaderFormat: { hour: "numeric", minute: "2-digit", hour12: false },
+  toolbarTitleClass: "calendar-toolbar-title",
+  buttonClass,
+  dayHeaderClass: weekendClass,
+  dayCellClass,
+  dayLaneClass: weekendClass,
+  dayCellTopInnerClass: dayNumberClass,
+  slotHeaderInnerClass: "calendar-slot-label",
+  allDayHeaderInnerClass: "calendar-allday-label",
+  eventClass,
+  blockEventClass: "calendar-event",
+  rowEventClass: "calendar-event--compact",
+  listItemEventClass: "calendar-list-event",
+  listDayFormat: {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  },
+  listDayHeaderInnerClass: "calendar-list-day-header",
   dayHeaderContent,
   eventContent,
   eventClick: onEventClick,
@@ -498,6 +543,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 
     <div
       class="calendar-shell relative isolate min-h-0 flex-1 rounded-lg bg-white p-3 shadow lg:p-4"
+      :style="EVENT_SOURCE_ACCENT_VARIABLES"
     >
       <div
         v-if="isLoading"
@@ -559,75 +605,56 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 
 <style scoped>
 .calendar-shell {
-  --fc-today-bg-color: rgba(0, 60, 77, 0.07);
-  --fc-neutral-bg-color: #f7f7f4;
-  --fc-list-event-hover-bg-color: white;
+  --fc-classic-today: rgba(0, 60, 77, 0.07);
 
   --color-formcolor-hover: #005068;
   --color-muted: #9ca3af;
+  --color-neutral-bg: #f7f7f4;
   --color-subtle-bg: #fafaf8;
+  --color-weekend-bg: rgb(0 0 0 / 2%);
   --color-button-border: #e2e2de;
 }
 
 /* Toolbar */
-:deep(.fc-toolbar-chunk) {
-  display: flex;
-  align-items: center;
-}
-
-:deep(.fc-toolbar-title) {
+:deep(.calendar-toolbar-title) {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-formcolor);
   white-space: nowrap;
 }
 
-:deep(.fc) {
-  height: 100%;
+:deep(.calendar-button) {
+  background-color: var(--color-neutral-bg);
+  border-color: var(--color-button-border);
+  color: #374151;
+  font-size: 12px;
+  padding: 6px 12px;
 
-  .fc-button-primary {
-    background-color: var(--fc-neutral-bg-color);
+  &:not(:disabled):hover {
+    background-color: var(--color-button-border);
     border-color: var(--color-button-border);
     color: #374151;
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 6px;
-
-    &:not(:disabled):hover {
-      background-color: var(--color-button-border);
-      border-color: var(--color-button-border);
-      color: #374151;
-    }
-
-    &.fc-button-active {
-      background-color: var(--color-formcolor);
-      border-color: var(--color-formcolor);
-      color: #fff;
-      font-weight: 500;
-      z-index: 2;
-
-      &:not(:disabled):hover {
-        background-color: var(--color-formcolor-hover);
-        border-color: var(--color-formcolor-hover);
-        color: #fff;
-      }
-    }
   }
 
-  .fc-createEvent-button.fc-button-primary {
+  &.calendar-button--selected,
+  &.calendar-button--primary {
     background-color: var(--color-formcolor);
     border-color: var(--color-formcolor);
     color: #fff;
     font-weight: 500;
 
-    &:hover {
+    &:not(:disabled):hover {
       background-color: var(--color-formcolor-hover);
       border-color: var(--color-formcolor-hover);
       color: #fff;
     }
   }
 
-  .fc-button:focus:not(:focus-visible) {
+  &.calendar-button--selected {
+    z-index: 2;
+  }
+
+  &:focus:not(:focus-visible) {
     box-shadow: none;
     outline: none;
   }
@@ -667,18 +694,17 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   }
 }
 
-:deep(.fc-day-sat),
-:deep(.fc-day-sun) {
-  background-color: var(--color-subtle-bg);
+:deep(.calendar-weekend) {
+  background-color: var(--color-weekend-bg);
 }
 
-:deep(.fc-timegrid-slot-label-cushion) {
+:deep(.calendar-slot-label) {
   font-size: 10px;
   color: var(--color-muted);
   padding-right: 6px;
 }
 
-:deep(.fc-timegrid-axis-cushion) {
+:deep(.calendar-allday-label) {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -687,18 +713,33 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   padding-right: 6px;
 }
 
-:deep(.fc-v-event),
-:deep(.fc-h-event) {
+:deep(.calendar-event) {
   border: none;
-  border-left: 3px solid var(--fc-event-border-color);
+  border-left: 3px solid var(--fc-event-contrast-color);
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.93);
+  }
 }
 
-:deep(.fc-v-event:hover),
-:deep(.fc-h-event:hover) {
-  filter: brightness(0.93);
+:deep(.calendar-event--source-personal) {
+  border-left-color: var(--calendar-accent-personal);
+}
+
+:deep(.calendar-event--source-shared) {
+  border-left-color: var(--calendar-accent-shared);
+}
+
+:deep(.calendar-event--source-organization) {
+  border-left-color: var(--calendar-accent-organization);
+}
+
+:deep(.calendar-event--compact) {
+  font-size: 11px;
+  padding: 1px 2px;
 }
 
 :deep(.calendar-event__title) {
@@ -719,6 +760,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
 /* Month view */
 :deep(.calendar-month-header__weekday) {
   display: block;
+  text-transform: uppercase;
   font-size: 11px;
   font-weight: 500;
   color: var(--color-muted);
@@ -726,56 +768,48 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   padding: 6px 0;
 }
 
-:deep(.fc-daygrid-day-top) {
-  flex-direction: row;
-}
-
-:deep(.fc-daygrid-day-number) {
+:deep(.calendar-day-number) {
   font-size: 13px;
   font-weight: 400;
   color: var(--color-formcolor);
   padding: 4px 8px;
-}
 
-:deep(.fc-day-today .fc-daygrid-day-number) {
-  background: var(--color-formcolor);
-  color: #fff;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 4px 8px;
-}
+  &.calendar-day-number--today {
+    background: var(--color-formcolor);
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 4px 8px;
+  }
 
-:deep(.fc-day-other) {
-  background-color: var(--color-subtle-bg);
-
-  .fc-daygrid-day-number {
+  &.calendar-day-number--other {
     color: #d1d5db;
   }
 }
 
-:deep(.fc-daygrid-event) {
-  font-size: 11px;
-  padding: 1px 2px;
+:deep(.calendar-day-cell--other) {
+  background-color: var(--color-subtle-bg);
 }
 
 /* List view */
-:deep(.fc-list-day th) {
-  text-align: left;
-}
-
 :deep(.calendar-list-day-header) {
+  text-transform: uppercase;
   font-size: 11px;
   font-weight: 600;
   color: #6b7280;
   letter-spacing: 0.05em;
 }
 
-:deep(.fc-list-event) {
+:deep(.calendar-list-event) {
   cursor: pointer;
+
+  &:hover {
+    background-color: #fff;
+  }
 }
 </style>

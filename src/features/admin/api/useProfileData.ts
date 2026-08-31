@@ -1,7 +1,7 @@
-import { ref, computed } from "vue";
+import { ref, computed, Ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
+import useUrl from "@/composables/useUrl";
 
 export interface OrgUser {
   id: number;
@@ -40,7 +40,7 @@ interface Data {
   permissions: HasPermission[] | null;
 }
 
-export function useProfileData(id: string) {
+export function useProfileData(id: Ref<string>) {
   const data = ref<Data | null>(null);
 
   const user = computed<OrgUser | null>(() => {
@@ -53,9 +53,11 @@ export function useProfileData(id: string) {
     return data.value.permissions;
   });
 
-  const client = useClient();
-  const request = client.get("/api/auth/org_users/{}/", id);
-  const query = useGet(request, data);
+  const url = useUrl(`/api/auth/org_users/{id}/`, {
+    pathParams: { id },
+  });
+
+  const query = useGet2(url, data);
 
   return {
     user,

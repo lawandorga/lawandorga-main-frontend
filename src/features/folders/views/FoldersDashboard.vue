@@ -12,8 +12,7 @@ import { useFolderPage } from "../api/useFolderPage";
 
 const userStore = useUserStore();
 
-const { query, availableGroups, availablePersons, folderItems, folderList } =
-  useFolderPage();
+const { query, availablePersons, folderItems, folderList } = useFolderPage();
 
 const setting = userStore.getSetting("foldersDashboardViewTab") as string;
 const tabChanged = (key: string) => {
@@ -43,7 +42,6 @@ const tabChanged = (key: string) => {
           <FoldersTreeView
             :query="query"
             :available-persons="availablePersons"
-            :available-groups="availableGroups"
             :folder-items="folderItems"
           />
         </template>
@@ -51,7 +49,6 @@ const tabChanged = (key: string) => {
           <FoldersTableView
             :query="query"
             :available-persons="availablePersons"
-            :available-groups="availableGroups"
             :folder-items="folderItems"
             :folder-list="folderList"
           />

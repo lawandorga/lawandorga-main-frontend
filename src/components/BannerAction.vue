@@ -15,7 +15,9 @@ const emit = defineEmits(["close"]);
 <template>
   <div class="fixed inset-x-0 bottom-0 pb-2 sm:pb-5">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <div class="bg-formcolor rounded-lg p-2 shadow-lg sm:p-3">
+      <div
+        class="bg-formcolor rounded-lg p-2 shadow-2xl ring-1 ring-white/20 sm:p-3"
+      >
         <div class="flex flex-wrap items-center justify-between">
           <div class="flex w-0 flex-1 items-center">
             <span class="flex rounded-lg bg-blue-800 p-2">

@@ -3,9 +3,9 @@ import { CheckCircleIcon, XCircleIcon } from "@heroicons/vue/20/solid";
 import { CircleLoader } from "lorga-ui";
 import { ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
+import useUrl from "@/composables/useUrl";
 import { formatDate } from "@/utils/date";
 
 import FollowUpCreate from "../actions/CreateFollowUp.vue";
@@ -36,9 +36,10 @@ interface TimelineEvent {
 const timeline = ref<null | TimelineEvent[]>(null);
 const loading = ref(false);
 
-const client = useClient();
-const request = client.get("/api/timeline/query/timeline/{}/", folderUuid);
-const timelineQuery = useQuery(request, timeline);
+const url = useUrl("/api/timeline/query/timeline/{id}/", {
+  pathParams: { id: folderUuid },
+});
+const timelineQuery = useQuery2(url, timeline);
 
 // get timeline
 const update = () => {

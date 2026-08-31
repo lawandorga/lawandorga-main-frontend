@@ -1,7 +1,7 @@
 import { Ref, computed, ref } from "vue";
 
-import useClient from "@/api/client";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
+import useUrl from "@/composables/useUrl";
 
 export interface Subfolder {
   name: string;
@@ -43,10 +43,11 @@ export interface FolderDetail {
 }
 
 export function useFolder(folderUuid: Ref<string>) {
-  const client = useClient();
-  const request = client.get(`/api/folders/query/{}/`, folderUuid);
   const folder = ref<FolderDetail>();
-  const query = useGet(request, folder, folderUuid);
+  const url = useUrl("/api/folders/query/{}/", {
+    pathParams: { 0: folderUuid },
+  });
+  const query = useGet2(url, folder);
 
   const record = computed<Content | null>(() => {
     if (!folder.value) return null;

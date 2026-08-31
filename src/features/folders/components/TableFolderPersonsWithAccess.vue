@@ -23,11 +23,7 @@ defineProps<{
     ]"
   >
     <template #head-action>
-      <FoldersGrantAccess
-        :folder-uuid="item.folder.uuid"
-        :query="query"
-        :available-persons="availablePersons"
-      />
+      <FoldersGrantAccess :folder-uuid="item.folder.uuid" :query="query" />
     </template>
     <template #action="access">
       <FoldersRevokeAccessUser

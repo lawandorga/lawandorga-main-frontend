@@ -6,10 +6,11 @@ import FoldersChangeName from "@/features/folders/actions/ChangeName.vue";
 import ChangeToken from "@/features/records/actions/ChangeToken.vue";
 
 import { Content, FolderDetail } from "../api/useFolder";
+import { ContentItemId, ContentItemType } from "../types";
 
 const props = defineProps<{
-  selectedId: string | number | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   folder: FolderDetail;
   query: () => void;
 }>();

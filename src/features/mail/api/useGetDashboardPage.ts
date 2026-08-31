@@ -1,7 +1,6 @@
-import axios from "axios";
 import { ref, computed } from "vue";
 
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 
 export interface AvailableMailDomain {
   uuid: string;
@@ -64,20 +63,7 @@ export interface MailDashboardPage {
 export function useGetDashboardPage() {
   const page = ref<MailDashboardPage | NoMailAccount>();
 
-  const request = () =>
-    axios
-      .get("mail/query/page/dashboard/")
-      .then((response) => {
-        const data = response.data;
-        data["noMailAccount"] = false;
-        return data;
-      })
-      .catch((error) => {
-        if (error.response.status === 444) return { noMailAccount: true };
-        throw error;
-      });
-
-  const query = useGet(request, page);
+  const query = useGet2("mail/query/page/dashboard/", page);
 
   const user = computed<SelfMailUser | null | false>(() => {
     if (page.value == undefined) return null;

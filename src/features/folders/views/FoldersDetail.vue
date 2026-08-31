@@ -24,6 +24,7 @@ import { useUserStore } from "@/store/user";
 
 import { useFolder } from "../api/useFolder";
 import FolderSubfolders from "../components/FolderSubfolders.vue";
+import { ContentItemType } from "../types";
 
 const route = useRoute();
 const router = useRouter();
@@ -44,8 +45,8 @@ const select = async (id: number | string | null, type: string) => {
   });
 };
 
-const selectedType = computed(() => {
-  return (route.query.selectedType as string) || "FOLDER";
+const selectedType = computed<ContentItemType>(() => {
+  return (route.query.selectedType as ContentItemType) || "FOLDER";
 });
 
 const selectedId = computed(() => {
@@ -104,10 +105,7 @@ const { mailQuery, mails, numberOfUnreadMails } = useMailImports(folderUuid);
           :grouping="grouping"
           :selected-id="selectedId"
           :selected-type="selectedType"
-          @selected="
-            selectedId = $event.id;
-            selectedType = $event.type;
-          "
+          @selected="select($event.id, $event.type)"
         />
 
         <FolderNavigationContent

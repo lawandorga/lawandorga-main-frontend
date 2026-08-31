@@ -2,9 +2,8 @@
 import { ModalCreate, ButtonNormal, types } from "lorga-ui";
 import { computed, ref, toRefs, watch } from "vue";
 
-import useClient from "@/api/client";
 import useCmd from "@/composables/useCmd";
-import useQuery from "@/composables/useQuery";
+import useQuery2 from "@/composables/useQuery2";
 
 const props = defineProps<{ groupId: number; query: () => void }>();
 const { query } = toRefs(props);
@@ -14,9 +13,7 @@ interface User {
   name: string;
 }
 const users = ref<User[]>([]);
-const client = useClient();
-const request = client.get("api/auth/org_users/");
-const userQuery = useQuery(request, users);
+const userQuery = useQuery2("api/auth/org_users/", users);
 
 const fields = computed<types.FormField[]>(() => [
   {

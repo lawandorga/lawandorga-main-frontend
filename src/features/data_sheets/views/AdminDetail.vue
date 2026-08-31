@@ -4,10 +4,9 @@ import { TableGenerator } from "lorga-ui";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
-import useClient from "@/api/client";
 import BoxLoader from "@/components/BoxLoader.vue";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
-import useGet from "@/composables/useGet";
+import useGet2 from "@/composables/useGet2";
 import DeleteField from "@/features/data_sheets/actions/DeleteField.vue";
 
 import CreateField from "../actions/CreateField.vue";
@@ -33,15 +32,12 @@ interface Template {
 }
 
 const route = useRoute();
-const client = useClient();
-
-const retrieve = client.get(
-  "api/data_sheets/query/templates/{}/",
-  route.params.id as string,
-);
 
 const template = ref<Template>();
-const query = useGet(retrieve, template);
+const query = useGet2(
+  `api/data_sheets/query/templates/${route.params.id}/`,
+  template,
+);
 </script>
 
 <template>

@@ -5,11 +5,12 @@ import { computed, toRefs } from "vue";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
 
 import { FolderDetail } from "../api/useFolder";
+import { ContentItemId, ContentItemType } from "../types";
 
 const props = defineProps<{
   folder: FolderDetail | null;
-  selectedId: string | number | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
 }>();
 const { selectedId, selectedType, folder } = toRefs(props);
 

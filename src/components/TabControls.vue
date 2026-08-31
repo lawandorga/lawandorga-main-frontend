@@ -18,11 +18,15 @@ type Tab =
     }
   | { key: string; spacer: boolean };
 
-const props = defineProps<{ tabs: Tab[]; defaultTab?: number | string }>();
+const props = defineProps<{
+  tabs: Tab[];
+  defaultTab?: number | string;
+  shouldNotUpdateUrl?: boolean;
+}>();
 
 const emit = defineEmits(["clicked"]);
 
-const { tabs, defaultTab } = toRefs(props);
+const { tabs, defaultTab, shouldNotUpdateUrl } = toRefs(props);
 
 const route = useRoute();
 const router = useRouter();
@@ -33,24 +37,34 @@ const internalTabs = ref<Tab[]>(tabs.value);
 const selectedTab = ref(0);
 
 const changeTab = (index: number) => {
-  router.push({ path: route.path, query: { ...route.query, selected: index } });
+  if (!shouldNotUpdateUrl.value) {
+    router.push({
+      path: route.path,
+      query: { ...route.query, selected: index },
+    });
+  }
   selectedTab.value = index;
   emit("clicked", index);
 };
 
-const updateTab = () => {
+const updateTabOnLoading = () => {
   internalTabs.value = [];
 
-  const routeValue = parseInt(route.query.selected as string);
-  const defaultValue = parseInt(defaultTab?.value as string);
+  const routeValue =
+    !shouldNotUpdateUrl.value && route.query.selected
+      ? parseInt(route.query.selected as string)
+      : undefined;
+  const defaultValue = defaultTab.value
+    ? parseInt(defaultTab.value as string)
+    : undefined;
   const selected: number = routeValue || defaultValue || 0;
   internalTabs.value = tabs.value;
   changeTab(selected);
 };
 
-updateTab();
+updateTabOnLoading();
 
-watch([defaultTab, tabs], updateTab, { flush: "post" });
+watch([defaultTab, tabs], updateTabOnLoading, { flush: "post" });
 </script>
 
 <template>

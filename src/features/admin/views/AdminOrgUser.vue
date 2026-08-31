@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { CogIcon } from "@heroicons/vue/24/outline";
 import { TableGenerator, ButtonNormal } from "lorga-ui";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 import BoxLoader from "@/components/BoxLoader.vue";
@@ -16,7 +17,9 @@ import { useProfileData } from "../api/useProfileData";
 const route = useRoute();
 const userStore = useUserStore();
 
-const { query, permissions, user } = useProfileData(route.params.id as string);
+const { query, permissions, user } = useProfileData(
+  computed(() => route.params.id as string),
+);
 </script>
 
 <template>

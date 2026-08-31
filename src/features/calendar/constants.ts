@@ -19,10 +19,10 @@ export type EventType = keyof typeof EVENT_TYPE_META;
 export const TYPE_TINT_ALPHA = "20";
 
 export const RECURRENCE_FREQUENCIES = [
-  { rule: "FREQ=DAILY", label: "Daily", fullCalendarFreq: "daily" },
-  { rule: "FREQ=WEEKLY", label: "Weekly", fullCalendarFreq: "weekly" },
-  { rule: "FREQ=MONTHLY", label: "Monthly", fullCalendarFreq: "monthly" },
-  { rule: "FREQ=YEARLY", label: "Yearly", fullCalendarFreq: "yearly" },
+  { rule: "FREQ=DAILY", label: "Daily" },
+  { rule: "FREQ=WEEKLY", label: "Weekly" },
+  { rule: "FREQ=MONTHLY", label: "Monthly" },
+  { rule: "FREQ=YEARLY", label: "Yearly" },
 ] as const;
 
 export const REMINDER_OFFSET_OPTIONS = [
@@ -49,3 +49,14 @@ export const DEFAULT_REMINDER: ReminderSettings = {
   minutes_before: 30,
   method: "IN_APP",
 };
+
+// ordered by preference: the first entry that is still free and not in the past wins
+export const REMINDER_CANDIDATES: ReminderSettings[] = [
+  DEFAULT_REMINDER,
+  ...REMINDER_OFFSET_OPTIONS.flatMap((offset) =>
+    REMINDER_METHOD_OPTIONS.map((method) => ({
+      minutes_before: offset.value,
+      method: method.value,
+    })),
+  ),
+];

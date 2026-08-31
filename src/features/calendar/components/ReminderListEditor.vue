@@ -11,6 +11,7 @@ export interface ReminderRow extends ReminderSettings {
 
 defineProps<{
   reminders: ReminderRow[];
+  addingDisabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -34,7 +35,7 @@ const methodOptions: types.FormOptionInput[] = [...REMINDER_METHOD_OPTIONS];
       <li
         v-for="reminder in reminders"
         :key="reminder.key"
-        class="flex items-center gap-2"
+        class="flex items-end gap-2"
       >
         <FormSelect
           class="flex-1"
@@ -67,7 +68,7 @@ const methodOptions: types.FormOptionInput[] = [...REMINDER_METHOD_OPTIONS];
       </li>
     </ul>
 
-    <ButtonNormal kind="action" @click="emit('add')">
+    <ButtonNormal kind="action" :disabled="addingDisabled" @click="emit('add')">
       + Add reminder
     </ButtonNormal>
   </div>

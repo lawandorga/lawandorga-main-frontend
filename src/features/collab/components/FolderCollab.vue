@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { CheckIcon } from "@heroicons/vue/24/outline";
 import { CircleLoader } from "lorga-ui";
-import { ref, toRefs, watch } from "vue";
+import { toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
-import { CollabTemplate } from "@/features/admin/api/useTemplate";
+import { useCollab } from "@/features/collab/api/useCollab";
 import { Content } from "@/features/folders/api/useFolder";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import { formatDate } from "@/utils/date";
 
 import CollabAddTemplate from "../actions/AddTemplate.vue";
@@ -20,26 +19,10 @@ import CollabRemoveTemplate from "../actions/RemoveTemplate.vue";
 import CollabShowHistory from "../actions/ShowHistory.vue";
 import CollabForm from "./CollabForm.vue";
 
-export interface History {
-  user: string;
-  time: string;
-  text: string;
-}
-
-interface Collab {
-  uuid: string;
-  name: string;
-  text: string;
-  created_at: string;
-  password: string;
-  history: History[];
-  template: CollabTemplate | null;
-}
-
 const props = defineProps<{
   folderContent: Content[];
-  selectedId: string | number | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   query: () => void;
   onDelete?: () => void;
 }>();
@@ -69,19 +52,7 @@ watch(
   { immediate: true },
 );
 
-const client = useClient();
-const request = client.get("api/collab/query/{}/", selectedId);
-const collab = ref<Collab>();
-const collabQuery = useQuery(request, collab);
-
-const update = () => {
-  if (collab.value && selectedId.value !== collab.value.uuid)
-    collab.value = undefined;
-  if (selectedType.value === "COLLAB" && selectedId.value) {
-    collabQuery();
-  }
-};
-watch(selectedId, update, { immediate: true });
+const { collab, collabQuery } = useCollab(selectedId, selectedType);
 
 const allQuery = () => {
   query.value();

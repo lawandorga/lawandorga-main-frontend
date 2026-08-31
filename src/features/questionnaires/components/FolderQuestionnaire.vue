@@ -1,85 +1,26 @@
 <script setup lang="ts">
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { ButtonNormal, CircleLoader } from "lorga-ui";
-import { Ref, ref, toRefs, watch } from "vue";
+import { toRefs } from "vue";
 
-import useClient from "@/api/client";
 import BoxHeadingStats from "@/components/BoxHeadingStats.vue";
-import useQuery from "@/composables/useQuery";
+import { ContentItemId, ContentItemType } from "@/features/folders/types";
 import { useAlertStore } from "@/store/alert";
 import { formatDate } from "@/utils/date";
 
 import QuestionnaireDelete from "../actions/DeleteQuestionnaire.vue";
 import QuestionnaireFileDownload from "../actions/DownloadQuestionnaireFile.vue";
-
-interface QuestionnaireField {
-  id: number;
-  type: string;
-  name: string;
-  question: string;
-}
-
-export interface QuestionnaireAnswer {
-  id: number;
-  data: string;
-  field: QuestionnaireField;
-}
-
-export interface QuestionnaireTemplate {
-  id: number;
-  rlc: number;
-  name: string;
-  notes: string;
-  updated: string;
-  created: string;
-}
-
-export interface Questionnaire {
-  id: number;
-  uuid: string;
-  code: string;
-  record: number;
-  template: QuestionnaireTemplate;
-  answers: QuestionnaireAnswer[];
-  created: string;
-  updated: string;
-}
+import { Questionnaire, useQuestionnaire } from "../api/useQuestionnaire.js";
 
 const props = defineProps<{
-  selectedId: number | string | null;
-  selectedType: string;
+  selectedId: ContentItemId;
+  selectedType: ContentItemType;
   query: () => void;
 }>();
 
 const { selectedId, query, selectedType } = toRefs(props);
 
-const questionnaire = ref<Questionnaire | null>(null);
-
-const loading = ref(false);
-
-const client = useClient();
-const request = client.get(`/api/questionnaires/query/{}/`, selectedId);
-
-const questionnaireQuery = useQuery(
-  request,
-  questionnaire,
-  selectedId as Ref<string>,
-);
-
-const update = () => {
-  if (questionnaire.value && selectedId.value !== questionnaire.value.uuid)
-    questionnaire.value = null;
-  if (selectedType.value === "QUESTIONNAIRE" && selectedId.value) {
-    loading.value = true;
-    questionnaireQuery().then(() => {
-      loading.value = false;
-    });
-  }
-};
-watch(selectedId, () => {
-  update();
-});
-update();
+const { questionnaire, isLoading } = useQuestionnaire(selectedId, selectedType);
 
 // copy link
 const alertStore = useAlertStore();
@@ -114,7 +55,7 @@ const copyLink = (recordQuestionnaire: Questionnaire) => {
           :questionnaire-id="questionnaire.id"
           :questionnaire-name="questionnaire.code"
           :query="query"
-          @deleted="questionnaire = null"
+          @deleted="questionnaire = undefined"
         />
       </template>
 
@@ -125,7 +66,7 @@ const copyLink = (recordQuestionnaire: Questionnaire) => {
           </dt>
           <dd
             v-if="answer.field.type === 'TEXTAREA'"
-            class="mt-1 text-sm break-words text-gray-900"
+            class="mt-1 text-sm wrap-break-word text-gray-900"
           >
             {{ answer.data }}
           </dd>
@@ -167,7 +108,7 @@ const copyLink = (recordQuestionnaire: Questionnaire) => {
       </dl>
     </BoxHeadingStats>
   </div>
-  <div v-else-if="loading">
+  <div v-else-if="isLoading">
     <CircleLoader />
   </div>
 </template>
