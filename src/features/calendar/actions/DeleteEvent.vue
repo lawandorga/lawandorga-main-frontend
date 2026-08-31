@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ModalDelete } from "lorga-ui";
-import { toRefs, watch } from "vue";
+import { toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
 
@@ -8,16 +8,15 @@ const props = defineProps<{
   query: () => void;
   eventUuid: string;
   eventName: string;
-  openSignal?: number;
 }>();
-const { query, eventUuid, eventName, openSignal } = toRefs(props);
+const { query, eventUuid, eventName } = toRefs(props);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 
-watch(openSignal, (next, prev) => {
-  if (next !== undefined && next !== prev) {
+defineExpose({
+  open: () => {
     commandModalOpen.value = true;
-  }
+  },
 });
 </script>
 
@@ -25,7 +24,6 @@ watch(openSignal, (next, prev) => {
   <ModalDelete
     v-model="commandModalOpen"
     title="Delete Event"
-    verb="delete"
     :obj-name="eventName"
     :request="commandRequest"
     :data="{ event_uuid: eventUuid, action: 'calendar/delete_event' }"

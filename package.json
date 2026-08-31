@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@eslint/js": "^10.0.1",
-    "@fullcalendar/rrule": "^7.0.2",
     "@fullcalendar/vue3": "^7.0.2",
     "@headlessui/vue": "==1.7.*",
     "@heroicons/vue": "==2.2.*",
@@ -56,7 +55,6 @@
     "postcss": "==8.5.*",
     "prettier": "==3.9.*",
     "remixicon": "==4.9.*",
-    "rrule": "^2.8.1",
     "tailwindcss": "==4.*",
     "temporal-polyfill": "^1.0.4",
     "typescript": "==6.*",

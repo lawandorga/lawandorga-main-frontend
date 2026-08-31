@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { BellIcon } from "@heroicons/vue/24/outline";
+import { ButtonNormal } from "lorga-ui";
 import { useRouter } from "vue-router";
 
 import { formatDate } from "@/utils/date";
@@ -62,14 +63,13 @@ const openNotification = (
           class="flex items-center justify-between border-b border-gray-100 px-4 py-2"
         >
           <span class="text-sm font-medium text-gray-900">Notifications</span>
-          <button
+          <ButtonNormal
             v-if="unreadCount > 0"
-            type="button"
-            class="cursor-pointer text-xs text-blue-600 hover:text-blue-800"
+            kind="action"
             @click="markAllRead"
           >
             Mark all read
-          </button>
+          </ButtonNormal>
         </div>
 
         <ul

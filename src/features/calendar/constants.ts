@@ -19,23 +19,23 @@ export type EventType = keyof typeof EVENT_TYPE_META;
 export const TYPE_TINT_ALPHA = "20";
 
 export const RECURRENCE_FREQUENCIES = [
-  { rule: "FREQ=DAILY", label: "Daily", fullCalendarFreq: "daily" },
-  { rule: "FREQ=WEEKLY", label: "Weekly", fullCalendarFreq: "weekly" },
-  { rule: "FREQ=MONTHLY", label: "Monthly", fullCalendarFreq: "monthly" },
-  { rule: "FREQ=YEARLY", label: "Yearly", fullCalendarFreq: "yearly" },
+  { rule: "FREQ=DAILY", label: "Daily" },
+  { rule: "FREQ=WEEKLY", label: "Weekly" },
+  { rule: "FREQ=MONTHLY", label: "Monthly" },
+  { rule: "FREQ=YEARLY", label: "Yearly" },
 ] as const;
 
 export const REMINDER_OFFSET_OPTIONS = [
-  { minutes: 0, label: "At start of event" },
-  { minutes: 10, label: "10 minutes before" },
-  { minutes: 30, label: "30 minutes before" },
-  { minutes: 60, label: "1 hour before" },
-  { minutes: 1440, label: "1 day before" },
+  { value: 0, name: "At start of event" },
+  { value: 10, name: "10 minutes before" },
+  { value: 30, name: "30 minutes before" },
+  { value: 60, name: "1 hour before" },
+  { value: 1440, name: "1 day before" },
 ] as const;
 
 export const REMINDER_METHOD_OPTIONS = [
-  { value: "EMAIL", label: "Email" },
-  { value: "IN_APP", label: "In-app" },
+  { value: "EMAIL", name: "Email" },
+  { value: "IN_APP", name: "In-app" },
 ] as const;
 
 export type ReminderMethod = (typeof REMINDER_METHOD_OPTIONS)[number]["value"];
@@ -55,7 +55,7 @@ export const REMINDER_CANDIDATES: ReminderSettings[] = [
   DEFAULT_REMINDER,
   ...REMINDER_OFFSET_OPTIONS.flatMap((offset) =>
     REMINDER_METHOD_OPTIONS.map((method) => ({
-      minutes_before: offset.minutes,
+      minutes_before: offset.value,
       method: method.value,
     })),
   ),

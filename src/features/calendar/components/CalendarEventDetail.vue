@@ -15,8 +15,10 @@ import { useGroups } from "@/features/org/api/useGroups";
 import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/date.js";
 
+import CancelOccurrence from "../actions/CancelOccurrence.vue";
 import DeleteEvent from "../actions/DeleteEvent.vue";
 import UpdateEvent from "../actions/UpdateEvent.vue";
+import UpdateOccurrence from "../actions/UpdateOccurrence.vue";
 import type { CalendarEvent } from "../api/useCalendarEvents";
 import {
   EVENT_SOURCE_META,
@@ -25,12 +27,19 @@ import {
   TYPE_TINT_ALPHA,
 } from "../constants.js";
 import { getEventAccessKind } from "../utils/eventAccess";
+import {
+  findOverride,
+  isRecurring,
+  resolveOccurrence,
+} from "../utils/occurrences";
 import CalendarDetailRow from "./CalendarDetailRow.vue";
 import CalendarReminders from "./CalendarReminders.vue";
+import EventScopeModal from "./EventScopeModal.vue";
 
 const props = defineProps<{
   modelValue: boolean;
   event: CalendarEvent | null;
+  originalStart?: string | null;
   query: () => void;
 }>();
 
@@ -69,8 +78,44 @@ const canEdit = computed(() => hasEditPermission.value);
 
 const canDelete = computed(() => hasEditPermission.value);
 
-const updateOpenSignal = ref(0);
-const deleteOpenSignal = ref(0);
+const updateEventRef = ref<InstanceType<typeof UpdateEvent> | null>(null);
+const deleteEventRef = ref<InstanceType<typeof DeleteEvent> | null>(null);
+const updateOccurrenceRef = ref<InstanceType<typeof UpdateOccurrence> | null>(
+  null,
+);
+const cancelOccurrenceRef = ref<InstanceType<typeof CancelOccurrence> | null>(
+  null,
+);
+
+const occurrence = computed(() => {
+  if (!props.event || !props.originalStart) return null;
+  if (!isRecurring(props.event)) return null;
+  return resolveOccurrence(
+    props.event,
+    props.originalStart,
+    findOverride(props.event, props.originalStart),
+  );
+});
+
+const displayed = computed(() => {
+  if (!props.event) return null;
+  if (occurrence.value) {
+    return {
+      title: occurrence.value.title,
+      start_time: occurrence.value.start,
+      end_time: occurrence.value.end,
+      location: occurrence.value.location,
+      description: occurrence.value.description,
+    };
+  }
+  return {
+    title: props.event.title,
+    start_time: props.event.start_time,
+    end_time: props.event.end_time,
+    location: props.event.location,
+    description: props.event.description,
+  };
+});
 
 const sourceMeta = computed(() => {
   const source = props.event ? getEventAccessKind(props.event) : "PERSONAL";
@@ -93,11 +138,11 @@ const toWeekdayDate = (value: string): string => {
 };
 
 const formattedDate = computed(() => {
-  if (!props.event) return "";
-  const { start_time, end_time, is_all_day } = props.event;
+  if (!props.event || !displayed.value) return "";
+  const { start_time, end_time } = displayed.value;
   const startLabel = toWeekdayDate(start_time);
   if (
-    is_all_day &&
+    props.event.is_all_day &&
     end_time &&
     formatDate(start_time, true) !== formatDate(end_time, true)
   ) {
@@ -119,25 +164,64 @@ const recurrenceLabel = computed(() => {
 });
 
 const formattedTime = computed(() => {
-  if (!props.event) return "";
+  if (!props.event || !displayed.value) return "";
   if (props.event.is_all_day) return "All day";
-  const start = formatDate(props.event.start_time, false, true);
-  if (!props.event.end_time) return start;
-  return `${start} - ${formatDate(props.event.end_time, false, true)}`;
+  const start = formatDate(displayed.value.start_time, false, true);
+  if (!displayed.value.end_time) return start;
+  return `${start} - ${formatDate(displayed.value.end_time, false, true)}`;
 });
 
 const closeDetail = () => {
   emit("update:modelValue", false);
 };
 
-const openUpdateModal = () => {
-  updateOpenSignal.value += 1;
+const openModal = (modal: { open: () => void } | null) => {
+  modal?.open();
   closeDetail();
 };
 
-const openDeleteModal = () => {
-  deleteOpenSignal.value += 1;
-  closeDetail();
+const SCOPE_ACTIONS = {
+  edit: {
+    title: "Edit repeating event",
+    question:
+      "Do you want to edit only this event or all events in this series?",
+    this: () => openModal(updateOccurrenceRef.value),
+    all: () => openModal(updateEventRef.value),
+  },
+  delete: {
+    title: "Delete repeating event",
+    question:
+      "Do you want to delete only this event or all events in this series?",
+    this: () => openModal(cancelOccurrenceRef.value),
+    all: () => openModal(deleteEventRef.value),
+  },
+} as const;
+
+type ScopeAction = keyof typeof SCOPE_ACTIONS;
+
+const scopeModalOpen = ref(false);
+const pendingAction = ref<ScopeAction>("edit");
+
+const scopeTitle = computed(() => SCOPE_ACTIONS[pendingAction.value].title);
+const scopeQuestion = computed(
+  () => SCOPE_ACTIONS[pendingAction.value].question,
+);
+
+const askScope = (action: ScopeAction) => {
+  if (!occurrence.value) {
+    SCOPE_ACTIONS[action].all();
+    return;
+  }
+  pendingAction.value = action;
+  scopeModalOpen.value = true;
+};
+
+const onEdit = () => askScope("edit");
+
+const onDelete = () => askScope("delete");
+
+const onScopeSelect = (scope: "this" | "all") => {
+  SCOPE_ACTIONS[pendingAction.value][scope]();
 };
 
 watch(
@@ -240,10 +324,10 @@ const hasVisibilityDetails = computed(
 <template>
   <ModalFree
     :model-value="modelValue"
-    :title="event?.title ?? ''"
+    :title="displayed?.title ?? ''"
     @update:model-value="emit('update:modelValue', $event)"
   >
-    <template v-if="event">
+    <template v-if="event && displayed">
       <div class="mb-5 flex gap-2">
         <span
           class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
@@ -274,19 +358,19 @@ const hasVisibilityDetails = computed(
           </div>
         </CalendarDetailRow>
         <CalendarDetailRow
-          v-if="event.location"
+          v-if="displayed.location"
           label="Location"
           :icon="MapPinIcon"
         >
-          <dd class="text-gray-900">{{ event.location }}</dd>
+          <dd class="text-gray-900">{{ displayed.location }}</dd>
         </CalendarDetailRow>
         <CalendarDetailRow
-          v-if="event.description"
+          v-if="displayed.description"
           label="Description"
           :icon="DocumentTextIcon"
         >
           <dd class="whitespace-pre-wrap text-gray-900">
-            {{ event.description }}
+            {{ displayed.description }}
           </dd>
         </CalendarDetailRow>
         <CalendarDetailRow
@@ -322,16 +406,11 @@ const hasVisibilityDetails = computed(
         <CalendarReminders :event="event" :query="query" />
       </div>
 
-      <div class="mt-5 flex items-center justify-between gap-3">
-        <ButtonNormal
-          v-if="canDelete"
-          kind="delete"
-          class="mr-auto"
-          @click="openDeleteModal"
-        >
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+        <ButtonNormal v-if="canDelete" kind="delete" @click="onDelete">
           Delete
         </ButtonNormal>
-        <ButtonNormal v-if="canEdit" kind="action" @click="openUpdateModal">
+        <ButtonNormal v-if="canEdit" kind="action" @click="onEdit">
           Edit
         </ButtonNormal>
       </div>
@@ -339,16 +418,32 @@ const hasVisibilityDetails = computed(
   </ModalFree>
 
   <template v-if="event">
-    <UpdateEvent
-      :query="query"
-      :event="event"
-      :open-signal="updateOpenSignal"
-    />
+    <UpdateEvent ref="updateEventRef" :query="query" :event="event" />
     <DeleteEvent
+      ref="deleteEventRef"
       :query="query"
       :event-uuid="event.uuid"
       :event-name="event.title"
-      :open-signal="deleteOpenSignal"
+    />
+    <template v-if="occurrence">
+      <UpdateOccurrence
+        ref="updateOccurrenceRef"
+        :query="query"
+        :event-uuid="event.uuid"
+        :occurrence="occurrence"
+      />
+      <CancelOccurrence
+        ref="cancelOccurrenceRef"
+        :query="query"
+        :event-uuid="event.uuid"
+        :occurrence="occurrence"
+      />
+    </template>
+    <EventScopeModal
+      v-model="scopeModalOpen"
+      :title="scopeTitle"
+      :question="scopeQuestion"
+      @select="onScopeSelect"
     />
   </template>
 </template>

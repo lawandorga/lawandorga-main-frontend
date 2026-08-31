@@ -1,20 +1,23 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
 
 import type { CalendarEvent } from "../api/useCalendarEvents";
-import { REMINDER_CANDIDATES, type ReminderSettings } from "../constants";
+import { type ReminderSettings } from "../constants";
+import { isRecurring } from "../utils/occurrences";
+import { findFreeReminderSlot } from "../utils/reminders";
 import ReminderListEditor, { type ReminderRow } from "./ReminderListEditor.vue";
 
 const props = defineProps<{
   event: CalendarEvent;
   query: () => void;
 }>();
+const { query } = toRefs(props);
 
-const { commandRequest } = useCmd(() => props.query());
+const { commandRequest } = useCmd(query);
 
-const isRecurring = computed(() => props.event.recurrence_rule !== "");
+const ignoreHandledError = () => undefined; // the command error handler already alerts
 
 const reminderRows = computed<ReminderRow[]>(() =>
   [...props.event.own_reminders]
@@ -28,29 +31,24 @@ const reminderRows = computed<ReminderRow[]>(() =>
 
 const MINUTE_IN_MS = 60 * 1000;
 
-const slotKey = (slot: ReminderSettings): string =>
-  `${slot.method}:${slot.minutes_before}`;
+const minutesUntilStart = computed(
+  () =>
+    (new Date(props.event.start_time).getTime() - Date.now()) / MINUTE_IN_MS,
+);
 
-const nextFreeReminderSlot = computed<ReminderSettings | null>(() => {
-  const taken = new Set(props.event.own_reminders.map(slotKey));
-  const minutesUntilStart =
-    (new Date(props.event.start_time).getTime() - Date.now()) / MINUTE_IN_MS;
-  return (
-    REMINDER_CANDIDATES.find(
-      (candidate) =>
-        !taken.has(slotKey(candidate)) &&
-        candidate.minutes_before < minutesUntilStart,
-    ) ?? null
-  );
-});
+const nextFreeReminderSlot = computed<ReminderSettings | null>(() =>
+  findFreeReminderSlot(
+    props.event.own_reminders,
+    // a series keeps producing occurrences, so its own start time is no cutoff
+    isRecurring(props.event) ? null : minutesUntilStart.value,
+  ),
+);
 
-const reminderNotice = computed(() => {
-  if (isRecurring.value)
-    return "Reminders for repeating events are coming soon.";
-  if (!nextFreeReminderSlot.value)
-    return "No reminder times are available for this event.";
-  return "";
-});
+const reminderNotice = computed(() =>
+  nextFreeReminderSlot.value
+    ? ""
+    : "No reminder times are available for this event.",
+);
 
 const addReminder = () => {
   const slot = nextFreeReminderSlot.value;
@@ -60,7 +58,7 @@ const addReminder = () => {
     event_uuid: props.event.uuid,
     minutes_before: slot.minutes_before,
     method: slot.method,
-  }).catch(() => undefined); // the command error handler already alerts
+  }).catch(ignoreHandledError);
 };
 
 const editorRemountKey = ref(0);
@@ -83,7 +81,7 @@ const removeReminder = (key: string | number) => {
   commandRequest({
     action: "calendar/delete_reminder",
     reminder_uuid: key,
-  }).catch(() => undefined); // the command error handler already alerts
+  }).catch(ignoreHandledError);
 };
 </script>
 

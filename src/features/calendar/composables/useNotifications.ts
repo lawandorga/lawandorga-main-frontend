@@ -12,7 +12,7 @@ export interface CalendarNotification {
   created: string;
 }
 
-const POLL_INTERVAL_MS = 5000;
+const POLL_INTERVAL_MS = 30000;
 
 const sharedNotifications = ref<CalendarNotification[] | undefined>(undefined);
 
@@ -28,16 +28,18 @@ export function useNotifications() {
       ).length,
   );
 
+  const ignoreHandledError = () => undefined; // the command error handler already alerts
+
   const markAsRead = (uuid: string) =>
     commandRequest({
       action: "calendar/mark_notification_read",
       notification_uuid: uuid,
-    }).catch(() => undefined); // the command error handler already alerts
+    }).catch(ignoreHandledError);
 
   const markAllAsRead = () =>
-    commandRequest({ action: "calendar/mark_all_notifications_read" }).catch(
-      () => undefined,
-    );
+    commandRequest({
+      action: "calendar/mark_all_notifications_read",
+    }).catch(ignoreHandledError);
 
   const alertStore = useAlertStore();
   const seenUuids = new Set<string>();
@@ -64,18 +66,18 @@ export function useNotifications() {
       count > 0 ? `(${count}) ${titleWithoutCount}` : titleWithoutCount;
   });
 
-  const refetchWhenVisible = () => {
+  const queryWhenVisible = () => {
     if (document.visibilityState === "visible") query();
   };
 
   let pollTimer: ReturnType<typeof setInterval> | undefined;
   onMounted(() => {
-    pollTimer = setInterval(query, POLL_INTERVAL_MS);
-    document.addEventListener("visibilitychange", refetchWhenVisible);
+    pollTimer = setInterval(queryWhenVisible, POLL_INTERVAL_MS);
+    document.addEventListener("visibilitychange", queryWhenVisible);
   });
   onUnmounted(() => {
     if (pollTimer !== undefined) clearInterval(pollTimer);
-    document.removeEventListener("visibilitychange", refetchWhenVisible);
+    document.removeEventListener("visibilitychange", queryWhenVisible);
     document.title = titleWithoutCount;
   });
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ModalUpdate, types } from "lorga-ui";
-import { computed, toRefs, watch } from "vue";
+import { computed, ref, toRefs } from "vue";
 
 import useCmd from "@/composables/useCmd";
 import { toLocalDateTimeInput } from "@/utils/date";
@@ -14,9 +14,8 @@ import useShareTargetOptions from "../composables/useShareTargetOptions";
 const props = defineProps<{
   query: () => void;
   event: CalendarEvent;
-  openSignal?: number;
 }>();
-const { query, event, openSignal } = toRefs(props);
+const { query, event } = toRefs(props);
 
 const { shareTargetOptions, loadShareTargetOptions } = useShareTargetOptions();
 const fields = computed<types.FormField[]>(() => [
@@ -68,7 +67,7 @@ const fields = computed<types.FormField[]>(() => [
   },
 ]);
 
-const { commandRequest, commandModalOpen } = useCmd(query.value);
+const { commandRequest, commandModalOpen } = useCmd(query);
 
 const request = (data: Record<string, unknown>) => {
   const normalized: Record<string, unknown> = { ...data };
@@ -77,11 +76,33 @@ const request = (data: Record<string, unknown>) => {
   return commandRequest(normalized);
 };
 
-watch(openSignal, (next, prev) => {
-  if (next !== undefined && next !== prev) {
+const buildInitialData = (): Record<string, unknown> => ({
+  event_uuid: props.event.uuid,
+  title: props.event.title,
+  event_type: props.event.event_type,
+  start_time: toLocalDateTimeInput(props.event.start_time),
+  end_time: props.event.end_time
+    ? toLocalDateTimeInput(props.event.end_time)
+    : "",
+  is_all_day: props.event.is_all_day,
+  recurrence_rule: props.event.recurrence_rule,
+  recurrence_until: props.event.recurrence_until ?? "",
+  view_grant_targets: props.event.view_grant_targets,
+  edit_grant_targets: props.event.edit_grant_targets,
+  location: props.event.location,
+  description: props.event.description,
+  action: "calendar/update_event",
+});
+
+// lorga-ui re-clones :data only when the object reference changes, so open() assigns a fresh object
+const initialData = ref<Record<string, unknown>>(buildInitialData());
+
+defineExpose({
+  open: () => {
     loadShareTargetOptions();
+    initialData.value = buildInitialData();
     commandModalOpen.value = true;
-  }
+  },
 });
 </script>
 
@@ -91,21 +112,7 @@ watch(openSignal, (next, prev) => {
     :fields="fields"
     title="Edit Event"
     :request="request"
-    :data="{
-      event_uuid: event.uuid,
-      title: event.title,
-      event_type: event.event_type,
-      start_time: toLocalDateTimeInput(event.start_time),
-      end_time: event.end_time ? toLocalDateTimeInput(event.end_time) : '',
-      is_all_day: event.is_all_day,
-      recurrence_rule: event.recurrence_rule,
-      recurrence_until: event.recurrence_until ?? '',
-      view_grant_targets: event.view_grant_targets,
-      edit_grant_targets: event.edit_grant_targets,
-      location: event.location,
-      description: event.description,
-      action: 'calendar/update_event',
-    }"
+    :data="initialData"
     submit="Update"
   >
     <template #event_type="{ data }">

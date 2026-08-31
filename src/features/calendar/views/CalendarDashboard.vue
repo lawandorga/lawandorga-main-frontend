@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import rrulePlugin from "@fullcalendar/rrule";
 import FullCalendar, {
   joinClassNames,
   type ButtonInfo,
@@ -13,6 +12,7 @@ import FullCalendar, {
   type EventClickInfo,
   type EventDisplayInfo,
   type EventDropInfo,
+  type EventInput,
   type EventResizeDoneInfo,
 } from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/vue3/daygrid";
@@ -32,21 +32,34 @@ import "@fullcalendar/vue3/themes/classic/palette.css";
 import BreadcrumbsBar from "@/components/BreadcrumbsBar.vue";
 import useCmd from "@/composables/useCmd";
 import { useAlertStore } from "@/store/alert";
+import { useUserStore } from "@/store/user";
 import { addDays, toLocalDateTimeInput } from "@/utils/date";
 
 import CreateEvent from "../actions/CreateEvent.vue";
 import {
+  occurrenceToFullCalendarEvent,
+  readOccurrenceProps,
+} from "../api/occurrenceToFullCalendarEvent";
+import {
   useCalendarEvents,
+  useCalendarOccurrences,
   type CalendarEvent,
+  type OccurrenceRange,
 } from "../api/useCalendarEvents";
 import CalendarEventDetail from "../components/CalendarEventDetail.vue";
 import CalendarFiltersPanel from "../components/CalendarFiltersPanel.vue";
+import EventScopeModal from "../components/EventScopeModal.vue";
 import {
   EVENT_SOURCE_META,
   EVENT_TYPE_META,
   type EventSource,
   type EventType,
 } from "../constants";
+import { getEventAccessKind } from "../utils/eventAccess";
+import {
+  isRecurring,
+  seriesTimesShiftedByOccurrenceMove,
+} from "../utils/occurrences";
 
 const EVENT_SOURCE_ACCENT_CLASS: Record<EventSource, string> = {
   PERSONAL: "calendar-event--source-personal",
@@ -66,16 +79,24 @@ const CALENDAR_PLUGINS = [
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
-  rrulePlugin,
   interactionPlugin,
 ];
 
-const { isLoading, fullCalendarEvents, calendarEvents, query } =
-  useCalendarEvents();
+const visibleRange = ref<OccurrenceRange | null>(null);
 
-const { commandRequest: updateEventRequest } = useCmd(query);
+const { isLoading, calendarEvents, query: queryEvents } = useCalendarEvents();
+const { occurrences: rangeOccurrences, query: queryOccurrences } =
+  useCalendarOccurrences(visibleRange);
+
+const refresh = () => {
+  queryEvents();
+  queryOccurrences();
+};
+
+const { commandRequest: updateEventRequest } = useCmd(refresh);
 
 const alertStore = useAlertStore();
+const userStore = useUserStore();
 
 const createEventModal = ref<InstanceType<typeof CreateEvent> | null>(null);
 
@@ -86,12 +107,14 @@ const selectedEvent = computed<CalendarEvent | null>(
       (event) => event.uuid === selectedEventUuid.value,
     ) ?? null,
 );
+// null for one-off events (no distinct occurrence) and when nothing is selected
+const selectedOriginalStart = ref<string | null>(null);
 const detailOpen = ref(false);
 
 const route = useRoute();
 const router = useRouter();
 
-const openEventFromRoute = (eventUuid: unknown) => {
+const openEventFromRoute = (eventUuid: unknown, originalStart: unknown) => {
   if (typeof eventUuid !== "string") return;
 
   const matchingEvent = (calendarEvents.value ?? []).find(
@@ -100,17 +123,20 @@ const openEventFromRoute = (eventUuid: unknown) => {
   if (!matchingEvent) return;
 
   selectedEventUuid.value = eventUuid;
+  selectedOriginalStart.value =
+    typeof originalStart === "string" ? originalStart : null;
   detailOpen.value = true;
 
   const remainingQuery = { ...route.query };
   delete remainingQuery.event;
+  delete remainingQuery.start;
   void router.replace({ query: remainingQuery });
 };
 
 watch(
-  [() => route.query.event, calendarEvents],
-  ([eventUuid]) => {
-    openEventFromRoute(eventUuid);
+  [() => route.query.event, () => route.query.start, calendarEvents],
+  ([eventUuid, originalStart]) => {
+    openEventFromRoute(eventUuid, originalStart);
   },
   { immediate: true },
 );
@@ -121,32 +147,47 @@ const accessFilterKeys = Object.keys(EVENT_SOURCE_META) as EventSource[];
 const selectedEventTypes = ref<Set<EventType>>(new Set(eventTypeFilterKeys));
 const selectedAccessKinds = ref<Set<EventSource>>(new Set(accessFilterKeys));
 
-const filteredFullCalendarEvents = computed(() =>
-  fullCalendarEvents.value.filter((fullCalendarEvent) => {
-    const event = fullCalendarEvent.extendedProps?.calendarEvent as
-      | CalendarEvent
-      | undefined;
+const eventsByUuid = computed(() => {
+  const map = new Map<string, CalendarEvent>();
+  for (const event of calendarEvents.value ?? []) map.set(event.uuid, event);
+  return map;
+});
 
-    if (!event) return true;
-
-    return (
-      selectedEventTypes.value.has(event.event_type) &&
-      selectedAccessKinds.value.has(
-        fullCalendarEvent.extendedProps?.eventSource as EventSource,
-      )
-    );
-  }),
+const visibleEventUuids = computed(
+  () =>
+    new Set(
+      (calendarEvents.value ?? [])
+        .filter(
+          (event) =>
+            selectedEventTypes.value.has(event.event_type) &&
+            selectedAccessKinds.value.has(getEventAccessKind(event)),
+        )
+        .map((event) => event.uuid),
+    ),
 );
+
+const displayedEvents = computed<EventInput[]>(() => {
+  const currentUserId = userStore.user?.id;
+  return rangeOccurrences.value
+    .filter((occurrence) => visibleEventUuids.value.has(occurrence.event_uuid))
+    .map((occurrence) =>
+      occurrenceToFullCalendarEvent(
+        occurrence,
+        eventsByUuid.value.get(occurrence.event_uuid),
+        currentUserId,
+      ),
+    );
+});
 
 const totalEventsCount = computed(() => (calendarEvents.value ?? []).length);
 
-const filteredEventsCount = computed(
-  () => filteredFullCalendarEvents.value.length,
-);
+const filteredEventsCount = computed(() => visibleEventUuids.value.size);
 
 const onEventClick = (props: EventClickInfo) => {
-  const clickedEvent = props.event.extendedProps.calendarEvent as CalendarEvent;
-  selectedEventUuid.value = clickedEvent.uuid;
+  const occurrenceProps = readOccurrenceProps(props.event);
+  if (!occurrenceProps) return;
+  selectedEventUuid.value = occurrenceProps.eventUuid;
+  selectedOriginalStart.value = occurrenceProps.originalStart;
   detailOpen.value = true;
 };
 
@@ -164,13 +205,17 @@ const onDateSelect = (selection: DateSelectInfo) => {
   selection.view.calendar.unselect();
 };
 
-const persistEventTimes = (event: EventApi, revert: () => void) => {
+const persistEventTimes = (
+  event: EventApi,
+  eventUuid: string,
+  revert: () => void,
+) => {
   if (!event.start) return;
   // FullCalendar's end date is exclusive, we want inclusive ones
   const end = event.allDay && event.end ? addDays(event.end, -1) : event.end;
   updateEventRequest({
     action: "calendar/update_event",
-    event_uuid: event.id,
+    event_uuid: eventUuid,
     is_all_day: event.allDay,
     start_time: toLocalDateTimeInput(event.start.toISOString()),
     end_time: end ? toLocalDateTimeInput(end.toISOString()) : null,
@@ -179,11 +224,102 @@ const persistEventTimes = (event: EventApi, revert: () => void) => {
     .catch(revert);
 };
 
+interface PendingReschedule {
+  parentEvent: CalendarEvent;
+  originalStart: string;
+  newStart: Date;
+  newEndInclusive: Date | null;
+  isAllDay: boolean;
+  revert: () => void;
+}
+
+const pendingReschedule = ref<PendingReschedule | null>(null);
+const rescheduleModalOpen = ref(false);
+
+const handleReschedule = (event: EventApi, revert: () => void) => {
+  const occurrenceProps = readOccurrenceProps(event);
+  if (!event.start || !occurrenceProps) {
+    revert();
+    return;
+  }
+  const parentEvent = eventsByUuid.value.get(occurrenceProps.eventUuid);
+  if (!parentEvent) {
+    revert();
+    return;
+  }
+  if (!isRecurring(parentEvent)) {
+    persistEventTimes(event, occurrenceProps.eventUuid, revert);
+    return;
+  }
+  pendingReschedule.value = {
+    parentEvent,
+    originalStart: occurrenceProps.originalStart,
+    newStart: event.start,
+    newEndInclusive:
+      event.allDay && event.end ? addDays(event.end, -1) : event.end,
+    isAllDay: event.allDay,
+    revert,
+  };
+  rescheduleModalOpen.value = true;
+};
+
+const thisOccurrencePayload = (pending: PendingReschedule) => ({
+  action: "calendar/update_event_occurrence",
+  event_uuid: pending.parentEvent.uuid,
+  original_start: pending.originalStart,
+  start_time: toLocalDateTimeInput(pending.newStart.toISOString()),
+  end_time: pending.newEndInclusive
+    ? toLocalDateTimeInput(pending.newEndInclusive.toISOString())
+    : null,
+});
+
+const wholeSeriesPayload = (pending: PendingReschedule) => {
+  const shifted = seriesTimesShiftedByOccurrenceMove({
+    originalStart: pending.originalStart,
+    seriesStart: pending.parentEvent.start_time,
+    newStart: pending.newStart.toISOString(),
+    newEnd: pending.newEndInclusive
+      ? pending.newEndInclusive.toISOString()
+      : null,
+  });
+  return {
+    action: "calendar/update_event",
+    event_uuid: pending.parentEvent.uuid,
+    is_all_day: pending.isAllDay,
+    start_time: toLocalDateTimeInput(shifted.start),
+    end_time: shifted.end ? toLocalDateTimeInput(shifted.end) : null,
+  };
+};
+
+const onRescheduleScope = (scope: "this" | "all") => {
+  const pending = pendingReschedule.value;
+  if (!pending) return;
+  const payload =
+    scope === "this"
+      ? thisOccurrencePayload(pending)
+      : wholeSeriesPayload(pending);
+  const successMessage =
+    scope === "this" ? "Event updated" : "All events updated";
+  // clear before closing, otherwise the dismiss-watch also reverts the drag
+  pendingReschedule.value = null;
+  rescheduleModalOpen.value = false;
+  updateEventRequest(payload)
+    .then(() => alertStore.showSuccess(successMessage))
+    .catch(pending.revert);
+};
+
+watch(rescheduleModalOpen, (open) => {
+  if (!open && pendingReschedule.value) {
+    pendingReschedule.value.revert();
+    pendingReschedule.value = null;
+  }
+});
+
 const onEventDrop = (drop: EventDropInfo) =>
-  persistEventTimes(drop.event, drop.revert);
+  handleReschedule(drop.event, drop.revert);
 
 const onEventResize = (resize: EventResizeDoneInfo) =>
-  persistEventTimes(resize.event, resize.revert);
+  handleReschedule(resize.event, resize.revert);
 
 const isoWeekNumber = (date: Date): number => {
   const millisecondsPerDay = 86400000;
@@ -292,16 +428,19 @@ const gridViewEventContent = (
 };
 
 const eventContent = (props: EventDisplayInfo) => {
-  const event = props.event.extendedProps.calendarEvent as
-    | CalendarEvent
-    | undefined;
+  const occurrenceProps = readOccurrenceProps(props.event);
+  // the drag-to-create preview has no event yet, so just show an empty div
+  if (!occurrenceProps) return { domNodes: [] };
+  const event = eventsByUuid.value.get(occurrenceProps.eventUuid);
 
-  // The drag-to-create preview has no event yet, so just show an empty div
-  if (!event) return { domNodes: [] };
+  const titleElement = textElement(
+    "div",
+    "calendar-event__title",
+    props.event.title,
+  );
 
-  const titleElement = textElement("div", "calendar-event__title", event.title);
-
-  if (props.view.type === "dayGridMonth") return { domNodes: [titleElement] };
+  if (!event || props.view.type === "dayGridMonth")
+    return { domNodes: [titleElement] };
   if (props.view.type === "listMonth")
     return listViewEventContent(event, titleElement);
   if (props.event.allDay) return { domNodes: [titleElement] };
@@ -382,11 +521,15 @@ const calendarBaseOptions: CalendarOptions = {
   select: onDateSelect,
   eventDrop: onEventDrop,
   eventResize: onEventResize,
+  // fires on first render and every navigation, so it drives the range fetch
+  datesSet: (arg) => {
+    visibleRange.value = { from: arg.startStr, to: arg.endStr };
+  },
 };
 
 const calendarOptions = computed<CalendarOptions>(() => ({
   ...calendarBaseOptions,
-  events: filteredFullCalendarEvents.value,
+  events: displayedEvents.value,
 }));
 </script>
 
@@ -442,12 +585,20 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       </div>
     </div>
 
-    <CreateEvent ref="createEventModal" :query="query" />
+    <CreateEvent ref="createEventModal" :query="refresh" />
 
     <CalendarEventDetail
       v-model="detailOpen"
       :event="selectedEvent"
-      :query="query"
+      :original-start="selectedOriginalStart"
+      :query="refresh"
+    />
+
+    <EventScopeModal
+      v-model="rescheduleModalOpen"
+      title="Change repeating event"
+      question="Do you want to change only this event or all events in this series?"
+      @select="onRescheduleScope"
     />
   </div>
 </template>
