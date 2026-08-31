@@ -4,6 +4,7 @@ import { computed } from "vue";
 
 import BoxLoader from "@/components/BoxLoader.vue";
 import BoxSection from "@/components/BoxSection.vue";
+import NewBadge from "@/components/NewBadge.vue";
 import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
 import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
 import UpdateNote from "@/features/dashboard/actions/UpdateNote.vue";
@@ -41,12 +42,8 @@ const canManageNotes = computed(() =>
           </div>
           <div class="flex justify-between">
             <h3 class="mb-2 flex items-center gap-2 font-medium text-gray-700">
+              <NewBadge class="mr-1" v-if="note.is_new" />
               {{ note.title }}
-              <span
-                v-if="note.is_new"
-                class="bg-formcolor rounded-md px-2 py-0.5 text-xs font-bold text-white"
-                >New</span
-              >
             </h3>
             <div v-if="canManageNotes" class="flex gap-6">
               <UpdateNote
