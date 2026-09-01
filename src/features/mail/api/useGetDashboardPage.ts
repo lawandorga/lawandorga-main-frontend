@@ -1,6 +1,7 @@
 import { ref, computed } from "vue";
 
 import useGet2 from "@/composables/useGet2";
+import useQuery2 from "@/composables/useQuery2";
 
 export interface AvailableMailDomain {
   uuid: string;
@@ -63,7 +64,11 @@ export interface MailDashboardPage {
 export function useGetDashboardPage() {
   const page = ref<MailDashboardPage | NoMailAccount>();
 
-  const query = useGet2("mail/query/page/dashboard/", page);
+  const query = useQuery2("api/mail/query/page/dashboard/", page);
+
+  query().catch((err) => {
+    page.value = { noMailAccount: true };
+  });
 
   const user = computed<SelfMailUser | null | false>(() => {
     if (page.value == undefined) return null;
