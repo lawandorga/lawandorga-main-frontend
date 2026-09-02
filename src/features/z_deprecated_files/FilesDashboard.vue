@@ -305,7 +305,7 @@ export default defineComponent({
     // Build URL for fetching items when folder is available
     const itemsUrl = computed(() => {
       if (!folder.value) return "";
-      return useUrl(`files/folder/{folderId}/items/`, {
+      return useUrl(`api/files/folder/{folderId}/items/`, {
         pathParams: { folderId: folder.value.id },
       }).value;
     });
