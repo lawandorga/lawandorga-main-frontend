@@ -35,6 +35,7 @@ import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
 import { addDays, toLocalDateTimeInput } from "@/utils/date";
 
+import CreateCalendarLink from "../actions/CreateCalendarLink.vue";
 import CreateEvent from "../actions/CreateEvent.vue";
 import {
   occurrenceToFullCalendarEvent,
@@ -539,6 +540,9 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   >
     <BreadcrumbsBar :base="{ name: 'calendar-dashboard' }" :pages="[]">
       <CalendarDaysIcon class="h-6 w-6" />
+      <template #buttons>
+        <CreateCalendarLink />
+      </template>
     </BreadcrumbsBar>
 
     <div
