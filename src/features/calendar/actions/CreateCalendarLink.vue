@@ -13,12 +13,18 @@ interface CalendarLinkResponse {
 }
 
 const modalOpen = ref(false);
-const selectedEventTypes = ref<EventType[]>(Object.keys(EVENT_TYPE_META) as EventType[]);
+const selectedEventTypes = ref<EventType[]>(
+  Object.keys(EVENT_TYPE_META) as EventType[],
+);
 const calendarUrl = ref<string | null>(null);
 const copied = ref(false);
 
-const eventTypes = computed(() =>
-  Object.entries(EVENT_TYPE_META) as [EventType, { label: string; color: string }][],
+const eventTypes = computed(
+  () =>
+    Object.entries(EVENT_TYPE_META) as [
+      EventType,
+      { label: string; color: string },
+    ][],
 );
 
 const { commandRequest } = useCmd();
@@ -52,8 +58,15 @@ async function copyLink() {
           :key="eventType"
           class="flex items-center gap-3 text-sm text-gray-700"
         >
-          <input v-model="selectedEventTypes" type="checkbox" :value="eventType" />
-          <span class="h-3 w-3 rounded-full" :style="{ backgroundColor: meta.color }" />
+          <input
+            v-model="selectedEventTypes"
+            type="checkbox"
+            :value="eventType"
+          />
+          <span
+            class="h-3 w-3 rounded-full"
+            :style="{ backgroundColor: meta.color }"
+          />
           {{ meta.label }}
         </label>
       </div>
@@ -66,7 +79,7 @@ async function copyLink() {
         Create link
       </ButtonNormal>
       <template v-else>
-        <p class="break-all text-sm text-gray-700">{{ calendarUrl }}</p>
+        <p class="text-sm break-all text-gray-700">{{ calendarUrl }}</p>
         <ButtonNormal kind="primary" @click="copyLink">
           {{ copied ? "Copied!" : "Copy link" }}
         </ButtonNormal>
