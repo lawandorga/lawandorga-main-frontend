@@ -93,6 +93,13 @@ export default function useNavigationItems() {
       });
 
     items.push({
+      label: "Calendar",
+      icon: CalendarDaysIcon,
+      is: "router-link",
+      attrs: { to: { name: "calendar-dashboard" } },
+    });
+
+    items.push({
       label: "Statistics",
       icon: ChartPieIcon,
       is: "router-link",
@@ -138,14 +145,6 @@ export default function useNavigationItems() {
         icon: ChatBubbleBottomCenterTextIcon,
         is: "router-link",
         attrs: { to: { name: "chat-dashboard" } },
-      });
-
-    if (store.user?.email === "dummy@law-orga.de")
-      items.push({
-        label: "Calendar (WIP)",
-        icon: CalendarDaysIcon,
-        is: "router-link",
-        attrs: { to: { name: "calendar-dashboard" } },
       });
 
     return items;
