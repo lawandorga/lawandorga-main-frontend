@@ -1,7 +1,7 @@
 import { isRef, Ref, ref, watch } from "vue";
 
 import useClient from "@/api/client";
-import { handleQueryError } from "@/api/errors";
+import { useErrorHandling } from "@/api/errors";
 
 export interface UseQueryOptions {
   autoFetchOnUrlChange?: boolean;
@@ -15,6 +15,8 @@ function useQuery2<Type>(
   const client = useClient();
   const request = client.get2(isRef(url) ? url : ref(url));
 
+  const { handleQueryError } = useErrorHandling();
+
   const query = () => {
     return request()
       .then((newItem) => {
@@ -25,7 +27,6 @@ function useQuery2<Type>(
 
   if (options.autoFetchOnUrlChange && isRef(url)) {
     watch(url, () => {
-      console.log(url.value);
       if (url.value) query();
     });
   }
