@@ -109,12 +109,7 @@ const { commandRequest: commandRequestThatDoesNotCloseModal } = useCmd(
             ><p class="mt-4">Created by: {{ task.creator_name }}</p></template
           >
           <template #description="{ data }">
-            <FormWysiwyg v-model="data.description" label="Description" /><i
-              class="text-sm text-gray-500"
-              >Hint: If you want to link to a folder you can hit #, type the
-              beginning of the folder and select the correct folder from the
-              list of suggestions.</i
-            >
+            <FormWysiwyg v-model="data.description" label="Description" />
           </template>
         </FormGenerator>
       </template>

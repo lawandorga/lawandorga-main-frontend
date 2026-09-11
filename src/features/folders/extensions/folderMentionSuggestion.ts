@@ -1,20 +1,28 @@
 import { SuggestionOptions } from "@tiptap/suggestion";
 import { VueRenderer } from "@tiptap/vue-3";
 
-import FolderMentionList from "@/components/FolderMentionList.vue";
-import { Folder } from "@/features/folders/api/useFolderPage";
+import FolderMentionList from "@/features/folders/components/FolderMentionList.vue";
+
+import { AvailableFolder } from "../api/useAvailableFolders";
 
 const MAX_RESULTS = 10;
 
-export default function createFolderMentionSuggestion(
-  getFolderList: () => Folder[],
-): Omit<SuggestionOptions, "editor"> {
+interface FolderSource {
+  folders: () => AvailableFolder[];
+  loadFolders: () => Promise<void>;
+}
+
+export default function createFolderMentionSuggestion({
+  folders,
+  loadFolders,
+}: FolderSource): Omit<SuggestionOptions, "editor"> {
   return {
     char: "#",
-    items: ({ query }) => {
-      const q = query.toLowerCase();
-      return getFolderList()
-        .filter((folder) => folder.name.toLowerCase().startsWith(q))
+    items: async ({ query }) => {
+      await loadFolders();
+      const search = query.toLowerCase();
+      return folders()
+        .filter((folder) => folder.name.toLowerCase().includes(search))
         .slice(0, MAX_RESULTS);
     },
     render: () => {

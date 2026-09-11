@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import { Folder } from "@/features/folders/api/useFolderPage";
+import { AvailableFolder } from "../api/useAvailableFolders";
 
 const props = defineProps<{
-  items: Folder[];
-  // eslint-disable-next-line no-unused-vars -- function type parameter name, not an unused variable
+  items: AvailableFolder[];
+  loading: boolean;
+  // eslint-disable-next-line no-unused-vars
   command: (selected: { id: string; label: string }) => void;
 }>();
 
@@ -20,10 +21,11 @@ watch(
 
 const selectItem = (index: number) => {
   const folder = props.items[index];
-  if (folder) props.command({ id: folder.uuid, label: folder.name });
+  if (folder) props.command({ id: folder.id, label: folder.name });
 };
 
 const onKeyDown = ({ event }: { event: KeyboardEvent }) => {
+  if (props.items.length === 0) return false;
   if (event.key === "ArrowUp") {
     selectedIndex.value =
       (selectedIndex.value + props.items.length - 1) % props.items.length;
@@ -49,7 +51,7 @@ defineExpose({ onKeyDown });
   >
     <button
       v-for="(folder, index) in items"
-      :key="folder.uuid"
+      :key="folder.id"
       type="button"
       class="block w-full rounded-md px-2 py-1 text-left text-sm"
       :class="
@@ -59,8 +61,10 @@ defineExpose({ onKeyDown });
     >
       📁 {{ folder.name }}
     </button>
-    <div v-if="items.length === 0" class="px-2 py-1 text-sm text-gray-500">
-      No folder was found.
-    </div>
+    <div
+      v-if="items.length === 0"
+      class="px-2 py-1 text-sm text-gray-500"
+      v-text="loading ? 'Loading folders...' : 'No folder was found.'"
+    ></div>
   </div>
 </template>
