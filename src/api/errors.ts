@@ -123,7 +123,7 @@ export function handleFileDownloadError(
   const error = context.error;
 
   const isJsonBlobError =
-    error.request.responseType === "blob" &&
+    error.request?.responseType === "blob" &&
     error.response !== undefined &&
     error.response.data instanceof Blob &&
     error.response.data.type &&

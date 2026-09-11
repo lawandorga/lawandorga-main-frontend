@@ -11,6 +11,7 @@ import EventsCreateEvent from "@/features/events/actions/CreateEvent.vue";
 import EventsDeleteEvent from "@/features/events/actions/DeleteEvent.vue";
 import EventsGetCalendarLink from "@/features/events/actions/GetCalendarLink.vue";
 import EventsUpdateEvent from "@/features/events/actions/UpdateEvent.vue";
+import { useFolderMentionLinks } from "@/features/folders/composables/useFolderMentionLinks";
 import { useUserStore } from "@/store/user";
 import { formatDate, formatDateToObject, FormattedDate } from "@/utils/date";
 
@@ -20,6 +21,7 @@ const showGlobal = ref(true);
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
+const { onFolderMentionClick } = useFolderMentionLinks();
 
 // eslint-disable-next-line no-unused-vars
 function groupBy<T>(items: T[], getKey: (element: T) => string) {
@@ -186,6 +188,7 @@ const eventsWithFormattedDate = computed(() => {
                 <div
                   class="prose prose-p:mt-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-p:mb-0"
                   v-html="event.description"
+                  @click="onFolderMentionClick"
                 ></div>
                 <!-- eslint-enable vue/no-v-html -->
               </div>

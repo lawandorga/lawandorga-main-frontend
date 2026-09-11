@@ -9,11 +9,13 @@ import CreateNote from "@/features/dashboard/actions/CreateNote.vue";
 import DeleteNote from "@/features/dashboard/actions/DeleteNote.vue";
 import UpdateNote from "@/features/dashboard/actions/UpdateNote.vue";
 import { useNotes } from "@/features/dashboard/api/useNotes";
+import { useFolderMentionLinks } from "@/features/folders/composables/useFolderMentionLinks";
 import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/date";
 
 const userStore = useUserStore();
 const { notes, notesQuery } = useNotes();
+const { onFolderMentionClick } = useFolderMentionLinks();
 
 const canManageNotes = computed(() =>
   userStore.hasPermission("dashboard__manage_notes"),
@@ -65,6 +67,7 @@ const canManageNotes = computed(() =>
           <p
             class="prose-sm prose text-sm wrap-break-word whitespace-pre-line text-gray-700"
             v-html="note.note"
+            @click="onFolderMentionClick"
           ></p>
           <!-- eslint-enable vue/no-v-html -->
         </article>

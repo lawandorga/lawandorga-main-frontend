@@ -11,6 +11,7 @@ import { toRefs } from "vue";
 import NewBadge from "@/components/NewBadge.vue";
 import useCmd from "@/composables/useCmd";
 import UpdateTask from "@/features/dashboard/actions/UpdateTask.vue";
+import { useFolderMentionLinks } from "@/features/folders/composables/useFolderMentionLinks";
 import { formatDate } from "@/utils/date";
 
 import DeleteTask from "../actions/DeleteTask.vue";
@@ -24,6 +25,8 @@ const props = defineProps<{
 const { task } = toRefs(props);
 
 const { commandRequest } = useCmd(props.query);
+
+const { onFolderMentionClick } = useFolderMentionLinks();
 
 const markAsDone = () => {
   commandRequest({
@@ -90,10 +93,13 @@ const priorityColor: Record<string, string> = {
           </div>
         </div>
       </div>
+      <!-- eslint-disable vue/no-v-html -->
       <p
         class="my-2 text-sm wrap-break-word whitespace-pre-line text-gray-700"
         v-html="task.description"
+        @click="onFolderMentionClick"
       />
+      <!-- eslint-enable vue/no-v-html -->
       <p
         v-if="task.page_url"
         class="mt-2 flex text-xs wrap-break-word whitespace-pre-line text-gray-700"

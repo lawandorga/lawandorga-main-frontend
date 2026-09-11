@@ -6,6 +6,9 @@ import { FormHelptext, FormLabel } from "lorga-ui";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
 
 import MenuBarSimple from "@/components/FormMenuBarSimple.vue";
+import { useAvailableFolders } from "@/features/folders/api/useAvailableFolders";
+import FolderMention from "@/features/folders/extensions/FolderMention";
+import createFolderMentionSuggestion from "@/features/folders/extensions/folderMentionSuggestion";
 
 const props = defineProps({
   label: {
@@ -39,6 +42,11 @@ const id = computed(() => `form-wysiwyg-${name.value}`);
 
 const emit = defineEmits(["update:modelValue"]);
 
+const { folders, loadFolders } = useAvailableFolders();
+
+const folderMentionHint =
+  "Hint: To link a folder, type # followed by the beginning of the folder name and pick the folder from the list of suggestions.";
+
 const editor = useEditor({
   editorProps: {
     attributes: {
@@ -51,6 +59,12 @@ const editor = useEditor({
     Link.configure({
       autolink: true,
       HTMLAttributes: { class: "underline text-formcolor" },
+    }),
+    FolderMention.configure({
+      suggestion: createFolderMentionSuggestion({
+        folders: () => folders.value,
+        loadFolders,
+      }),
     }),
   ],
   onUpdate: () => {
@@ -90,4 +104,5 @@ watch(modelValue, (newValue) => {
     <EditorContent :editor="editor" />
   </div>
   <FormHelptext :helptext="helptext" />
+  <FormHelptext :helptext="folderMentionHint" />
 </template>
