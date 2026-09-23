@@ -57,6 +57,9 @@ const buildInitialData = (prefill?: EventTimePrefill) => {
   return {
     action: "calendar/create_event",
     event_type: "APPOINTMENT",
+    title: "",
+    location: "",
+    description: "",
     is_all_day: prefill?.allDay ?? false,
     start_time: toLocalDateTimeInput(start.toISOString()),
     end_time: end ? toLocalDateTimeInput(end.toISOString()) : "",
