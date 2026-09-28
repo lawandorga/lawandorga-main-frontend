@@ -141,7 +141,7 @@ export default function useNavigationItems() {
 
     if (store.org?.is_chat_enabled)
       items.push({
-        label: "Chat (Beta)",
+        label: "Chat",
         icon: ChatBubbleBottomCenterTextIcon,
         is: "router-link",
         attrs: { to: { name: "chat-dashboard" } },
