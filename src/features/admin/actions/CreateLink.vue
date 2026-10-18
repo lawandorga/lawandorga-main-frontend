@@ -20,7 +20,8 @@ const fields: types.FormField[] = [
     name: "link",
     type: "text",
     required: true,
-    helptext: "The link needs to start with 'https://'",
+    helptext:
+      "The link needs to start with 'https://' and must be no longer than 4,096 characters.",
   },
   {
     label: "Order",
