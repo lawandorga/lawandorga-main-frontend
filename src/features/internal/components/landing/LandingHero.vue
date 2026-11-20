@@ -15,7 +15,7 @@ defineProps<{
     class="lo-dark bg-lo-petrol relative overflow-hidden text-white"
   >
     <div
-      class="relative mx-auto max-w-[1240px] px-5 pt-16 pb-[72px] sm:px-12 sm:pt-[120px] sm:pb-32"
+      class="relative mx-auto max-w-[1240px] px-5 pt-10 pb-[72px] sm:px-12 sm:pt-12 sm:pb-32"
     >
       <div
         class="grid grid-cols-1 items-end gap-12 min-[981px]:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] min-[981px]:gap-20"
