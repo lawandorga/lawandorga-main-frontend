@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mailto } from "@/features/internal/utils/landing";
+import { LCD_WEBSITE_URL, mailto } from "@/features/internal/utils/landing";
 
 import LoMark from "./LoMark.vue";
 
@@ -25,7 +25,12 @@ const teamMail = mailto();
         <p lang="en" class="text-lo-accent mt-2.5 mb-0 font-bold">
           Legal Work. Organized.
         </p>
-        <p class="mt-1.5 mb-0">Ein Projekt von Law Clinics Deutschland e.V.</p>
+        <p class="mt-1.5 mb-0">
+          Ein Projekt von
+          <a :href="LCD_WEBSITE_URL" class="text-white" data-testid="lcd-link">
+            Law Clinics Deutschland e.V.
+          </a>
+        </p>
       </div>
       <nav
         aria-label="Rechtliches und Kontakt"

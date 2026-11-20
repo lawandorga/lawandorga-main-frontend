@@ -83,6 +83,9 @@ export function formatLandingDate(value: string): string {
 // served from public/, bound in templates so the build does not import it
 export const LCD_LOGO_URL = "/landing/lcd-logo.svg";
 
+// website of Law Clinics Deutschland e.V. (logo and name link there)
+export const LCD_WEBSITE_URL = "https://law-clinics.de/";
+
 export const DEFAULT_SCREENSHOT_NOTE =
   "Screenshot aus der Demo-Organisation mit Beispieldaten.";
 

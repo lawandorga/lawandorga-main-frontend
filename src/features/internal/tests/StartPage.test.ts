@@ -243,6 +243,22 @@ describe("StartPage", () => {
     wrapper.unmount();
   });
 
+  it("links the LCD logo and name to the LCD website", () => {
+    const wrapper = mountPage();
+
+    const links = wrapper.findAll("[data-testid='lcd-link']");
+    // header logo, logo in "Gemeinsam getragen", name in the footer
+    expect(links).toHaveLength(3);
+    for (const link of links) {
+      expect(link.attributes("href")).toBe("https://law-clinics.de/");
+      // accessible name: the link text or the alt text of the logo
+      const img = link.find("img");
+      const name = link.text() + (img.exists() ? img.attributes("alt") : "");
+      expect(name).toContain("Law Clinics Deutschland e.V.");
+    }
+    wrapper.unmount();
+  });
+
   it("renders sponsor logos with the organization names", () => {
     const wrapper = mountPage();
 
