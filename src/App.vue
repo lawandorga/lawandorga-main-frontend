@@ -29,7 +29,8 @@
       :alerts="alertStore.alerts"
       @close="alertStore.closeAlert($event)"
     />
-    <BannerList v-if="userStore.loaded" />
+    <!-- app hints (e.g. key optimizations) belong to the app, not the public pages -->
+    <BannerList v-if="userStore.loaded && !isStandalone" />
   </div>
 </template>
 
