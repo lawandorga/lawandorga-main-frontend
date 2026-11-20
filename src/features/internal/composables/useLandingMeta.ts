@@ -3,10 +3,10 @@ import { onBeforeUnmount, onMounted } from "vue";
 import {
   PAGE_DESCRIPTION,
   PAGE_TITLE,
+  STICKY_HEADER_OFFSET,
 } from "@/features/internal/utils/landing";
 
-// height of the sticky landing header (80 px) plus some air
-export const STICKY_HEADER_SCROLL_PADDING = "96px";
+export const STICKY_HEADER_SCROLL_PADDING = `${STICKY_HEADER_OFFSET}px`;
 
 /**
  * Sets the document title, the page language (de), the meta description and

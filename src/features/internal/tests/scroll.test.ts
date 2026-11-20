@@ -29,7 +29,7 @@ describe("landingScrollBehavior", () => {
   it("scrolls to the section of a hash link", () => {
     expect(
       landingScrollBehavior(route(true, "#neuigkeiten"), route(true), null),
-    ).toEqual({ el: "#neuigkeiten" });
+    ).toEqual({ el: "#neuigkeiten", top: 96 });
   });
 
   it("keeps the previous behaviour inside the app", () => {
