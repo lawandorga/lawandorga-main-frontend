@@ -180,7 +180,33 @@ describe("StartPage", () => {
     expect(lead.text()).toContain("Lead article");
     expect(lead.text()).toContain("08.10.2026");
     expect(lead.text()).toContain("Lead preview");
+    expect(lead.get("p").classes()).toContain("line-clamp-2");
     expect(wrapper.findAll("[data-testid='news-item']")).toHaveLength(2);
+    wrapper.unmount();
+  });
+
+  it("keeps the title link and adds a 'Read full article' link per article", () => {
+    const wrapper = mountPage();
+
+    const articles = wrapper.findAll(
+      "[data-testid='news-lead'], [data-testid='news-item']",
+    );
+    expect(articles).toHaveLength(3);
+    for (const [i, article] of articles.entries()) {
+      const id = pageData.articles[i].id;
+      const target = JSON.stringify({
+        name: "internal-article",
+        params: { id },
+      });
+      expect(article.get("h3 a").attributes("data-to")).toBe(target);
+      const readMore = article.get("[data-testid='read-more']");
+      expect(readMore.attributes("data-to")).toBe(target);
+      expect(readMore.text()).toContain("Read full article");
+      // unique link name for screen readers
+      expect(readMore.get(".sr-only").text()).toBe(
+        `: ${pageData.articles[i].title}`,
+      );
+    }
     wrapper.unmount();
   });
 
