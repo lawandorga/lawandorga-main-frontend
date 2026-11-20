@@ -117,7 +117,7 @@ watch(
 
     <figure
       v-if="active"
-      class="border-lo-line sticky top-0 z-[2] order-first -mx-5 my-0 border-b bg-white px-5 pt-3 pb-2 min-[981px]:top-[max(16px,calc(50vh-300px))] min-[981px]:order-none min-[981px]:mx-0 min-[981px]:border-0 min-[981px]:p-0 max-[980px]:[@media(max-height:640px)]:static"
+      class="border-lo-line sticky top-20 z-[2] order-first -mx-5 my-0 border-b bg-white px-5 pt-3 pb-2 min-[981px]:top-[max(96px,calc(50vh-260px))] min-[981px]:order-none min-[981px]:mx-0 min-[981px]:border-0 min-[981px]:p-0 max-[980px]:[@media(max-height:640px)]:static"
     >
       <div
         id="showroom-panel"
@@ -125,7 +125,7 @@ watch(
       >
         <div
           v-if="active.screenshot_url"
-          class="flex h-[263px] items-center justify-center rounded-[9px] bg-[#EBEDF0] p-2.5 min-[981px]:h-[min(526px,calc(100vh-120px))] min-[981px]:p-[18px]"
+          class="flex h-[263px] items-center justify-center rounded-[9px] bg-[#EBEDF0] p-2.5 min-[981px]:h-[min(526px,calc(100vh-176px))] min-[981px]:p-[18px]"
         >
           <img
             :src="active.screenshot_url"
@@ -135,7 +135,7 @@ watch(
         </div>
         <div
           v-else
-          class="flex h-[263px] flex-col items-center justify-center gap-4 rounded-[9px] bg-[#EBEDF0] p-6 text-center min-[981px]:h-[min(526px,calc(100vh-120px))]"
+          class="flex h-[263px] flex-col items-center justify-center gap-4 rounded-[9px] bg-[#EBEDF0] p-6 text-center min-[981px]:h-[min(526px,calc(100vh-176px))]"
         >
           <img
             v-if="active.icon_url"

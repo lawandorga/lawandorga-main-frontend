@@ -106,6 +106,9 @@ describe("StartPage", () => {
       true,
     );
     expect(document.documentElement.lang).toBe("de");
+    // sticky header: anchors and focus stay below it
+    expect(wrapper.get("header").classes()).toContain("sticky");
+    expect(document.documentElement.style.scrollPaddingTop).toBe("96px");
     expect(document.title).toContain("Sichere Fallverwaltung");
     wrapper.unmount();
   });
