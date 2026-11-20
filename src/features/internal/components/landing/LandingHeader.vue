@@ -78,7 +78,7 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
   <header class="border-lo-line sticky top-0 z-40 border-b bg-white">
     <!-- sticky like most websites; useLandingMeta sets a matching scroll padding -->
     <div
-      class="mx-auto flex h-20 max-w-[1240px] items-center justify-between gap-6 px-5 sm:px-12"
+      class="mx-auto flex h-20 max-w-[1240px] items-center justify-between gap-3 px-5 sm:gap-6 sm:px-12"
     >
       <div class="flex min-w-0 items-center gap-5">
         <a
@@ -87,14 +87,18 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
           class="text-lo-petrol flex items-center gap-2.5 no-underline"
         >
           <LoMark fill="#003C4D" class="block size-8" />
-          <span class="text-[22px] font-extrabold tracking-[-0.02em]">
+          <span
+            class="text-[22px] font-extrabold tracking-[-0.02em] max-[379px]:sr-only"
+          >
             Law&amp;Orga
           </span>
         </a>
-        <span class="bg-lo-line hidden h-[30px] w-px sm:block"></span>
+        <!-- "ein Projekt von" + LCD logo only from 1180 px; below it would
+             collide with the navigation and the sign in button -->
+        <span class="bg-lo-line hidden h-[30px] w-px min-[1180px]:block"></span>
         <a
           :href="LCD_WEBSITE_URL"
-          class="text-lo-muted hidden items-center gap-2.5 text-sm leading-tight no-underline sm:flex"
+          class="text-lo-muted hidden items-center gap-2.5 text-sm leading-tight no-underline min-[1180px]:flex"
           data-testid="lcd-link"
         >
           <span class="whitespace-nowrap">ein Projekt von</span>
@@ -105,7 +109,10 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
           />
         </a>
       </div>
-      <nav aria-label="Hauptnavigation" class="flex items-center gap-8">
+      <nav
+        aria-label="Hauptnavigation"
+        class="flex items-center gap-3 sm:gap-8"
+      >
         <div class="hidden gap-8 text-base font-semibold min-[981px]:flex">
           <a
             v-for="item in menuItems"
@@ -121,7 +128,7 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
           v-if="isAuthenticated"
           :to="{ name: 'dashboard' }"
           lang="en"
-          class="lo-btn lo-btn-primary min-h-11 px-[22px] text-base whitespace-nowrap"
+          class="lo-btn lo-btn-primary min-h-11 px-4 text-base whitespace-nowrap sm:px-[22px]"
         >
           Dashboard
         </router-link>
@@ -129,7 +136,7 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
           v-else
           :href="loginUrl"
           lang="en"
-          class="lo-btn lo-btn-primary min-h-11 px-[22px] text-base whitespace-nowrap"
+          class="lo-btn lo-btn-primary min-h-11 px-4 text-base whitespace-nowrap sm:px-[22px]"
         >
           Sign in
         </a>
