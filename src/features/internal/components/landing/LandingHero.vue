@@ -50,7 +50,11 @@ defineProps<{
           <p class="text-lo-on-dark-muted mt-16 mb-0 max-w-[34em] text-base">
             Seit 2018 im Einsatz: rund 70 Organisationen, 800 bis 1.000 aktive
             Nutzer:innen pro Monat und über 20.300 angelegte Akten (Stand
-            11/2026). Für Law Clinics dauerhaft kostenfrei.
+            11/2026). Für Law Clinics dauerhaft kostenfrei und solidarisch
+            mitgetragen: Wer kann, unterstützt mit einem
+            <a href="#traeger" class="font-bold text-white">
+              freiwilligen Beitrag</a
+            >.
           </p>
         </div>
 

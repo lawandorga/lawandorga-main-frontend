@@ -243,6 +243,23 @@ describe("StartPage", () => {
     wrapper.unmount();
   });
 
+  it("links the voluntary contribution in the hero facts to 'Gemeinsam getragen'", () => {
+    const wrapper = mountPage();
+
+    const facts = wrapper
+      .findAll("#top p")
+      .find((p) => p.text().startsWith("Seit 2018"));
+    // whitespace as the browser renders it
+    expect(facts?.text().replace(/\s+/g, " ")).toContain(
+      "Für Law Clinics dauerhaft kostenfrei und solidarisch mitgetragen: Wer kann, unterstützt mit einem freiwilligen Beitrag.",
+    );
+    const link = facts?.get("a");
+    expect(link?.attributes("href")).toBe("#traeger");
+    expect(link?.text()).toBe("freiwilligen Beitrag");
+    expect(wrapper.find("section#traeger").exists()).toBe(true);
+    wrapper.unmount();
+  });
+
   it("links the LCD logo and name to the LCD website", () => {
     const wrapper = mountPage();
 
