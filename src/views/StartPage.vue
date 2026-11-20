@@ -88,8 +88,8 @@ watch(
               So arbeitet ihr mit Law&amp;Orga
             </h2>
             <p class="text-lo-text-2 mt-5 mb-0 text-[19px]">
-              Scrollt weiter. Das Fenster zeigt jeweils den Bereich, über den
-              ihr gerade lest.
+              Von der Aktenliste bis zur Statistik: So sieht der Arbeitsalltag
+              in Law&amp;Orga aus. Das Bild wechselt beim Weiterlesen mit.
             </p>
           </div>
           <LandingShowroom :areas="showroomAreas" />
