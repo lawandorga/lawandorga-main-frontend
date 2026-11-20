@@ -31,14 +31,21 @@ const registerUrl = getRegisterUrl();
 const passwordResetUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/password_reset/`;
 
 // the api only returns published content, no filtering needed here
+// optional chaining also keeps the page working against an older backend
+// that does not return feature_areas or the new roadmap fields yet
 const showroomAreas = computed(
   () =>
-    page.value?.feature_areas.filter((a) => a.placement === "showroom") ?? [],
+    page.value?.feature_areas?.filter((a) => a.placement === "showroom") ?? [],
 );
 const moreAreas = computed(
-  () => page.value?.feature_areas.filter((a) => a.placement === "more") ?? [],
+  () => page.value?.feature_areas?.filter((a) => a.placement === "more") ?? [],
 );
-const roadmapItems = computed(() => page.value?.roadmap_items ?? []);
+const roadmapItems = computed(() =>
+  (page.value?.roadmap_items ?? []).map((item) => ({
+    ...item,
+    benefits: item.benefits ?? [],
+  })),
+);
 const articles = computed(() => page.value?.articles ?? []);
 </script>
 
