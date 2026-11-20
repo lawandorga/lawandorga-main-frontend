@@ -1,0 +1,205 @@
+<script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+
+import { useSectionSpy } from "@/features/internal/composables/useSectionSpy";
+import {
+  LCD_LOGO_URL,
+  LCD_WEBSITE_URL,
+} from "@/features/internal/utils/landing";
+
+import LoMark from "./LoMark.vue";
+
+const props = withDefaults(
+  defineProps<{
+    // prefix for the anchor links, e.g. "/start/" on other pages
+    anchorBase?: string;
+    loginUrl: string;
+    isAuthenticated?: boolean;
+    // highlight the section the reader is in (on the start page)
+    spy?: boolean;
+    // fixed highlight on other pages, e.g. "neuigkeiten" on the news list
+    currentSection?: string;
+  }>(),
+  {
+    anchorBase: "",
+    isAuthenticated: false,
+    spy: false,
+    currentSection: undefined,
+  },
+);
+
+const sections = [
+  { id: "einblick", label: "Einblick" },
+  { id: "sicherheit", label: "Sicherheit" },
+  { id: "organisationen", label: "Für Organisationen" },
+  { id: "roadmap", label: "Roadmap" },
+  { id: "neuigkeiten", label: "Neuigkeiten" },
+];
+
+const { activeId: spiedId } = useSectionSpy(
+  sections.map((s) => s.id),
+  props.spy,
+);
+
+const activeSection = computed(() => props.currentSection ?? spiedId.value);
+
+const menuItems = computed(() =>
+  sections.map((section) => ({
+    ...section,
+    href: `${props.anchorBase}#${section.id}`,
+    // aria-current="location" tells screen readers where the reader is
+    current: section.id === activeSection.value ? "location" : undefined,
+  })),
+);
+
+const menuOpen = ref(false);
+const menuButton = ref<HTMLButtonElement | null>(null);
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
+};
+
+const closeMenu = () => {
+  menuOpen.value = false;
+};
+
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Escape" && menuOpen.value) {
+    menuOpen.value = false;
+    menuButton.value?.focus();
+  }
+};
+
+onMounted(() => document.addEventListener("keydown", onKeydown));
+onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
+</script>
+
+<template>
+  <header class="border-lo-line sticky top-0 z-40 border-b bg-white">
+    <!-- sticky like most websites; useLandingMeta sets a matching scroll padding -->
+    <div
+      class="mx-auto flex h-20 max-w-[1240px] items-center justify-between gap-3 px-5 sm:gap-6 sm:px-12"
+    >
+      <div class="flex min-w-0 items-center gap-5">
+        <a
+          :href="`${anchorBase}#top`"
+          aria-label="Law&Orga Startseite"
+          class="text-lo-petrol flex items-center gap-2.5 no-underline"
+        >
+          <LoMark fill="#003C4D" class="block size-8" />
+          <span
+            class="text-[22px] font-extrabold tracking-[-0.02em] max-[379px]:sr-only"
+          >
+            Law&amp;Orga
+          </span>
+        </a>
+        <!-- "ein Projekt von" + LCD logo only from 1180 px; below it would
+             collide with the navigation and the sign in button -->
+        <span class="bg-lo-line hidden h-[30px] w-px min-[1180px]:block"></span>
+        <a
+          :href="LCD_WEBSITE_URL"
+          class="text-lo-muted hidden items-center gap-2.5 text-sm leading-tight no-underline min-[1180px]:flex"
+          data-testid="lcd-link"
+        >
+          <span class="whitespace-nowrap">ein Projekt von</span>
+          <img
+            :src="LCD_LOGO_URL"
+            alt="Law Clinics Deutschland e.V."
+            class="block h-[30px] w-auto"
+          />
+        </a>
+      </div>
+      <nav
+        aria-label="Hauptnavigation"
+        class="flex items-center gap-3 sm:gap-8"
+      >
+        <div class="hidden gap-8 text-base font-semibold min-[981px]:flex">
+          <a
+            v-for="item in menuItems"
+            :key="item.href"
+            :href="item.href"
+            :aria-current="item.current"
+            class="lo-navlink text-lo-text whitespace-nowrap"
+          >
+            {{ item.label }}
+          </a>
+        </div>
+        <router-link
+          v-if="isAuthenticated"
+          :to="{ name: 'dashboard' }"
+          lang="en"
+          class="lo-btn lo-btn-primary min-h-11 px-4 text-base whitespace-nowrap sm:px-[22px]"
+        >
+          Dashboard
+        </router-link>
+        <a
+          v-else
+          :href="loginUrl"
+          lang="en"
+          class="lo-btn lo-btn-primary min-h-11 px-4 text-base whitespace-nowrap sm:px-[22px]"
+        >
+          Sign in
+        </a>
+        <button
+          ref="menuButton"
+          type="button"
+          class="lo-btn lo-btn-ghost min-h-11 gap-2 px-[11px] text-base min-[981px]:hidden sm:px-3"
+          :aria-expanded="menuOpen ? 'true' : 'false'"
+          aria-controls="mobile-menu"
+          @click="toggleMenu"
+        >
+          <svg
+            v-if="menuOpen"
+            aria-hidden="true"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#003C4D"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+          <svg
+            v-else
+            aria-hidden="true"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#003C4D"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          >
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <span class="max-sm:sr-only">Menü</span>
+        </button>
+      </nav>
+    </div>
+    <nav
+      v-show="menuOpen"
+      id="mobile-menu"
+      aria-label="Menü"
+      class="border-lo-line border-t bg-white min-[981px]:hidden"
+    >
+      <ul class="m-0 list-none px-5 pt-2 pb-4">
+        <li
+          v-for="item in menuItems"
+          :key="item.href"
+          class="border-b border-[#E6EBEC]"
+        >
+          <a
+            :href="item.href"
+            :aria-current="item.current"
+            class="lo-navlink text-lo-text flex min-h-[52px] items-center text-lg font-bold"
+            @click="closeMenu"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+</template>

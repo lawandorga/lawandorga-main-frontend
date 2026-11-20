@@ -1,0 +1,177 @@
+/*
+ * Base rules for the public landing pages (/start/, /internal/articles/).
+ * Everything is scoped to the .lo root so the app itself is not affected.
+ * Layout and colours live in Tailwind classes in the components.
+ * The rules sit in the components layer, so Tailwind utilities (e.g.
+ * responsive display classes) win over them.
+ */
+
+@layer components {
+  .lo {
+    font-family: var(--font-lo);
+    color: var(--color-lo-text);
+    font-size: 18px;
+    line-height: 1.6;
+    background: #ffffff;
+  }
+
+  .lo p,
+  .lo dd,
+  .lo li,
+  .lo figcaption {
+    text-wrap: pretty;
+  }
+
+  .lo h1,
+  .lo h2,
+  .lo h3 {
+    text-wrap: balance;
+  }
+
+  /* links */
+  /* the Tailwind preflight removes underlines, text links keep them */
+  .lo a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+  .lo a:not(.lo-btn):hover {
+    text-decoration-thickness: 2px;
+  }
+  .lo .lo-dark a:not(.lo-btn):hover {
+    color: var(--color-lo-accent);
+  }
+
+  /* visible focus: petrol on light, accent on dark backgrounds */
+  .lo a:focus-visible,
+  .lo button:focus-visible,
+  .lo summary:focus-visible {
+    outline: 3px solid var(--color-lo-petrol);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .lo .lo-dark a:focus-visible,
+  .lo .lo-dark button:focus-visible,
+  .lo .lo-dark summary:focus-visible {
+    outline-color: var(--color-lo-accent);
+  }
+
+  /* buttons */
+  .lo .lo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.1s ease;
+  }
+  .lo .lo-btn:active {
+    transform: translateY(1px);
+  }
+  .lo .lo-btn-primary {
+    background: var(--color-lo-petrol);
+    color: #ffffff;
+  }
+  .lo .lo-btn-primary:hover {
+    background: var(--color-lo-petrol-hover);
+    box-shadow: 0 8px 18px -10px rgb(0 40 52 / 0.7);
+  }
+  .lo .lo-btn-white {
+    background: #ffffff;
+    color: var(--color-lo-petrol);
+  }
+  .lo .lo-btn-white:hover {
+    background: var(--color-lo-mist);
+    box-shadow: 0 8px 18px -10px rgb(0 0 0 / 0.45);
+  }
+  .lo .lo-btn-outline {
+    border: 2px solid var(--color-lo-petrol);
+    color: var(--color-lo-petrol);
+    background: transparent;
+  }
+  .lo .lo-btn-outline:hover {
+    background: var(--color-lo-petrol);
+    color: #ffffff;
+  }
+  .lo .lo-btn-ghost {
+    border: 1.5px solid var(--color-lo-petrol);
+    color: var(--color-lo-petrol);
+    background: transparent;
+  }
+  .lo .lo-btn-ghost:hover {
+    background: var(--color-lo-mist);
+  }
+
+  /* anchor navigation */
+  .lo .lo-navlink {
+    text-decoration: none;
+    text-underline-offset: 8px;
+    transition: color 0.15s ease;
+  }
+  .lo .lo-navlink:hover {
+    color: var(--color-lo-petrol);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--color-lo-accent);
+  }
+  /* the section the reader is in: petrol text with a thick petrol underline
+     (enough contrast, unlike the light accent used for hover) */
+  .lo .lo-navlink[aria-current="location"],
+  .lo .lo-navlink[aria-current="location"]:hover {
+    color: var(--color-lo-petrol);
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--color-lo-petrol);
+  }
+
+  /* disclosure rows (<details>) */
+  .lo summary {
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .lo summary::-webkit-details-marker {
+    display: none;
+  }
+  .lo .lo-chev {
+    transition: transform 0.2s ease;
+  }
+  .lo details[open] > summary .lo-chev {
+    transform: rotate(180deg);
+  }
+
+  /* skip link */
+  .lo .lo-skip {
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    z-index: 50;
+    padding: 12px 18px;
+    background: #ffffff;
+    color: var(--color-lo-petrol);
+    font-weight: 800;
+    border-radius: 6px;
+  }
+  .lo .lo-skip:focus {
+    left: 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lo *,
+    .lo *::before,
+    .lo *::after {
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+    .lo .lo-btn:active {
+      transform: none;
+    }
+  }
+}
