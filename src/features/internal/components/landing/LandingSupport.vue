@@ -58,9 +58,9 @@ const sponsors = [
           </h2>
           <p class="text-lo-text-2 mt-5 mb-0 text-[19px]">
             Law&amp;Orga ist ein Projekt von Law Clinics Deutschland e.V., dem
-            Dachverband der Law Clinics in Deutschland. Für Law Clinics bleibt
-            es dauerhaft kostenfrei. Ihr Beitrag ist freiwillig, keine Law
-            Clinic verliert den Zugang.
+            bundesweiten Dachverband der Law Clinics. Für Law Clinics bleibt es
+            dauerhaft kostenfrei. Ihr Beitrag ist freiwillig, keine Law Clinic
+            verliert den Zugang.
           </p>
           <p class="text-lo-text-2 mt-4 mb-0 text-[19px]">
             Andere gemeinnützige Organisationen beteiligen sich solidarisch
