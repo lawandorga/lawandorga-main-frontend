@@ -34,7 +34,8 @@ const items = [
 </script>
 
 <template>
-  <section id="sicherheit" class="bg-lo-mist relative overflow-hidden">
+  <!-- overflow-clip (not hidden) clips the mark without breaking the sticky column -->
+  <section id="sicherheit" class="bg-lo-mist relative overflow-clip">
     <LoMark
       fill="#D3E7EB"
       class="pointer-events-none absolute -bottom-[300px] -left-[220px] block size-[820px]"
@@ -45,7 +46,7 @@ const items = [
       <div
         class="grid grid-cols-1 items-start gap-12 min-[981px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] min-[981px]:gap-24"
       >
-        <div class="min-[981px]:sticky min-[981px]:top-10">
+        <div class="min-[981px]:sticky min-[981px]:top-28">
           <h2
             class="text-lo-petrol m-0 text-[clamp(36px,3.8vw,52px)] leading-[1.05] font-extrabold tracking-[-0.035em]"
           >

@@ -46,7 +46,8 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
 </script>
 
 <template>
-  <header class="border-lo-line border-b bg-white">
+  <header class="border-lo-line sticky top-0 z-40 border-b bg-white">
+    <!-- sticky like most websites; useLandingMeta sets a matching scroll padding -->
     <div
       class="mx-auto flex h-20 max-w-[1240px] items-center justify-between gap-6 px-5 sm:px-12"
     >
