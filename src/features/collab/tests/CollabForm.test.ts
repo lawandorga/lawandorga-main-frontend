@@ -55,7 +55,7 @@ const FormTipTapTwoStub = defineComponent({
 
 const mountComponent = (text = "<p>Hello</p>") =>
   mount(CollabForm, {
-    props: { text, collabUuid: "collab-1", password: "secret" },
+    props: { text, collabUuid: "collab-1" },
     attachTo: document.body,
     global: { stubs: { FormTipTapTwo: FormTipTapTwoStub } },
   });
@@ -453,7 +453,6 @@ describe("CollabForm", () => {
         props: {
           text: unnormalisedText,
           collabUuid: "collab-1",
-          password: "secret",
         },
         attachTo: document.body,
         global: { stubs: { FormMenuBar: true } },

@@ -16,7 +16,6 @@ import { formatDate } from "@/utils/date";
 const props = defineProps<{
   text: string;
   collabUuid: string;
-  password: string;
 }>();
 
 const { text, collabUuid } = toRefs(props);
@@ -175,12 +174,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div @keydown="onKeydown">
-    <FormTipTapTwo
-      v-model="model"
-      :room="collabUuid"
-      :password="password"
-      @ready="resetBaseline"
-    >
+    <FormTipTapTwo v-model="model" @ready="resetBaseline">
       <div
         class="flex items-center justify-between gap-4 px-3 py-2 print:hidden"
       >
