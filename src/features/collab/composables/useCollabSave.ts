@@ -60,6 +60,9 @@ export function useCollabSave(model: Ref<string>, collabUuid: Ref<string>) {
       .catch(() => {
         // the text stays in the editor, typing again schedules a retry
         state.value = "error";
+        // edits made during the failed request were ignored by the watcher,
+        // so retry them once without waiting for another keystroke
+        if (model.value !== snapshot) autosave();
         return false;
       })
       .finally(() => {

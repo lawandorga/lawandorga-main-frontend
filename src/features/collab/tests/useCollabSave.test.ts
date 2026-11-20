@@ -121,6 +121,46 @@ describe("useCollabSave", () => {
     expect(state.value).toBe("saved");
   });
 
+  it("retries edits made during a failed request once, without another keystroke", async () => {
+    const request = deferred();
+    commandRequest.mockReturnValueOnce(request.promise);
+    const { model, state, saveNow } = setUp();
+
+    model.value = "<p>First</p>";
+    const result = saveNow();
+    model.value = "<p>First and second</p>";
+
+    request.reject({ title: "Network Error" });
+    await expect(result).resolves.toBe(false);
+    expect(state.value).toBe("error");
+    expect(commandRequest).toHaveBeenCalledTimes(1);
+
+    await vi.advanceTimersByTimeAsync(AUTOSAVE_DELAY_MS - 1);
+    expect(commandRequest).toHaveBeenCalledTimes(1);
+
+    await vi.advanceTimersByTimeAsync(1);
+    expect(commandRequest).toHaveBeenCalledTimes(2);
+    expect(commandRequest).toHaveBeenLastCalledWith(
+      expect.objectContaining({ text: "<p>First and second</p>" }),
+    );
+    expect(state.value).toBe("saved");
+
+    // exactly once: nothing else is scheduled afterwards
+    await vi.advanceTimersByTimeAsync(AUTOSAVE_DELAY_MS * 3);
+    expect(commandRequest).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not schedule a retry when a request fails without edits during it", async () => {
+    commandRequest.mockRejectedValueOnce({ title: "Network Error" });
+    const { model, saveNow } = setUp();
+
+    model.value = "<p>Changed</p>";
+    await saveNow();
+
+    await vi.advanceTimersByTimeAsync(AUTOSAVE_DELAY_MS * 3);
+    expect(commandRequest).toHaveBeenCalledTimes(1);
+  });
+
   it("returns the same promise and sends no second request while one is in flight", async () => {
     const request = deferred();
     commandRequest.mockReturnValueOnce(request.promise);
