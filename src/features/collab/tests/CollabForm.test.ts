@@ -1,3 +1,4 @@
+import { EditorContent } from "@tiptap/vue-3";
 import { flushPromises, mount, VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineComponent, h } from "vue";
@@ -440,6 +441,89 @@ describe("CollabForm", () => {
       const event = new Event("beforeunload", { cancelable: true });
       window.dispatchEvent(event);
       expect(event.defaultPrevented).toBe(false);
+    });
+  });
+
+  describe("with the real editor", () => {
+    // Tiptap rewrites this to "<p>Hello <strong>World</strong></p>"
+    const unnormalisedText = "Hello <b>World</b>";
+
+    const mountWithEditor = () =>
+      mount(CollabForm, {
+        props: {
+          text: unnormalisedText,
+          collabUuid: "collab-1",
+          password: "secret",
+        },
+        attachTo: document.body,
+        global: { stubs: { FormMenuBar: true } },
+      });
+
+    const editorOf = (w: ReturnType<typeof mountWithEditor>) =>
+      w.findComponent(EditorContent).props("editor")!;
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("loading a document does not mark it dirty", async () => {
+      const w = mountWithEditor();
+      // Tiptap emits "create" in a timeout after mounting
+      await vi.advanceTimersByTimeAsync(0);
+      await flushPromises();
+
+      expect(editorOf(w).getHTML()).not.toBe(unnormalisedText);
+      expect(w.get('[data-test="collab-save-status"]').text()).toContain(
+        "All changes saved",
+      );
+
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(commandRequest).not.toHaveBeenCalled();
+      w.unmount();
+    });
+
+    it("typing back to the loaded text does not create a version", async () => {
+      const w = mountWithEditor();
+      await vi.advanceTimersByTimeAsync(0);
+      await flushPromises();
+
+      const editor = editorOf(w);
+      editor.commands.insertContentAt(1, "x");
+      await flushPromises();
+      expect(w.get('[data-test="collab-save-status"]').text()).toContain(
+        "Unsaved changes",
+      );
+      editor.commands.deleteRange({ from: 1, to: 2 });
+      await flushPromises();
+
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(commandRequest).not.toHaveBeenCalled();
+      w.unmount();
+    });
+
+    it("emits edits made right after mounting", async () => {
+      const w = mountWithEditor();
+      await flushPromises();
+
+      // no 500 ms delay any more: the first edit is picked up immediately
+      editorOf(w).commands.insertContentAt(1, "x");
+      await flushPromises();
+
+      expect(w.get('[data-test="collab-save-status"]').text()).toContain(
+        "Unsaved changes",
+      );
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(commandRequest).toHaveBeenCalledTimes(1);
+      expect(commandRequest).toHaveBeenCalledWith(
+        expect.objectContaining({
+          text: "<p>xHello <strong>World</strong></p>",
+        }),
+      );
+      w.unmount();
     });
   });
 });

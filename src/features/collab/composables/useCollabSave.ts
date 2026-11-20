@@ -77,6 +77,16 @@ export function useCollabSave(model: Ref<string>, collabUuid: Ref<string>) {
     autosave.flush();
   }
 
+  /**
+   * Replace the baseline without saving, e.g. with the HTML the editor
+   * normalised the loaded text to. Ignored once the user changed the text.
+   */
+  function resetBaseline(text: string) {
+    if (state.value !== "saved" || model.value !== lastSaved.value) return;
+    lastSaved.value = text;
+    model.value = text;
+  }
+
   watch(
     model,
     (value) => {
@@ -101,5 +111,6 @@ export function useCollabSave(model: Ref<string>, collabUuid: Ref<string>) {
     saveNow,
     scheduleAutosave,
     flush,
+    resetBaseline,
   };
 }

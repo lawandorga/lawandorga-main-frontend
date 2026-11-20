@@ -23,7 +23,10 @@ const { text, collabUuid } = toRefs(props);
 
 const model = ref<string>(text.value);
 
-const { state, lastSavedAt, saveNow, flush } = useCollabSave(model, collabUuid);
+const { state, lastSavedAt, saveNow, flush, resetBaseline } = useCollabSave(
+  model,
+  collabUuid,
+);
 
 const isMac =
   typeof navigator !== "undefined" &&
@@ -172,7 +175,12 @@ onBeforeUnmount(() => {
 
 <template>
   <div @keydown="onKeydown">
-    <FormTipTapTwo v-model="model" :room="collabUuid" :password="password">
+    <FormTipTapTwo
+      v-model="model"
+      :room="collabUuid"
+      :password="password"
+      @ready="resetBaseline"
+    >
       <div
         class="flex items-center justify-between gap-4 px-3 py-2 print:hidden"
       >

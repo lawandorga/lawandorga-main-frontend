@@ -15,10 +15,15 @@ const props = defineProps<{
 }>();
 const { modelValue } = toRefs(props);
 
-const emit = defineEmits(["update:modelValue"]);
+// "ready" emits the HTML the editor normalised the loaded content to,
+// so the parent can use it as baseline without treating it as a change
+const emit = defineEmits(["update:modelValue", "ready"]);
 
 const editor = useEditor({
   content: modelValue.value,
+  onCreate: ({ editor: e }) => emit("ready", e.getHTML()),
+  // only fires for document changes, never for the initial content
+  onUpdate: ({ editor: e }) => emit("update:modelValue", e.getHTML()),
   editorProps: {
     attributes: {
       class: "prose p-5 w-full focus:outline-none sm:max-w-none",
@@ -39,16 +44,6 @@ const editor = useEditor({
     }),
   ],
 });
-
-setTimeout(() => {
-  editor.value?.on("update", ({ editor: e }) => {
-    editorUpdated(e.getHTML());
-  });
-}, 500);
-
-function editorUpdated(value: string) {
-  emit("update:modelValue", value);
-}
 </script>
 
 <template>

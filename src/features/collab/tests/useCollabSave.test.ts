@@ -180,6 +180,26 @@ describe("useCollabSave", () => {
     expect(state.value).toBe("saved");
   });
 
+  it("resetBaseline replaces the baseline without a request", async () => {
+    const { model, state, resetBaseline } = setUp("Hello <b>World</b>");
+
+    resetBaseline("<p>Hello <strong>World</strong></p>");
+    expect(model.value).toBe("<p>Hello <strong>World</strong></p>");
+    expect(state.value).toBe("saved");
+
+    await vi.advanceTimersByTimeAsync(AUTOSAVE_DELAY_MS);
+    expect(commandRequest).not.toHaveBeenCalled();
+  });
+
+  it("resetBaseline is ignored once the user changed the text", () => {
+    const { model, state, resetBaseline } = setUp("<p>A</p>");
+
+    model.value = "<p>AB</p>";
+    resetBaseline("<p>A</p>");
+    expect(model.value).toBe("<p>AB</p>");
+    expect(state.value).toBe("dirty");
+  });
+
   it("flush saves a pending autosave immediately", async () => {
     const { model, flush } = setUp();
 
