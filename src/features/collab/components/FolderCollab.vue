@@ -82,11 +82,7 @@ const allQuery = () => {
           :on-delete="onDelete"
         />
       </template>
-      <CollabForm
-        :text="collab.text"
-        :collab-uuid="collab.uuid"
-        :password="collab.password"
-      />
+      <CollabForm :text="collab.text" :collab-uuid="collab.uuid" />
       <template v-if="!!collab.template">
         <div class="mt-6 flex items-center">
           <CheckIcon class="h-6 w-6" />

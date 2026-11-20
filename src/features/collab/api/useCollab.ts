@@ -16,7 +16,6 @@ export interface Collab {
   name: string;
   text: string;
   created_at: string;
-  password: string;
   history: History[];
   template: CollabTemplate | null;
 }
