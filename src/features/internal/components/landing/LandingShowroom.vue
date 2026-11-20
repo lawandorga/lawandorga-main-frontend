@@ -93,7 +93,7 @@ watch(
             type="button"
             aria-controls="showroom-panel"
             :aria-current="area.id === active?.id ? 'true' : undefined"
-            class="hover:text-lo-petrol hover:decoration-lo-accent min-h-11 cursor-pointer scroll-mt-[300px] border-0 bg-transparent p-0 text-left text-[clamp(26px,2.4vw,34px)] leading-[1.15] font-extrabold tracking-[-0.025em] underline decoration-[5px] underline-offset-[10px] transition-colors min-[981px]:scroll-mt-0 [@media(max-height:640px)]:scroll-mt-0"
+            class="hover:text-lo-petrol hover:decoration-lo-accent min-h-11 cursor-pointer scroll-mt-[300px] border-0 bg-transparent p-0 text-left text-[clamp(26px,2.4vw,34px)] leading-[1.15] font-extrabold tracking-[-0.025em] underline decoration-[5px] underline-offset-[10px] transition-colors min-[981px]:scroll-mt-0 max-[980px]:[@media(max-height:640px)]:scroll-mt-0"
             :class="
               area.id === active?.id
                 ? 'text-lo-petrol decoration-lo-accent'
@@ -117,7 +117,7 @@ watch(
 
     <figure
       v-if="active"
-      class="border-lo-line sticky top-0 z-[2] order-first -mx-5 my-0 border-b bg-white px-5 pt-3 pb-2 min-[981px]:top-[calc(50vh-300px)] min-[981px]:order-none min-[981px]:mx-0 min-[981px]:border-0 min-[981px]:p-0 [@media(max-height:640px)]:static"
+      class="border-lo-line sticky top-0 z-[2] order-first -mx-5 my-0 border-b bg-white px-5 pt-3 pb-2 min-[981px]:top-[max(16px,calc(50vh-300px))] min-[981px]:order-none min-[981px]:mx-0 min-[981px]:border-0 min-[981px]:p-0 max-[980px]:[@media(max-height:640px)]:static"
     >
       <div
         id="showroom-panel"
@@ -125,7 +125,7 @@ watch(
       >
         <div
           v-if="active.screenshot_url"
-          class="flex h-[263px] items-center justify-center rounded-[9px] bg-[#EBEDF0] p-2.5 min-[981px]:h-[526px] min-[981px]:p-[18px]"
+          class="flex h-[263px] items-center justify-center rounded-[9px] bg-[#EBEDF0] p-2.5 min-[981px]:h-[min(526px,calc(100vh-120px))] min-[981px]:p-[18px]"
         >
           <img
             :src="active.screenshot_url"
@@ -135,7 +135,7 @@ watch(
         </div>
         <div
           v-else
-          class="flex h-[263px] flex-col items-center justify-center gap-4 rounded-[9px] bg-[#EBEDF0] p-6 text-center min-[981px]:h-[526px]"
+          class="flex h-[263px] flex-col items-center justify-center gap-4 rounded-[9px] bg-[#EBEDF0] p-6 text-center min-[981px]:h-[min(526px,calc(100vh-120px))]"
         >
           <img
             v-if="active.icon_url"
