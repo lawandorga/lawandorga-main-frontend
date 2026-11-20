@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
+import { useSectionSpy } from "@/features/internal/composables/useSectionSpy";
 import { LCD_LOGO_URL } from "@/features/internal/utils/landing";
 
 import LoMark from "./LoMark.vue";
@@ -11,17 +12,42 @@ const props = withDefaults(
     anchorBase?: string;
     loginUrl: string;
     isAuthenticated?: boolean;
+    // highlight the section the reader is in (on the start page)
+    spy?: boolean;
+    // fixed highlight on other pages, e.g. "neuigkeiten" on the news list
+    currentSection?: string;
   }>(),
-  { anchorBase: "", isAuthenticated: false },
+  {
+    anchorBase: "",
+    isAuthenticated: false,
+    spy: false,
+    currentSection: undefined,
+  },
 );
 
-const menuItems = [
-  { href: "#einblick", label: "Einblick" },
-  { href: "#sicherheit", label: "Sicherheit" },
-  { href: "#organisationen", label: "Für Organisationen" },
-  { href: "#roadmap", label: "Roadmap" },
-  { href: "#neuigkeiten", label: "Neuigkeiten" },
-].map((item) => ({ ...item, href: `${props.anchorBase}${item.href}` }));
+const sections = [
+  { id: "einblick", label: "Einblick" },
+  { id: "sicherheit", label: "Sicherheit" },
+  { id: "organisationen", label: "Für Organisationen" },
+  { id: "roadmap", label: "Roadmap" },
+  { id: "neuigkeiten", label: "Neuigkeiten" },
+];
+
+const { activeId: spiedId } = useSectionSpy(
+  sections.map((s) => s.id),
+  props.spy,
+);
+
+const activeSection = computed(() => props.currentSection ?? spiedId.value);
+
+const menuItems = computed(() =>
+  sections.map((section) => ({
+    ...section,
+    href: `${props.anchorBase}#${section.id}`,
+    // aria-current="location" tells screen readers where the reader is
+    current: section.id === activeSection.value ? "location" : undefined,
+  })),
+);
 
 const menuOpen = ref(false);
 const menuButton = ref<HTMLButtonElement | null>(null);
@@ -81,6 +107,7 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
             v-for="item in menuItems"
             :key="item.href"
             :href="item.href"
+            :aria-current="item.current"
             class="lo-navlink text-lo-text whitespace-nowrap"
           >
             {{ item.label }}
@@ -154,6 +181,7 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
         >
           <a
             :href="item.href"
+            :aria-current="item.current"
             class="lo-navlink text-lo-text flex min-h-[52px] items-center text-lg font-bold"
             @click="closeMenu"
           >
