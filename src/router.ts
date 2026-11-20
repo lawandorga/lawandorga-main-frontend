@@ -8,6 +8,7 @@ import eventsRoutes from "@/features/events/routes";
 import folderRoutes from "@/features/folders/routes";
 import helpRoutes from "@/features/help/routes";
 import internalRoutes from "@/features/internal/routes";
+import { landingScrollBehavior } from "@/features/internal/utils/scroll";
 import legalRoutes from "@/features/legal/routes";
 import mailRoutes from "@/features/mail/routes";
 import chatRoutes from "@/features/matrix_chat/routes";
@@ -74,6 +75,8 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  // public pages start at the top instead of keeping the old scroll position
+  scrollBehavior: landingScrollBehavior,
 });
 
 router.onError((error, to) => {

@@ -42,9 +42,12 @@ export interface FeatureArea {
   screenshot_note: string;
 }
 
-export function useLoginPage() {
-  const page = ref<LoginPage | null>(null);
+// kept between visits: when the reader comes back (browser back button), the
+// page renders at full height right away, so the scroll position can be
+// restored; the data is refreshed in the background on every visit
+const page = ref<LoginPage | null>(null);
 
+export function useLoginPage() {
   useGet2("api/internal/pages/index/", page);
 
   return {
