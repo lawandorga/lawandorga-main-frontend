@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="flex h-screen overflow-hidden print:h-auto print:overflow-auto">
+    <!-- public pages (landing page) bring their own header, main and footer -->
+    <router-view v-if="isStandalone"></router-view>
+    <div
+      v-else
+      class="flex h-screen overflow-hidden print:h-auto print:overflow-auto"
+    >
       <NavigationMobile :open="menuOpen" :set-open="setMenuOpen" />
 
       <NavigationSidebar v-if="userStore.isAuthenticated && isInsideApp" />
@@ -97,6 +102,10 @@ const userStore = useUserStore();
 
 const isInsideApp = computed<boolean>(() => {
   return route.name !== "start";
+});
+
+const isStandalone = computed<boolean>(() => {
+  return route.meta.standalone === true;
 });
 
 const setMenuOpen = (open: boolean) => {

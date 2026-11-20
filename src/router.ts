@@ -34,6 +34,8 @@ const routes: Array<RouteRecordRaw> = [
     path: "/start/",
     name: "start",
     component: StartPage,
+    // public page with its own header and footer (see App.vue)
+    meta: { standalone: true },
   },
   {
     path: "/dashboard/",
