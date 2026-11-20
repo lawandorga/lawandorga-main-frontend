@@ -29,6 +29,7 @@ const loaded = computed(() => articles.value !== null);
     <a class="lo-skip" href="#inhalt">Zum Inhalt springen</a>
     <LandingHeader
       anchor-base="/start/"
+      current-section="neuigkeiten"
       :login-url="loginUrl"
       :is-authenticated="userStore.isAuthenticated"
     />

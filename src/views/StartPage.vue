@@ -55,6 +55,7 @@ const articles = computed(() => page.value?.articles ?? []);
     <LandingHeader
       :login-url="loginUrl"
       :is-authenticated="userStore.isAuthenticated"
+      spy
     />
 
     <main id="inhalt" tabindex="-1" class="outline-none">

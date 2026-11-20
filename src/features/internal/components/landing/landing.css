@@ -121,6 +121,15 @@
     text-decoration-thickness: 2px;
     text-decoration-color: var(--color-lo-accent);
   }
+  /* the section the reader is in: petrol text with a thick petrol underline
+     (enough contrast, unlike the light accent used for hover) */
+  .lo .lo-navlink[aria-current="location"],
+  .lo .lo-navlink[aria-current="location"]:hover {
+    color: var(--color-lo-petrol);
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--color-lo-petrol);
+  }
 
   /* disclosure rows (<details>) */
   .lo summary {

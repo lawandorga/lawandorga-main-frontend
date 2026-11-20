@@ -66,6 +66,28 @@ describe("LandingHeader: mobile menu", () => {
     wrapper.unmount();
   });
 
+  it("highlights the current section in both navigations", () => {
+    const wrapper = mountHeader({
+      anchorBase: "/start/",
+      currentSection: "neuigkeiten",
+    });
+
+    const current = wrapper.findAll('a[aria-current="location"]');
+    expect(current).toHaveLength(2); // desktop navigation and mobile menu
+    for (const link of current) {
+      expect(link.text()).toBe("Neuigkeiten");
+      expect(link.attributes("href")).toBe("/start/#neuigkeiten");
+    }
+    wrapper.unmount();
+  });
+
+  it("highlights nothing without a current section", () => {
+    const wrapper = mountHeader();
+
+    expect(wrapper.findAll('a[aria-current="location"]')).toHaveLength(0);
+    wrapper.unmount();
+  });
+
   it("shows Sign in for visitors and Dashboard for signed in users", () => {
     const visitor = mountHeader();
     expect(visitor.text()).toContain("Sign in");
