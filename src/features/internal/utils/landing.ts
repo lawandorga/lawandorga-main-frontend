@@ -83,6 +83,10 @@ export function formatLandingDate(value: string): string {
 // served from public/, bound in templates so the build does not import it
 export const LCD_LOGO_URL = "/landing/lcd-logo.svg";
 
+// height of the sticky landing header (80 px) plus some air; anchor targets
+// and focused elements are kept this far from the top of the viewport
+export const STICKY_HEADER_OFFSET = 96;
+
 // website of Law Clinics Deutschland e.V. (logo and name link there)
 export const LCD_WEBSITE_URL = "https://law-clinics.de/";
 
