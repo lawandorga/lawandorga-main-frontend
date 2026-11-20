@@ -103,6 +103,13 @@ async function saveBeforeLeaving(): Promise<boolean> {
 
 const showLeaveDialog = ref(false);
 const retryingInDialog = ref(false);
+
+// lorga-ui's secondary (indigo-200 ring) and delete (red-200 border) buttons
+// have barely visible focus indicators. The class lands on ButtonNormal's
+// wrapper <div>, so target the inner <button>; "!" beats lorga-ui's
+// focus:outline-none. formcolor #003c4d has 11.98:1 contrast against white.
+const dialogButtonFocus =
+  "[&>button:focus-visible]:outline-solid! [&>button:focus-visible]:outline-2! [&>button:focus-visible]:outline-offset-2! [&>button:focus-visible]:outline-formcolor!";
 // eslint-disable-next-line no-unused-vars
 let resolveLeaveDialog: ((leave: boolean) => void) | null = null;
 
@@ -238,10 +245,18 @@ onBeforeUnmount(() => {
         <ButtonNormal kind="primary" @click="retryInDialog">
           {{ retryingInDialog ? "Saving…" : "Try saving again" }}
         </ButtonNormal>
-        <ButtonNormal kind="secondary" @click="closeLeaveDialog(false)">
+        <ButtonNormal
+          kind="secondary"
+          :class="dialogButtonFocus"
+          @click="closeLeaveDialog(false)"
+        >
           Stay here
         </ButtonNormal>
-        <ButtonNormal kind="delete" @click="closeLeaveDialog(true)">
+        <ButtonNormal
+          kind="delete"
+          :class="dialogButtonFocus"
+          @click="closeLeaveDialog(true)"
+        >
           Leave without saving
         </ButtonNormal>
       </div>
