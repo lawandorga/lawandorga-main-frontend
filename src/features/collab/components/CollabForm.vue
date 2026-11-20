@@ -5,7 +5,9 @@ import {
   ExclamationTriangleIcon,
   PencilSquareIcon,
 } from "@heroicons/vue/24/outline";
-import { computed, ref, toRefs } from "vue";
+import { ButtonNormal, ModalFree } from "lorga-ui";
+import { computed, onBeforeUnmount, ref, toRefs, watch } from "vue";
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from "vue-router";
 
 import FormTipTapTwo from "@/components/FormTipTapTwo.vue";
 import { useCollabSave } from "@/features/collab/composables/useCollabSave";
@@ -21,7 +23,7 @@ const { text, collabUuid } = toRefs(props);
 
 const model = ref<string>(text.value);
 
-const { state, lastSavedAt, saveNow } = useCollabSave(model, collabUuid);
+const { state, lastSavedAt, saveNow, flush } = useCollabSave(model, collabUuid);
 
 const isMac =
   typeof navigator !== "undefined" &&
@@ -88,6 +90,84 @@ function onKeydown(event: KeyboardEvent) {
   event.preventDefault();
   void saveNow();
 }
+
+// leaving the collab: save first, ask only if saving failed
+
+async function saveBeforeLeaving(): Promise<boolean> {
+  const saved = await saveNow();
+  // the text may have changed while a request was already in flight
+  return saved && (await saveNow());
+}
+
+const showLeaveDialog = ref(false);
+const retryingInDialog = ref(false);
+// eslint-disable-next-line no-unused-vars
+let resolveLeaveDialog: ((leave: boolean) => void) | null = null;
+
+const askToLeave = (): Promise<boolean> =>
+  new Promise((resolve) => {
+    resolveLeaveDialog = resolve;
+    showLeaveDialog.value = true;
+  });
+
+const closeLeaveDialog = (leave: boolean) => {
+  resolveLeaveDialog?.(leave);
+  resolveLeaveDialog = null;
+  showLeaveDialog.value = false;
+};
+
+// Escape, the close button and a backdrop click mean "Stay here"
+watch(showLeaveDialog, (open) => {
+  if (!open) closeLeaveDialog(false);
+});
+
+async function retryInDialog() {
+  if (retryingInDialog.value) return;
+  retryingInDialog.value = true;
+  const saved = await saveBeforeLeaving();
+  retryingInDialog.value = false;
+  if (saved) closeLeaveDialog(true);
+}
+
+async function guardLeaving(): Promise<false | undefined> {
+  if (state.value === "saved") return;
+  if (await saveBeforeLeaving()) return;
+  return (await askToLeave()) ? undefined : false;
+}
+
+onBeforeRouteUpdate((to) => {
+  // only switching to another collab, record or folder leaves this collab
+  if (to.query.selectedId === collabUuid.value) return;
+  return guardLeaving();
+});
+
+onBeforeRouteLeave(() => guardLeaving());
+
+// closing or reloading the tab: let the browser show its native warning
+
+const onBeforeUnload = (event: BeforeUnloadEvent) => {
+  event.preventDefault();
+  // legacy browsers only show the warning when returnValue is set
+  event.returnValue = "";
+};
+
+watch(
+  state,
+  (value) => {
+    if (value === "saved") {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    } else {
+      window.addEventListener("beforeunload", onBeforeUnload);
+    }
+  },
+  { immediate: true },
+);
+
+onBeforeUnmount(() => {
+  // safety net: send a pending autosave right away
+  flush();
+  window.removeEventListener("beforeunload", onBeforeUnload);
+});
 </script>
 
 <template>
@@ -146,5 +226,23 @@ function onKeydown(event: KeyboardEvent) {
         </button>
       </div>
     </FormTipTapTwo>
+
+    <ModalFree v-model="showLeaveDialog" title="Your changes are not saved">
+      <p class="mb-5 text-sm text-gray-700">
+        Saving failed before you left this document. If you leave now, your last
+        edits are lost.
+      </p>
+      <div class="flex flex-wrap items-center justify-end gap-3">
+        <ButtonNormal kind="primary" @click="retryInDialog">
+          {{ retryingInDialog ? "Saving…" : "Try saving again" }}
+        </ButtonNormal>
+        <ButtonNormal kind="secondary" @click="closeLeaveDialog(false)">
+          Stay here
+        </ButtonNormal>
+        <ButtonNormal kind="delete" @click="closeLeaveDialog(true)">
+          Leave without saving
+        </ButtonNormal>
+      </div>
+    </ModalFree>
   </div>
 </template>
