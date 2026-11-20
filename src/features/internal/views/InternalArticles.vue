@@ -7,6 +7,7 @@ import "@/features/internal/components/landing/landing.css";
 import { computed } from "vue";
 
 import { usePublicArticles } from "@/features/internal/api/usePublicArticles";
+import ArticleReadMore from "@/features/internal/components/landing/ArticleReadMore.vue";
 import LandingFooter from "@/features/internal/components/landing/LandingFooter.vue";
 import LandingHeader from "@/features/internal/components/landing/LandingHeader.vue";
 import { useLandingMeta } from "@/features/internal/composables/useLandingMeta";
@@ -49,11 +50,14 @@ const loaded = computed(() => articles.value !== null);
         >
           Zurzeit gibt es keine Neuigkeiten.
         </p>
-        <div class="mt-10 max-w-[52em]">
+        <div
+          class="mt-10 grid grid-cols-1 gap-x-16 md:grid-cols-2"
+          data-testid="article-grid"
+        >
           <article
             v-for="article in articles ?? []"
             :key="article.id"
-            class="border-lo-line-2 border-t pt-5 pb-7 last:border-b"
+            class="border-lo-line-2 border-t pt-5 pb-8"
           >
             <time :datetime="article.date" class="text-lo-muted text-[15px]">
               {{ formatLandingDate(article.date) }}
@@ -68,9 +72,13 @@ const loaded = computed(() => articles.value !== null);
                 {{ article.title }}
               </router-link>
             </h2>
-            <p class="text-lo-muted mt-1.5 mb-0 text-[17px]">
+            <p
+              v-if="article.preview"
+              class="text-lo-muted mt-1.5 mb-0 line-clamp-2 text-[17px]"
+            >
               {{ article.preview }}
             </p>
+            <ArticleReadMore :id="article.id" :title="article.title" />
           </article>
         </div>
       </div>

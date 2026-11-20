@@ -4,6 +4,8 @@ import { computed } from "vue";
 import { ArticleList } from "@/features/internal/api/useLoginPage";
 import { formatLandingDate } from "@/features/internal/utils/landing";
 
+import ArticleReadMore from "./ArticleReadMore.vue";
+
 const props = defineProps<{ articles: ArticleList[] }>();
 
 const lead = computed(() => props.articles[0]);
@@ -44,9 +46,13 @@ const more = computed(() => props.articles.slice(1, 3));
               {{ lead.title }}
             </router-link>
           </h3>
-          <p class="text-lo-text-2 mt-3.5 mb-0 max-w-[32em] text-[19px]">
+          <p
+            v-if="lead.preview"
+            class="text-lo-text-2 mt-3.5 mb-0 line-clamp-2 max-w-[32em] text-[19px]"
+          >
             {{ lead.preview }}
           </p>
+          <ArticleReadMore :id="lead.id" :title="lead.title" />
         </article>
         <div class="flex flex-col">
           <article
@@ -68,9 +74,13 @@ const more = computed(() => props.articles.slice(1, 3));
                 {{ article.title }}
               </router-link>
             </h3>
-            <p class="text-lo-muted mt-1.5 mb-0 text-[17px]">
+            <p
+              v-if="article.preview"
+              class="text-lo-muted mt-1.5 mb-0 line-clamp-2 text-[17px]"
+            >
               {{ article.preview }}
             </p>
+            <ArticleReadMore :id="article.id" :title="article.title" />
           </article>
         </div>
       </div>
