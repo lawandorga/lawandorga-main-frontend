@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   LCD_LOGO_URL,
+  LCD_WEBSITE_URL,
   MAIL_SUBJECTS,
   mailto,
 } from "@/features/internal/utils/landing";
@@ -36,11 +37,17 @@ const sponsors = [
         class="grid grid-cols-1 items-start gap-12 min-[981px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] min-[981px]:gap-24"
       >
         <div>
-          <img
-            :src="LCD_LOGO_URL"
-            alt="Law Clinics Deutschland e.V."
-            class="block h-auto w-80 max-w-full"
-          />
+          <a
+            :href="LCD_WEBSITE_URL"
+            class="inline-block max-w-full"
+            data-testid="lcd-link"
+          >
+            <img
+              :src="LCD_LOGO_URL"
+              alt="Law Clinics Deutschland e.V."
+              class="block h-auto w-80 max-w-full"
+            />
+          </a>
         </div>
         <div>
           <h2

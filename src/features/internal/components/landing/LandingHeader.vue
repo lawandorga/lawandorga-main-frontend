@@ -2,7 +2,10 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
 import { useSectionSpy } from "@/features/internal/composables/useSectionSpy";
-import { LCD_LOGO_URL } from "@/features/internal/utils/landing";
+import {
+  LCD_LOGO_URL,
+  LCD_WEBSITE_URL,
+} from "@/features/internal/utils/landing";
 
 import LoMark from "./LoMark.vue";
 
@@ -90,8 +93,9 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown));
         </a>
         <span class="bg-lo-line hidden h-[30px] w-px sm:block"></span>
         <a
-          :href="`${anchorBase}#traeger`"
+          :href="LCD_WEBSITE_URL"
           class="text-lo-muted hidden items-center gap-2.5 text-sm leading-tight no-underline sm:flex"
+          data-testid="lcd-link"
         >
           <span class="whitespace-nowrap">ein Projekt von</span>
           <img
