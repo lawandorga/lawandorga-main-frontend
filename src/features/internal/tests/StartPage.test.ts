@@ -225,6 +225,24 @@ describe("StartPage", () => {
     wrapper.unmount();
   });
 
+  it("renders against an older backend without the new fields", () => {
+    page.value = {
+      content: "",
+      roadmap_items: [
+        { id: 1, title: "Old item", description: "Old", date: "2024-01-01" },
+      ],
+      articles: [{ id: 2, title: "Old article", date: "2024-01-01" }],
+    } as unknown as LoginPage;
+    const wrapper = mountPage();
+
+    expect(wrapper.find("#einblick h3 button").exists()).toBe(false);
+    expect(wrapper.find("[data-testid='roadmap-planned']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.text()).toContain("Old article");
+    wrapper.unmount();
+  });
+
   it("renders without data", () => {
     page.value = null;
     const wrapper = mountPage();
