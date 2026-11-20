@@ -87,6 +87,10 @@ export const LCD_LOGO_URL = "/landing/lcd-logo.svg";
 // and focused elements are kept this far from the top of the viewport
 export const STICKY_HEADER_OFFSET = 96;
 
+// where a section heading lands after a click in the menu: header (81 px)
+// plus about 32 px of space, the same for every section
+export const SECTION_ANCHOR_OFFSET = 112;
+
 // website of Law Clinics Deutschland e.V. (logo and name link there)
 export const LCD_WEBSITE_URL = "https://law-clinics.de/";
 

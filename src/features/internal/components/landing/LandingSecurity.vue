@@ -45,6 +45,7 @@ const items = [
     >
       <div
         class="grid grid-cols-1 items-start gap-12 min-[981px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] min-[981px]:gap-24"
+        data-anchor
       >
         <div class="min-[981px]:sticky min-[981px]:top-28">
           <h2

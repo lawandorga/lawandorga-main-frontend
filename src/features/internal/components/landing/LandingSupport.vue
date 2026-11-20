@@ -35,6 +35,7 @@ const sponsors = [
     <div class="mx-auto max-w-[1240px] px-5 py-[88px] sm:px-12 sm:py-[120px]">
       <div
         class="grid grid-cols-1 items-start gap-12 min-[981px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] min-[981px]:gap-24"
+        data-anchor
       >
         <div>
           <a

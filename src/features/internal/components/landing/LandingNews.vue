@@ -15,7 +15,10 @@ const more = computed(() => props.articles.slice(1, 3));
 <template>
   <section id="neuigkeiten" class="bg-white">
     <div class="mx-auto max-w-[1240px] px-5 py-[88px] sm:px-12 sm:py-[120px]">
-      <div class="flex flex-wrap items-baseline justify-between gap-6">
+      <div
+        class="flex flex-wrap items-baseline justify-between gap-6"
+        data-anchor
+      >
         <h2
           class="text-lo-petrol m-0 text-[clamp(30px,2.8vw,40px)] leading-[1.1] font-extrabold tracking-[-0.03em]"
         >

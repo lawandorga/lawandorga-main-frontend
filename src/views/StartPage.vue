@@ -4,7 +4,7 @@ import "@fontsource/aileron/600.css";
 import "@fontsource/aileron/700.css";
 import "@fontsource/aileron/800.css";
 import "@/features/internal/components/landing/landing.css";
-import { computed } from "vue";
+import { computed, nextTick, watch } from "vue";
 
 import { useLoginPage } from "@/features/internal/api/useLoginPage";
 import LandingFooter from "@/features/internal/components/landing/LandingFooter.vue";
@@ -18,6 +18,7 @@ import LandingSecurity from "@/features/internal/components/landing/LandingSecur
 import LandingShowroom from "@/features/internal/components/landing/LandingShowroom.vue";
 import LandingSupport from "@/features/internal/components/landing/LandingSupport.vue";
 import { useLandingMeta } from "@/features/internal/composables/useLandingMeta";
+import { markLandingReady } from "@/features/internal/utils/scroll";
 import { useUserStore } from "@/store/user";
 import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
 
@@ -47,6 +48,16 @@ const roadmapItems = computed(() =>
   })),
 );
 const articles = computed(() => page.value?.articles ?? []);
+
+// anchor links (e.g. /start/#roadmap) wait until the content is rendered,
+// because it changes the height of the page
+watch(
+  page,
+  (value) => {
+    if (value) nextTick(markLandingReady);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -70,7 +81,7 @@ const articles = computed(() => page.value?.articles ?? []);
         <div
           class="mx-auto max-w-[1240px] px-5 pt-[88px] pb-24 sm:px-12 sm:pt-36"
         >
-          <div class="max-w-[36em]">
+          <div class="max-w-[36em]" data-anchor>
             <h2
               class="text-lo-petrol m-0 text-[clamp(36px,3.8vw,52px)] leading-[1.05] font-extrabold tracking-[-0.035em]"
             >
