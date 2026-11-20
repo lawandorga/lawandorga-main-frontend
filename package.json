@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@eslint/js": "==10.0.*",
+    "@fontsource/aileron": "==5.3.*",
     "@fullcalendar/vue3": "==7.1.*",
     "@headlessui/vue": "==1.7.*",
     "@heroicons/vue": "==2.2.*",
