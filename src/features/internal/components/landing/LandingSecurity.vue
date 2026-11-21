@@ -45,9 +45,8 @@ const items = [
     >
       <div
         class="grid grid-cols-1 items-start gap-12 min-[981px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] min-[981px]:gap-24"
-        data-anchor
       >
-        <div class="min-[981px]:sticky min-[981px]:top-28">
+        <div class="min-[981px]:sticky min-[981px]:top-20">
           <h2
             class="text-lo-petrol m-0 text-[clamp(36px,3.8vw,52px)] leading-[1.05] font-extrabold tracking-[-0.035em]"
           >

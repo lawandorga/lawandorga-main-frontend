@@ -3,21 +3,16 @@ import { onBeforeUnmount, onMounted } from "vue";
 import {
   PAGE_DESCRIPTION,
   PAGE_TITLE,
-  STICKY_HEADER_OFFSET,
 } from "@/features/internal/utils/landing";
 
-export const STICKY_HEADER_SCROLL_PADDING = `${STICKY_HEADER_OFFSET}px`;
-
 /**
- * Sets the document title, the page language (de), the meta description and
- * a scroll padding for the sticky header of the public landing pages and
- * restores the previous values when the page is left. The scroll padding
- * keeps anchor targets and focused elements below the header (WCAG 2.4.11).
+ * Sets the document title, the page language (de) and the meta description of
+ * the public landing page and restores the previous values when the page is
+ * left.
  */
 export function useLandingMeta(title = PAGE_TITLE) {
   let previousTitle = "";
   let previousLang = "";
-  let previousScrollPadding = "";
   let previousDescription: string | null = null;
   let createdMeta = false;
 
@@ -26,9 +21,6 @@ export function useLandingMeta(title = PAGE_TITLE) {
     document.title = title;
     previousLang = document.documentElement.lang;
     document.documentElement.lang = "de";
-    previousScrollPadding = document.documentElement.style.scrollPaddingTop;
-    document.documentElement.style.scrollPaddingTop =
-      STICKY_HEADER_SCROLL_PADDING;
 
     let meta = document.querySelector<HTMLMetaElement>(
       'meta[name="description"]',
@@ -46,7 +38,6 @@ export function useLandingMeta(title = PAGE_TITLE) {
   onBeforeUnmount(() => {
     document.title = previousTitle;
     document.documentElement.lang = previousLang;
-    document.documentElement.style.scrollPaddingTop = previousScrollPadding;
     const meta = document.querySelector<HTMLMetaElement>(
       'meta[name="description"]',
     );

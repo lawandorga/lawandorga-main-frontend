@@ -13,7 +13,7 @@ vi.mock("@/features/internal/api/useLoginPage", () => ({
   useLoginPage: () => ({ page }),
 }));
 
-const pageData: LoginPage = {
+const pageData = {
   content: "<p>old content</p>",
   roadmap_items: [
     { id: 10, title: "Old roadmap item", description: "", date: "2024-01-01" },
@@ -49,20 +49,13 @@ describe("StartPage", () => {
     page.value = JSON.parse(JSON.stringify(pageData));
   });
 
-  it("renders the landmarks, skip link and German page language", () => {
+  it("renders inside the app layout without an own header or main", () => {
     const wrapper = mountPage();
 
-    expect(wrapper.find("a.lo-skip").attributes("href")).toBe("#inhalt");
-    expect(wrapper.find("header").exists()).toBe(true);
-    expect(wrapper.find("main#inhalt").exists()).toBe(true);
+    expect(wrapper.find("header").exists()).toBe(false);
+    expect(wrapper.find("main").exists()).toBe(false);
     expect(wrapper.find("footer").exists()).toBe(true);
-    expect(wrapper.find("nav[aria-label='Hauptnavigation']").exists()).toBe(
-      true,
-    );
     expect(document.documentElement.lang).toBe("de");
-    // sticky header: anchors and focus stay below it
-    expect(wrapper.get("header").classes()).toContain("sticky");
-    expect(document.documentElement.style.scrollPaddingTop).toBe("96px");
     expect(document.title).toContain("Sichere Fallverwaltung");
     wrapper.unmount();
   });
@@ -122,7 +115,6 @@ describe("StartPage", () => {
     const wrapper = mountPage();
 
     expect(wrapper.find("#roadmap").exists()).toBe(false);
-    expect(wrapper.find("a[href='#roadmap']").exists()).toBe(false);
     expect(wrapper.text()).not.toContain("Old roadmap item");
     wrapper.unmount();
   });
@@ -211,8 +203,7 @@ describe("StartPage", () => {
     const wrapper = mountPage();
 
     const links = wrapper.findAll("[data-testid='lcd-link']");
-    // header logo, logo in "Gemeinsam getragen", name in the footer
-    expect(links).toHaveLength(3);
+    expect(links).toHaveLength(2);
     for (const link of links) {
       expect(link.attributes("href")).toBe("https://law-clinics.de/");
       // accessible name: the link text or the alt text of the logo

@@ -1,10 +1,40 @@
 /*
- * Base rules for the public landing pages (/start/, /internal/articles/).
- * Everything is scoped to the .lo root so the app itself is not affected.
+ * Base rules for the public landing page (/start/). Everything is scoped to
+ * the .lo root so the app itself is not affected.
  * Layout and colours live in Tailwind classes in the components.
  * The rules sit in the components layer, so Tailwind utilities (e.g.
  * responsive display classes) win over them.
  */
+
+/* Aileron (CC0-1.0), self-hosted in public/landing/fonts */
+@font-face {
+  font-family: "Aileron";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/landing/fonts/aileron-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aileron";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/landing/fonts/aileron-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aileron";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/landing/fonts/aileron-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aileron";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/landing/fonts/aileron-latin-800-normal.woff2") format("woff2");
+}
 
 @layer components {
   .lo {
@@ -100,37 +130,6 @@
     background: var(--color-lo-petrol);
     color: #ffffff;
   }
-  .lo .lo-btn-ghost {
-    border: 1.5px solid var(--color-lo-petrol);
-    color: var(--color-lo-petrol);
-    background: transparent;
-  }
-  .lo .lo-btn-ghost:hover {
-    background: var(--color-lo-mist);
-  }
-
-  /* anchor navigation */
-  .lo .lo-navlink {
-    text-decoration: none;
-    text-underline-offset: 8px;
-    transition: color 0.15s ease;
-  }
-  .lo .lo-navlink:hover {
-    color: var(--color-lo-petrol);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-decoration-color: var(--color-lo-accent);
-  }
-  /* the section the reader is in: petrol text with a thick petrol underline
-     (enough contrast, unlike the light accent used for hover) */
-  .lo .lo-navlink[aria-current="location"],
-  .lo .lo-navlink[aria-current="location"]:hover {
-    color: var(--color-lo-petrol);
-    text-decoration: underline;
-    text-decoration-thickness: 3px;
-    text-decoration-color: var(--color-lo-petrol);
-  }
-
   /* disclosure rows (<details>) */
   .lo summary {
     list-style: none;
@@ -147,28 +146,11 @@
     transform: rotate(180deg);
   }
 
-  /* skip link */
-  .lo .lo-skip {
-    position: absolute;
-    left: -9999px;
-    top: 8px;
-    z-index: 50;
-    padding: 12px 18px;
-    background: #ffffff;
-    color: var(--color-lo-petrol);
-    font-weight: 800;
-    border-radius: 6px;
-  }
-  .lo .lo-skip:focus {
-    left: 16px;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .lo *,
     .lo *::before,
     .lo *::after {
       transition: none !important;
-      scroll-behavior: auto !important;
     }
     .lo .lo-btn:active {
       transform: none;

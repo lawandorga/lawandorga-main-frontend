@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { ArticleList } from "@/features/internal/api/useLoginPage";
 import { formatLandingDate } from "@/features/internal/utils/landing";
 
 import ArticleReadMore from "./ArticleReadMore.vue";
 
-const props = defineProps<{ articles: ArticleList[] }>();
+// an article as returned by api/internal/pages/index/
+export interface ArticleTeaser {
+  id: number;
+  title: string;
+  preview: string;
+  date: string;
+}
+
+const props = defineProps<{ articles: ArticleTeaser[] }>();
 
 const lead = computed(() => props.articles[0]);
 const more = computed(() => props.articles.slice(1, 3));
@@ -15,22 +22,11 @@ const more = computed(() => props.articles.slice(1, 3));
 <template>
   <section id="neuigkeiten" class="bg-white">
     <div class="mx-auto max-w-[1240px] px-5 py-[88px] sm:px-12 sm:py-[120px]">
-      <div
-        class="flex flex-wrap items-baseline justify-between gap-6"
-        data-anchor
+      <h2
+        class="text-lo-petrol m-0 text-[clamp(30px,2.8vw,40px)] leading-[1.1] font-extrabold tracking-[-0.03em]"
       >
-        <h2
-          class="text-lo-petrol m-0 text-[clamp(30px,2.8vw,40px)] leading-[1.1] font-extrabold tracking-[-0.03em]"
-        >
-          Neuigkeiten
-        </h2>
-        <router-link
-          :to="{ name: 'internal-articles' }"
-          class="lo-btn lo-btn-outline min-h-[46px] px-5 text-base"
-        >
-          Alle Neuigkeiten
-        </router-link>
-      </div>
+        Neuigkeiten
+      </h2>
       <div
         v-if="lead"
         class="mt-10 grid grid-cols-1 items-start gap-12 min-[981px]:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] min-[981px]:gap-[72px]"

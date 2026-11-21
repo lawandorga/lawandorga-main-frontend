@@ -26,34 +26,6 @@ export function getActiveStep(
   return id;
 }
 
-export interface SectionPosition {
-  id: string;
-  top: number;
-  bottom: number;
-}
-
-/**
- * The section of the anchor navigation the reader is in.
- *
- * A section is active while it contains the reading line (`line`, measured
- * from the top of the viewport, below the sticky header). Above the first
- * section (hero) and in sections without a menu entry nothing is active.
- */
-export function getActiveSection(
-  sections: SectionPosition[],
-  line: number,
-): string | undefined {
-  for (const section of sections) {
-    if (section.top <= line && section.bottom > line) return section.id;
-  }
-  return undefined;
-}
-
-/** reading line: a third of the viewport, but never inside the header */
-export function getReadingLine(viewportHeight: number, minimum = 120): number {
-  return Math.max(minimum, Math.round(viewportHeight / 3));
-}
-
 export function prefersReducedMotion(): boolean {
   if (typeof window === "undefined" || !window.matchMedia) return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -81,14 +53,6 @@ export function formatLandingDate(value: string): string {
 
 // served from public/, bound in templates so the build does not import it
 export const LCD_LOGO_URL = "/landing/lcd-logo.svg";
-
-// height of the sticky landing header (80 px) plus some air; anchor targets
-// and focused elements are kept this far from the top of the viewport
-export const STICKY_HEADER_OFFSET = 96;
-
-// where a section heading lands after a click in the menu: header (81 px)
-// plus about 32 px of space, the same for every section
-export const SECTION_ANCHOR_OFFSET = 112;
 
 // website of Law Clinics Deutschland e.V. (logo and name link there)
 export const LCD_WEBSITE_URL = "https://law-clinics.de/";

@@ -7,13 +7,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/features/internal/views/InternalArticle.vue"),
   },
   {
-    path: "/internal/articles/",
-    name: "internal-articles",
-    component: () => import("@/features/internal/views/InternalArticles.vue"),
-    // public page with its own header and footer (see App.vue)
-    meta: { standalone: true },
-  },
-  {
     path: "/internal/imprint/",
     name: "internal-imprint",
     component: () => import("@/features/internal/views/InternalImprint.vue"),

@@ -1,51 +1,9 @@
 import {
   formatLandingDate,
-  getActiveSection,
   getActiveStep,
-  getReadingLine,
   MAIL_SUBJECTS,
   mailto,
 } from "../utils/landing";
-
-describe("getActiveSection", () => {
-  const sections = [
-    { id: "einblick", top: 300, bottom: 2300 },
-    { id: "sicherheit", top: 2300, bottom: 3300 },
-    // a section without menu entry in between is simply not in the list
-    { id: "roadmap", top: 4000, bottom: 5000 },
-  ];
-  const shift = (by: number) =>
-    sections.map((s) => ({ ...s, top: s.top - by, bottom: s.bottom - by }));
-
-  it("highlights nothing in the hero above the first section", () => {
-    expect(getActiveSection(sections, 300 - 1)).toBeUndefined();
-  });
-
-  it("highlights the section that contains the reading line", () => {
-    expect(getActiveSection(shift(0), 300)).toBe("einblick");
-    expect(getActiveSection(shift(2100), 300)).toBe("sicherheit");
-    expect(getActiveSection(shift(3800), 300)).toBe("roadmap");
-  });
-
-  it("switches exactly at the section border", () => {
-    expect(getActiveSection(shift(1999), 300)).toBe("einblick");
-    expect(getActiveSection(shift(2000), 300)).toBe("sicherheit");
-  });
-
-  it("highlights nothing in a section without menu entry", () => {
-    expect(getActiveSection(shift(3200), 300)).toBeUndefined();
-  });
-});
-
-describe("getReadingLine", () => {
-  it("uses a third of the viewport", () => {
-    expect(getReadingLine(900)).toBe(300);
-  });
-
-  it("never lies inside the sticky header", () => {
-    expect(getReadingLine(300)).toBe(120);
-  });
-});
 
 describe("getActiveStep", () => {
   const steps = (tops: number[]) =>

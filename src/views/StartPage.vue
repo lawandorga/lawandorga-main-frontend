@@ -1,17 +1,14 @@
 <script lang="ts" setup>
-import "@fontsource/aileron/400.css";
-import "@fontsource/aileron/600.css";
-import "@fontsource/aileron/700.css";
-import "@fontsource/aileron/800.css";
 import "@/features/internal/components/landing/landing.css";
-import { computed, nextTick, watch } from "vue";
+import { computed } from "vue";
 
 import { useLoginPage } from "@/features/internal/api/useLoginPage";
 import LandingFooter from "@/features/internal/components/landing/LandingFooter.vue";
-import LandingHeader from "@/features/internal/components/landing/LandingHeader.vue";
 import LandingHero from "@/features/internal/components/landing/LandingHero.vue";
 import LandingMore from "@/features/internal/components/landing/LandingMore.vue";
-import LandingNews from "@/features/internal/components/landing/LandingNews.vue";
+import LandingNews, {
+  type ArticleTeaser,
+} from "@/features/internal/components/landing/LandingNews.vue";
 import LandingOrganizations from "@/features/internal/components/landing/LandingOrganizations.vue";
 import LandingSecurity from "@/features/internal/components/landing/LandingSecurity.vue";
 import LandingShowroom from "@/features/internal/components/landing/LandingShowroom.vue";
@@ -21,7 +18,6 @@ import {
   MORE_AREAS,
   SHOWROOM_AREAS,
 } from "@/features/internal/content/landingContent";
-import { markLandingReady } from "@/features/internal/utils/scroll";
 import { useUserStore } from "@/store/user";
 import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
 
@@ -34,64 +30,44 @@ const loginUrl = `${getRawLoginUrl()}?next=${window.location.origin}/dashboard/`
 const registerUrl = getRegisterUrl();
 const passwordResetUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/password_reset/`;
 
-// showroom and "Außerdem" rows are fixed content of the frontend, the
-// existing endpoint only provides the articles (articles for everyone)
-const articles = computed(() => page.value?.articles ?? []);
-
-// anchor links (e.g. /start/#neuigkeiten) wait until the articles are
-// rendered, because they change the height of the page
-watch(
-  page,
-  (value) => {
-    if (value) nextTick(markLandingReady);
-  },
-  { immediate: true },
+const articles = computed(
+  () => (page.value?.articles ?? []) as unknown as ArticleTeaser[],
 );
 </script>
 
 <template>
-  <div class="lo" lang="de">
-    <a class="lo-skip" href="#inhalt">Zum Inhalt springen</a>
-    <LandingHeader
+  <div class="lo -mx-6 -my-6" lang="de">
+    <LandingHero
       :login-url="loginUrl"
+      :register-url="registerUrl"
+      :password-reset-url="passwordResetUrl"
       :is-authenticated="userStore.isAuthenticated"
-      spy
     />
 
-    <main id="inhalt" tabindex="-1" class="outline-none">
-      <LandingHero
-        :login-url="loginUrl"
-        :register-url="registerUrl"
-        :password-reset-url="passwordResetUrl"
-        :is-authenticated="userStore.isAuthenticated"
-      />
-
-      <section id="einblick" class="bg-white">
-        <div
-          class="mx-auto max-w-[1240px] px-5 pt-[88px] pb-24 sm:px-12 sm:pt-36"
-        >
-          <div class="max-w-[36em]" data-anchor>
-            <h2
-              class="text-lo-petrol m-0 text-[clamp(36px,3.8vw,52px)] leading-[1.05] font-extrabold tracking-[-0.035em]"
-            >
-              So arbeitet ihr mit Law&amp;Orga
-            </h2>
-            <p class="text-lo-text-2 mt-5 mb-0 text-[19px]">
-              Von der Aktenliste bis zur Statistik: So sieht der Arbeitsalltag
-              in Law&amp;Orga aus. Das Bild wechselt beim Weiterlesen mit.
-            </p>
-          </div>
-          <LandingShowroom :areas="SHOWROOM_AREAS" />
-          <LandingMore :areas="MORE_AREAS" />
+    <section id="einblick" class="bg-white">
+      <div
+        class="mx-auto max-w-[1240px] px-5 pt-[88px] pb-24 sm:px-12 sm:pt-36"
+      >
+        <div class="max-w-[36em]">
+          <h2
+            class="text-lo-petrol m-0 text-[clamp(36px,3.8vw,52px)] leading-[1.05] font-extrabold tracking-[-0.035em]"
+          >
+            So arbeitet ihr mit Law&amp;Orga
+          </h2>
+          <p class="text-lo-text-2 mt-5 mb-0 text-[19px]">
+            Von der Aktenliste bis zur Statistik: So sieht der Arbeitsalltag in
+            Law&amp;Orga aus. Das Bild wechselt beim Weiterlesen mit.
+          </p>
         </div>
-      </section>
+        <LandingShowroom :areas="SHOWROOM_AREAS" />
+        <LandingMore :areas="MORE_AREAS" />
+      </div>
+    </section>
 
-      <LandingSecurity />
-      <LandingOrganizations />
-      <LandingNews :articles="articles" />
-      <LandingSupport />
-    </main>
-
+    <LandingSecurity />
+    <LandingOrganizations />
+    <LandingNews :articles="articles" />
+    <LandingSupport />
     <LandingFooter />
   </div>
 </template>
