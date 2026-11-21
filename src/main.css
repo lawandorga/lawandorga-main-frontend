@@ -6,6 +6,24 @@
 
 @theme {
   --color-muted: #717182;
+
+  /* landing page (/start/) design tokens */
+  --color-lo-petrol: #003c4d;
+  --color-lo-petrol-hover: #00566e;
+  --color-lo-accent: #9cbcc6;
+  --color-lo-mist: #e4f1f3;
+  --color-lo-neutral: #f4f6f5;
+  --color-lo-footer: #002a36;
+  --color-lo-text: #14212b;
+  --color-lo-text-2: #2c3a44;
+  --color-lo-muted: #3d4b55;
+  --color-lo-inactive: #5a6872;
+  --color-lo-line: #dce3e4;
+  --color-lo-line-2: #c9d3d4;
+  --color-lo-input: #7b8790;
+  --color-lo-on-dark: #d3e6ea;
+  --color-lo-on-dark-muted: #bfdde3;
+  --font-lo: Aileron, "Helvetica Neue", Arial, sans-serif;
 }
 
 @plugin "@tailwindcss/typography";

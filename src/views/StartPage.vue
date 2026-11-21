@@ -1,309 +1,73 @@
 <script lang="ts" setup>
-import { ButtonNormal } from "lorga-ui";
+import "@/features/internal/components/landing/landing.css";
 import { computed } from "vue";
 
+import { useLoginPage } from "@/features/internal/api/useLoginPage";
+import LandingFooter from "@/features/internal/components/landing/LandingFooter.vue";
+import LandingHero from "@/features/internal/components/landing/LandingHero.vue";
+import LandingMore from "@/features/internal/components/landing/LandingMore.vue";
+import LandingNews, {
+  type ArticleTeaser,
+} from "@/features/internal/components/landing/LandingNews.vue";
+import LandingOrganizations from "@/features/internal/components/landing/LandingOrganizations.vue";
+import LandingSecurity from "@/features/internal/components/landing/LandingSecurity.vue";
+import LandingShowroom from "@/features/internal/components/landing/LandingShowroom.vue";
+import LandingSupport from "@/features/internal/components/landing/LandingSupport.vue";
+import { useLandingMeta } from "@/features/internal/composables/useLandingMeta";
 import {
-  useLoginPage,
-  LoginPage,
-  RoadmapItem,
-} from "@/features/internal/api/useLoginPage";
+  MORE_AREAS,
+  SHOWROOM_AREAS,
+} from "@/features/internal/content/landingContent";
 import { useUserStore } from "@/store/user";
-import { formatDate } from "@/utils/date";
 import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
 
-const getLoginUrl = () => {
-  const loginUrl = getRawLoginUrl();
-  const origin = window.location.origin;
-  const next = "/dashboard/";
-  return `${loginUrl}?next=${origin}${next}`;
-};
-
-const sponsors = [
-  {
-    name: "CMS Stiftung",
-    image: "/sponsor-cms.jpg",
-    type: "MAIN",
-    class: "",
-  },
-  {
-    name: "Prototype Fund",
-    image: "/sponsor-p.png",
-    type: "FORMER",
-    class: "p-2",
-  },
-  {
-    name: "Deutsche Stiftung für Engagement und Ehrenamt",
-    image: "/sponsor-dse.png",
-    type: "CURRENT",
-    class: "px-4",
-  },
-  {
-    name: "Bundesministerium für Bildung und Forschung",
-    image: "/sponsor-bmbf.png",
-    type: "FORMER",
-    class: "px-2 py-1",
-  },
-  {
-    name: "Robert Bosch Stiftung",
-    image: "/sponsor-rbs.png",
-    type: "FORMER",
-    class: "px-2 py-1",
-  },
-  {
-    name: "Google Impact Challenge",
-    image: "/sponsor-google.png",
-    type: "FORMER",
-    class: "",
-  },
-];
-
-const sponsorGroups = [
-  { name: "Main Sponsor", type: "MAIN", class: "" },
-  { name: "Current Sponsors", type: "CURRENT", class: "" },
-  { name: "Former Sponsors", type: "FORMER", class: "w-full" },
-];
+useLandingMeta();
 
 const userStore = useUserStore();
-
 const { page } = useLoginPage();
 
-const roadmapItems = computed<RoadmapItem[]>(() => {
-  if (!page.value) return [];
-  return page.value.roadmap_items;
-});
+const loginUrl = `${getRawLoginUrl()}?next=${window.location.origin}/dashboard/`;
+const registerUrl = getRegisterUrl();
+const passwordResetUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/password_reset/`;
 
-const articles = computed<LoginPage["articles"]>(() => {
-  if (!page.value) return [];
-  return page.value.articles;
-});
-
-const passwordForgottenLink = `${
-  import.meta.env.VITE_AUTH_URL
-}/auth/user/password_reset/`;
+const articles = computed(
+  () => (page.value?.articles ?? []) as unknown as ArticleTeaser[],
+);
 </script>
 
 <template>
-  <main class="divide-y divide-gray-100">
-    <section class="bg-formcolor mx-auto max-w-7xl px-8 py-8">
-      <div class="max-w-7xl">
-        <div class="grid gap-6 lg:grid-cols-2">
-          <div class="">
-            <div>
-              <h1
-                class="m-0 text-4xl font-extrabold tracking-tight text-white sm:leading-none lg:text-5xl xl:text-6xl"
-              >
-                <div class="flex flex-wrap items-center space-x-5">
-                  <div class="flex items-center space-x-3">
-                    <img
-                      src="/logo.svg"
-                      alt="Law&Orga Logo"
-                      class="h-16 w-16"
-                    />
-                    <span class="md:block">Law&Orga</span>
-                  </div>
-                  <div class="h-16 w-0.5 bg-gray-200"></div>
-                  <img
-                    src="/sponsor-cms.jpg"
-                    alt="CMS Stiftung"
-                    class="h-auto w-40 overflow-hidden rounded"
-                  />
-                </div>
-              </h1>
-              <p class="mt-3 text-base text-gray-200 sm:mt-5 sm:text-xl">
-                <b>Law&Orga</b>
-                ist ein
-                <b>kostenfreies Akten- und Organisationsverwaltungssystem</b>
-                <span>,</span>
-                welches speziell auf die Bedürfnisse einer (R)LC angepasst ist.
-              </p>
-              <p class="mt-3 text-base text-gray-200 sm:mt-5">
-                Unter besonderer Berücksichtigung des Datenschutzes mithilfe von
-                Berechtigungssystemen für die Nutzer und einer komplexen
-                Verschlüsselung auf der technischen Seite ermöglicht die
-                Aktenverwaltungskomponente das Erstellen, die Durchsuchung, die
-                Verwaltung und die Vereinheitlichung von Akten. Durch die
-                Organisationsverwaltungsfunktion können Ressorts/Arbeitsgruppen
-                erstellt und koordiniert werden. Mithilfe einer
-                Dateiverwaltungsfunktion können die Dateien übersichtlich und
-                datenschutzkonform bei Law&Orga gespeichert werden.
-              </p>
-            </div>
-          </div>
-          <div class="flex flex-col justify-center">
-            <div class="rounded-sm bg-white p-6 shadow-sm">
-              <h2 class="mb-8 text-2xl font-bold">Login</h2>
-              <p v-if="false">We're running updates. We'll be back shortly!</p>
-              <div v-else-if="!userStore.isAuthenticated">
-                <ButtonNormal :href="getLoginUrl()">
-                  To the login page
-                </ButtonNormal>
-                <div class="space-x-4 pt-6 text-right">
-                  <a
-                    :href="getRegisterUrl()"
-                    class="inline-block hover:underline"
-                  >
-                    Register
-                  </a>
-                  <a
-                    :href="passwordForgottenLink"
-                    class="inline-block hover:underline"
-                  >
-                    Forgot Password?
-                  </a>
-                </div>
-              </div>
-              <div v-else>
-                <p class="mb-4">You are logged in already.</p>
-                <ButtonNormal :to="{ name: 'dashboard' }">
-                  To the dashboard
-                </ButtonNormal>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
+  <div class="lo -mx-6 -my-6" lang="de">
+    <LandingHero
+      :login-url="loginUrl"
+      :register-url="registerUrl"
+      :password-reset-url="passwordResetUrl"
+      :is-authenticated="userStore.isAuthenticated"
+    />
+
+    <section id="einblick" class="bg-white">
       <div
-        class="relative mx-auto max-w-lg divide-y-2 divide-gray-200 lg:max-w-7xl"
+        class="mx-auto max-w-[1240px] px-5 pt-[88px] pb-24 sm:px-12 sm:pt-36"
       >
-        <!-- eslint-disable vue/no-v-html -->
-        <article
-          v-if="page"
-          class="prose prose-lg"
-          v-html="page.content"
-        ></article>
+        <div class="max-w-[36em]">
+          <h2
+            class="text-lo-petrol m-0 text-[clamp(36px,3.8vw,52px)] leading-[1.05] font-extrabold tracking-[-0.035em]"
+          >
+            So arbeitet ihr mit Law&amp;Orga
+          </h2>
+          <p class="text-lo-text-2 mt-5 mb-0 text-[19px]">
+            Von der Aktenliste bis zur Statistik: So sieht der Arbeitsalltag in
+            Law&amp;Orga aus. Das Bild wechselt beim Weiterlesen mit.
+          </p>
+        </div>
+        <LandingShowroom :areas="SHOWROOM_AREAS" />
+        <LandingMore :areas="MORE_AREAS" />
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
-      <div class="relative mx-auto max-w-lg lg:max-w-7xl">
-        <div>
-          <h2
-            class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
-          >
-            More News
-          </h2>
-        </div>
-        <div class="grid gap-16 pt-10 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
-          <div v-for="article in articles" :key="article.id">
-            <p class="text-sm text-gray-500">
-              <time>{{ formatDate(article.date) }}</time>
-            </p>
-            <router-link
-              :to="{ name: 'internal-article', params: { id: article.id } }"
-              class="mt-2 block"
-            >
-              <p class="text-xl font-semibold text-gray-900">
-                {{ article.title }}
-              </p>
-              <p class="mt-3 line-clamp-3 text-base text-gray-500">
-                {{ article.description }}
-              </p>
-            </router-link>
-            <div class="mt-3">
-              <router-link
-                :to="{ name: 'internal-article', params: { id: article.id } }"
-                class="text-formcolor text-base font-semibold"
-              >
-                Read full article
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
-      <div class="relative mx-auto max-w-lg lg:max-w-7xl">
-        <div>
-          <h2
-            class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
-          >
-            Roadmap
-          </h2>
-        </div>
-        <div class="pt-10">
-          <div class="max-w-2xl">
-            <ul class="divide-y divide-gray-200">
-              <li v-for="item in roadmapItems" :key="item.id" class="py-4">
-                <div class="flex-1 space-y-1">
-                  <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-semibold">
-                      {{ item.title }}
-                    </h3>
-                    <p class="text-sm text-gray-500">
-                      {{ item.date }}
-                    </p>
-                  </div>
-                  <p class="text-sm text-gray-500">
-                    {{ item.description }}
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
-      <div class="relative mx-auto max-w-lg lg:max-w-7xl">
-        <div class="mb-6">
-          <h2
-            class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
-          >
-            Sponsors
-          </h2>
-        </div>
-        <div class="-mx-6 -my-2 flex flex-wrap justify-start">
-          <div
-            v-for="group in sponsorGroups"
-            :key="group.name"
-            class="px-6 py-2"
-            :class="[group.class]"
-          >
-            <h3 class="mb-4 text-xl font-bold tracking-tight text-gray-900">
-              {{ group.name }}
-            </h3>
-            <ul class="-m-3 flex flex-wrap justify-start">
-              <li
-                v-for="sponsor in sponsors.filter(
-                  (item) => item.type === group.type,
-                )"
-                :key="sponsor.name"
-                class="block p-3 lg:max-w-68"
-              >
-                <figure>
-                  <img
-                    :src="sponsor.image"
-                    :alt="sponsor.name"
-                    class="mx-auto max-h-20 w-auto overflow-hidden rounded-md border-2 border-gray-300 shadow"
-                    :class="[sponsor.class]"
-                  />
-                  <figcaption class="mt-2 text-center text-sm text-gray-500">
-                    {{ sponsor.name }}
-                  </figcaption>
-                </figure>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto max-w-7xl bg-white px-8 py-12">
-      <div class="space-x-4 text-right">
-        <a href="https://github.com/lawandorga" rel="noopener" target="_blank">
-          Open Source Code
-        </a>
-        <router-link :to="{ name: 'internal-imprint' }">Imprint</router-link>
-        <a
-          target="_blank"
-          rel="noopener"
-          href="http://rlc-deutschland.de/datenschutz/"
-        >
-          Privacy
-        </a>
-        <router-link :to="{ name: 'internal-toms' }">TOMS</router-link>
-      </div>
-    </section>
-  </main>
+    <LandingSecurity />
+    <LandingOrganizations />
+    <LandingNews :articles="articles" />
+    <LandingSupport />
+    <LandingFooter />
+  </div>
 </template>
