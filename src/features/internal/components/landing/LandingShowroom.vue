@@ -7,10 +7,8 @@ import {
   getActiveStep,
   prefersReducedMotion,
 } from "@/features/internal/utils/landing";
-import { useUserStore } from "@/store/user";
 
 const props = defineProps<{ areas: LandingArea[] }>();
-const userStore = useUserStore();
 
 const stepsRoot = ref<HTMLElement | null>(null);
 const activeId = ref<string | null>(null);
@@ -106,8 +104,7 @@ onBeforeUnmount(() => {
 
     <figure
       v-if="active"
-      class="border-lo-line sticky z-[2] order-first -mx-5 my-0 border-b bg-white px-5 pt-3 pb-2 min-[981px]:top-[max(80px,calc(50vh-268px))] min-[981px]:order-none min-[981px]:mx-0 min-[981px]:border-0 min-[981px]:p-0 max-[980px]:[@media(max-height:640px)]:static"
-      :class="userStore.isAuthenticated ? 'top-16' : 'top-0'"
+      class="border-lo-line sticky top-20 z-[2] order-first -mx-5 my-0 border-b bg-white px-5 pt-3 pb-2 min-[981px]:top-[max(96px,calc(50vh-260px))] min-[981px]:order-none min-[981px]:mx-0 min-[981px]:border-0 min-[981px]:p-0 max-[980px]:[@media(max-height:640px)]:static"
     >
       <div
         id="showroom-panel"
