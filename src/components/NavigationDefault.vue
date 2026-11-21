@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+
 import { getRegisterUrl } from "@/utils/login";
+
+const route = useRoute();
 </script>
 
 <template>
-  <div class="bg-formcolor print:hidden">
+  <div v-if="route.name !== 'start'" class="bg-formcolor print:hidden">
     <div
       class="flex h-16 shrink-0 items-center justify-between border-b border-white/20 px-4"
     >

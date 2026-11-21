@@ -49,10 +49,12 @@ describe("StartPage", () => {
     page.value = JSON.parse(JSON.stringify(pageData));
   });
 
-  it("renders inside the app layout without an own header or main", () => {
+  it("renders inside the app layout with its own menu bar but no main", () => {
     const wrapper = mountPage();
 
-    expect(wrapper.find("header").exists()).toBe(false);
+    expect(
+      wrapper.find("header nav[aria-label='Hauptnavigation']").exists(),
+    ).toBe(true);
     expect(wrapper.find("main").exists()).toBe(false);
     expect(wrapper.find("footer").exists()).toBe(true);
     expect(document.documentElement.lang).toBe("de");
@@ -203,7 +205,7 @@ describe("StartPage", () => {
     const wrapper = mountPage();
 
     const links = wrapper.findAll("[data-testid='lcd-link']");
-    expect(links).toHaveLength(2);
+    expect(links).toHaveLength(3);
     for (const link of links) {
       expect(link.attributes("href")).toBe("https://law-clinics.de/");
       // accessible name: the link text or the alt text of the logo

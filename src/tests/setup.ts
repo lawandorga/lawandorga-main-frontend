@@ -4,3 +4,8 @@ global.ResizeObserver = class ResizeObserver {
   unobserve() {}
   disconnect() {}
 };
+
+global.IntersectionObserver = class IntersectionObserver {
+  observe() {}
+  disconnect() {}
+} as unknown as typeof IntersectionObserver;

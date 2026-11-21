@@ -4,6 +4,7 @@ import { computed } from "vue";
 
 import { useLoginPage } from "@/features/internal/api/useLoginPage";
 import LandingFooter from "@/features/internal/components/landing/LandingFooter.vue";
+import LandingHeader from "@/features/internal/components/landing/LandingHeader.vue";
 import LandingHero from "@/features/internal/components/landing/LandingHero.vue";
 import LandingMore from "@/features/internal/components/landing/LandingMore.vue";
 import LandingNews, {
@@ -36,7 +37,11 @@ const articles = computed(
 </script>
 
 <template>
-  <div class="lo -mx-6 -my-6" lang="de">
+  <div class="lo -mx-6 -my-6 [&_section]:scroll-mt-28" lang="de">
+    <LandingHeader
+      :login-url="loginUrl"
+      :is-authenticated="userStore.isAuthenticated"
+    />
     <LandingHero
       :login-url="loginUrl"
       :register-url="registerUrl"
