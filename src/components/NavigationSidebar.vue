@@ -137,34 +137,15 @@ const lastNameInitial = computed(() => {
 
         <div
           v-show="expanded"
-          class="flex shrink-0 flex-col items-start justify-center border-t border-white/20 px-4 pt-2 pb-4"
+          class="flex shrink-0 flex-col items-start justify-center border-t border-white/20 px-4 pt-3 pb-4"
         >
-          <div class="py-2 text-xs text-white/50 uppercase">Sponsors</div>
-          <figure class="mb-3">
+          <figure class="w-full">
             <figcaption class="mb-1 text-white/50">A project of</figcaption>
-            <a
-              href="https://rlc-deutschland.de/"
-              rel="noopener"
-              target="_blank"
-            >
+            <a href="https://law-clinics.de/" rel="noopener" target="_blank">
               <img
-                src="/rlcd.png"
-                alt="RLC Deutschland"
-                class="h-auto w-36 overflow-hidden rounded-md border-2 border-gray-200 bg-white px-2 py-2 shadow"
-              />
-            </a>
-          </figure>
-          <figure>
-            <figcaption class="mb-1 text-white/50">Supported by</figcaption>
-            <a
-              href="https://www.cms-stiftung.de/"
-              rel="noopener"
-              target="_blank"
-            >
-              <img
-                src="/sponsor-cms.jpg"
-                alt="CMS Stiftung"
-                class="h-auto w-full overflow-hidden rounded-md border-2 border-gray-200 shadow"
+                src="/lcd-logo.svg"
+                alt="Law Clinics Deutschland e.V."
+                class="h-auto w-full overflow-hidden rounded-md shadow"
               />
             </a>
           </figure>
