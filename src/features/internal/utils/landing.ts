@@ -69,7 +69,6 @@ export function mailto(subject?: string): string {
 export const MAIL_SUBJECTS = {
   demo: "Demo-Zugang anfragen (Website)",
   organization: "Law&Orga für unsere Organisation (Website)",
-  fund: "Law&Orga fördern (Website)",
   support: "Law&Orga unterstützen (Website)",
 } as const;
 

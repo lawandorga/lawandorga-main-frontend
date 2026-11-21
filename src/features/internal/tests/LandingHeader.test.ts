@@ -35,7 +35,7 @@ describe("LandingHeader: mobile menu", () => {
     const button = wrapper.get('button[aria-controls="mobile-menu"]');
     await button.trigger("click");
 
-    await wrapper.get('#mobile-menu a[href="#roadmap"]').trigger("click");
+    await wrapper.get('#mobile-menu a[href="#neuigkeiten"]').trigger("click");
 
     expect(button.attributes("aria-expanded")).toBe("false");
     wrapper.unmount();

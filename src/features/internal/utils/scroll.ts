@@ -7,7 +7,7 @@ let landingReady = false;
 
 /**
  * Called by the start page once its data is rendered. Anchor jumps wait for
- * it, because the showroom and the roadmap change the height of the page.
+ * it, because the articles change the height of the page.
  * The data is kept between visits, so later visits are ready right away.
  */
 export function markLandingReady() {
@@ -56,7 +56,7 @@ function anchorPosition(hash: string) {
  *
  * - back/forward: restore the previous position
  * - a link with a hash (menu entries and other in-page anchors, which the
- *   router handles as navigations, and links like /start/#roadmap from
+ *   router handles as navigations, and links like /start/#neuigkeiten from
  *   other pages): the heading of the section ends up the same distance below
  *   the sticky header for every section
  * - any other navigation from or to a public page: start at the top

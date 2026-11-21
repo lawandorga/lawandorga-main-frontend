@@ -6,7 +6,7 @@ import "@fontsource/aileron/800.css";
 import "@/features/internal/components/landing/landing.css";
 import { computed } from "vue";
 
-import { usePublicArticles } from "@/features/internal/api/usePublicArticles";
+import { useLoginPage } from "@/features/internal/api/useLoginPage";
 import ArticleReadMore from "@/features/internal/components/landing/ArticleReadMore.vue";
 import LandingFooter from "@/features/internal/components/landing/LandingFooter.vue";
 import LandingHeader from "@/features/internal/components/landing/LandingHeader.vue";
@@ -18,7 +18,9 @@ import { getRawLoginUrl } from "@/utils/login";
 useLandingMeta("Neuigkeiten – Law&Orga");
 
 const userStore = useUserStore();
-const { articles } = usePublicArticles();
+// articles for everyone, newest first, from the existing endpoint
+const { page } = useLoginPage();
+const articles = computed(() => page.value?.articles ?? null);
 
 const loginUrl = `${getRawLoginUrl()}?next=${window.location.origin}/dashboard/`;
 const loaded = computed(() => articles.value !== null);

@@ -6,10 +6,14 @@ import { ref } from "vue";
 import type { ArticleList } from "../api/useLoginPage";
 import InternalArticles from "../views/InternalArticles.vue";
 
-const articles = ref<ArticleList[] | null>(null);
+// the list uses the articles of the existing landing page endpoint
+const page = ref<{ articles: ArticleList[] } | null>(null);
+const setArticles = (articles: ArticleList[]) => {
+  page.value = { articles };
+};
 
-vi.mock("@/features/internal/api/usePublicArticles", () => ({
-  usePublicArticles: () => ({ articles }),
+vi.mock("@/features/internal/api/useLoginPage", () => ({
+  useLoginPage: () => ({ page }),
 }));
 
 const mountPage = () =>
@@ -28,10 +32,10 @@ const mountPage = () =>
 
 describe("InternalArticles", () => {
   it("lists the articles in two columns with preview and read more link", () => {
-    articles.value = [
+    setArticles([
       { id: 1, title: "First", preview: "First preview", date: "2026-10-08" },
       { id: 2, title: "Second", preview: "", date: "2026-09-17" },
-    ];
+    ]);
     const wrapper = mountPage();
 
     expect(wrapper.get("[data-testid='article-grid']").classes()).toContain(
@@ -54,7 +58,7 @@ describe("InternalArticles", () => {
   });
 
   it("says so when there are no articles", () => {
-    articles.value = [];
+    setArticles([]);
     const wrapper = mountPage();
 
     expect(wrapper.text()).toContain("Zurzeit gibt es keine Neuigkeiten.");

@@ -13,11 +13,14 @@ import LandingHero from "@/features/internal/components/landing/LandingHero.vue"
 import LandingMore from "@/features/internal/components/landing/LandingMore.vue";
 import LandingNews from "@/features/internal/components/landing/LandingNews.vue";
 import LandingOrganizations from "@/features/internal/components/landing/LandingOrganizations.vue";
-import LandingRoadmap from "@/features/internal/components/landing/LandingRoadmap.vue";
 import LandingSecurity from "@/features/internal/components/landing/LandingSecurity.vue";
 import LandingShowroom from "@/features/internal/components/landing/LandingShowroom.vue";
 import LandingSupport from "@/features/internal/components/landing/LandingSupport.vue";
 import { useLandingMeta } from "@/features/internal/composables/useLandingMeta";
+import {
+  MORE_AREAS,
+  SHOWROOM_AREAS,
+} from "@/features/internal/content/landingContent";
 import { markLandingReady } from "@/features/internal/utils/scroll";
 import { useUserStore } from "@/store/user";
 import { getRawLoginUrl, getRegisterUrl } from "@/utils/login";
@@ -31,26 +34,12 @@ const loginUrl = `${getRawLoginUrl()}?next=${window.location.origin}/dashboard/`
 const registerUrl = getRegisterUrl();
 const passwordResetUrl = `${import.meta.env.VITE_AUTH_URL}/auth/user/password_reset/`;
 
-// the api only returns published content, no filtering needed here
-// optional chaining also keeps the page working against an older backend
-// that does not return feature_areas or the new roadmap fields yet
-const showroomAreas = computed(
-  () =>
-    page.value?.feature_areas?.filter((a) => a.placement === "showroom") ?? [],
-);
-const moreAreas = computed(
-  () => page.value?.feature_areas?.filter((a) => a.placement === "more") ?? [],
-);
-const roadmapItems = computed(() =>
-  (page.value?.roadmap_items ?? []).map((item) => ({
-    ...item,
-    benefits: item.benefits ?? [],
-  })),
-);
+// showroom and "Außerdem" rows are fixed content of the frontend, the
+// existing endpoint only provides the articles (articles for everyone)
 const articles = computed(() => page.value?.articles ?? []);
 
-// anchor links (e.g. /start/#roadmap) wait until the content is rendered,
-// because it changes the height of the page
+// anchor links (e.g. /start/#neuigkeiten) wait until the articles are
+// rendered, because they change the height of the page
 watch(
   page,
   (value) => {
@@ -92,14 +81,13 @@ watch(
               in Law&amp;Orga aus. Das Bild wechselt beim Weiterlesen mit.
             </p>
           </div>
-          <LandingShowroom :areas="showroomAreas" />
-          <LandingMore :areas="moreAreas" />
+          <LandingShowroom :areas="SHOWROOM_AREAS" />
+          <LandingMore :areas="MORE_AREAS" />
         </div>
       </section>
 
       <LandingSecurity />
       <LandingOrganizations />
-      <LandingRoadmap :items="roadmapItems" />
       <LandingNews :articles="articles" />
       <LandingSupport />
     </main>

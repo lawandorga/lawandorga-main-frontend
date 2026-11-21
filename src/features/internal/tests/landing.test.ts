@@ -87,9 +87,6 @@ describe("mailto", () => {
     expect(mailto(MAIL_SUBJECTS.demo)).toBe(
       "mailto:team@law-orga.de?subject=Demo-Zugang%20anfragen%20(Website)",
     );
-    expect(mailto(MAIL_SUBJECTS.fund)).toBe(
-      "mailto:team@law-orga.de?subject=Law%26Orga%20f%C3%B6rdern%20(Website)",
-    );
     expect(decodeURIComponent(mailto(MAIL_SUBJECTS.organization))).toBe(
       "mailto:team@law-orga.de?subject=Law&Orga für unsere Organisation (Website)",
     );

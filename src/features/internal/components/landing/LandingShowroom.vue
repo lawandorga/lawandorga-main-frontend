@@ -1,26 +1,19 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
-import { FeatureArea } from "@/features/internal/api/useLoginPage";
+import { LandingArea } from "@/features/internal/content/landingContent";
 import {
   DEFAULT_SCREENSHOT_NOTE,
   getActiveStep,
   prefersReducedMotion,
 } from "@/features/internal/utils/landing";
 
-const props = defineProps<{ areas: FeatureArea[] }>();
+const props = defineProps<{ areas: LandingArea[] }>();
 
 const stepsRoot = ref<HTMLElement | null>(null);
-const activeId = ref<number | null>(null);
+const activeId = ref<string | null>(null);
 
-const active = computed<FeatureArea | undefined>(() => {
+const active = computed<LandingArea | undefined>(() => {
   return (
     props.areas.find((area) => area.id === activeId.value) ?? props.areas[0]
   );
@@ -39,11 +32,11 @@ const onScroll = () => {
     top: el.getBoundingClientRect().top,
   }));
   const id = getActiveStep(steps, window.innerHeight);
-  if (id !== undefined) activeId.value = Number(id);
+  if (id !== undefined) activeId.value = id;
 };
 
-const goTo = (area: FeatureArea) => {
-  const el = stepElements().find((s) => s.dataset.step === String(area.id));
+const goTo = (area: LandingArea) => {
+  const el = stepElements().find((s) => s.dataset.step === area.id);
   el?.scrollIntoView?.({
     block: "center",
     behavior: prefersReducedMotion() ? "auto" : "smooth",
@@ -61,12 +54,6 @@ onBeforeUnmount(() => {
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("resize", onScroll);
 });
-
-// data arrives after mount
-watch(
-  () => props.areas,
-  () => nextTick(onScroll),
-);
 </script>
 
 <template>

@@ -13,56 +13,10 @@ vi.mock("@/features/internal/api/useLoginPage", () => ({
   useLoginPage: () => ({ page }),
 }));
 
-const area = (
-  id: number,
-  title: string,
-  placement: "showroom" | "more",
-  screenshot: boolean,
-) => ({
-  id,
-  title,
-  description: `${title} description`,
-  placement,
-  position: id,
-  icon_url: `/media/icons/${id}.png`,
-  screenshot_url: screenshot ? `/media/shots/${id}.png` : null,
-  screenshot_alt: screenshot ? `${title} alt` : "",
-  screenshot_note: "",
-});
-
 const pageData: LoginPage = {
   content: "<p>old content</p>",
-  feature_areas: [
-    area(1, "Akten", "showroom", true),
-    area(2, "Chat und Signal", "showroom", false),
-    area(3, "Dashboard und News", "more", true),
-    area(4, "E-Mail und externe Anfragen", "more", false),
-  ],
   roadmap_items: [
-    {
-      id: 10,
-      title: "Kalender mit Freigaben",
-      description: "",
-      date: "2026-09-11",
-      status: "live",
-      stage: "",
-      benefits: [],
-      status_note: "",
-      icon_url: null,
-      position: 0,
-    },
-    {
-      id: 11,
-      title: "L&O Forms",
-      description: "Formulare für Ratsuchende.",
-      date: "2026-11-20",
-      status: "planned",
-      stage: "Prototyp",
-      benefits: ["Weniger Abtippen", "Keine unsicheren Dienste"],
-      status_note: "Prototyp vorhanden.",
-      icon_url: "/media/icons/forms.png",
-      position: 0,
-    },
+    { id: 10, title: "Old roadmap item", description: "", date: "2024-01-01" },
   ],
   articles: [
     {
@@ -113,33 +67,39 @@ describe("StartPage", () => {
     wrapper.unmount();
   });
 
-  it("renders the showroom areas with the first one active", () => {
+  it("renders the fixed showroom areas with the first one active", () => {
     const wrapper = mountPage();
 
     const buttons = wrapper.findAll("#einblick h3 button");
-    expect(buttons.map((b) => b.text())).toEqual(["Akten", "Chat und Signal"]);
+    expect(buttons.map((b) => b.text())).toEqual([
+      "Akten",
+      "Einzelne Akte",
+      "Aufgaben",
+      "Kalender",
+      "Chat und Signal",
+      "Statistik",
+    ]);
     expect(buttons[0].attributes("aria-current")).toBe("true");
     expect(buttons[1].attributes("aria-current")).toBeUndefined();
 
     const shot = wrapper.get("#showroom-panel img");
-    expect(shot.attributes("src")).toBe("/media/shots/1.png");
-    expect(shot.attributes("alt")).toBe("Akten alt");
+    expect(shot.attributes("src")).toBe("/landing/screenshots/shot-akten.webp");
+    expect(shot.attributes("alt")).toContain("Screenshot: Aktenliste");
     expect(wrapper.text()).toContain(
-      "Screenshot aus der Demo-Organisation mit Beispieldaten.",
+      "Screenshot aus der Demo-Organisation, Daten durch Beispieldaten ersetzt.",
     );
     wrapper.unmount();
   });
-
   it("shows the icon and title for an area without screenshot", async () => {
     const wrapper = mountPage();
 
-    await wrapper.findAll("#einblick h3 button")[1].trigger("click");
+    await wrapper.findAll("#einblick h3 button")[4].trigger("click");
 
     const panel = wrapper.get("#showroom-panel");
     expect(panel.text()).toContain("Chat und Signal");
     expect(panel.find("img").attributes("alt")).toBe("");
     expect(
-      wrapper.findAll("#einblick h3 button")[1].attributes("aria-current"),
+      wrapper.findAll("#einblick h3 button")[4].attributes("aria-current"),
     ).toBe("true");
     wrapper.unmount();
   });
@@ -148,34 +108,24 @@ describe("StartPage", () => {
     const wrapper = mountPage();
 
     const rows = wrapper.findAll("[data-testid='more-row']");
-    expect(rows).toHaveLength(2);
-    expect(rows[0].find("details").exists()).toBe(true);
+    expect(rows.map((r) => r.find("summary, div").text())).toHaveLength(3);
+    expect(rows[0].text()).toContain("Dashboard und News");
     expect(
-      rows[0].find("details img[alt='Dashboard und News alt']").exists(),
+      rows[0].find("details img[alt^='Screenshot: Dashboard']").exists(),
     ).toBe(true);
     expect(rows[1].find("details").exists()).toBe(false);
     expect(rows[1].text()).toContain("E-Mail und externe Anfragen");
+    expect(rows[2].find("details").exists()).toBe(true);
     wrapper.unmount();
   });
-
-  it("splits the roadmap into live items and planned accordion rows", () => {
+  it("does not show the roadmap (parked) or roadmap items from the api", () => {
     const wrapper = mountPage();
 
-    expect(wrapper.get("[data-testid='roadmap-live']").text()).toContain(
-      "Kalender mit Freigaben",
-    );
-    const planned = wrapper.findAll("details[data-testid='roadmap-planned']");
-    expect(planned).toHaveLength(1);
-    expect(planned[0].get("summary").text()).toContain("L&O Forms");
-    expect(planned[0].get("summary").text()).toContain("Prototyp");
-    expect(planned[0].findAll("li").map((li) => li.text())).toEqual([
-      "Weniger Abtippen",
-      "Keine unsicheren Dienste",
-    ]);
-    expect(planned[0].text()).toContain("Stand: Prototyp vorhanden.");
+    expect(wrapper.find("#roadmap").exists()).toBe(false);
+    expect(wrapper.find("a[href='#roadmap']").exists()).toBe(false);
+    expect(wrapper.text()).not.toContain("Old roadmap item");
     wrapper.unmount();
   });
-
   it("shows the lead article and two more with dates", () => {
     const wrapper = mountPage();
 
@@ -224,9 +174,6 @@ describe("StartPage", () => {
     );
     expect(hrefs).toContain(
       "mailto:team@law-orga.de?subject=Law%26Orga%20f%C3%BCr%20unsere%20Organisation%20(Website)",
-    );
-    expect(hrefs).toContain(
-      "mailto:team@law-orga.de?subject=Law%26Orga%20f%C3%B6rdern%20(Website)",
     );
     expect(hrefs).toContain(
       "mailto:team@law-orga.de?subject=Law%26Orga%20unterst%C3%BCtzen%20(Website)",
@@ -287,29 +234,12 @@ describe("StartPage", () => {
     wrapper.unmount();
   });
 
-  it("renders against an older backend without the new fields", () => {
-    page.value = {
-      content: "",
-      roadmap_items: [
-        { id: 1, title: "Old item", description: "Old", date: "2024-01-01" },
-      ],
-      articles: [{ id: 2, title: "Old article", date: "2024-01-01" }],
-    } as unknown as LoginPage;
-    const wrapper = mountPage();
-
-    expect(wrapper.find("#einblick h3 button").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='roadmap-planned']").exists()).toBe(
-      false,
-    );
-    expect(wrapper.text()).toContain("Old article");
-    wrapper.unmount();
-  });
-
   it("renders without data", () => {
     page.value = null;
     const wrapper = mountPage();
 
-    expect(wrapper.find("#einblick h3 button").exists()).toBe(false);
+    // the showroom is fixed content, only the news wait for the api
+    expect(wrapper.findAll("#einblick h3 button")).toHaveLength(6);
     expect(wrapper.find("[data-testid='news-lead']").exists()).toBe(false);
     expect(wrapper.text()).toContain("Datenschutz als Fundament");
     wrapper.unmount();

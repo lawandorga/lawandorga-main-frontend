@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { FeatureArea } from "@/features/internal/api/useLoginPage";
+import { LandingArea } from "@/features/internal/content/landingContent";
 import {
   DEFAULT_SCREENSHOT_NOTE,
   MAIL_SUBJECTS,
   mailto,
 } from "@/features/internal/utils/landing";
 
-defineProps<{ areas: FeatureArea[] }>();
+defineProps<{ areas: LandingArea[] }>();
 
 const demoMail = mailto(MAIL_SUBJECTS.demo);
 </script>

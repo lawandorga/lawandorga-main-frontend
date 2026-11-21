@@ -32,7 +32,6 @@ const sections = [
   { id: "einblick", label: "Einblick" },
   { id: "sicherheit", label: "Sicherheit" },
   { id: "organisationen", label: "Für Organisationen" },
-  { id: "roadmap", label: "Roadmap" },
   { id: "neuigkeiten", label: "Neuigkeiten" },
 ];
 
