@@ -9,9 +9,7 @@ import { toRefs } from "vue";
 import MenuBar from "./FormMenuBar.vue";
 
 const props = defineProps<{
-  room: string;
   modelValue: string;
-  password: string; // this password should change daily
 }>();
 const { modelValue } = toRefs(props);
 
@@ -19,6 +17,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const editor = useEditor({
   content: modelValue.value,
+  onUpdate: ({ editor: e }) => emit("update:modelValue", e.getHTML()),
   editorProps: {
     attributes: {
       class: "prose p-5 w-full focus:outline-none sm:max-w-none",
@@ -39,16 +38,6 @@ const editor = useEditor({
     }),
   ],
 });
-
-setTimeout(() => {
-  editor.value?.on("update", ({ editor: e }) => {
-    editorUpdated(e.getHTML());
-  });
-}, 500);
-
-function editorUpdated(value: string) {
-  emit("update:modelValue", value);
-}
 </script>
 
 <template>
@@ -77,33 +66,6 @@ function editorUpdated(value: string) {
 
 <style lang="css">
 @reference "tailwindcss";
-
-/* give a remote user a caret */
-.collaboration-cursor__caret {
-  position: relative;
-  margin-left: -1px;
-  margin-right: -1px;
-  border-left: 1px solid #0d0d0d;
-  border-right: 1px solid #0d0d0d;
-  word-break: normal;
-  pointer-events: none;
-}
-
-/* render the username above the caret */
-.collaboration-cursor__label {
-  position: absolute;
-  top: -1.4em;
-  left: -1px;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  user-select: none;
-  color: #0d0d0d;
-  padding: 0.1rem 0.3rem;
-  border-radius: 3px 3px 3px 0;
-  white-space: nowrap;
-}
 
 /* make cell selection visible */
 .selectedCell {
